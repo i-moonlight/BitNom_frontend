@@ -51,13 +51,13 @@ install_dependencies:
     paths:
       - node_modules/
 
-testing_testing:
-  stage: test
-  variables:
-    REACT_APP_WS: "ws://bitnorm.com"
-  script:
-    - export REACT_APP_WS=$REACT_APP_WS
-    - npm test
+# testing_testing:
+#   stage: test
+#   variables:
+#     REACT_APP_WS: "ws://bitnorm.com"
+#   script:
+#     - export REACT_APP_WS=$REACT_APP_WS
+#     - npm test
 
 deploy_on_server:
   stage: deploy
