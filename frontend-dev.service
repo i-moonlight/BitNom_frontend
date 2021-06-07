@@ -1,0 +1,17 @@
+[Unit]
+Description=FrontendDev
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker container kill frontend-dev
+ExecStartPre=-/usr/bin/docker system prune -a -f
+ExecStartPre=-/bin/bash /home/bitnorm/clean-volumes.sh
+WorkingDirectory=/home/bitnorm/frontend-dev
+ExecStartPre=/usr/bin/docker image build -t frontend-dev .
+ExecStart=/usr/bin/docker container run --publish 5000:5000 --name frontend-dev frontend-dev
+
+[Install]
+WantedBy=multi-user.target

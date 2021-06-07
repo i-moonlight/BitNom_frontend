@@ -1,0 +1,15 @@
+[Unit]
+Description=Frontend
+After=docker.service
+Requires=docker.service
+After=gateway.service
+Requires=gateway.service
+
+[Service]
+TimeoutStartSec=0
+Restart=on-failure
+ExecStartPre=-/usr/bin/bash /home/bitnorm/clean-volumes.sh
+ExecStart=/usr/bin/docker run --rm -v /home/bitnorm/frontend:/host:ro --volumes-from gateway alpine cp -rT /host/ /bitnorm-static/gateway/
+
+[Install]
+WantedBy=multi-user.target

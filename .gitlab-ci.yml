@@ -1,0 +1,112 @@
+image: node:lts-alpine
+
+before_script:
+  ##
+  ## Install ssh-agent if not already installed, it is required by Docker.
+  ## (change apt-get to yum if you use an RPM-based image)
+  ##
+  - "which ssh-agent || ( apk upgrade --update && apk add openssh-client rsync )"
+
+  ##
+  ## Run ssh-agent (inside the build environment)
+  ##
+  - eval $(ssh-agent -s)
+
+  ##
+  ## Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  ## We're using tr to fix line endings which makes ed25519 keys work
+  ## without extra base64 encoding.
+  ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
+  ##
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+  ##
+  ## Create the SSH directory and give it the right permissions
+  ##
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+  ##
+  ## Assuming you created the SSH_KNOWN_HOSTS variable, uncomment the
+  ## following two lines.
+  ##
+  - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm i -g npm
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+testing_testing:
+  stage: test
+  variables:
+    REACT_APP_WS: "ws://bitnorm.com"
+  script:
+    - export REACT_APP_WS=$REACT_APP_WS
+    - npm test
+
+deploy_on_server:
+  stage: deploy
+  only:
+    refs:
+      - main
+  variables:
+    REACT_APP_CRYPTOCONTROL_KEY: "359df4119fe11ba051dcddefb2f08649"
+    REACT_APP_API_GATEWAY: "/graphql"
+    APPLICATION_DOMAIN: "https://bitnorm.com"
+    REACT_APP_WS: "ws://bitnorm.com"
+  environment:
+    name: staging
+    url: $DEPLOYMENT_SERVER_IP
+  script:
+    - export REACT_APP_CRYPTOCONTROL_KEY=$REACT_APP_CRYPTOCONTROL_KEY
+    - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
+    - export REACT_APP_WS=$REACT_APP_WS
+    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
+    - npm run build
+    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME/
+    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME/
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/frontend/frontend.service /etc/systemd/system"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/frontend.service"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl daemon-reload"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart frontend"
+
+deploy_demo:
+  stage: deploy
+  only:
+    refs:
+      - development
+  variables:
+    REACT_APP_CRYPTOCONTROL_KEY: "359df4119fe11ba051dcddefb2f08649"
+    REACT_APP_API_GATEWAY: "graphql"
+    APPLICATION_DOMAIN: "http://136.144.176.215"
+    REACT_APP_WS: "ws://136.144.176.215"
+  environment:
+    name: staging
+    url: $DEPLOYMENT_SERVER_IP
+  script:
+    - export REACT_APP_WS=$REACT_APP_WS
+    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
+    - export REACT_APP_API_GATEWAY=$APPLICATION_DOMAIN/$REACT_APP_API_GATEWAY
+    - npm run build
+    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
+    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend-dev.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
+    - rsync -av -e ssh  ../$CI_PROJECT_NAME/Dockerfile bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/frontend-dev/frontend-dev.service /etc/systemd/system"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/frontend-dev.service"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl daemon-reload"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart frontend-dev"
