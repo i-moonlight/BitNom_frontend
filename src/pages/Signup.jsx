@@ -26,8 +26,8 @@ export default function Signup() {
         justify='center'
         style={{ minHeight: '100vh', paddingTop: 50, paddingBottom: 50 }}
       >
-        <Grid item xs={4}>
-          <div className='text-center my-3 px-5'>
+        <Grid item xs={11} sm={7} md={6} lg={4}>
+          <div className='text-center my-3 px-sm-5'>
             <Typography color='textPrimary' variant='h5'>
               GET STARTED NOW
             </Typography>
@@ -64,7 +64,7 @@ export default function Signup() {
                   type='password'
                   fullWidth
                 />
-                <div className='text-center my-3 px-5'>
+                <div className='text-center my-3 px-sm-0'>
                   <Typography color='textPrimary' variant='body1'>
                     By clicking Agree &amp; Join, you agree to the BitNorm
                     <Link color='primary'>User Agreement</Link>,{' '}

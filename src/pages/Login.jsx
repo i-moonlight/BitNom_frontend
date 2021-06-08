@@ -28,8 +28,8 @@ export default function Login() {
         justify='center'
         style={{ minHeight: '100vh' }}
       >
-        <Grid item xs={4}>
-          <div className='text-center my-3 px-5'>
+        <Grid item xs={11} sm={7} md={6} lg={4}>
+          <div className='text-center my-3 px-sm-5'>
             <Typography color='textPrimary' variant='h5'>
               Hi! WELCOME BACK
             </Typography>
@@ -66,7 +66,7 @@ export default function Login() {
                   Continue With Google
                 </Button>
 
-                <div className='text-center'>
+                <div className='text-center my-3 px-sm-0'>
                   <Typography variant='body1'>
                     <div style={{ marginTop: 10 }}></div>
                     New to Bitnorm?{' '}
