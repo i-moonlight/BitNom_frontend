@@ -1,38 +1,39 @@
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   Card,
   Container,
   Divider,
-  fade,
   Hidden,
   IconButton,
   InputBase,
-  makeStyles,
   Menu,
   MenuItem,
   Tab,
   Tabs,
   Typography,
+  useTheme,
   withStyles,
 } from '@material-ui/core';
 import {
+  AccountBalanceWalletOutlined,
   Brightness3,
   ChevronRight,
+  ExitToAppRounded,
   ForumRounded,
   MenuRounded,
   Notifications,
-  NotificationsRounded,
   PeopleRounded,
   Search,
 } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-// import logo from '../assets/logo.svg';
 import logo_light from '../assets/logo_light.svg';
 import { signout } from '../store/actions/authActions';
+import { status } from '../store/local/dummy';
+import Button from './Button';
+import { useStyles } from './styles.components';
 
 const BitTab = withStyles(theme => ({
   root: {
@@ -48,134 +49,29 @@ const BitTab = withStyles(theme => ({
   },
 }))(props => <Tab disableRipple {...props} />);
 
-const useStyles = makeStyles(theme => ({
-  // wrapper: {
-  //   backgroundColor: "transparent",
-  // },
-  root: {
-    flexGrow: 1,
-    // position: "fixed",
-    // top: 0,
-  },
-  appBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    color: theme.palette.text.primary,
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    flexGrow: 1,
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    // marginRight: theme.spacing(2),
-    // marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  statusBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    color: theme.palette.text.primary,
-  },
-  tabBar: {
-    textTransform: 'none',
-  },
-  textTheme: {
-    color: theme.palette.primary.dark,
-  },
-}));
-
 export default function NavBar() {
   const [value, setValue] = React.useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const theme = useTheme();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'desktop-menu';
+  const mobileMenuId = 'mobile-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -191,99 +87,113 @@ export default function NavBar() {
       <MenuItem onClick={handleMenuClose}>Account and Billing</MenuItem>
       <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <div>
+        <div className='center-horizontal'>
           <Typography>Referred Friends</Typography>
-          <div>
-            <Typography>0</Typography>
+          <div className='px-2 center-horizontal'>
+            <Typography className='px-1'>0</Typography>
             <PeopleRounded />
           </div>
         </div>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>BN Token</MenuItem>
-      <MenuItem onClick={() => dispatch(signout())}>Sign Out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label='show 4 new mails' color='inherit'>
-          <Badge badgeContent={4} color='secondary'>
-            <ForumRounded />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
+      <Divider />
+      <MenuItem onClick={handleMenuClose}>
+        <div className='w-100 center-horizontal space-between'>
+          <Typography>BN Token</Typography>
+          <div className='px-2 center-horizontal'>
+            <Typography className='px-1'>0</Typography>
+            <AccountBalanceWalletOutlined />
+          </div>
+        </div>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label='show 11 new notifications' color='inherit'>
-          <Badge badgeContent={0} color='secondary'>
-            <NotificationsRounded />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+      <Divider />
+      <MenuItem onClick={() => dispatch(signout())}>
+        <div className='w-100 center-horizontal space-between'>
+          <Typography color='secondary'>Sign Out</Typography>
+          <div className='px-2 center-horizontal'>
+            <ExitToAppRounded color='secondary' />
+          </div>
+        </div>
       </MenuItem>
-      {/* <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem> */}
     </Menu>
   );
 
   return (
-    <AppBar position='fixed' color='inherit' elevation={0}>
+    <AppBar
+      position='fixed'
+      style={{
+        background: theme.palette.background.default,
+      }}
+      elevation={0}
+    >
       <Box className={classes.root}>
-        <Container>
+        <Container maxWidth='lg'>
           <div className={classes.statusBar}>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                overflowX: 'auto',
+                minHeight: 36,
               }}
             >
-              {[1, 2, 3, 4].map(item => (
-                <Typography key={item} style={{ marginRight: 16 }}>
-                  Crypto: <span className={classes.textTheme}>1837</span>
-                </Typography>
+              {status.map(({ title, value }) => (
+                <div>
+                  <Typography key={title} style={{ marginRight: 16 }} noWrap>
+                    {title}: <span className={classes.textTheme}>{value}</span>
+                  </Typography>
+                </div>
               ))}
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {[1, 2].map(() => (
-                <>
-                  <Typography style={{ marginRight: 4 }}>English</Typography>
-                  <IconButton aria-label='show 4 new mails' color='inherit'>
+            <Hidden smDown>
+              <div className='center-horizontal'>
+                <Button
+                  variant='text'
+                  color='textPrimary'
+                  endIcon={
                     <ChevronRight
                       style={{
                         transform: 'rotateZ(90deg)',
                       }}
                     />
-                  </IconButton>
-                </>
-              ))}
-              <IconButton aria-label='show 4 new mails' color='inherit'>
-                <Brightness3 />
-              </IconButton>
-            </div>
+                  }
+                >
+                  English
+                </Button>
+                <Button
+                  variant='text'
+                  color='textPrimary'
+                  endIcon={
+                    <ChevronRight
+                      style={{
+                        transform: 'rotateZ(90deg)',
+                      }}
+                    />
+                  }
+                >
+                  <Avatar
+                    style={{
+                      height: 24,
+                      width: 24,
+                      background: '#0F986E',
+                      marginRight: 8,
+                      color: theme.palette.text.primary,
+                    }}
+                    variant='square'
+                  >
+                    $
+                  </Avatar>{' '}
+                  USD
+                </Button>
+
+                <IconButton
+                  className='p-o'
+                  aria-label='show 4 new mails'
+                  color='inherit'
+                >
+                  <Brightness3 />
+                </IconButton>
+              </div>
+            </Hidden>
           </div>
         </Container>
       </Box>
@@ -321,59 +231,59 @@ export default function NavBar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton
-                aria-label='show 17 new notifications'
-                color='inherit'
-              >
+              <IconButton color='inherit'>
                 <Notifications />
               </IconButton>
-              <IconButton
-                edge='end'
-                aria-label='account of current user'
-                aria-haspopup='true'
-                color='inherit'
-              >
+              <IconButton style={{ marginRight: 30 }} color='inherit'>
                 <ForumRounded />
               </IconButton>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
+
+              <Button
+                className='py-0'
+                variant='text'
+                color='textPrimary'
+                aria-label='account of current user'
+                aria-controls={menuId}
+                aria-haspopup='true'
+                onClick={handleProfileMenuOpen}
+                style={
+                  {
+                    // display: 'flex',
+                    // alignItems: 'center',
+                    // '&:hover': {
+                    //   background: theme.palette.background.paper,
+                    // },
+                  }
+                }
               >
                 <Avatar
                   variant='rounded'
                   style={{
                     backgroundColor: '#fed132',
                     marginRight: 12,
-                    marginLeft: 16,
+                    // marginLeft: 16,
+                    width: 30,
+                    height: 30,
                   }}
                 >
                   L
                 </Avatar>
                 <Typography style={{ marginRight: 4 }}>Mahmud Zayn</Typography>
-                <IconButton
-                  color='inherit'
-                  edge='end'
-                  aria-label='account of current user'
-                  aria-controls={menuId}
-                  aria-haspopup='true'
-                  onClick={handleProfileMenuOpen}
-                >
+                <IconButton className='p-0 m-0' color='inherit' edge='end'>
                   <ChevronRight
                     style={{
                       transform: 'rotateZ(90deg)',
                     }}
                   />
                 </IconButton>
-              </div>
+              </Button>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-label='show more'
                 aria-controls={mobileMenuId}
                 aria-haspopup='true'
-                onClick={handleMobileMenuOpen}
+                onClick={handleProfileMenuOpen}
                 color='inherit'
               >
                 <MenuRounded />
@@ -387,12 +297,8 @@ export default function NavBar() {
               value={value}
               onChange={handleChange}
               indicatorColor='primary'
-              // textColor='primary'
               variant='scrollable'
               scrollButtons='auto'
-              // variant="fullWidth"
-              // class={classes.tabBar}
-              //   centered
             >
               <BitTab label='BN Connect' />
               <BitTab label='BN Knowledge Center' />
@@ -406,7 +312,7 @@ export default function NavBar() {
         </Container>
       </Box>
       <Divider />
-      {renderMobileMenu}
+      {/* {renderMobileMenu} */}
       {renderMenu}
     </AppBar>
   );

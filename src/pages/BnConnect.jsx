@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -21,17 +20,19 @@ import {
 } from '@material-ui/core';
 import {
   AddRounded,
-  Book,
   BookmarkRounded,
+  CollectionsBookmarkRounded,
   EventRounded,
   Favorite,
   MessageOutlined,
   MoreVert,
   Notifications,
+  PersonRounded,
   Settings,
   Share,
 } from '@material-ui/icons';
 import React from 'react';
+import Button from '../components/Button';
 import Screen from '../components/Screen';
 
 const useStyles = makeStyles(theme => ({
@@ -46,7 +47,7 @@ export default function BnConnect() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container>
+        <Container maxWidth='lg'>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -76,10 +77,7 @@ export default function BnConnect() {
 
 function Scroll() {
   return (
-    <Card
-      //  className={classes.root}
-      style={{ marginBottom: 16 }}
-    >
+    <Card style={{ marginBottom: 16 }}>
       <CardHeader
         avatar={<Avatar aria-label='recipe'>R</Avatar>}
         action={
@@ -122,14 +120,7 @@ function Scroll() {
             </Grid>
           ))}
         </Grid>
-
-        {/* <CardMedia
-          style={{ height: 160, borderRadius: 16 }}
-          image={"https://picsum.photos/200/300"}
-          title="Paella dish"
-        /> */}
       </CardContent>
-
       <CardActions disableSpacing>
         <IconButton aria-label='add to favorites'>
           <Favorite />
@@ -145,7 +136,11 @@ function Scroll() {
 function TrendingPost() {
   return (
     <Paper>
-      <List style={{ padding: 8 }} component={Card} variant='outlined'>
+      <List
+        style={{ padding: 8, paddingBottom: 0 }}
+        component={Card}
+        variant='outlined'
+      >
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           Trending Post
         </Typography>
@@ -172,20 +167,20 @@ function UserCard() {
     <div
       style={{
         position: 'sticky',
-        top: 176,
+        bottom: 20,
       }}
     >
       <Card style={{ marginBottom: 16 }} variant={'outlined'}>
         <CardMedia
-          style={{ height: 140 }}
+          style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
           title='Contemplative Reptile'
         />
         <CardContent
           style={{
             position: 'relative',
-            top: -100,
-            marginBottom: -100,
+            top: -80,
+            marginBottom: -80,
           }}
         >
           <div className='space-between'>
@@ -193,21 +188,27 @@ function UserCard() {
               <Avatar
                 variant='rounded'
                 style={{
-                  // position:"relative",
                   backgroundColor: '#fed132',
                   marginRight: 12,
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                 }}
               >
                 L
               </Avatar>
-              <Typography variant='body1'>Mahmud Zayn</Typography>
+              <Typography className='pt-1' variant='body1'>
+                Mahmud Zayn
+              </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
                 @mahmudzayn
               </Typography>
             </div>
-            <div>
+            <div
+              style={{
+                position: 'relative',
+                top: 60,
+              }}
+            >
               <IconButton>
                 <Notifications />
               </IconButton>
@@ -220,26 +221,50 @@ function UserCard() {
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>
-            {[1, 2, 3].map(item => (
-              <div key={item}>
-                <Typography variant='h6'>Scrolls</Typography>
-                <div className='center-horizontal'>
-                  <Book fontSize='small' />
-                  <Typography variant='h5'>0</Typography>
-                </div>
+            <div>
+              <Typography variant='body1'>Scrolls</Typography>
+              <div className='center-horizontal'>
+                <CollectionsBookmarkRounded
+                  color='primary'
+                  className='mx-2'
+                  fontSize='small'
+                />
+                <Typography variant='body1'>0</Typography>
               </div>
-            ))}
+            </div>
+            <div>
+              <Typography variant='body1'>Following</Typography>
+              <div className='center-horizontal'>
+                <PersonRounded
+                  color='primary'
+                  className='mx-2'
+                  fontSize='small'
+                />
+                <Typography variant='body1'>0</Typography>
+              </div>
+            </div>
+            <div>
+              <Typography variant='body1'>Followers</Typography>
+              <div className='center-horizontal'>
+                <PersonRounded
+                  color='primary'
+                  className='mx-2'
+                  fontSize='small'
+                />
+                <Typography variant='body1'>0</Typography>
+              </div>
+            </div>
           </div>
         </CardContent>
         <Divider />
-        <CardActions>
+        <CardActions className='py-0'>
           <IconButton>
             <BookmarkRounded />
           </IconButton>
           <Typography>Saved Items</Typography>
         </CardActions>
         <Divider />
-        <CardActions>
+        <CardActions className='py-0'>
           <IconButton>
             <EventRounded />
           </IconButton>
@@ -249,7 +274,7 @@ function UserCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Button color='primary' fullWidth variant='contained'>
+      <Button color='primary' fullWidth>
         Start Scroll
       </Button>
     </div>
