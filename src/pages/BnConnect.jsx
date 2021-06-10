@@ -1,39 +1,49 @@
 import {
   Avatar,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
   Container,
   Divider,
+  fade,
   Grid,
   Hidden,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
   makeStyles,
   Paper,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import {
   AddRounded,
   BookmarkRounded,
   CollectionsBookmarkRounded,
+  CommentRounded,
   EventRounded,
-  Favorite,
   MessageOutlined,
   MoreVert,
   Notifications,
   PersonRounded,
   Settings,
-  Share,
+  ShareRounded,
+  ThumbUpRounded,
 } from '@material-ui/icons';
 import React from 'react';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
+
+import image from '../assets/image.svg';
+import video from '../assets/video.svg';
+import schedule from '../assets/schedule.svg';
+import write from '../assets/write.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,6 +65,7 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
+              <StartScroll />
               <Scroll />
               <Scroll />
               <Scroll />
@@ -66,12 +77,70 @@ export default function BnConnect() {
             <Grid item md={4} lg={3}>
               <Hidden smDown>
                 <TrendingPost />
+                <SuggestedPeople />
               </Hidden>
             </Grid>
           </Grid>
         </Container>
       </div>
     </Screen>
+  );
+}
+
+function StartScroll() {
+  const theme = useTheme();
+
+  return (
+    <Card style={{ marginBottom: 16 }}>
+      <CardContent>
+        <CardActionArea>
+          <Card
+            elevation={0}
+            style={{
+              padding: 12,
+              borderRadius: 8,
+              backgroundColor: fade(theme.palette.common.white, 0.15),
+            }}
+          >
+            <Typography color='textSecondary'>Start a scroll</Typography>
+          </Card>
+        </CardActionArea>
+        <div className='space-between mt-4 mx-2'>
+          <Button textCase variant='text' color='textPrimary'>
+            <div className='center-horizontal'>
+              <img style={{ marginRight: 10 }} src={image} alt='img' />
+              <Hidden xsDown>
+                <Typography>Image</Typography>
+              </Hidden>
+            </div>
+          </Button>
+          <Button textCase variant='text' color='textPrimary'>
+            <div className='center-horizontal'>
+              <img style={{ marginRight: 10 }} src={video} alt='img' />
+              <Hidden xsDown>
+                <Typography>Video</Typography>
+              </Hidden>
+            </div>
+          </Button>
+          <Button textCase variant='text' color='textPrimary'>
+            <div className='center-horizontal'>
+              <img style={{ marginRight: 10 }} src={schedule} alt='img' />
+              <Hidden xsDown>
+                <Typography>Schedule</Typography>
+              </Hidden>
+            </div>
+          </Button>
+          <Button textCase variant='text' color='textPrimary'>
+            <div className='center-horizontal'>
+              <img style={{ marginRight: 10 }} src={write} alt='img' />
+              <Hidden xsDown>
+                <Typography>Write Article</Typography>
+              </Hidden>
+            </div>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -121,13 +190,32 @@ function Scroll() {
           ))}
         </Grid>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label='add to favorites'>
-          <Favorite />
-        </IconButton>
-        <IconButton aria-label='share'>
-          <Share />
-        </IconButton>
+      <Divider />
+      <CardActions className='space-around'>
+        <Button
+          color='textPrimary'
+          textCase
+          variant='text'
+          startIcon={<ThumbUpRounded />}
+        >
+          Like
+        </Button>
+        <Button
+          color='textPrimary'
+          textCase
+          variant='text'
+          startIcon={<CommentRounded />}
+        >
+          Comment
+        </Button>
+        <Button
+          color='textPrimary'
+          textCase
+          variant='text'
+          startIcon={<ShareRounded />}
+        >
+          Share
+        </Button>
       </CardActions>
     </Card>
   );
@@ -135,7 +223,11 @@ function Scroll() {
 
 function TrendingPost() {
   return (
-    <Paper>
+    <Paper
+      style={{
+        marginBottom: 16,
+      }}
+    >
       <List
         style={{ padding: 8, paddingBottom: 0 }}
         component={Card}
@@ -162,19 +254,55 @@ function TrendingPost() {
   );
 }
 
+function SuggestedPeople() {
+  return (
+    <Paper>
+      <List
+        style={{ padding: 8, paddingBottom: 0 }}
+        component={Card}
+        variant='outlined'
+      >
+        <Typography style={{ marginLeft: 8 }} variant='body1'>
+          People you may know
+        </Typography>
+        {[1, 2, 3].map(item => (
+          <ListItem key={item} divider>
+            <ListItemAvatar>
+              <Avatar>
+                <PersonRounded />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary='Andy bo Wu' secondary='@andybowu' />
+            <ListItemIcon>
+              {/* <SendRounded /> */}
+              <Button size='small' variant='outlined' textCase>
+                Follow
+              </Button>
+            </ListItemIcon>
+          </ListItem>
+        ))}
+        <Divider />
+        <Typography className='my-2' color='primary'>
+          Show more
+        </Typography>
+      </List>
+    </Paper>
+  );
+}
+
 function UserCard() {
   return (
     <div
       style={{
         position: 'sticky',
-        bottom: 20,
+        top: 176,
       }}
     >
       <Card style={{ marginBottom: 16 }} variant={'outlined'}>
         <CardMedia
           style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
-          title='Contemplative Reptile'
+          // title='Contemplative Reptile'
         />
         <CardContent
           style={{

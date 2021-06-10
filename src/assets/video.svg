@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="33" height="25" viewBox="0 0 33 25">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#83c677"/>
+      <stop offset="1" stop-color="#0f1"/>
+    </linearGradient>
+  </defs>
+  <path id="Icon_material-ondemand-video" data-name="Icon material-ondemand-video" d="M31.5,4.5H4.5a2.885,2.885,0,0,0-3,2.778V23.944a2.894,2.894,0,0,0,3,2.778H12V29.5H24V26.722h7.5a2.89,2.89,0,0,0,2.985-2.778L34.5,7.278A2.9,2.9,0,0,0,31.5,4.5Zm0,19.444H4.5V7.278h27ZM24,15.611,13.5,21.167V10.056Z" transform="translate(-1.5 -4.5)" fill="url(#linear-gradient)"/>
+</svg>
