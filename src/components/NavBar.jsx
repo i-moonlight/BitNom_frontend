@@ -8,8 +8,13 @@ import {
   Hidden,
   IconButton,
   InputBase,
-  Menu,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
   MenuItem,
+  Popover,
   Tab,
   Tabs,
   Typography,
@@ -20,14 +25,18 @@ import {
   AccountBalanceWalletOutlined,
   Brightness3,
   ChevronRight,
+  ChevronRightRounded,
   ExitToAppRounded,
   ForumRounded,
   MenuRounded,
+  MoreVert,
   Notifications,
   PeopleRounded,
+  PersonRounded,
   Search,
+  SettingsRounded,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import logo_light from '../assets/logo_light.svg';
 import { signout } from '../store/actions/authActions';
@@ -46,47 +55,94 @@ const BitTab = withStyles(theme => ({
       opacity: 1,
       color: '#fff',
     },
+    '&:hover': {
+      backgroundColor: theme.palette.background.paper,
+    },
   },
 }))(props => <Tab disableRipple {...props} />);
 
-export default function NavBar() {
-  const [value, setValue] = React.useState(0);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const menuId = 'menu-profile';
+const tabOptionsId = 'menu-tab-options';
+const notificationId = 'menu-notifications';
+const notificationOptionId = 'menu-notification-option';
+
+export default function NavBar({ handleScrollOptionOpen }) {
+  const [value, setValue] = useState(0);
+  const [tabOptions, setTabOptions] = useState(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
+  const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
+    useState(null);
+
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
+
+  const isMenuOpen = Boolean(menuAnchorEl);
+  const isTabOptionOpen = Boolean(tabOptionAnchorEl);
+  const isNotificationOpen = Boolean(notificationAnchorEl);
+  const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
+
+  const handleMenuOpen = event => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
+  };
+
+  const handleTabOptionsOpen = event => {
+    setTabOptionAnchorEl(event.currentTarget);
+  };
+
+  const handleTabOptionsClose = event => {
+    setTabOptionAnchorEl(null);
+  };
+
+  const handleNotificationsOpen = event => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationsClose = event => {
+    setNotificationAnchorEl(null);
+  };
+
+  const handleNotificationOptionOpen = event => {
+    setNotificationOptionAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationOptionClose = event => {
+    setNotificationOptionAnchorEl(null);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const menuId = 'desktop-menu';
-  const mobileMenuId = 'mobile-menu';
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    <Popover
+      anchorEl={menuAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Watchlist</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Account and Billing</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
+        My Profile
+      </MenuItem>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
+        Watchlist
+      </MenuItem>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
+        Account and Billing
+      </MenuItem>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
+        Settings
+      </MenuItem>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
         <div className='center-horizontal'>
           <Typography>Referred Friends</Typography>
           <div className='px-2 center-horizontal'>
@@ -96,7 +152,7 @@ export default function NavBar() {
         </div>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem className='py-3' onClick={handleMenuClose}>
         <div className='w-100 center-horizontal space-between'>
           <Typography>BN Token</Typography>
           <div className='px-2 center-horizontal'>
@@ -106,7 +162,7 @@ export default function NavBar() {
         </div>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={() => dispatch(signout())}>
+      <MenuItem className='py-3' onClick={() => dispatch(signout())}>
         <div className='w-100 center-horizontal space-between'>
           <Typography color='secondary'>Sign Out</Typography>
           <div className='px-2 center-horizontal'>
@@ -114,7 +170,132 @@ export default function NavBar() {
           </div>
         </div>
       </MenuItem>
-    </Menu>
+    </Popover>
+  );
+
+  const renderTabOptions = (
+    <Popover
+      anchorEl={tabOptionAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      id={tabOptionsId}
+      keepMounted
+      open={isTabOptionOpen}
+      onClose={handleTabOptionsClose}
+    >
+      {tabOptions &&
+        tabOptions.map(({ label }) => (
+          <MenuItem
+            className='py-3 space-between'
+            style={{
+              width: tabOptionAnchorEl && tabOptionAnchorEl.offsetWidth,
+            }}
+            onClick={handleTabOptionsClose}
+          >
+            {label}
+            <ChevronRightRounded />
+          </MenuItem>
+        ))}
+    </Popover>
+  );
+
+  const renderNotifications = (
+    <Popover
+      anchorEl={notificationAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={notificationId}
+      // keepMounted
+      open={isNotificationOpen}
+      onClose={handleNotificationsClose}
+    >
+      <List
+        style={{ padding: 8, paddingBottom: 0 }}
+        component={Card}
+        variant='outlined'
+      >
+        <div className='space-between center-horizontal'>
+          <Typography style={{ marginLeft: 8 }} variant='body1'>
+            Notifications
+          </Typography>
+          <IconButton>
+            <SettingsRounded />
+          </IconButton>
+        </div>
+        <Divider />
+        {[1, 2, 3].map(item => (
+          <ListItem className='space-between' key={item} divider>
+            <ListItemAvatar>
+              <Avatar>
+                <PersonRounded />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <div>
+                  <Typography>Andy bo Wu</Typography>
+                  <Typography>sent a friend request</Typography>
+                </div>
+              }
+              secondary='50 minutes ago'
+            />
+            <ListItemIcon
+              aria-label='show more'
+              aria-controls={notificationOptionId}
+              aria-haspopup='true'
+              onClick={handleNotificationOptionOpen}
+              color='inherit'
+              style={{
+                marginRight: 0,
+                paddingRight: 0,
+                minWidth: 20,
+                '&.MuiListItemIcon-root': {
+                  minWidth: 20,
+                },
+              }}
+            >
+              <MoreVert />
+            </ListItemIcon>
+          </ListItem>
+        ))}
+        <Divider />
+        <Typography className='my-2' color='primary'>
+          Show more
+        </Typography>
+      </List>
+    </Popover>
+  );
+
+  const renderNotificationOption = (
+    <Popover
+      anchorEl={notificationOptionAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={notificationOptionId}
+      // keepMounted
+      open={isNotificationOptionOpen}
+      onClose={handleNotificationOptionClose}
+      style={{ marginLeft: 16, width: '100%' }}
+    >
+      <List
+        style={{ padding: 0, paddingBottom: 0 }}
+        component={Card}
+        variant='outlined'
+      >
+        <ListItem button divider>
+          <ListItemText secondary='Mark as read' />
+        </ListItem>
+        <ListItem button divider>
+          <ListItemText secondary='Remove This Notification' />
+        </ListItem>
+        <ListItem button divider>
+          <ListItemText
+            secondary='Turn off Notifications from 
+ this account'
+          />
+        </ListItem>
+      </List>
+    </Popover>
   );
 
   return (
@@ -231,7 +412,13 @@ export default function NavBar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton color='inherit'>
+              <IconButton
+                color='inherit'
+                aria-label='account of current user'
+                aria-controls={notificationId}
+                aria-haspopup='true'
+                onClick={handleNotificationsOpen}
+              >
                 <Notifications />
               </IconButton>
               <IconButton style={{ marginRight: 30 }} color='inherit'>
@@ -245,16 +432,7 @@ export default function NavBar() {
                 aria-label='account of current user'
                 aria-controls={menuId}
                 aria-haspopup='true'
-                onClick={handleProfileMenuOpen}
-                style={
-                  {
-                    // display: 'flex',
-                    // alignItems: 'center',
-                    // '&:hover': {
-                    //   background: theme.palette.background.paper,
-                    // },
-                  }
-                }
+                onClick={handleMenuOpen}
               >
                 <Avatar
                   variant='rounded'
@@ -281,9 +459,9 @@ export default function NavBar() {
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-label='show more'
-                aria-controls={mobileMenuId}
+                aria-controls={menuId}
                 aria-haspopup='true'
-                onClick={handleProfileMenuOpen}
+                onClick={handleMenuOpen}
                 color='inherit'
               >
                 <MenuRounded />
@@ -300,20 +478,61 @@ export default function NavBar() {
               variant='scrollable'
               scrollButtons='auto'
             >
-              <BitTab label='BN Connect' />
-              <BitTab label='BN Knowledge Center' />
-              <BitTab label='Exchange' />
-              <BitTab label='Services' />
-              <BitTab label='Job Board' />
-              <BitTab label='Product' />
-              <BitTab label='More' />
+              {[
+                {
+                  label: 'BN Connect',
+                },
+                {
+                  label: 'BN Knowledge Center',
+                  menuItems: [
+                    { label: 'Crypto-tinder' },
+                    { label: 'Forum' },
+                    { label: 'Cryptocurrency' },
+                    { label: 'Bitcointalk' },
+                  ],
+                },
+                { label: 'Exchange' },
+                { label: 'Services' },
+                { label: 'Job Board' },
+                {
+                  label: 'Product',
+                  menuItems: [
+                    { label: 'Investor page' },
+                    { label: 'Crypto API' },
+                    { label: 'Widgets and bots' },
+                    { label: 'Mobile App' },
+                  ],
+                },
+                {
+                  label: 'More',
+                  menuItems: [
+                    { label: 'Help Center' },
+                    { label: 'BN Community' },
+                    { label: 'About' },
+                    { label: 'BN for business' },
+                    { label: 'BN Moderators' },
+                  ],
+                },
+              ].map(({ label, menuItems }) => (
+                <BitTab
+                  label={label}
+                  aria-controls={tabOptionsId}
+                  aria-haspopup='true'
+                  onClick={event => {
+                    menuItems && setTabOptions(menuItems);
+                    menuItems && handleTabOptionsOpen(event);
+                  }}
+                />
+              ))}
             </Tabs>
           </div>
         </Container>
       </Box>
       <Divider />
-      {/* {renderMobileMenu} */}
+      {renderTabOptions}
       {renderMenu}
+      {renderNotifications}
+      {renderNotificationOption}
     </AppBar>
   );
 }

@@ -58,6 +58,15 @@ const theme = createMuiTheme({
       default: '#18191A',
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
 });
 
 //Sync to local storage everytime store changes

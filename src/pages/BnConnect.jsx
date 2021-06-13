@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Card,
   CardActionArea,
   CardActions,
@@ -19,24 +20,29 @@ import {
   ListItemText,
   makeStyles,
   Paper,
+  Popover,
   Typography,
   useTheme,
 } from '@material-ui/core';
 import {
   AddRounded,
+  BookmarkBorderRounded,
   BookmarkRounded,
   CollectionsBookmarkRounded,
   CommentRounded,
   EventRounded,
+  FileCopyOutlined,
+  FlagOutlined,
   MessageOutlined,
   MoreVert,
   Notifications,
+  PersonAddDisabledOutlined,
   PersonRounded,
   Settings,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
 
@@ -51,8 +57,77 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const scrollOptionId = 'menu-scroll-option';
+
 export default function BnConnect() {
   const classes = useStyles();
+  const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
+
+  const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
+
+  const handleScrollOptionOpen = event => {
+    setScrollOptionAnchorEl(event.currentTarget);
+  };
+
+  const handleScrollOptionClose = event => {
+    setScrollOptionAnchorEl(null);
+  };
+
+  const renderScrollOption = (
+    <Popover
+      anchorEl={scrollOptionAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={scrollOptionId}
+      // keepMounted
+      open={isScrollOptionOpen}
+      onClose={handleScrollOptionClose}
+      style={{ marginLeft: 16, width: '100%' }}
+    >
+      <List
+        style={{ padding: 0, paddingBottom: 0 }}
+        component={Card}
+        variant='outlined'
+      >
+        <ListItem button divider>
+          <ListItemIcon>
+            <BookmarkBorderRounded />
+          </ListItemIcon>
+          <ListItemText
+            primary='Save the scroll'
+            secondary='Add this to you saved items'
+          />
+        </ListItem>
+        <ListItem button divider>
+          <ListItemIcon>
+            <FlagOutlined />
+          </ListItemIcon>
+          <ListItemText
+            primary='Report this scroll'
+            secondary='Im concerned about this scroll'
+          />
+        </ListItem>
+        <ListItem button divider>
+          <ListItemIcon>
+            <FileCopyOutlined />
+          </ListItemIcon>
+          <ListItemText primary='Copy this scroll' />
+        </ListItem>
+        <ListItem button divider>
+          <ListItemIcon>
+            <PersonAddDisabledOutlined />
+          </ListItemIcon>
+          <ListItemText primary='Unfollow @briansadroe' />
+        </ListItem>
+        <Divider />
+        <div className='m-2'>
+          <Button fullWidth textCase>
+            Support by tipping
+          </Button>
+        </div>
+      </List>
+    </Popover>
+  );
 
   return (
     <Screen>
@@ -66,7 +141,7 @@ export default function BnConnect() {
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <StartScroll />
-              <Scroll />
+              <Scroll handleScrollOptionOpen={handleScrollOptionOpen} />
               <Scroll />
               <Scroll />
               <Scroll />
@@ -83,6 +158,7 @@ export default function BnConnect() {
           </Grid>
         </Container>
       </div>
+      {renderScrollOption}
     </Screen>
   );
 }
@@ -144,13 +220,19 @@ function StartScroll() {
   );
 }
 
-function Scroll() {
+function Scroll({ handleScrollOptionOpen }) {
   return (
     <Card style={{ marginBottom: 16 }}>
       <CardHeader
         avatar={<Avatar aria-label='recipe'>R</Avatar>}
         action={
-          <IconButton aria-label='settings'>
+          <IconButton
+            aria-label='show more'
+            aria-controls={scrollOptionId}
+            aria-haspopup='true'
+            onClick={handleScrollOptionOpen}
+            color='inherit'
+          >
             <MoreVert />
           </IconButton>
         }
@@ -331,6 +413,7 @@ function UserCard() {
                 @mahmudzayn
               </Typography>
             </div>
+
             <div
               style={{
                 position: 'relative',
@@ -345,7 +428,10 @@ function UserCard() {
               </IconButton>
             </div>
           </div>
-
+          <Typography>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
+            perferendis ratione.
+          </Typography>
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>
@@ -396,7 +482,12 @@ function UserCard() {
           <IconButton>
             <EventRounded />
           </IconButton>
-          <Typography>Event</Typography>
+          <Typography>
+            Events
+            <Badge badgeContent='3' color='secondary'>
+              <span className='mx-2 '></span>
+            </Badge>
+          </Typography>
           <IconButton color='primary' style={{ marginLeft: 'auto' }}>
             <AddRounded />
           </IconButton>

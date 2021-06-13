@@ -13,7 +13,7 @@ export default function Screen({ auth, children }) {
     JSON.stringify(user) === '{}' && !auth && history.push('/auth/login');
   }, [auth, history, user]);
   return (
-    <div>
+    <div style={{ minHeight: '100vh' }}>
       <NavBar />
       <div style={{ height: 160 }}></div>
       {children}

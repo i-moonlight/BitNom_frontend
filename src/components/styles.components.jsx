@@ -84,6 +84,6 @@ export const useStyles = makeStyles(theme => ({
     textTransform: 'none',
   },
   textTheme: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.primary.main,
   },
 }));
