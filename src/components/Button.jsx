@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import logo_google from '../assets/google.png';
+import logo_google from '../assets/components/google.png';
 
 export default function Button({
   textCase,

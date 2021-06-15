@@ -5,3 +5,40 @@ export const status = [
   { title: 'Dominance', value: 'BTC:42.1% ETH:20.0%' },
   { title: 'BN Token', value: '0.04' },
 ];
+
+export const tabs = [
+  {
+    label: 'BN Connect',
+  },
+  {
+    label: 'BN Knowledge Center',
+    menuItems: [
+      { label: 'Crypto-tinder' },
+      { label: 'Forum' },
+      { label: 'Cryptocurrency' },
+      { label: 'Bitcointalk' },
+    ],
+  },
+  { label: 'Exchange' },
+  { label: 'Services' },
+  { label: 'Job Board' },
+  {
+    label: 'Product',
+    menuItems: [
+      { label: 'Investor page' },
+      { label: 'Crypto API' },
+      { label: 'Widgets and bots' },
+      { label: 'Mobile App' },
+    ],
+  },
+  {
+    label: 'More',
+    menuItems: [
+      { label: 'Help Center' },
+      { label: 'BN Community' },
+      { label: 'About' },
+      { label: 'BN for business' },
+      { label: 'BN Moderators' },
+    ],
+  },
+];
