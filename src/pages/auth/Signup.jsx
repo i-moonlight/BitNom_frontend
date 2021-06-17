@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-
-import TextField from '../components/TextField';
-import Button from '../components/Button';
-import DividerText from '../components/DividerText';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/actions/authActions';
+import Button from '../../components/Button';
+import DividerText from '../../components/DividerText';
+import TextField from '../../components/TextField';
 
-export default function Login() {
+export default function Signup() {
   const state = useSelector(state => state);
   const history = useHistory();
-  const dispatch = useDispatch();
   const user = state.auth.user;
 
   useEffect(() => {
@@ -26,21 +23,26 @@ export default function Login() {
         direction='column'
         alignItems='center'
         justify='center'
-        style={{ minHeight: '100vh' }}
+        style={{ minHeight: '100vh', paddingTop: 50, paddingBottom: 50 }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
           <div className='text-center my-3 px-sm-5'>
             <Typography color='textPrimary' variant='h5'>
-              Hi! WELCOME BACK
+              GET STARTED NOW
             </Typography>
             <Typography color='textPrimary' variant='body1'>
-              Stay updated and get full access to a thousand opportunities
-              across the globe.
+              Its free to join and gain full access to thousand opportunities
             </Typography>
           </div>
           <Card elevated={false}>
             <CardContent>
               <div className='text-center my-3 mx-2'>
+                <TextField
+                  label='Username'
+                  variant='outlined'
+                  size='small'
+                  fullWidth
+                />
                 <TextField
                   label='Email Adress'
                   variant='outlined'
@@ -51,27 +53,36 @@ export default function Login() {
                   label='Password'
                   variant='outlined'
                   size='small'
+                  type='password'
                   fullWidth
                 />
-                <Button
+                <TextField
+                  label='Confirm Password'
+                  variant='outlined'
+                  size='small'
+                  type='password'
                   fullWidth
-                  onClick={() => {
-                    dispatch(login('', ''));
-                  }}
-                >
-                  Sign In
-                </Button>
+                />
+                <div className='text-center my-3 px-sm-0'>
+                  <Typography color='textPrimary' variant='body1'>
+                    By clicking Agree &amp; Join, you agree to the BitNorm
+                    <Link color='primary'>User Agreement</Link>,{' '}
+                    <Link color='primary'>Privacy Policy</Link>, and
+                    <Link color='primary'>Cookie Policy</Link>.
+                  </Typography>
+                </div>
+                <Button fullWidth>Join BitNorm</Button>
                 <DividerText>or</DividerText>
                 <Button google fullWidth>
                   Continue With Google
                 </Button>
 
-                <div className='text-center my-3 px-sm-0'>
+                <div className='text-center'>
                   <Typography variant='body1'>
                     <div style={{ marginTop: 10 }}></div>
-                    New to Bitnorm?{' '}
-                    <Link color='primary' to='/auth/signup'>
-                      Join now
+                    Already on Bitnorm?{' '}
+                    <Link color='primary' to='/auth/login'>
+                      Sign In
                     </Link>
                   </Typography>
                 </div>

@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-
-import TextField from '../components/TextField';
-import Button from '../components/Button';
-import DividerText from '../components/DividerText';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import Button from '../../components/Button';
+import DividerText from '../../components/DividerText';
+import TextField from '../../components/TextField';
+import { login } from '../../store/actions/authActions';
 
-export default function Signup() {
+export default function Login() {
   const state = useSelector(state => state);
   const history = useHistory();
+  const dispatch = useDispatch();
   const user = state.auth.user;
 
   useEffect(() => {
@@ -24,26 +25,21 @@ export default function Signup() {
         direction='column'
         alignItems='center'
         justify='center'
-        style={{ minHeight: '100vh', paddingTop: 50, paddingBottom: 50 }}
+        style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
           <div className='text-center my-3 px-sm-5'>
             <Typography color='textPrimary' variant='h5'>
-              GET STARTED NOW
+              Hi! WELCOME BACK
             </Typography>
             <Typography color='textPrimary' variant='body1'>
-              Its free to join and gain full access to thousand opportunities
+              Stay updated and get full access to a thousand opportunities
+              across the globe.
             </Typography>
           </div>
           <Card elevated={false}>
             <CardContent>
               <div className='text-center my-3 mx-2'>
-                <TextField
-                  label='Username'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
                 <TextField
                   label='Email Adress'
                   variant='outlined'
@@ -54,36 +50,34 @@ export default function Signup() {
                   label='Password'
                   variant='outlined'
                   size='small'
-                  type='password'
                   fullWidth
                 />
-                <TextField
-                  label='Confirm Password'
-                  variant='outlined'
-                  size='small'
-                  type='password'
-                  fullWidth
-                />
-                <div className='text-center my-3 px-sm-0'>
-                  <Typography color='textPrimary' variant='body1'>
-                    By clicking Agree &amp; Join, you agree to the BitNorm
-                    <Link color='primary'>User Agreement</Link>,{' '}
-                    <Link color='primary'>Privacy Policy</Link>, and
-                    <Link color='primary'>Cookie Policy</Link>.
+                <div>
+                  <Typography className='end-horizontal mb-2'>
+                    <Link color='primary' to='/auth/request_reset_link'>
+                      Forgot Password?
+                    </Link>
                   </Typography>
                 </div>
-                <Button fullWidth>Join BitNorm</Button>
+                <Button
+                  fullWidth
+                  onClick={() => {
+                    dispatch(login('', ''));
+                  }}
+                >
+                  Sign In
+                </Button>
                 <DividerText>or</DividerText>
                 <Button google fullWidth>
                   Continue With Google
                 </Button>
 
-                <div className='text-center'>
+                <div className='text-center my-3 px-sm-0'>
                   <Typography variant='body1'>
                     <div style={{ marginTop: 10 }}></div>
-                    Already on Bitnorm?{' '}
-                    <Link color='primary' to='/auth/login'>
-                      Sign In
+                    New to Bitnorm?{' '}
+                    <Link color='primary' to='/auth/signup'>
+                      Join now
                     </Link>
                   </Typography>
                 </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import NavBar from './NavBar';
+import NavBar from './navbar/NavBar';
 
 export default function Screen({ auth, children }) {
   const state = useSelector(state => state);
@@ -13,7 +13,7 @@ export default function Screen({ auth, children }) {
     JSON.stringify(user) === '{}' && !auth && history.push('/auth/login');
   }, [auth, history, user]);
   return (
-    <div>
+    <div style={{ minHeight: '100vh' }}>
       <NavBar />
       <div style={{ height: 160 }}></div>
       {children}

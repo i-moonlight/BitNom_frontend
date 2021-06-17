@@ -51,11 +51,20 @@ const theme = createMuiTheme({
       main: '#006097',
     },
     secondary: {
-      main: '#0EA0F3',
+      main: '#FB5E5E',
     },
     background: {
       paper: '#242526',
       default: '#18191A',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
     },
   },
 });

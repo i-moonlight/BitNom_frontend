@@ -1,8 +1,15 @@
 import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import logo_google from '../assets/google.png';
+import logo_google from '../assets/components/google.png';
 
-export default function Button({ color, variant, google, children, ...props }) {
+export default function Button({
+  textCase,
+  color,
+  variant,
+  google,
+  children,
+  ...props
+}) {
   return (
     <MuiButton
       color={color ? color : 'primary'}
@@ -10,7 +17,8 @@ export default function Button({ color, variant, google, children, ...props }) {
       disableElevation
       style={{
         backgroundColor: google && '#f2f2f2',
-        color: google && '#818181',
+        color: !color && google && '#818181',
+        textTransform: textCase && 'none',
       }}
       {...props}
     >

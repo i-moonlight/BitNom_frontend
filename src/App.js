@@ -1,13 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-import "./css/style.css";
-import Routes from "./Routes";
+import './css/style.css';
+import Routes from './Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    height: "100%",
+    height: '100%',
   },
 }));
 

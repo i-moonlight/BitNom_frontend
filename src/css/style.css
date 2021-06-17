@@ -19,6 +19,18 @@ a {
     align-items: center;
 }
 
+.start-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.end-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .center-horizontal {
     display: flex;
     flex-direction: row;
@@ -29,6 +41,12 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between !important;
+}
+
+.space-around {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around !important;
 }
 
 
