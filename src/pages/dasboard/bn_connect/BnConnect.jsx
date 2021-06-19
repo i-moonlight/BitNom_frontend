@@ -6,6 +6,7 @@ import SuggestedPeople from './SuggestedPeople';
 import Scroll from './Scroll';
 import TrendingPosts from './TrendingPosts';
 import UserCard from './UserCard';
+import { scrollVariations } from '../../../store/local/dummy';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +29,20 @@ export default function BnConnect() {
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <CreateScroll />
-              <Scroll />
+              {scrollVariations.map(
+                ({ name, username, hashtags, text, images, videos, link }) => (
+                  <Scroll
+                    key={`${Math.random() * 1000}`}
+                    link={link}
+                    name={name}
+                    videos={videos}
+                    images={images}
+                    username={username}
+                    hashtags={hashtags}
+                    text={text}
+                  />
+                )
+              )}
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
