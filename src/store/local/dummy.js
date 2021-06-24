@@ -1,3 +1,11 @@
+import {
+  AssessmentRounded,
+  DescriptionRounded,
+  ImageRounded,
+  VideocamRounded,
+  WatchLaterRounded,
+} from '@material-ui/icons';
+
 export const status = [
   { title: 'Crypto', value: '6,847' },
   { title: 'Exchange', value: '4,847' },
@@ -93,4 +101,12 @@ export const scrollVariations = [
       hostname: 'cointelegraph.com',
     },
   },
+];
+
+export const createPostIcons = [
+  { Icon: ImageRounded },
+  { Icon: VideocamRounded },
+  { Icon: AssessmentRounded },
+  { Icon: WatchLaterRounded },
+  { Icon: DescriptionRounded },
 ];

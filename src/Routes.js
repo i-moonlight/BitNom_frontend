@@ -6,6 +6,8 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Signup from './pages/auth/Signup';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import Events from './pages/dasboard/Events';
+import Notifications from './pages/dasboard/Notifications';
+import People from './pages/dasboard/People';
 
 export default function Routes() {
   return (
@@ -14,6 +16,12 @@ export default function Routes() {
         <Route exact component={RedirectToDash} path='/' />
         <Route exact component={BnConnect} path='/dashboard' />
         <Route exact component={Events} path='/dashboard/events' />
+        <Route
+          exact
+          component={Notifications}
+          path='/dashboard/notifications'
+        />
+        <Route exact component={People} path='/dashboard/people' />
 
         <Route exact component={Login} path='/auth/login' />
         <Route exact component={Signup} path='/auth/signup' />

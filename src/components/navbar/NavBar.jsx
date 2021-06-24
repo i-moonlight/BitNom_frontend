@@ -13,7 +13,7 @@ const tabOptionsId = 'menu-tab-options';
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notification-option';
 
-export default function NavBar({ handleScrollOptionOpen }) {
+export default function NavBar() {
   const [value, setValue] = useState(0);
   const [tabOptions, setTabOptions] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -41,7 +41,7 @@ export default function NavBar({ handleScrollOptionOpen }) {
     setTabOptionAnchorEl(event.currentTarget);
   };
 
-  const handleTabOptionsClose = event => {
+  const handleTabOptionsClose = () => {
     setTabOptionAnchorEl(null);
   };
 
@@ -49,7 +49,7 @@ export default function NavBar({ handleScrollOptionOpen }) {
     setNotificationAnchorEl(event.currentTarget);
   };
 
-  const handleNotificationsClose = event => {
+  const handleNotificationsClose = () => {
     setNotificationAnchorEl(null);
   };
 
@@ -57,7 +57,7 @@ export default function NavBar({ handleScrollOptionOpen }) {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
 
-  const handleNotificationOptionClose = event => {
+  const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
 

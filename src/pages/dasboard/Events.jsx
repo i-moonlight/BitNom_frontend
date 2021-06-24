@@ -88,7 +88,7 @@ function EventListCard() {
       </Typography>
       <Divider />
       <CardContent>
-        {[1, 2, 3].map(event => (
+        {[1, 2, 3].map(() => (
           <>
             <div
               style={{

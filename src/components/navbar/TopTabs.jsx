@@ -24,6 +24,7 @@ export default function TopTabs({
         >
           {tabs.map(({ label, menuItems }) => (
             <BitTab
+              key={`${tabOptionsId}`}
               label={label}
               aria-controls={tabOptionsId}
               aria-haspopup='true'

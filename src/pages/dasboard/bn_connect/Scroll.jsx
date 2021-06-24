@@ -39,7 +39,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
-  const handleScrollOptionClose = event => {
+  const handleScrollOptionClose = () => {
     setScrollOptionAnchorEl(null);
   };
 
@@ -134,7 +134,7 @@ export default function Scroll({
         <Divider />
         <CardActions className='space-around'>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<ThumbUpRounded />}
@@ -142,7 +142,7 @@ export default function Scroll({
             Like
           </Button>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<CommentRounded />}
@@ -150,7 +150,7 @@ export default function Scroll({
             Comment
           </Button>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<ShareRounded />}

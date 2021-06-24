@@ -31,7 +31,7 @@ export default function ProfileBar({
   return (
     <Box className={classes.root}>
       <Container>
-        <Card class={classes.appBar}>
+        <Card elevation={0} className={classes.appBar}>
           <Avatar src={logo_light} style={{ marginRight: 8 }}>
             B
           </Avatar>
@@ -78,7 +78,7 @@ export default function ProfileBar({
             <Button
               className='py-0'
               variant='text'
-              color='textPrimary'
+              color='default'
               aria-label='account of current user'
               aria-controls={menuId}
               aria-haspopup='true'
