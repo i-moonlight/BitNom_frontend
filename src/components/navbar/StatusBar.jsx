@@ -30,7 +30,7 @@ export default function StatusBar() {
             }}
           >
             {status.map(({ title, value }) => (
-              <div>
+              <div key={`${Math.random() * 1000}`}>
                 <Typography key={title} style={{ marginRight: 16 }} noWrap>
                   {title}: <span className={classes.textTheme}>{value}</span>
                 </Typography>
@@ -41,7 +41,7 @@ export default function StatusBar() {
             <div className='center-horizontal'>
               <Button
                 variant='text'
-                color='textPrimary'
+                color='default'
                 endIcon={
                   <ChevronRight
                     style={{
@@ -54,7 +54,7 @@ export default function StatusBar() {
               </Button>
               <Button
                 variant='text'
-                color='textPrimary'
+                color='default'
                 endIcon={
                   <ChevronRight
                     style={{

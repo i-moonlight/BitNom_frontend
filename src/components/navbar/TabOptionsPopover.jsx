@@ -22,6 +22,7 @@ export default function TabOptionsPopover({
       {tabOptions &&
         tabOptions.map(({ label }) => (
           <MenuItem
+            key={`${Math.random() * 1000}`}
             className='py-3 space-between'
             style={{
               width: tabOptionAnchorEl && tabOptionAnchorEl.offsetWidth,

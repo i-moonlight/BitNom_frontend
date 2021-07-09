@@ -12,16 +12,26 @@ import {
 import {
   CommentRounded,
   MoreVert,
+  PlayCircleFilled,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll() {
+export default function Scroll({
+  name,
+  username,
+  text,
+  link,
+  images = [],
+  videos = [],
+  hashtags = [],
+}) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
@@ -29,7 +39,7 @@ export default function Scroll() {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
-  const handleScrollOptionClose = event => {
+  const handleScrollOptionClose = () => {
     setScrollOptionAnchorEl(null);
   };
 
@@ -51,9 +61,9 @@ export default function Scroll() {
           }
           title={
             <div className='center-horizontal'>
-              <Typography style={{ marginRight: 8 }}>Brian Sadroe </Typography>
+              <Typography style={{ marginRight: 8 }}>{name}</Typography>
               <Typography variant='body2' color='textSecondary'>
-                @briansadroe
+                {username}
               </Typography>
             </div>
           }
@@ -62,33 +72,69 @@ export default function Scroll() {
 
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
+            {text}
+            <br />
+            <Typography color='primary'>
+              {hashtags.map(hash => hash + ' ')}
+            </Typography>
+            <br />
+            <Grid container spacing={2} className='mb-2'>
+              {videos &&
+                videos.map(item => (
+                  <Grid key={item} item xs={videos.length > 1 ? 6 : 12}>
+                    <div
+                      className='center-horizontal mx-auto'
+                      style={{
+                        height: 200,
+                        borderRadius: 8,
+                        width: '100%',
+                        backgroundImage: `url('https://picsum.photos/200/300')`,
+                        backgroundSize: 'cover',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        backgroundBlendMode: 'soft-light',
+                      }}
+                    >
+                      <PlayCircleFilled
+                        style={{
+                          margin: 'auto',
+                          width: 50,
+                          height: 50,
+                        }}
+                      />
+                    </div>
+                  </Grid>
+                ))}
+              {images &&
+                images.map(item => (
+                  <Grid key={item} item xs={images.length > 1 ? 6 : 12}>
+                    <div
+                      style={{
+                        height: 200,
+                        borderRadius: 8,
+                        width: '100%',
+                        backgroundImage: `url('https://picsum.photos/200/300')`,
+                        backgroundSize: 'cover',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        backgroundBlendMode: 'soft-light',
+                      }}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+            <br />
+            {link && (
+              <>
+                <LinkCard link={link} />
+                <br />
+              </>
+            )}
+            12.1K Likes . 120 Comments
           </Typography>
-        </CardContent>
-
-        <CardContent>
-          <Grid container spacing={2}>
-            {[1, 2].map(item => (
-              <Grid key={item} item xs={6}>
-                <div
-                  style={{
-                    height: 200,
-                    borderRadius: 8,
-                    width: '100%',
-                    backgroundImage: `url('https://picsum.photos/200/300')`,
-                    backgroundSize: 'cover',
-                  }}
-                />
-              </Grid>
-            ))}
-          </Grid>
         </CardContent>
         <Divider />
         <CardActions className='space-around'>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<ThumbUpRounded />}
@@ -96,7 +142,7 @@ export default function Scroll() {
             Like
           </Button>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<CommentRounded />}
@@ -104,7 +150,7 @@ export default function Scroll() {
             Comment
           </Button>
           <Button
-            color='textPrimary'
+            color='default'
             textCase
             variant='text'
             startIcon={<ShareRounded />}

@@ -14,13 +14,13 @@ import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
 
-export default function CreateScroll() {
+export default function CreateScroll({ setOpen }) {
   const theme = useTheme();
 
   return (
     <Card style={{ marginBottom: 16 }}>
       <CardContent>
-        <CardActionArea>
+        <CardActionArea onClick={() => setOpen(true)}>
           <Card
             elevation={0}
             style={{
@@ -33,7 +33,7 @@ export default function CreateScroll() {
           </Card>
         </CardActionArea>
         <div className='space-between mt-4 mx-2'>
-          <Button textCase variant='text' color='textPrimary'>
+          <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
               <img style={{ marginRight: 10 }} src={image} alt='img' />
               <Hidden xsDown>
@@ -41,7 +41,7 @@ export default function CreateScroll() {
               </Hidden>
             </div>
           </Button>
-          <Button textCase variant='text' color='textPrimary'>
+          <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
               <img style={{ marginRight: 10 }} src={video} alt='img' />
               <Hidden xsDown>
@@ -49,7 +49,7 @@ export default function CreateScroll() {
               </Hidden>
             </div>
           </Button>
-          <Button textCase variant='text' color='textPrimary'>
+          <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
               <img style={{ marginRight: 10 }} src={schedule} alt='img' />
               <Hidden xsDown>
@@ -57,7 +57,7 @@ export default function CreateScroll() {
               </Hidden>
             </div>
           </Button>
-          <Button textCase variant='text' color='textPrimary'>
+          <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
               <img style={{ marginRight: 10 }} src={write} alt='img' />
               <Hidden xsDown>

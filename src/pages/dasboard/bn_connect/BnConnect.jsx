@@ -6,6 +6,9 @@ import SuggestedPeople from './SuggestedPeople';
 import Scroll from './Scroll';
 import TrendingPosts from './TrendingPosts';
 import UserCard from './UserCard';
+import { scrollVariations } from '../../../store/local/dummy';
+import CreatePost from './create_scroll/CreatePost';
+import { useState } from 'react';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function BnConnect() {
+  const [createScrollOpen, setCreateScrollOpen] = useState(false);
   const classes = useStyles();
 
   return (
@@ -27,8 +31,21 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll />
-              <Scroll />
+              <CreateScroll setOpen={open => setCreateScrollOpen(open)} />
+              {scrollVariations.map(
+                ({ name, username, hashtags, text, images, videos, link }) => (
+                  <Scroll
+                    key={`${Math.random() * 1000}`}
+                    link={link}
+                    name={name}
+                    videos={videos}
+                    images={images}
+                    username={username}
+                    hashtags={hashtags}
+                    text={text}
+                  />
+                )
+              )}
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
@@ -39,6 +56,10 @@ export default function BnConnect() {
           </Grid>
         </Container>
       </div>
+      <CreatePost
+        open={createScrollOpen}
+        setOpen={open => setCreateScrollOpen(open)}
+      />
     </Screen>
   );
 }

@@ -11,6 +11,7 @@ export const useStyles = makeStyles(theme => ({
     color: theme.palette.text.primary,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    background: 'none',
   },
   grow: {
     flexGrow: 1,

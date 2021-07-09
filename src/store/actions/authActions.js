@@ -2,8 +2,8 @@
 // import { deviceName, Environment } from "../local/contents";
 // const baseUrl = Environment.apiUrl;
 
-export const login = (username, password) => {
-  return (dispatch, getState) => {
+export const login = () => {
+  return dispatch => {
     // const config = {
     //   headers: {
     //     Accept: 'application/json',
@@ -49,8 +49,8 @@ export const login = (username, password) => {
   };
 };
 
-export const signout = (username, password) => {
-  return (dispatch, getState) => {
+export const signout = () => {
+  return dispatch => {
     dispatch({ type: 'USER_LOGOUT' });
   };
 };
