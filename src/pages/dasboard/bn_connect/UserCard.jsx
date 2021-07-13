@@ -19,9 +19,13 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
 export default function UserCard() {
+  const state = useSelector(state => state);
+  const user = state.auth.user;
+
   return (
     <div
       style={{
@@ -56,10 +60,10 @@ export default function UserCard() {
                 L
               </Avatar>
               <Typography className='pt-1' variant='body1'>
-                Mahmud Zayn
+                {user?.displayName}
               </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
-                @mahmudzayn
+                {`@${user?._id}`}
               </Typography>
             </div>
 
@@ -77,10 +81,10 @@ export default function UserCard() {
               </IconButton>
             </div>
           </div>
-          <Typography>
+          {/* <Typography>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
             perferendis ratione.
-          </Typography>
+          </Typography> */}
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>

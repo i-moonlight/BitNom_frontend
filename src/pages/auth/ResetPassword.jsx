@@ -1,18 +1,28 @@
+import { useMutation } from '@apollo/client';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import Alert from '@material-ui/lab/Alert';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
+import Form from '../../components/Form';
 import TextField from '../../components/TextField';
+import { requestResetInitialValues } from './utilities/initial_values';
+import { MUTATION_REQUEST_RESET } from './utilities/queries';
+import { requestResetValidationSchema } from './utilities/validation_schemas';
 
 export default function ResetPassword() {
+  const [emailErr, setEmailErr] = useState(null);
+  const [requestSent, setRequestSent] = useState(false);
   const state = useSelector(state => state);
   const history = useHistory();
   const user = state.auth.user;
 
+  const [requestReset] = useMutation(MUTATION_REQUEST_RESET);
+
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-  });
+  }, [state]);
 
   return (
     <div className='center-horizontal center-vertical'>
@@ -21,7 +31,7 @@ export default function ResetPassword() {
         spacing={0}
         direction='column'
         alignItems='center'
-        justify='center'
+        justifyContent='center'
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
@@ -34,25 +44,60 @@ export default function ResetPassword() {
               link to reset your password.
             </Typography>
           </div>
-          <Card elevated={false}>
+          <Card elevation={0}>
             <CardContent>
-              <div className='text-center my-3 mx-2'>
-                <TextField
-                  label='Email Adress'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
+              <Form
+                initialValues={requestResetInitialValues}
+                validationSchema={requestResetValidationSchema}
+                onSubmit={({ email }) => {
+                  requestReset({
+                    variables: {
+                      email,
+                    },
+                    errorPolicy: 'all',
+                  }).then(({ data, errors }) => {
+                    setEmailErr(null);
 
-                <Button fullWidth>Reset Password</Button>
-                <div>
-                  <Typography className='center-vertical mt-4'>
-                    <Link color='primary' to='/auth/login'>
-                      Back to login
-                    </Link>
-                  </Typography>
+                    data?.Users?.createPasswordResetCode &&
+                      setRequestSent(true);
+
+                    errors &&
+                      errors.map(err => {
+                        err?.state?.username &&
+                          setEmailErr(err?.state?.username);
+                      });
+                  });
+                }}
+              >
+                <div className='text-center my-3 mx-2'>
+                  <TextField
+                    error={emailErr && true}
+                    errorText={emailErr && emailErr[0]}
+                    name='email'
+                    label='Email Adress'
+                    variant='outlined'
+                    size='small'
+                    fullWidth
+                  />
+
+                  {requestSent && (
+                    <Alert className='mb-2' severity='success'>
+                      Request sent! Check your email.
+                    </Alert>
+                  )}
+
+                  <Button disabled={requestSent} fullWidth submit>
+                    Reset Password
+                  </Button>
+                  <div>
+                    <Typography className='center-vertical mt-4'>
+                      <Link color='primary' to='/auth/login'>
+                        Back to login
+                      </Link>
+                    </Typography>
+                  </div>
                 </div>
-              </div>
+              </Form>
             </CardContent>
           </Card>
         </Grid>

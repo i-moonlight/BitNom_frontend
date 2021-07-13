@@ -1,15 +1,20 @@
 import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import logo_google from '../assets/components/google.png';
+import logo_google from '../assets/components/google.svg';
+import { useFormikContext } from 'formik';
 
 export default function Button({
   textCase,
   color,
+  submit,
+  onClick,
   variant,
   google,
   children,
   ...props
 }) {
+  const formikContext = useFormikContext();
+
   return (
     <MuiButton
       color={color ? color : 'primary'}
@@ -20,6 +25,7 @@ export default function Button({
         color: !color && google && '#818181',
         textTransform: textCase && 'none',
       }}
+      onClick={submit ? formikContext.handleSubmit : onClick}
       {...props}
     >
       {google && (
