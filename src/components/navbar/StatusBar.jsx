@@ -22,6 +22,7 @@ export default function StatusBar() {
       <Container maxWidth='lg'>
         <div className={classes.statusBar}>
           <div
+            className='scroll-hidden'
             style={{
               display: 'flex',
               alignItems: 'center',

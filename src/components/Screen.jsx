@@ -12,6 +12,7 @@ export default function Screen({ auth, children }) {
   useEffect(() => {
     JSON.stringify(user) === '{}' && !auth && history.push('/auth/login');
   }, [auth, history, user]);
+
   return (
     <div style={{ minHeight: '100vh' }}>
       <NavBar />

@@ -1,21 +1,62 @@
+import { useMutation } from '@apollo/client';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import Alert from '@material-ui/lab/Alert';
+import React, { useEffect, useState } from 'react';
+import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import DividerText from '../../components/DividerText';
+import Form from '../../components/Form';
 import TextField from '../../components/TextField';
 import { login } from '../../store/actions/authActions';
+import { loginUserInitialValues } from './utilities/initial_values';
+import {
+  MUTATION_GOOGLE_LOGIN,
+  MUTATION_LOGIN_USER,
+} from './utilities/queries';
+import { loginUserValidationSchema } from './utilities/validation_schemas';
 
 export default function Login() {
+  const [loginErr, setLoginErr] = useState(null);
+  const [googleErr, setGoogleErr] = useState(null);
   const state = useSelector(state => state);
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = state.auth.user;
+  const errors = state.auth.err;
+
+  const [loginUser] = useMutation(MUTATION_LOGIN_USER);
+  const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN);
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
+
+    errors &&
+      errors.map(err => {
+        err?.state[''] && setLoginErr(err?.state['']);
+      });
   });
+
+  const responseGoogle = response => {
+    console.log('googleresponse: ', response);
+
+    googleLogin({
+      variables: {
+        token: response.tokenId,
+      },
+      errorPolicy: 'all',
+    }).then(({ data, errors }) => {
+      let userData = data?.Users?.googleLogin ? data?.Users?.googleLogin : {};
+      let userErrors = errors ? errors : null;
+      setGoogleErr(userErrors);
+      dispatch(login(userData, null));
+    });
+  };
+
+  const failureGoogle = response => {
+    console.log('googleErr: ', response);
+  };
 
   return (
     <div className='center-horizontal center-vertical'>
@@ -24,7 +65,7 @@ export default function Login() {
         spacing={0}
         direction='column'
         alignItems='center'
-        justify='center'
+        justifyContent='center'
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
@@ -37,51 +78,97 @@ export default function Login() {
               across the globe.
             </Typography>
           </div>
-          <Card elevated={false}>
+          <Card elevation={0}>
             <CardContent>
-              <div className='text-center my-3 mx-2'>
-                <TextField
-                  label='Email Adress'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
-                <TextField
-                  label='Password'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
-                <div>
-                  <Typography className='end-horizontal mb-2'>
-                    <Link color='primary' to='/auth/request_reset_link'>
-                      Forgot Password?
-                    </Link>
-                  </Typography>
-                </div>
-                <Button
-                  fullWidth
-                  onClick={() => {
-                    dispatch(login('', ''));
-                  }}
-                >
-                  Sign In
-                </Button>
-                <DividerText>or</DividerText>
-                <Button google fullWidth>
-                  Continue With Google
-                </Button>
+              <Form
+                initialValues={loginUserInitialValues}
+                validationSchema={loginUserValidationSchema}
+                onSubmit={({ username, password }) => {
+                  loginUser({
+                    variables: {
+                      username,
+                      password,
+                    },
+                    errorPolicy: 'all',
+                  }).then(({ data, errors }) => {
+                    let userData = data?.Users?.login ? data?.Users?.login : {};
+                    let userErrors = errors ? errors : null;
 
-                <div className='text-center my-3 px-sm-0'>
-                  <Typography variant='body1'>
-                    <div style={{ marginTop: 10 }}></div>
-                    New to Bitnorm?{' '}
-                    <Link color='primary' to='/auth/signup'>
-                      Join now
-                    </Link>
-                  </Typography>
+                    dispatch(login(userData, userErrors));
+                  });
+                }}
+              >
+                <div className='text-center my-3 mx-2'>
+                  <TextField
+                    error={loginErr && true}
+                    errorText={loginErr && loginErr[0]}
+                    name='username'
+                    label='Email or Username'
+                    variant='outlined'
+                    fullWidth
+                  />
+                  <TextField
+                    error={loginErr && true}
+                    errorText={loginErr && loginErr[0]}
+                    name='password'
+                    label='Password'
+                    variant='outlined'
+                    type='password'
+                    fullWidth
+                  />
+                  <div>
+                    <Typography className='end-horizontal mb-2'>
+                      <Link color='primary' to='/auth/request_reset_link'>
+                        Forgot Password?
+                      </Link>
+                    </Typography>
+                  </div>
+                  <Button fullWidth submit>
+                    Sign In
+                  </Button>
+                  <DividerText>or</DividerText>
+
+                  {googleErr &&
+                    googleErr.map(err => (
+                      <Alert
+                        className='mb-2'
+                        key={Math.random() * 100}
+                        severity='error'
+                      >
+                        {err?.state?.email && err?.state?.email[0]}
+                        {err?.state?._id && err?.state?._id[0]}
+                      </Alert>
+                    ))}
+
+                  <GoogleLogin
+                    clientId='705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com'
+                    buttonText='Login Google'
+                    onSuccess={responseGoogle}
+                    onFailure={failureGoogle}
+                    render={renderProps => (
+                      <Button
+                        onClick={renderProps.onClick}
+                        textCase
+                        google
+                        fullWidth
+                      >
+                        Continue With Google
+                      </Button>
+                    )}
+                    cookiePolicy={'single_host_origin'}
+                  />
+
+                  <div className='text-center my-3 px-sm-0'>
+                    <Typography variant='body1'>
+                      <div style={{ marginTop: 10 }}></div>
+                      New to Bitnorm?{' '}
+                      <Link color='primary' to='/auth/signup'>
+                        Join now
+                      </Link>
+                    </Typography>
+                  </div>
                 </div>
-              </div>
+              </Form>
             </CardContent>
           </Card>
         </Grid>

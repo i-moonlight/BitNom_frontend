@@ -30,7 +30,7 @@ export default function BnConnect() {
                 <UserCard />
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={12} md={8} lg={6}>
+            <Grid item xs={12} sm={12} md={8} lg={5}>
               <CreateScroll setOpen={open => setCreateScrollOpen(open)} />
               {scrollVariations.map(
                 ({ name, username, hashtags, text, images, videos, link }) => (
@@ -47,7 +47,7 @@ export default function BnConnect() {
                 )
               )}
             </Grid>
-            <Grid item md={4} lg={3}>
+            <Grid item md={4} lg={3.5}>
               <Hidden smDown>
                 <TrendingPosts />
                 <SuggestedPeople />

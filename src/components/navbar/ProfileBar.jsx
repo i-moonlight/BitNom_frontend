@@ -16,6 +16,7 @@ import {
   Search,
 } from '@material-ui/icons';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import logo_light from '../../assets/logo_light.svg';
 import Button from '../Button';
 import { useStyles } from '../styles.components';
@@ -26,6 +27,8 @@ export default function ProfileBar({
   notificationId,
   handleNotificationsOpen,
 }) {
+  const state = useSelector(state => state);
+  const user = state.auth.user;
   const classes = useStyles();
 
   return (
@@ -96,7 +99,9 @@ export default function ProfileBar({
               >
                 L
               </Avatar>
-              <Typography style={{ marginRight: 4 }}>Mahmud Zayn</Typography>
+              <Typography style={{ marginRight: 4 }}>
+                {user?.displayName}
+              </Typography>
               <IconButton className='p-0 m-0' color='inherit' edge='end'>
                 <ChevronRight
                   style={{
