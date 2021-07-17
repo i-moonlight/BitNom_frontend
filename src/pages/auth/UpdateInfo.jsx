@@ -21,26 +21,26 @@ export default function UpdateInfo() {
   const [updateProfileInfo] = useMutation(MUTATION_UPDATE_PROFILE_INFO);
 
   useEffect(() => {
-    JSON.stringify(user) === '{}' && history.push('/auth/login');
     user?.email?.verified && user?.displayName && history.push('/');
+    JSON.stringify(user) === '{}' && history.push('/auth/login');
   }, [state]);
 
   return (
-    <div className='center-horizontal center-vertical'>
+    <div className="center-horizontal center-vertical">
       <Grid
         container
         spacing={0}
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
-          <div className='text-center my-3 px-sm-5'>
-            <Typography color='textPrimary' variant='h5'>
+          <div className="text-center my-3 px-sm-5">
+            <Typography color="textPrimary" variant="h5">
               BEFORE WE PROCEED
             </Typography>
-            <Typography color='textPrimary' variant='body1'>
+            <Typography color="textPrimary" variant="body1">
               Please fill out the following details for a better experience.
             </Typography>
           </div>
@@ -62,31 +62,29 @@ export default function UpdateInfo() {
                       : {};
                     let userErrors = errors ? errors : null;
 
-                    console.log(userData);
-
                     dispatch(login(userData, userErrors));
                   });
                 }}
               >
-                <div className='text-center my-3 mx-2'>
+                <div className="text-center my-3 mx-2">
                   <TextField
                     disabled
                     label={user?._id}
-                    variant='outlined'
+                    variant="outlined"
                     fullWidth
                     adornment={<DoneRounded />}
-                    adornmentType='end'
+                    adornmentType="end"
                   />
                   <TextField
-                    name='displayName'
-                    label='Full Name'
-                    variant='outlined'
+                    name="displayName"
+                    label="Full Name"
+                    variant="outlined"
                     fullWidth
                   />
                   <TextField
-                    name='bio'
-                    label='Your Bio'
-                    variant='outlined'
+                    name="bio"
+                    label="Your Bio"
+                    variant="outlined"
                     multiline
                     rows={3}
                     fullWidth

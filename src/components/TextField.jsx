@@ -24,19 +24,21 @@ export default function TextField({
 
   return (
     <FormControl
-      id='formik-input'
+      id="formik-input"
       fullWidth
-      variant='outlined'
-      color='primary'
+      variant="outlined"
+      color="primary"
       style={{ marginTop: 8, marginBottom: 8, padding: 0 }}
-      size='small'
+      size="small"
     >
-      <InputLabel
-        style={{ color: errorText && '#F44336' }}
-        htmlFor='formik-input'
-      >
-        {label ? label : placeholder}
-      </InputLabel>
+      {label && (
+        <InputLabel
+          style={{ color: errorText && '#F44336' }}
+          htmlFor="formik-input"
+        >
+          {label}
+        </InputLabel>
+      )}
       <OutlinedInput
         fullWidth
         label={label}
@@ -48,19 +50,19 @@ export default function TextField({
         type={type}
         startAdornment={
           adornment && adornmentType !== 'end' ? (
-            <InputAdornment position='start'>{adornment}</InputAdornment>
+            <InputAdornment position="start">{adornment}</InputAdornment>
           ) : null
         }
         endAdornment={
           adornment && adornmentType === 'end' ? (
-            <InputAdornment position='end'>{adornment}</InputAdornment>
+            <InputAdornment position="end">{adornment}</InputAdornment>
           ) : null
         }
         {...defaultProps}
       />
       {name && touched[name] && errors[name] ? (
         <small
-          className='ml-5 mt-1 text-sm text-start'
+          className="ml-5 mt-1 text-sm text-start"
           style={{ color: '#F44336' }}
         >
           {errors[name]}
@@ -68,7 +70,7 @@ export default function TextField({
       ) : null}
       {errorText && (
         <small
-          className='ml-5 mt-1 text-sm text-start'
+          className="ml-5 mt-1 text-sm text-start"
           style={{ color: '#F44336' }}
         >
           {errorText}
