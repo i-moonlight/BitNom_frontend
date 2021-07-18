@@ -2,7 +2,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  fade,
+  alpha,
   Hidden,
   Typography,
   useTheme,
@@ -25,7 +25,7 @@ export default function CreateScroll({ setOpen }) {
             style={{
               padding: 12,
               borderRadius: 8,
-              backgroundColor: fade(theme.palette.common.white, 0.15),
+              backgroundColor: alpha(theme.palette.common.white, 0.15),
             }}
           >
             <Typography color='textSecondary'>Start a scroll</Typography>
