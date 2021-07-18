@@ -13,7 +13,7 @@ import React from 'react';
 import Button from '../../components/Button';
 import Screen from '../../components/Screen';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
