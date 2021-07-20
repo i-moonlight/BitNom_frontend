@@ -3,19 +3,24 @@ import {
   Box,
   Card,
   Container,
+  Divider,
   Hidden,
   IconButton,
   InputBase,
+  Menu,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import {
   ChevronRight,
+  Directions,
   ForumRounded,
   MenuRounded,
   Notifications,
   Search,
 } from '@material-ui/icons';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import logo_light from '../../assets/logo_light.svg';
 import Button from '../Button';
 import { useStyles } from '../styles.components';
@@ -26,6 +31,8 @@ export default function ProfileBar({
   notificationId,
   handleNotificationsOpen,
 }) {
+  const state = useSelector(state => state);
+  const user = state.auth.user;
   const classes = useStyles();
 
   return (
@@ -47,20 +54,50 @@ export default function ProfileBar({
               NEW
             </Typography>
           </Hidden>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <Search />
-            </div>
+
+          <Paper elevation={0} component='form' className={classes.paperSearch}>
+            {/* <IconButton className={classes.iconButton} aria-label="menu">
+              <Menu />
+            </IconButton> */}
+            <Button
+              textCase
+              // className="py-0"
+              variant='text'
+              // aria-label="account of current user"
+              // aria-controls={menuId}
+              // aria-haspopup="true"
+              // onClick={handleMenuOpen}
+            >
+              <Typography color='textSecondary'>General</Typography>
+              <ChevronRight
+                style={{
+                  transform: 'rotateZ(90deg)',
+                }}
+              />
+            </Button>
+            <Divider className={classes.divider} orientation='vertical' />
             <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+              className={classes.input}
+              placeholder='Search Bitnorm'
+              inputProps={{ 'aria-label': 'search bitnorm' }}
             />
-          </div>
-          <div className={classes.grow} />
+            <IconButton
+              type='submit'
+              className={classes.iconButton}
+              aria-label='search'
+            >
+              <Search />
+            </IconButton>
+            {/* <IconButton
+              color="primary"
+              className={classes.iconButton}
+              aria-label="directions"
+            >
+              <Directions />
+            </IconButton> */}
+          </Paper>
+
+          {/* <div className={classes.grow} /> */}
           <div className={classes.sectionDesktop}>
             <IconButton
               color='inherit'
@@ -71,11 +108,12 @@ export default function ProfileBar({
             >
               <Notifications />
             </IconButton>
-            <IconButton style={{ marginRight: 30 }} color='inherit'>
+            <IconButton color='inherit'>
               <ForumRounded />
             </IconButton>
 
             <Button
+              textCase
               className='py-0'
               variant='text'
               color='default'
@@ -89,21 +127,20 @@ export default function ProfileBar({
                 style={{
                   backgroundColor: '#fed132',
                   marginRight: 12,
-                  // marginLeft: 16,
                   width: 30,
                   height: 30,
                 }}
               >
                 L
               </Avatar>
-              <Typography style={{ marginRight: 4 }}>Mahmud Zayn</Typography>
-              <IconButton className='p-0 m-0' color='inherit' edge='end'>
-                <ChevronRight
-                  style={{
-                    transform: 'rotateZ(90deg)',
-                  }}
-                />
-              </IconButton>
+              <Typography style={{ marginRight: 4 }}>
+                {user?.displayName}
+              </Typography>
+              <ChevronRight
+                style={{
+                  transform: 'rotateZ(90deg)',
+                }}
+              />
             </Button>
           </div>
           <div className={classes.sectionMobile}>

@@ -37,24 +37,24 @@ export default function MenuPopover({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem className='py-3' onClick={handleMenuClose}>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
         My Profile
       </MenuItem>
-      <MenuItem className='py-3' onClick={handleMenuClose}>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
         Watchlist
       </MenuItem>
-      <MenuItem className='py-3' onClick={handleMenuClose}>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
         Account and Billing
       </MenuItem>
-      <MenuItem className='py-3' onClick={handleMenuClose}>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
         Settings
       </MenuItem>
 
       <Hidden mdUp>
-        <MenuItem className='py-3' onClick={() => null}>
-          <div className='w-100 center-horizontal space-between'>
+        <MenuItem className="py-3" onClick={() => null}>
+          <div className="w-100 center-horizontal space-between">
             <Typography>English</Typography>
-            <div className='px-2 center-horizontal'>
+            <div className="px-2 center-horizontal">
               <ChevronRight
                 style={{
                   transform: 'rotateZ(90deg)',
@@ -65,9 +65,9 @@ export default function MenuPopover({
         </MenuItem>
         <Divider />
 
-        <MenuItem className='py-3' onClick={() => null}>
-          <div className='w-100 center-horizontal space-between'>
-            <div className='center-horizontal'>
+        <MenuItem className="py-3" onClick={() => null}>
+          <div className="w-100 center-horizontal space-between">
+            <div className="center-horizontal">
               <Avatar
                 style={{
                   height: 24,
@@ -76,13 +76,13 @@ export default function MenuPopover({
                   marginRight: 8,
                   color: theme.palette.text.primary,
                 }}
-                variant='square'
+                variant="square"
               >
                 $
               </Avatar>
               <Typography>USD</Typography>
             </div>
-            <div className='px-2 center-horizontal'>
+            <div className="px-2 center-horizontal">
               <ChevronRight
                 style={{
                   transform: 'rotateZ(90deg)',
@@ -93,44 +93,44 @@ export default function MenuPopover({
         </MenuItem>
         <Divider />
 
-        <MenuItem className='py-3' onClick={() => null}>
-          <div className='w-100 center-horizontal space-between'>
+        <MenuItem className="py-3" onClick={() => null}>
+          <div className="w-100 center-horizontal space-between">
             <Typography>Theme</Typography>
           </div>
-          <div className='px-2 center-horizontal'>
+          <div className="px-2 center-horizontal">
             <Brightness3 />
           </div>
         </MenuItem>
         <Divider />
       </Hidden>
 
-      <MenuItem className='py-3' onClick={handleMenuClose}>
-        <div className='w-100 center-horizontal space-between'>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
+        <div className="w-100 center-horizontal space-between">
           <Typography>Referred Friends</Typography>
-          <div className='px-2 center-horizontal '>
-            <Typography className='px-1'>0</Typography>
+          <div className="px-2 center-horizontal ">
+            <Typography className="px-1">0</Typography>
             <PeopleRounded />
           </div>
         </div>
       </MenuItem>
       <Divider />
 
-      <MenuItem className='py-3' onClick={handleMenuClose}>
-        <div className='w-100 center-horizontal space-between'>
+      <MenuItem className="py-3" onClick={handleMenuClose}>
+        <div className="w-100 center-horizontal space-between">
           <Typography>BN Token</Typography>
-          <div className='px-2 center-horizontal'>
-            <Typography className='px-1'>0</Typography>
+          <div className="px-2 center-horizontal">
+            <Typography className="px-1">0</Typography>
             <AccountBalanceWalletOutlined />
           </div>
         </div>
       </MenuItem>
       <Divider />
 
-      <MenuItem className='py-3' onClick={() => dispatch(signout())}>
-        <div className='w-100 center-horizontal space-between'>
-          <Typography color='secondary'>Sign Out</Typography>
-          <div className='px-2 center-horizontal'>
-            <ExitToAppRounded color='secondary' />
+      <MenuItem className="py-3" onClick={() => dispatch(signout())}>
+        <div className="w-100 center-horizontal space-between">
+          <Typography color="secondary">Sign Out</Typography>
+          <div className="px-2 center-horizontal">
+            <ExitToAppRounded color="secondary" />
           </div>
         </div>
       </MenuItem>

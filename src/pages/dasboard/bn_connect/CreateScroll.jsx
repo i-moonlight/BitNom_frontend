@@ -2,7 +2,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  fade,
+  alpha,
   Hidden,
   Typography,
   useTheme,
@@ -16,7 +16,6 @@ import write from '../../../assets/scrolls/write.svg';
 
 export default function CreateScroll({ setOpen }) {
   const theme = useTheme();
-
   return (
     <Card style={{ marginBottom: 16 }}>
       <CardContent>
@@ -26,7 +25,7 @@ export default function CreateScroll({ setOpen }) {
             style={{
               padding: 12,
               borderRadius: 8,
-              backgroundColor: fade(theme.palette.common.white, 0.15),
+              backgroundColor: alpha(theme.palette.common.white, 0.15),
             }}
           >
             <Typography color='textSecondary'>Start a scroll</Typography>
@@ -35,7 +34,11 @@ export default function CreateScroll({ setOpen }) {
         <div className='space-between mt-4 mx-2'>
           <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
-              <img style={{ marginRight: 10 }} src={image} alt='img' />
+              <img
+                style={{ marginRight: 10, width: 20 }}
+                src={image}
+                alt='img'
+              />
               <Hidden xsDown>
                 <Typography>Image</Typography>
               </Hidden>
@@ -43,7 +46,11 @@ export default function CreateScroll({ setOpen }) {
           </Button>
           <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
-              <img style={{ marginRight: 10 }} src={video} alt='img' />
+              <img
+                style={{ marginRight: 10, width: 20 }}
+                src={video}
+                alt='img'
+              />
               <Hidden xsDown>
                 <Typography>Video</Typography>
               </Hidden>
@@ -51,7 +58,11 @@ export default function CreateScroll({ setOpen }) {
           </Button>
           <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
-              <img style={{ marginRight: 10 }} src={schedule} alt='img' />
+              <img
+                style={{ marginRight: 10, width: 20 }}
+                src={schedule}
+                alt='img'
+              />
               <Hidden xsDown>
                 <Typography>Schedule</Typography>
               </Hidden>
@@ -59,9 +70,13 @@ export default function CreateScroll({ setOpen }) {
           </Button>
           <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
-              <img style={{ marginRight: 10 }} src={write} alt='img' />
+              <img
+                style={{ marginRight: 10, width: 20 }}
+                src={write}
+                alt='img'
+              />
               <Hidden xsDown>
-                <Typography>Write Article</Typography>
+                <Typography>Article</Typography>
               </Hidden>
             </div>
           </Button>

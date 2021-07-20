@@ -1,4 +1,4 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -9,8 +9,7 @@ import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
-// Use Local Storage Persistance
-// Save to local storage
+// Save to local storage // Use Local Storage Persistance
 const saveToLocalStorage = state => {
   try {
     let stringState = JSON.stringify(state);
@@ -20,7 +19,7 @@ const saveToLocalStorage = state => {
   }
 };
 
-// Load from local storage
+// Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
   try {
     let stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
@@ -32,6 +31,7 @@ const loadFromLocalStorage = () => {
   }
 };
 
+// Use Local Storage Persistance
 const persistedStorage = loadFromLocalStorage();
 
 // Initialize Store
@@ -41,10 +41,11 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
+//Sync to local storage everytime store changes
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
 //Create MUI Theme
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -58,18 +59,17 @@ const theme = createMuiTheme({
       default: '#18191A',
     },
   },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
+  // breakpoints: {
+  //   values: {
+  //     xs: 0,
+  //     sm: 600,
+  //     md: 960,
+  //     lg: 1120,
+  //     xl: 1920,
+  //   },
+  // },
 });
 
-//Sync to local storage everytime store changes
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

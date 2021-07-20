@@ -1,8 +1,8 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
-import './css/style.css';
+import React from 'react';
 import Routes from './Routes';
+import './css/style.css';
+import './css/bootstrap_utilities.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
