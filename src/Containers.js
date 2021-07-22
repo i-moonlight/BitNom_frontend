@@ -108,7 +108,7 @@ export const AppContainers = () => (
 
 function RedirectToDash() {
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
 
   useEffect(() => {

@@ -19,6 +19,7 @@
     "template-curly-spacing": "off",
     "no-unused-vars": "warn",
     "quotes": [
+      "warn",
       "single",
       { "allowTemplateLiterals": true, "avoidEscape": true }
     ],

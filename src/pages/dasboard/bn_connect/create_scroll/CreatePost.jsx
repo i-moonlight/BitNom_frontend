@@ -17,7 +17,10 @@ import { ChevronRight, CloseRounded, Person, Public } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
-import { MUTATION_CREATE_POST } from '../utilities/queries';
+import {
+  MUTATION_CREATE_POST,
+  QUERY_LOAD_SCROLLS,
+} from '../../utilities/queries';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
@@ -36,6 +39,7 @@ export default function CreatePost({ open, setOpen }) {
       variables: {
         data: ICreatePost,
       },
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
 
