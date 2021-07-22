@@ -21,12 +21,14 @@ export default function Signup() {
   const [usernameErr, setUsernameErr] = useState(null);
   const [emailErr, setEmailErr] = useState(null);
   const [googleErr, setGoogleErr] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const [justRegistered, setJustRegistered] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const state = useSelector(state => state);
   const user = state.auth.user;
-  const errors = state.auth.err;
-  const justRegistered = state.auth.justRegistered;
+  // const errors = state.auth.err;
+  const justRegisteredState = state.auth.justRegistered;
 
   const [createUser] = useMutation(MUTATION_CREATE_USER);
   const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP);
@@ -57,7 +59,7 @@ export default function Signup() {
       let userErrors = errors ? errors : null;
       setGoogleErr(userErrors);
 
-      dispatch(login(userData, null));
+      register(login(userData, null));
     });
   };
 
@@ -90,6 +92,7 @@ export default function Signup() {
                 initialValues={createUserInitialValues}
                 validationSchema={createUserValidationSchema}
                 onSubmit={({ username, email, password }) => {
+                  setJustRegistered(false);
                   setUsernameErr(null);
                   setEmailErr(null);
 
@@ -106,7 +109,10 @@ export default function Signup() {
                       ? data?.Users?.create
                       : {};
                     let userErrors = errors ? errors : null;
-                    dispatch(register(userData, userErrors));
+                    setErrors(userErrors);
+
+                    dispatch(register(userData, null));
+                    !userErrors && setJustRegistered(justRegisteredState);
                   });
                 }}
               >
@@ -146,7 +152,7 @@ export default function Signup() {
                     <Alert
                       className='mb-2'
                       key={Math.random() * 100}
-                      severity='error'
+                      severity='success'
                     >
                       Registration Successful
                     </Alert>
@@ -170,7 +176,7 @@ export default function Signup() {
                     </Typography>
                   </div>
 
-                  <Button submit fullWidth>
+                  <Button disabled={justRegistered} submit fullWidth>
                     Join BitNorm
                   </Button>
                   <DividerText>or</DividerText>
@@ -196,6 +202,7 @@ export default function Signup() {
                         textCase
                         google
                         fullWidth
+                        disabled={justRegistered}
                       >
                         Continue With Google
                       </Button>

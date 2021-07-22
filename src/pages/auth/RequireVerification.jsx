@@ -7,12 +7,14 @@ import {
   useTheme,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { login } from '../../store/actions/authActions';
 import { MUTATION_SEND_EMAIL_VERIFICATION } from './utilities/queries';
 
 export default function RequireVerification() {
   const state = useSelector(state => state);
+  const dispatch = useDispatch();
   const theme = useTheme();
   const history = useHistory();
   const user = state.auth.user;
@@ -78,6 +80,20 @@ export default function RequireVerification() {
                         {loading ? 'Sending ... ' : 'Resend Code'}
                       </span>
                     )}
+                  </Typography>
+                  <Typography>
+                    Already verified?{' '}
+                    <span
+                      onClick={() => {
+                        dispatch(login({}, null));
+                      }}
+                      style={{
+                        color: theme.palette.primary.main,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Back to Login
+                    </span>
                   </Typography>
                 </div>
               </div>

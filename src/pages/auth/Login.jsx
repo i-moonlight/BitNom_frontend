@@ -59,21 +59,21 @@ export default function Login() {
   };
 
   return (
-    <div className='center-horizontal center-vertical'>
+    <div className="center-horizontal center-vertical">
       <Grid
         container
         spacing={0}
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
-          <div className='text-center my-3 px-sm-5'>
-            <Typography color='textPrimary' variant='h5'>
+          <div className="text-center my-3 px-sm-5">
+            <Typography color="textPrimary" variant="h5">
               Hi! WELCOME BACK
             </Typography>
-            <Typography color='textPrimary' variant='body1'>
+            <Typography color="textPrimary" variant="body1">
               Stay updated and get full access to a thousand opportunities
               across the globe.
             </Typography>
@@ -96,29 +96,42 @@ export default function Login() {
 
                     dispatch(login(userData, userErrors));
                   });
+
+                  // For debugging
+                  // const mockuserData = {
+                  //   _id: 'mark',
+                  //   email: {
+                  //     address: 'mbenjerminne@gmail.com',
+                  //     verified: true,
+                  //   },
+                  //   displayName: 'Mark Aloo',
+                  // };
+
+                  // dispatch(login(mockuserData, null));
+                  //end debugging
                 }}
               >
-                <div className='text-center my-3 mx-2'>
+                <div className="text-center my-3 mx-2">
                   <TextField
                     error={loginErr && true}
                     errorText={loginErr && loginErr[0]}
-                    name='username'
-                    label='Email or Username'
-                    variant='outlined'
+                    name="username"
+                    label="Email or Username"
+                    variant="outlined"
                     fullWidth
                   />
                   <TextField
                     error={loginErr && true}
                     errorText={loginErr && loginErr[0]}
-                    name='password'
-                    label='Password'
-                    variant='outlined'
-                    type='password'
+                    name="password"
+                    label="Password"
+                    variant="outlined"
+                    type="password"
                     fullWidth
                   />
                   <div>
-                    <Typography className='end-horizontal mb-2'>
-                      <Link color='primary' to='/auth/request_reset_link'>
+                    <Typography className="end-horizontal mb-2">
+                      <Link color="primary" to="/auth/request_reset_link">
                         Forgot Password?
                       </Link>
                     </Typography>
@@ -131,9 +144,9 @@ export default function Login() {
                   {googleErr &&
                     googleErr.map(err => (
                       <Alert
-                        className='mb-2'
+                        className="mb-2"
                         key={Math.random() * 100}
-                        severity='error'
+                        severity="error"
                       >
                         {err?.state?.email && err?.state?.email[0]}
                         {err?.state?._id && err?.state?._id[0]}
@@ -141,8 +154,8 @@ export default function Login() {
                     ))}
 
                   <GoogleLogin
-                    clientId='705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com'
-                    buttonText='Login Google'
+                    clientId="705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com"
+                    buttonText="Login Google"
                     onSuccess={responseGoogle}
                     onFailure={failureGoogle}
                     render={renderProps => (
@@ -158,11 +171,11 @@ export default function Login() {
                     cookiePolicy={'single_host_origin'}
                   />
 
-                  <div className='text-center my-3 px-sm-0'>
-                    <Typography variant='body1'>
+                  <div className="text-center my-3 px-sm-0">
+                    <Typography variant="body1">
                       <div style={{ marginTop: 10 }}></div>
                       New to Bitnorm?{' '}
-                      <Link color='primary' to='/auth/signup'>
+                      <Link color="primary" to="/auth/signup">
                         Join now
                       </Link>
                     </Typography>
