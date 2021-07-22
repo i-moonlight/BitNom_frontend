@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -12,34 +13,44 @@ import {
 import {
   CommentRounded,
   MoreVert,
-  PlayCircleFilled,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
-import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
-import { MUTATION_CREATE_REACTION } from '../utilities/queries';
 import Button from '../../../components/Button';
-import LinkCard from './LinkCard';
+import { MUTATION_CREATE_REACTION } from '../utilities/queries';
+// import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll }) {
+export default function Scroll({ scroll: scroll2 }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
+
+  let scroll = {
+    ...scroll2,
+    // images: [
+    //   'https://picsum.photos/200',
+    //   'https://picsum.photos/200',
+    //   'https://picsum.photos/200',
+    //   //  'https://picsum.photos/200'
+    // ],
+  };
+
   const [createReaction, { loading, data, error }] = useMutation(
     MUTATION_CREATE_REACTION
   );
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
   const handleScrollOptionClose = () => {
     setScrollOptionAnchorEl(null);
   };
-  const handleCreateReaction = (reaction) => {
+
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -51,7 +62,7 @@ export default function Scroll({ scroll }) {
     });
   };
   console.log(scroll?.images);
-  const getCreationTime = (time) => {
+  const getCreationTime = time => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
     let minutes = Math.round(ms / (1000 * 60));
@@ -62,6 +73,7 @@ export default function Scroll({ scroll }) {
     else if (hours < 24) return hours + 'h ago';
     else return days + 'd ago';
   };
+
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
@@ -90,12 +102,12 @@ export default function Scroll({ scroll }) {
           }
           subheader={getCreationTime(scroll?.createdAt)}
         />
-
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />
             <Grid container spacing={2} className='mb-2'>
+<<<<<<< HEAD
               {scroll?.images.map((item) => (
                 <Grid key={item} item xs={scroll?.images.length > 1 ? 6 : 12}>
                   <div
@@ -111,6 +123,31 @@ export default function Scroll({ scroll }) {
                   />
                 </Grid>
               ))}
+=======
+              {scroll?.images.length > 0 &&
+                scroll?.images?.map(imageURL => (
+                  <Grid
+                    className='mt-3'
+                    key={imageURL}
+                    item
+                    xs={scroll?.images.length > 1 ? 6 : 12}
+                  >
+                    <div
+                      style={{
+                        height: 200,
+                        borderRadius: 8,
+                        width: '100%',
+                        backgroundImage:
+                          'url(http://localhost:3000' + imageURL + ')',
+                        backgroundSize: 'cover',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        backgroundBlendMode: 'soft-light',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Grid>
+                ))}
+>>>>>>> 6d6f3c7578fa4384e2e6c4bc8536bb77df0283fd
             </Grid>
             <br />
             {`${scroll?.reactions?.likes} ${

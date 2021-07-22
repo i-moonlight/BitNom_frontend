@@ -1,8 +1,6 @@
 import {
   AssessmentRounded,
   DescriptionRounded,
-  ImageRounded,
-  VideocamRounded,
   WatchLaterRounded,
 } from '@material-ui/icons';
 
