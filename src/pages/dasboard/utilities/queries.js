@@ -84,6 +84,8 @@ export const QUERY_LOAD_SCROLLS = gql`
           displayName
           type
         }
+        images
+        video
         comments
         createdAt
         reactions {

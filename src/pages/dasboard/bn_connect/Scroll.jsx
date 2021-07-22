@@ -50,7 +50,7 @@ export default function Scroll({ scroll }) {
       },
     });
   };
-
+  console.log(scroll?.images);
   const getCreationTime = (time) => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
@@ -94,6 +94,24 @@ export default function Scroll({ scroll }) {
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
+            <br />
+            <Grid container spacing={2} className='mb-2'>
+              {scroll?.images.map((item) => (
+                <Grid key={item} item xs={scroll?.images.length > 1 ? 6 : 12}>
+                  <div
+                    style={{
+                      height: 200,
+                      borderRadius: 8,
+                      width: '100%',
+                      //backgroundImage: `url('localhost:3000//picsum.photos/200/300')`,
+                      backgroundSize: 'cover',
+                      backgroundColor: 'rgba(0,0,0,0.2)',
+                      backgroundBlendMode: 'soft-light',
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
             <br />
             {`${scroll?.reactions?.likes} ${
               scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'

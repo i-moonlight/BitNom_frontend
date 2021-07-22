@@ -105,7 +105,7 @@ export const AppContainers = () => (
         />
       </Switch>
     </ApolloProvider>
-    <ApolloProvider client={socialApolloClient}>
+    <ApolloProvider client={uploadApolloClient}>
       <Switch>
         <Route exact component={BnConnect} path='/dashboard' />
 
