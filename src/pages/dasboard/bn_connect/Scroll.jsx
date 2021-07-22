@@ -30,12 +30,12 @@ export default function Scroll({ scroll: scroll2 }) {
 
   let scroll = {
     ...scroll2,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/200',
-      'https://picsum.photos/200',
-      //  'https://picsum.photos/200'
-    ],
+    // images: [
+    //   'https://picsum.photos/200',
+    //   'https://picsum.photos/200',
+    //   'https://picsum.photos/200',
+    //   //  'https://picsum.photos/200'
+    // ],
   };
 
   const [createReaction, { loading, data, error }] = useMutation(
@@ -61,7 +61,7 @@ export default function Scroll({ scroll: scroll2 }) {
       },
     });
   };
-
+  console.log(scroll?.images);
   const getCreationTime = time => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
@@ -102,29 +102,35 @@ export default function Scroll({ scroll: scroll2 }) {
           }
           subheader={getCreationTime(scroll?.createdAt)}
         />
-
         <CardContent>
-          {/* <Grid container>
-            {scroll?.images &&
-              scroll?.images.map(imageURL => (
-                <Grid
-                  item
-                  className='mr-2 mb-3'
-                  xs={6}
-                  key={imageURL}
-                  style={{
-                    // backgroundImage: `url('${imageURL}')`,
-                    backgroundImage: 'url(' + imageURL + ')',
-                    backgroundSize: 'cover',
-                    height: 140,
-                  }}
-                >
-                   <img src={imageURL} />
-                </Grid>
-              ))}
-          </Grid> */}
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
+            <br />
+            <Grid container spacing={2} className='mb-2'>
+              {scroll?.images.length > 0 &&
+                scroll?.images?.map(imageURL => (
+                  <Grid
+                    className='mt-3'
+                    key={imageURL}
+                    item
+                    xs={scroll?.images.length > 1 ? 6 : 12}
+                  >
+                    <div
+                      style={{
+                        height: 200,
+                        borderRadius: 8,
+                        width: '100%',
+                        backgroundImage:
+                          'url(http://localhost:3000' + imageURL + ')',
+                        backgroundSize: 'cover',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        backgroundBlendMode: 'soft-light',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
             <br />
             {`${scroll?.reactions?.likes} ${
               scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'

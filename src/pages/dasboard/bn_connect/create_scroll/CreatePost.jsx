@@ -67,7 +67,7 @@ export default function CreatePost({ open, setOpen }) {
     for (const file of e.target.files) {
       images.push(file);
     }
-    //setScrollImages(images.slice(0, 4));
+    setScrollImages(images.slice(0, 4));
     console.log(scroll_images);
   };
 

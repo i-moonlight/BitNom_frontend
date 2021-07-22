@@ -87,6 +87,8 @@ export const QUERY_LOAD_SCROLLS = gql`
           reputation
           type
         }
+        images
+        video
         comments
         bookmarks
         is_flag
