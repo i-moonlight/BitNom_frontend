@@ -16,7 +16,6 @@ import write from '../../../assets/scrolls/write.svg';
 
 export default function CreateScroll({ setOpen }) {
   const theme = useTheme();
-
   return (
     <Card style={{ marginBottom: 16 }}>
       <CardContent>

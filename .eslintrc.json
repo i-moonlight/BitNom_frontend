@@ -18,7 +18,11 @@
     // "linebreak-style": ["error", "windows"],
     "template-curly-spacing": "off",
     "no-unused-vars": "warn",
-    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "quotes": [
+      "warn",
+      "single",
+      { "allowTemplateLiterals": true, "avoidEscape": true }
+    ],
     "react/prop-types": 0,
     "semi": ["error", "always"]
   }

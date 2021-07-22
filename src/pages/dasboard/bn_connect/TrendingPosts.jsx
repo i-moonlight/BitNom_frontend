@@ -26,7 +26,7 @@ export default function TrendingPosts() {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           Trending Post
         </Typography>
-        {[1, 2, 3, 4, 5].map(item => (
+        {[1, 2, 3, 4, 5].map((item) => (
           <ListItem key={item} divider>
             <ListItemAvatar>
               <Avatar variant='square'>

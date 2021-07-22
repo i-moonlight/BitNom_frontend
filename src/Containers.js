@@ -6,6 +6,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { createUploadLink } from 'apollo-upload-client';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
@@ -51,6 +52,20 @@ const socialLink = from([
     credentials: 'include',
   }),
 ]);
+
+const uploadLink = createUploadLink({
+  uri: 'http://localhost:3000/bn-social/graphql',
+  credentials: 'include',
+  headers: {
+    'keep-alive': 'true',
+  },
+  //useGETForQueries: 'true',
+});
+
+const uploadApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: uploadLink,
+});
 
 const usersApolloClient = new ApolloClient({
   cache: new InMemoryCache(),
@@ -108,7 +123,7 @@ export const AppContainers = () => (
 
 function RedirectToDash() {
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
 
   useEffect(() => {

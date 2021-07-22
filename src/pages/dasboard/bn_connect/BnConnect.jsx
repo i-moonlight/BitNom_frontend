@@ -1,5 +1,11 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, Hidden, makeStyles } from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  Hidden,
+  makeStyles,
+  CircularProgress,
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Screen from '../../../components/Screen';
 import { scrollVariations } from '../../../store/local/dummy';
@@ -11,7 +17,7 @@ import TrendingPosts from './TrendingPosts';
 import UserCard from './UserCard';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -19,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  const [latestScrolls, setlatestScrolls] = useState([]);
   const classes = useStyles();
 
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
@@ -26,13 +33,13 @@ export default function BnConnect() {
   useEffect(() => {
     console.log(error);
     console.log(loading);
-    console.log(data);
+    if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
   }, [data]);
 
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -40,33 +47,14 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll setOpen={open => setCreateScrollOpen(open)} />
-              {scrollVariations.map(scroll => (
-                <Scroll
-                  key={`${Math.random() * 1000}`}
-                  // link={link}
-                  // name={name}
-                  // videos={videos}
-                  // images={images}
-                  // username={username}
-                  // hashtags={hashtags}
-                  // text={text}
-                />
-              ))}
-              {scrollVariations.map(
-                ({ name, username, hashtags, text, images, videos, link }) => (
-                  <Scroll
-                    key={`${Math.random() * 1000}`}
-                    link={link}
-                    name={name}
-                    videos={videos}
-                    images={images}
-                    username={username}
-                    hashtags={hashtags}
-                    text={text}
-                  />
-                )
+              <CreateScroll setOpen={(open) => setCreateScrollOpen(open)} />
+              {loading && (
+                <CircularProgress color='primary' size={60} thickness={7} />
               )}
+              {latestScrolls.length &&
+                latestScrolls.map((scroll) => (
+                  <Scroll key={scroll?._id} scroll={scroll} />
+                ))}
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
@@ -79,7 +67,7 @@ export default function BnConnect() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={open => setCreateScrollOpen(open)}
+        setOpen={(open) => setCreateScrollOpen(open)}
       />
     </Screen>
   );
