@@ -31,6 +31,7 @@ export default function ScrollOptionsPopover({
   const [createBookmark, { loading, data, error }] = useMutation(
     MUTATION_CREATE_BOOKMARK
   );
+
   //const [
   //  createFlag,
   //  {
@@ -39,6 +40,7 @@ export default function ScrollOptionsPopover({
   //    error: { flagError },
   //   },
   //] = useMutation(MUTATION_CREATE_FLAG);
+
   const handleCreateBookmark = () => {
     createBookmark({
       variables: {
@@ -49,6 +51,7 @@ export default function ScrollOptionsPopover({
       },
     });
   };
+
   //const handleCreateFlag = () => {
   //  createFlag({
   //    variables: {
@@ -59,6 +62,7 @@ export default function ScrollOptionsPopover({
   //    },
   //  });
   //};
+
   return (
     <Popover
       anchorEl={scrollOptionAnchorEl}

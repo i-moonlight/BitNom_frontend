@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -12,34 +13,44 @@ import {
 import {
   CommentRounded,
   MoreVert,
-  PlayCircleFilled,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
-import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
-import { MUTATION_CREATE_REACTION } from '../utilities/queries';
 import Button from '../../../components/Button';
-import LinkCard from './LinkCard';
+import { MUTATION_CREATE_REACTION } from '../utilities/queries';
+// import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll }) {
+export default function Scroll({ scroll: scroll2 }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
+
+  let scroll = {
+    ...scroll2,
+    images: [
+      'https://picsum.photos/200',
+      'https://picsum.photos/200',
+      'https://picsum.photos/200',
+      //  'https://picsum.photos/200'
+    ],
+  };
+
   const [createReaction, { loading, data, error }] = useMutation(
     MUTATION_CREATE_REACTION
   );
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
   const handleScrollOptionClose = () => {
     setScrollOptionAnchorEl(null);
   };
-  const handleCreateReaction = (reaction) => {
+
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -51,7 +62,7 @@ export default function Scroll({ scroll }) {
     });
   };
 
-  const getCreationTime = (time) => {
+  const getCreationTime = time => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
     let minutes = Math.round(ms / (1000 * 60));
@@ -62,6 +73,7 @@ export default function Scroll({ scroll }) {
     else if (hours < 24) return hours + 'h ago';
     else return days + 'd ago';
   };
+
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
@@ -92,6 +104,25 @@ export default function Scroll({ scroll }) {
         />
 
         <CardContent>
+          <Grid container>
+            {scroll?.images &&
+              scroll?.images.map(imageURL => (
+                <Grid
+                  item
+                  className='mr-2 mb-3'
+                  xs={6}
+                  key={imageURL}
+                  style={{
+                    // backgroundImage: `url('${imageURL}')`,
+                    backgroundImage: 'url(' + imageURL + ')',
+                    backgroundSize: 'cover',
+                    height: 140,
+                  }}
+                >
+                  {/* <img src={imageURL} /> */}
+                </Grid>
+              ))}
+          </Grid>
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />

@@ -78,20 +78,29 @@ export const QUERY_LOAD_SCROLLS = gql`
     Posts {
       get(data: { limit: 220 }) {
         _id
+        images
+        video
         author {
           _id
           image
           displayName
+          reputation
           type
         }
         comments
-        createdAt
+        bookmarks
+        is_flag
         reactions {
           likes
+          dislikes
+          loves
+          celebrations
         }
         content
         content_entities {
           type
+          offset
+          length
           resource {
             _id
             type
