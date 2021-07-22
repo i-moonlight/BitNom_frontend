@@ -13,7 +13,14 @@ import {
   useTheme,
   Icon,
 } from '@material-ui/core';
-import { ChevronRight, CloseRounded, Person, Public } from '@material-ui/icons';
+import {
+  ChevronRight,
+  CloseRounded,
+  ImageRounded,
+  VideocamRounded,
+  Person,
+  Public,
+} from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -54,9 +61,14 @@ export default function CreatePost({ open, setOpen }) {
     e.preventDefault();
     onCreatePost({ content: scroll_text, images: scroll_images });
   };
-  const handleFileChange = (e) => {
-    if (!e.target.files[0]) return;
-    setScrollImages(e.target.files[0]);
+  const handleFilesChange = (e) => {
+    if (!e.target.files.length) return;
+    const images = [];
+    for (const file of e.target.files) {
+      images.push(file);
+    }
+    //setScrollImages(images.slice(0, 4));
+    console.log(scroll_images);
   };
 
   return (
@@ -117,6 +129,7 @@ export default function CreatePost({ open, setOpen }) {
                 multiline
                 rows={5}
                 rowsMax={10}
+                id='content-field'
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -127,12 +140,45 @@ export default function CreatePost({ open, setOpen }) {
                 }
                 value={scroll_text}
               />
-              <Typography className='mb-3' variant='h6' color='primary'>
-                Add Hashtags
-              </Typography>
+              <Button
+                onClick={() => {
+                  setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
+                  document.getElementById('content-field').focus();
+                }}
+                variant='text'
+                style={{ textTransform: 'none' }}
+                color='primary'
+              >
+                <Typography>Add Hashtags</Typography>
+              </Button>
               <Divider />
               <div className='space-between mt-3'>
                 <div className='center-horizontal'>
+                  <label htmlFor='fileUpload'>
+                    <ImageRounded
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                      }}
+                    />
+                  </label>
+                  <label htmlFor='fileUpload'>
+                    <VideocamRounded
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                      }}
+                    />
+                  </label>
+                  <input
+                    type='file'
+                    id='fileUpload'
+                    onChange={handleFilesChange}
+                    multiple
+                    style={{ display: 'none' }}
+                  />
                   {createPostIcons.map(({ Icon }, i = 0) => {
                     return (
                       <Icon
