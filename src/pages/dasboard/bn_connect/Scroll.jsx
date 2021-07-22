@@ -104,7 +104,7 @@ export default function Scroll({ scroll: scroll2 }) {
         />
 
         <CardContent>
-          <Grid container>
+          {/* <Grid container>
             {scroll?.images &&
               scroll?.images.map(imageURL => (
                 <Grid
@@ -119,10 +119,10 @@ export default function Scroll({ scroll: scroll2 }) {
                     height: 140,
                   }}
                 >
-                  {/* <img src={imageURL} /> */}
+                   <img src={imageURL} />
                 </Grid>
               ))}
-          </Grid>
+          </Grid> */}
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />
