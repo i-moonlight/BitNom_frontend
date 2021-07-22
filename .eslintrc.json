@@ -10,12 +10,19 @@
     },
     "ecmaVersion": 12,
     "sourceType": "module",
-    "parser": "babel-eslint"
+    "parser": "babel/eslint-parser"
   },
   "plugins": ["react"],
   "rules": {
     "template-curly-spacing": "off",
-    "indent": "off",
+    "indent": [
+      "warn",
+      2,
+      {
+        "ignoredNodes": ["TemplateLiteral"],
+        "SwitchCase": 1
+      }
+    ],
     "no-unused-vars": "warn",
     "quotes": ["warn", "single", { "allowTemplateLiterals": true }],
     "react/prop-types": 0,

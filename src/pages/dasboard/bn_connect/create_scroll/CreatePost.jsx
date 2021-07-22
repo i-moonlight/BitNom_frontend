@@ -36,6 +36,7 @@ export default function CreatePost({ open, setOpen }) {
   const [active, setActive] = useState(4);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
+  const [scroll_video, setScrollVideo] = useState();
   const theme = useTheme();
   const state = useSelector((state) => state);
   const user = state.auth.user;
@@ -52,16 +53,22 @@ export default function CreatePost({ open, setOpen }) {
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      setOpen(false);
       setScrollText('');
+      setScrollImages([]);
+      setScrollVideo(undefined);
+      setOpen(false);
     }
   }, [data]);
 
   const handleCreatePost = (e) => {
     e.preventDefault();
-    onCreatePost({ content: scroll_text, images: scroll_images });
+    onCreatePost({
+      content: scroll_text,
+      images: scroll_images,
+      video: scroll_video,
+    });
   };
-  const handleFilesChange = (e) => {
+  const handleImagesUpload = (e) => {
     if (!e.target.files.length) return;
     const images = [];
     for (const file of e.target.files) {
@@ -69,6 +76,10 @@ export default function CreatePost({ open, setOpen }) {
     }
     setScrollImages(images.slice(0, 4));
     console.log(scroll_images);
+  };
+  const handleVideoUpload = (e) => {
+    if (!e.target.files) return;
+    setScrollVideo(e.target.files[0]);
   };
 
   return (
@@ -154,7 +165,7 @@ export default function CreatePost({ open, setOpen }) {
               <Divider />
               <div className='space-between mt-3'>
                 <div className='center-horizontal'>
-                  <label htmlFor='fileUpload'>
+                  <label htmlFor='imageUpload'>
                     <ImageRounded
                       style={{
                         width: 30,
@@ -163,7 +174,15 @@ export default function CreatePost({ open, setOpen }) {
                       }}
                     />
                   </label>
-                  <label htmlFor='fileUpload'>
+                  <input
+                    type='file'
+                    id='imageUpload'
+                    onChange={handleImagesUpload}
+                    accept='.jpg,.png'
+                    multiple
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor='videoUpload'>
                     <VideocamRounded
                       style={{
                         width: 30,
@@ -174,9 +193,9 @@ export default function CreatePost({ open, setOpen }) {
                   </label>
                   <input
                     type='file'
-                    id='fileUpload'
-                    onChange={handleFilesChange}
-                    multiple
+                    id='videoUpload'
+                    accept='.mp4,.mkv'
+                    onChange={handleVideoUpload}
                     style={{ display: 'none' }}
                   />
                   {createPostIcons.map(({ Icon }, i = 0) => {

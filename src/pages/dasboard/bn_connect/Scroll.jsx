@@ -103,7 +103,7 @@ export default function Scroll({ scroll }) {
                       height: 200,
                       borderRadius: 8,
                       width: '100%',
-                      //backgroundImage: `url('localhost:3000//picsum.photos/200/300')`,
+                      backgroundImage: `url(${'http://127.0.0.1:3000' + item})`,
                       backgroundSize: 'cover',
                       backgroundColor: 'rgba(0,0,0,0.2)',
                       backgroundBlendMode: 'soft-light',
