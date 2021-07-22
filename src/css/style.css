@@ -1,3 +1,7 @@
+* {
+  font-family: 'Nunito', sans-serif !important;
+}
+
 html,
 body {
   width: 100%;
@@ -8,6 +12,21 @@ body {
 
 a {
   text-decoration: none;
+}
+
+small {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Display Flex */

@@ -35,7 +35,7 @@ export default function Notifications() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='lg' disableGutters>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>

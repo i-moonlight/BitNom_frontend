@@ -1,4 +1,12 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+  ApolloClient,
+  ApolloProvider,
+  from,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -9,8 +17,36 @@ import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
-// Use Local Storage Persistance
-// Save to local storage
+//GraphQL and Apollo Client Setup
+const errorLink = onError(({ graphqlErrors, networkError }) => {
+  if (graphqlErrors) {
+    graphqlErrors.map(({ message, location, path }, index) => {
+      console.log(`Graphql error[${index}] ${message}`);
+      console.log(
+        `Above graphql error[${index}] ocurred at location ${location} and path ${path}`
+      );
+    });
+  }
+  if (networkError) {
+    console.log(`Graphql network error ${networkError}`);
+  }
+});
+
+const link = from([
+  errorLink,
+  new HttpLink({
+    uri: 'http://localhost:3000/users/graphql',
+    credentials: 'include',
+  }),
+]);
+
+const usersApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: link,
+  credentials: 'include',
+});
+
+// Save to local storage // Use Local Storage Persistance
 const saveToLocalStorage = state => {
   try {
     let stringState = JSON.stringify(state);
@@ -20,7 +56,7 @@ const saveToLocalStorage = state => {
   }
 };
 
-// Load from local storage
+// Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
   try {
     let stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
@@ -32,6 +68,7 @@ const loadFromLocalStorage = () => {
   }
 };
 
+// Use Local Storage Persistance
 const persistedStorage = loadFromLocalStorage();
 
 // Initialize Store
@@ -41,10 +78,11 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
+//Sync to local storage everytime store changes
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
 //Create MUI Theme
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -63,20 +101,21 @@ const theme = createMuiTheme({
       xs: 0,
       sm: 600,
       md: 960,
-      lg: 1280,
+      lg: 1120,
       xl: 1920,
     },
   },
 });
 
-//Sync to local storage everytime store changes
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Provider>
+    <ApolloProvider client={usersApolloClient}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
