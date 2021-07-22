@@ -42,7 +42,7 @@ export default function Scroll({ scroll: scroll2 }) {
     MUTATION_CREATE_REACTION
   );
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -50,7 +50,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -62,7 +62,7 @@ export default function Scroll({ scroll: scroll2 }) {
     });
   };
   console.log(scroll?.images);
-  const getCreationTime = time => {
+  const getCreationTime = (time) => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
     let minutes = Math.round(ms / (1000 * 60));
@@ -107,25 +107,8 @@ export default function Scroll({ scroll: scroll2 }) {
             {scroll?.content}
             <br />
             <Grid container spacing={2} className='mb-2'>
-<<<<<<< HEAD
-              {scroll?.images.map((item) => (
-                <Grid key={item} item xs={scroll?.images.length > 1 ? 6 : 12}>
-                  <div
-                    style={{
-                      height: 200,
-                      borderRadius: 8,
-                      width: '100%',
-                      backgroundImage: `url(${'http://127.0.0.1:3000' + item})`,
-                      backgroundSize: 'cover',
-                      backgroundColor: 'rgba(0,0,0,0.2)',
-                      backgroundBlendMode: 'soft-light',
-                    }}
-                  />
-                </Grid>
-              ))}
-=======
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -147,7 +130,6 @@ export default function Scroll({ scroll: scroll2 }) {
                     />
                   </Grid>
                 ))}
->>>>>>> 6d6f3c7578fa4384e2e6c4bc8536bb77df0283fd
             </Grid>
             <br />
             {`${scroll?.reactions?.likes} ${

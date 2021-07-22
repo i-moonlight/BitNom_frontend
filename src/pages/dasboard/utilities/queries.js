@@ -87,10 +87,9 @@ export const QUERY_LOAD_SCROLLS = gql`
           reputation
           type
         }
-        images
-        video
         comments
         bookmarks
+        createdAt
         is_flag
         reactions {
           likes
