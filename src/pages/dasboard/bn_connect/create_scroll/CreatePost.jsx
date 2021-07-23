@@ -12,6 +12,7 @@ import {
   Typography,
   useTheme,
   Icon,
+  IconButton,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -33,15 +34,14 @@ import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
-  const [active, setActive] = useState(4);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [createPost, { loading, data, error }] =
     useMutation(MUTATION_CREATE_POST);
-  const onCreatePost = (ICreatePost) => {
+  const onCreatePost = ICreatePost => {
     createPost({
       variables: {
         data: ICreatePost,
@@ -57,11 +57,11 @@ export default function CreatePost({ open, setOpen }) {
     }
   }, [data]);
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
     onCreatePost({ content: scroll_text, images: scroll_images });
   };
-  const handleFilesChange = (e) => {
+  const handleFilesChange = e => {
     if (!e.target.files.length) return;
     const images = [];
     for (const file of e.target.files) {
@@ -89,14 +89,16 @@ export default function CreatePost({ open, setOpen }) {
             <div className='space-between mx-3 my-2'>
               <Typography></Typography>
               <Typography variant='h6'>Create Post</Typography>
-              <CloseRounded onClick={() => setOpen(!open)} />
+              <IconButton size='small'>
+                <CloseRounded onClick={() => setOpen(!open)} />
+              </IconButton>
             </div>
 
             <Divider />
             <CardContent>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar src={user?.photo}>
                     <Person />
                   </Avatar>
                 </ListItemAvatar>
@@ -104,10 +106,11 @@ export default function CreatePost({ open, setOpen }) {
                   primary={user?.displayName}
                   secondary={
                     <Button
-                      variant='text'
+                      textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: '0px 5px',
+                        padding: '0px 10px',
+                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
@@ -124,14 +127,13 @@ export default function CreatePost({ open, setOpen }) {
                 />
               </ListItem>
               <TextField
-                style={{ border: 'none' }}
                 fullWidth
                 multiline
                 rows={5}
                 rowsMax={10}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -140,7 +142,7 @@ export default function CreatePost({ open, setOpen }) {
                 }
                 value={scroll_text}
               />
-              <Button
+              {/* <Button
                 onClick={() => {
                   setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
                   document.getElementById('content-field').focus();
@@ -150,47 +152,54 @@ export default function CreatePost({ open, setOpen }) {
                 color='primary'
               >
                 <Typography>Add Hashtags</Typography>
-              </Button>
-              <Divider />
-              <div className='space-between mt-3'>
+              </Button> */}
+              {/* <Divider /> */}
+              <div className='space-between mt-1'>
                 <div className='center-horizontal'>
-                  <label htmlFor='fileUpload'>
-                    <ImageRounded
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 10,
-                      }}
-                    />
-                  </label>
-                  <label htmlFor='fileUpload'>
-                    <VideocamRounded
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 10,
-                      }}
-                    />
-                  </label>
                   <input
                     type='file'
                     id='fileUpload'
                     onChange={handleFilesChange}
                     multiple
-                    style={{ display: 'none' }}
+                    style={{
+                      display: 'none',
+                      // opacity: 0,
+                      position: 'absolute',
+                      // zIndex: 2,
+                    }}
                   />
-                  {createPostIcons.map(({ Icon }, i = 0) => {
+                  <label
+                    style={{
+                      marginRight: 10,
+                    }}
+                    htmlFor='fileUpload'
+                  >
+                    <IconButton size='small'>
+                      <ImageRounded />
+                    </IconButton>
+                  </label>
+                  <label
+                    style={{
+                      marginRight: 10,
+                    }}
+                    htmlFor='fileUpload'
+                  >
+                    <IconButton size='small'>
+                      <VideocamRounded />
+                    </IconButton>
+                  </label>
+
+                  {createPostIcons.map(({ Icon }) => {
                     return (
-                      <Icon
+                      <IconButton
                         key={`${Math.random() * 1000}`}
-                        onClick={() => setActive(i)}
+                        size='small'
                         style={{
-                          color: active === i && theme.palette.primary.main,
-                          width: 30,
-                          height: 30,
                           marginRight: 10,
                         }}
-                      />
+                      >
+                        <Icon />
+                      </IconButton>
                     );
                   })}
                 </div>
@@ -204,7 +213,6 @@ export default function CreatePost({ open, setOpen }) {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
       </Grid>
     </Modal>
   );

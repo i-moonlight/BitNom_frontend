@@ -18,6 +18,7 @@ import Signup from './pages/auth/Signup';
 import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
+import BnServices from './pages/dasboard/bn_services/BnServices';
 import Events from './pages/dasboard/Events';
 import Notifications from './pages/dasboard/Notifications';
 import People from './pages/dasboard/People';
@@ -108,7 +109,7 @@ export const AppContainers = () => (
     <ApolloProvider client={uploadApolloClient}>
       <Switch>
         <Route exact component={BnConnect} path='/dashboard' />
-
+        <Route exact component={BnServices} path='/dashboard/services' />
         <Route exact component={Events} path='/dashboard/events' />
         <Route
           exact
@@ -123,7 +124,7 @@ export const AppContainers = () => (
 
 function RedirectToDash() {
   const history = useHistory();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
 
   useEffect(() => {
