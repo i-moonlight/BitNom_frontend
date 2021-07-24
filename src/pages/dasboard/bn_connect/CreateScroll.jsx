@@ -17,13 +17,18 @@ import write from '../../../assets/scrolls/write.svg';
 export default function CreateScroll({ setOpen }) {
   const theme = useTheme();
   return (
-    <Card style={{ marginBottom: 16 }}>
+    <Card style={{ marginBottom: 12 }}>
       <CardContent>
-        <CardActionArea onClick={() => setOpen(true)}>
+        <CardActionArea
+          style={{
+            borderRadius: 8,
+          }}
+          onClick={() => setOpen(true)}
+        >
           <Card
             elevation={0}
             style={{
-              padding: 12,
+              padding: 8,
               borderRadius: 8,
               backgroundColor: alpha(theme.palette.common.white, 0.15),
             }}
@@ -31,7 +36,7 @@ export default function CreateScroll({ setOpen }) {
             <Typography color='textSecondary'>Start a scroll</Typography>
           </Card>
         </CardActionArea>
-        <div className='space-between mt-4 mx-2'>
+        <div className='space-between mt-2 mx-1'>
           <Button textCase variant='text' color='primary'>
             <div className='center-horizontal'>
               <img

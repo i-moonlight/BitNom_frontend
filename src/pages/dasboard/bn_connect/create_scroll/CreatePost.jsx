@@ -11,6 +11,8 @@ import {
   CircularProgress,
   Typography,
   useTheme,
+  Icon,
+  IconButton,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -33,7 +35,6 @@ import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
-  const [active, setActive] = useState(4);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const [scroll_text, setScrollText] = useState('');
@@ -89,14 +90,16 @@ export default function CreatePost({ open, setOpen }) {
             <div className='space-between mx-3 my-2'>
               <Typography></Typography>
               <Typography variant='h6'>Create Post</Typography>
-              <CloseRounded onClick={() => setOpen(!open)} />
+              <IconButton size='small'>
+                <CloseRounded onClick={() => setOpen(!open)} />
+              </IconButton>
             </div>
 
             <Divider />
             <CardContent>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar src={user?.photo}>
                     <Person />
                   </Avatar>
                 </ListItemAvatar>
@@ -104,10 +107,11 @@ export default function CreatePost({ open, setOpen }) {
                   primary={user?.displayName}
                   secondary={
                     <Button
-                      variant='text'
+                      textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: '0px 5px',
+                        padding: '0px 10px',
+                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
@@ -124,7 +128,6 @@ export default function CreatePost({ open, setOpen }) {
                 />
               </ListItem>
               <TextField
-                style={{ border: 'none' }}
                 fullWidth
                 multiline
                 rows={5}
@@ -140,7 +143,7 @@ export default function CreatePost({ open, setOpen }) {
                 }
                 value={scroll_text}
               />
-              <Button
+              {/* <Button
                 onClick={() => {
                   setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
                   document.getElementById('content-field').focus();
@@ -150,32 +153,32 @@ export default function CreatePost({ open, setOpen }) {
                 color='primary'
               >
                 <Typography>Add Hashtags</Typography>
-              </Button>
-              <Divider />
-              <div className='space-between mt-3'>
+              </Button> */}
+              {/* <Divider /> */}
+              <div className='space-between mt-1'>
                 <div className='center-horizontal'>
-                  <ImageRounded
+                  <IconButton
                     onClick={() => {
                       setOpenImage(true);
                     }}
+                    size='small'
                     style={{
-                      color: openImage && theme.palette.primary.main,
-                      width: 30,
-                      height: 30,
                       marginRight: 10,
                     }}
-                  />
-                  <VideocamRounded
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                  <IconButton
                     onClick={() => {
                       setOpenVideo(true);
                     }}
+                    size='small'
                     style={{
-                      color: openVideo && theme.palette.primary.main,
-                      width: 30,
-                      height: 30,
                       marginRight: 10,
                     }}
-                  />
+                  >
+                    <VideocamRounded />
+                  </IconButton>
 
                   <DropzoneDialog
                     acceptedFiles={['image/*']}
@@ -205,18 +208,18 @@ export default function CreatePost({ open, setOpen }) {
                     }}
                     showPreviews={true}
                   />
-                  {createPostIcons.map(({ Icon }, i = 0) => {
+
+                  {createPostIcons.map(({ Icon }) => {
                     return (
-                      <Icon
+                      <IconButton
                         key={`${Math.random() * 1000}`}
-                        onClick={() => setActive(i)}
+                        size='small'
                         style={{
-                          color: active === i && theme.palette.primary.main,
-                          width: 30,
-                          height: 30,
                           marginRight: 10,
                         }}
-                      />
+                      >
+                        <Icon />
+                      </IconButton>
                     );
                   })}
                 </div>
@@ -230,7 +233,6 @@ export default function CreatePost({ open, setOpen }) {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
       </Grid>
     </Modal>
   );
