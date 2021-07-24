@@ -11,7 +11,6 @@ import {
   CircularProgress,
   Typography,
   useTheme,
-  Icon,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -21,6 +20,7 @@ import {
   Person,
   Public,
 } from '@material-ui/icons';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -34,6 +34,8 @@ import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
   const [active, setActive] = useState(4);
+  const [openImage, setOpenImage] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState();
@@ -67,19 +69,6 @@ export default function CreatePost({ open, setOpen }) {
       images: scroll_images,
       video: scroll_video,
     });
-  };
-  const handleImagesUpload = (e) => {
-    if (!e.target.files.length) return;
-    const images = [];
-    for (const file of e.target.files) {
-      images.push(file);
-    }
-    setScrollImages(images.slice(0, 4));
-    console.log(scroll_images);
-  };
-  const handleVideoUpload = (e) => {
-    if (!e.target.files) return;
-    setScrollVideo(e.target.files[0]);
   };
 
   return (
@@ -165,38 +154,56 @@ export default function CreatePost({ open, setOpen }) {
               <Divider />
               <div className='space-between mt-3'>
                 <div className='center-horizontal'>
-                  <label htmlFor='imageUpload'>
-                    <ImageRounded
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 10,
-                      }}
-                    />
-                  </label>
-                  <input
-                    type='file'
-                    id='imageUpload'
-                    onChange={handleImagesUpload}
-                    accept='.jpg,.png'
-                    multiple
-                    style={{ display: 'none' }}
+                  <ImageRounded
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    style={{
+                      color: openImage && theme.palette.primary.main,
+                      width: 30,
+                      height: 30,
+                      marginRight: 10,
+                    }}
                   />
-                  <label htmlFor='videoUpload'>
-                    <VideocamRounded
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 10,
-                      }}
-                    />
-                  </label>
-                  <input
-                    type='file'
-                    id='videoUpload'
-                    accept='.mp4,.mkv'
-                    onChange={handleVideoUpload}
-                    style={{ display: 'none' }}
+                  <VideocamRounded
+                    onClick={() => {
+                      setOpenVideo(true);
+                    }}
+                    style={{
+                      color: openVideo && theme.palette.primary.main,
+                      width: 30,
+                      height: 30,
+                      marginRight: 10,
+                    }}
+                  />
+
+                  <DropzoneDialog
+                    acceptedFiles={['image/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    maxFileSize={5000000}
+                    open={openImage}
+                    filesLimit='4'
+                    onClose={() => setOpenImage(false)}
+                    onSave={(files) => {
+                      setScrollImages(files);
+                      setOpenImage(false);
+                    }}
+                    showPreviews={true}
+                  />
+                  <DropzoneDialog
+                    acceptedFiles={['video/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    maxFileSize={5000000}
+                    open={openVideo}
+                    filesLimit='1'
+                    onClose={() => setOpenVideo(false)}
+                    onSave={(files) => {
+                      setScrollVideo(files[0]);
+                      setOpenImage(false);
+                    }}
+                    showPreviews={true}
                   />
                   {createPostIcons.map(({ Icon }, i = 0) => {
                     return (

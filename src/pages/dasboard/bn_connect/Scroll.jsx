@@ -13,12 +13,17 @@ import {
 import {
   CommentRounded,
   MoreVert,
+  PostAddRounded,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_REACTION } from '../utilities/queries';
+import {
+  MUTATION_CREATE_REACTION,
+  GET_SCROLL_BY_ID,
+  QUERY_LOAD_SCROLLS,
+} from '../utilities/queries';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 
@@ -61,7 +66,7 @@ export default function Scroll({ scroll: scroll2 }) {
       },
     });
   };
-  console.log(scroll?.images);
+  console.log(scroll?.video);
   const getCreationTime = (time) => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
