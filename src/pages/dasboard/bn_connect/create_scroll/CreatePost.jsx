@@ -36,6 +36,7 @@ import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
   const [active, setActive] = useState(4);
+  const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const [scroll_text, setScrollText] = useState('');
@@ -53,19 +54,23 @@ export default function CreatePost({ open, setOpen }) {
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
+    setScrollText('');
+    setScrollImages([]);
+    setScrollVideo(undefined);
+    setCreatePostErr(false);
   };
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      setScrollText('');
-      setScrollImages([]);
-      setScrollVideo(undefined);
+      console.log(data);
       setOpen(false);
     }
   }, [data]);
 
   const handleCreatePost = e => {
     e.preventDefault();
+    if (scroll_text.trim() == '') return setCreatePostErr(true);
+
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
@@ -131,6 +136,8 @@ export default function CreatePost({ open, setOpen }) {
               <TextField
                 fullWidth
                 multiline
+                error={createPostErr && true}
+                errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}
                 rowsMax={10}
                 id='content-field'
@@ -158,28 +165,28 @@ export default function CreatePost({ open, setOpen }) {
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
-                  <ImageRounded
+                  <IconButton
                     onClick={() => {
                       setOpenImage(true);
                     }}
+                    size='small'
                     style={{
-                      color: openImage && theme.palette.primary.main,
-                      width: 30,
-                      height: 30,
                       marginRight: 10,
                     }}
-                  />
-                  <VideocamRounded
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                  <IconButton
                     onClick={() => {
                       setOpenVideo(true);
                     }}
+                    size='small'
                     style={{
-                      color: openVideo && theme.palette.primary.main,
-                      width: 30,
-                      height: 30,
                       marginRight: 10,
                     }}
-                  />
+                  >
+                    <VideocamRounded />
+                  </IconButton>
 
                   <DropzoneDialog
                     acceptedFiles={['image/*']}
@@ -205,30 +212,10 @@ export default function CreatePost({ open, setOpen }) {
                     onClose={() => setOpenVideo(false)}
                     onSave={files => {
                       setScrollVideo(files[0]);
-                      setOpenImage(false);
+                      setOpenVideo(false);
                     }}
                     showPreviews={true}
                   />
-                  <label
-                    style={{
-                      marginRight: 10,
-                    }}
-                    htmlFor='fileUpload'
-                  >
-                    <IconButton size='small'>
-                      <ImageRounded />
-                    </IconButton>
-                  </label>
-                  <label
-                    style={{
-                      marginRight: 10,
-                    }}
-                    htmlFor='fileUpload'
-                  >
-                    <IconButton size='small'>
-                      <VideocamRounded />
-                    </IconButton>
-                  </label>
 
                   {createPostIcons.map(({ Icon }) => {
                     return (

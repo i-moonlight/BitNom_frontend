@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  CardMedia,
   Grid,
   IconButton,
   Typography,
@@ -128,6 +129,15 @@ export default function Scroll({ scroll: scroll2 }) {
             {scroll?.content}
             <br />
             <Grid container spacing={2} className='mb-2'>
+              {scroll?.video && (
+                <Grid item xs={12}>
+                  <CardMedia
+                    component='video'
+                    src={`http://localhost:3000${scroll?.video}`}
+                    controls
+                  />
+                </Grid>
+              )}
               {scroll?.images.length > 0 &&
                 scroll?.images?.map(imageURL => (
                   <Grid
