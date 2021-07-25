@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -27,6 +27,7 @@ import {
   MUTATION_CREATE_REACTION,
   GET_SCROLL_BY_ID,
   QUERY_LOAD_SCROLLS,
+  QUERY_GET_COMMENTS,
 } from '../utilities/queries';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
@@ -46,6 +47,16 @@ export default function Scroll({ scroll: scroll2 }) {
     MUTATION_CREATE_REACTION
   );
 
+  const {
+    loading: commentsLoading,
+    data: commentsData,
+    error: commentsError,
+  } = useQuery(QUERY_GET_COMMENTS, {
+    variables: { scroll_id: scroll._id },
+  });
+
+  console.log('cdts', commentsData?.Comments);
+
   const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
@@ -63,9 +74,11 @@ export default function Scroll({ scroll: scroll2 }) {
           reaction: reaction,
         },
       },
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
-  console.log(scroll?.video);
+
+  // console.log(scroll?.video);
   const getCreationTime = time => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
@@ -82,7 +95,11 @@ export default function Scroll({ scroll: scroll2 }) {
     <>
       <Card style={{ marginBottom: 16 }}>
         <CardHeader
-          avatar={<Avatar aria-label='recipe'>R</Avatar>}
+          avatar={
+            <Avatar src={scroll?.author?.image} aria-label='recipe'>
+              R
+            </Avatar>
+          }
           action={
             <IconButton
               aria-label='show more'
@@ -174,7 +191,7 @@ export default function Scroll({ scroll: scroll2 }) {
         <Divider />
         <CardContent>
           <div className='center-horizontal'>
-            <Avatar className='mx-2'>
+            <Avatar src={scroll?.author?.image} className='mx-2'>
               <PersonRounded />
             </Avatar>
             <TextField
@@ -185,27 +202,28 @@ export default function Scroll({ scroll: scroll2 }) {
               }
             />
           </div>
-          {[1, 2, 3].map(comment => (
-            <div key={Math.random() * 100} className='center-horizontal'>
-              <Avatar className='mx-2'>
-                <PersonRounded />
-              </Avatar>
-              <Card className='mb-2'>
-                <CardContent>
-                  <div className='center-horizontal space-between w-100'>
-                    <Typography> Mahmud Zayn . @mahmud . 1hr ago</Typography>
-                    <IconButton size='small'>
-                      <MoreHorizRounded />
-                    </IconButton>
-                  </div>
-                  <Typography>
-                    Lorem ipsum Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Numquam, nostrum.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
+          {commentsData &&
+            commentsData?.Comments?.get.map(comment => (
+              <div key={Math.random() * 100} className='center-horizontal'>
+                <Avatar src={comment?.author?.image} className='mx-2'>
+                  <PersonRounded />
+                </Avatar>
+                <Card className='mb-2'>
+                  <CardContent>
+                    <div className='center-horizontal space-between w-100'>
+                      <Typography>
+                        {comment?.author?.displayName} . @{comment?.author?._id}{' '}
+                        . {getCreationTime(comment.creation_date)}
+                      </Typography>
+                      <IconButton size='small'>
+                        <MoreHorizRounded />
+                      </IconButton>
+                    </div>
+                    <Typography>{comment?.content}</Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
         </CardContent>
       </Card>
       <ScrollOptionsPopover
