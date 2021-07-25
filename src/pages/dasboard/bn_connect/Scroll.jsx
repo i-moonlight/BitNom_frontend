@@ -12,13 +12,22 @@ import {
 } from '@material-ui/core';
 import {
   CommentRounded,
+  ImageRounded,
+  MoreHorizRounded,
   MoreVert,
+  PersonRounded,
+  PostAddRounded,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_REACTION } from '../utilities/queries';
+import TextField from '../../../components/TextField';
+import {
+  MUTATION_CREATE_REACTION,
+  GET_SCROLL_BY_ID,
+  QUERY_LOAD_SCROLLS,
+} from '../utilities/queries';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 
@@ -30,12 +39,7 @@ export default function Scroll({ scroll: scroll2 }) {
 
   let scroll = {
     ...scroll2,
-    // images: [
-    //   'https://picsum.photos/200',
-    //   'https://picsum.photos/200',
-    //   'https://picsum.photos/200',
-    //   //  'https://picsum.photos/200'
-    // ],
+    // images: ['https://picsum.photos/200', 'https://picsum.photos/200'],
   };
 
   const [createReaction, { loading, data, error }] = useMutation(
@@ -61,7 +65,7 @@ export default function Scroll({ scroll: scroll2 }) {
       },
     });
   };
-  console.log(scroll?.images);
+  console.log(scroll?.video);
   const getCreationTime = time => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
@@ -167,6 +171,42 @@ export default function Scroll({ scroll: scroll2 }) {
             Share
           </Button>
         </CardActions>
+        <Divider />
+        <CardContent>
+          <div className='center-horizontal'>
+            <Avatar className='mx-2'>
+              <PersonRounded />
+            </Avatar>
+            <TextField
+              endAdornment={
+                <IconButton size='small'>
+                  <ImageRounded />
+                </IconButton>
+              }
+            />
+          </div>
+          {[1, 2, 3].map(comment => (
+            <div key={Math.random() * 100} className='center-horizontal'>
+              <Avatar className='mx-2'>
+                <PersonRounded />
+              </Avatar>
+              <Card className='mb-2'>
+                <CardContent>
+                  <div className='center-horizontal space-between w-100'>
+                    <Typography> Mahmud Zayn . @mahmud . 1hr ago</Typography>
+                    <IconButton size='small'>
+                      <MoreHorizRounded />
+                    </IconButton>
+                  </div>
+                  <Typography>
+                    Lorem ipsum Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Numquam, nostrum.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </CardContent>
       </Card>
       <ScrollOptionsPopover
         scrollId={scroll?._id}

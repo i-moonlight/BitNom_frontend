@@ -22,6 +22,7 @@ import {
   Person,
   Public,
 } from '@material-ui/icons';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -34,8 +35,12 @@ import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
+  const [active, setActive] = useState(4);
+  const [openImage, setOpenImage] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
+  const [scroll_video, setScrollVideo] = useState();
   const theme = useTheme();
   const state = useSelector(state => state);
   const user = state.auth.user;
@@ -52,23 +57,20 @@ export default function CreatePost({ open, setOpen }) {
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      setOpen(false);
       setScrollText('');
+      setScrollImages([]);
+      setScrollVideo(undefined);
+      setOpen(false);
     }
   }, [data]);
 
   const handleCreatePost = e => {
     e.preventDefault();
-    onCreatePost({ content: scroll_text, images: scroll_images });
-  };
-  const handleFilesChange = e => {
-    if (!e.target.files.length) return;
-    const images = [];
-    for (const file of e.target.files) {
-      images.push(file);
-    }
-    setScrollImages(images.slice(0, 4));
-    console.log(scroll_images);
+    onCreatePost({
+      content: scroll_text,
+      images: scroll_images,
+      video: scroll_video,
+    });
   };
 
   return (
@@ -156,17 +158,56 @@ export default function CreatePost({ open, setOpen }) {
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
-                  <input
-                    type='file'
-                    id='fileUpload'
-                    onChange={handleFilesChange}
-                    multiple
-                    style={{
-                      display: 'none',
-                      // opacity: 0,
-                      position: 'absolute',
-                      // zIndex: 2,
+                  <ImageRounded
+                    onClick={() => {
+                      setOpenImage(true);
                     }}
+                    style={{
+                      color: openImage && theme.palette.primary.main,
+                      width: 30,
+                      height: 30,
+                      marginRight: 10,
+                    }}
+                  />
+                  <VideocamRounded
+                    onClick={() => {
+                      setOpenVideo(true);
+                    }}
+                    style={{
+                      color: openVideo && theme.palette.primary.main,
+                      width: 30,
+                      height: 30,
+                      marginRight: 10,
+                    }}
+                  />
+
+                  <DropzoneDialog
+                    acceptedFiles={['image/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    maxFileSize={5000000}
+                    open={openImage}
+                    filesLimit='4'
+                    onClose={() => setOpenImage(false)}
+                    onSave={files => {
+                      setScrollImages(files);
+                      setOpenImage(false);
+                    }}
+                    showPreviews={true}
+                  />
+                  <DropzoneDialog
+                    acceptedFiles={['video/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    maxFileSize={5000000}
+                    open={openVideo}
+                    filesLimit='1'
+                    onClose={() => setOpenVideo(false)}
+                    onSave={files => {
+                      setScrollVideo(files[0]);
+                      setOpenImage(false);
+                    }}
+                    showPreviews={true}
                   />
                   <label
                     style={{

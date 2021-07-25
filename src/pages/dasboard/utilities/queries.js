@@ -87,10 +87,49 @@ export const QUERY_LOAD_SCROLLS = gql`
           reputation
           type
         }
-        images
-        video
         comments
         bookmarks
+        createdAt
+        is_flag
+        reactions {
+          likes
+          dislikes
+          loves
+          celebrations
+        }
+        content
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SCROLL_BY_ID = gql`
+  query ($_id: ID!) {
+    Posts {
+      getById(_id: $_id) {
+        _id
+        images
+        video
+        author {
+          _id
+          image
+          displayName
+          reputation
+          type
+        }
+        comments
+        bookmarks
+        createdAt
         is_flag
         reactions {
           likes
