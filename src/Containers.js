@@ -6,6 +6,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { createUploadLink } from 'apollo-upload-client';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
@@ -17,6 +18,7 @@ import Signup from './pages/auth/Signup';
 import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
+import BnServices from './pages/dasboard/bn_services/BnServices';
 import Events from './pages/dasboard/Events';
 import Notifications from './pages/dasboard/Notifications';
 import People from './pages/dasboard/People';
@@ -51,6 +53,20 @@ const socialLink = from([
     credentials: 'include',
   }),
 ]);
+
+const uploadLink = createUploadLink({
+  uri: 'http://localhost:3000/bn-social/graphql',
+  credentials: 'include',
+  headers: {
+    'keep-alive': 'true',
+  },
+  //useGETForQueries: 'true',
+});
+
+const uploadApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: uploadLink,
+});
 
 const usersApolloClient = new ApolloClient({
   cache: new InMemoryCache(),
@@ -90,10 +106,10 @@ export const AppContainers = () => (
         />
       </Switch>
     </ApolloProvider>
-    <ApolloProvider client={socialApolloClient}>
+    <ApolloProvider client={uploadApolloClient}>
       <Switch>
         <Route exact component={BnConnect} path='/dashboard' />
-
+        <Route exact component={BnServices} path='/dashboard/services' />
         <Route exact component={Events} path='/dashboard/events' />
         <Route
           exact

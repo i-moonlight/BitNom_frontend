@@ -13,15 +13,56 @@ import {
   FlagOutlined,
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
+import { useMutation } from '@apollo/client';
 import React from 'react';
+import {
+  MUTATION_CREATE_BOOKMARK,
+  MUTATION_CREATE_FLAG,
+} from '../utilities/queries';
 import Button from '../../../components/Button';
 
 export default function ScrollOptionsPopover({
+  scrollId,
   scrollOptionId,
   scrollOptionAnchorEl,
   isScrollOptionOpen,
   handleScrollOptionClose,
 }) {
+  const [createBookmark, { loading, data, error }] = useMutation(
+    MUTATION_CREATE_BOOKMARK
+  );
+
+  //const [
+  //  createFlag,
+  //  {
+  //    loading: { flagLoading },
+  //    data: { flagData },
+  //    error: { flagError },
+  //   },
+  //] = useMutation(MUTATION_CREATE_FLAG);
+
+  const handleCreateBookmark = () => {
+    createBookmark({
+      variables: {
+        data: {
+          _id: scrollId,
+          type: 'post',
+        },
+      },
+    });
+  };
+
+  //const handleCreateFlag = () => {
+  //  createFlag({
+  //    variables: {
+  //      data: {
+  //        _id: scrollId,
+  //        type: 'post',
+  //      },
+  //    },
+  //  });
+  //};
+
   return (
     <Popover
       anchorEl={scrollOptionAnchorEl}
@@ -38,7 +79,7 @@ export default function ScrollOptionsPopover({
         component={Card}
         variant='outlined'
       >
-        <ListItem button divider>
+        <ListItem button divider onClick={handleCreateBookmark}>
           <ListItemIcon>
             <BookmarkBorderRounded />
           </ListItemIcon>

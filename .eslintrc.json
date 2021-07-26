@@ -10,12 +10,10 @@
     },
     "ecmaVersion": 12,
     "sourceType": "module",
-    "parser": "babel-eslint"
+    "parser": "babel/eslint-parser"
   },
   "plugins": ["react"],
   "rules": {
-    "indent": ["warn", 2, { "SwitchCase": 1 }],
-    // "linebreak-style": ["error", "windows"],
     "template-curly-spacing": "off",
     "no-unused-vars": "warn",
     "quotes": [0, { "allowTemplateLiterals": true, "avoidEscape": true }],
