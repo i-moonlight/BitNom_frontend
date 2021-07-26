@@ -36,6 +36,7 @@ import {
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import moment from 'moment';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import Comment from './Comment';
 
 const scrollOptionId = 'menu-scroll-option';
@@ -45,6 +46,7 @@ export default function Scroll({ scroll: scroll2 }) {
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
+  const [openImage, setOpenImage] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
@@ -100,8 +102,6 @@ export default function Scroll({ scroll: scroll2 }) {
       image: comment_image,
     });
   };
-
-  console.log('cdts', commentsData?.Comments);
 
   const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
@@ -259,7 +259,12 @@ export default function Scroll({ scroll: scroll2 }) {
                 endAdornment={
                   <>
                     <InputAdornment>
-                      <IconButton size='small'>
+                      <IconButton
+                        onClick={() => {
+                          setOpenImage(true);
+                        }}
+                        size='small'
+                      >
                         <ImageRounded />
                       </IconButton>
                     </InputAdornment>
@@ -274,6 +279,20 @@ export default function Scroll({ scroll: scroll2 }) {
               />
             </div>
           )}
+          <DropzoneDialog
+            acceptedFiles={['image/*']}
+            cancelButtonText={'cancel'}
+            submitButtonText={'submit'}
+            maxFileSize={5000000}
+            open={openImage}
+            filesLimit='1'
+            onClose={() => setOpenImage(false)}
+            onSave={(files) => {
+              setCommentImage(files[0]);
+              setOpenImage(false);
+            }}
+            showPreviews={true}
+          />
           {commentsData &&
             commentsData?.Comments?.get
               .filter((comment) => !comment.response_to)
