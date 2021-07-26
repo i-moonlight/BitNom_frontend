@@ -8,6 +8,7 @@ import {
   Divider,
   CardMedia,
   Grid,
+  InputAdornment,
   IconButton,
   Typography,
 } from '@material-ui/core';
@@ -16,6 +17,7 @@ import {
   ImageRounded,
   MoreHorizRounded,
   MoreVert,
+  Send,
   PersonRounded,
   PostAddRounded,
   ShareRounded,
@@ -26,6 +28,7 @@ import Button from '../../../components/Button';
 import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_REACTION,
+  MUTATION_CREATE_COMMENT,
   GET_SCROLL_BY_ID,
   QUERY_LOAD_SCROLLS,
   QUERY_GET_COMMENTS,
@@ -38,6 +41,10 @@ const scrollOptionId = 'menu-scroll-option';
 
 export default function Scroll({ scroll: scroll2 }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
+  const [openComments, setOpenComments] = useState(false);
+  const [comment_text, setCommentText] = useState('');
+  const [comment_image, setCommentImage] = useState(null);
+  const [createCommentErr, setCreateCommentErr] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
   let scroll = {
@@ -49,18 +56,53 @@ export default function Scroll({ scroll: scroll2 }) {
   const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
     variables: { _id: scroll?._id },
   });
+  const [
+    createComment,
+    {
+      loading: createCommentLoading,
+      data: createCommentData,
+      error: createCommentError,
+    },
+  ] = useMutation(MUTATION_CREATE_COMMENT);
 
   const {
     loading: commentsLoading,
     data: commentsData,
     error: commentsError,
   } = useQuery(QUERY_GET_COMMENTS, {
-    variables: { scroll_id: scroll._id },
+    variables: { data: { scroll_id: scroll?._id } },
   });
+  const onCreateComment = (ICreateComment) => {
+    createComment({
+      variables: {
+        data: ICreateComment,
+      },
+      refetchQueries: [
+        {
+          query: QUERY_GET_COMMENTS,
+          variables: { data: { scroll_id: scroll?._id } },
+        },
+      ],
+    });
+    setCommentText('');
+    setCommentImage(null);
+    setCreateCommentErr(false);
+  };
+
+  const handleCreateComment = (e) => {
+    e.preventDefault();
+    if (comment_text.trim() == '' && !comment_image)
+      return setCreateCommentErr(true);
+    onCreateComment({
+      content: comment_text,
+      scroll: scroll?._id,
+      image: comment_image,
+    });
+  };
 
   console.log('cdts', commentsData?.Comments);
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -68,7 +110,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -128,7 +170,7 @@ export default function Scroll({ scroll: scroll2 }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -174,6 +216,7 @@ export default function Scroll({ scroll: scroll2 }) {
             color='default'
             textCase
             variant='text'
+            onClick={() => setOpenComments(true)}
             startIcon={<CommentRounded />}
           >
             Comment
@@ -189,20 +232,46 @@ export default function Scroll({ scroll: scroll2 }) {
         </CardActions>
         <Divider />
         <CardContent>
-          <div className='center-horizontal'>
-            <Avatar src={scroll?.author?.image} className='mx-2'>
-              <PersonRounded />
-            </Avatar>
-            <TextField
-              endAdornment={
-                <IconButton size='small'>
-                  <ImageRounded />
-                </IconButton>
-              }
-            />
-          </div>
+          {openComments && (
+            <div className='center-horizontal'>
+              <Avatar src={scroll?.author?.image} className='mx-2'>
+                <PersonRounded />
+              </Avatar>
+              <TextField
+                error={createCommentErr && true}
+                errorText={createCommentErr && 'The comment cannot be empty'}
+                rows={5}
+                rowsMax={10}
+                id='comment-field'
+                placeholder='Comment'
+                onChange={(e) =>
+                  setCommentText(
+                    comment_text?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value
+                  )
+                }
+                endAdornment={
+                  <>
+                    <InputAdornment>
+                      <IconButton size='small'>
+                        <ImageRounded />
+                      </IconButton>
+                    </InputAdornment>
+                    <InputAdornment>
+                      <IconButton onClick={handleCreateComment} size='small'>
+                        <Send />
+                      </IconButton>
+                    </InputAdornment>
+                  </>
+                }
+                value={comment_text}
+              />
+            </div>
+          )}
+
           {commentsData &&
-            commentsData?.Comments?.get.map(comment => (
+            commentsData?.Comments?.get.map((comment) => (
               <div key={Math.random() * 100} className='center-horizontal'>
                 <Avatar src={comment?.author?.image} className='mx-2'>
                   <PersonRounded />

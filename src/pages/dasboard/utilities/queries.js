@@ -52,7 +52,43 @@ export const MUTATION_DELETE_POST = gql`
 export const MUTATION_CREATE_COMMENT = gql`
   mutation ($data: ICreateComment!) {
     Comments {
-      create(data: $data)
+      create(data: $data) {
+        _id
+        author {
+          _id
+          image
+          displayName
+          reputation
+          type
+        }
+        content
+        image
+        scroll
+        response_to {
+          _id
+          author {
+            _id
+          }
+        }
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+        creation_date
+        bookmarks
+        reactions {
+          likes
+          dislikes
+          loves
+          celebrations
+        }
+      }
     }
   }
 `;
@@ -154,14 +190,16 @@ export const GET_SCROLL_BY_ID = gql`
 `;
 
 export const QUERY_GET_COMMENTS = gql`
-  query ($scroll_id: ID!) {
+  query ($data: IGetComments!) {
     Comments {
-      get(data: { scroll_id: $scroll_id }) {
+      get(data: $data) {
         _id
         content
         author {
           _id
+          type
           displayName
+          reputation
           image
         }
         creation_date
@@ -175,6 +213,9 @@ export const QUERY_GET_COMMENTS = gql`
         scroll
         response_to {
           _id
+          author {
+            _id
+          }
         }
       }
     }

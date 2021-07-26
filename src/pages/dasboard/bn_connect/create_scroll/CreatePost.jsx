@@ -41,7 +41,7 @@ export default function CreatePost({ open, setOpen }) {
   const [openVideo, setOpenVideo] = useState(false);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
-  const [scroll_video, setScrollVideo] = useState();
+  const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
   const state = useSelector(state => state);
   const user = state.auth.user;
