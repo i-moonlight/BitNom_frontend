@@ -45,9 +45,10 @@ export default function Scroll({ scroll: scroll2 }) {
     // images: ['https://picsum.photos/200', 'https://picsum.photos/200'],
   };
 
-  const [createReaction, { loading, data, error }] = useMutation(
-    MUTATION_CREATE_REACTION
-  );
+  const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+  const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
+    variables: { _id: scroll?._id },
+  });
 
   const {
     loading: commentsLoading,
@@ -59,7 +60,7 @@ export default function Scroll({ scroll: scroll2 }) {
 
   console.log('cdts', commentsData?.Comments);
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -67,7 +68,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -80,8 +81,7 @@ export default function Scroll({ scroll: scroll2 }) {
     });
   };
 
-  // console.log(scroll?.video);
-  const getCreationTime = time => {
+  const getCreationTime = (time) => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
     let minutes = Math.round(ms / (1000 * 60));
@@ -140,7 +140,7 @@ export default function Scroll({ scroll: scroll2 }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -214,7 +214,7 @@ export default function Scroll({ scroll: scroll2 }) {
             />
           </div>
           {commentsData &&
-            commentsData?.Comments?.get.map(comment => (
+            commentsData?.Comments?.get.map((comment) => (
               <div key={Math.random() * 100} className='center-horizontal'>
                 <Avatar src={comment?.author?.image} className='mx-2'>
                   <PersonRounded />
