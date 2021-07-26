@@ -32,6 +32,7 @@ import {
 } from '../utilities/queries';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+import moment from 'moment';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -122,7 +123,7 @@ export default function Scroll({ scroll: scroll2 }) {
               </Typography>
             </div>
           }
-          subheader={getCreationTime(scroll?.createdAt)}
+          subheader={moment(scroll?.createdAt).fromNow()}
         />
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
@@ -223,7 +224,7 @@ export default function Scroll({ scroll: scroll2 }) {
                     <div className='center-horizontal space-between w-100'>
                       <Typography>
                         {comment?.author?.displayName} . @{comment?.author?._id}{' '}
-                        . {getCreationTime(comment.creation_date)}
+                        . {moment(comment.creation_date).fromNow()}
                       </Typography>
                       <IconButton size='small'>
                         <MoreHorizRounded />
