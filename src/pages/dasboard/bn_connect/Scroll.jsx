@@ -60,7 +60,7 @@ export default function Scroll({ scroll: scroll2 }) {
 
   console.log('cdts', commentsData?.Comments);
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -68,7 +68,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -79,18 +79,6 @@ export default function Scroll({ scroll: scroll2 }) {
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-  };
-
-  const getCreationTime = (time) => {
-    let ms = new Date().getTime() - time;
-    let seconds = Math.round(ms / 1000);
-    let minutes = Math.round(ms / (1000 * 60));
-    let hours = Math.round(ms / (1000 * 60 * 60));
-    let days = Math.round(ms / (1000 * 60 * 60 * 24));
-    if (seconds < 60) return 'a few seconds ago';
-    else if (minutes < 60) return minutes + 'm ago';
-    else if (hours < 24) return hours + 'h ago';
-    else return days + 'd ago';
   };
 
   return (
@@ -140,7 +128,7 @@ export default function Scroll({ scroll: scroll2 }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map((imageURL) => (
+                scroll?.images?.map(imageURL => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -214,7 +202,7 @@ export default function Scroll({ scroll: scroll2 }) {
             />
           </div>
           {commentsData &&
-            commentsData?.Comments?.get.map((comment) => (
+            commentsData?.Comments?.get.map(comment => (
               <div key={Math.random() * 100} className='center-horizontal'>
                 <Avatar src={comment?.author?.image} className='mx-2'>
                   <PersonRounded />
