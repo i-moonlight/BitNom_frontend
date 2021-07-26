@@ -33,22 +33,10 @@ export default function VerifyEmail() {
       let userErrors = errors ? errors : null;
       setVerifyErr(userErrors);
 
-      console.log(data);
-
-      if (data?.Users?.verifyEmail) {
-        let newUserData = {
-          ...user,
-          email: { ...user?.email, verified: true },
-        };
-
-        // console.log('newUser: ');
-        // console.log(newUserData);
-        // console.log();
-
-        user?._id?.length > 1
-          ? dispatch(login(newUserData, null))
-          : history.push('/auth/login');
-      }
+      setTimeout(() => {
+        dispatch(login({}, null));
+        history.push('/auth/login');
+      }, 2000);
     });
   }, [state]);
 
@@ -79,7 +67,11 @@ export default function VerifyEmail() {
                     <span style={{ marginTop: 10 }}></span>
                     {verifying
                       ? `Verifying email ...`
-                      : 'Verification finished'}
+                      : `Verification ${
+                          verifyErr && verifyErr[0]?.state?.verificationCode
+                            ? 'failed!'
+                            : 'finished. Redirecting ...'
+                        } `}
                   </Typography>
                   {verifyErr &&
                     verifyErr.map(err => (
