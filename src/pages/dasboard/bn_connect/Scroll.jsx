@@ -13,17 +13,22 @@ import {
 } from '@material-ui/core';
 import {
   CommentRounded,
+  ImageRounded,
+  MoreHorizRounded,
   MoreVert,
+  PersonRounded,
   PostAddRounded,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_REACTION,
   GET_SCROLL_BY_ID,
   QUERY_LOAD_SCROLLS,
+  QUERY_GET_COMMENTS,
 } from '../utilities/queries';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
@@ -36,18 +41,23 @@ export default function Scroll({ scroll: scroll2 }) {
 
   let scroll = {
     ...scroll2,
-    // images: [
-    //   'https://picsum.photos/200',
-    //   'https://picsum.photos/200',
-    //   'https://picsum.photos/200',
-    //   //  'https://picsum.photos/200'
-    // ],
+    // images: ['https://picsum.photos/200', 'https://picsum.photos/200'],
   };
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
   const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
     variables: { _id: scroll?._id },
   });
+
+  const {
+    loading: commentsLoading,
+    data: commentsData,
+    error: commentsError,
+  } = useQuery(QUERY_GET_COMMENTS, {
+    variables: { scroll_id: scroll._id },
+  });
+
+  console.log('cdts', commentsData?.Comments);
 
   const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
@@ -66,13 +76,10 @@ export default function Scroll({ scroll: scroll2 }) {
           reaction: reaction,
         },
       },
-      refetchQueries: [
-        { query: GET_SCROLL_BY_ID, variables: { _id: scroll?._id } },
-        //{ query: QUERY_LOAD_SCROLLS, fetchPolicy: 'cache-only' },
-      ],
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
-  console.log(scroll?.video);
+
   const getCreationTime = (time) => {
     let ms = new Date().getTime() - time;
     let seconds = Math.round(ms / 1000);
@@ -89,7 +96,11 @@ export default function Scroll({ scroll: scroll2 }) {
     <>
       <Card style={{ marginBottom: 16 }}>
         <CardHeader
-          avatar={<Avatar aria-label='recipe'>R</Avatar>}
+          avatar={
+            <Avatar src={scroll?.author?.image} aria-label='recipe'>
+              R
+            </Avatar>
+          }
           action={
             <IconButton
               aria-label='show more'
@@ -187,6 +198,43 @@ export default function Scroll({ scroll: scroll2 }) {
             Share
           </Button>
         </CardActions>
+        <Divider />
+        <CardContent>
+          <div className='center-horizontal'>
+            <Avatar src={scroll?.author?.image} className='mx-2'>
+              <PersonRounded />
+            </Avatar>
+            <TextField
+              endAdornment={
+                <IconButton size='small'>
+                  <ImageRounded />
+                </IconButton>
+              }
+            />
+          </div>
+          {commentsData &&
+            commentsData?.Comments?.get.map((comment) => (
+              <div key={Math.random() * 100} className='center-horizontal'>
+                <Avatar src={comment?.author?.image} className='mx-2'>
+                  <PersonRounded />
+                </Avatar>
+                <Card className='mb-2'>
+                  <CardContent>
+                    <div className='center-horizontal space-between w-100'>
+                      <Typography>
+                        {comment?.author?.displayName} . @{comment?.author?._id}{' '}
+                        . {getCreationTime(comment.creation_date)}
+                      </Typography>
+                      <IconButton size='small'>
+                        <MoreHorizRounded />
+                      </IconButton>
+                    </div>
+                    <Typography>{comment?.content}</Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+        </CardContent>
       </Card>
       <ScrollOptionsPopover
         scrollId={scroll?._id}

@@ -35,6 +35,7 @@ import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
+  const [active, setActive] = useState(4);
   const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
@@ -42,11 +43,11 @@ export default function CreatePost({ open, setOpen }) {
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState();
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [createPost, { loading, data, error }] =
     useMutation(MUTATION_CREATE_POST);
-  const onCreatePost = (ICreatePost) => {
+  const onCreatePost = ICreatePost => {
     createPost({
       variables: {
         data: ICreatePost,
@@ -66,7 +67,7 @@ export default function CreatePost({ open, setOpen }) {
     }
   }, [data]);
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
 
@@ -141,7 +142,7 @@ export default function CreatePost({ open, setOpen }) {
                 rowsMax={10}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -195,7 +196,7 @@ export default function CreatePost({ open, setOpen }) {
                     open={openImage}
                     filesLimit='4'
                     onClose={() => setOpenImage(false)}
-                    onSave={(files) => {
+                    onSave={files => {
                       setScrollImages(files);
                       setOpenImage(false);
                     }}
@@ -209,7 +210,7 @@ export default function CreatePost({ open, setOpen }) {
                     open={openVideo}
                     filesLimit='1'
                     onClose={() => setOpenVideo(false)}
-                    onSave={(files) => {
+                    onSave={files => {
                       setScrollVideo(files[0]);
                       setOpenVideo(false);
                     }}

@@ -152,3 +152,31 @@ export const GET_SCROLL_BY_ID = gql`
     }
   }
 `;
+
+export const QUERY_GET_COMMENTS = gql`
+  query ($scroll_id: ID!) {
+    Comments {
+      get(data: { scroll_id: $scroll_id }) {
+        _id
+        content
+        author {
+          _id
+          displayName
+          image
+        }
+        creation_date
+        image
+        reactions {
+          celebrations
+          likes
+          dislikes
+          loves
+        }
+        scroll
+        response_to {
+          _id
+        }
+      }
+    }
+  }
+`;

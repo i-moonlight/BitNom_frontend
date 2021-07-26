@@ -49,6 +49,7 @@ export default function UserCard() {
           <div className='space-between'>
             <div>
               <Avatar
+                src={user?.image}
                 variant='rounded'
                 style={{
                   backgroundColor: '#fed132',
