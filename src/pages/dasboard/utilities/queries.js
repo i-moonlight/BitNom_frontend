@@ -74,7 +74,7 @@ export const MUTATION_DELETE_COMMENT = gql`
 `;
 
 export const QUERY_LOAD_SCROLLS = gql`
-  query {
+  query GetAllScrolls {
     Posts {
       get(data: { limit: 220 }) {
         _id
@@ -114,7 +114,7 @@ export const QUERY_LOAD_SCROLLS = gql`
 `;
 
 export const GET_SCROLL_BY_ID = gql`
-  query ($_id: ID!) {
+  query GetByID($_id: ID!) {
     Posts {
       getById(_id: $_id) {
         _id

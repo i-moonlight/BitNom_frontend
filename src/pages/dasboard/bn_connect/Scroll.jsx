@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -44,9 +44,10 @@ export default function Scroll({ scroll: scroll2 }) {
     // ],
   };
 
-  const [createReaction, { loading, data, error }] = useMutation(
-    MUTATION_CREATE_REACTION
-  );
+  const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+  const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
+    variables: { _id: scroll?._id },
+  });
 
   const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
@@ -65,6 +66,10 @@ export default function Scroll({ scroll: scroll2 }) {
           reaction: reaction,
         },
       },
+      refetchQueries: [
+        { query: GET_SCROLL_BY_ID, variables: { _id: scroll?._id } },
+        //{ query: QUERY_LOAD_SCROLLS, fetchPolicy: 'cache-only' },
+      ],
     });
   };
   console.log(scroll?.video);
