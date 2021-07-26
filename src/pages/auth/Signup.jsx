@@ -13,6 +13,7 @@ import { login, register } from '../../store/actions/authActions';
 import { createUserInitialValues } from './utilities/initial_values';
 import {
   MUTATION_CREATE_USER,
+  MUTATION_GOOGLE_LOGIN,
   MUTATION_GOOGLE_SIGNUP,
 } from './utilities/queries';
 import { createUserValidationSchema } from './utilities/validation_schemas';
@@ -32,6 +33,7 @@ export default function Signup() {
 
   const [createUser] = useMutation(MUTATION_CREATE_USER);
   const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP);
+  const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN);
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
@@ -59,7 +61,24 @@ export default function Signup() {
       let userErrors = errors ? errors : null;
       setGoogleErr(userErrors);
 
-      register(login(userData, null));
+      dispatch(register(userData, null));
+      // console.log(userData);
+      // dispatch(login(userData,null));
+
+      !userErrors &&
+        googleLogin({
+          variables: {
+            token: response.tokenId,
+          },
+          errorPolicy: 'all',
+        }).then(({ data, errors }) => {
+          let userData = data?.Users?.googleLogin
+            ? data?.Users?.googleLogin
+            : {};
+          let userErrors = errors ? errors : null;
+          setGoogleErr(userErrors);
+          dispatch(login(userData, null));
+        });
     });
   };
 
@@ -154,7 +173,7 @@ export default function Signup() {
                       key={Math.random() * 100}
                       severity='success'
                     >
-                      Registration Successful
+                      Registration Successful. Continue to login.
                     </Alert>
                   )}
 
@@ -209,7 +228,7 @@ export default function Signup() {
                     )}
                     cookiePolicy={'single_host_origin'}
                   />
-                  <div className='text-center'>
+                  <div className='text-center mt-3'>
                     <Typography variant='body1'>
                       <span style={{ marginTop: 10 }}></span>
                       Already on Bitnorm?{' '}

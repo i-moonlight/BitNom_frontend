@@ -36,6 +36,7 @@ import {
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import moment from 'moment';
+import Comment from './Comment';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -243,7 +244,11 @@ export default function Scroll({ scroll: scroll2 }) {
                 rows={5}
                 rowsMax={10}
                 id='comment-field'
-                placeholder='Comment'
+                placeholder={
+                  commentsData?.Comments?.get?.length > 0
+                    ? ''
+                    : 'Be the first to comment..'
+                }
                 onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
@@ -269,29 +274,12 @@ export default function Scroll({ scroll: scroll2 }) {
               />
             </div>
           )}
-
           {commentsData &&
-            commentsData?.Comments?.get.map((comment) => (
-              <div key={Math.random() * 100} className='center-horizontal'>
-                <Avatar src={comment?.author?.image} className='mx-2'>
-                  <PersonRounded />
-                </Avatar>
-                <Card className='mb-2'>
-                  <CardContent>
-                    <div className='center-horizontal space-between w-100'>
-                      <Typography>
-                        {comment?.author?.displayName} . @{comment?.author?._id}{' '}
-                        . {moment(comment.creation_date).fromNow()}
-                      </Typography>
-                      <IconButton size='small'>
-                        <MoreHorizRounded />
-                      </IconButton>
-                    </div>
-                    <Typography>{comment?.content}</Typography>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
+            commentsData?.Comments?.get
+              .filter((comment) => !comment.response_to)
+              .map((comment) => (
+                <Comment key={comment._id} comment={comment} />
+              ))}
         </CardContent>
       </Card>
       <ScrollOptionsPopover

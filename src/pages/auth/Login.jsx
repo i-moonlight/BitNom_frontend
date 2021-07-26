@@ -24,18 +24,13 @@ export default function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = state.auth.user;
-  const errors = state.auth.err;
+  // const errors = state.auth.err;
 
   const [loginUser] = useMutation(MUTATION_LOGIN_USER);
   const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN);
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-
-    errors &&
-      errors.map(err => {
-        err?.state[''] && setLoginErr(err?.state['']);
-      });
   });
 
   const responseGoogle = response => {
@@ -59,21 +54,21 @@ export default function Login() {
   };
 
   return (
-    <div className="center-horizontal center-vertical">
+    <div className='center-horizontal center-vertical'>
       <Grid
         container
         spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
+        direction='column'
+        alignItems='center'
+        justifyContent='center'
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
-          <div className="text-center my-3 px-sm-5">
-            <Typography color="textPrimary" variant="h5">
+          <div className='text-center my-3 px-sm-5'>
+            <Typography color='textPrimary' variant='h5'>
               Hi! WELCOME BACK
             </Typography>
-            <Typography color="textPrimary" variant="body1">
+            <Typography color='textPrimary' variant='body1'>
               Stay updated and get full access to a thousand opportunities
               across the globe.
             </Typography>
@@ -92,9 +87,13 @@ export default function Login() {
                     errorPolicy: 'all',
                   }).then(({ data, errors }) => {
                     let userData = data?.Users?.login ? data?.Users?.login : {};
-                    let userErrors = errors ? errors : null;
 
-                    dispatch(login(userData, userErrors));
+                    errors &&
+                      errors.map(err => {
+                        err?.state[''] && setLoginErr(err?.state['']);
+                      });
+
+                    dispatch(login(userData, null));
                   });
 
                   // For debugging
@@ -111,27 +110,27 @@ export default function Login() {
                   //end debugging
                 }}
               >
-                <div className="text-center my-3 mx-2">
+                <div className='text-center my-3 mx-2'>
                   <TextField
                     error={loginErr && true}
                     errorText={loginErr && loginErr[0]}
-                    name="username"
-                    label="Email or Username"
-                    variant="outlined"
+                    name='username'
+                    label='Email or Username'
+                    variant='outlined'
                     fullWidth
                   />
                   <TextField
                     error={loginErr && true}
                     errorText={loginErr && loginErr[0]}
-                    name="password"
-                    label="Password"
-                    variant="outlined"
-                    type="password"
+                    name='password'
+                    label='Password'
+                    variant='outlined'
+                    type='password'
                     fullWidth
                   />
                   <div>
-                    <Typography className="end-horizontal mb-2">
-                      <Link color="primary" to="/auth/request_reset_link">
+                    <Typography className='end-horizontal mb-2'>
+                      <Link color='primary' to='/auth/request_reset_link'>
                         Forgot Password?
                       </Link>
                     </Typography>
@@ -144,18 +143,19 @@ export default function Login() {
                   {googleErr &&
                     googleErr.map(err => (
                       <Alert
-                        className="mb-2"
+                        className='mb-2'
                         key={Math.random() * 100}
-                        severity="error"
+                        severity='error'
                       >
                         {err?.state?.email && err?.state?.email[0]}
                         {err?.state?._id && err?.state?._id[0]}
+                        {err?.state[''] && err?.state['']}
                       </Alert>
                     ))}
 
                   <GoogleLogin
-                    clientId="705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com"
-                    buttonText="Login Google"
+                    clientId='705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com'
+                    buttonText='Login Google'
                     onSuccess={responseGoogle}
                     onFailure={failureGoogle}
                     render={renderProps => (
@@ -171,11 +171,11 @@ export default function Login() {
                     cookiePolicy={'single_host_origin'}
                   />
 
-                  <div className="text-center my-3 px-sm-0">
-                    <Typography variant="body1">
+                  <div className='text-center my-3 px-sm-0'>
+                    <Typography variant='body1'>
                       <div style={{ marginTop: 10 }}></div>
                       New to Bitnorm?{' '}
-                      <Link color="primary" to="/auth/signup">
+                      <Link color='primary' to='/auth/signup'>
                         Join now
                       </Link>
                     </Typography>
