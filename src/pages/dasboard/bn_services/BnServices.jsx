@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function BnServices() {
-  const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  // const [createScrollOpen, setCreateScrollOpen] = useState(false);
   const [latestScrolls, setlatestScrolls] = useState([]);
   const classes = useStyles();
 

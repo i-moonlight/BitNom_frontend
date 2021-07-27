@@ -14,9 +14,9 @@ import { QUERY_GET_COMMENTS } from '../utilities/queries';
 
 export default function Comment({ comment, style }) {
   const {
-    loading: commentsLoading,
     data: commentsData,
-    error: commentsError,
+    // loading: commentsLoading,
+    // error: commentsError,
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: comment.scroll } },
   });

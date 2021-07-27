@@ -60,9 +60,8 @@ export default function UpdateInfo() {
                     let userData = data?.Users?.update
                       ? data?.Users?.update
                       : {};
-                    let userErrors = errors ? errors : null;
 
-                    console.log(userData);
+                    errors && console.log(errors);
 
                     dispatch(login(userData, null));
                   });

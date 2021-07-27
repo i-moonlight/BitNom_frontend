@@ -32,6 +32,7 @@ export default function VerifyEmail() {
       setVerifying(false);
       let userErrors = errors ? errors : null;
       setVerifyErr(userErrors);
+      console.log(data);
 
       setTimeout(() => {
         dispatch(login({}, null));
