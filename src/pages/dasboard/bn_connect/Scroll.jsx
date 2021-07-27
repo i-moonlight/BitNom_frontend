@@ -5,43 +5,39 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Divider,
   CardMedia,
+  Divider,
   Grid,
-  InputAdornment,
   IconButton,
   Typography,
 } from '@material-ui/core';
 import {
   CommentRounded,
   ImageRounded,
-  MoreHorizRounded,
   MoreVert,
-  Send,
   PersonRounded,
-  PostAddRounded,
+  Send,
   ShareRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
+import { DropzoneDialog } from 'material-ui-dropzone';
+import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import TextField from '../../../components/TextField';
 import {
-  MUTATION_CREATE_REACTION,
   MUTATION_CREATE_COMMENT,
-  GET_SCROLL_BY_ID,
-  QUERY_LOAD_SCROLLS,
+  MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
+  QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
+import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-import moment from 'moment';
-import { DropzoneDialog } from 'material-ui-dropzone';
-import Comment from './Comment';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll: scroll2, setSharedPost, setOpen }) {
+export default function Scroll({ scroll, setSharedPost, setOpen }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
@@ -50,31 +46,31 @@ export default function Scroll({ scroll: scroll2, setSharedPost, setOpen }) {
   const [createCommentErr, setCreateCommentErr] = useState(null);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
-  let scroll = {
-    ...scroll2,
-    // images: ['https://picsum.photos/200', 'https://picsum.photos/200'],
-  };
-
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-  const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
-    variables: { _id: scroll?._id },
-  });
+
+  // const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
+  //   variables: { _id: scroll?._id },
+  // });
+
   const [
     createComment,
     {
-      loading: createCommentLoading,
       data: createCommentData,
-      error: createCommentError,
+      // loading: createCommentLoading,
+      // error: createCommentError,
     },
   ] = useMutation(MUTATION_CREATE_COMMENT);
 
+  console.log(createCommentData);
+
   const {
-    loading: commentsLoading,
     data: commentsData,
-    error: commentsError,
+    // loading: commentsLoading,
+    // error: commentsError,
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: scroll?._id } },
   });
+
   const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {

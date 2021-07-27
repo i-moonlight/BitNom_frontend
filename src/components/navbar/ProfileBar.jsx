@@ -7,13 +7,11 @@ import {
   Hidden,
   IconButton,
   InputBase,
-  Menu,
   Paper,
   Typography,
 } from '@material-ui/core';
 import {
   ChevronRight,
-  Directions,
   ForumRounded,
   MenuRounded,
   Notifications,

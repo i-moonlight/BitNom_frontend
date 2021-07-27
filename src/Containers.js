@@ -46,13 +46,14 @@ const authLink = from([
   }),
 ]);
 
-const socialLink = from([
-  errorLink,
-  new HttpLink({
-    uri: 'http://localhost:3000/bn-social/graphql',
-    credentials: 'include',
-  }),
-]);
+// const socialLink = from([
+//   errorLink,
+//   new HttpLink({
+//     uri: 'http://localhost:3000/bn-social/graphql',
+//     // uri: "http://localhost:3000/files/graphql",
+//     credentials: 'include',
+//   }),
+// ]);
 
 const uploadLink = createUploadLink({
   uri: 'http://localhost:3000/bn-social/graphql',
@@ -73,11 +74,11 @@ const usersApolloClient = new ApolloClient({
   credentials: 'include',
 });
 
-const socialApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: socialLink,
-  credentials: 'include',
-});
+// const socialApolloClient = new ApolloClient({
+//   cache: new InMemoryCache(),
+//   link: socialLink,
+//   credentials: 'include',
+// });
 
 export const AppContainers = () => (
   <BrowserRouter>
@@ -123,7 +124,7 @@ export const AppContainers = () => (
 
 function RedirectToDash() {
   const history = useHistory();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
 
   useEffect(() => {

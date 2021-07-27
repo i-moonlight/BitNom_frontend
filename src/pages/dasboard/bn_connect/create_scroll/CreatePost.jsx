@@ -1,38 +1,37 @@
+import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
   CardContent,
+  CircularProgress,
   Divider,
   Grid,
+  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Modal,
-  CircularProgress,
   Typography,
   useTheme,
-  Icon,
-  IconButton,
 } from '@material-ui/core';
 import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  VideocamRounded,
   Person,
   Public,
+  VideocamRounded,
 } from '@material-ui/icons';
 import { DropzoneDialog } from 'material-ui-dropzone';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useMutation } from '@apollo/client';
+import Button from '../../../../components/Button';
+import TextField from '../../../../components/TextField';
+import { createPostIcons } from '../../../../store/local/dummy';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import Button from '../../../../components/Button';
-import TextField from '../../../../components/TextField';
-import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({
   open,
@@ -40,7 +39,6 @@ export default function CreatePost({
   sharedPost,
   setSharedPost,
 }) {
-  const [active, setActive] = useState(4);
   const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
@@ -52,8 +50,14 @@ export default function CreatePost({
   const theme = useTheme();
   const state = useSelector((state) => state);
   const user = state.auth.user;
-  const [createPost, { loading, data, error }] =
-    useMutation(MUTATION_CREATE_POST);
+  const [
+    createPost,
+    {
+      loading,
+      data,
+      //  error
+    },
+  ] = useMutation(MUTATION_CREATE_POST);
 
   const onCreatePost = async (ICreatePost) => {
     await createPost({
@@ -237,9 +241,6 @@ export default function CreatePost({
                     showAlerts={['error']}
                     showPreviews={false}
                     showPreviewsInDropzone
-                    // previewGridProps={{
-                    //   container: { spacing: 1, direction: 'row' },
-                    // }}
                     previewChipProps={{
                       style: {
                         marginLeft: 16,

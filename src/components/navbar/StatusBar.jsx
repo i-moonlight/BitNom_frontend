@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Hidden,
-  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -19,10 +18,10 @@ export default function StatusBar() {
 
   return (
     <Box className={classes.root}>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <div className={classes.statusBar}>
           <div
-            className="scroll-hidden"
+            className='scroll-hidden'
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -33,8 +32,8 @@ export default function StatusBar() {
             {status.map(({ title, value }) => (
               <div key={`${Math.random() * 1000}`}>
                 <Typography
-                  variant="body2"
-                  color="textSecondary"
+                  variant='body2'
+                  color='textSecondary'
                   key={title}
                   style={{ marginRight: 16 }}
                   noWrap
@@ -45,11 +44,11 @@ export default function StatusBar() {
             ))}
           </div>
           <Hidden smDown>
-            <div className="center-horizontal">
+            <div className='center-horizontal'>
               <Button
                 textCase
-                variant="text"
-                color="default"
+                variant='text'
+                color='default'
                 endIcon={
                   <ChevronRight
                     style={{
@@ -62,8 +61,8 @@ export default function StatusBar() {
               </Button>
               <Button
                 textCase
-                variant="text"
-                color="default"
+                variant='text'
+                color='default'
                 endIcon={
                   <ChevronRight
                     style={{
@@ -80,16 +79,16 @@ export default function StatusBar() {
                     marginRight: 8,
                     color: theme.palette.text.primary,
                   }}
-                  variant="rounded"
+                  variant='rounded'
                 >
-                  <Typography variant="body2">$</Typography>
+                  <Typography variant='body2'>$</Typography>
                 </Avatar>{' '}
                 USD
               </Button>
               <Button
                 textCase
-                variant="text"
-                color="default"
+                variant='text'
+                color='default'
                 // endIcon={
                 //   <ChevronRight
                 //     style={{

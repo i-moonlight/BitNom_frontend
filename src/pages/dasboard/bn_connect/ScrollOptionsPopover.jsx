@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   Divider,
@@ -13,13 +14,12 @@ import {
   FlagOutlined,
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
-import { useMutation } from '@apollo/client';
 import React from 'react';
+import Button from '../../../components/Button';
 import {
   MUTATION_CREATE_BOOKMARK,
   MUTATION_CREATE_FLAG,
 } from '../utilities/queries';
-import Button from '../../../components/Button';
 
 export default function ScrollOptionsPopover({
   scroll,
@@ -28,14 +28,27 @@ export default function ScrollOptionsPopover({
   isScrollOptionOpen,
   handleScrollOptionClose,
 }) {
-  const [createBookmark, { loading, data, error }] = useMutation(
-    MUTATION_CREATE_BOOKMARK
-  );
+  const [
+    createBookmark,
+    {
+      data,
+      //  loading,
+      //   error
+    },
+  ] = useMutation(MUTATION_CREATE_BOOKMARK);
+
+  console.log(data);
 
   const [
     createFlag,
-    { loading: flagLoading, data: flagData, error: flagError },
+    {
+      // loading: flagLoading,
+      // data: flagData,
+      error: flagError,
+    },
   ] = useMutation(MUTATION_CREATE_FLAG);
+
+  flagError && console.log(flagError);
 
   const handleCreateBookmark = () => {
     createBookmark({
