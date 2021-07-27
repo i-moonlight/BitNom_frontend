@@ -261,30 +261,33 @@ export default function Scroll({ scroll: scroll2 }) {
                       : e.target.value
                   )
                 }
-                endAdornment={
-                  <>
-                    <InputAdornment>
-                      <IconButton
-                        onClick={() => {
-                          setOpenImage(true);
-                        }}
-                        size='small'
-                      >
-                        <ImageRounded />
-                      </IconButton>
-                    </InputAdornment>
-                    <InputAdornment>
-                      <IconButton onClick={handleCreateComment} size='small'>
-                        <Send />
-                      </IconButton>
-                    </InputAdornment>
-                  </>
+                adornment={
+                  <IconButton
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    size='small'
+                  >
+                    <ImageRounded />
+                  </IconButton>
                 }
+                adornmentType='end'
                 value={comment_text}
               />
+              <IconButton
+                className='mx-3'
+                onClick={handleCreateComment}
+                // size='small'
+              >
+                <Send />
+              </IconButton>
             </div>
           )}
           <DropzoneDialog
+            previewGridProps={{ container: { spacing: 1, direction: 'row' } }}
+            showAlerts={['error']}
+            // useChipsForPreview
+            previewText=''
             acceptedFiles={['image/*']}
             cancelButtonText={'cancel'}
             submitButtonText={'submit'}
@@ -296,7 +299,9 @@ export default function Scroll({ scroll: scroll2 }) {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
-            showPreviews={true}
+            showPreviewsInDropzone
+            showPreviews={false}
+            showFileNames={false}
           />
           {commentsData &&
             commentsData?.Comments?.get

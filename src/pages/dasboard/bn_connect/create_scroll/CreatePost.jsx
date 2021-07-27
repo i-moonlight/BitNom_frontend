@@ -233,29 +233,45 @@ export default function CreatePost({ open, setOpen }) {
                     cancelButtonText={'cancel'}
                     submitButtonText={'submit'}
                     maxFileSize={5000000}
-                    open={openImage}
                     filesLimit='4'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    previewGridProps={{
+                      container: { spacing: 1, direction: 'row' },
+                    }}
+                    open={openImage}
                     onClose={() => setOpenImage(false)}
                     onSave={files => {
                       setScrollImages(files);
                       setOpenImage(false);
                     }}
-                    showPreviews={true}
                   />
                   <DropzoneDialog
                     acceptedFiles={['video/*']}
                     cancelButtonText={'cancel'}
                     submitButtonText={'submit'}
+                    useChipsForPreview
                     maxFileSize={5000000}
-                    open={openVideo}
                     filesLimit='1'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    // previewGridProps={{
+                    //   container: { spacing: 1, direction: 'row' },
+                    // }}
+                    previewChipProps={{
+                      style: {
+                        marginLeft: 16,
+                      },
+                    }}
+                    open={openVideo}
                     onClose={() => setOpenVideo(false)}
                     onSave={files => {
                       console.log(files);
                       setScrollVideo(files[0]);
                       setOpenVideo(false);
                     }}
-                    showPreviews={true}
                   />
 
                   {createPostIcons.map(({ Icon }) => {
