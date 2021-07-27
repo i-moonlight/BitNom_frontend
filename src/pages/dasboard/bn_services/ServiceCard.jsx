@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Card,
   CardActions,
   CardContent,
@@ -10,24 +9,11 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import {
-  AddRounded,
-  BookmarkRounded,
-  CollectionsBookmarkRounded,
-  EventRounded,
-  Notifications,
-  PersonRounded,
-  Settings,
-  ShareRounded,
-} from '@material-ui/icons';
+import { ShareRounded } from '@material-ui/icons';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
 export default function ServiceCard() {
-  const state = useSelector(state => state);
-  const user = state.auth.user;
-
   return (
     <div>
       <Card variant={'outlined'}>

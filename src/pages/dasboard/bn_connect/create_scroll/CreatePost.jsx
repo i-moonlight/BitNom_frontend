@@ -28,8 +28,6 @@ import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import {
   MUTATION_CREATE_POST,
-  MUTATION_CREATE_FILE_IMAGE,
-  MUTATION_CREATE_FILE_VIDEO,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 import Button from '../../../../components/Button';
@@ -53,7 +51,6 @@ export default function CreatePost({ open, setOpen }) {
     useMutation(MUTATION_CREATE_POST);
 
   const onCreatePost = async (ICreatePost) => {
-    console.log('ICreatePost', ICreatePost);
     await createPost({
       variables: {
         data: ICreatePost,
@@ -67,23 +64,6 @@ export default function CreatePost({ open, setOpen }) {
     setImageDisabled(false);
     setVideoDisabled(false);
   };
-  // const [createPost, { loading, data, error }] = useMutation(
-  //   MUTATION_CREATE_FILE_VIDEO
-  // );
-  // const onCreatePost = async (ISaveImage) => {
-  //   console.log("ICreatePost", ISaveImage);
-  //   const createimage = await createPost({
-  //     variables: {
-  //       data: ISaveImage,
-  //     },
-  //     refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
-  //   });
-  //   console.log("createimage", createimage);
-  //   setScrollText("");
-  //   setScrollImages([]);
-  //   setScrollVideo(undefined);
-  //   setCreatePostErr(false);
-  // };
 
   useEffect(() => {
     if (data?.Posts?.create) {
@@ -227,23 +207,40 @@ export default function CreatePost({ open, setOpen }) {
                     cancelButtonText={'cancel'}
                     submitButtonText={'submit'}
                     maxFileSize={5000000}
-                    open={openImage}
                     filesLimit='4'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    previewGridProps={{
+                      container: { spacing: 1, direction: 'row' },
+                    }}
+                    open={openImage}
                     onClose={() => setOpenImage(false)}
                     onSave={(files) => {
                       setScrollImages(files);
                       setOpenImage(false);
                       setVideoDisabled(true);
                     }}
-                    showPreviews={true}
                   />
                   <DropzoneDialog
                     acceptedFiles={['video/*']}
                     cancelButtonText={'cancel'}
                     submitButtonText={'submit'}
+                    useChipsForPreview
                     maxFileSize={5000000}
-                    open={openVideo}
                     filesLimit='1'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    // previewGridProps={{
+                    //   container: { spacing: 1, direction: 'row' },
+                    // }}
+                    previewChipProps={{
+                      style: {
+                        marginLeft: 16,
+                      },
+                    }}
+                    open={openVideo}
                     onClose={() => setOpenVideo(false)}
                     onSave={(files) => {
                       console.log(files);
@@ -251,7 +248,6 @@ export default function CreatePost({ open, setOpen }) {
                       setOpenVideo(false);
                       setImageDisabled(true);
                     }}
-                    showPreviews={true}
                   />
 
                   {createPostIcons.map(({ Icon }) => {

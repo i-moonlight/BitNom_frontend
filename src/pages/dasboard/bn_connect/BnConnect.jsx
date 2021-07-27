@@ -16,7 +16,7 @@ import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
 import UserCard from './UserCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -46,20 +46,20 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll setOpen={(open) => setCreateScrollOpen(open)} />
+              <CreateScroll setOpen={open => setCreateScrollOpen(open)} />
               <Grid item align='center'>
                 {loading && (
                   <CircularProgress color='primary' size={60} thickness={6} />
                 )}
               </Grid>
               {latestScrolls.length &&
-                latestScrolls.map((scroll) => (
+                latestScrolls.map(scroll => (
                   <Scroll key={scroll?._id} scroll={scroll} />
                 ))}
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
-                <TrendingPosts />
+                <TrendingPosts posts={null} />
                 <SuggestedPeople />
               </Hidden>
             </Grid>
@@ -68,7 +68,7 @@ export default function BnConnect() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
       />
     </Screen>
   );
