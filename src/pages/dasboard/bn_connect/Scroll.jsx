@@ -41,7 +41,7 @@ import Comment from './Comment';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll: scroll2 }) {
+export default function Scroll({ scroll: scroll2, setSharedPost, setOpen }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
@@ -75,7 +75,7 @@ export default function Scroll({ scroll: scroll2 }) {
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: scroll?._id } },
   });
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -92,7 +92,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -103,7 +103,7 @@ export default function Scroll({ scroll: scroll2 }) {
     });
   };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -111,7 +111,7 @@ export default function Scroll({ scroll: scroll2 }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -171,7 +171,7 @@ export default function Scroll({ scroll: scroll2 }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -226,6 +226,10 @@ export default function Scroll({ scroll: scroll2 }) {
             color='default'
             textCase
             variant='text'
+            onClick={() => {
+              setOpen(scroll);
+              setSharedPost(scroll);
+            }}
             startIcon={<ShareRounded />}
           >
             Share
@@ -254,7 +258,7 @@ export default function Scroll({ scroll: scroll2 }) {
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -295,7 +299,7 @@ export default function Scroll({ scroll: scroll2 }) {
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={files => {
+            onSave={(files) => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -305,8 +309,10 @@ export default function Scroll({ scroll: scroll2 }) {
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter(comment => !comment.response_to)
-              .map(comment => <Comment key={comment._id} comment={comment} />)}
+              .filter((comment) => !comment.response_to)
+              .map((comment) => (
+                <Comment key={comment._id} comment={comment} />
+              ))}
         </CardContent>
       </Card>
       <ScrollOptionsPopover

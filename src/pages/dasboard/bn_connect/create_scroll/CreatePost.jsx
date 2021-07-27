@@ -34,7 +34,12 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 
-export default function CreatePost({ open, setOpen }) {
+export default function CreatePost({
+  open,
+  setOpen,
+  sharedPost,
+  setSharedPost,
+}) {
   const [active, setActive] = useState(4);
   const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
@@ -60,6 +65,7 @@ export default function CreatePost({ open, setOpen }) {
     setScrollText('');
     setScrollImages([]);
     setScrollVideo(null);
+    setSharedPost(null);
     setCreatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
@@ -151,7 +157,6 @@ export default function CreatePost({ open, setOpen }) {
                 error={createPostErr && true}
                 errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}
-                rowsMax={10}
                 id='content-field'
                 placeholder="What's happening"
                 onChange={(e) =>
