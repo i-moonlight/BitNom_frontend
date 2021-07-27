@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const MUTATION_CREATE_FILE_VIDEO = gql`
   mutation ($data: ISaveVideo!) {
@@ -87,6 +87,7 @@ export const MUTATION_CREATE_COMMENT = gql`
           type
         }
         content
+        replies
         image
         scroll
         response_to {
@@ -227,6 +228,7 @@ export const QUERY_GET_COMMENTS = gql`
           reputation
           image
         }
+        replies
         creation_date
         image
         reactions {

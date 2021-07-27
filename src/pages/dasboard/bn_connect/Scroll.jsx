@@ -43,7 +43,13 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
   const [openImage, setOpenImage] = useState(false);
-  const [createCommentErr, setCreateCommentErr] = useState(null);
+  const [openReplies, setOpenReplies] = useState(false);
+  const [responseTo, setResponseTo] = useState('');
+  const [reply, setReply] = useState('');
+  const [reply_image, setReplyImage] = useState(null);
+  const [openReplyImage, setOpenReplyImage] = useState(false);
+  const [replyErr, setReplyErr] = useState(false);
+  const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -84,6 +90,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
       ],
     });
     setCommentText('');
+    setReply('');
     setCommentImage(null);
     setCreateCommentErr(false);
   };
@@ -96,6 +103,16 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
       content: comment_text,
       scroll: scroll?._id,
       image: comment_image,
+    });
+  };
+  const handleCreateReply = (e) => {
+    e.preventDefault();
+    if (reply.trim() == '' && !reply_image) return setReplyErr(true);
+    onCreateComment({
+      content: reply,
+      scroll: scroll?._id,
+      image: comment_image,
+      response_to: responseTo,
     });
   };
 
@@ -307,8 +324,54 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
             commentsData?.Comments?.get
               .filter((comment) => !comment.response_to)
               .map((comment) => (
-                <Comment key={comment._id} comment={comment} />
+                <Comment
+                  key={comment._id}
+                  setResponseTo={setResponseTo}
+                  setOpenReplies={setOpenReplies}
+                  comment={comment}
+                />
               ))}
+          {openReplies && (
+            <div className='center-horizontal'>
+              <Avatar src={scroll?.author?.image} className='mx-2'>
+                <PersonRounded />
+              </Avatar>
+              <TextField
+                error={replyErr}
+                errorText={replyErr && 'The reply cannot be empty'}
+                rows={5}
+                rowsMax={10}
+                id='reply-field'
+                placeholder='Reply'
+                onChange={(e) =>
+                  setReply(
+                    reply?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value
+                  )
+                }
+                adornment={
+                  <IconButton
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    size='small'
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                }
+                adornmentType='end'
+                value={reply}
+              />
+              <IconButton
+                className='mx-3'
+                onClick={handleCreateReply}
+                // size='small'
+              >
+                <Send />
+              </IconButton>
+            </div>
+          )}
         </CardContent>
       </Card>
       <ScrollOptionsPopover
