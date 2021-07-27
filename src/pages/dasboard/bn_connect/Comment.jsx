@@ -3,9 +3,9 @@ import {
   Avatar,
   Card,
   CardContent,
+  Grid,
   IconButton,
   Typography,
-  Grid,
 } from '@material-ui/core';
 import { MoreHorizRounded, PersonRounded } from '@material-ui/icons';
 import moment from 'moment';
@@ -18,10 +18,10 @@ export default function Comment({ comment, style }) {
     data: commentsData,
     error: commentsError,
   } = useQuery(QUERY_GET_COMMENTS, {
-    variables: { scroll_id: comment.scroll },
+    variables: { data: { scroll_id: comment.scroll } },
   });
 
-  console.log('cmtdt: ', commentsData);
+  //   console.log('cmtdt: ', commentsData);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function Comment({ comment, style }) {
         <Avatar src={comment?.author?.image} className='mx-2'>
           <PersonRounded />
         </Avatar>
-        <div className='mb-2 flex-1'>
+        <div className='mb-3 flex-1'>
           <Card variant='outlined'>
             <CardContent>
               <div className='center-horizontal space-between w-100'>
@@ -42,10 +42,9 @@ export default function Comment({ comment, style }) {
                 </IconButton>
               </div>
               <Typography>{comment?.content}</Typography>
-              <br />
-              <Grid container spacing={2} className='mb-2'>
-                {comment?.image.length > 0 && (
-                  <Grid className='mt-3' key={comment?.image} item xs={12}>
+              {comment?.image.length > 0 && (
+                <Grid container spacing={2}>
+                  <Grid className='mt-2' key={comment?.image} item xs={12}>
                     <div
                       style={{
                         height: 200,
@@ -60,19 +59,21 @@ export default function Comment({ comment, style }) {
                       }}
                     />
                   </Grid>
-                )}
-              </Grid>
+                </Grid>
+              )}
             </CardContent>
           </Card>
-          <Typography>Like 12 | Reply . 5 Replies</Typography>
+          {/* <Typography className='mt-1'>
+            Like {comment?.reactions?.likes} | Reply . 0 Replies
+          </Typography> */}
         </div>
       </div>
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
+            commentInner => commentInner?.response_to?._id === comment?._id
           )
-          .map((commentInner) => (
+          .map(commentInner => (
             <Comment
               style={{
                 marginLeft: 30,

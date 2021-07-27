@@ -11,7 +11,7 @@ import {
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
 
-export default function TrendingPosts() {
+export default function TrendingPosts({ posts }) {
   return (
     <Paper
       style={{
@@ -24,21 +24,22 @@ export default function TrendingPosts() {
         variant='outlined'
       >
         <Typography style={{ marginLeft: 8 }} variant='body1'>
-          Trending Post
+          Trending Posts
         </Typography>
-        {[1, 2, 3, 4, 5].map((item) => (
-          <ListItem key={item} divider>
-            <ListItemAvatar>
-              <Avatar variant='square'>
-                <MessageOutlined />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary='What is crypto currency?'
-              secondary='12.1K Likes . 120 Comments'
-            />
-          </ListItem>
-        ))}
+        {posts &&
+          posts.map(post => (
+            <ListItem key={post?._id} divider>
+              <ListItemAvatar>
+                <Avatar variant='square'>
+                  <MessageOutlined />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary='What is crypto currency?'
+                secondary='12.1K Likes . 120 Comments'
+              />
+            </ListItem>
+          ))}
       </List>
     </Paper>
   );
