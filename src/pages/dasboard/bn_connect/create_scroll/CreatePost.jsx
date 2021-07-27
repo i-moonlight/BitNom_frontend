@@ -13,7 +13,7 @@ import {
   useTheme,
   Icon,
   IconButton,
-} from "@material-ui/core";
+} from '@material-ui/core';
 import {
   ChevronRight,
   CloseRounded,
@@ -21,27 +21,29 @@ import {
   VideocamRounded,
   Person,
   Public,
-} from "@material-ui/icons";
-import { DropzoneDialog } from "material-ui-dropzone";
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useMutation } from "@apollo/client";
+} from '@material-ui/icons';
+import { DropzoneDialog } from 'material-ui-dropzone';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useMutation } from '@apollo/client';
 import {
   MUTATION_CREATE_POST,
   MUTATION_CREATE_FILE_IMAGE,
   MUTATION_CREATE_FILE_VIDEO,
   QUERY_LOAD_SCROLLS,
-} from "../../utilities/queries";
-import Button from "../../../../components/Button";
-import TextField from "../../../../components/TextField";
-import { createPostIcons } from "../../../../store/local/dummy";
+} from '../../utilities/queries';
+import Button from '../../../../components/Button';
+import TextField from '../../../../components/TextField';
+import { createPostIcons } from '../../../../store/local/dummy';
 
 export default function CreatePost({ open, setOpen }) {
   const [active, setActive] = useState(4);
   const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
-  const [scroll_text, setScrollText] = useState("");
+  const [videoDisabled, setVideoDisabled] = useState(false);
+  const [imageDisabled, setImageDisabled] = useState(false);
+  const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
@@ -51,18 +53,19 @@ export default function CreatePost({ open, setOpen }) {
     useMutation(MUTATION_CREATE_POST);
 
   const onCreatePost = async (ICreatePost) => {
-    console.log("ICreatePost", ICreatePost);
-    let createPostdata = await createPost({
+    console.log('ICreatePost', ICreatePost);
+    await createPost({
       variables: {
         data: ICreatePost,
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-    console.log("createPostdata", createPostdata);
-    setScrollText("");
+    setScrollText('');
     setScrollImages([]);
-    setScrollVideo(undefined);
+    setScrollVideo(null);
     setCreatePostErr(false);
+    setImageDisabled(false);
+    setVideoDisabled(false);
   };
   // const [createPost, { loading, data, error }] = useMutation(
   //   MUTATION_CREATE_FILE_VIDEO
@@ -84,33 +87,13 @@ export default function CreatePost({ open, setOpen }) {
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      console.log(data);
       setOpen(false);
     }
   }, [data]);
 
   const handleCreatePost = (e) => {
     e.preventDefault();
-    if (scroll_text.trim() == "") return setCreatePostErr(true);
-    console.log("scroll_video", scroll_video);
-    console.log("scroll_images", scroll_images);
-    // let image = scroll_images[0];
-
-    // let data = {
-    //   mime_type: scroll_video.type,
-    //   video: scroll_video,
-    //   width: "50",
-    //   height: "50",
-    //   filename: scroll_video.name,
-    //   thumb: null,
-    // };
-    // let data = {
-    //   mime_type: image.type,
-    //   image: image,
-    //   width: "50",
-    //   height: "50",
-    // };
-    // onCreatePost(data);
+    if (scroll_text.trim() == '') return setCreatePostErr(true);
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
@@ -121,29 +104,38 @@ export default function CreatePost({ open, setOpen }) {
   return (
     <Modal
       style={{
-        outline: "none",
-        "&:focus-visible": {
-          outline: "none",
+        outline: 'none',
+        '&:focus-visible': {
+          outline: 'none',
         },
       }}
-      className="center-horizontal center-vertical w-100"
+      className='center-horizontal center-vertical w-100'
       open={open}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className="space-between mx-3 my-2">
+            <div className='space-between mx-3 my-2'>
               <Typography></Typography>
-              <Typography variant="h6">Create Post</Typography>
-              <IconButton size="small">
-                <CloseRounded onClick={() => setOpen(!open)} />
+              <Typography variant='h6'>Create Post</Typography>
+              <IconButton size='small'>
+                <CloseRounded
+                  onClick={() => {
+                    setOpen(!open);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                    setCreatePostErr(false);
+                    setImageDisabled(false);
+                    setVideoDisabled(false);
+                  }}
+                />
               </IconButton>
             </div>
 
             <Divider />
             <CardContent>
-              <ListItem className="p-0">
+              <ListItem className='p-0'>
                 <ListItemAvatar>
                   <Avatar src={user?.photo}>
                     <Person />
@@ -156,14 +148,14 @@ export default function CreatePost({ open, setOpen }) {
                       textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: "0px 10px",
-                        textTransform: "none",
+                        padding: '0px 10px',
+                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
                         <ChevronRight
                           style={{
-                            transform: "rotateZ(90deg)",
+                            transform: 'rotateZ(90deg)',
                           }}
                         />
                       }
@@ -177,10 +169,10 @@ export default function CreatePost({ open, setOpen }) {
                 fullWidth
                 multiline
                 error={createPostErr && true}
-                errorText={createPostErr && "The post content cannot be empty"}
+                errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}
                 rowsMax={10}
-                id="content-field"
+                id='content-field'
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -203,13 +195,14 @@ export default function CreatePost({ open, setOpen }) {
                 <Typography>Add Hashtags</Typography>
               </Button> */}
               {/* <Divider /> */}
-              <div className="space-between mt-1">
-                <div className="center-horizontal">
+              <div className='space-between mt-1'>
+                <div className='center-horizontal'>
                   <IconButton
                     onClick={() => {
                       setOpenImage(true);
                     }}
-                    size="small"
+                    disabled={imageDisabled}
+                    size='small'
                     style={{
                       marginRight: 10,
                     }}
@@ -220,7 +213,8 @@ export default function CreatePost({ open, setOpen }) {
                     onClick={() => {
                       setOpenVideo(true);
                     }}
-                    size="small"
+                    disabled={videoDisabled}
+                    size='small'
                     style={{
                       marginRight: 10,
                     }}
@@ -229,31 +223,33 @@ export default function CreatePost({ open, setOpen }) {
                   </IconButton>
 
                   <DropzoneDialog
-                    acceptedFiles={["image/*"]}
-                    cancelButtonText={"cancel"}
-                    submitButtonText={"submit"}
+                    acceptedFiles={['image/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
                     maxFileSize={5000000}
                     open={openImage}
-                    filesLimit="4"
+                    filesLimit='4'
                     onClose={() => setOpenImage(false)}
                     onSave={(files) => {
                       setScrollImages(files);
                       setOpenImage(false);
+                      setVideoDisabled(true);
                     }}
                     showPreviews={true}
                   />
                   <DropzoneDialog
-                    acceptedFiles={["video/*"]}
-                    cancelButtonText={"cancel"}
-                    submitButtonText={"submit"}
+                    acceptedFiles={['video/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
                     maxFileSize={5000000}
                     open={openVideo}
-                    filesLimit="1"
+                    filesLimit='1'
                     onClose={() => setOpenVideo(false)}
                     onSave={(files) => {
                       console.log(files);
                       setScrollVideo(files[0]);
                       setOpenVideo(false);
+                      setImageDisabled(true);
                     }}
                     showPreviews={true}
                   />
@@ -262,7 +258,7 @@ export default function CreatePost({ open, setOpen }) {
                     return (
                       <IconButton
                         key={`${Math.random() * 1000}`}
-                        size="small"
+                        size='small'
                         style={{
                           marginRight: 10,
                         }}
@@ -274,7 +270,7 @@ export default function CreatePost({ open, setOpen }) {
                 </div>
                 {!loading && <Button onClick={handleCreatePost}>Post</Button>}
                 {loading && (
-                  <Button size="small" style={{ margin: "0" }}>
+                  <Button size='small' style={{ margin: '0' }}>
                     <CircularProgress size={24} thickness={4} />
                   </Button>
                 )}

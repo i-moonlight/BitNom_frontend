@@ -302,7 +302,7 @@ export default function Scroll({ scroll: scroll2 }) {
         </CardContent>
       </Card>
       <ScrollOptionsPopover
-        scrollId={scroll?._id}
+        scroll={scroll}
         scrollOptionId={scrollOptionId}
         scrollOptionAnchorEl={scrollOptionAnchorEl}
         isScrollOptionOpen={isScrollOptionOpen}
