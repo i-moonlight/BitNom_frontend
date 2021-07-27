@@ -37,11 +37,13 @@ export default function CreatePost({ open, setOpen }) {
   const [createPostErr, setCreatePostErr] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
+  const [videoDisabled, setVideoDisabled] = useState(false);
+  const [imageDisabled, setImageDisabled] = useState(false);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const [
     createPost,
@@ -52,67 +54,30 @@ export default function CreatePost({ open, setOpen }) {
     },
   ] = useMutation(MUTATION_CREATE_POST);
 
-  const onCreatePost = async ICreatePost => {
-    console.log('ICreatePost', ICreatePost);
-    let createPostdata = await createPost({
+  const onCreatePost = async (ICreatePost) => {
+    await createPost({
       variables: {
         data: ICreatePost,
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-    console.log('createPostdata', createPostdata);
     setScrollText('');
     setScrollImages([]);
-    setScrollVideo(undefined);
+    setScrollVideo(null);
     setCreatePostErr(false);
+    setImageDisabled(false);
+    setVideoDisabled(false);
   };
-  // const [createPost, { loading, data, error }] = useMutation(
-  //   MUTATION_CREATE_FILE_VIDEO
-  // );
-  // const onCreatePost = async (ISaveImage) => {
-  //   console.log("ICreatePost", ISaveImage);
-  //   const createimage = await createPost({
-  //     variables: {
-  //       data: ISaveImage,
-  //     },
-  //     refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
-  //   });
-  //   console.log("createimage", createimage);
-  //   setScrollText("");
-  //   setScrollImages([]);
-  //   setScrollVideo(undefined);
-  //   setCreatePostErr(false);
-  // };
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      console.log(data);
       setOpen(false);
     }
   }, [data]);
 
-  const handleCreatePost = e => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    console.log('scroll_video', scroll_video);
-    console.log('scroll_images', scroll_images);
-    // let image = scroll_images[0];
-
-    // let data = {
-    //   mime_type: scroll_video.type,
-    //   video: scroll_video,
-    //   width: "50",
-    //   height: "50",
-    //   filename: scroll_video.name,
-    //   thumb: null,
-    // };
-    // let data = {
-    //   mime_type: image.type,
-    //   image: image,
-    //   width: "50",
-    //   height: "50",
-    // };
-    // onCreatePost(data);
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
@@ -139,7 +104,16 @@ export default function CreatePost({ open, setOpen }) {
               <Typography></Typography>
               <Typography variant='h6'>Create Post</Typography>
               <IconButton size='small'>
-                <CloseRounded onClick={() => setOpen(!open)} />
+                <CloseRounded
+                  onClick={() => {
+                    setOpen(!open);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                    setCreatePostErr(false);
+                    setImageDisabled(false);
+                    setVideoDisabled(false);
+                  }}
+                />
               </IconButton>
             </div>
 
@@ -184,7 +158,7 @@ export default function CreatePost({ open, setOpen }) {
                 rowsMax={10}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -211,6 +185,7 @@ export default function CreatePost({ open, setOpen }) {
                     onClick={() => {
                       setOpenImage(true);
                     }}
+                    disabled={imageDisabled}
                     size='small'
                     style={{
                       marginRight: 10,
@@ -222,6 +197,7 @@ export default function CreatePost({ open, setOpen }) {
                     onClick={() => {
                       setOpenVideo(true);
                     }}
+                    disabled={videoDisabled}
                     size='small'
                     style={{
                       marginRight: 10,
@@ -244,9 +220,10 @@ export default function CreatePost({ open, setOpen }) {
                     }}
                     open={openImage}
                     onClose={() => setOpenImage(false)}
-                    onSave={files => {
+                    onSave={(files) => {
                       setScrollImages(files);
                       setOpenImage(false);
+                      setVideoDisabled(true);
                     }}
                   />
                   <DropzoneDialog
@@ -266,10 +243,11 @@ export default function CreatePost({ open, setOpen }) {
                     }}
                     open={openVideo}
                     onClose={() => setOpenVideo(false)}
-                    onSave={files => {
+                    onSave={(files) => {
                       console.log(files);
                       setScrollVideo(files[0]);
                       setOpenVideo(false);
+                      setImageDisabled(true);
                     }}
                   />
 

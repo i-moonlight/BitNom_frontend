@@ -57,12 +57,10 @@ const authLink = from([
 
 const uploadLink = createUploadLink({
   uri: 'http://localhost:3000/bn-social/graphql',
-  // uri: "http://localhost:3000/files/graphql",
   credentials: 'include',
   headers: {
     'keep-alive': 'true',
   },
-  //useGETForQueries: 'true',
 });
 
 const uploadApolloClient = new ApolloClient({
