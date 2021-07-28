@@ -29,7 +29,7 @@ export default function Comment({
     // loading: commentsLoading,
     // error: commentsError,
   } = useQuery(QUERY_GET_COMMENTS, {
-    variables: { data: { scroll_id: comment.scroll } },
+    variables: { data: { scroll_id: comment?.scroll } },
   });
   const handleCreateReaction = (reaction) => {
     createReaction({
@@ -40,7 +40,12 @@ export default function Comment({
           reaction: reaction,
         },
       },
-      refetchQueries: [{ query: QUERY_GET_COMMENTS }],
+      refetchQueries: [
+        {
+          query: QUERY_GET_COMMENTS,
+          variables: { data: { scroll_id: comment?.scroll } },
+        },
+      ],
     });
   };
 
