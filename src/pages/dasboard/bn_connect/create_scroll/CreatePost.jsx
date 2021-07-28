@@ -32,6 +32,7 @@ import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
+import ScrollPreview from './ScrollPreview';
 
 export default function CreatePost({
   open,
@@ -48,7 +49,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [
     createPost,
@@ -59,7 +60,7 @@ export default function CreatePost({
     },
   ] = useMutation(MUTATION_CREATE_POST);
 
-  const onCreatePost = async (ICreatePost) => {
+  const onCreatePost = async ICreatePost => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -81,7 +82,7 @@ export default function CreatePost({
     }
   }, [data]);
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     onCreatePost({
@@ -155,6 +156,7 @@ export default function CreatePost({
                   }
                 />
               </ListItem>
+              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               <TextField
                 fullWidth
                 multiline
@@ -163,7 +165,7 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -225,7 +227,7 @@ export default function CreatePost({
                     }}
                     open={openImage}
                     onClose={() => setOpenImage(false)}
-                    onSave={(files) => {
+                    onSave={files => {
                       setScrollImages(files);
                       setOpenImage(false);
                       setVideoDisabled(true);
@@ -248,7 +250,7 @@ export default function CreatePost({
                     }}
                     open={openVideo}
                     onClose={() => setOpenVideo(false)}
-                    onSave={(files) => {
+                    onSave={files => {
                       console.log(files);
                       setScrollVideo(files[0]);
                       setOpenVideo(false);
