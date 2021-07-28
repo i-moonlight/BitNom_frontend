@@ -180,7 +180,7 @@ export default function Scroll({
               );
             })}
           </Typography>
-          {scroll?.shared_resource && (
+          {scroll?.shared_resource?._id && (
             <ScrollPreview scroll={scroll?.shared_resource?._id} />
           )}
           <Grid container spacing={2} className='mb-2'>
@@ -248,18 +248,20 @@ export default function Scroll({
           >
             Comment
           </Button>
-          <Button
-            color='default'
-            textCase
-            variant='text'
-            onClick={() => {
-              setOpen(scroll);
-              setSharedPost(scroll);
-            }}
-            startIcon={<ShareRounded />}
-          >
-            Share
-          </Button>
+          {scroll?.shared_resource?.id && (
+            <Button
+              color='default'
+              textCase
+              variant='text'
+              onClick={() => {
+                setOpen(scroll);
+                setSharedPost(scroll);
+              }}
+              startIcon={<ShareRounded />}
+            >
+              Share
+            </Button>
+          )}
         </CardActions>
         <Divider />
         <CardContent>
