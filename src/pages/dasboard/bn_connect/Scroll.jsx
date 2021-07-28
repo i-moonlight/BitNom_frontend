@@ -67,7 +67,7 @@ export default function Scroll({
     },
   ] = useMutation(MUTATION_CREATE_COMMENT);
 
-  console.log(createCommentData);
+  //console.log(scroll?.shared_resource);
 
   const {
     data: commentsData,
@@ -77,7 +77,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -94,7 +94,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -105,7 +105,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -113,7 +113,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -189,7 +189,7 @@ export default function Scroll({
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -280,7 +280,7 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -321,7 +321,7 @@ export default function Scroll({
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={files => {
+            onSave={(files) => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -331,8 +331,8 @@ export default function Scroll({
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter(comment => !comment.response_to)
-              .map(comment => (
+              .filter((comment) => !comment.response_to)
+              .map((comment) => (
                 <Comment
                   scroll={scroll}
                   key={comment._id}

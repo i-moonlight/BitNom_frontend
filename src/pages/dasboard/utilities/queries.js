@@ -154,6 +154,37 @@ export const QUERY_LOAD_SCROLLS = gql`
         comments
         bookmarks
         createdAt
+        shared_resource {
+          _id {
+            _id
+            images
+            video
+            author {
+              _id
+              image
+              displayName
+              reputation
+              type
+            }
+            reactions {
+              likes
+              dislikes
+              loves
+              celebrations
+            }
+            content
+            content_entities {
+              type
+              offset
+              length
+              resource {
+                _id
+                type
+              }
+              url
+            }
+          }
+        }
         is_flag
         reactions {
           likes
@@ -193,6 +224,9 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
         }
         comments
         bookmarks
+        shared_resource {
+          _id
+        }
         createdAt
         is_flag
         reactions {
