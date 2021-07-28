@@ -2,6 +2,10 @@
   font-family: 'Nunito', sans-serif !important;
 }
 
+*:focus-visible {
+  outline: none !important;
+}
+
 html,
 body {
   width: 100%;

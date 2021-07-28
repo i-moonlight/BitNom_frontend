@@ -29,6 +29,8 @@ export default function Comment({
   onCreateComment,
   comment_image,
   scroll,
+  setImagePreviewURL,
+  setImagePreviewOpen,
 }) {
   const [openReplies, setOpenReplies] = useState(false);
   const [reply, setReply] = useState('');
@@ -101,7 +103,19 @@ export default function Comment({
 
                 {comment?.image.length > 0 && (
                   <Grid container spacing={2}>
-                    <Grid className='mt-2' key={comment?.image} item xs={12}>
+                    <Grid
+                      className='mt-2'
+                      key={comment?.image}
+                      item
+                      xs={12}
+                      onClick={() => {
+                        setImagePreviewURL &&
+                          setImagePreviewURL(
+                            'http://localhost:3000' + comment.image
+                          );
+                        setImagePreviewOpen(true);
+                      }}
+                    >
                       <div
                         style={{
                           height: 200,
@@ -208,6 +222,8 @@ export default function Comment({
               }}
               key={commentInner._id}
               comment={commentInner}
+              setImagePreviewURL={setImagePreviewURL}
+              setImagePreviewOpen={setImagePreviewOpen}
             />
           ))}
     </>

@@ -9,7 +9,6 @@ import {
   Divider,
   Grid,
   IconButton,
-  Link,
   Typography,
 } from '@material-ui/core';
 import {
@@ -25,6 +24,7 @@ import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_COMMENT,
@@ -38,7 +38,13 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll, setSharedPost, setOpen }) {
+export default function Scroll({
+  scroll,
+  setSharedPost,
+  setOpen,
+  setImagePreviewOpen,
+  setImagePreviewURL,
+}) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
@@ -46,7 +52,6 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
   const [openImage, setOpenImage] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
-
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
   // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
@@ -190,6 +195,10 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
                     key={imageURL}
                     item
                     xs={scroll?.images.length > 1 ? 6 : 12}
+                    onClick={() => {
+                      setImagePreviewURL('http://localhost:3000' + imageURL);
+                      setImagePreviewOpen(true);
+                    }}
                   >
                     <div
                       style={{
@@ -330,6 +339,8 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
                   comment={comment}
                   setOpenImage={setOpenImage}
                   onCreateComment={onCreateComment}
+                  setImagePreviewURL={setImagePreviewURL}
+                  setImagePreviewOpen={setImagePreviewOpen}
                   comment_image={comment_image}
                 />
               ))}
