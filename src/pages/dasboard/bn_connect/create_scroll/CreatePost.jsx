@@ -32,7 +32,7 @@ import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import ScrollPreview from './ScrollPreview';
+import ScrollPreview from '../ScrollPreview';
 
 export default function CreatePost({
   open,

@@ -9,6 +9,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  Link,
   Typography,
 } from '@material-ui/core';
 import {
@@ -48,7 +49,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  // const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
+  // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
   //   variables: { _id: scroll?._id },
   // });
 
@@ -156,6 +157,22 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />
+            {scroll?.content_entities?.map(entity => {
+              let colortext = scroll?.content?.slice(
+                entity?.offset,
+                entity?.offset + entity?.length
+              );
+
+              return (
+                <a
+                  href={entity?.url}
+                  className='mx-1 mt-1'
+                  key={entity?.offset}
+                >
+                  {colortext}
+                </a>
+              );
+            })}
             <Grid container spacing={2} className='mb-2'>
               {scroll?.video && (
                 <Grid item xs={12}>

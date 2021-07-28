@@ -135,10 +135,12 @@ export const MUTATION_DELETE_COMMENT = gql`
   }
 `;
 
+// { limit: 220 }
+
 export const QUERY_LOAD_SCROLLS = gql`
-  query GetAllScrolls {
+  query ($data: IGetPosts) {
     Posts {
-      get(data: { limit: 220 }) {
+      get(data: $data) {
         _id
         images
         video
@@ -175,7 +177,7 @@ export const QUERY_LOAD_SCROLLS = gql`
   }
 `;
 
-export const GET_SCROLL_BY_ID = gql`
+export const QUERY_GET_SCROLL_BY_ID = gql`
   query GetByID($_id: ID!) {
     Posts {
       getById(_id: $_id) {

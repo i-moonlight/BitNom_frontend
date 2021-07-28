@@ -11,8 +11,9 @@ body {
 }
 
 a {
-  text-decoration: none;
-  color: #006097;
+  text-decoration: none !important;
+  color: #006097 !important;
+  cursor: pointer !important;
 }
 
 small {
