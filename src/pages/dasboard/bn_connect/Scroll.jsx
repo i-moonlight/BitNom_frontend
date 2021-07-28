@@ -35,6 +35,7 @@ import {
 import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+import ScrollPreview from './ScrollPreview';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -77,7 +78,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = (ICreateComment) => {
+  const onCreateComment = ICreateComment => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -94,7 +95,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = (e) => {
+  const handleCreateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -105,7 +106,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -113,7 +114,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -178,51 +179,54 @@ export default function Scroll({
                 </a>
               );
             })}
-            <Grid container spacing={2} className='mb-2'>
-              {scroll?.video && (
-                <Grid item xs={12}>
-                  <CardMedia
-                    component='video'
-                    src={`http://localhost:3000${scroll?.video}`}
-                    controls
+          </Typography>
+          {scroll?.shared_resource && (
+            <ScrollPreview scroll={scroll?.shared_resource?._id} />
+          )}
+          <Grid container spacing={2} className='mb-2'>
+            {scroll?.video && (
+              <Grid item xs={12}>
+                <CardMedia
+                  component='video'
+                  src={`http://localhost:3000${scroll?.video}`}
+                  controls
+                />
+              </Grid>
+            )}
+            {scroll?.images.length > 0 &&
+              scroll?.images?.map(imageURL => (
+                <Grid
+                  className='mt-3'
+                  key={imageURL}
+                  item
+                  xs={scroll?.images.length > 1 ? 6 : 12}
+                  onClick={() => {
+                    setImagePreviewURL('http://localhost:3000' + imageURL);
+                    setImagePreviewOpen(true);
+                  }}
+                >
+                  <div
+                    style={{
+                      height: 200,
+                      borderRadius: 8,
+                      width: '100%',
+                      backgroundImage:
+                        'url(http://localhost:3000' + imageURL + ')',
+                      backgroundSize: 'cover',
+                      backgroundColor: 'rgba(0,0,0,0.2)',
+                      backgroundBlendMode: 'soft-light',
+                      cursor: 'pointer',
+                    }}
                   />
                 </Grid>
-              )}
-              {scroll?.images.length > 0 &&
-                scroll?.images?.map((imageURL) => (
-                  <Grid
-                    className='mt-3'
-                    key={imageURL}
-                    item
-                    xs={scroll?.images.length > 1 ? 6 : 12}
-                    onClick={() => {
-                      setImagePreviewURL('http://localhost:3000' + imageURL);
-                      setImagePreviewOpen(true);
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: 200,
-                        borderRadius: 8,
-                        width: '100%',
-                        backgroundImage:
-                          'url(http://localhost:3000' + imageURL + ')',
-                        backgroundSize: 'cover',
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        backgroundBlendMode: 'soft-light',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
-            <br />
-            {`${scroll?.reactions?.likes} ${
-              scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
-            } . ${scroll?.comments} ${
-              scroll?.comments === 1 ? 'Comment' : 'Comments'
-            }`}
-          </Typography>
+              ))}
+          </Grid>
+          <br />
+          {`${scroll?.reactions?.likes} ${
+            scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
+          } . ${scroll?.comments} ${
+            scroll?.comments === 1 ? 'Comment' : 'Comments'
+          }`}
         </CardContent>
         <Divider />
         <CardActions className='space-around'>
@@ -280,7 +284,7 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -321,7 +325,7 @@ export default function Scroll({
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={(files) => {
+            onSave={files => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -331,8 +335,8 @@ export default function Scroll({
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter((comment) => !comment.response_to)
-              .map((comment) => (
+              .filter(comment => !comment.response_to)
+              .map(comment => (
                 <Comment
                   scroll={scroll}
                   key={comment._id}

@@ -166,6 +166,7 @@ export const QUERY_LOAD_SCROLLS = gql`
               reputation
               type
             }
+            comments
             reactions {
               likes
               dislikes
