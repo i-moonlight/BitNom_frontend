@@ -248,7 +248,7 @@ export default function Scroll({
           >
             Comment
           </Button>
-          {scroll?.shared_resource?.id && (
+          {!scroll?.shared_resource?._id && (
             <Button
               color='default'
               textCase
