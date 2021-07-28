@@ -37,13 +37,19 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll }) {
+export default function Scroll({ scroll, setSharedPost, setOpen }) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
   const [openImage, setOpenImage] = useState(false);
-  const [createCommentErr, setCreateCommentErr] = useState(null);
+  const [openReplies, setOpenReplies] = useState(false);
+  const [responseTo, setResponseTo] = useState('');
+  const [reply, setReply] = useState('');
+  const [reply_image, setReplyImage] = useState(null);
+  const [openReplyImage, setOpenReplyImage] = useState(false);
+  const [replyErr, setReplyErr] = useState(false);
+  const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -71,7 +77,7 @@ export default function Scroll({ scroll }) {
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -84,11 +90,12 @@ export default function Scroll({ scroll }) {
       ],
     });
     setCommentText('');
+    setReply('');
     setCommentImage(null);
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -98,8 +105,18 @@ export default function Scroll({ scroll }) {
       image: comment_image,
     });
   };
+  const handleCreateReply = (e) => {
+    e.preventDefault();
+    if (reply.trim() == '' && !reply_image) return setReplyErr(true);
+    onCreateComment({
+      content: reply,
+      scroll: scroll?._id,
+      image: comment_image,
+      response_to: responseTo,
+    });
+  };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -107,7 +124,7 @@ export default function Scroll({ scroll }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -167,7 +184,7 @@ export default function Scroll({ scroll }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}
@@ -222,6 +239,10 @@ export default function Scroll({ scroll }) {
             color='default'
             textCase
             variant='text'
+            onClick={() => {
+              setOpen(scroll);
+              setSharedPost(scroll);
+            }}
             startIcon={<ShareRounded />}
           >
             Share
@@ -250,7 +271,7 @@ export default function Scroll({ scroll }) {
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -291,7 +312,7 @@ export default function Scroll({ scroll }) {
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={files => {
+            onSave={(files) => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -301,8 +322,56 @@ export default function Scroll({ scroll }) {
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter(comment => !comment.response_to)
-              .map(comment => <Comment key={comment._id} comment={comment} />)}
+              .filter((comment) => !comment.response_to)
+              .map((comment) => (
+                <Comment
+                  key={comment._id}
+                  setResponseTo={setResponseTo}
+                  setOpenReplies={setOpenReplies}
+                  comment={comment}
+                />
+              ))}
+          {openReplies && (
+            <div className='center-horizontal'>
+              <Avatar src={scroll?.author?.image} className='mx-2'>
+                <PersonRounded />
+              </Avatar>
+              <TextField
+                error={replyErr}
+                errorText={replyErr && 'The reply cannot be empty'}
+                rows={5}
+                rowsMax={10}
+                id='reply-field'
+                placeholder='Reply'
+                onChange={(e) =>
+                  setReply(
+                    reply?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value
+                  )
+                }
+                adornment={
+                  <IconButton
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    size='small'
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                }
+                adornmentType='end'
+                value={reply}
+              />
+              <IconButton
+                className='mx-3'
+                onClick={handleCreateReply}
+                // size='small'
+              >
+                <Send />
+              </IconButton>
+            </div>
+          )}
         </CardContent>
       </Card>
       <ScrollOptionsPopover
