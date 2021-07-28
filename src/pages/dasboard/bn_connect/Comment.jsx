@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -7,22 +7,33 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import { MoreHorizRounded, PersonRounded } from '@material-ui/icons';
-import moment from 'moment';
-import React from 'react';
 import {
-  QUERY_GET_COMMENTS,
-  MUTATION_CREATE_REACTION,
-  QUERY_LOAD_SCROLLS,
-} from '../utilities/queries';
+  ImageRounded,
+  MoreHorizRounded,
+  PersonRounded,
+  Send,
+} from '@material-ui/icons';
+import moment from 'moment';
+import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import TextField from '../../../components/TextField';
+import {
+  MUTATION_CREATE_REACTION,
+  QUERY_GET_COMMENTS,
+} from '../utilities/queries';
 
 export default function Comment({
   comment,
   style,
-  setResponseTo,
-  setOpenReplies,
+  setOpenImage,
+  onCreateComment,
+  comment_image,
+  scroll,
 }) {
+  const [openReplies, setOpenReplies] = useState(false);
+  const [reply, setReply] = useState('');
+  const [responseTo, setResponseTo] = useState('');
+  const [replyErr, setReplyErr] = useState(false);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
   const {
     data: commentsData,
@@ -31,7 +42,8 @@ export default function Comment({
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: comment?.scroll } },
   });
-  const handleCreateReaction = (reaction) => {
+
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -47,6 +59,18 @@ export default function Comment({
         },
       ],
     });
+  };
+
+  const handleCreateReply = e => {
+    e.preventDefault();
+    if (reply.trim() == '') return setReplyErr(true);
+    onCreateComment({
+      content: reply,
+      scroll: scroll._id,
+      image: comment_image,
+      response_to: responseTo,
+    });
+    setReply('');
   };
 
   return (
@@ -129,14 +153,55 @@ export default function Comment({
               </Button>
             )}
           </Typography>
+          {openReplies && (
+            <div className='center-horizontal'>
+              <Avatar src={scroll?.author?.image} className='mx-2'>
+                <PersonRounded />
+              </Avatar>
+              <TextField
+                error={replyErr}
+                errorText={replyErr && 'The reply cannot be empty'}
+                rows={5}
+                rowsMax={10}
+                id='reply-field'
+                placeholder='Reply'
+                onChange={e =>
+                  setReply(
+                    reply?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value
+                  )
+                }
+                adornment={
+                  <IconButton
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    size='small'
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                }
+                adornmentType='end'
+                value={reply}
+              />
+              <IconButton
+                className='mx-3'
+                onClick={handleCreateReply}
+                // size='small'
+              >
+                <Send />
+              </IconButton>
+            </div>
+          )}
         </div>
       </div>
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
+            commentInner => commentInner?.response_to?._id === comment?._id
           )
-          .map((commentInner) => (
+          .map(commentInner => (
             <Comment
               style={{
                 marginLeft: 30,
