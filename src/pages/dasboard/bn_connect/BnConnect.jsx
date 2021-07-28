@@ -59,7 +59,7 @@ export default function BnConnect() {
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
-                <TrendingPosts posts={null} />
+                <TrendingPosts posts={[1, 2, 3]} />
                 <SuggestedPeople />
               </Hidden>
             </Grid>
