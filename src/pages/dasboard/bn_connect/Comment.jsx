@@ -85,7 +85,7 @@ export default function Comment({
           <Card variant='outlined'>
             <CardContent>
               <div className='center-horizontal space-between w-100'>
-                <Typography display='inline'>
+                <Typography variant='body2' display='inline'>
                   {comment?.author?.displayName}{' '}
                   <Typography display='inline' variant='body2'>
                     . @{comment?.author?._id}
@@ -143,7 +143,7 @@ export default function Comment({
               </Typography>
             </CardContent>
           </Card>
-          <Typography>
+          <span>
             <Button
               color='default'
               onClick={() => handleCreateReaction('like')}
@@ -166,7 +166,7 @@ export default function Comment({
                 Reply
               </Button>
             )}
-          </Typography>
+          </span>
           {openReplies && (
             <div className='center-horizontal'>
               <Avatar src={scroll?.author?.image} className='mx-2'>

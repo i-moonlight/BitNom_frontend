@@ -27,7 +27,6 @@ export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
-  const [latestScrolls, setlatestScrolls] = useState([]);
   const [sharedPost, setSharedPost] = useState(null);
 
   const classes = useStyles();
@@ -37,7 +36,6 @@ export default function BnConnect() {
   useEffect(() => {
     console.log(error);
     console.log(loading);
-    if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
   }, [data]);
 
   return (
@@ -57,8 +55,8 @@ export default function BnConnect() {
                   <CircularProgress color='primary' size={60} thickness={6} />
                 )}
               </Grid>
-              {latestScrolls.length &&
-                latestScrolls.map(scroll => (
+              {data?.Posts?.get &&
+                data?.Posts?.get?.map(scroll => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
                     setImagePreviewURL={url => setImagePreviewURL(url)}

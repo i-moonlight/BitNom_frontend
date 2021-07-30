@@ -123,7 +123,9 @@ export default function Scroll({
           reaction: reaction,
         },
       },
-      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+      refetchQueries: [
+        { query: QUERY_LOAD_SCROLLS, variables: { data: { limit: 200 } } },
+      ],
     });
   };
 
@@ -149,7 +151,7 @@ export default function Scroll({
           }
           title={
             <div className='center-horizontal'>
-              <Typography style={{ marginRight: 8 }}>
+              <Typography variant='body2' style={{ marginRight: 8 }}>
                 {scroll?.author?.displayName}
               </Typography>
               <Typography variant='body2' color='textSecondary'>
@@ -222,11 +224,13 @@ export default function Scroll({
               ))}
           </Grid>
           <br />
-          {`${scroll?.reactions?.likes} ${
-            scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
-          } . ${scroll?.comments} ${
-            scroll?.comments === 1 ? 'Comment' : 'Comments'
-          }`}
+          <Typography variant='body2' color='textSecondary'>
+            {`${scroll?.reactions?.likes} ${
+              scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
+            } . ${scroll?.comments} ${
+              scroll?.comments === 1 ? 'Comment' : 'Comments'
+            }`}
+          </Typography>
         </CardContent>
         <Divider />
         <CardActions className='space-around'>
@@ -266,7 +270,7 @@ export default function Scroll({
         <Divider />
         <CardContent>
           {!openComments && scroll?.comments < 1 && (
-            <Typography color='textSecondary'>
+            <Typography variant='body2' color='textSecondary'>
               Be the first to comment
             </Typography>
           )}

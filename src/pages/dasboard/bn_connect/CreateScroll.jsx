@@ -33,7 +33,9 @@ export default function CreateScroll({ setOpen }) {
               backgroundColor: alpha(theme.palette.common.white, 0.15),
             }}
           >
-            <Typography color='textSecondary'>Start a scroll</Typography>
+            <Typography variant='body2' color='textSecondary'>
+              Start a scroll
+            </Typography>
           </Card>
         </CardActionArea>
         <div className='space-between mt-2 mx-1'>
@@ -45,7 +47,7 @@ export default function CreateScroll({ setOpen }) {
                 alt='img'
               />
               <Hidden xsDown>
-                <Typography>Image</Typography>
+                <Typography variant='body2'>Image</Typography>
               </Hidden>
             </div>
           </Button>
@@ -57,7 +59,7 @@ export default function CreateScroll({ setOpen }) {
                 alt='img'
               />
               <Hidden xsDown>
-                <Typography>Video</Typography>
+                <Typography variant='body2'>Video</Typography>
               </Hidden>
             </div>
           </Button>
@@ -69,7 +71,7 @@ export default function CreateScroll({ setOpen }) {
                 alt='img'
               />
               <Hidden xsDown>
-                <Typography>Schedule</Typography>
+                <Typography variant='body2'>Schedule</Typography>
               </Hidden>
             </div>
           </Button>
@@ -81,7 +83,7 @@ export default function CreateScroll({ setOpen }) {
                 alt='img'
               />
               <Hidden xsDown>
-                <Typography>Article</Typography>
+                <Typography variant='body2'>Article</Typography>
               </Hidden>
             </div>
           </Button>

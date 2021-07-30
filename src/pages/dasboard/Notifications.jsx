@@ -122,10 +122,10 @@ function NotificationListCard() {
   return (
     <Card>
       <div className='space-between'>
-        <Typography className='mx-4 my-1' variant='h6'>
-          Notification
+        <Typography className='mx-4 my-1' variant='body1'>
+          Notifications
         </Typography>
-        <Typography className='mx-4 my-1' variant='h6'>
+        <Typography className='mx-4 my-1' variant='body1'>
           Settings
         </Typography>
       </div>
@@ -141,8 +141,10 @@ function NotificationListCard() {
             <ListItemText
               primary={
                 <div className='center-horizontal'>
-                  <Typography className='mx-1'>Andy bo Wu </Typography>
-                  <Typography color='textSecondary'>
+                  <Typography variant='body2' className='mx-1'>
+                    Andy bo Wu{' '}
+                  </Typography>
+                  <Typography variant='body2' color='textSecondary'>
                     sent a friend request
                   </Typography>
                 </div>

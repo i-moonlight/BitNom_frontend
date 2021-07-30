@@ -32,7 +32,10 @@ export default function SuggestedPeople() {
                 <PersonRounded />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary='Andy bo Wu' secondary='@andybowu' />
+            <ListItemText
+              primary={<Typography variant='body2'>Andy Bo Wu</Typography>}
+              secondary='@andybowu'
+            />
             <ListItemIcon>
               {/* <SendRounded /> */}
               <Button size='small' variant='outlined' textCase>
@@ -42,7 +45,7 @@ export default function SuggestedPeople() {
           </ListItem>
         ))}
         <Divider />
-        <Typography className='my-2' color='primary'>
+        <Typography variant='body2' className='my-2' color='primary'>
           Show more
         </Typography>
       </List>

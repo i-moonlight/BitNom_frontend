@@ -21,7 +21,7 @@ export default function LinkCard({ link }) {
       <CardActionArea onClick={() => window.open(url, '_blank')}>
         <CardMedia style={{ height: 140 }} image={image} title={title} />
         <CardContent>
-          <Typography gutterBottom variant='h6'>
+          <Typography gutterBottom variant='body1'>
             {title}
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p'>

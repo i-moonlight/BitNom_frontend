@@ -38,7 +38,7 @@ export default function NotificationsPopover({
         variant='outlined'
       >
         <div className='space-between center-horizontal'>
-          <Typography style={{ marginLeft: 8 }} variant='body1'>
+          <Typography style={{ marginLeft: 8 }} variant='body2'>
             Notifications
           </Typography>
           <IconButton>
@@ -56,8 +56,8 @@ export default function NotificationsPopover({
             <ListItemText
               primary={
                 <div>
-                  <Typography>Andy bo Wu</Typography>
-                  <Typography>sent a friend request</Typography>
+                  <Typography variant='body2'>Andy bo Wu</Typography>
+                  <Typography variant='body2'>sent a friend request</Typography>
                 </div>
               }
               secondary='50 minutes ago'
@@ -82,7 +82,7 @@ export default function NotificationsPopover({
           </ListItem>
         ))}
         <Divider />
-        <Typography className='my-2' color='primary'>
+        <Typography variant='body2' className='my-2' color='primary'>
           Show more
         </Typography>
       </List>
