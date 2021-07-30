@@ -23,6 +23,7 @@ import BnServices from './pages/dasboard/bn_services/BnServices';
 import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/People';
+import Profile from './pages/dasboard/profile/Profile';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -133,6 +134,7 @@ export const AppContainers = () => {
               path='/dashboard/notifications'
             />
             <Route exact component={People} path='/dashboard/people' />
+            <Route exact component={Profile} path='/dashboard/profile' />
           </Switch>
         </ApolloProvider>
       </BrowserRouter>

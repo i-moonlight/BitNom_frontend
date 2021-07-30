@@ -7,11 +7,6 @@ import Routes from './Routes';
 export default function App() {
   const theme = useTheme();
 
-  const bgDark = {
-    paper: '#242526',
-    default: '#171818',
-  };
-
   //Create MUI Theme
   const providerTheme = createTheme({
     palette: {
@@ -22,7 +17,10 @@ export default function App() {
       secondary: {
         main: '#FB5E5E',
       },
-      background: bgDark,
+      background: {
+        paper: '#242526',
+        default: '#171818',
+      },
     },
   });
 
