@@ -1,22 +1,34 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import React from 'react';
-import Routes from './Routes';
-import './css/style.css';
 import './css/bootstrap_utilities.css';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    height: '100%',
-  },
-}));
+import './css/style.css';
+import Routes from './Routes';
 
 export default function App() {
-  const classes = useStyles();
+  const theme = useTheme();
+
+  const bgDark = {
+    paper: '#242526',
+    default: '#171818',
+  };
+
+  //Create MUI Theme
+  const providerTheme = createTheme({
+    palette: {
+      type: 'dark',
+      primary: {
+        main: '#006097',
+      },
+      secondary: {
+        main: '#FB5E5E',
+      },
+      background: bgDark,
+    },
+  });
 
   return (
-    <div className={classes.root}>
+    <ThemeProvider theme={providerTheme}>
       <Routes />
-    </div>
+    </ThemeProvider>
   );
 }

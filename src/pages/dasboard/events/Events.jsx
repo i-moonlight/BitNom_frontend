@@ -10,8 +10,8 @@ import {
 } from '@material-ui/core';
 import { EventRounded, RoomRounded } from '@material-ui/icons';
 import React from 'react';
-import Button from '../../components/Button';
-import Screen from '../../components/Screen';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
 
 const useStyles = makeStyles(theme => ({
   root: {

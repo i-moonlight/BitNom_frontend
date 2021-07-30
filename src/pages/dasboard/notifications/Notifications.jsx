@@ -6,22 +6,14 @@ import {
   Divider,
   Grid,
   Hidden,
-  ListItem,
-  ListItemText,
-  makeStyles,
-  ListItemIcon,
-  ListItemAvatar,
-  Typography,
+  ListItem, ListItemAvatar, ListItemIcon, ListItemText,
+  makeStyles, Typography
 } from '@material-ui/core';
 import {
-  List,
-  PersonRounded,
-  MoreVert,
-  Inbox,
-  Drafts,
+  Drafts, Inbox, List, MoreVert, PersonRounded
 } from '@material-ui/icons';
 import React from 'react';
-import Screen from '../../components/Screen';
+import Screen from '../../../components/Screen';
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -1,4 +1,3 @@
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -44,29 +43,10 @@ const store = createStore(
 //Sync to local storage everytime store changes
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
-//Create MUI Theme
-const theme = createTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      main: '#006097',
-    },
-    secondary: {
-      main: '#FB5E5E',
-    },
-    background: {
-      paper: '#242526',
-      default: '#171818',
-    },
-  },
-});
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -24,7 +24,6 @@ import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_COMMENT,
