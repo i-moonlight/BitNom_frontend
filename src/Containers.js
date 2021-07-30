@@ -6,6 +6,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -19,9 +20,10 @@ import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import BnServices from './pages/dasboard/bn_services/BnServices';
-import Events from './pages/dasboard/Events';
-import Notifications from './pages/dasboard/Notifications';
+import Events from './pages/dasboard/events/Events';
+import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/People';
+import Profile from './pages/dasboard/profile/Profile';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -80,47 +82,65 @@ const usersApolloClient = new ApolloClient({
 //   credentials: 'include',
 // });
 
-export const AppContainers = () => (
-  <BrowserRouter>
-    <ApolloProvider client={usersApolloClient}>
-      <Switch>
-        <Route exact component={RedirectToDash} path='/' />
-        <Route exact component={Login} path='/auth/login' />
-        <Route exact component={Signup} path='/auth/signup' />
-        <Route exact component={UpdateInfo} path='/auth/update_info_register' />
-        <Route
-          exact
-          component={RequireVerification}
-          path='/auth/require_verify'
-        />
-        <Route exact component={VerifyEmail} path='/auth/verify_email' />
-        <Route
-          exact
-          component={ResetPassword}
-          path='/auth/request_reset_link'
-        />
-        <Route
-          exact
-          component={CreatePassword}
-          path='/auth/password_reset/:key'
-        />
-      </Switch>
-    </ApolloProvider>
-    <ApolloProvider client={uploadApolloClient}>
-      <Switch>
-        <Route exact component={BnConnect} path='/dashboard' />
-        <Route exact component={BnServices} path='/dashboard/services' />
-        <Route exact component={Events} path='/dashboard/events' />
-        <Route
-          exact
-          component={Notifications}
-          path='/dashboard/notifications'
-        />
-        <Route exact component={People} path='/dashboard/people' />
-      </Switch>
-    </ApolloProvider>
-  </BrowserRouter>
-);
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    height: '100%',
+  },
+}));
+
+export const AppContainers = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <BrowserRouter>
+        <ApolloProvider client={usersApolloClient}>
+          <Switch>
+            <Route exact component={RedirectToDash} path='/' />
+            <Route exact component={Login} path='/auth/login' />
+            <Route exact component={Signup} path='/auth/signup' />
+            <Route
+              exact
+              component={UpdateInfo}
+              path='/auth/update_info_register'
+            />
+            <Route
+              exact
+              component={RequireVerification}
+              path='/auth/require_verify'
+            />
+            <Route exact component={VerifyEmail} path='/auth/verify_email' />
+            <Route
+              exact
+              component={ResetPassword}
+              path='/auth/request_reset_link'
+            />
+            <Route
+              exact
+              component={CreatePassword}
+              path='/auth/password_reset/:key'
+            />
+          </Switch>
+        </ApolloProvider>
+        <ApolloProvider client={uploadApolloClient}>
+          <Switch>
+            <Route exact component={BnConnect} path='/dashboard' />
+            <Route exact component={BnServices} path='/dashboard/services' />
+            <Route exact component={Events} path='/dashboard/events' />
+            <Route
+              exact
+              component={Notifications}
+              path='/dashboard/notifications'
+            />
+            <Route exact component={People} path='/dashboard/people' />
+            <Route exact component={Profile} path='/dashboard/profile' />
+          </Switch>
+        </ApolloProvider>
+      </BrowserRouter>
+    </div>
+  );
+};
 
 function RedirectToDash() {
   const history = useHistory();

@@ -60,7 +60,7 @@ export default function UserCard() {
               >
                 L
               </Avatar>
-              <Typography className='pt-1' variant='body1'>
+              <Typography className='pt-1' variant='body2'>
                 {user?.displayName}
               </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
@@ -82,7 +82,7 @@ export default function UserCard() {
               </IconButton>
             </div>
           </div>
-          {/* <Typography>
+          {/* <Typography variant='body2'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
             perferendis ratione.
           </Typography> */}
@@ -90,36 +90,36 @@ export default function UserCard() {
 
           <div className='center-horizontal space-between'>
             <div>
-              <Typography variant='body1'>Scrolls</Typography>
+              <Typography variant='body2'>Scrolls</Typography>
               <div className='center-horizontal'>
                 <CollectionsBookmarkRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
             <div>
-              <Typography variant='body1'>Following</Typography>
+              <Typography variant='body2'>Following</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
             <div>
-              <Typography variant='body1'>Followers</Typography>
+              <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
           </div>
@@ -129,14 +129,14 @@ export default function UserCard() {
           <IconButton>
             <BookmarkRounded />
           </IconButton>
-          <Typography>Saved Items</Typography>
+          <Typography variant='body2'>Saved Items</Typography>
         </CardActions>
         <Divider />
         <CardActions className='py-0'>
           <IconButton>
             <EventRounded />
           </IconButton>
-          <Typography>
+          <Typography variant='body2'>
             Events
             <Badge badgeContent='3' color='secondary'>
               <span className='mx-2 '></span>

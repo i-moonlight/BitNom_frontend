@@ -7,6 +7,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScroll from './CreateScroll';
@@ -24,8 +25,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
-  const [latestScrolls, setlatestScrolls] = useState([]);
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
+  const [imagePreviewURL, setImagePreviewURL] = useState(null);
   const [sharedPost, setSharedPost] = useState(null);
+
   const classes = useStyles();
 
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
@@ -33,7 +36,6 @@ export default function BnConnect() {
   useEffect(() => {
     console.log(error);
     console.log(loading);
-    if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
   }, [data]);
 
   return (
@@ -53,10 +55,12 @@ export default function BnConnect() {
                   <CircularProgress color='primary' size={60} thickness={6} />
                 )}
               </Grid>
-              {latestScrolls.length &&
-                latestScrolls.map(scroll => (
+              {data?.Posts?.get &&
+                data?.Posts?.get?.map(scroll => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
+                    setImagePreviewURL={url => setImagePreviewURL(url)}
+                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
                     key={scroll?._id}
                     scroll={scroll}
@@ -77,6 +81,14 @@ export default function BnConnect() {
         setOpen={open => setCreateScrollOpen(open)}
         sharedPost={sharedPost}
         setSharedPost={setSharedPost}
+      />
+      <ImagePreview
+        open={imagePreviewOpen}
+        imgURL={imagePreviewURL}
+        onClose={() => {
+          setImagePreviewOpen(false);
+          setImagePreviewURL(null);
+        }}
       />
     </Screen>
   );

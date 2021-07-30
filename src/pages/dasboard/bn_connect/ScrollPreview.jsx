@@ -36,7 +36,7 @@ export default function ScrollPreview({ scroll }) {
           }
           title={
             <div className='center-horizontal'>
-              <Typography style={{ marginRight: 8 }}>
+              <Typography variant='body2' style={{ marginRight: 8 }}>
                 {scroll?.author?.displayName}
               </Typography>
               <Typography variant='body2' color='textSecondary'>

@@ -35,7 +35,11 @@ export default function TrendingPosts({ posts }) {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary='What is crypto currency?'
+                primary={
+                  <Typography variant='body2'>
+                    What is crypto currency?
+                  </Typography>
+                }
                 secondary='12.1K Likes . 120 Comments'
               />
             </ListItem>

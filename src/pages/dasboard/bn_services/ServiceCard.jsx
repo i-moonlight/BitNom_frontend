@@ -42,7 +42,7 @@ export default function ServiceCard() {
               >
                 L
               </Avatar>
-              <Typography className='pt-1' variant='body1'>
+              <Typography className='pt-1' variant='body2'>
                 Service 101
               </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
@@ -56,13 +56,13 @@ export default function ServiceCard() {
                 top: 70,
               }}
             >
-              <Typography>20 Subscribers</Typography>
+              <Typography variant='body2'>20 Subscribers</Typography>
             </div>
           </div>
 
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
-          <Typography>
+          <Typography variant='body2'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
             perferendis ratione.
           </Typography>

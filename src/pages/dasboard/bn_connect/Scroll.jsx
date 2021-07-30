@@ -34,10 +34,17 @@ import {
 import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+import ScrollPreview from './ScrollPreview';
 
 const scrollOptionId = 'menu-scroll-option';
 
-export default function Scroll({ scroll, setSharedPost, setOpen }) {
+export default function Scroll({
+  scroll,
+  setSharedPost,
+  setOpen,
+  setImagePreviewOpen,
+  setImagePreviewURL,
+}) {
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
@@ -45,10 +52,9 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
   const [openImage, setOpenImage] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
-
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  // const { error, loading, data } = useQuery(GET_SCROLL_BY_ID, {
+  // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
   //   variables: { _id: scroll?._id },
   // });
 
@@ -71,7 +77,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = (ICreateComment) => {
+  const onCreateComment = ICreateComment => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -88,7 +94,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = (e) => {
+  const handleCreateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -99,7 +105,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
     });
   };
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -107,7 +113,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -116,7 +122,9 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           reaction: reaction,
         },
       },
-      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+      refetchQueries: [
+        { query: QUERY_LOAD_SCROLLS, variables: { data: { limit: 200 } } },
+      ],
     });
   };
 
@@ -142,7 +150,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           }
           title={
             <div className='center-horizontal'>
-              <Typography style={{ marginRight: 8 }}>
+              <Typography variant='body2' style={{ marginRight: 8 }}>
                 {scroll?.author?.displayName}
               </Typography>
               <Typography variant='body2' color='textSecondary'>
@@ -156,41 +164,66 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />
-            <Grid container spacing={2} className='mb-2'>
-              {scroll?.video && (
-                <Grid item xs={12}>
-                  <CardMedia
-                    component='video'
-                    src={`http://localhost:3000${scroll?.video}`}
-                    controls
+            {scroll?.content_entities?.map(entity => {
+              let colortext = scroll?.content?.slice(
+                entity?.offset,
+                entity?.offset + entity?.length
+              );
+
+              return (
+                <a
+                  href={entity?.url}
+                  className='mx-1 mt-1'
+                  key={entity?.offset}
+                >
+                  {colortext}
+                </a>
+              );
+            })}
+          </Typography>
+          {scroll?.shared_resource?._id && (
+            <ScrollPreview scroll={scroll?.shared_resource?._id} />
+          )}
+          <Grid container spacing={2} className='mb-2'>
+            {scroll?.video && (
+              <Grid item xs={12}>
+                <CardMedia
+                  component='video'
+                  src={`http://localhost:3000${scroll?.video}`}
+                  controls
+                />
+              </Grid>
+            )}
+            {scroll?.images.length > 0 &&
+              scroll?.images?.map(imageURL => (
+                <Grid
+                  className='mt-3'
+                  key={imageURL}
+                  item
+                  xs={scroll?.images.length > 1 ? 6 : 12}
+                  onClick={() => {
+                    setImagePreviewURL('http://localhost:3000' + imageURL);
+                    setImagePreviewOpen(true);
+                  }}
+                >
+                  <div
+                    style={{
+                      height: 200,
+                      borderRadius: 8,
+                      width: '100%',
+                      backgroundImage:
+                        'url(http://localhost:3000' + imageURL + ')',
+                      backgroundSize: 'cover',
+                      backgroundColor: 'rgba(0,0,0,0.2)',
+                      backgroundBlendMode: 'soft-light',
+                      cursor: 'pointer',
+                    }}
                   />
                 </Grid>
-              )}
-              {scroll?.images.length > 0 &&
-                scroll?.images?.map((imageURL) => (
-                  <Grid
-                    className='mt-3'
-                    key={imageURL}
-                    item
-                    xs={scroll?.images.length > 1 ? 6 : 12}
-                  >
-                    <div
-                      style={{
-                        height: 200,
-                        borderRadius: 8,
-                        width: '100%',
-                        backgroundImage:
-                          'url(http://localhost:3000' + imageURL + ')',
-                        backgroundSize: 'cover',
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        backgroundBlendMode: 'soft-light',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
-            <br />
+              ))}
+          </Grid>
+          <br />
+          <Typography variant='body2' color='textSecondary'>
             {`${scroll?.reactions?.likes} ${
               scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
             } . ${scroll?.comments} ${
@@ -218,23 +251,25 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           >
             Comment
           </Button>
-          <Button
-            color='default'
-            textCase
-            variant='text'
-            onClick={() => {
-              setOpen(scroll);
-              setSharedPost(scroll);
-            }}
-            startIcon={<ShareRounded />}
-          >
-            Share
-          </Button>
+          {!scroll?.shared_resource?._id && (
+            <Button
+              color='default'
+              textCase
+              variant='text'
+              onClick={() => {
+                setOpen(scroll);
+                setSharedPost(scroll);
+              }}
+              startIcon={<ShareRounded />}
+            >
+              Share
+            </Button>
+          )}
         </CardActions>
         <Divider />
         <CardContent>
           {!openComments && scroll?.comments < 1 && (
-            <Typography color='textSecondary'>
+            <Typography variant='body2' color='textSecondary'>
               Be the first to comment
             </Typography>
           )}
@@ -254,7 +289,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -295,7 +330,7 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={(files) => {
+            onSave={files => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -305,14 +340,16 @@ export default function Scroll({ scroll, setSharedPost, setOpen }) {
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter((comment) => !comment.response_to)
-              .map((comment) => (
+              .filter(comment => !comment.response_to)
+              .map(comment => (
                 <Comment
                   scroll={scroll}
                   key={comment._id}
                   comment={comment}
                   setOpenImage={setOpenImage}
                   onCreateComment={onCreateComment}
+                  setImagePreviewURL={setImagePreviewURL}
+                  setImagePreviewOpen={setImagePreviewOpen}
                   comment_image={comment_image}
                 />
               ))}

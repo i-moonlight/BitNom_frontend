@@ -66,7 +66,9 @@ export default function ProfileBar({
               // aria-haspopup="true"
               // onClick={handleMenuOpen}
             >
-              <Typography color='textSecondary'>General</Typography>
+              <Typography variant='body2' color='textSecondary'>
+                General
+              </Typography>
               <ChevronRight
                 style={{
                   transform: 'rotateZ(90deg)',
@@ -131,7 +133,7 @@ export default function ProfileBar({
               >
                 L
               </Avatar>
-              <Typography style={{ marginRight: 4 }}>
+              <Typography variant='body2' style={{ marginRight: 4 }}>
                 {user?.displayName}
               </Typography>
               <ChevronRight
