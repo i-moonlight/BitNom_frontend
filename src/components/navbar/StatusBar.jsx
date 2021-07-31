@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Hidden,
-  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -22,16 +21,23 @@ export default function StatusBar() {
       <Container maxWidth='lg'>
         <div className={classes.statusBar}>
           <div
+            className='scroll-hidden'
             style={{
               display: 'flex',
               alignItems: 'center',
               overflowX: 'auto',
-              minHeight: 36,
+              // minHeight: 36,
             }}
           >
             {status.map(({ title, value }) => (
               <div key={`${Math.random() * 1000}`}>
-                <Typography key={title} style={{ marginRight: 16 }} noWrap>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  key={title}
+                  style={{ marginRight: 16 }}
+                  noWrap
+                >
                   {title}: <span className={classes.textTheme}>{value}</span>
                 </Typography>
               </div>
@@ -40,6 +46,7 @@ export default function StatusBar() {
           <Hidden smDown>
             <div className='center-horizontal'>
               <Button
+                textCase
                 variant='text'
                 color='default'
                 endIcon={
@@ -53,6 +60,7 @@ export default function StatusBar() {
                 English
               </Button>
               <Button
+                textCase
                 variant='text'
                 color='default'
                 endIcon={
@@ -65,26 +73,32 @@ export default function StatusBar() {
               >
                 <Avatar
                   style={{
-                    height: 24,
-                    width: 24,
+                    height: 20,
+                    width: 20,
                     background: '#0F986E',
                     marginRight: 8,
                     color: theme.palette.text.primary,
                   }}
-                  variant='square'
+                  variant='rounded'
                 >
-                  $
+                  <Typography variant='body2'>$</Typography>
                 </Avatar>{' '}
                 USD
               </Button>
-
-              <IconButton
-                className='p-o'
-                aria-label='show 4 new mails'
-                color='inherit'
+              <Button
+                textCase
+                variant='text'
+                color='default'
+                // endIcon={
+                //   <ChevronRight
+                //     style={{
+                //       transform: 'rotateZ(90deg)',
+                //     }}
+                //   />
+                // }
               >
                 <Brightness3 />
-              </IconButton>
+              </Button>
             </div>
           </Hidden>
         </div>

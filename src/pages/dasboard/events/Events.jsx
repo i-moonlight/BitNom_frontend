@@ -10,8 +10,8 @@ import {
 } from '@material-ui/core';
 import { EventRounded, RoomRounded } from '@material-ui/icons';
 import React from 'react';
-import Button from '../../components/Button';
-import Screen from '../../components/Screen';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +25,7 @@ export default function Events() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='lg' disableGutters>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -69,7 +69,7 @@ function CreateEventCard() {
             }}
           />
           <div>
-            <Typography variant='body1' className='mb-3'>
+            <Typography variant='body2' className='mb-3'>
               Host an event on BitNorm and invite your network
             </Typography>
             <Button>create Event</Button>
@@ -113,14 +113,16 @@ function EventListCard() {
                 <Typography color='textSecondary' variant='body2'>
                   MONDAY, 17 JULY 2021 AT 08:00 UTC+02
                 </Typography>
-                <Typography>Savvy UX Summit 2021 (Virtual)</Typography>
+                <Typography variant='body2'>
+                  Savvy UX Summit 2021 (Virtual)
+                </Typography>
                 <div className='center-horizontal'>
                   <RoomRounded color='primary' />
-                  <Typography color='primary'>
+                  <Typography variant='body2' color='primary'>
                     Capeesh - E14 9HN Manchester
                   </Typography>
                 </div>
-                <Typography>2,435 Going</Typography>
+                <Typography variant='body2'>2,435 Going</Typography>
               </div>
             </div>
             <Divider />

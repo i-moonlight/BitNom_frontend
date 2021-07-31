@@ -1,14 +1,25 @@
+import { useMutation } from '@apollo/client';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
+import Form from '../../components/Form';
 import TextField from '../../components/TextField';
+import { resetPasswordInitialValues } from './utilities/initial_values';
+import { MUTATION_RESET_PASSWORD } from './utilities/queries';
+import { resetPasswordValidationSchema } from './utilities/validation_schemas';
 
-export default function CreatePassword() {
+export default function CreatePassword({ match }) {
+  const [resetErr, setResetErr] = useState(null);
+  const [requestSent, setRequestSent] = useState(false);
   const state = useSelector(state => state);
   const history = useHistory();
   const user = state.auth.user;
+
+  const [resetPassword] = useMutation(MUTATION_RESET_PASSWORD);
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
@@ -21,7 +32,7 @@ export default function CreatePassword() {
         spacing={0}
         direction='column'
         alignItems='center'
-        justify='center'
+        justifyContent='center'
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={11} sm={7} md={6} lg={4}>
@@ -33,31 +44,71 @@ export default function CreatePassword() {
               Create a new memorable password.
             </Typography>
           </div>
-          <Card elevated={false}>
+          <Card elevation={0}>
             <CardContent>
-              <div className='text-center my-3 mx-2'>
-                <TextField
-                  label='New Password'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
-                <TextField
-                  label='Confirm New Password'
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                />
+              <Form
+                initialValues={resetPasswordInitialValues}
+                validationSchema={resetPasswordValidationSchema}
+                onSubmit={({ password }) => {
+                  resetPassword({
+                    variables: {
+                      resetCode: match.params.key,
+                      newPassword: password,
+                    },
+                    errorPolicy: 'all',
+                  }).then(({ data, errors }) => {
+                    setResetErr(null);
 
-                <Button fullWidth>Create Password</Button>
-                <div>
-                  <Typography className='center-vertical mt-4'>
-                    <Link color='primary' to='/auth/login'>
-                      Back to login
-                    </Link>
-                  </Typography>
+                    data?.Users?.resetPassword && setRequestSent(true);
+
+                    errors &&
+                      errors.map(err => {
+                        err?.state?.resetCode &&
+                          setResetErr(err?.state?.resetCode);
+                      });
+                  });
+                }}
+              >
+                <div className='text-center my-3 mx-2'>
+                  <TextField
+                    name='password'
+                    label='New Password'
+                    variant='outlined'
+                    type='password'
+                    fullWidth
+                  />
+                  <TextField
+                    name='cpassword'
+                    label='Confirm New Password'
+                    variant='outlined'
+                    type='password'
+                    fullWidth
+                  />
+
+                  {requestSent && (
+                    <Alert className='mb-2' severity='success'>
+                      Reset successful Login with your new password.
+                    </Alert>
+                  )}
+
+                  {resetErr && (
+                    <Alert className='mb-2' severity='error'>
+                      {resetErr[0]}
+                    </Alert>
+                  )}
+
+                  <Button disabled={requestSent} submit fullWidth>
+                    Create Password
+                  </Button>
+                  <div>
+                    <Typography className='center-vertical mt-4'>
+                      <Link color='primary' to='/auth/login'>
+                        Back to login
+                      </Link>
+                    </Typography>
+                  </div>
                 </div>
-              </div>
+              </Form>
             </CardContent>
           </Card>
         </Grid>

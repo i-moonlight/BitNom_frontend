@@ -1,3 +1,11 @@
+* {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+*:focus-visible {
+  outline: none !important;
+}
+
 html,
 body {
   width: 100%;
@@ -7,7 +15,24 @@ body {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: #006097 !important;
+  cursor: pointer !important;
+}
+
+small {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Display Flex */

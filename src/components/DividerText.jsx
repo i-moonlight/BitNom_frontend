@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function DividerText({ children }) {
+export default function spaniderText({ children }) {
   return (
-    <p
+    <span
       style={{
         display: 'flex',
         flexDirection: 'row',
@@ -11,23 +11,23 @@ export default function DividerText({ children }) {
         margin: '1em 0',
       }}
     >
-      <div
+      <span
         style={{
           height: '.025em',
           background: 'gray',
           flex: '1',
           margin: '0 .25em 0 0',
         }}
-      ></div>
+      ></span>
       {children}
-      <div
+      <span
         style={{
           height: '.025em',
           background: 'gray',
           flex: '1',
           margin: '0 0 0 .25em',
         }}
-      ></div>
-    </p>
+      ></span>
+    </span>
   );
 }

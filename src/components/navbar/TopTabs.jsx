@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
 import { tabs } from '../../store/local/dummy';
@@ -14,28 +15,30 @@ export default function TopTabs({
 
   return (
     <div className={classes.tabBar}>
-      <Container maxWidth='lg'>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor='primary'
-          variant='scrollable'
-          scrollButtons='auto'
-        >
-          {tabs.map(({ label, menuItems }) => (
-            <BitTab
-              key={`${tabOptionsId}`}
-              label={label}
-              aria-controls={tabOptionsId}
-              aria-haspopup='true'
-              onClick={event => {
-                menuItems && setTabOptions(menuItems);
-                menuItems && handleTabOptionsOpen(event);
-              }}
-            />
-          ))}
-        </Tabs>
-      </Container>
+      <Box className={classes.root}>
+        <Container maxWidth='lg'>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor='primary'
+            // variant='scrollable'
+            scrollButtons='auto'
+          >
+            {tabs.map(({ label, menuItems }) => (
+              <BitTab
+                key={`${tabOptionsId}`}
+                label={label}
+                aria-controls={tabOptionsId}
+                aria-haspopup='true'
+                onClick={event => {
+                  menuItems && setTabOptions(menuItems);
+                  menuItems && handleTabOptionsOpen(event);
+                }}
+              />
+            ))}
+          </Tabs>
+        </Container>
+      </Box>
     </div>
   );
 }

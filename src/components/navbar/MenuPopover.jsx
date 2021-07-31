@@ -53,7 +53,7 @@ export default function MenuPopover({
       <Hidden mdUp>
         <MenuItem className='py-3' onClick={() => null}>
           <div className='w-100 center-horizontal space-between'>
-            <Typography>English</Typography>
+            <Typography variant='body2'>English</Typography>
             <div className='px-2 center-horizontal'>
               <ChevronRight
                 style={{
@@ -80,7 +80,7 @@ export default function MenuPopover({
               >
                 $
               </Avatar>
-              <Typography>USD</Typography>
+              <Typography variant='body2'>USD</Typography>
             </div>
             <div className='px-2 center-horizontal'>
               <ChevronRight
@@ -95,7 +95,7 @@ export default function MenuPopover({
 
         <MenuItem className='py-3' onClick={() => null}>
           <div className='w-100 center-horizontal space-between'>
-            <Typography>Theme</Typography>
+            <Typography variant='body2'>Theme</Typography>
           </div>
           <div className='px-2 center-horizontal'>
             <Brightness3 />
@@ -106,9 +106,11 @@ export default function MenuPopover({
 
       <MenuItem className='py-3' onClick={handleMenuClose}>
         <div className='w-100 center-horizontal space-between'>
-          <Typography>Referred Friends</Typography>
+          <Typography variant='body2'>Referred Friends</Typography>
           <div className='px-2 center-horizontal '>
-            <Typography className='px-1'>0</Typography>
+            <Typography variant='body2' className='px-1'>
+              0
+            </Typography>
             <PeopleRounded />
           </div>
         </div>
@@ -117,9 +119,11 @@ export default function MenuPopover({
 
       <MenuItem className='py-3' onClick={handleMenuClose}>
         <div className='w-100 center-horizontal space-between'>
-          <Typography>BN Token</Typography>
+          <Typography variant='body2'>BN Token</Typography>
           <div className='px-2 center-horizontal'>
-            <Typography className='px-1'>0</Typography>
+            <Typography variant='body2' className='px-1'>
+              0
+            </Typography>
             <AccountBalanceWalletOutlined />
           </div>
         </div>
@@ -128,7 +132,9 @@ export default function MenuPopover({
 
       <MenuItem className='py-3' onClick={() => dispatch(signout())}>
         <div className='w-100 center-horizontal space-between'>
-          <Typography color='secondary'>Sign Out</Typography>
+          <Typography variant='body2' color='secondary'>
+            Sign Out
+          </Typography>
           <div className='px-2 center-horizontal'>
             <ExitToAppRounded color='secondary' />
           </div>

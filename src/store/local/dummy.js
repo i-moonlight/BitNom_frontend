@@ -1,8 +1,6 @@
 import {
   AssessmentRounded,
   DescriptionRounded,
-  ImageRounded,
-  VideocamRounded,
   WatchLaterRounded,
 } from '@material-ui/icons';
 
@@ -104,8 +102,6 @@ export const scrollVariations = [
 ];
 
 export const createPostIcons = [
-  { Icon: ImageRounded },
-  { Icon: VideocamRounded },
   { Icon: AssessmentRounded },
   { Icon: WatchLaterRounded },
   { Icon: DescriptionRounded },

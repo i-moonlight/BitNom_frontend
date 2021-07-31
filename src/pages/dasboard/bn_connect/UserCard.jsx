@@ -19,9 +19,13 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
-export default function UserCard() {
+export default function UserCard({ setOpen }) {
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
+
   return (
     <div
       style={{
@@ -45,6 +49,7 @@ export default function UserCard() {
           <div className='space-between'>
             <div>
               <Avatar
+                src={user?.image}
                 variant='rounded'
                 style={{
                   backgroundColor: '#fed132',
@@ -55,11 +60,11 @@ export default function UserCard() {
               >
                 L
               </Avatar>
-              <Typography className='pt-1' variant='body1'>
-                Mahmud Zayn
+              <Typography className='pt-1' variant='body2'>
+                {user?.displayName}
               </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
-                @mahmudzayn
+                {`@${user?._id}`}
               </Typography>
             </div>
 
@@ -77,44 +82,44 @@ export default function UserCard() {
               </IconButton>
             </div>
           </div>
-          <Typography>
+          {/* <Typography variant='body2'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
             perferendis ratione.
-          </Typography>
+          </Typography> */}
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>
             <div>
-              <Typography variant='body1'>Scrolls</Typography>
+              <Typography variant='body2'>Scrolls</Typography>
               <div className='center-horizontal'>
                 <CollectionsBookmarkRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
             <div>
-              <Typography variant='body1'>Following</Typography>
+              <Typography variant='body2'>Following</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
             <div>
-              <Typography variant='body1'>Followers</Typography>
+              <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
                   color='primary'
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body1'>0</Typography>
+                <Typography variant='body2'>0</Typography>
               </div>
             </div>
           </div>
@@ -124,14 +129,14 @@ export default function UserCard() {
           <IconButton>
             <BookmarkRounded />
           </IconButton>
-          <Typography>Saved Items</Typography>
+          <Typography variant='body2'>Saved Items</Typography>
         </CardActions>
         <Divider />
         <CardActions className='py-0'>
           <IconButton>
             <EventRounded />
           </IconButton>
-          <Typography>
+          <Typography variant='body2'>
             Events
             <Badge badgeContent='3' color='secondary'>
               <span className='mx-2 '></span>
@@ -142,7 +147,7 @@ export default function UserCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Button color='primary' fullWidth>
+      <Button onClick={setOpen} color='primary' fullWidth>
         Start Scroll
       </Button>
     </div>

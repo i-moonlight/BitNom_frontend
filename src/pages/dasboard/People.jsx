@@ -31,7 +31,7 @@ export default function People() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='lg' disableGutters>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -54,7 +54,7 @@ export default function People() {
 function PeopleListCard() {
   return (
     <Card>
-      <Typography className='mx-4 my-1' variant='h6'>
+      <Typography className='mx-4 my-1' variant='body1'>
         People you may know
       </Typography>
 
@@ -70,8 +70,12 @@ function PeopleListCard() {
             <ListItemText
               primary={
                 <div className='center-horizontal'>
-                  <Typography className='mx-1'>Andy bo Wu </Typography>
-                  <Typography color='textSecondary'>@andybuwu</Typography>
+                  <Typography variant='body2' className='mx-1'>
+                    Andy bo Wu{' '}
+                  </Typography>
+                  <Typography variant='body2' color='textSecondary'>
+                    @andybuwu
+                  </Typography>
                 </div>
               }
               secondary='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi, accusamus. Laudantium vitae corrupti totam sed molestias, veniam sunt vero distinctio.'

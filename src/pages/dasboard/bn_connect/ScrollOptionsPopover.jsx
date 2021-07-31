@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   Divider,
@@ -15,13 +16,59 @@ import {
 } from '@material-ui/icons';
 import React from 'react';
 import Button from '../../../components/Button';
+import {
+  MUTATION_CREATE_BOOKMARK,
+  MUTATION_CREATE_FLAG,
+} from '../utilities/queries';
 
 export default function ScrollOptionsPopover({
+  scroll,
+  setFlaggedResource,
+  setOpenFlag,
   scrollOptionId,
   scrollOptionAnchorEl,
   isScrollOptionOpen,
   handleScrollOptionClose,
 }) {
+  const [
+    createBookmark,
+    {
+      data,
+      //  loading,
+      //   error
+    },
+  ] = useMutation(MUTATION_CREATE_BOOKMARK);
+
+  console.log(data);
+
+  const [
+    createFlag,
+    {
+      // loading: flagLoading,
+      // data: flagData,
+      error: flagError,
+    },
+  ] = useMutation(MUTATION_CREATE_FLAG);
+
+  flagError && console.log(flagError);
+
+  const handleCreateBookmark = () => {
+    createBookmark({
+      variables: {
+        data: {
+          _id: scroll?._id,
+          type: 'post',
+        },
+      },
+    });
+  };
+  const handleReportScroll = () => {
+    setOpenFlag(true);
+    handleScrollOptionClose();
+    const resource = Object.assign({ resourceType: 'post' }, scroll);
+    setFlaggedResource(resource);
+  };
+
   return (
     <Popover
       anchorEl={scrollOptionAnchorEl}
@@ -38,16 +85,16 @@ export default function ScrollOptionsPopover({
         component={Card}
         variant='outlined'
       >
-        <ListItem button divider>
+        <ListItem button divider onClick={handleCreateBookmark}>
           <ListItemIcon>
             <BookmarkBorderRounded />
           </ListItemIcon>
           <ListItemText
-            primary='Save the scroll'
-            secondary='Add this to you saved items'
+            primary='Save this scroll'
+            secondary='Add this to your bookmarks'
           />
         </ListItem>
-        <ListItem button divider>
+        <ListItem button divider onClick={handleReportScroll}>
           <ListItemIcon>
             <FlagOutlined />
           </ListItemIcon>
@@ -66,7 +113,7 @@ export default function ScrollOptionsPopover({
           <ListItemIcon>
             <PersonAddDisabledOutlined />
           </ListItemIcon>
-          <ListItemText primary='Unfollow @briansadroe' />
+          <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
         </ListItem>
         <Divider />
         <div className='m-2'>

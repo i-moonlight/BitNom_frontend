@@ -1,9 +1,12 @@
+import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
   CardContent,
+  CircularProgress,
   Divider,
   Grid,
+  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -11,15 +14,89 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { ChevronRight, CloseRounded, Person, Public } from '@material-ui/icons';
-import React, { useState } from 'react';
+import {
+  ChevronRight,
+  CloseRounded,
+  ImageRounded,
+  Person,
+  Public,
+  VideocamRounded,
+} from '@material-ui/icons';
+import { DropzoneDialog } from 'material-ui-dropzone';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
+import {
+  MUTATION_CREATE_POST,
+  QUERY_LOAD_SCROLLS,
+} from '../../utilities/queries';
+import ScrollPreview from '../ScrollPreview';
 
-export default function CreatePost({ open, setOpen }) {
-  const [active, setActive] = useState(4);
+export default function CreatePost({
+  open,
+  setOpen,
+  sharedPost,
+  setSharedPost,
+}) {
+  const [createPostErr, setCreatePostErr] = useState(null);
+  const [openImage, setOpenImage] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
+  const [videoDisabled, setVideoDisabled] = useState(false);
+  const [imageDisabled, setImageDisabled] = useState(false);
+  const [scroll_text, setScrollText] = useState('');
+  const [scroll_images, setScrollImages] = useState([]);
+  const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
+  const state = useSelector(state => state);
+  const user = state.auth.user;
+  const [
+    createPost,
+    {
+      loading,
+      data,
+      //  error
+    },
+  ] = useMutation(MUTATION_CREATE_POST);
+
+  const onCreatePost = async ICreatePost => {
+    await createPost({
+      variables: {
+        data: ICreatePost,
+      },
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+    });
+    setScrollText('');
+    setScrollImages([]);
+    setScrollVideo(null);
+    setSharedPost(null);
+    setCreatePostErr(false);
+    setImageDisabled(false);
+    setVideoDisabled(false);
+  };
+
+  useEffect(() => {
+    if (data?.Posts?.create) {
+      setOpen(false);
+    }
+  }, [data]);
+
+  const handleCreatePost = e => {
+    e.preventDefault();
+    if (scroll_text.trim() == '') return setCreatePostErr(true);
+    let sharedResource = sharedPost
+      ? { _id: sharedPost?._id, type: 'post' }
+      : null;
+    let flag = sharedPost ? sharedPost?.is_flag : null;
+    onCreatePost({
+      content: scroll_text,
+      images: scroll_images,
+      video: scroll_video,
+      shared_resource: sharedResource,
+      is_flag: flag,
+    });
+  };
 
   return (
     <Modal
@@ -37,27 +114,39 @@ export default function CreatePost({ open, setOpen }) {
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
             <div className='space-between mx-3 my-2'>
-              <Typography></Typography>
-              <Typography variant='h6'>Create Post</Typography>
-              <CloseRounded onClick={() => setOpen(!open)} />
+              <Typography variant='body2'></Typography>
+              <Typography variant='body1'>Create Post</Typography>
+              <IconButton size='small'>
+                <CloseRounded
+                  onClick={() => {
+                    setOpen(!open);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                    setCreatePostErr(false);
+                    setImageDisabled(false);
+                    setVideoDisabled(false);
+                  }}
+                />
+              </IconButton>
             </div>
 
             <Divider />
             <CardContent>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar src={user?.photo}>
                     <Person />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary='Mahmud Zayn'
+                  primary={user?.displayName}
                   secondary={
                     <Button
-                      variant='text'
+                      textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: '0px 5px',
+                        padding: '0px 10px',
+                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
@@ -73,40 +162,132 @@ export default function CreatePost({ open, setOpen }) {
                   }
                 />
               </ListItem>
+              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               <TextField
-                // style={{ border: 'none' }}
                 fullWidth
                 multiline
+                error={createPostErr && true}
+                errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}
+                id='content-field'
                 placeholder="What's happening"
+                onChange={e =>
+                  setScrollText(
+                    scroll_text?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value
+                  )
+                }
+                value={scroll_text}
               />
-              <Typography className='mb-3' variant='h6' color='primary'>
-                Add Hashtags
-              </Typography>
-              <Divider />
-              <div className='space-between mt-3'>
+              {/* <Button
+                onClick={() => {
+                  setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
+                  document.getElementById('content-field').focus();
+                }}
+                variant='text'
+                style={{ textTransform: 'none' }}
+                color='primary'
+              >
+                <Typography variant='body2'>Add Hashtags</Typography>
+              </Button> */}
+              {/* <Divider /> */}
+              <div className='space-between mt-1'>
                 <div className='center-horizontal'>
-                  {createPostIcons.map(({ Icon }, i = 0) => {
+                  <IconButton
+                    onClick={() => {
+                      setOpenImage(true);
+                    }}
+                    disabled={imageDisabled}
+                    size='small'
+                    style={{
+                      marginRight: 10,
+                    }}
+                  >
+                    <ImageRounded />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setOpenVideo(true);
+                    }}
+                    disabled={videoDisabled}
+                    size='small'
+                    style={{
+                      marginRight: 10,
+                    }}
+                  >
+                    <VideocamRounded />
+                  </IconButton>
+
+                  <DropzoneDialog
+                    acceptedFiles={['image/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    maxFileSize={5000000}
+                    filesLimit='4'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    previewGridProps={{
+                      container: { spacing: 1, direction: 'row' },
+                    }}
+                    open={openImage}
+                    onClose={() => setOpenImage(false)}
+                    onSave={files => {
+                      setScrollImages(files);
+                      setOpenImage(false);
+                      setVideoDisabled(true);
+                    }}
+                  />
+                  <DropzoneDialog
+                    acceptedFiles={['video/*']}
+                    cancelButtonText={'cancel'}
+                    submitButtonText={'submit'}
+                    useChipsForPreview
+                    maxFileSize={5000000}
+                    filesLimit='1'
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    previewChipProps={{
+                      style: {
+                        marginLeft: 16,
+                      },
+                    }}
+                    open={openVideo}
+                    onClose={() => setOpenVideo(false)}
+                    onSave={files => {
+                      console.log(files);
+                      setScrollVideo(files[0]);
+                      setOpenVideo(false);
+                      setImageDisabled(true);
+                    }}
+                  />
+
+                  {createPostIcons.map(({ Icon }) => {
                     return (
-                      <Icon
+                      <IconButton
                         key={`${Math.random() * 1000}`}
-                        onClick={() => setActive(i)}
+                        size='small'
                         style={{
-                          color: active === i && theme.palette.primary.main,
-                          width: 30,
-                          height: 30,
                           marginRight: 10,
                         }}
-                      />
+                      >
+                        <Icon />
+                      </IconButton>
                     );
                   })}
                 </div>
-                <Button>Post</Button>
+                {!loading && <Button onClick={handleCreatePost}>Post</Button>}
+                {loading && (
+                  <Button size='small' style={{ margin: '0' }}>
+                    <CircularProgress size={24} thickness={4} />
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
       </Grid>
     </Modal>
   );
