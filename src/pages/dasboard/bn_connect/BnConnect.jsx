@@ -4,6 +4,7 @@ import {
   Container,
   Grid,
   Hidden,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
@@ -71,6 +72,9 @@ export default function BnConnect() {
                     scroll={scroll}
                   />
                 ))}
+              {data?.Posts?.get?.length < 1 && (
+                <Typography>There are no scrolls yet..Start Some!!</Typography>
+              )}
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>

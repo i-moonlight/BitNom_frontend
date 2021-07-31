@@ -166,7 +166,7 @@ export default function Comment({
             </CardContent>
           </Card>
           <Typography>
-            <LikeButton
+            {/*  <LikeButton
               resource={comment}
               resourceType='comment'
               color='default'
@@ -174,8 +174,8 @@ export default function Comment({
               variant='text'
             >
               Like
-            </LikeButton>
-            {comment?.response_to ? '' : '.'}
+            </LikeButton> 
+            {comment?.response_to ? '' : '.'}*/}
             {!comment?.response_to && (
               <Button
                 color='default'
