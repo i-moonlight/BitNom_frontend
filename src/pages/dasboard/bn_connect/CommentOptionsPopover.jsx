@@ -21,14 +21,14 @@ import {
   MUTATION_CREATE_FLAG,
 } from '../utilities/queries';
 
-export default function ScrollOptionsPopover({
-  scroll,
+export default function CommentOptionsPopover({
+  comment,
+  commentOptionId,
   setFlaggedResource,
   setOpenFlag,
-  scrollOptionId,
-  scrollOptionAnchorEl,
-  isScrollOptionOpen,
-  handleScrollOptionClose,
+  commentOptionAnchorEl,
+  isCommentOptionOpen,
+  handleCommentOptionClose,
 }) {
   const [
     createBookmark,
@@ -56,28 +56,29 @@ export default function ScrollOptionsPopover({
     createBookmark({
       variables: {
         data: {
-          _id: scroll?._id,
-          type: 'post',
+          _id: comment?._id,
+          type: 'comment',
         },
       },
     });
   };
-  const handleReportScroll = () => {
+
+  const handleReportComment = () => {
     setOpenFlag(true);
-    handleScrollOptionClose();
-    const resource = Object.assign({ resourceType: 'post' }, scroll);
+    handleCommentOptionClose();
+    const resource = Object.assign({ resourceType: 'comment' }, comment);
     setFlaggedResource(resource);
   };
 
   return (
     <Popover
-      anchorEl={scrollOptionAnchorEl}
+      anchorEl={commentOptionAnchorEl}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={scrollOptionId}
+      id={commentOptionId}
       keepMounted
-      open={isScrollOptionOpen}
-      onClose={handleScrollOptionClose}
+      open={isCommentOptionOpen}
+      onClose={handleCommentOptionClose}
       style={{ marginLeft: 16, width: '100%' }}
     >
       <List
@@ -90,30 +91,30 @@ export default function ScrollOptionsPopover({
             <BookmarkBorderRounded />
           </ListItemIcon>
           <ListItemText
-            primary='Save this scroll'
+            primary='Save this comment'
             secondary='Add this to your bookmarks'
           />
         </ListItem>
-        <ListItem button divider onClick={handleReportScroll}>
+        <ListItem button divider onClick={handleReportComment}>
           <ListItemIcon>
             <FlagOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Report this scroll'
-            secondary='Im concerned about this scroll'
+            primary='Report this comment'
+            secondary='Im concerned about this comment'
           />
         </ListItem>
         <ListItem button divider>
           <ListItemIcon>
             <FileCopyOutlined />
           </ListItemIcon>
-          <ListItemText primary='Copy this scroll' />
+          <ListItemText primary='Copy this comment' />
         </ListItem>
         <ListItem button divider>
           <ListItemIcon>
             <PersonAddDisabledOutlined />
           </ListItemIcon>
-          <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
+          <ListItemText primary={`Unfollow @${comment?.author?._id}`} />
         </ListItem>
         <Divider />
         <div className='m-2'>

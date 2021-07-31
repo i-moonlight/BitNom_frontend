@@ -7,6 +7,7 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
+
 import {
   ImageRounded,
   MoreHorizRounded,
@@ -16,12 +17,15 @@ import {
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import LikeButton from './LikeButton';
 import TextField from '../../../components/TextField';
+import CommentOptionsPopover from './CommentOptionsPopover';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
 } from '../utilities/queries';
 
+const commentOptionId = 'menu-comment-option';
 export default function Comment({
   comment,
   style,
@@ -29,9 +33,13 @@ export default function Comment({
   onCreateComment,
   comment_image,
   scroll,
+  setFlaggedResource,
+  setOpenFlag,
   setImagePreviewURL,
   setImagePreviewOpen,
 }) {
+  const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
+  const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
   const [reply, setReply] = useState('');
   const [responseTo, setResponseTo] = useState('');
@@ -45,13 +53,21 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
-  const handleCreateReaction = reaction => {
+  const handleCommentOptionOpen = (event) => {
+    setCommentOptionAnchorEl(event.currentTarget);
+  };
+
+  const handleCommentOptionClose = () => {
+    setCommentOptionAnchorEl(null);
+  };
+  const handleCreateReaction = (e) => {
+    e.stopPropagation();
     createReaction({
       variables: {
         data: {
           _id: comment?._id,
           type: 'comment',
-          reaction: reaction,
+          reaction: 'like',
         },
       },
       refetchQueries: [
@@ -63,7 +79,7 @@ export default function Comment({
     });
   };
 
-  const handleCreateReply = e => {
+  const handleCreateReply = (e) => {
     e.preventDefault();
     if (reply.trim() == '') return setReplyErr(true);
     onCreateComment({
@@ -85,7 +101,7 @@ export default function Comment({
           <Card variant='outlined'>
             <CardContent>
               <div className='center-horizontal space-between w-100'>
-                <Typography variant='body2' display='inline'>
+                <Typography display='inline'>
                   {comment?.author?.displayName}{' '}
                   <Typography display='inline' variant='body2'>
                     . @{comment?.author?._id}
@@ -94,7 +110,13 @@ export default function Comment({
                     . {moment(comment.creation_date).fromNow()}
                   </Typography>
                 </Typography>
-                <IconButton size='small'>
+                <IconButton
+                  aria-label='show more'
+                  aria-controls={commentOptionId}
+                  aria-haspopup='true'
+                  onClick={handleCommentOptionOpen}
+                  size='small'
+                >
                   <MoreHorizRounded />
                 </IconButton>
               </div>
@@ -143,15 +165,16 @@ export default function Comment({
               </Typography>
             </CardContent>
           </Card>
-          <span>
-            <Button
+          <Typography>
+            <LikeButton
+              resource={comment}
+              resourceType='comment'
               color='default'
-              onClick={() => handleCreateReaction('like')}
               textCase
               variant='text'
             >
               Like
-            </Button>
+            </LikeButton>
             {comment?.response_to ? '' : '.'}
             {!comment?.response_to && (
               <Button
@@ -166,7 +189,7 @@ export default function Comment({
                 Reply
               </Button>
             )}
-          </span>
+          </Typography>
           {openReplies && (
             <div className='center-horizontal'>
               <Avatar src={scroll?.author?.image} className='mx-2'>
@@ -179,7 +202,7 @@ export default function Comment({
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
-                onChange={e =>
+                onChange={(e) =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -210,12 +233,21 @@ export default function Comment({
           )}
         </div>
       </div>
+      <CommentOptionsPopover
+        setFlaggedResource={setFlaggedResource}
+        setOpenFlag={setOpenFlag}
+        comment={comment}
+        commentOptionId={commentOptionId}
+        commentOptionAnchorEl={commentOptionAnchorEl}
+        isCommentOptionOpen={isCommentOptionOpen}
+        handleCommentOptionClose={handleCommentOptionClose}
+      />
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            commentInner => commentInner?.response_to?._id === comment?._id
+            (commentInner) => commentInner?.response_to?._id === comment?._id
           )
-          .map(commentInner => (
+          .map((commentInner) => (
             <Comment
               style={{
                 marginLeft: 30,
@@ -224,6 +256,8 @@ export default function Comment({
               comment={commentInner}
               setImagePreviewURL={setImagePreviewURL}
               setImagePreviewOpen={setImagePreviewOpen}
+              setFlaggedResource={setFlaggedResource}
+              setOpenFlag={setOpenFlag}
             />
           ))}
     </>

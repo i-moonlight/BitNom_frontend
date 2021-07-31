@@ -22,8 +22,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
-export default function UserCard() {
-  const state = useSelector(state => state);
+export default function UserCard({ setOpen }) {
+  const state = useSelector((state) => state);
   const user = state.auth.user;
 
   return (
@@ -147,7 +147,7 @@ export default function UserCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Button color='primary' fullWidth>
+      <Button onClick={setOpen} color='primary' fullWidth>
         Start Scroll
       </Button>
     </div>
