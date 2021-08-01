@@ -16,7 +16,7 @@ import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 
 export default function TrendingPosts() {
   const [trending, setTrending] = useState([]);
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
+  const { data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: { sortByField: 'comments' } },
   });
   useEffect(() => {

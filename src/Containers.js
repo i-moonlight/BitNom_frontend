@@ -82,7 +82,7 @@ const usersApolloClient = new ApolloClient({
 //   credentials: 'include',
 // });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -144,7 +144,7 @@ export const AppContainers = () => {
 
 function RedirectToDash() {
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
 
   useEffect(() => {

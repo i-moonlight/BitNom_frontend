@@ -1,34 +1,34 @@
 import {
   Avatar,
-  Badge,
+  //Badge,
   Box,
   Card,
-  CardActions,
+  //CardActions,
   CardContent,
   CardMedia,
-  colors,
+  //colors,
   Divider,
-  IconButton,
+  //IconButton,
   Tab,
   Tabs,
   Typography,
   withStyles,
 } from '@material-ui/core';
 import {
-  AddRounded,
+  //AddRounded,
   AssignmentIndOutlined,
-  BookmarkRounded,
+  //BookmarkRounded,
   CalendarTodayOutlined,
-  CollectionsBookmarkRounded,
-  EventRounded,
+  //CollectionsBookmarkRounded,
+  //EventRounded,
   Language,
-  Notifications,
+  //Notifications,
   PeopleRounded,
-  PersonRounded,
-  Settings,
+  //PersonRounded,
+  //Settings,
   StarRounded,
   StorageRounded,
-  TimelapseOutlined,
+  //TimelapseOutlined,
   TimelineRounded,
 } from '@material-ui/icons';
 import React from 'react';
@@ -38,7 +38,7 @@ import useColors from '../../../hooks/useColors';
 
 export default function ProfileCard() {
   const [tabValue, setTabValue] = React.useState(0);
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const colors = useColors();
 
@@ -221,7 +221,7 @@ const Insight = ({ value, text }) => (
   </div>
 );
 
-const TabPanel = props => {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -241,7 +241,7 @@ const TabPanel = props => {
   );
 };
 
-const ProfileTab = withStyles(theme => ({
+const ProfileTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     fontWeight: theme.typography.fontWeightBold,
@@ -254,4 +254,4 @@ const ProfileTab = withStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

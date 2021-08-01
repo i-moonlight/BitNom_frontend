@@ -1,17 +1,17 @@
 import { useQuery } from '@apollo/client';
 import {
-  CircularProgress,
+  //CircularProgress,
   Container,
   Grid,
   Hidden,
   makeStyles,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import ProfileCard from './ProfileCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
