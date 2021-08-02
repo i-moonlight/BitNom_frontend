@@ -1,5 +1,5 @@
 [Unit]
-Description=Frontend
+Description=V1FrontendDev
 After=docker.service
 Requires=docker.service
 After=v1-gateway-dev.service
