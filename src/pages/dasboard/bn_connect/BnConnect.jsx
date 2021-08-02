@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
   const [sharedPost, setSharedPost] = useState(null);
@@ -53,7 +55,11 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll setOpen={(open) => setCreateScrollOpen(open)} />
+              <CreateScroll
+                setOpenImage={setOpenImage}
+                setOpenVideo={setOpenVideo}
+                setOpen={(open) => setCreateScrollOpen(open)}
+              />
               <Grid item align='center'>
                 {loading && (
                   <CircularProgress color='primary' size={60} thickness={6} />
@@ -92,6 +98,10 @@ export default function BnConnect() {
       <CreatePost
         open={createScrollOpen}
         setOpen={(open) => setCreateScrollOpen(open)}
+        openImage={openImage}
+        setOpenImage={setOpenImage}
+        openVideo={openVideo}
+        setOpenVideo={setOpenVideo}
         sharedPost={sharedPost}
         setSharedPost={setSharedPost}
       />

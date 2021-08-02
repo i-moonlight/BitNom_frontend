@@ -37,12 +37,15 @@ import ScrollPreview from '../ScrollPreview';
 export default function CreatePost({
   open,
   setOpen,
+  openImage,
+  setOpenImage,
+  openVideo,
+  setOpenVideo,
   sharedPost,
   setSharedPost,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
-  const [openImage, setOpenImage] = useState(false);
-  const [openVideo, setOpenVideo] = useState(false);
+
   const [videoDisabled, setVideoDisabled] = useState(false);
   const [imageDisabled, setImageDisabled] = useState(false);
   const [scroll_text, setScrollText] = useState('');
