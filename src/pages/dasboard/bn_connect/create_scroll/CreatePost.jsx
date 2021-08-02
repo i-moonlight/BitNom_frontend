@@ -106,6 +106,8 @@ export default function CreatePost({
     <Modal
       style={{
         outline: 'none',
+        maxHeight: '100%',
+        overflow: 'scroll',
         '&:focus-visible': {
           outline: 'none',
         },
@@ -166,7 +168,6 @@ export default function CreatePost({
                   }
                 />
               </ListItem>
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               <TextField
                 fullWidth
                 multiline
@@ -184,6 +185,7 @@ export default function CreatePost({
                 }
                 value={scroll_text}
               />
+              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               {/* <Button
                 onClick={() => {
                   setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
