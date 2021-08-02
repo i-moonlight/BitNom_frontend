@@ -78,7 +78,7 @@ export default function CreatePost({
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      setOpen(false);
+      //console.log(data);
     }
   }, [data]);
 
@@ -96,6 +96,7 @@ export default function CreatePost({
       shared_resource: sharedResource,
       is_flag: flag,
     });
+    setOpen(false);
   };
 
   return (

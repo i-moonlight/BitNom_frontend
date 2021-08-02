@@ -49,6 +49,7 @@ export default function ScrollOptionsPopover({
         },
       },
     });
+    handleScrollOptionClose();
   };
   const handleReportScroll = () => {
     setOpenFlag(true);
@@ -99,12 +100,14 @@ export default function ScrollOptionsPopover({
             <ListItemText primary='Edit this scroll' />
           </ListItem>
         )}
-        <ListItem button divider>
-          <ListItemIcon>
-            <PersonAddDisabledOutlined />
-          </ListItemIcon>
-          <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
-        </ListItem>
+        {user?._id !== scroll?.author?._id && (
+          <ListItem button divider>
+            <ListItemIcon>
+              <PersonAddDisabledOutlined />
+            </ListItemIcon>
+            <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
+          </ListItem>
+        )}
         <Divider />
         <div className='m-2'>
           <Button fullWidth textCase>

@@ -73,7 +73,11 @@ export default function BnConnect() {
                   />
                 ))}
               {data?.Posts?.get?.length < 1 && (
-                <Typography>There are no scrolls yet..Start Some!!</Typography>
+                <Grid align='center'>
+                  <Typography color='primary'>
+                    There are no scrolls yet..Start Some!!
+                  </Typography>
+                </Grid>
               )}
             </Grid>
             <Grid item md={4} lg={3}>
