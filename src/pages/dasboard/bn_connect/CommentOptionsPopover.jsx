@@ -14,12 +14,10 @@ import {
   FlagOutlined,
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import {
-  MUTATION_CREATE_BOOKMARK,
-  MUTATION_CREATE_FLAG,
-} from '../utilities/queries';
+import { MUTATION_CREATE_BOOKMARK } from '../utilities/queries';
 
 export default function CommentOptionsPopover({
   comment,
@@ -33,24 +31,19 @@ export default function CommentOptionsPopover({
   const [
     createBookmark,
     {
-      data,
+      data: bookmarkData,
       //  loading,
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
 
-  console.log(data);
-
-  const [
-    createFlag,
-    {
-      // loading: flagLoading,
-      // data: flagData,
-      error: flagError,
-    },
-  ] = useMutation(MUTATION_CREATE_FLAG);
-
-  flagError && console.log(flagError);
+  useEffect(() => {
+    if (bookmarkData?.bookmarks?.create == true) {
+      console.log(bookmarkData?.bookmarks?.create);
+    }
+  }, [bookmarkData]);
 
   const handleCreateBookmark = () => {
     createBookmark({
@@ -61,6 +54,7 @@ export default function CommentOptionsPopover({
         },
       },
     });
+    handleCommentOptionClose();
   };
 
   const handleReportComment = () => {
@@ -104,18 +98,22 @@ export default function CommentOptionsPopover({
             secondary='Im concerned about this comment'
           />
         </ListItem>
-        <ListItem button divider>
-          <ListItemIcon>
-            <FileCopyOutlined />
-          </ListItemIcon>
-          <ListItemText primary='Copy this comment' />
-        </ListItem>
-        <ListItem button divider>
-          <ListItemIcon>
-            <PersonAddDisabledOutlined />
-          </ListItemIcon>
-          <ListItemText primary={`Unfollow @${comment?.author?._id}`} />
-        </ListItem>
+        {user?._id === comment?.author?._id && (
+          <ListItem button divider>
+            <ListItemIcon>
+              <FileCopyOutlined />
+            </ListItemIcon>
+            <ListItemText primary='Edit this comment' />
+          </ListItem>
+        )}
+        {user?._id !== comment?.author?._id && (
+          <ListItem button divider>
+            <ListItemIcon>
+              <PersonAddDisabledOutlined />
+            </ListItemIcon>
+            <ListItemText primary={`Unfollow @${comment?.author?._id}`} />
+          </ListItem>
+        )}
         <Divider />
         <div className='m-2'>
           <Button fullWidth textCase>

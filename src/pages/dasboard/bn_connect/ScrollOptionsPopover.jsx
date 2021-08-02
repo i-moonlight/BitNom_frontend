@@ -15,11 +15,9 @@ import {
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import {
-  MUTATION_CREATE_BOOKMARK,
-  MUTATION_CREATE_FLAG,
-} from '../utilities/queries';
+import { MUTATION_CREATE_BOOKMARK } from '../utilities/queries';
 
 export default function ScrollOptionsPopover({
   scroll,
@@ -38,19 +36,9 @@ export default function ScrollOptionsPopover({
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
-
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
   console.log(data);
-
-  const [
-    createFlag,
-    {
-      // loading: flagLoading,
-      // data: flagData,
-      error: flagError,
-    },
-  ] = useMutation(MUTATION_CREATE_FLAG);
-
-  flagError && console.log(flagError);
 
   const handleCreateBookmark = () => {
     createBookmark({
@@ -103,12 +91,14 @@ export default function ScrollOptionsPopover({
             secondary='Im concerned about this scroll'
           />
         </ListItem>
-        <ListItem button divider>
-          <ListItemIcon>
-            <FileCopyOutlined />
-          </ListItemIcon>
-          <ListItemText primary='Copy this scroll' />
-        </ListItem>
+        {user?._id === scroll?.author?._id && (
+          <ListItem button divider>
+            <ListItemIcon>
+              <FileCopyOutlined />
+            </ListItemIcon>
+            <ListItemText primary='Edit this scroll' />
+          </ListItem>
+        )}
         <ListItem button divider>
           <ListItemIcon>
             <PersonAddDisabledOutlined />

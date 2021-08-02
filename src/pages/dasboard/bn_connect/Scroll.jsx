@@ -22,9 +22,9 @@ import {
 } from '@material-ui/icons';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../../components/Button';
-import ImagePreview from '../../../components/ImagePreview';
+//import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_COMMENT,
@@ -128,6 +128,12 @@ export default function Scroll({
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
+
+  useEffect(() => {
+    if (createCommentData?.Comments?.create) {
+      console.log('comment created');
+    }
+  }, [createCommentData]);
 
   return (
     <>

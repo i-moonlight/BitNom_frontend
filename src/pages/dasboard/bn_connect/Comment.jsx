@@ -17,7 +17,6 @@ import {
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import LikeButton from './LikeButton';
 import TextField from '../../../components/TextField';
 import CommentOptionsPopover from './CommentOptionsPopover';
 import {
@@ -60,8 +59,10 @@ export default function Comment({
   const handleCommentOptionClose = () => {
     setCommentOptionAnchorEl(null);
   };
-  const handleCreateReaction = (e) => {
-    e.stopPropagation();
+
+  const handleCreateReaction = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     createReaction({
       variables: {
         data: {
@@ -166,16 +167,15 @@ export default function Comment({
             </CardContent>
           </Card>
           <Typography>
-            {/*  <LikeButton
-              resource={comment}
-              resourceType='comment'
+            <Button
               color='default'
+              onClick={handleCreateReaction}
               textCase
               variant='text'
             >
               Like
-            </LikeButton> 
-            {comment?.response_to ? '' : '.'}*/}
+            </Button>
+            {comment?.response_to ? '' : '.'}
             {!comment?.response_to && (
               <Button
                 color='default'

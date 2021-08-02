@@ -10,10 +10,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  useTheme,
 } from '@material-ui/core';
 import { CloseRounded } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
@@ -21,19 +20,9 @@ export default function FlagResource({
   openFlag,
   setOpenFlag,
   flaggedResource,
-  flaggedResourceType,
   setFlaggedResource,
 }) {
-  const theme = useTheme();
-
-  const [
-    createFlag,
-    {
-      loading,
-      data,
-      //  error
-    },
-  ] = useMutation(MUTATION_CREATE_FLAG);
+  const [createFlag, { data }] = useMutation(MUTATION_CREATE_FLAG);
 
   const onCreateFlag = async (ICreateFlag) => {
     await createFlag({
