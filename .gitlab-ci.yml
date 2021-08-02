@@ -44,6 +44,10 @@ cache:
 
 install_dependencies:
   stage: build
+  only:
+    refs:
+      - development
+      - main
   script:
     - npm i -g npm
     - npm install
