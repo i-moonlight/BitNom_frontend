@@ -22,7 +22,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
-export default function UserCard({ setOpen }) {
+export default function UserCard({ setOpen, setOpenSavedItems }) {
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
@@ -126,7 +126,7 @@ export default function UserCard({ setOpen }) {
         </CardContent>
         <Divider />
         <CardActions className='py-0'>
-          <IconButton>
+          <IconButton onClick={() => setOpenSavedItems(true)}>
             <BookmarkRounded />
           </IconButton>
           <Typography variant='body2'>Saved Items</Typography>

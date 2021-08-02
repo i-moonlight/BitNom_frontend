@@ -17,7 +17,10 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_BOOKMARK } from '../utilities/queries';
+import {
+  MUTATION_CREATE_BOOKMARK,
+  GET_BOOKMARKED_SCROLLS,
+} from '../utilities/queries';
 
 export default function ScrollOptionsPopover({
   scroll,
@@ -48,6 +51,16 @@ export default function ScrollOptionsPopover({
           type: 'post',
         },
       },
+      refetchQueries: [
+        {
+          query: GET_BOOKMARKED_SCROLLS,
+          variables: {
+            data: {
+              sortAscending: false,
+            },
+          },
+        },
+      ],
     });
     handleScrollOptionClose();
   };

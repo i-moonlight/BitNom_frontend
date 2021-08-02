@@ -90,6 +90,10 @@ export default function Scroll({
           query: QUERY_GET_COMMENTS,
           variables: { data: { scroll_id: scroll?._id } },
         },
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { sortByField: 'comments' } },
+        },
       ],
     });
     setCommentText('');
@@ -188,9 +192,6 @@ export default function Scroll({
               );
             })}
           </Typography>
-          {scroll?.shared_resource?._id && (
-            <ScrollPreview scroll={scroll?.shared_resource?._id} />
-          )}
           <Grid container spacing={2} className='mb-2'>
             {scroll?.video && (
               <Grid item xs={12}>
@@ -229,6 +230,9 @@ export default function Scroll({
                 </Grid>
               ))}
           </Grid>
+          {scroll?.shared_resource?._id && (
+            <ScrollPreview scroll={scroll?.shared_resource?._id} />
+          )}
           <br />
           {`${scroll?.reactions?.likes} ${
             scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'

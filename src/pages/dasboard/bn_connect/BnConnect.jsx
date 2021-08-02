@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import SavedItems from '../SavedItems';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScroll from './CreateScroll';
 import CreatePost from './create_scroll/CreatePost';
@@ -30,6 +31,7 @@ export default function BnConnect() {
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
+  const [openSavedItems, setOpenSavedItems] = useState(false);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
   const [sharedPost, setSharedPost] = useState(null);
@@ -51,41 +53,59 @@ export default function BnConnect() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard
+                  setOpenSavedItems={setOpenSavedItems}
+                  setOpen={(open) => setCreateScrollOpen(open)}
+                />
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll
-                setOpenImage={setOpenImage}
-                setOpenVideo={setOpenVideo}
-                setOpen={(open) => setCreateScrollOpen(open)}
-              />
-              <Grid item align='center'>
-                {loading && (
-                  <CircularProgress color='primary' size={60} thickness={6} />
+            {openSavedItems && (
+              <Grid item xs={12} sm={12} md={8} lg={6}>
+                <SavedItems
+                  setOpen={() => setCreateScrollOpen(true)}
+                  setOpenSavedItems={setOpenSavedItems}
+                  setOpenFlag={setCreateFlagOpen}
+                  setFlaggedResource={setFlaggedResource}
+                  setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                  setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                  setSharedPost={setSharedPost}
+                />
+              </Grid>
+            )}
+            {!openSavedItems && (
+              <Grid item xs={12} sm={12} md={8} lg={6}>
+                <CreateScroll
+                  setOpenImage={setOpenImage}
+                  setOpenVideo={setOpenVideo}
+                  setOpen={(open) => setCreateScrollOpen(open)}
+                />
+                <Grid item align='center'>
+                  {loading && (
+                    <CircularProgress color='primary' size={60} thickness={6} />
+                  )}
+                </Grid>
+                {data?.Posts?.get &&
+                  data?.Posts?.get?.map((scroll) => (
+                    <Scroll
+                      setOpen={() => setCreateScrollOpen(true)}
+                      setOpenFlag={setCreateFlagOpen}
+                      setFlaggedResource={setFlaggedResource}
+                      setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                      setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                      setSharedPost={setSharedPost}
+                      key={scroll?._id}
+                      scroll={scroll}
+                    />
+                  ))}
+                {data?.Posts?.get?.length < 1 && (
+                  <Grid align='center'>
+                    <Typography color='primary'>
+                      There are no scrolls yet..Start Some!!
+                    </Typography>
+                  </Grid>
                 )}
               </Grid>
-              {data?.Posts?.get &&
-                data?.Posts?.get?.map((scroll) => (
-                  <Scroll
-                    setOpen={() => setCreateScrollOpen(true)}
-                    setOpenFlag={setCreateFlagOpen}
-                    setFlaggedResource={setFlaggedResource}
-                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
-                    setSharedPost={setSharedPost}
-                    key={scroll?._id}
-                    scroll={scroll}
-                  />
-                ))}
-              {data?.Posts?.get?.length < 1 && (
-                <Grid align='center'>
-                  <Typography color='primary'>
-                    There are no scrolls yet..Start Some!!
-                  </Typography>
-                </Grid>
-              )}
-            </Grid>
+            )}
             <Grid item md={4} lg={3}>
               <Hidden smDown>
                 <TrendingPosts posts={[1, 2, 3]} />
