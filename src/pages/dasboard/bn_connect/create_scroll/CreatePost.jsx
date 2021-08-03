@@ -1,3 +1,4 @@
+//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
   Avatar,
@@ -22,7 +23,7 @@ import {
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
-import { DropzoneDialog } from 'material-ui-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
@@ -38,16 +39,18 @@ export default function CreatePost({
   open,
   setOpen,
   openImage,
+  imageDisabled,
   setOpenImage,
+  setImageDisabled,
   openVideo,
+  videoDisabled,
   setOpenVideo,
+  setVideoDisabled,
   sharedPost,
   setSharedPost,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
 
-  const [videoDisabled, setVideoDisabled] = useState(false);
-  const [imageDisabled, setImageDisabled] = useState(false);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
@@ -77,6 +80,8 @@ export default function CreatePost({
     setCreatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
+    setOpenImage(false);
+    setOpenVideo(false);
   };
 
   useEffect(() => {
@@ -105,13 +110,14 @@ export default function CreatePost({
   return (
     <Modal
       style={{
+        maxHeight: '95%',
         outline: 'none',
-        maxHeight: '100%',
-        overflow: 'scroll',
+
         '&:focus-visible': {
           outline: 'none',
         },
       }}
+      scroll='body'
       className='center-horizontal center-vertical w-100'
       open={open}
     >
@@ -126,6 +132,8 @@ export default function CreatePost({
                 <CloseRounded
                   onClick={() => {
                     setOpen(!open);
+                    setOpenImage(false);
+                    setOpenVideo(false);
                     setScrollImages([]);
                     setScrollVideo(null);
                     setCreatePostErr(false);
@@ -185,24 +193,38 @@ export default function CreatePost({
                 }
                 value={scroll_text}
               />
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
-              {/* <Button
-                onClick={() => {
-                  setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');
-                  document.getElementById('content-field').focus();
-                }}
-                variant='text'
-                style={{ textTransform: 'none' }}
-                color='primary'
+              <Card
+                style={{ display: openImage || openVideo ? 'block' : 'none' }}
               >
-                <Typography variant='body2'>Add Hashtags</Typography>
-              </Button> */}
+                <DropzoneArea
+                  clearOnUnmount
+                  onChange={(files) => {
+                    openImage ? setScrollImages(files) : setScrollVideo(null);
+                  }}
+                  dropzoneText={
+                    openImage
+                      ? 'Drag n drop images here or click'
+                      : 'Drag n drop a video here or click'
+                  }
+                  acceptedFiles={openImage ? ['image/*'] : ['video/*']}
+                  maxFileSize={5000000}
+                  filesLimit={openImage ? '4' : '1'}
+                  showAlerts={['error']}
+                  showPreviews={false}
+                  showPreviewsInDropzone
+                  previewGridProps={{
+                    container: { spacing: 1, direction: 'row' },
+                  }}
+                />
+              </Card>
+              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
                     onClick={() => {
                       setOpenImage(true);
+                      setVideoDisabled(true);
                     }}
                     disabled={imageDisabled}
                     size='small'
@@ -215,6 +237,7 @@ export default function CreatePost({
                   <IconButton
                     onClick={() => {
                       setOpenVideo(true);
+                      setImageDisabled(true);
                     }}
                     disabled={videoDisabled}
                     size='small'
@@ -224,52 +247,6 @@ export default function CreatePost({
                   >
                     <VideocamRounded />
                   </IconButton>
-
-                  <DropzoneDialog
-                    acceptedFiles={['image/*']}
-                    cancelButtonText={'cancel'}
-                    submitButtonText={'submit'}
-                    maxFileSize={5000000}
-                    filesLimit='4'
-                    showAlerts={['error']}
-                    showPreviews={false}
-                    showPreviewsInDropzone
-                    previewGridProps={{
-                      container: { spacing: 1, direction: 'row' },
-                    }}
-                    open={openImage}
-                    onClose={() => setOpenImage(false)}
-                    onSave={(files) => {
-                      setScrollImages(files);
-                      setOpenImage(false);
-                      setVideoDisabled(true);
-                    }}
-                  />
-                  <DropzoneDialog
-                    acceptedFiles={['video/*']}
-                    cancelButtonText={'cancel'}
-                    submitButtonText={'submit'}
-                    useChipsForPreview
-                    maxFileSize={5000000}
-                    filesLimit='1'
-                    showAlerts={['error']}
-                    showPreviews={false}
-                    showPreviewsInDropzone
-                    previewChipProps={{
-                      style: {
-                        marginLeft: 16,
-                      },
-                    }}
-                    open={openVideo}
-                    onClose={() => setOpenVideo(false)}
-                    onSave={(files) => {
-                      console.log(files);
-                      setScrollVideo(files[0]);
-                      setOpenVideo(false);
-                      setImageDisabled(true);
-                    }}
-                  />
-
                   {createPostIcons.map(({ Icon }) => {
                     return (
                       <IconButton

@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client';
 import {
   Card,
   CardHeader,
-  CardActions,
   CircularProgress,
   IconButton,
   Grid,
@@ -109,50 +108,48 @@ export default function SavedItems({
           }
           subheader={
             <Typography variant='body2' color='textSecondary'>
-              Anything Saved under BNSocial is private.
+              Anything saved under BNSocial is private.
             </Typography>
           }
         />
 
-        <CardActions>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor='primary'
-            /* classes={{
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor='primary'
+          /* classes={{
               root: classes.tabsRoot,
               indicator: classes.displayNone,
             }} */
-          >
-            <Tab
-              /* classes={{
+        >
+          <Tab
+            /* classes={{
                     root: classes.tabRootButton,
                     label: classes.tabLabel,
                     selected: classes.tabSelected,
                     wrapper: classes.tabWrapper,
                   }} */
-              key={'allItems'}
-              label={'All'}
-              style={{ textTransform: 'none' }}
-            />
-            <Tab
-              key={'Scrolls'}
-              label={'Scrolls'}
-              style={{ textTransform: 'none' }}
-            />
-            <Tab
-              key={'Comments'}
-              label={'Comments'}
-              style={{ textTransform: 'none' }}
-            />
-            {/* <Tab
+            key={'allItems'}
+            label={'All'}
+            style={{ textTransform: 'none' }}
+          />
+          <Tab
+            key={'Scrolls'}
+            label={'Scrolls'}
+            style={{ textTransform: 'none' }}
+          />
+          <Tab
+            key={'Comments'}
+            label={'Comments'}
+            style={{ textTransform: 'none' }}
+          />
+          {/* <Tab
               key={'Articles'}
               label={'Articles'}
               style={{ textTransform: 'none' }}
               disabled
             /> */}
-          </Tabs>
-        </CardActions>
+        </Tabs>
       </Card>
       {value === 0 && (scrollsLoading || commentsLoading || allLoading) && (
         <Grid align='center'>

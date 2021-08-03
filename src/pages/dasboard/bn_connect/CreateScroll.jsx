@@ -14,7 +14,13 @@ import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
 
-export default function CreateScroll({ setOpen, setOpenImage, setOpenVideo }) {
+export default function CreateScroll({
+  setOpen,
+  setOpenImage,
+  setOpenVideo,
+  setImageDisabled,
+  setVideoDisabled,
+}) {
   const theme = useTheme();
   return (
     <Card style={{ marginBottom: 12 }}>
@@ -44,6 +50,7 @@ export default function CreateScroll({ setOpen, setOpenImage, setOpenVideo }) {
             onClick={() => {
               setOpen(true);
               setOpenImage(true);
+              setVideoDisabled(true);
             }}
             variant='text'
             color='primary'
@@ -64,6 +71,7 @@ export default function CreateScroll({ setOpen, setOpenImage, setOpenVideo }) {
             onClick={() => {
               setOpen(true);
               setOpenVideo(true);
+              setImageDisabled(true);
             }}
             variant='text'
             color='primary'

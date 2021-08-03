@@ -31,6 +31,8 @@ export default function BnConnect() {
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
+  const [videoDisabled, setVideoDisabled] = useState(false);
+  const [imageDisabled, setImageDisabled] = useState(false);
   const [openSavedItems, setOpenSavedItems] = useState(false);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
@@ -76,6 +78,8 @@ export default function BnConnect() {
               <Grid item xs={12} sm={12} md={8} lg={6}>
                 <CreateScroll
                   setOpenImage={setOpenImage}
+                  setImageDisabled={setImageDisabled}
+                  setVideoDisabled={setVideoDisabled}
                   setOpenVideo={setOpenVideo}
                   setOpen={(open) => setCreateScrollOpen(open)}
                 />
@@ -100,7 +104,7 @@ export default function BnConnect() {
                 {data?.Posts?.get?.length < 1 && (
                   <Grid align='center'>
                     <Typography color='primary'>
-                      There are no scrolls yet..Start Some!!
+                      There are no scrolls yet..Let yours be the first!!
                     </Typography>
                   </Grid>
                 )}
@@ -119,6 +123,10 @@ export default function BnConnect() {
         open={createScrollOpen}
         setOpen={(open) => setCreateScrollOpen(open)}
         openImage={openImage}
+        imageDisabled={imageDisabled}
+        videoDisabled={videoDisabled}
+        setImageDisabled={setImageDisabled}
+        setVideoDisabled={setVideoDisabled}
         setOpenImage={setOpenImage}
         openVideo={openVideo}
         setOpenVideo={setOpenVideo}
