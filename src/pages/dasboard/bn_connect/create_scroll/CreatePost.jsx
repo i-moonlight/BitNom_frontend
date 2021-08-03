@@ -37,12 +37,15 @@ import ScrollPreview from '../ScrollPreview';
 export default function CreatePost({
   open,
   setOpen,
+  openImage,
+  setOpenImage,
+  openVideo,
+  setOpenVideo,
   sharedPost,
   setSharedPost,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
-  const [openImage, setOpenImage] = useState(false);
-  const [openVideo, setOpenVideo] = useState(false);
+
   const [videoDisabled, setVideoDisabled] = useState(false);
   const [imageDisabled, setImageDisabled] = useState(false);
   const [scroll_text, setScrollText] = useState('');
@@ -78,7 +81,7 @@ export default function CreatePost({
 
   useEffect(() => {
     if (data?.Posts?.create) {
-      setOpen(false);
+      //console.log(data);
     }
   }, [data]);
 
@@ -96,12 +99,15 @@ export default function CreatePost({
       shared_resource: sharedResource,
       is_flag: flag,
     });
+    setOpen(false);
   };
 
   return (
     <Modal
       style={{
         outline: 'none',
+        maxHeight: '100%',
+        overflow: 'scroll',
         '&:focus-visible': {
           outline: 'none',
         },
@@ -162,7 +168,6 @@ export default function CreatePost({
                   }
                 />
               </ListItem>
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               <TextField
                 fullWidth
                 multiline
@@ -180,6 +185,7 @@ export default function CreatePost({
                 }
                 value={scroll_text}
               />
+              {sharedPost && <ScrollPreview scroll={sharedPost} />}
               {/* <Button
                 onClick={() => {
                   setScrollText(scroll_text?.length ? scroll_text + ' #' : '#');

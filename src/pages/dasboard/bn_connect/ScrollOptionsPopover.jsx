@@ -17,7 +17,10 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_BOOKMARK } from '../utilities/queries';
+import {
+  MUTATION_CREATE_BOOKMARK,
+  GET_BOOKMARKED_SCROLLS,
+} from '../utilities/queries';
 
 export default function ScrollOptionsPopover({
   scroll,
@@ -48,7 +51,18 @@ export default function ScrollOptionsPopover({
           type: 'post',
         },
       },
+      refetchQueries: [
+        {
+          query: GET_BOOKMARKED_SCROLLS,
+          variables: {
+            data: {
+              sortAscending: false,
+            },
+          },
+        },
+      ],
     });
+    handleScrollOptionClose();
   };
   const handleReportScroll = () => {
     setOpenFlag(true);
@@ -99,12 +113,14 @@ export default function ScrollOptionsPopover({
             <ListItemText primary='Edit this scroll' />
           </ListItem>
         )}
-        <ListItem button divider>
-          <ListItemIcon>
-            <PersonAddDisabledOutlined />
-          </ListItemIcon>
-          <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
-        </ListItem>
+        {user?._id !== scroll?.author?._id && (
+          <ListItem button divider>
+            <ListItemIcon>
+              <PersonAddDisabledOutlined />
+            </ListItemIcon>
+            <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
+          </ListItem>
+        )}
         <Divider />
         <div className='m-2'>
           <Button fullWidth textCase>

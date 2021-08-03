@@ -24,7 +24,6 @@ import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/People';
 import Profile from './pages/dasboard/profile/Profile';
-
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -39,11 +38,12 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
     console.log(`Graphql network error ${networkError}`);
   }
 });
+const backendUri = process.env.REACT_APP_BACKEND_URL;
 
 const authLink = from([
   errorLink,
   new HttpLink({
-    uri: 'http://localhost:3000/users/graphql',
+    uri: backendUri + '/users/graphql',
     credentials: 'include',
   }),
 ]);
@@ -51,14 +51,14 @@ const authLink = from([
 // const socialLink = from([
 //   errorLink,
 //   new HttpLink({
-//     uri: 'http://localhost:3000/bn-social/graphql',
+//     uri: backendUri + '/bn-social/graphql',
 //     // uri: "http://localhost:3000/files/graphql",
 //     credentials: 'include',
 //   }),
 // ]);
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:3000/bn-social/graphql',
+  uri: backendUri + '/bn-social/graphql',
   credentials: 'include',
   headers: {
     'keep-alive': 'true',

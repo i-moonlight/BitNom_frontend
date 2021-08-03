@@ -14,7 +14,7 @@ import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
 
-export default function CreateScroll({ setOpen }) {
+export default function CreateScroll({ setOpen, setOpenImage, setOpenVideo }) {
   const theme = useTheme();
   return (
     <Card style={{ marginBottom: 12 }}>
@@ -39,7 +39,15 @@ export default function CreateScroll({ setOpen }) {
           </Card>
         </CardActionArea>
         <div className='space-between mt-2 mx-1'>
-          <Button textCase variant='text' color='primary'>
+          <Button
+            textCase
+            onClick={() => {
+              setOpen(true);
+              setOpenImage(true);
+            }}
+            variant='text'
+            color='primary'
+          >
             <div className='center-horizontal'>
               <img
                 style={{ marginRight: 10, width: 20 }}
@@ -51,7 +59,15 @@ export default function CreateScroll({ setOpen }) {
               </Hidden>
             </div>
           </Button>
-          <Button textCase variant='text' color='primary'>
+          <Button
+            textCase
+            onClick={() => {
+              setOpen(true);
+              setOpenVideo(true);
+            }}
+            variant='text'
+            color='primary'
+          >
             <div className='center-horizontal'>
               <img
                 style={{ marginRight: 10, width: 20 }}

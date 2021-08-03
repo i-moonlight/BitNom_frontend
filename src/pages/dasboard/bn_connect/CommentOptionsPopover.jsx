@@ -17,7 +17,10 @@ import {
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_BOOKMARK } from '../utilities/queries';
+import {
+  MUTATION_CREATE_BOOKMARK,
+  GET_BOOKMARKED_COMMENTS,
+} from '../utilities/queries';
 
 export default function CommentOptionsPopover({
   comment,
@@ -53,6 +56,16 @@ export default function CommentOptionsPopover({
           type: 'comment',
         },
       },
+      refetchQueries: [
+        {
+          query: GET_BOOKMARKED_COMMENTS,
+          variables: {
+            data: {
+              sortAscending: false,
+            },
+          },
+        },
+      ],
     });
     handleCommentOptionClose();
   };
