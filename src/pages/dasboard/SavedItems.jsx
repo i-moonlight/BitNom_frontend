@@ -35,20 +35,26 @@ export default function SavedItems({
   const [savedComments, setSavedComments] = useState([]);
   //const [savedArticles, setSavedArticles] = useState([]);
 
-  const { data: bookmarkedScrolls } = useQuery(GET_BOOKMARKED_SCROLLS, {
-    variables: {
-      data: {
-        sortAscending: false,
+  const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
+    GET_BOOKMARKED_SCROLLS,
+    {
+      variables: {
+        data: {
+          sortAscending: false,
+        },
       },
-    },
-  });
-  const { data: bookmarkedComments } = useQuery(GET_BOOKMARKED_COMMENTS, {
-    variables: {
-      data: {
-        sortAscending: false,
+    }
+  );
+  const { data: bookmarkedComments, loading: commentsLoading } = useQuery(
+    GET_BOOKMARKED_COMMENTS,
+    {
+      variables: {
+        data: {
+          sortAscending: false,
+        },
       },
-    },
-  });
+    }
+  );
 
   const handleChange = (event, value) => {
     setValue(value);
@@ -83,7 +89,6 @@ export default function SavedItems({
     setAllItems(allSaved);
     setAllLoading(false);
   }, [savedScrolls, savedComments]);
-  console.log(allItems);
   return (
     <>
       <Card variant='outlined' style={{ marginBottom: 12 }}>
@@ -149,8 +154,14 @@ export default function SavedItems({
           </Tabs>
         </CardActions>
       </Card>
+      {value === 0 && (scrollsLoading || commentsLoading || allLoading) && (
+        <Grid align='center'>
+          <CircularProgress color='primary' size={24} thickness={4} />
+        </Grid>
+      )}
       {value === 0 &&
         allItems.length > 1 &&
+        !allLoading &&
         allItems
           ?.sort((a, b) => b.created - a.created)
           .map((item) =>
@@ -202,9 +213,12 @@ export default function SavedItems({
             setImagePreviewOpen={setImagePreviewOpen}
           />
         ))}
-      {(value == 0 && allItems.length == 0) ||
-      (value == 1 && savedScrolls.length == 0) ||
-      (value == 2 && savedComments.length == 0) ? (
+      {((value == 0 && allItems.length < 1) ||
+        (value == 1 && savedScrolls.length < 1) ||
+        (value == 2 && savedComments.length < 1)) &&
+      !scrollsLoading &&
+      !commentsLoading &&
+      !allLoading ? (
         <Grid align='center'>
           <Typography variant='body1' color='primary'>
             No Saved items here yet..start bookmarking!!
@@ -212,11 +226,6 @@ export default function SavedItems({
         </Grid>
       ) : (
         ''
-      )}
-      {value == 0 && allLoading && (
-        <Grid align='center'>
-          <CircularProgress color='primary' size={24} thickness={4} />
-        </Grid>
       )}
     </>
   );

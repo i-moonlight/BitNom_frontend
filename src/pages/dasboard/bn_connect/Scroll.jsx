@@ -57,10 +57,6 @@ export default function Scroll({
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
-  //   variables: { _id: scroll?._id },
-  // });
-
   const [
     createComment,
     {
@@ -69,8 +65,6 @@ export default function Scroll({
       // error: createCommentError,
     },
   ] = useMutation(MUTATION_CREATE_COMMENT);
-
-  //console.log(scroll?.shared_resource);
 
   const {
     data: commentsData,
@@ -89,10 +83,6 @@ export default function Scroll({
         {
           query: QUERY_GET_COMMENTS,
           variables: { data: { scroll_id: scroll?._id } },
-        },
-        {
-          query: QUERY_LOAD_SCROLLS,
-          variables: { data: { sortByField: 'comments' } },
         },
       ],
     });

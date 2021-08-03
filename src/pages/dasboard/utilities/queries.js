@@ -209,6 +209,39 @@ export const QUERY_LOAD_SCROLLS = gql`
   }
 `;
 
+export const GET_TRENDING_POSTS = gql`
+  query ($data: IGetPosts) {
+    Posts {
+      get(data: $data) {
+        _id
+        author {
+          _id
+          displayName
+        }
+        comments
+        createdAt
+        reactions {
+          likes
+          dislikes
+          loves
+          celebrations
+        }
+        content
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+      }
+    }
+  }
+`;
+
 export const GET_BOOKMARKED_SCROLLS = gql`
   query ($data: IGetBookmarked) {
     Posts {
