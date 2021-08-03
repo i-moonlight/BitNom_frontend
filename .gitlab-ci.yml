@@ -70,7 +70,7 @@ deploy_on_server:
       - main
   variables:
     REACT_APP_API_GATEWAY: "/graphql"
-    APPLICATION_DOMAIN: "https://bitnorm.com"
+    REACT_APP_BACKEND_URL: "https://bitnorm.com"
     REACT_APP_WS: "ws://bitnorm.com"
   environment:
     name: staging
@@ -78,7 +78,7 @@ deploy_on_server:
   script:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_WS=$REACT_APP_WS
-    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
+    - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
     - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
@@ -94,7 +94,7 @@ deploy_demo:
       - development
   variables:
     REACT_APP_API_GATEWAY: "graphql"
-    APPLICATION_DOMAIN: "http://136.144.176.215:4545"
+    REACT_APP_BACKEND_URL: "http://136.144.176.215:4545"
     REACT_APP_WS: "ws://136.144.176.215:4545"
   environment:
     name: staging
@@ -102,7 +102,7 @@ deploy_demo:
   script:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_WS=$REACT_APP_WS
-    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
+    - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
     - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend-dev.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
