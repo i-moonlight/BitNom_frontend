@@ -57,10 +57,6 @@ export default function Scroll({
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
-  //   variables: { _id: scroll?._id },
-  // });
-
   const [
     createComment,
     {
@@ -69,8 +65,6 @@ export default function Scroll({
       // error: createCommentError,
     },
   ] = useMutation(MUTATION_CREATE_COMMENT);
-
-  //console.log(scroll?.shared_resource);
 
   const {
     data: commentsData,
@@ -188,9 +182,6 @@ export default function Scroll({
               );
             })}
           </Typography>
-          {scroll?.shared_resource?._id && (
-            <ScrollPreview scroll={scroll?.shared_resource?._id} />
-          )}
           <Grid container spacing={2} className='mb-2'>
             {scroll?.video && (
               <Grid item xs={12}>
@@ -229,6 +220,9 @@ export default function Scroll({
                 </Grid>
               ))}
           </Grid>
+          {scroll?.shared_resource?._id && (
+            <ScrollPreview scroll={scroll?.shared_resource?._id} />
+          )}
           <br />
           {`${scroll?.reactions?.likes} ${
             scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
