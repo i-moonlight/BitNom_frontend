@@ -32,6 +32,8 @@ export default function Comment({
   onCreateComment,
   comment_image,
   scroll,
+  setCommentToEdit,
+  setUpdateCommentOpen,
   setFlaggedResource,
   setOpenFlag,
   setImagePreviewURL,
@@ -134,7 +136,7 @@ export default function Comment({
                       onClick={() => {
                         setImagePreviewURL &&
                           setImagePreviewURL(
-                            'http://localhost:3000' + comment.image
+                            process.env.REACT_APP_BACKEND_URL + comment.image
                           );
                         setImagePreviewOpen(true);
                       }}
@@ -145,7 +147,10 @@ export default function Comment({
                           borderRadius: 8,
                           width: '100%',
                           backgroundImage:
-                            'url(http://localhost:3000' + comment.image + ')',
+                            'url(' +
+                            process.env.REACT_APP_BACKEND_URL +
+                            comment.image +
+                            ')',
                           backgroundSize: 'cover',
                           backgroundColor: 'rgba(0,0,0,0.2)',
                           backgroundBlendMode: 'soft-light',
@@ -236,6 +241,8 @@ export default function Comment({
       <CommentOptionsPopover
         setFlaggedResource={setFlaggedResource}
         setOpenFlag={setOpenFlag}
+        setUpdateCommentOpen={setUpdateCommentOpen}
+        setCommentToEdit={setCommentToEdit}
         comment={comment}
         commentOptionId={commentOptionId}
         commentOptionAnchorEl={commentOptionAnchorEl}
@@ -254,6 +261,8 @@ export default function Comment({
               }}
               key={commentInner._id}
               comment={commentInner}
+              setUpdateCommentOpen={setUpdateCommentOpen}
+              setCommentToEdit={setCommentToEdit}
               setImagePreviewURL={setImagePreviewURL}
               setImagePreviewOpen={setImagePreviewOpen}
               setFlaggedResource={setFlaggedResource}

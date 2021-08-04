@@ -43,7 +43,9 @@ export default function Scroll({
   scroll,
   setSharedPost,
   setPostToEdit,
+  setCommentToEdit,
   setUpdateOpen,
+  setUpdateCommentOpen,
   setFlaggedResource,
   setOpenFlag,
   setOpen,
@@ -351,6 +353,8 @@ export default function Scroll({
                 <Comment
                   scroll={scroll}
                   key={comment._id}
+                  setUpdateCommentOpen={setUpdateCommentOpen}
+                  setCommentToEdit={setCommentToEdit}
                   comment={comment}
                   setFlaggedResource={setFlaggedResource}
                   setOpenFlag={setOpenFlag}
