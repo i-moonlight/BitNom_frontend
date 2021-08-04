@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  //const [trending, setTrending] = useState([]);
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
@@ -42,11 +43,24 @@ export default function BnConnect() {
   const classes = useStyles();
 
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
+  /* const { data: trendingData, loading: loadingTrending } = useQuery(
+    QUERY_LOAD_SCROLLS,
+    {
+      variables: { data: { sortByField: 'comments' } },
+    }
+  ); */
 
   useEffect(() => {
     console.log(error);
     console.log(loading);
   }, [data]);
+
+  /* useEffect(() => {
+    if (trendingData?.Posts?.get) {
+      let posts = trendingData?.Posts?.get;
+      setTrending(posts);
+    }
+  }, [trendingData]); */
 
   return (
     <Screen>
@@ -112,7 +126,11 @@ export default function BnConnect() {
             )}
             <Grid item md={4} lg={3}>
               <Hidden smDown>
-                <TrendingPosts posts={[1, 2, 3]} />
+                <TrendingPosts
+                  //trending={trending}
+                  //loading={loadingTrending}
+                  posts={[1, 2, 3]}
+                />
                 <SuggestedPeople />
               </Hidden>
             </Grid>

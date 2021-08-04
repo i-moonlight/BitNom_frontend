@@ -135,6 +135,7 @@ export default function CreatePost({
                     setScrollImages([]);
                     setScrollVideo(null);
                     setCreatePostErr(false);
+                    setSharedPost(null);
                     setImageDisabled(false);
                     setVideoDisabled(false);
                   }}
@@ -143,7 +144,7 @@ export default function CreatePost({
             </div>
 
             <Divider />
-            <CardContent style={{ maxHeight: '500px', overflowY: 'scroll' }}>
+            <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
                   <Avatar src={user?.photo}>
