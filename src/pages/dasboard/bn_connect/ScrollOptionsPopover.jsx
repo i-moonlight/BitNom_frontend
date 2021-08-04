@@ -26,6 +26,8 @@ export default function ScrollOptionsPopover({
   scroll,
   setFlaggedResource,
   setOpenFlag,
+  //setUpdateOpen,
+  setPostToEdit,
   scrollOptionId,
   scrollOptionAnchorEl,
   isScrollOptionOpen,
@@ -70,6 +72,11 @@ export default function ScrollOptionsPopover({
     const resource = Object.assign({ resourceType: 'post' }, scroll);
     setFlaggedResource(resource);
   };
+  const handleEditScroll = () => {
+    setPostToEdit(scroll);
+    //setUpdateOpen(true);
+    handleScrollOptionClose();
+  };
 
   return (
     <Popover
@@ -106,7 +113,7 @@ export default function ScrollOptionsPopover({
           />
         </ListItem>
         {user?._id === scroll?.author?._id && (
-          <ListItem button divider>
+          <ListItem button divider onClick={handleEditScroll}>
             <ListItemIcon>
               <FileCopyOutlined />
             </ListItemIcon>

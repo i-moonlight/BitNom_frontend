@@ -19,10 +19,11 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
-export default function UserCard({ setOpen, setOpenSavedItems }) {
+export default function UserCard({ setOpen }) {
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
@@ -126,9 +127,11 @@ export default function UserCard({ setOpen, setOpenSavedItems }) {
         </CardContent>
         <Divider />
         <CardActions className='py-0'>
-          <IconButton onClick={() => setOpenSavedItems(true)}>
-            <BookmarkRounded />
-          </IconButton>
+          <Link to='/dashboard/profile/bookmarks'>
+            <IconButton>
+              <BookmarkRounded />
+            </IconButton>
+          </Link>
           <Typography variant='body2'>Saved Items</Typography>
         </CardActions>
         <Divider />
