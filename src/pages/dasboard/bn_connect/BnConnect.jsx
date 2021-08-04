@@ -13,6 +13,7 @@ import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScroll from './CreateScroll';
 import CreatePost from './create_scroll/CreatePost';
+import UpdatePost from './update_scroll/UpdatePost';
 import FlagResource from './flag_resource/FlagResource';
 import Scroll from './Scroll';
 import SuggestedPeople from './SuggestedPeople';
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
   //const [trending, setTrending] = useState([]);
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
@@ -36,6 +38,7 @@ export default function BnConnect() {
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
   const [sharedPost, setSharedPost] = useState(null);
+  const [postToEdit, setPostToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
 
   const classes = useStyles();
@@ -87,11 +90,13 @@ export default function BnConnect() {
                 data?.Posts?.get?.map((scroll) => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
+                    setUpdateOpen={setUpdateScrollOpen}
                     setOpenFlag={setCreateFlagOpen}
                     setFlaggedResource={setFlaggedResource}
                     setImagePreviewURL={(url) => setImagePreviewURL(url)}
                     setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
+                    setPostToEdit={setPostToEdit}
                     key={scroll?._id}
                     scroll={scroll}
                   />
@@ -130,6 +135,22 @@ export default function BnConnect() {
         setOpenVideo={setOpenVideo}
         sharedPost={sharedPost}
         setSharedPost={setSharedPost}
+      />
+      <UpdatePost
+        updateScrollOpen={updateScrollOpen}
+        postToEdit={postToEdit}
+        setPostToEdit={setPostToEdit}
+        setUpdateScrollOpen={(UpdateScrollOpen) =>
+          setUpdateScrollOpen(UpdateScrollOpen)
+        }
+        openImage={openImage}
+        imageDisabled={imageDisabled}
+        videoDisabled={videoDisabled}
+        setImageDisabled={setImageDisabled}
+        setVideoDisabled={setVideoDisabled}
+        setOpenImage={setOpenImage}
+        openVideo={openVideo}
+        setOpenVideo={setOpenVideo}
       />
       <ImagePreview
         open={imagePreviewOpen}

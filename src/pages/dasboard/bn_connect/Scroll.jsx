@@ -42,6 +42,8 @@ const scrollOptionId = 'menu-scroll-option';
 export default function Scroll({
   scroll,
   setSharedPost,
+  setPostToEdit,
+  setUpdateOpen,
   setFlaggedResource,
   setOpenFlag,
   setOpen,
@@ -187,7 +189,7 @@ export default function Scroll({
               <Grid item xs={12}>
                 <CardMedia
                   component='video'
-                  src={`http://localhost:3000${scroll?.video}`}
+                  src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                   controls
                 />
               </Grid>
@@ -200,7 +202,9 @@ export default function Scroll({
                   item
                   xs={scroll?.images.length > 1 ? 6 : 12}
                   onClick={() => {
-                    setImagePreviewURL('http://localhost:3000' + imageURL);
+                    setImagePreviewURL(
+                      process.env.REACT_APP_BACKEND_URL + imageURL
+                    );
                     setImagePreviewOpen(true);
                   }}
                 >
@@ -210,7 +214,10 @@ export default function Scroll({
                       borderRadius: 8,
                       width: '100%',
                       backgroundImage:
-                        'url(http://localhost:3000' + imageURL + ')',
+                        'url(' +
+                        process.env.REACT_APP_BACKEND_URL +
+                        imageURL +
+                        ')',
                       backgroundSize: 'cover',
                       backgroundColor: 'rgba(0,0,0,0.2)',
                       backgroundBlendMode: 'soft-light',
@@ -363,7 +370,9 @@ export default function Scroll({
         isScrollOptionOpen={isScrollOptionOpen}
         handleScrollOptionClose={handleScrollOptionClose}
         setFlaggedResource={setFlaggedResource}
+        setPostToEdit={setPostToEdit}
         setOpenFlag={setOpenFlag}
+        setUpdateOpen={setUpdateOpen}
       />
     </>
   );
