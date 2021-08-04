@@ -1,15 +1,13 @@
 import { useMutation } from '@apollo/client';
 import {
-  Avatar,
   Card,
   CardContent,
   Grid,
   IconButton,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
 
-import { MoreHorizRounded, LaunchRounded } from '@material-ui/icons';
+import { MoreHorizRounded } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
@@ -73,11 +71,6 @@ export default function SavedComment({
   return (
     <>
       <div style={style} className='d-flex flex-row flex-start'>
-        <Tooltip title='Go to scroll' aria-label='Scroll link'>
-          <Avatar className='mx-2'>
-            <LaunchRounded />
-          </Avatar>
-        </Tooltip>
         <div className='mb-3 flex-1'>
           <Card variant='outlined'>
             <CardContent>

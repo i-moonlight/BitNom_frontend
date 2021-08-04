@@ -131,23 +131,26 @@ export default function SavedItems({
                   }} */
             key={'allItems'}
             label={'All'}
+            disableRipple
             style={{ textTransform: 'none' }}
           />
           <Tab
             key={'Scrolls'}
             label={'Scrolls'}
+            disableRipple
             style={{ textTransform: 'none' }}
           />
           <Tab
             key={'Comments'}
             label={'Comments'}
+            disableRipple
             style={{ textTransform: 'none' }}
           />
           {/* <Tab
               key={'Articles'}
               label={'Articles'}
               style={{ textTransform: 'none' }}
-              disabled
+              disableRipple
             /> */}
         </Tabs>
       </Card>
@@ -157,7 +160,7 @@ export default function SavedItems({
         </Grid>
       )}
       {value === 0 &&
-        allItems.length > 1 &&
+        allItems.length > 0 &&
         !allLoading &&
         allItems
           ?.sort((a, b) => b.created - a.created)
@@ -185,7 +188,7 @@ export default function SavedItems({
             )
           )}
       {value === 1 &&
-        savedScrolls.length > 1 &&
+        savedScrolls.length > 0 &&
         savedScrolls?.map((scroll) => (
           <Scroll
             setOpen={setOpen}

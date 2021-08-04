@@ -110,14 +110,12 @@ export default function CreatePost({
   return (
     <Modal
       style={{
-        maxHeight: '95%',
         outline: 'none',
 
         '&:focus-visible': {
           outline: 'none',
         },
       }}
-      scroll='body'
       className='center-horizontal center-vertical w-100'
       open={open}
     >
@@ -145,7 +143,7 @@ export default function CreatePost({
             </div>
 
             <Divider />
-            <CardContent>
+            <CardContent style={{ maxHeight: '500px', overflowY: 'scroll' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
                   <Avatar src={user?.photo}>
