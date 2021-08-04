@@ -311,16 +311,7 @@ export default function UpdatePost({
                     <VideocamRounded />
                   </IconButton>
                 </div>
-                {!loading && (
-                  <Button
-                    onClick={() => {
-                      setScrollText('');
-                      handleUpdatePost();
-                    }}
-                  >
-                    Update
-                  </Button>
-                )}
+                {!loading && <Button onClick={handleUpdatePost}>Update</Button>}
                 {loading && (
                   <Button size='small' style={{ margin: '0' }}>
                     <CircularProgress size={24} thickness={4} />
