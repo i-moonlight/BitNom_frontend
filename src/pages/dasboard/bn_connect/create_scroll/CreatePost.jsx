@@ -178,6 +178,7 @@ export default function CreatePost({
               <TextField
                 fullWidth
                 multiline
+                variant='standard'
                 error={createPostErr && true}
                 errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}

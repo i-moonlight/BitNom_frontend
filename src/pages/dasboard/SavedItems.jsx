@@ -1,39 +1,63 @@
 import { useQuery } from '@apollo/client';
 import {
+  CircularProgress,
+  Container,
+  Grid,
+  Hidden,
   Card,
   CardHeader,
-  CircularProgress,
   IconButton,
-  Grid,
   Tabs,
   Tab,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   GET_BOOKMARKED_SCROLLS,
   GET_BOOKMARKED_COMMENTS,
+  QUERY_LOAD_SCROLLS,
 } from './utilities/queries';
+import ImagePreview from '../../components/ImagePreview';
+import Screen from '../../components/Screen';
+import CreatePost from './bn_connect/create_scroll/CreatePost';
+import FlagResource from './bn_connect/flag_resource/FlagResource';
 import Scroll from './bn_connect/Scroll';
+import SuggestedPeople from './bn_connect/SuggestedPeople';
+import TrendingPosts from './bn_connect/TrendingPosts';
 import SavedComment from './bn_connect/SavedComment';
+import UserCard from './bn_connect/UserCard';
 
-export default function SavedItems({
-  setOpenSavedItems,
-  setSharedPost,
-  setFlaggedResource,
-  setOpenFlag,
-  setOpen,
-  setImagePreviewOpen,
-  setImagePreviewURL,
-}) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+export default function SavedItems() {
+  const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  //const [trending, setTrending] = useState([]);
+  const [createFlagOpen, setCreateFlagOpen] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
+  const [videoDisabled, setVideoDisabled] = useState(false);
+  const [imageDisabled, setImageDisabled] = useState(false);
   const [value, setValue] = React.useState(0);
   const [allItems, setAllItems] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
   const [savedScrolls, setSavedScrolls] = useState([]);
   const [savedComments, setSavedComments] = useState([]);
   //const [savedArticles, setSavedArticles] = useState([]);
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
+  const [imagePreviewURL, setImagePreviewURL] = useState(null);
+  const [sharedPost, setSharedPost] = useState(null);
+  const [flaggedResource, setFlaggedResource] = useState(null);
 
+  const classes = useStyles();
+
+  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
   const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
     GET_BOOKMARKED_SCROLLS,
     {
@@ -88,145 +112,208 @@ export default function SavedItems({
     setAllItems(allSaved);
     setAllLoading(false);
   }, [savedScrolls, savedComments]);
-  return (
-    <>
-      <Card variant='outlined' style={{ marginBottom: 12 }}>
-        <CardHeader
-          avatar={
-            <IconButton
-              onClick={() => setOpenSavedItems(false)}
-              aria-label='back'
-              color='inherit'
-            >
-              <ArrowBack />
-            </IconButton>
-          }
-          title={
-            <div className='center-horizontal'>
-              <Typography variant='body1'>Saved Items</Typography>
-            </div>
-          }
-          subheader={
-            <Typography variant='body2' color='textSecondary'>
-              Anything saved under BNSocial is private.
-            </Typography>
-          }
-        />
 
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor='primary'
-          /* classes={{
+  useEffect(() => {
+    console.log(error);
+    console.log(loading);
+  }, [data]);
+  return (
+    <Screen>
+      <div className={classes.root}>
+        <Container maxWidth='lg'>
+          <Grid container spacing={2}>
+            <Hidden mdDown>
+              <Grid item lg={3}>
+                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <>
+                <Card variant='outlined' style={{ marginBottom: 12 }}>
+                  <CardHeader
+                    avatar={
+                      <Link to='/dashboard'>
+                        <IconButton aria-label='back' color='inherit'>
+                          <ArrowBack />
+                        </IconButton>
+                      </Link>
+                    }
+                    title={
+                      <div className='center-horizontal'>
+                        <Typography variant='body1'>Saved Items</Typography>
+                      </div>
+                    }
+                    subheader={
+                      <Typography variant='body2' color='textSecondary'>
+                        Anything saved under BNSocial is private.
+                      </Typography>
+                    }
+                  />
+
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor='primary'
+                    /* classes={{
               root: classes.tabsRoot,
               indicator: classes.displayNone,
             }} */
-        >
-          <Tab
-            /* classes={{
+                  >
+                    <Tab
+                      /* classes={{
                     root: classes.tabRootButton,
                     label: classes.tabLabel,
                     selected: classes.tabSelected,
                     wrapper: classes.tabWrapper,
                   }} */
-            key={'allItems'}
-            label={'All'}
-            disableRipple
-            style={{ textTransform: 'none' }}
-          />
-          <Tab
-            key={'Scrolls'}
-            label={'Scrolls'}
-            disableRipple
-            style={{ textTransform: 'none' }}
-          />
-          <Tab
-            key={'Comments'}
-            label={'Comments'}
-            disableRipple
-            style={{ textTransform: 'none' }}
-          />
-          {/* <Tab
+                      key={'allItems'}
+                      label={'All'}
+                      disableRipple
+                      style={{ textTransform: 'none' }}
+                    />
+                    <Tab
+                      key={'Scrolls'}
+                      label={'Scrolls'}
+                      disableRipple
+                      style={{ textTransform: 'none' }}
+                    />
+                    <Tab
+                      key={'Comments'}
+                      label={'Comments'}
+                      disableRipple
+                      style={{ textTransform: 'none' }}
+                    />
+                    {/* <Tab
               key={'Articles'}
               label={'Articles'}
               style={{ textTransform: 'none' }}
               disableRipple
             /> */}
-        </Tabs>
-      </Card>
-      {value === 0 && (scrollsLoading || commentsLoading || allLoading) && (
-        <Grid align='center'>
-          <CircularProgress color='primary' size={24} thickness={4} />
-        </Grid>
-      )}
-      {value === 0 &&
-        allItems.length > 0 &&
-        !allLoading &&
-        allItems
-          ?.sort((a, b) => b.created - a.created)
-          .map((item) =>
-            item.scroll ? (
-              <SavedComment
-                key={item._id}
-                comment={item}
-                setFlaggedResource={setFlaggedResource}
-                setOpenFlag={setOpenFlag}
-                setImagePreviewURL={setImagePreviewURL}
-                setImagePreviewOpen={setImagePreviewOpen}
-              />
-            ) : (
-              <Scroll
-                setOpen={setOpen}
-                setOpenFlag={setOpenFlag}
-                setFlaggedResource={setFlaggedResource}
-                setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
-                setSharedPost={setSharedPost}
-                key={item?._id}
-                scroll={item}
-              />
-            )
-          )}
-      {value === 1 &&
-        savedScrolls.length > 0 &&
-        savedScrolls?.map((scroll) => (
-          <Scroll
-            setOpen={setOpen}
-            setOpenFlag={setOpenFlag}
-            setFlaggedResource={setFlaggedResource}
-            setImagePreviewURL={(url) => setImagePreviewURL(url)}
-            setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
-            setSharedPost={setSharedPost}
-            key={scroll?._id}
-            scroll={scroll}
-          />
-        ))}
-      {value === 2 &&
-        savedComments.length > 0 &&
-        savedComments?.map((comment) => (
-          <SavedComment
-            key={comment._id}
-            comment={comment}
-            setFlaggedResource={setFlaggedResource}
-            setOpenFlag={setOpenFlag}
-            setImagePreviewURL={setImagePreviewURL}
-            setImagePreviewOpen={setImagePreviewOpen}
-          />
-        ))}
-      {((value == 0 && allItems.length < 1) ||
-        (value == 1 && savedScrolls.length < 1) ||
-        (value == 2 && savedComments.length < 1)) &&
-      !scrollsLoading &&
-      !commentsLoading &&
-      !allLoading ? (
-        <Grid align='center'>
-          <Typography variant='body1' color='primary'>
-            No Saved items here yet..start bookmarking!!
-          </Typography>
-        </Grid>
-      ) : (
-        ''
-      )}
-    </>
+                  </Tabs>
+                </Card>
+                {value === 0 &&
+                  (scrollsLoading || commentsLoading || allLoading) && (
+                    <Grid align='center'>
+                      <CircularProgress
+                        color='primary'
+                        size={24}
+                        thickness={4}
+                      />
+                    </Grid>
+                  )}
+                {value === 0 &&
+                  allItems.length > 0 &&
+                  !allLoading &&
+                  allItems
+                    ?.sort((a, b) => b.created - a.created)
+                    .map((item) =>
+                      item.scroll ? (
+                        <SavedComment
+                          key={item._id}
+                          comment={item}
+                          setFlaggedResource={setFlaggedResource}
+                          setOpenFlag={createFlagOpen}
+                          setImagePreviewURL={setImagePreviewURL}
+                          setImagePreviewOpen={setImagePreviewOpen}
+                        />
+                      ) : (
+                        <Scroll
+                          setOpen={(open) => setCreateScrollOpen(open)}
+                          setOpenFlag={setCreateFlagOpen}
+                          setFlaggedResource={setFlaggedResource}
+                          setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                          setImagePreviewOpen={(open) =>
+                            setImagePreviewOpen(open)
+                          }
+                          setSharedPost={setSharedPost}
+                          key={item?._id}
+                          scroll={item}
+                        />
+                      )
+                    )}
+                {value === 1 &&
+                  savedScrolls.length > 0 &&
+                  savedScrolls?.map((scroll) => (
+                    <Scroll
+                      setOpen={(open) => setCreateScrollOpen(open)}
+                      setOpenFlag={setCreateFlagOpen}
+                      setFlaggedResource={setFlaggedResource}
+                      setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                      setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                      setSharedPost={setSharedPost}
+                      key={scroll?._id}
+                      scroll={scroll}
+                    />
+                  ))}
+                {value === 2 &&
+                  savedComments.length > 0 &&
+                  savedComments?.map((comment) => (
+                    <SavedComment
+                      key={comment._id}
+                      comment={comment}
+                      setFlaggedResource={setFlaggedResource}
+                      setOpenFlag={setCreateFlagOpen}
+                      setImagePreviewURL={setImagePreviewURL}
+                      setImagePreviewOpen={setImagePreviewOpen}
+                    />
+                  ))}
+                {((value == 0 && allItems.length < 1) ||
+                  (value == 1 && savedScrolls.length < 1) ||
+                  (value == 2 && savedComments.length < 1)) &&
+                !scrollsLoading &&
+                !commentsLoading &&
+                !allLoading ? (
+                  <Grid align='center'>
+                    <Typography variant='body1' color='primary'>
+                      No Saved items here yet..start bookmarking!!
+                    </Typography>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+              </>
+            </Grid>
+            <Grid item md={4} lg={3}>
+              <Hidden smDown>
+                <TrendingPosts
+                  //trending={trending}
+                  //loading={loadingTrending}
+                  posts={[1, 2, 3]}
+                />
+                <SuggestedPeople />
+              </Hidden>
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+      <CreatePost
+        open={createScrollOpen}
+        setOpen={(open) => setCreateScrollOpen(open)}
+        openImage={openImage}
+        imageDisabled={imageDisabled}
+        videoDisabled={videoDisabled}
+        setImageDisabled={setImageDisabled}
+        setVideoDisabled={setVideoDisabled}
+        setOpenImage={setOpenImage}
+        openVideo={openVideo}
+        setOpenVideo={setOpenVideo}
+        sharedPost={sharedPost}
+        setSharedPost={setSharedPost}
+      />
+      <ImagePreview
+        open={imagePreviewOpen}
+        imgURL={imagePreviewURL}
+        onClose={() => {
+          setImagePreviewOpen(false);
+          setImagePreviewURL(null);
+        }}
+      />
+      <FlagResource
+        openFlag={createFlagOpen}
+        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        flaggedResource={flaggedResource}
+        setFlaggedResource={setFlaggedResource}
+      />
+    </Screen>
   );
 }
