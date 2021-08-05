@@ -7,6 +7,11 @@ import {
   CardContent,
   CircularProgress,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContentText,
+  DialogContent,
   Grid,
   IconButton,
   ListItem,
@@ -32,6 +37,7 @@ import TextField from '../../../../components/TextField';
 import {
   MUTATION_UPDATE_POST,
   QUERY_LOAD_SCROLLS,
+  MUTATION_DELETE_POST,
 } from '../../utilities/queries';
 
 export default function UpdatePost({
@@ -48,11 +54,12 @@ export default function UpdatePost({
   setOpenVideo,
   setVideoDisabled,
 }) {
-  const [createPostErr, setCreatePostErr] = useState(null);
+  const [updatePostErr, setUpdatePostErr] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [scroll_text, setScrollText] = useState('');
-  const [scroll_images, setScrollImages] = useState([]);
-  const [scroll_video, setScrollVideo] = useState(null);
+  const [scroll_images, setScrollImages] = useState(null);
+  const [scroll_video, setScrollVideo] = useState(undefined);
+  const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
   const state = useSelector((state) => state);
   const user = state.auth.user;
@@ -64,36 +71,62 @@ export default function UpdatePost({
       //  error
     },
   ] = useMutation(MUTATION_UPDATE_POST);
+  const [
+    deletePost,
+    {
+      //loading: deleteLoading,
+      data: deleteData,
+      //  error
+    },
+  ] = useMutation(MUTATION_DELETE_POST);
 
+  const onDeletePost = async (id) => {
+    await deletePost({
+      variables: {
+        _id: id,
+      },
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+    });
+    setScrollText('');
+    setScrollImages(null);
+    setScrollVideo(undefined);
+    setUpdatePostErr(false);
+    setImageDisabled(false);
+    setVideoDisabled(false);
+    setOpenImage(false);
+    setFileType(null);
+    setOpenVideo(false);
+    setPostToEdit(null);
+  };
   const onUpdatePost = async (IUpdatePost) => {
+    console.log(IUpdatePost);
     await updatePost({
       variables: {
         data: IUpdatePost,
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-    setPostToEdit(null);
     setScrollText('');
-    setScrollImages([]);
-    setScrollVideo(null);
-    setCreatePostErr(false);
+    setScrollImages(null);
+    setScrollVideo(undefined);
+    setUpdatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
     setOpenImage(false);
     setFileType(null);
     setOpenVideo(false);
+    setPostToEdit(null);
   };
-  let initialUrls = [];
   useEffect(() => {
-    if (data?.Posts?.create) {
-      //console.log(data);
+    if (data?.Posts?.update) {
+      console.log(data, deleteData);
     }
   }, [data]);
 
   useEffect(() => {
     if (postToEdit?.images.length > 0) {
       setFileType('image');
-    } else if (postToEdit?.video.trim() !== '') {
+    } else if (postToEdit?.video?.trim() !== '') {
       setFileType('video');
     }
     if (postToEdit) {
@@ -103,12 +136,20 @@ export default function UpdatePost({
 
   const handleUpdatePost = (e) => {
     e.preventDefault();
-    if (scroll_text.trim() == '') return setCreatePostErr(true);
+    if (scroll_text.trim() == '') return setUpdatePostErr(true);
     onUpdatePost({
+      post_id: postToEdit?._id,
       content: scroll_text,
       images: scroll_images,
       video: scroll_video,
     });
+    setUpdateScrollOpen(false);
+  };
+
+  const handleDeletePost = (e) => {
+    e.preventDefault();
+    onDeletePost(postToEdit?._id);
+    setOpenDelete(false);
     setUpdateScrollOpen(false);
   };
 
@@ -138,9 +179,9 @@ export default function UpdatePost({
                     setPostToEdit(null);
                     setOpenImage(false);
                     setOpenVideo(false);
-                    setScrollImages([]);
+                    setScrollImages(null);
                     setScrollVideo(null);
-                    setCreatePostErr(false);
+                    setUpdatePostErr(false);
                     setFileType(null);
                     setImageDisabled(false);
                     setVideoDisabled(false);
@@ -185,8 +226,8 @@ export default function UpdatePost({
                 fullWidth
                 multiline
                 variant='standard'
-                error={createPostErr && true}
-                errorText={createPostErr && 'The post content cannot be empty'}
+                error={updatePostErr && true}
+                errorText={updatePostErr && 'The post content cannot be empty'}
                 rows={5}
                 id='update-scroll-field'
                 placeholder="What's happening"
@@ -206,9 +247,10 @@ export default function UpdatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  initialFiles={initialUrls}
                   onChange={(files) => {
-                    openImage ? setScrollImages(files) : setScrollVideo(null);
+                    openImage
+                      ? setScrollImages(files)
+                      : setScrollVideo(files[0]);
                   }}
                   dropzoneText={
                     openImage
@@ -226,8 +268,9 @@ export default function UpdatePost({
                   }}
                 />
               </Card>
-              {postToEdit?.video ||
-                (postToEdit?.images?.length > 0 && fileType !== null && (
+              {(postToEdit?.video?.trim() !== '' ||
+                postToEdit?.images?.length > 0) &&
+                fileType !== null && (
                   <Card>
                     <div className='space-between mx-3 my-2'>
                       <Typography variant='body2'></Typography>
@@ -280,13 +323,41 @@ export default function UpdatePost({
                         ))}
                     </Grid>
                   </Card>
-                ))}
+                )}
               {/* <Divider /> */}
+              <Dialog
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogTitle id='alert-dialog-title'>
+                  {'Delete this post?'}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id='alert-dialog-description'>
+                    This can’t be undone and it will be removed from your
+                    profile, the timeline of any accounts that follow you, and
+                    from the BNConnect platform.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setOpenDelete(false)} color='primary'>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleDeletePost} color='primary' autoFocus>
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
                     onClick={() => {
                       setOpenImage(true);
+                      setFileType(null);
+                      setScrollImages([]);
+                      setScrollVideo(null);
                       setVideoDisabled(true);
                     }}
                     disabled={imageDisabled}
@@ -300,6 +371,9 @@ export default function UpdatePost({
                   <IconButton
                     onClick={() => {
                       setOpenVideo(true);
+                      setFileType(null);
+                      setScrollImages([]);
+                      setScrollVideo(null);
                       setImageDisabled(true);
                     }}
                     disabled={videoDisabled}
@@ -311,12 +385,27 @@ export default function UpdatePost({
                     <VideocamRounded />
                   </IconButton>
                 </div>
-                {!loading && <Button onClick={handleUpdatePost}>Update</Button>}
-                {loading && (
-                  <Button size='small' style={{ margin: '0' }}>
-                    <CircularProgress size={24} thickness={4} />
+                <div>
+                  <Button
+                    style={{
+                      backgroundColor: '#ba000d',
+                      color: '#FFFFFF',
+                      marginRight: '12px',
+                    }}
+                    variant='contained'
+                    onClick={() => setOpenDelete(true)}
+                  >
+                    Delete
                   </Button>
-                )}
+                  {!loading && (
+                    <Button onClick={handleUpdatePost}>Update</Button>
+                  )}
+                  {loading && (
+                    <Button size='small' style={{ margin: '0' }}>
+                      <CircularProgress size={24} thickness={4} />
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

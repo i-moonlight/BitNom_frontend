@@ -199,7 +199,9 @@ export default function CreatePost({
                 <DropzoneArea
                   clearOnUnmount
                   onChange={(files) => {
-                    openImage ? setScrollImages(files) : setScrollVideo(null);
+                    openImage
+                      ? setScrollImages(files)
+                      : setScrollVideo(files[0]);
                   }}
                   dropzoneText={
                     openImage

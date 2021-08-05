@@ -26,6 +26,8 @@ export default function CommentOptionsPopover({
   comment,
   commentOptionId,
   setFlaggedResource,
+  setCommentToEdit,
+  setUpdateCommentOpen,
   setOpenFlag,
   commentOptionAnchorEl,
   isCommentOptionOpen,
@@ -77,6 +79,12 @@ export default function CommentOptionsPopover({
     setFlaggedResource(resource);
   };
 
+  const handleEditComment = () => {
+    setCommentToEdit(comment);
+    setUpdateCommentOpen(true);
+    handleCommentOptionClose();
+  };
+
   return (
     <Popover
       anchorEl={commentOptionAnchorEl}
@@ -112,7 +120,7 @@ export default function CommentOptionsPopover({
           />
         </ListItem>
         {user?._id === comment?.author?._id && (
-          <ListItem button divider>
+          <ListItem button divider onClick={handleEditComment}>
             <ListItemIcon>
               <FileCopyOutlined />
             </ListItemIcon>
