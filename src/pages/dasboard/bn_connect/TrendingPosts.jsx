@@ -36,7 +36,7 @@ export default function TrendingPosts({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending.slice(0, 4).map((post) => (
+          trending.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar
