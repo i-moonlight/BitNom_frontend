@@ -44,6 +44,10 @@ cache:
 
 install_dependencies:
   stage: build
+  only:
+    refs:
+      - development
+      - main
   script:
     - npm i -g npm
     - npm install
@@ -65,25 +69,23 @@ deploy_on_server:
     refs:
       - main
   variables:
-    REACT_APP_CRYPTOCONTROL_KEY: "359df4119fe11ba051dcddefb2f08649"
     REACT_APP_API_GATEWAY: "/graphql"
-    APPLICATION_DOMAIN: "https://bitnorm.com"
+    REACT_APP_BACKEND_URL: "https://bitnorm.com"
     REACT_APP_WS: "ws://bitnorm.com"
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP
   script:
-    - export REACT_APP_CRYPTOCONTROL_KEY=$REACT_APP_CRYPTOCONTROL_KEY
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_WS=$REACT_APP_WS
-    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
+    - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
-    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME/
-    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME/
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/frontend/frontend.service /etc/systemd/system"
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/frontend.service"
+    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
+    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/v1-frontend/frontend.service /etc/systemd/system/v1-frontend.service"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/v1-frontend.service"
     - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl daemon-reload"
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart frontend"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart v1-frontend"
 
 deploy_demo:
   stage: deploy
@@ -91,22 +93,20 @@ deploy_demo:
     refs:
       - development
   variables:
-    REACT_APP_CRYPTOCONTROL_KEY: "359df4119fe11ba051dcddefb2f08649"
     REACT_APP_API_GATEWAY: "graphql"
-    APPLICATION_DOMAIN: "http://136.144.176.215"
-    REACT_APP_WS: "ws://136.144.176.215"
+    REACT_APP_BACKEND_URL: "http://136.144.176.215:4545"
+    REACT_APP_WS: "ws://136.144.176.215:4545"
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP
   script:
+    - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_WS=$REACT_APP_WS
-    - export APPLICATION_DOMAIN=$APPLICATION_DOMAIN
-    - export REACT_APP_API_GATEWAY=$APPLICATION_DOMAIN/$REACT_APP_API_GATEWAY
+    - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
-    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
-    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend-dev.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
-    - rsync -av -e ssh  ../$CI_PROJECT_NAME/Dockerfile bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/$CI_PROJECT_NAME-dev/
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/frontend-dev/frontend-dev.service /etc/systemd/system"
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/frontend-dev.service"
+    - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
+    - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend-dev.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo mv /home/bitnorm/v1-frontend-dev/frontend-dev.service /etc/systemd/system/v1-frontend-dev.service"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl enable /etc/systemd/system/v1-frontend-dev.service"
     - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl daemon-reload"
-    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart frontend-dev"
+    - ssh bitnorm@$DEPLOYMENT_SERVER_IP -tt "sudo systemctl restart v1-frontend-dev"

@@ -19,11 +19,12 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
-export default function UserCard() {
-  const state = useSelector(state => state);
+export default function UserCard({ setOpen }) {
+  const state = useSelector((state) => state);
   const user = state.auth.user;
 
   return (
@@ -126,9 +127,11 @@ export default function UserCard() {
         </CardContent>
         <Divider />
         <CardActions className='py-0'>
-          <IconButton>
-            <BookmarkRounded />
-          </IconButton>
+          <Link to='/dashboard/profile/bookmarks'>
+            <IconButton>
+              <BookmarkRounded />
+            </IconButton>
+          </Link>
           <Typography variant='body2'>Saved Items</Typography>
         </CardActions>
         <Divider />
@@ -147,7 +150,7 @@ export default function UserCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Button color='primary' fullWidth>
+      <Button onClick={setOpen} color='primary' fullWidth>
         Start Scroll
       </Button>
     </div>

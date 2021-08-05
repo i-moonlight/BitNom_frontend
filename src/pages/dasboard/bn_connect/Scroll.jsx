@@ -22,8 +22,9 @@ import {
 } from '@material-ui/icons';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../../components/Button';
+//import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../components/TextField';
 import {
   MUTATION_CREATE_COMMENT,
@@ -41,6 +42,10 @@ const scrollOptionId = 'menu-scroll-option';
 export default function Scroll({
   scroll,
   setSharedPost,
+  setPostToEdit,
+  setUpdateOpen,
+  setFlaggedResource,
+  setOpenFlag,
   setOpen,
   setImagePreviewOpen,
   setImagePreviewURL,
@@ -54,10 +59,6 @@ export default function Scroll({
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  // const { error, loading, data } = useQuery(QUERY_GET_SCROLL_BY_ID, {
-  //   variables: { _id: scroll?._id },
-  // });
-
   const [
     createComment,
     {
@@ -67,8 +68,6 @@ export default function Scroll({
     },
   ] = useMutation(MUTATION_CREATE_COMMENT);
 
-  //console.log(scroll?.shared_resource);
-
   const {
     data: commentsData,
     // loading: commentsLoading,
@@ -77,7 +76,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -94,7 +93,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -105,7 +104,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -113,7 +112,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -122,11 +121,15 @@ export default function Scroll({
           reaction: reaction,
         },
       },
-      refetchQueries: [
-        { query: QUERY_LOAD_SCROLLS, variables: { data: { limit: 200 } } },
-      ],
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
+
+  useEffect(() => {
+    if (createCommentData?.Comments?.create) {
+      console.log('comment created');
+    }
+  }, [createCommentData]);
 
   return (
     <>
@@ -150,7 +153,7 @@ export default function Scroll({
           }
           title={
             <div className='center-horizontal'>
-              <Typography variant='body2' style={{ marginRight: 8 }}>
+              <Typography style={{ marginRight: 8 }}>
                 {scroll?.author?.displayName}
               </Typography>
               <Typography variant='body2' color='textSecondary'>
@@ -164,7 +167,7 @@ export default function Scroll({
           <Typography variant='body2' color='textSecondary' component='p'>
             {scroll?.content}
             <br />
-            {scroll?.content_entities?.map(entity => {
+            {scroll?.content_entities?.map((entity) => {
               let colortext = scroll?.content?.slice(
                 entity?.offset,
                 entity?.offset + entity?.length
@@ -181,28 +184,27 @@ export default function Scroll({
               );
             })}
           </Typography>
-          {scroll?.shared_resource?._id && (
-            <ScrollPreview scroll={scroll?.shared_resource?._id} />
-          )}
           <Grid container spacing={2} className='mb-2'>
             {scroll?.video && (
               <Grid item xs={12}>
                 <CardMedia
                   component='video'
-                  src={`http://localhost:3000${scroll?.video}`}
+                  src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                   controls
                 />
               </Grid>
             )}
             {scroll?.images.length > 0 &&
-              scroll?.images?.map(imageURL => (
+              scroll?.images?.map((imageURL) => (
                 <Grid
                   className='mt-3'
                   key={imageURL}
                   item
                   xs={scroll?.images.length > 1 ? 6 : 12}
                   onClick={() => {
-                    setImagePreviewURL('http://localhost:3000' + imageURL);
+                    setImagePreviewURL(
+                      process.env.REACT_APP_BACKEND_URL + imageURL
+                    );
                     setImagePreviewOpen(true);
                   }}
                 >
@@ -212,7 +214,10 @@ export default function Scroll({
                       borderRadius: 8,
                       width: '100%',
                       backgroundImage:
-                        'url(http://localhost:3000' + imageURL + ')',
+                        'url(' +
+                        process.env.REACT_APP_BACKEND_URL +
+                        imageURL +
+                        ')',
                       backgroundSize: 'cover',
                       backgroundColor: 'rgba(0,0,0,0.2)',
                       backgroundBlendMode: 'soft-light',
@@ -222,14 +227,15 @@ export default function Scroll({
                 </Grid>
               ))}
           </Grid>
+          {scroll?.shared_resource?._id && (
+            <ScrollPreview scroll={scroll?.shared_resource?._id} />
+          )}
           <br />
-          <Typography variant='body2' color='textSecondary'>
-            {`${scroll?.reactions?.likes} ${
-              scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
-            } . ${scroll?.comments} ${
-              scroll?.comments === 1 ? 'Comment' : 'Comments'
-            }`}
-          </Typography>
+          {`${scroll?.reactions?.likes} ${
+            scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
+          } . ${scroll?.comments} ${
+            scroll?.comments === 1 ? 'Comment' : 'Comments'
+          }`}
         </CardContent>
         <Divider />
         <CardActions className='space-around'>
@@ -269,7 +275,7 @@ export default function Scroll({
         <Divider />
         <CardContent>
           {!openComments && scroll?.comments < 1 && (
-            <Typography variant='body2' color='textSecondary'>
+            <Typography color='textSecondary'>
               Be the first to comment
             </Typography>
           )}
@@ -289,7 +295,7 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -330,7 +336,7 @@ export default function Scroll({
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={files => {
+            onSave={(files) => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -340,12 +346,14 @@ export default function Scroll({
           />
           {commentsData &&
             commentsData?.Comments?.get
-              .filter(comment => !comment.response_to)
-              .map(comment => (
+              .filter((comment) => !comment.response_to)
+              .map((comment) => (
                 <Comment
                   scroll={scroll}
                   key={comment._id}
                   comment={comment}
+                  setFlaggedResource={setFlaggedResource}
+                  setOpenFlag={setOpenFlag}
                   setOpenImage={setOpenImage}
                   onCreateComment={onCreateComment}
                   setImagePreviewURL={setImagePreviewURL}
@@ -361,6 +369,10 @@ export default function Scroll({
         scrollOptionAnchorEl={scrollOptionAnchorEl}
         isScrollOptionOpen={isScrollOptionOpen}
         handleScrollOptionClose={handleScrollOptionClose}
+        setFlaggedResource={setFlaggedResource}
+        setPostToEdit={setPostToEdit}
+        setOpenFlag={setOpenFlag}
+        setUpdateOpen={setUpdateOpen}
       />
     </>
   );

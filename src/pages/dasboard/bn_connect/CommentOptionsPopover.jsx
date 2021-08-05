@@ -14,48 +14,51 @@ import {
   FlagOutlined,
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import {
   MUTATION_CREATE_BOOKMARK,
-  GET_BOOKMARKED_SCROLLS,
+  GET_BOOKMARKED_COMMENTS,
 } from '../utilities/queries';
 
-export default function ScrollOptionsPopover({
-  scroll,
+export default function CommentOptionsPopover({
+  comment,
+  commentOptionId,
   setFlaggedResource,
   setOpenFlag,
-  //setUpdateOpen,
-  setPostToEdit,
-  scrollOptionId,
-  scrollOptionAnchorEl,
-  isScrollOptionOpen,
-  handleScrollOptionClose,
+  commentOptionAnchorEl,
+  isCommentOptionOpen,
+  handleCommentOptionClose,
 }) {
   const [
     createBookmark,
     {
-      data,
+      data: bookmarkData,
       //  loading,
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
   const state = useSelector((state) => state);
   const user = state.auth.user;
-  console.log(data);
+
+  useEffect(() => {
+    if (bookmarkData?.bookmarks?.create == true) {
+      console.log(bookmarkData?.bookmarks?.create);
+    }
+  }, [bookmarkData]);
 
   const handleCreateBookmark = () => {
     createBookmark({
       variables: {
         data: {
-          _id: scroll?._id,
-          type: 'post',
+          _id: comment?._id,
+          type: 'comment',
         },
       },
       refetchQueries: [
         {
-          query: GET_BOOKMARKED_SCROLLS,
+          query: GET_BOOKMARKED_COMMENTS,
           variables: {
             data: {
               sortAscending: false,
@@ -64,29 +67,25 @@ export default function ScrollOptionsPopover({
         },
       ],
     });
-    handleScrollOptionClose();
+    handleCommentOptionClose();
   };
-  const handleReportScroll = () => {
+
+  const handleReportComment = () => {
     setOpenFlag(true);
-    handleScrollOptionClose();
-    const resource = Object.assign({ resourceType: 'post' }, scroll);
+    handleCommentOptionClose();
+    const resource = Object.assign({ resourceType: 'comment' }, comment);
     setFlaggedResource(resource);
-  };
-  const handleEditScroll = () => {
-    setPostToEdit(scroll);
-    //setUpdateOpen(true);
-    handleScrollOptionClose();
   };
 
   return (
     <Popover
-      anchorEl={scrollOptionAnchorEl}
+      anchorEl={commentOptionAnchorEl}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={scrollOptionId}
+      id={commentOptionId}
       keepMounted
-      open={isScrollOptionOpen}
-      onClose={handleScrollOptionClose}
+      open={isCommentOptionOpen}
+      onClose={handleCommentOptionClose}
       style={{ marginLeft: 16, width: '100%' }}
     >
       <List
@@ -99,33 +98,33 @@ export default function ScrollOptionsPopover({
             <BookmarkBorderRounded />
           </ListItemIcon>
           <ListItemText
-            primary='Save this scroll'
+            primary='Save this comment'
             secondary='Add this to your bookmarks'
           />
         </ListItem>
-        <ListItem button divider onClick={handleReportScroll}>
+        <ListItem button divider onClick={handleReportComment}>
           <ListItemIcon>
             <FlagOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Report this scroll'
-            secondary='Im concerned about this scroll'
+            primary='Report this comment'
+            secondary='Im concerned about this comment'
           />
         </ListItem>
-        {user?._id === scroll?.author?._id && (
-          <ListItem button divider onClick={handleEditScroll}>
+        {user?._id === comment?.author?._id && (
+          <ListItem button divider>
             <ListItemIcon>
               <FileCopyOutlined />
             </ListItemIcon>
-            <ListItemText primary='Edit this scroll' />
+            <ListItemText primary='Edit this comment' />
           </ListItem>
         )}
-        {user?._id !== scroll?.author?._id && (
+        {user?._id !== comment?.author?._id && (
           <ListItem button divider>
             <ListItemIcon>
               <PersonAddDisabledOutlined />
             </ListItemIcon>
-            <ListItemText primary={`Unfollow @${scroll?.author?._id}`} />
+            <ListItemText primary={`Unfollow @${comment?.author?._id}`} />
           </ListItem>
         )}
         <Divider />

@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
+  CardMedia,
   CardContent,
   CircularProgress,
   Divider,
@@ -28,16 +29,16 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
-import { createPostIcons } from '../../../../store/local/dummy';
 import {
-  MUTATION_CREATE_POST,
+  MUTATION_UPDATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import ScrollPreview from '../ScrollPreview';
 
-export default function CreatePost({
-  open,
-  setOpen,
+export default function UpdatePost({
+  updateScrollOpen,
+  setUpdateScrollOpen,
+  postToEdit,
+  setPostToEdit,
   openImage,
   imageDisabled,
   setOpenImage,
@@ -46,11 +47,9 @@ export default function CreatePost({
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
-  sharedPost,
-  setSharedPost,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
-
+  const [fileType, setFileType] = useState(null);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
@@ -58,53 +57,59 @@ export default function CreatePost({
   const state = useSelector((state) => state);
   const user = state.auth.user;
   const [
-    createPost,
+    updatePost,
     {
       loading,
       data,
       //  error
     },
-  ] = useMutation(MUTATION_CREATE_POST);
+  ] = useMutation(MUTATION_UPDATE_POST);
 
-  const onCreatePost = async (ICreatePost) => {
-    await createPost({
+  const onUpdatePost = async (IUpdatePost) => {
+    await updatePost({
       variables: {
-        data: ICreatePost,
+        data: IUpdatePost,
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
+    setPostToEdit(null);
     setScrollText('');
     setScrollImages([]);
     setScrollVideo(null);
-    setSharedPost(null);
     setCreatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
     setOpenImage(false);
+    setFileType(null);
     setOpenVideo(false);
   };
-
+  let initialUrls = [];
   useEffect(() => {
     if (data?.Posts?.create) {
       //console.log(data);
     }
   }, [data]);
 
-  const handleCreatePost = (e) => {
+  useEffect(() => {
+    if (postToEdit?.images.length > 0) {
+      setFileType('image');
+    } else if (postToEdit?.video.trim() !== '') {
+      setFileType('video');
+    }
+    if (postToEdit) {
+      setScrollText(postToEdit?.content);
+    }
+  }, [postToEdit]);
+
+  const handleUpdatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    let sharedResource = sharedPost
-      ? { _id: sharedPost?._id, type: 'post' }
-      : null;
-    let flag = sharedPost ? sharedPost?.is_flag : null;
-    onCreatePost({
+    onUpdatePost({
       content: scroll_text,
       images: scroll_images,
       video: scroll_video,
-      shared_resource: sharedResource,
-      is_flag: flag,
     });
-    setOpen(false);
+    setUpdateScrollOpen(false);
   };
 
   return (
@@ -117,7 +122,7 @@ export default function CreatePost({
         },
       }}
       className='center-horizontal center-vertical w-100'
-      open={open}
+      open={updateScrollOpen}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
@@ -125,17 +130,18 @@ export default function CreatePost({
           <Card>
             <div className='space-between mx-3 my-2'>
               <Typography variant='body2'></Typography>
-              <Typography variant='body1'>Create Post</Typography>
+              <Typography variant='body1'>Update Post</Typography>
               <IconButton size='small'>
                 <CloseRounded
                   onClick={() => {
-                    setOpen(!open);
+                    setUpdateScrollOpen(!updateScrollOpen);
+                    setPostToEdit(null);
                     setOpenImage(false);
                     setOpenVideo(false);
                     setScrollImages([]);
                     setScrollVideo(null);
                     setCreatePostErr(false);
-                    setSharedPost(null);
+                    setFileType(null);
                     setImageDisabled(false);
                     setVideoDisabled(false);
                   }}
@@ -182,7 +188,7 @@ export default function CreatePost({
                 error={createPostErr && true}
                 errorText={createPostErr && 'The post content cannot be empty'}
                 rows={5}
-                id='content-field'
+                id='update-scroll-field'
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -194,10 +200,13 @@ export default function CreatePost({
                 value={scroll_text}
               />
               <Card
-                style={{ display: openImage || openVideo ? 'block' : 'none' }}
+                style={{
+                  display: openImage || openVideo ? 'block' : 'none',
+                }}
               >
                 <DropzoneArea
                   clearOnUnmount
+                  initialFiles={initialUrls}
                   onChange={(files) => {
                     openImage ? setScrollImages(files) : setScrollVideo(null);
                   }}
@@ -217,7 +226,61 @@ export default function CreatePost({
                   }}
                 />
               </Card>
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
+              {postToEdit?.video ||
+                (postToEdit?.images?.length > 0 && fileType !== null && (
+                  <Card>
+                    <div className='space-between mx-3 my-2'>
+                      <Typography variant='body2'></Typography>
+                      <Typography variant='body1'></Typography>
+                      <IconButton size='small'>
+                        <CloseRounded
+                          onClick={() => {
+                            setFileType(null);
+                            setScrollImages([]);
+                            setScrollVideo(null);
+                          }}
+                        />
+                      </IconButton>
+                    </div>
+                    <Grid container spacing={2} className='mb-2'>
+                      {postToEdit?.video && (
+                        <Grid item xs={12}>
+                          <CardMedia
+                            component='video'
+                            src={`${process.env.REACT_APP_BACKEND_URL}${postToEdit?.video}`}
+                            controls
+                          />
+                        </Grid>
+                      )}
+                      {postToEdit?.images?.length > 0 &&
+                        postToEdit?.images?.map((imageURL) => (
+                          <Grid
+                            className='mt-3'
+                            key={imageURL}
+                            item
+                            xs={postToEdit?.images?.length > 1 ? 6 : 12}
+                          >
+                            <div
+                              style={{
+                                height: 200,
+                                borderRadius: 8,
+                                width: '100%',
+                                backgroundImage:
+                                  'url(' +
+                                  process.env.REACT_APP_BACKEND_URL +
+                                  imageURL +
+                                  ')',
+                                backgroundSize: 'cover',
+                                backgroundColor: 'rgba(0,0,0,0.2)',
+                                backgroundBlendMode: 'soft-light',
+                                cursor: 'pointer',
+                              }}
+                            />
+                          </Grid>
+                        ))}
+                    </Grid>
+                  </Card>
+                ))}
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
@@ -247,21 +310,8 @@ export default function CreatePost({
                   >
                     <VideocamRounded />
                   </IconButton>
-                  {createPostIcons.map(({ Icon }) => {
-                    return (
-                      <IconButton
-                        key={`${Math.random() * 1000}`}
-                        size='small'
-                        style={{
-                          marginRight: 10,
-                        }}
-                      >
-                        <Icon />
-                      </IconButton>
-                    );
-                  })}
                 </div>
-                {!loading && <Button onClick={handleCreatePost}>Post</Button>}
+                {!loading && <Button onClick={handleUpdatePost}>Update</Button>}
                 {loading && (
                   <Button size='small' style={{ margin: '0' }}>
                     <CircularProgress size={24} thickness={4} />

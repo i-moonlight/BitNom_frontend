@@ -1,11 +1,11 @@
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import './css/bootstrap_utilities.css';
 import './css/style.css';
 import Routes from './Routes';
 
 export default function App() {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   //Create MUI Theme
   const providerTheme = createTheme({

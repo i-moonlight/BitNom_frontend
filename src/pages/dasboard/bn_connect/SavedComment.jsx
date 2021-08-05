@@ -1,6 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
-  Avatar,
   Card,
   CardContent,
   Grid,
@@ -8,30 +7,22 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import {
-  ImageRounded,
-  MoreHorizRounded,
-  PersonRounded,
-  Send,
-} from '@material-ui/icons';
+import { MoreHorizRounded } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import TextField from '../../../components/TextField';
+//import TextField from '../../../components/TextField';
 import CommentOptionsPopover from './CommentOptionsPopover';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
+  GET_BOOKMARKED_COMMENTS,
 } from '../utilities/queries';
 
 const commentOptionId = 'menu-comment-option';
-export default function Comment({
+export default function SavedComment({
   comment,
   style,
-  setOpenImage,
-  onCreateComment,
-  comment_image,
-  scroll,
   setFlaggedResource,
   setOpenFlag,
   setImagePreviewURL,
@@ -39,18 +30,7 @@ export default function Comment({
 }) {
   const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
-  const [openReplies, setOpenReplies] = useState(false);
-  const [reply, setReply] = useState('');
-  const [responseTo, setResponseTo] = useState('');
-  const [replyErr, setReplyErr] = useState(false);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-  const {
-    data: commentsData,
-    // loading: commentsLoading,
-    // error: commentsError,
-  } = useQuery(QUERY_GET_COMMENTS, {
-    variables: { data: { scroll_id: comment?.scroll } },
-  });
 
   const handleCommentOptionOpen = (event) => {
     setCommentOptionAnchorEl(event.currentTarget);
@@ -76,28 +56,21 @@ export default function Comment({
           query: QUERY_GET_COMMENTS,
           variables: { data: { scroll_id: comment?.scroll } },
         },
+        {
+          query: GET_BOOKMARKED_COMMENTS,
+          variables: {
+            data: {
+              sortAscending: false,
+            },
+          },
+        },
       ],
     });
-  };
-
-  const handleCreateReply = (e) => {
-    e.preventDefault();
-    if (reply.trim() == '') return setReplyErr(true);
-    onCreateComment({
-      content: reply,
-      scroll: scroll._id,
-      image: comment_image,
-      response_to: responseTo,
-    });
-    setReply('');
   };
 
   return (
     <>
       <div style={style} className='d-flex flex-row flex-start'>
-        <Avatar src={comment?.author?.image} className='mx-2'>
-          <PersonRounded />
-        </Avatar>
         <div className='mb-3 flex-1'>
           <Card variant='outlined'>
             <CardContent>
@@ -175,62 +148,7 @@ export default function Comment({
             >
               Like
             </Button>
-            {comment?.response_to ? '' : '.'}
-            {!comment?.response_to && (
-              <Button
-                color='default'
-                onClick={() => {
-                  setOpenReplies(true);
-                  setResponseTo(comment?._id);
-                }}
-                textCase
-                variant='text'
-              >
-                Reply
-              </Button>
-            )}
           </Typography>
-          {openReplies && (
-            <div className='center-horizontal'>
-              <Avatar src={scroll?.author?.image} className='mx-2'>
-                <PersonRounded />
-              </Avatar>
-              <TextField
-                error={replyErr}
-                errorText={replyErr && 'The reply cannot be empty'}
-                rows={5}
-                rowsMax={10}
-                id='reply-field'
-                placeholder='Reply'
-                onChange={(e) =>
-                  setReply(
-                    reply?.length >= 250
-                      ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value
-                  )
-                }
-                adornment={
-                  <IconButton
-                    onClick={() => {
-                      setOpenImage(true);
-                    }}
-                    size='small'
-                  >
-                    <ImageRounded />
-                  </IconButton>
-                }
-                adornmentType='end'
-                value={reply}
-              />
-              <IconButton
-                className='mx-3'
-                onClick={handleCreateReply}
-                // size='small'
-              >
-                <Send />
-              </IconButton>
-            </div>
-          )}
         </div>
       </div>
       <CommentOptionsPopover
@@ -242,24 +160,6 @@ export default function Comment({
         isCommentOptionOpen={isCommentOptionOpen}
         handleCommentOptionClose={handleCommentOptionClose}
       />
-      {commentsData &&
-        commentsData?.Comments?.get
-          .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
-          )
-          .map((commentInner) => (
-            <Comment
-              style={{
-                marginLeft: 30,
-              }}
-              key={commentInner._id}
-              comment={commentInner}
-              setImagePreviewURL={setImagePreviewURL}
-              setImagePreviewOpen={setImagePreviewOpen}
-              setFlaggedResource={setFlaggedResource}
-              setOpenFlag={setOpenFlag}
-            />
-          ))}
     </>
   );
 }

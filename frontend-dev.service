@@ -1,17 +1,15 @@
 [Unit]
-Description=FrontendDev
+Description=V1FrontendDev
 After=docker.service
 Requires=docker.service
+After=v1-gateway-dev.service
+Requires=v1-gateway-dev.service
 
 [Service]
 TimeoutStartSec=0
 Restart=on-failure
-ExecStartPre=-/usr/bin/docker container kill frontend-dev
-ExecStartPre=-/usr/bin/docker system prune -a -f
-ExecStartPre=-/bin/bash /home/bitnorm/clean-volumes.sh
-WorkingDirectory=/home/bitnorm/frontend-dev
-ExecStartPre=/usr/bin/docker image build -t frontend-dev .
-ExecStart=/usr/bin/docker container run --publish 5000:5000 --name frontend-dev frontend-dev
+ExecStartPre=-/usr/bin/bash /home/bitnorm/clean-volumes.sh
+ExecStart=/usr/bin/docker run --rm -v /home/bitnorm/v1-frontend-dev:/host:ro --volumes-from v1-gateway-dev alpine cp -rT /host/ /v1-static-dev/v1-gateway-dev/
 
 [Install]
 WantedBy=multi-user.target

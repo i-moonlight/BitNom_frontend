@@ -5,14 +5,14 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  IconButton,
+  //IconButton,
   Typography,
 } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+//import { MoreVert } from '@material-ui/icons';
 import moment from 'moment';
 import React from 'react';
 
-const scrollOptionId = 'menu-scroll-option';
+//const scrollOptionId = 'menu-scroll-option';
 
 export default function ScrollPreview({ scroll }) {
   return (
@@ -23,16 +23,6 @@ export default function ScrollPreview({ scroll }) {
             <Avatar src={scroll?.author?.image} aria-label='recipe'>
               R
             </Avatar>
-          }
-          action={
-            <IconButton
-              aria-label='show more'
-              aria-controls={scrollOptionId}
-              aria-haspopup='true'
-              color='inherit'
-            >
-              <MoreVert />
-            </IconButton>
           }
           title={
             <div className='center-horizontal'>
@@ -61,7 +51,7 @@ export default function ScrollPreview({ scroll }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
                     className='mt-3'
                     key={imageURL}

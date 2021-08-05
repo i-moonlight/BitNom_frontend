@@ -209,6 +209,111 @@ export const QUERY_LOAD_SCROLLS = gql`
   }
 `;
 
+export const GET_TRENDING_POSTS = gql`
+  query ($data: IGetPosts) {
+    Posts {
+      get(data: $data) {
+        _id
+        author {
+          _id
+          displayName
+        }
+        comments
+        createdAt
+        reactions {
+          likes
+          dislikes
+          loves
+          celebrations
+        }
+        content
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+      }
+    }
+  }
+`;
+
+export const GET_BOOKMARKED_SCROLLS = gql`
+  query ($data: IGetBookmarked) {
+    Posts {
+      getBookmarked(data: $data) {
+        _id
+        images
+        video
+        author {
+          _id
+          image
+          displayName
+          reputation
+          type
+        }
+        comments
+        bookmarks
+        createdAt
+        shared_resource {
+          _id {
+            _id
+            images
+            video
+            author {
+              _id
+              image
+              displayName
+              reputation
+              type
+            }
+            comments
+            reactions {
+              likes
+              dislikes
+              loves
+              celebrations
+            }
+            content
+            content_entities {
+              type
+              offset
+              length
+              resource {
+                _id
+                type
+              }
+              url
+            }
+          }
+        }
+        is_flag
+        reactions {
+          likes
+          dislikes
+          loves
+          celebrations
+        }
+        content
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_GET_SCROLL_BY_ID = gql`
   query GetByID($_id: ID!) {
     Posts {
@@ -256,6 +361,40 @@ export const QUERY_GET_COMMENTS = gql`
   query ($data: IGetComments!) {
     Comments {
       get(data: $data) {
+        _id
+        content
+        author {
+          _id
+          type
+          displayName
+          reputation
+          image
+        }
+        replies
+        creation_date
+        image
+        reactions {
+          celebrations
+          likes
+          dislikes
+          loves
+        }
+        scroll
+        response_to {
+          _id
+          author {
+            _id
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_BOOKMARKED_COMMENTS = gql`
+  query ($data: IGetBookmarked) {
+    Comments {
+      getBookmarked(data: $data) {
         _id
         content
         author {

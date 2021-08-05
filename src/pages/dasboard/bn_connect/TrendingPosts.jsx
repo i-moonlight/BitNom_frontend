@@ -4,6 +4,8 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  //CircularProgress,
+  //Grid,
   ListItemText,
   Paper,
   Typography,
@@ -27,7 +29,26 @@ export default function TrendingPosts({ posts }) {
           Trending Posts
         </Typography>
         {posts &&
-          posts.map(post => (
+          posts.map((post) => (
+            <ListItem key={post?._id} divider>
+              <ListItemAvatar>
+                <Avatar variant='square'>
+                  <MessageOutlined />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary='What is crypto currency?'
+                secondary='12.1K Likes . 120 Comments'
+              />
+            </ListItem>
+          ))}
+        {/*         {loading && (
+          <Grid align='center'>
+            <CircularProgress color='primary' size={24} thickness={4} />
+          </Grid>
+        )}
+        {trending &&
+          trending.slice(0, 5).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar variant='square'>
@@ -36,14 +57,21 @@ export default function TrendingPosts({ posts }) {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography variant='body2'>
-                    What is crypto currency?
-                  </Typography>
+                  <Typography variant='body2'>{post?.content}</Typography>
                 }
-                secondary='12.1K Likes . 120 Comments'
+                secondary={`${post?.reactions?.likes} ${
+                  post?.reactions?.likes === 1 ? 'Like' : 'Likes'
+                } . ${post?.comments} ${
+                  post?.comments === 1 ? 'Comment' : 'Comments'
+                }`}
               />
             </ListItem>
           ))}
+        {!loading && trending.length === 0 && (
+          <Typography variant='body2'>
+            Trending posts will appear hear..start commenting!!
+          </Typography>
+        )} */}
       </List>
     </Paper>
   );
