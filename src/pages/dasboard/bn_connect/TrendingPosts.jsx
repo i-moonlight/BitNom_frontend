@@ -36,11 +36,22 @@ export default function TrendingPosts({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending.slice(0, 5).map((post) => (
+          trending.slice(0, 4).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
+                <Avatar
+                  src={
+                    post?.images?.length > 0
+                      ? process.env.REACT_APP_BACKEND_URL + post?.images[0]
+                      : ''
+                  }
+                  variant='square'
+                >
+                  <MessageOutlined
+                    style={{
+                      display: post?.images.length > 0 ? 'none' : 'block',
+                    }}
+                  />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
