@@ -1,13 +1,13 @@
 import {
   Avatar,
-  //Badge,
   Box,
   Card,
-  //CardActions,
   CardContent,
   CardMedia,
-  //colors,
   Divider,
+  //Badge,
+  //CardActions,
+  //colors,
   //IconButton,
   Tab,
   Tabs,
@@ -38,7 +38,7 @@ import useColors from '../../../hooks/useColors';
 
 export default function ProfileCard() {
   const [tabValue, setTabValue] = React.useState(0);
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const colors = useColors();
 
@@ -221,7 +221,7 @@ const Insight = ({ value, text }) => (
   </div>
 );
 
-const TabPanel = (props) => {
+const TabPanel = props => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -241,7 +241,7 @@ const TabPanel = (props) => {
   );
 };
 
-const ProfileTab = withStyles((theme) => ({
+const ProfileTab = withStyles(theme => ({
   root: {
     textTransform: 'none',
     fontWeight: theme.typography.fontWeightBold,
@@ -254,4 +254,4 @@ const ProfileTab = withStyles((theme) => ({
       backgroundColor: theme.palette.background.paper,
     },
   },
-}))((props) => <Tab disableRipple {...props} />);
+}))(props => <Tab disableRipple {...props} />);

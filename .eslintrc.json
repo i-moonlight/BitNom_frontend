@@ -1,6 +1,7 @@
 {
   "env": {
     "browser": true,
+    "node": true,
     "es2021": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
@@ -19,5 +20,6 @@
     "quotes": [0, { "allowTemplateLiterals": true, "avoidEscape": true }],
     "react/prop-types": 0,
     "semi": ["error", "always"]
+    // "no-undef": "off"
   }
 }

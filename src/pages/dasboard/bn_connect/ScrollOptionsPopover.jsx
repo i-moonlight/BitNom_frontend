@@ -26,7 +26,7 @@ export default function ScrollOptionsPopover({
   scroll,
   setFlaggedResource,
   setOpenFlag,
-  //setUpdateOpen,
+  setUpdateOpen,
   setPostToEdit,
   scrollOptionId,
   scrollOptionAnchorEl,
@@ -74,7 +74,7 @@ export default function ScrollOptionsPopover({
   };
   const handleEditScroll = () => {
     setPostToEdit(scroll);
-    //setUpdateOpen(true);
+    setUpdateOpen(true);
     handleScrollOptionClose();
   };
 

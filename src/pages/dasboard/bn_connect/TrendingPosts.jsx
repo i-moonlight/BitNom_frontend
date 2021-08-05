@@ -4,8 +4,8 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  //CircularProgress,
-  //Grid,
+  CircularProgress,
+  Grid,
   ListItemText,
   Paper,
   Typography,
@@ -13,7 +13,9 @@ import {
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
 
-export default function TrendingPosts({ posts }) {
+export default function TrendingPosts({ trending, loading }) {
+  console.log(trending, loading);
+
   return (
     <Paper
       style={{
@@ -28,31 +30,28 @@ export default function TrendingPosts({ posts }) {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           Trending Posts
         </Typography>
-        {posts &&
-          posts.map((post) => (
-            <ListItem key={post?._id} divider>
-              <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary='What is crypto currency?'
-                secondary='12.1K Likes . 120 Comments'
-              />
-            </ListItem>
-          ))}
-        {/*         {loading && (
+        {loading && (
           <Grid align='center'>
             <CircularProgress color='primary' size={24} thickness={4} />
           </Grid>
         )}
         {trending &&
-          trending.slice(0, 5).map((post) => (
+          trending.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
+                <Avatar
+                  src={
+                    post?.images?.length > 0
+                      ? process.env.REACT_APP_BACKEND_URL + post?.images[0]
+                      : ''
+                  }
+                  variant='square'
+                >
+                  <MessageOutlined
+                    style={{
+                      display: post?.images.length > 0 ? 'none' : 'block',
+                    }}
+                  />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -68,10 +67,12 @@ export default function TrendingPosts({ posts }) {
             </ListItem>
           ))}
         {!loading && trending.length === 0 && (
-          <Typography variant='body2'>
-            Trending posts will appear hear..start commenting!!
-          </Typography>
-        )} */}
+          <Grid align='center'>
+            <Typography color='Primary' variant='body2'>
+              Trending posts will appear hear..start commenting.
+            </Typography>
+          </Grid>
+        )}
       </List>
     </Paper>
   );

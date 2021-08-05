@@ -45,7 +45,7 @@ export default function ScrollPreview({ scroll }) {
                 <Grid item xs={12}>
                   <CardMedia
                     component='video'
-                    src={`http://localhost:3000${scroll?.video}`}
+                    src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                     controls
                   />
                 </Grid>
@@ -64,7 +64,10 @@ export default function ScrollPreview({ scroll }) {
                         borderRadius: 8,
                         width: '100%',
                         backgroundImage:
-                          'url(http://localhost:3000' + imageURL + ')',
+                          'url(' +
+                          process.env.REACT_APP_BACKEND_URL +
+                          imageURL +
+                          ')',
                         backgroundSize: 'cover',
                         backgroundColor: 'rgba(0,0,0,0.2)',
                         backgroundBlendMode: 'soft-light',

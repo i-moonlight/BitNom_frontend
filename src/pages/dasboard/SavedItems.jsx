@@ -79,6 +79,13 @@ export default function SavedItems() {
     }
   );
 
+  const { loading: trendingLoading, data: trendingData } = useQuery(
+    QUERY_LOAD_SCROLLS,
+    {
+      variables: { data: { sortByField: 'comments', limit: 5 } },
+    }
+  );
+
   const handleChange = (event, value) => {
     setValue(value);
   };
@@ -276,9 +283,8 @@ export default function SavedItems() {
             <Grid item md={4} lg={3}>
               <Hidden smDown>
                 <TrendingPosts
-                  //trending={trending}
-                  //loading={loadingTrending}
-                  posts={[1, 2, 3]}
+                  trending={trendingData?.Posts?.get}
+                  loading={trendingLoading}
                 />
                 <SuggestedPeople />
               </Hidden>
