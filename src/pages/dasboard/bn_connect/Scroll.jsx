@@ -98,6 +98,24 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
+  /*  String.prototype.replaceAt = function (entity) {
+        let url = `"${entity.url}"`;
+        let replacement = '<a href=' + url + '>' + entity.url + ' </a>';
+        let ending = this.substr(entity.offset + entity.length);
+        return this.substr(0, entity.offset) + replacement + ending;
+      };
+
+      const contentBodyFactory = (item) => {
+        if (item.content_entities.length > 0) {
+          for (const entity of item.content_entities) {
+            if (entity.type == 'url') {
+              item.content = item.content.replaceAt(entity);
+            }
+          }
+        }
+      };
+ */
+
   const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
@@ -135,7 +153,7 @@ export default function Scroll({
       console.log('comment created');
     }
   }, [createCommentData]);
-
+  console.log(scroll?.content);
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
