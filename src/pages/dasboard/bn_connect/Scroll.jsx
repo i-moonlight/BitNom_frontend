@@ -85,6 +85,9 @@ export default function Scroll({
       },
       refetchQueries: [
         {
+          query: QUERY_LOAD_SCROLLS,
+        },
+        {
           query: QUERY_GET_COMMENTS,
           variables: { data: { scroll_id: scroll?._id } },
         },

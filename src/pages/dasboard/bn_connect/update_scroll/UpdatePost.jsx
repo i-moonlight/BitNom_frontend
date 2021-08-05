@@ -58,7 +58,7 @@ export default function UpdatePost({
   const [fileType, setFileType] = useState(null);
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState(null);
-  const [scroll_video, setScrollVideo] = useState(null);
+  const [scroll_video, setScrollVideo] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
   const state = useSelector((state) => state);
@@ -89,7 +89,7 @@ export default function UpdatePost({
     });
     setScrollText('');
     setScrollImages(null);
-    setScrollVideo(null);
+    setScrollVideo(undefined);
     setUpdatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
@@ -108,7 +108,7 @@ export default function UpdatePost({
     });
     setScrollText('');
     setScrollImages(null);
-    setScrollVideo(null);
+    setScrollVideo(undefined);
     setUpdatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
@@ -126,7 +126,7 @@ export default function UpdatePost({
   useEffect(() => {
     if (postToEdit?.images.length > 0) {
       setFileType('image');
-    } else if (postToEdit?.video.trim() !== '') {
+    } else if (postToEdit?.video?.trim() !== '') {
       setFileType('video');
     }
     if (postToEdit) {
@@ -248,7 +248,9 @@ export default function UpdatePost({
                 <DropzoneArea
                   clearOnUnmount
                   onChange={(files) => {
-                    openImage ? setScrollImages(files) : setScrollVideo(null);
+                    openImage
+                      ? setScrollImages(files)
+                      : setScrollVideo(files[0]);
                   }}
                   dropzoneText={
                     openImage
@@ -266,8 +268,9 @@ export default function UpdatePost({
                   }}
                 />
               </Card>
-              {postToEdit?.video ||
-                (postToEdit?.images?.length > 0 && fileType !== null && (
+              {(postToEdit?.video?.trim() !== '' ||
+                postToEdit?.images?.length > 0) &&
+                fileType !== null && (
                   <Card>
                     <div className='space-between mx-3 my-2'>
                       <Typography variant='body2'></Typography>
@@ -320,7 +323,7 @@ export default function UpdatePost({
                         ))}
                     </Grid>
                   </Card>
-                ))}
+                )}
               {/* <Divider /> */}
               <Dialog
                 open={openDelete}

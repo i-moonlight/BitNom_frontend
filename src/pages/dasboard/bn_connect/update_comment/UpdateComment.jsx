@@ -35,6 +35,7 @@ import TextField from '../../../../components/TextField';
 import {
   MUTATION_UPDATE_COMMENT,
   QUERY_GET_COMMENTS,
+  QUERY_LOAD_SCROLLS,
   MUTATION_DELETE_COMMENT,
 } from '../../utilities/queries';
 
@@ -77,6 +78,7 @@ export default function UpdateComment({
         _id: id,
       },
       refetchQueries: [
+        { query: QUERY_LOAD_SCROLLS },
         {
           query: QUERY_GET_COMMENTS,
           variables: { data: { scroll_id: commentToEdit?.scroll } },
@@ -303,7 +305,7 @@ export default function UpdateComment({
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id='alert-dialog-description'>
-                    This can’t be undone and it will be removed under from your
+                    This can’t be undone and it will be removed from your
                     profile and from the BNConnect platform.
                   </DialogContentText>
                 </DialogContent>
