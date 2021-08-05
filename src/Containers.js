@@ -8,9 +8,8 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
 import Login from './pages/auth/Login';
 import RequireVerification from './pages/auth/RequireVerification';
@@ -25,6 +24,8 @@ import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/People';
 import Profile from './pages/dasboard/profile/Profile';
 import SavedItems from './pages/dasboard/SavedItems';
+import Landing from './pages/landing/Landing';
+
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -39,6 +40,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
     console.log(`Graphql network error ${networkError}`);
   }
 });
+
 const backendUri = process.env.REACT_APP_BACKEND_URL;
 
 const authLink = from([
@@ -83,7 +85,7 @@ const usersApolloClient = new ApolloClient({
 //   credentials: 'include',
 // });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -98,7 +100,7 @@ export const AppContainers = () => {
       <BrowserRouter>
         <ApolloProvider client={usersApolloClient}>
           <Switch>
-            <Route exact component={RedirectToDash} path='/' />
+            <Route exact component={Landing} path='/' />
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route
@@ -147,21 +149,3 @@ export const AppContainers = () => {
     </div>
   );
 };
-
-function RedirectToDash() {
-  const history = useHistory();
-  const state = useSelector((state) => state);
-  const user = state.auth.user;
-
-  useEffect(() => {
-    if (!user?.email?.verified) {
-      history.push('/auth/require_verify');
-    } else {
-      user?.email?.verified && !user?.displayName
-        ? history.push('/auth/update_info_register')
-        : history.push('/dashboard');
-    }
-  }, []);
-
-  return null;
-}

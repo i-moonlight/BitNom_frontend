@@ -20,6 +20,11 @@ a {
   cursor: pointer !important;
 }
 
+a.alt {
+  color: #fff !important;
+  font-weight: bold;
+}
+
 small {
   font-family: 'Nunito', sans-serif !important;
 }
