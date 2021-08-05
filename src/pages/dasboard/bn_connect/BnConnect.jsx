@@ -21,7 +21,7 @@ import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
 import UserCard from './UserCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -31,7 +31,6 @@ export default function BnConnect() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
   const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
   const [updateCommentOpen, setUpdateCommentOpen] = useState(false);
-  //const [trending, setTrending] = useState([]);
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
@@ -47,24 +46,17 @@ export default function BnConnect() {
   const classes = useStyles();
 
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
-  /* const { data: trendingData, loading: loadingTrending } = useQuery(
+  const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {
       variables: { data: { sortByField: 'comments' } },
     }
-  ); */
+  );
 
   useEffect(() => {
     console.log(error);
     console.log(loading);
   }, [data]);
-
-  /* useEffect(() => {
-    if (trendingData?.Posts?.get) {
-      let posts = trendingData?.Posts?.get;
-      setTrending(posts);
-    }
-  }, [trendingData]); */
 
   return (
     <Screen>
@@ -73,7 +65,7 @@ export default function BnConnect() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard setOpen={open => setCreateScrollOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -82,7 +74,7 @@ export default function BnConnect() {
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
                 setOpenVideo={setOpenVideo}
-                setOpen={(open) => setCreateScrollOpen(open)}
+                setOpen={open => setCreateScrollOpen(open)}
               />
               <Grid item align='center'>
                 {loading && (
@@ -90,15 +82,15 @@ export default function BnConnect() {
                 )}
               </Grid>
               {data?.Posts?.get &&
-                data?.Posts?.get?.map((scroll) => (
+                data?.Posts?.get?.map(scroll => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
                     setUpdateOpen={setUpdateScrollOpen}
                     setUpdateCommentOpen={setUpdateCommentOpen}
                     setOpenFlag={setCreateFlagOpen}
                     setFlaggedResource={setFlaggedResource}
-                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                    setImagePreviewURL={url => setImagePreviewURL(url)}
+                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}
@@ -117,8 +109,8 @@ export default function BnConnect() {
             <Grid item md={4} lg={3}>
               <Hidden smDown>
                 <TrendingPosts
-                  //trending={trending}
-                  //loading={loadingTrending}
+                  trending={trendingData?.Posts?.get}
+                  loading={trendingLoading}
                   posts={[1, 2, 3]}
                 />
                 <SuggestedPeople />
@@ -129,7 +121,7 @@ export default function BnConnect() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -145,7 +137,7 @@ export default function BnConnect() {
         updateScrollOpen={updateScrollOpen}
         postToEdit={postToEdit}
         setPostToEdit={setPostToEdit}
-        setUpdateScrollOpen={(UpdateScrollOpen) =>
+        setUpdateScrollOpen={UpdateScrollOpen =>
           setUpdateScrollOpen(UpdateScrollOpen)
         }
         openImage={openImage}
@@ -161,7 +153,7 @@ export default function BnConnect() {
         updateCommentOpen={updateCommentOpen}
         commentToEdit={commentToEdit}
         setCommentToEdit={setCommentToEdit}
-        setUpdateCommentOpen={(UpdateCommentOpen) =>
+        setUpdateCommentOpen={UpdateCommentOpen =>
           setUpdateCommentOpen(UpdateCommentOpen)
         }
         openImage={openImage}
@@ -177,7 +169,7 @@ export default function BnConnect() {
       />
       <FlagResource
         openFlag={createFlagOpen}
-        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />
