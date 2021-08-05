@@ -4,8 +4,8 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  //CircularProgress,
-  //Grid,
+  CircularProgress,
+  Grid,
   ListItemText,
   Paper,
   Typography,
@@ -13,7 +13,7 @@ import {
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
 
-export default function TrendingPosts({ posts, trending, loading }) {
+export default function TrendingPosts({ trending, loading }) {
   console.log(trending, loading);
 
   return (
@@ -30,21 +30,7 @@ export default function TrendingPosts({ posts, trending, loading }) {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           Trending Posts
         </Typography>
-        {trending &&
-          trending.map(post => (
-            <ListItem key={post?._id} divider>
-              <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={post.content}
-                secondary={`${post?.reactions?.likes} Likes . ${post?.comments} Comments`}
-              />
-            </ListItem>
-          ))}
-        {/*         {loading && (
+        {loading && (
           <Grid align='center'>
             <CircularProgress color='primary' size={24} thickness={4} />
           </Grid>
@@ -70,10 +56,12 @@ export default function TrendingPosts({ posts, trending, loading }) {
             </ListItem>
           ))}
         {!loading && trending.length === 0 && (
-          <Typography variant='body2'>
-            Trending posts will appear hear..start commenting!!
-          </Typography>
-        )} */}
+          <Grid align='center'>
+            <Typography color='Primary' variant='body2'>
+              Trending posts will appear hear..start commenting.
+            </Typography>
+          </Grid>
+        )}
       </List>
     </Paper>
   );
