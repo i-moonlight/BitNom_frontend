@@ -36,7 +36,7 @@ export default function TrendingPosts({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending.slice(0, 3).map((post) => (
+          trending?.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar
@@ -49,7 +49,7 @@ export default function TrendingPosts({ trending, loading }) {
                 >
                   <MessageOutlined
                     style={{
-                      display: post?.images.length > 0 ? 'none' : 'block',
+                      display: post?.images?.length > 0 ? 'none' : 'block',
                     }}
                   />
                 </Avatar>
@@ -66,7 +66,7 @@ export default function TrendingPosts({ trending, loading }) {
               />
             </ListItem>
           ))}
-        {!loading && trending.length === 0 && (
+        {!loading && trending?.length === 0 && (
           <Grid align='center'>
             <Typography color='Primary' variant='body2'>
               Trending posts will appear hear..start commenting.
