@@ -50,7 +50,7 @@ export default function UpdateComment({
   const [updateCommentErr, setUpdateCommentErr] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [comment_text, setCommentText] = useState('');
-  const [comment_image, setCommentImage] = useState(null);
+  const [comment_image, setCommentImage] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
   const state = useSelector((state) => state);
@@ -86,7 +86,7 @@ export default function UpdateComment({
       ],
     });
     setCommentText('');
-    setCommentImage(null);
+    setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
     setFileType(null);
@@ -106,7 +106,7 @@ export default function UpdateComment({
       ],
     });
     setCommentText('');
-    setCommentImage(null);
+    setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
     setFileType(null);
@@ -170,7 +170,7 @@ export default function UpdateComment({
                     setUpdateCommentOpen(!updateCommentOpen);
                     setCommentToEdit(null);
                     setOpenImage(false);
-                    setCommentImage(null);
+                    setCommentImage(undefined);
                     setUpdateCommentErr(false);
                     setFileType(null);
                   }}
