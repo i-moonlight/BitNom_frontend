@@ -13,7 +13,7 @@ import {
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
 
-export default function TrendingPosts({ posts, trending, loading }) {
+export default function TrendingPosts({ trending, loading }) {
   console.log(trending, loading);
 
   return (

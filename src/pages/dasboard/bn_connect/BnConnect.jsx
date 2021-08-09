@@ -111,7 +111,6 @@ export default function BnConnect() {
                 <TrendingPosts
                   trending={trendingData?.Posts?.get}
                   loading={trendingLoading}
-                  posts={[1, 2, 3]}
                 />
                 <SuggestedPeople />
               </Hidden>

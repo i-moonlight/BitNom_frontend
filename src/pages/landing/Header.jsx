@@ -1,0 +1,54 @@
+import { Container, Grid, Typography, useTheme } from '@material-ui/core';
+import { ArrowRightAltRounded } from '@material-ui/icons';
+import React from 'react';
+import headerBgImg from '../../assets/landing/img12.png';
+import Button from '../../components/Button';
+
+export default function Header() {
+  const theme = useTheme();
+  return (
+    <Grid
+      style={{
+        backgroundColor: '#18191a',
+        paddingTop: 116,
+      }}
+    >
+      <Container container component={Grid} maxWidth='lg'>
+        <Grid
+          style={{
+            backgroundImage: `url('${headerBgImg}')`,
+            backgroundSize: 'cover',
+            borderRadius: 30,
+            padding: '5%',
+          }}
+          item
+          lg={12}
+          className='mt-5 mb-5'
+        >
+          <Typography variant='h3' color='textPrimary' className='mb-2 mt-4'>
+            The Ultimate Crypto-Intelligence Suite
+          </Typography>
+          <Typography variant='h6' color='textPrimary' className='my-2'>
+            BitNorm is an ever-expanding ecosystem of interconnected apps and
+            services, built for a decentralized future.
+          </Typography>
+          <Button
+            color={theme.palette.text.primary}
+            size='medium'
+            textCase
+            className='mt-2 mb-5'
+            endIcon={<ArrowRightAltRounded />}
+          >
+            Explore BN
+          </Button>
+          <Typography variant='body2' color='textPrimary' className='mt-5'>
+            BN crypto token is NOW available.{' '}
+            <a href='' className='alt'>
+              Click here to buy
+            </a>
+          </Typography>
+        </Grid>
+      </Container>
+    </Grid>
+  );
+}

@@ -11,12 +11,14 @@ export default function useColors() {
     theme,
     button: theme,
     buttonAlt: white,
+    cardAlt: '#18191a',
   };
 
   const themeLight = {
     theme,
     button: theme,
     buttonAlt: white,
+    cardAlt: '#18191a',
   };
 
   const [themeColors, setThemeColors] = useState(themeDark);
