@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
+import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPosts({ trending, loading }) {
   console.log(trending, loading);
@@ -56,7 +57,11 @@ export default function TrendingPosts({ trending, loading }) {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography variant='body2'>{post?.content}</Typography>
+                  <Typography
+                    dangerouslySetInnerHTML={{
+                      __html: truncateText(contentBodyFactory(post), 90),
+                    }}
+                  ></Typography>
                 }
                 secondary={`${post?.reactions?.likes} ${
                   post?.reactions?.likes === 1 ? 'Like' : 'Likes'
