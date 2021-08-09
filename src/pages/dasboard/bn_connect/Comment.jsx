@@ -23,6 +23,7 @@ import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
 } from '../utilities/queries';
+import { contentBodyFactory } from '../utilities/functions';
 
 const commentOptionId = 'menu-comment-option';
 export default function Comment({
@@ -124,7 +125,11 @@ export default function Comment({
                 </IconButton>
               </div>
               <Typography variant='body2' color='textSecondary' component='p'>
-                {comment?.content}
+                <Typography
+                  dangerouslySetInnerHTML={{
+                    __html: contentBodyFactory(comment),
+                  }}
+                ></Typography>
 
                 {comment?.image.length > 0 && (
                   <Grid container spacing={2}>
@@ -202,11 +207,16 @@ export default function Comment({
               </Avatar>
               <TextField
                 error={replyErr}
+                multiline
                 errorText={replyErr && 'The reply cannot be empty'}
-                rows={5}
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleCreateReply(e);
+                  }
+                }}
                 onChange={(e) =>
                   setReply(
                     reply?.length >= 250

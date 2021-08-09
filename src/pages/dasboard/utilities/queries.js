@@ -166,6 +166,7 @@ export const QUERY_LOAD_SCROLLS = gql`
               reputation
               type
             }
+            createdAt
             comments
             reactions {
               likes
@@ -378,6 +379,16 @@ export const QUERY_GET_COMMENTS = gql`
           likes
           dislikes
           loves
+        }
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
         }
         scroll
         response_to {

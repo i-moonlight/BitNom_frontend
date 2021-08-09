@@ -4,14 +4,15 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  //CircularProgress,
-  //Grid,
+  CircularProgress,
+  Grid,
   ListItemText,
   Paper,
   Typography,
 } from '@material-ui/core';
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
+import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPosts({ trending, loading }) {
   console.log(trending, loading);
@@ -30,36 +31,37 @@ export default function TrendingPosts({ trending, loading }) {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           Trending Posts
         </Typography>
-        {trending &&
-          trending.map(post => (
-            <ListItem key={post?._id} divider>
-              <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={post.content}
-                secondary={`${post?.reactions?.likes} Likes . ${post?.comments} Comments`}
-              />
-            </ListItem>
-          ))}
-        {/*         {loading && (
+        {loading && (
           <Grid align='center'>
             <CircularProgress color='primary' size={24} thickness={4} />
           </Grid>
         )}
         {trending &&
-          trending.slice(0, 5).map((post) => (
+          trending?.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
-                <Avatar variant='square'>
-                  <MessageOutlined />
+                <Avatar
+                  src={
+                    post?.images?.length > 0
+                      ? process.env.REACT_APP_BACKEND_URL + post?.images[0]
+                      : ''
+                  }
+                  variant='square'
+                >
+                  <MessageOutlined
+                    style={{
+                      display: post?.images?.length > 0 ? 'none' : 'block',
+                    }}
+                  />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  <Typography variant='body2'>{post?.content}</Typography>
+                  <Typography
+                    dangerouslySetInnerHTML={{
+                      __html: truncateText(contentBodyFactory(post), 90),
+                    }}
+                  ></Typography>
                 }
                 secondary={`${post?.reactions?.likes} ${
                   post?.reactions?.likes === 1 ? 'Like' : 'Likes'
@@ -69,11 +71,13 @@ export default function TrendingPosts({ trending, loading }) {
               />
             </ListItem>
           ))}
-        {!loading && trending.length === 0 && (
-          <Typography variant='body2'>
-            Trending posts will appear hear..start commenting!!
-          </Typography>
-        )} */}
+        {!loading && trending?.length === 0 && (
+          <Grid align='center'>
+            <Typography color='Primary' variant='body2'>
+              Trending posts will appear hear..start commenting.
+            </Typography>
+          </Grid>
+        )}
       </List>
     </Paper>
   );

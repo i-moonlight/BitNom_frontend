@@ -32,6 +32,7 @@ import {
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
+import { contentBodyFactory } from '../utilities/functions';
 import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
@@ -129,13 +130,13 @@ export default function Scroll({
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
-
+  console.log(scroll);
   useEffect(() => {
     if (createCommentData?.Comments?.create) {
       console.log('comment created');
     }
   }, [createCommentData]);
-
+  console.log(scroll?.content);
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
@@ -170,9 +171,13 @@ export default function Scroll({
         />
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
-            {scroll?.content}
-            <br />
-            {scroll?.content_entities?.map(entity => {
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: contentBodyFactory(scroll),
+              }}
+            ></Typography>
+            {/* <br />
+            {scroll?.content_entities?.map((entity) => {
               let colortext = scroll?.content?.slice(
                 entity?.offset,
                 entity?.offset + entity?.length
@@ -187,7 +192,7 @@ export default function Scroll({
                   {colortext}
                 </a>
               );
-            })}
+            })} */}
           </Typography>
           <Grid container spacing={2} className='mb-2'>
             {scroll?.video && (
@@ -292,9 +297,14 @@ export default function Scroll({
               <TextField
                 error={createCommentErr && true}
                 errorText={createCommentErr && 'The comment cannot be empty'}
-                rows={5}
+                multiline
                 rowsMax={10}
                 id='comment-field'
+                onKeyPress={e => {
+                  if (e.key === 'Enter') {
+                    handleCreateComment(e);
+                  }
+                }}
                 placeholder={
                   commentsData?.Comments?.get?.length > 0
                     ? ''
