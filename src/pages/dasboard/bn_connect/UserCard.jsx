@@ -26,7 +26,6 @@ import Button from '../../../components/Button';
 export default function UserCard({ setOpen }) {
   const state = useSelector((state) => state);
   const user = state.auth.user;
-
   return (
     <div
       style={{
