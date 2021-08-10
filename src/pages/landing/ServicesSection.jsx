@@ -35,7 +35,7 @@ export default function ServicesSection() {
               their usage and hence their true value. product to life
             </Typography>
             <Typography className={classes.sectionText} color='textPrimary'>
-              <a href=''>Visit BN Services</a>
+              <a href=''>Visit BN Services &gt;</a>
             </Typography>
           </Grid>
           <Grid item lg={6}>

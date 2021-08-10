@@ -102,7 +102,7 @@ export default function ProjectSection() {
               cryptocurrencies.
             </Typography>
             <Typography className={classes.sectionText} color='textPrimary'>
-              <a href=''>Read more about this feature &rarr;</a>
+              <a href=''>Read more about this feature &gt;</a>
             </Typography>
           </div>
         </Grid>

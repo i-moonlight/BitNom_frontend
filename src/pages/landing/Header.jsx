@@ -1,5 +1,16 @@
-import { Container, Grid, Typography, useTheme } from '@material-ui/core';
-import { ArrowRightAltRounded } from '@material-ui/icons';
+import {
+  Container,
+  Grid,
+  IconButton,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
+import {
+  ArrowForward,
+  ArrowForwardRounded,
+  ArrowRightAltRounded,
+  PlayArrowRounded,
+} from '@material-ui/icons';
 import React from 'react';
 import headerBgImg from '../../assets/landing/img12.png';
 import Button from '../../components/Button';
@@ -32,15 +43,20 @@ export default function Header() {
             BitNorm is an ever-expanding ecosystem of interconnected apps and
             services, built for a decentralized future.
           </Typography>
-          <Button
-            color={theme.palette.text.primary}
-            size='medium'
-            textCase
-            className='mt-2 mb-5'
-            endIcon={<ArrowRightAltRounded />}
-          >
-            Explore BN
-          </Button>
+          <div className='center-horizontal mt-2 mb-5'>
+            <Button
+              color={theme.palette.text.primary}
+              size='large'
+              textCase
+              className='mx-2'
+              endIcon={<ArrowForwardRounded />}
+            >
+              Explore BN
+            </Button>
+            <IconButton>
+              <PlayArrowRounded />
+            </IconButton>
+          </div>
           <Typography variant='body2' color='textPrimary' className='mt-5'>
             BN crypto token is NOW available.{' '}
             <a href='' className='alt'>

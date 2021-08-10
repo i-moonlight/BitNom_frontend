@@ -13,11 +13,14 @@ import {
 } from '@material-ui/core';
 import {
   CommentRounded,
+  FavoriteRounded,
   ImageRounded,
   MoreVert,
+  PanToolRounded,
   PersonRounded,
   Send,
   ShareRounded,
+  ThumbDownRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import { DropzoneDialog } from 'material-ui-dropzone';
@@ -37,6 +40,7 @@ import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
+import useColors from '../../../hooks/useColors';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -58,9 +62,12 @@ export default function Scroll({
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
   const [openImage, setOpenImage] = useState(false);
+  const [likeHovered, setLikeHovered] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+
+  const colors = useColors();
 
   const [
     createComment,
@@ -248,11 +255,62 @@ export default function Scroll({
           }`}
         </CardContent>
         <Divider />
+        <Card
+          style={{
+            position: 'absolute',
+            alignSelf: 'baseline',
+            borderRadius: 10,
+            backgroundColor: colors.cardAlt,
+            display: likeHovered ? 'block' : 'none',
+            transform: 'translateY(-28px)',
+          }}
+          onMouseEnter={() => setLikeHovered(true)}
+          onMouseLeave={() => setLikeHovered(false)}
+        >
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('love');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<FavoriteRounded />}
+          >
+            Love
+          </Button>
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('dislike');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<ThumbDownRounded />}
+          >
+            Dislike
+          </Button>
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('celebrate');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<PanToolRounded />}
+          >
+            Celebrate
+          </Button>
+        </Card>
         <CardActions className='space-around'>
           <Button
             color='default'
             textCase
             onClick={() => handleCreateReaction('like')}
+            onMouseEnter={() => setLikeHovered(true)}
+            onMouseLeave={() => setLikeHovered(false)}
             variant='text'
             startIcon={<ThumbUpRounded />}
           >

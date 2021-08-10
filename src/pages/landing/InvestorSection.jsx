@@ -72,7 +72,7 @@ export default function InvestorSection() {
                   </Grid>
                 </Grid>
                 <Typography className={classes.sectionText} color='textPrimary'>
-                  <a href=''>Visit investor page</a>
+                  <a href=''>Visit investor page &gt;</a>
                 </Typography>
               </Grid>
             </Grid>

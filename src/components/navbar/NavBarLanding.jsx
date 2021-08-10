@@ -7,8 +7,13 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { ArrowRightAltRounded, ChevronRight } from '@material-ui/icons';
+import {
+  ArrowRightAltRounded,
+  ChevronRight,
+  Navigation,
+} from '@material-ui/icons';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import logo_light from '../../assets/logo_light.svg';
 import useColors from '../../hooks/useColors';
 import Button from '../Button';
@@ -17,6 +22,7 @@ import StatusBar from './StatusBar';
 export default function NavBarLanding() {
   const theme = useTheme();
   const colors = useColors();
+  const history = useHistory();
 
   return (
     <AppBar
@@ -38,13 +44,13 @@ export default function NavBarLanding() {
               <Typography variant='h6' noWrap>
                 BITNORM
               </Typography>
-              <Typography
+              {/* <Typography
                 style={{ marginLeft: 16, color: '#F59301' }}
                 variant='body2'
                 noWrap
               >
                 NEW
-              </Typography>
+              </Typography> */}
             </Hidden>
           </div>
           <div className='center-horizontal'>
@@ -80,10 +86,24 @@ export default function NavBarLanding() {
             </Button>
           </div>
           <div className='center-horizontal'>
-            <Button color={colors.buttonAlt} variant='text' textCase>
+            <Button
+              className='mx-2'
+              color={colors.buttonAlt}
+              variant='text'
+              textCase
+              onClick={() => {
+                history.push('/auth/login');
+              }}
+            >
               Sign In
             </Button>
-            <Button textCase endIcon={<ArrowRightAltRounded />}>
+            <Button
+              textCase
+              endIcon={<ArrowRightAltRounded />}
+              onClick={() => {
+                history.push('/auth/signup');
+              }}
+            >
               Explore BN
             </Button>
           </div>

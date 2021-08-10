@@ -26,8 +26,11 @@ export default function Login() {
   const user = state.auth.user;
   // const errors = state.auth.err;
 
-  const [loginUser] = useMutation(MUTATION_LOGIN_USER);
-  const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN);
+  const [loginUser, { loading: loginLoading }] =
+    useMutation(MUTATION_LOGIN_USER);
+  const [googleLogin, { loading: googleLoading }] = useMutation(
+    MUTATION_GOOGLE_LOGIN
+  );
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
@@ -135,7 +138,7 @@ export default function Login() {
                       </Link>
                     </Typography>
                   </div>
-                  <Button fullWidth submit>
+                  <Button fullWidth submit disabled={loginLoading}>
                     Sign In
                   </Button>
                   <DividerText>or</DividerText>
@@ -164,6 +167,7 @@ export default function Login() {
                         textCase
                         google
                         fullWidth
+                        disabled={googleLoading}
                       >
                         Continue With Google
                       </Button>
