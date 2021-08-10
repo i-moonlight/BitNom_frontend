@@ -7,10 +7,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import botImg from '../../assets/landing/bot.svg';
-import ghostImg from '../../assets/landing/ghost.svg';
-import infrastructureImg from '../../assets/landing/infrastructure.svg';
-import useColors from '../../hooks/useColors';
+import botImg from '../../../assets/landing/bot.svg';
+import ghostImg from '../../../assets/landing/ghost.svg';
+import infrastructureImg from '../../../assets/landing/infrastructure.svg';
+import useColors from '../../../hooks/useColors';
 import { useStyles } from './Landing';
 
 export default function InfrastructureSection() {

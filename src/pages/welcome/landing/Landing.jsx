@@ -1,0 +1,42 @@
+import { makeStyles } from '@material-ui/core';
+import React from 'react';
+import AcceptCookies from '../AcceptCookies';
+import InfrastructureSection from './InfrastructureSection';
+import ProjectSection from './ProjectSection';
+import Wrapper from '../Wrapper';
+import Header from './Header';
+import InvestorSection from './InvestorSection';
+import LayersSection from './LayersSection';
+import ServicesSection from './ServicesSection';
+import Sponsors from './Sponsors';
+import TransitionSection from './TransitionSection';
+
+export const INVESTOR_CARD_DISPLACEMENT = 200;
+
+export default function Landing() {
+  return (
+    <Wrapper>
+      <Header />
+      <Sponsors />
+      <ProjectSection />
+      <InfrastructureSection />
+      <TransitionSection />
+      <LayersSection />
+      <InvestorSection />
+      <ServicesSection />
+      <AcceptCookies />
+    </Wrapper>
+  );
+}
+
+export const useStyles = makeStyles(() => ({
+  sectionText: {
+    lineHeight: '1.8em',
+    marginBottom: 16,
+  },
+  cardImg: {
+    width: 100,
+    height: 100,
+    padding: 10,
+  },
+}));

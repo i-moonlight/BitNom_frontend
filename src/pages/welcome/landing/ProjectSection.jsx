@@ -6,12 +6,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import card1Img from '../../assets/landing/card (1).svg';
-import card2Img from '../../assets/landing/card (2).svg';
-import card3Img from '../../assets/landing/card (3).svg';
-import joinImg from '../../assets/landing/img2.png';
-import visionImg from '../../assets/landing/vision.svg';
-import Button from '../../components/Button';
+import card1Img from '../../../assets/landing/card (1).svg';
+import card2Img from '../../../assets/landing/card (2).svg';
+import card3Img from '../../../assets/landing/card (3).svg';
+import joinImg from '../../../assets/landing/img2.png';
+import visionImg from '../../../assets/landing/vision.svg';
+import Button from '../../../components/Button';
 import { useStyles } from './Landing';
 
 export default function ProjectSection() {

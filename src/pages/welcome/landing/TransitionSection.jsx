@@ -6,9 +6,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import card4Img from '../../assets/landing/card (4).svg';
-import card5Img from '../../assets/landing/card (5).svg';
-import card6Img from '../../assets/landing/card (6).svg';
+import card4Img from '../../../assets/landing/card (4).svg';
+import card5Img from '../../../assets/landing/card (5).svg';
+import card6Img from '../../../assets/landing/card (6).svg';
 import { useStyles } from './Landing';
 
 export default function TransitionSection() {

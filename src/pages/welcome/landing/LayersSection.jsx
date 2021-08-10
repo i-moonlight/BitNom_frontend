@@ -7,9 +7,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import media2Img from '../../assets/landing/img7.png';
-import media1Img from '../../assets/landing/img8.png';
-import media3Img from '../../assets/landing/img9.png';
+import media2Img from '../../../assets/landing/img7.png';
+import media1Img from '../../../assets/landing/img8.png';
+import media3Img from '../../../assets/landing/img9.png';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function LayersSection() {

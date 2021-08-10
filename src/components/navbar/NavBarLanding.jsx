@@ -55,14 +55,15 @@ export default function NavBarLanding() {
           </div>
           <div className='center-horizontal'>
             <Button
+              className='mx-2'
               color={colors.buttonAlt}
               variant='text'
               textCase
-              endIcon={<ChevronRight style={{ transform: 'rotate(90deg)' }} />}
             >
               Home
             </Button>
             <Button
+              className='mx-2'
               color={colors.buttonAlt}
               variant='text'
               textCase
@@ -71,6 +72,7 @@ export default function NavBarLanding() {
               Ecosystem
             </Button>
             <Button
+              className='mx-2'
               color={colors.buttonAlt}
               variant='text'
               textCase
@@ -78,10 +80,20 @@ export default function NavBarLanding() {
             >
               Product
             </Button>
-            <Button color={colors.buttonAlt} variant='text' textCase>
+            <Button
+              className='mx-2'
+              color={colors.buttonAlt}
+              variant='text'
+              textCase
+            >
               BN for Business
             </Button>
-            <Button color={colors.buttonAlt} variant='text' textCase>
+            <Button
+              className='mx-2'
+              color={colors.buttonAlt}
+              variant='text'
+              textCase
+            >
               Learn
             </Button>
           </div>

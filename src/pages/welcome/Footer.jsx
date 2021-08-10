@@ -1,5 +1,6 @@
 import { Container, Divider, Grid, Typography } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import googlePlayImg from '../../assets/google_play.svg';
 import logoImg from '../../assets/logo_light.svg';
 import Button from '../../components/Button';
@@ -83,9 +84,10 @@ export default function Footer() {
           </Grid>
           <Grid item lg={6}>
             <Typography variant='body2' color='textPrimary'>
-              <a href=''> Terms And Conditions </a>.
-              <a href=''> Privacy Policy </a>.<a href=''> Cookie Policy </a>.
-              <a href=''> Disclaimer</a>
+              <Link to='/terms'> Terms And Conditions </Link>.
+              <Link to='/privacy_policy'> Privacy Policy </Link>.
+              <Link to='/cookie_policy'> Cookie Policy </Link>.
+              <Link to='/disclaimer'> Disclaimer</Link>
             </Typography>
           </Grid>
         </Container>

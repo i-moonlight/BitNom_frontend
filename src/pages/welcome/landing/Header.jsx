@@ -5,15 +5,10 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import {
-  ArrowForward,
-  ArrowForwardRounded,
-  ArrowRightAltRounded,
-  PlayArrowRounded,
-} from '@material-ui/icons';
+import { ArrowForwardRounded, PlayArrowRounded } from '@material-ui/icons';
 import React from 'react';
-import headerBgImg from '../../assets/landing/img12.png';
-import Button from '../../components/Button';
+import headerBgImg from '../../../assets/landing/img12.png';
+import Button from '../../../components/Button';
 
 export default function Header() {
   const theme = useTheme();
@@ -21,7 +16,6 @@ export default function Header() {
     <Grid
       style={{
         backgroundColor: '#18191a',
-        paddingTop: 116,
       }}
     >
       <Container container component={Grid} maxWidth='lg'>

@@ -6,8 +6,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import investorGraphicImg from '../../assets/landing/articles.png';
-import investorImg from '../../assets/landing/investor.svg';
+import investorGraphicImg from '../../../assets/landing/articles.png';
+import investorImg from '../../../assets/landing/investor.svg';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function InvestorSection() {

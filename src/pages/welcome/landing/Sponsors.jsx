@@ -1,11 +1,11 @@
 import { Container, Grid } from '@material-ui/core';
 import React from 'react';
-import sponsor1Img from '../../assets/landing/sponsor (1).png';
-import sponsor2Img from '../../assets/landing/sponsor (2).png';
-import sponsor3Img from '../../assets/landing/sponsor (3).png';
-import sponsor4Img from '../../assets/landing/sponsor (4).png';
-import sponsor5Img from '../../assets/landing/sponsor (5).png';
-import sponsor6Img from '../../assets/landing/sponsor (6).png';
+import sponsor1Img from '../../../assets/landing/sponsor (1).png';
+import sponsor2Img from '../../../assets/landing/sponsor (2).png';
+import sponsor3Img from '../../../assets/landing/sponsor (3).png';
+import sponsor4Img from '../../../assets/landing/sponsor (4).png';
+import sponsor5Img from '../../../assets/landing/sponsor (5).png';
+import sponsor6Img from '../../../assets/landing/sponsor (6).png';
 
 export default function Sponsors() {
   return (

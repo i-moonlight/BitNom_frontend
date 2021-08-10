@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
-import servicesImg from '../../assets/landing/img3.png';
+import servicesImg from '../../../assets/landing/img3.png';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function ServicesSection() {
