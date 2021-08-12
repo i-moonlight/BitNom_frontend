@@ -3,6 +3,7 @@ import {
   Box,
   Container,
   Hidden,
+  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -46,6 +47,7 @@ export default function StatusBar() {
           <Hidden smDown>
             <div className='center-horizontal'>
               <Button
+                className='py-0 mx-1 my-1'
                 textCase
                 variant='text'
                 color='default'
@@ -60,6 +62,7 @@ export default function StatusBar() {
                 English
               </Button>
               <Button
+                className='py-0 mx-1 my-1'
                 textCase
                 variant='text'
                 color='default'
@@ -85,20 +88,15 @@ export default function StatusBar() {
                 </Avatar>{' '}
                 USD
               </Button>
-              <Button
-                textCase
-                variant='text'
-                color='default'
-                // endIcon={
-                //   <ChevronRight
-                //     style={{
-                //       transform: 'rotateZ(90deg)',
-                //     }}
-                //   />
-                // }
-              >
-                <Brightness3 />
-              </Button>
+
+              <IconButton size='small'>
+                <Brightness3
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                />
+              </IconButton>
             </div>
           </Hidden>
         </div>

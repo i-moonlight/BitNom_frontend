@@ -27,8 +27,10 @@ import SavedItems from './pages/dasboard/SavedItems';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
+import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
 import Landing from './pages/welcome/landing/Landing';
 import Privacy from './pages/welcome/privacy/Privacy';
+import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
 
 //GraphQL and Apollo Client Setup
@@ -111,6 +113,8 @@ export const AppContainers = () => {
             <Route exact component={Privacy} path='/privacy_policy' />
             <Route exact component={Cookie} path='/cookie_policy' />
             <Route exact component={Disclaimer} path='/disclaimer' />
+            <Route exact component={FeatureRequest} path='/feature_request' />
+            <Route exact component={RoadMap} path='/roadmap' />
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route

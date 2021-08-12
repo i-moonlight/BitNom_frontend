@@ -22,9 +22,16 @@ export default function Wrapper({ children }) {
   }, []);
 
   return (
-    <div style={{ width: '100%', paddingTop: 116, minHeight: '100vh' }}>
+    <div
+      style={{
+        width: '100%',
+        paddingTop: 116,
+        minHeight: '100vh',
+      }}
+    >
       <NavBarLanding />
       {children}
+
       <Footer />
     </div>
   );
