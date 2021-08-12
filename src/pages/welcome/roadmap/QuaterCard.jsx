@@ -11,7 +11,7 @@ export default function QuaterCard({ title, text, list }) {
   const classes = useStyles();
 
   return (
-    <Grid item lg={3}>
+    <Grid item lg={3} md={4} sm={6} xs={12}>
       <Card className={classes.card}>
         <CardContent>
           <Typography gutterBottom>{title}</Typography>

@@ -39,7 +39,6 @@ export default function FeatureRequest() {
 
             <Grid
               item
-              xs={12}
               sm={12}
               md={8}
               lg={6}
@@ -48,6 +47,9 @@ export default function FeatureRequest() {
                 paddingTop: 16,
               }}
             >
+              <Hidden mdUp>
+                <RequestFormCard />
+              </Hidden>
               <div className='space-between center-horizontal'>
                 <Typography variant='h6' color='textSecondary'>
                   Showing Trending Feature requests

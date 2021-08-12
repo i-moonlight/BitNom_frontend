@@ -5,10 +5,10 @@ import React from 'react';
 export default function BitnormPaper({ title }) {
   return (
     <>
-      <Grid item lg={2}></Grid>
+      <Grid item md={2}></Grid>
       <Grid
         item
-        lg={8}
+        md={8}
         style={{
           borderRadius: 30,
         }}
@@ -118,7 +118,7 @@ export default function BitnormPaper({ title }) {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item lg={2}></Grid>
+      <Grid item md={2}></Grid>
     </>
   );
 }

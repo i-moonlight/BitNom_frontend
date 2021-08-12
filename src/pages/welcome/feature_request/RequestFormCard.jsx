@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@material-ui/core';
 import { Card, CardContent } from '@material-ui/core';
 import React from 'react';
 import Button from '../../../components/Button';
@@ -17,6 +17,7 @@ export default function RequestFormCard() {
       }}
     >
       <CardContent>
+        <Typography color='textSecondary'>Request Feature</Typography>
         <Form>
           <TextField placeholder='Descriptive Title' fullWidth />
           <TextField

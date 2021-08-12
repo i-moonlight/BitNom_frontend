@@ -9,10 +9,10 @@ export default function Faqs() {
     <Wrapper>
       <Grid>
         <Container container component={Grid} maxWidth='lg'>
-          <Grid item lg={2}></Grid>
+          <Grid item md={2}></Grid>
           <Grid
             item
-            lg={8}
+            md={8}
             style={{
               borderRadius: 30,
             }}
@@ -29,7 +29,7 @@ export default function Faqs() {
             <FaqSection />
             <FaqSection />
           </Grid>
-          <Grid item lg={2}></Grid>
+          <Grid item md={2}></Grid>
         </Container>
       </Grid>
     </Wrapper>
