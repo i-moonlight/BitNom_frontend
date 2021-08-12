@@ -1,23 +1,21 @@
 import {
   Breadcrumbs,
   Container,
-  createStyles,
   Grid,
   Link,
   makeStyles,
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { useState } from 'react';
+import { roadMap } from '../welcome.data';
 import Wrapper from '../Wrapper';
 import QuaterCard from './QuaterCard';
 
 export default function RoadMap() {
   // const theme = useTheme();
   const classes = useStyles();
-
-  const setYear = year => {
-    console.log(year);
-  };
+  const [year, setYear] = useState('2021');
 
   return (
     <Wrapper>
@@ -34,32 +32,31 @@ export default function RoadMap() {
       <div className={classes.body}>
         <Container maxWidth='lg'>
           <div className='pt-4'>
-            <Breadcrumbs
-              style={
-                {
-                  // backgroundColor: '#fed132',
-                }
-              }
-              aria-label='breadcrumb'
-            >
-              <Link color='inherit' onClick={() => setYear('2019')}>
-                2019
-              </Link>
-              <Link color='inherit' onClick={() => setYear('2020')}>
-                2020
-              </Link>
-              <Link color='inherit' onClick={() => setYear('2021')}>
-                2021
-              </Link>
+            <Breadcrumbs aria-label='breadcrumb'>
+              {roadMap.map(road => (
+                <Link
+                  className={road?.year != year ? 'alt' : 'fw-bold'}
+                  key={road?.year}
+                  onClick={() => setYear(road?.year)}
+                >
+                  {road?.year}
+                </Link>
+              ))}
             </Breadcrumbs>
           </div>
         </Container>
         <Container maxWidth='lg'>
           <Grid className='py-4' container spacing={2}>
-            <QuaterCard />
-            <QuaterCard />
-            <QuaterCard />
-            <QuaterCard />
+            {roadMap
+              .filter(road => road?.year == year)[0]
+              .quaters?.map(quater => (
+                <QuaterCard
+                  key={quater?.name}
+                  title={quater?.name}
+                  text={quater?.text}
+                  list={quater?.list}
+                />
+              ))}
           </Grid>
         </Container>
       </div>

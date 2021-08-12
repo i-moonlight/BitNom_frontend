@@ -15,7 +15,7 @@ export default function ServicesSection() {
     >
       <Container maxWidth='lg'>
         <Grid spacing={5} container className='py-5'>
-          <Grid item lg={6} className='py-5 mt-3'>
+          <Grid item sm={10} md={6} className='py-5 mt-3'>
             <Typography
               className={classes.sectionText}
               variant='h6'
@@ -38,7 +38,7 @@ export default function ServicesSection() {
               <a href=''>Visit BN Services &gt;</a>
             </Typography>
           </Grid>
-          <Grid item lg={6}>
+          <Grid item sm={10} md={6}>
             <img style={{ width: '100%' }} src={servicesImg} alt='' />
           </Grid>
         </Grid>

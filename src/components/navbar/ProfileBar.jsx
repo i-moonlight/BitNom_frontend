@@ -19,6 +19,7 @@ import {
 } from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import logo_light from '../../assets/logo_light.svg';
 import Button from '../Button';
 import { useStyles } from '../styles.components';
@@ -32,26 +33,32 @@ export default function ProfileBar({
   const state = useSelector(state => state);
   const user = state.auth.user;
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <Box className={classes.root}>
       <Container>
         <Card elevation={0} className={classes.appBar}>
-          <Avatar src={logo_light} style={{ marginRight: 8 }}>
-            B
-          </Avatar>
-          <Hidden smDown>
-            <Typography variant='h6' noWrap>
-              BITNORM
-            </Typography>
-            <Typography
-              style={{ marginLeft: 16, color: '#F59301' }}
-              variant='body2'
-              noWrap
-            >
-              NEW
-            </Typography>
-          </Hidden>
+          <div
+            className='center-horizontal c-pointer'
+            onClick={() => history.push('/')}
+          >
+            <Avatar className='c-pointer me-2' src={logo_light}>
+              B
+            </Avatar>
+            <Hidden smDown>
+              <Typography className='c-pointer' variant='h6' noWrap>
+                BITNORM
+              </Typography>
+              <Typography
+                style={{ marginLeft: 16, color: '#F59301' }}
+                variant='body2'
+                noWrap
+              >
+                NEW
+              </Typography>
+            </Hidden>
+          </div>
 
           <Paper elevation={0} component='form' className={classes.paperSearch}>
             {/* <IconButton className={classes.iconButton} aria-label="menu">

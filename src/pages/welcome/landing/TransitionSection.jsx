@@ -15,9 +15,9 @@ export default function TransitionSection() {
   const classes = useStyles();
   return (
     <Grid style={{ backgroundColor: '#18191a' }}>
-      <Container maxWidth='lg' className='pb-5'>
+      <Container maxWidth='lg'>
         <Grid spacing={5} container className='py-5'>
-          <Grid item lg={6}>
+          <Grid item md={6}>
             <Typography
               variant='h1'
               style={{
@@ -30,7 +30,7 @@ export default function TransitionSection() {
               Our World Is Changing. Together, We Can Change It For The Better.
             </Typography>
           </Grid>
-          <Grid item lg={6}>
+          <Grid item md={6}>
             <Grid container spacing={5}>
               <Grid item lg={3}>
                 <Card className={classes.cardImg}>
@@ -54,21 +54,25 @@ export default function TransitionSection() {
                 </Card>
               </Grid>
               <Grid item lg={3}></Grid>
-              <Typography
-                className={classes.sectionText}
-                gutterBottom
-                color='textPrimary'
-              >
-                We aim to empower the beginner transition from novice to master
-                in the simplest of ways and the master to expand his knowledge,
-                specialty, and career. We empower both learners and businesses.
-                We believe in community and humanity.
-              </Typography>
-              <Typography className={classes.sectionText} color='textPrimary'>
-                We believe that the action of making the lives of those around
-                us better has the consequence of making our lives better whether
-                directly or indirectly.
-              </Typography>
+            </Grid>
+            <Grid container spacing={5}>
+              <Grid item sm={12}>
+                <Typography
+                  className={classes.sectionText}
+                  gutterBottom
+                  color='textPrimary'
+                >
+                  We aim to empower the beginner transition from novice to
+                  master in the simplest of ways and the master to expand his
+                  knowledge, specialty, and career. We empower both learners and
+                  businesses. We believe in community and humanity.
+                </Typography>
+                <Typography className={classes.sectionText} color='textPrimary'>
+                  We believe that the action of making the lives of those around
+                  us better has the consequence of making our lives better
+                  whether directly or indirectly.
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

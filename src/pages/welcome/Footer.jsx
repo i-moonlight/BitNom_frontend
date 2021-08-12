@@ -5,71 +5,88 @@ import googlePlayImg from '../../assets/google_play.svg';
 import logoImg from '../../assets/logo_light.svg';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
+import { footerLinks } from './welcome.data';
 
 export default function Footer() {
   return (
     <>
       <Grid style={{ backgroundColor: '#18191a' }}>
-        <Container container component={Grid} maxWidth='lg'>
-          <Grid className='center-horizontal my-3' item lg={6}>
-            <Typography variant='h6' color='textSecondary'>
-              Get BitNorm Updates to your Inbox
-            </Typography>
-          </Grid>
-          <Grid item lg={6} className='my-3'>
-            <div className='center-horizontal'>
-              <TextField
-                style={{ flex: 1 }}
-                fullWidth={false}
-                placeholder='Enter Your Email'
-              />
-              <Button className='mx-2' textCase>
-                Join Mailing List
-              </Button>
-            </div>
-          </Grid>
-          <Grid item lg={12} className='mb-3'>
-            <Divider />
-          </Grid>
-          {[1, 2, 3, 4].map(footer => (
-            <Grid key={footer} item lg={3} className='my-3'>
-              <Typography gutterBottom variant='body2' color='textSecondary'>
-                COMPANY
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                Home
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                About Us
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                Whitepaper
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                Brand Guidelines
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                RoadMap
-              </Typography>
-              <Typography gutterBottom color='textPrimary'>
-                Blogs
+        <Container maxWidth='lg'>
+          <Grid container>
+            <Grid className='center-horizontal my-3' item md={6} sm={12}>
+              <Typography variant='h6' color='textSecondary'>
+                Get BitNorm Updates to your Inbox
               </Typography>
             </Grid>
-          ))}
+            <Grid item md={6} sm={12} className='my-3'>
+              <div className='center-horizontal'>
+                <TextField
+                  style={{ flex: 1 }}
+                  fullWidth={false}
+                  placeholder='Enter Your Email'
+                />
+                <Button className='mx-2' textCase>
+                  <Typography noWrap>Subscribe</Typography>
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
 
-          <Grid item lg={12} className='my-3'>
-            <Divider />
+          <Grid container>
+            <Grid item lg={12} className='mb-3'>
+              <Divider />
+            </Grid>
           </Grid>
-          <Grid item lg={6} className='my-2'>
-            <div className='center-horizontal'>
-              <img style={{ width: 50 }} src={logoImg} alt='' />
-              <Typography className='mx-2' variant='h5' color='textPrimary'>
-                BITNORM
-              </Typography>
-            </div>
+
+          <Grid container>
+            {footerLinks.map(footerLink => (
+              <Grid
+                key={footerLink[0]?.text}
+                item
+                md={3}
+                sm={4}
+                xs={6}
+                className='my-3'
+              >
+                {footerLink.map(link => (
+                  <div key={link?.text}>
+                    {link?.title ? (
+                      <Typography
+                        gutterBottom
+                        variant='body2'
+                        color='textSecondary'
+                      >
+                        {link?.text}
+                      </Typography>
+                    ) : (
+                      <Typography gutterBottom color='textPrimary'>
+                        <Link to={link?.link}>{link?.text}</Link>
+                      </Typography>
+                    )}
+                  </div>
+                ))}
+              </Grid>
+            ))}
           </Grid>
-          <Grid item lg={6} className='my-2'>
-            <img style={{ height: 50 }} src={googlePlayImg} alt='' />
+
+          <Grid container>
+            <Grid item lg={12} className='my-3'>
+              <Divider />
+            </Grid>
+          </Grid>
+
+          <Grid container>
+            <Grid item xs={6} className='my-2'>
+              <div className='center-horizontal'>
+                <img style={{ width: 40 }} src={logoImg} alt='' />
+                <Typography className='mx-2' variant='h6' color='textPrimary'>
+                  BITNORM
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={6} className='my-2'>
+              <img style={{ height: 40 }} src={googlePlayImg} alt='' />
+            </Grid>
           </Grid>
         </Container>
       </Grid>
@@ -77,7 +94,7 @@ export default function Footer() {
       <Grid style={{ backgroundColor: '#141617' }}>
         <Container container component={Grid} maxWidth='lg' className='py-3'>
           <Grid item lg={6}>
-            <Typography variant='body2' color='textPrimary'>
+            <Typography className='me-5' variant='body2' color='textPrimary'>
               Copyright &copy; {new Date().getFullYear()} {window.location.host}{' '}
               All rights reserved
             </Typography>

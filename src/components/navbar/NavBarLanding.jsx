@@ -11,7 +11,6 @@ import { ArrowRightAltRounded, ChevronRight } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import logo_light from '../../assets/logo_light.svg';
-import useColors from '../../hooks/useColors';
 import Button from '../Button';
 import { menuEcosystem, menuProduct } from '../data.components';
 import NavBarMenu from './NavBarMenu';
@@ -21,7 +20,6 @@ export default function NavBarLanding() {
   const [showMenuEcosystem, setShowMenuEcosystem] = useState(false);
   const [showMenuProduct, setShowMenuProduct] = useState(false);
   const theme = useTheme();
-  const colors = useColors();
   const history = useHistory();
 
   return (
@@ -36,7 +34,10 @@ export default function NavBarLanding() {
       <Divider />
       <Container>
         <div className='space-between my-3'>
-          <div className='center-horizontal'>
+          <div
+            className='center-horizontal c-pointer'
+            onClick={() => history.push('/')}
+          >
             <Avatar src={logo_light} style={{ marginRight: 8 }}>
               B
             </Avatar>
@@ -49,7 +50,7 @@ export default function NavBarLanding() {
           <div className='center-horizontal'>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
             >
@@ -57,7 +58,7 @@ export default function NavBarLanding() {
             </Button>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
               endIcon={<ChevronRight style={{ transform: 'rotate(90deg)' }} />}
@@ -73,7 +74,7 @@ export default function NavBarLanding() {
             </Button>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
               endIcon={<ChevronRight style={{ transform: 'rotate(90deg)' }} />}
@@ -89,7 +90,7 @@ export default function NavBarLanding() {
             </Button>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
             >
@@ -97,7 +98,7 @@ export default function NavBarLanding() {
             </Button>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
             >
@@ -107,7 +108,7 @@ export default function NavBarLanding() {
           <div className='center-horizontal'>
             <Button
               className='mx-2'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
               variant='text'
               textCase
               onClick={() => {

@@ -1,4 +1,10 @@
 /*  */
+.c-pointer {
+  cursor: pointer !important;
+}
+/*  */
+
+/*  */
 .d-flex {
   display: flex !important;
 }

@@ -20,6 +20,7 @@ export default function App() {
       background: {
         paper: '#242526',
         default: '#171818',
+        alt: '#444444',
       },
     },
   });

@@ -40,7 +40,7 @@ import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
-import useColors from '../../../hooks/useColors';
+import { useTheme } from '@material-ui/core';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -67,7 +67,7 @@ export default function Scroll({
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  const colors = useColors();
+  const theme = useTheme();
 
   const [
     createComment,
@@ -260,7 +260,7 @@ export default function Scroll({
             position: 'absolute',
             alignSelf: 'baseline',
             borderRadius: 10,
-            backgroundColor: colors.cardAlt,
+            backgroundColor: theme.palette.background.default,
             display: likeHovered ? 'block' : 'none',
             transform: 'translateY(-28px)',
           }}

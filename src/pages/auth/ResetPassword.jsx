@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
+import NavBarAuth from '../../components/navbar/NavBarAuth';
 import TextField from '../../components/TextField';
 import { requestResetInitialValues } from './utilities/initial_values';
 import { MUTATION_REQUEST_RESET } from './utilities/queries';
@@ -25,83 +26,86 @@ export default function ResetPassword() {
   }, [state]);
 
   return (
-    <div className='center-horizontal center-vertical'>
-      <Grid
-        container
-        spacing={0}
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
-        style={{ minHeight: '100vh' }}
-      >
-        <Grid item xs={11} sm={7} md={6} lg={4}>
-          <div className='text-center my-3 px-sm-5'>
-            <Typography color='textPrimary' variant='h5'>
-              FORGOT PASSWORD
-            </Typography>
-            <Typography color='textPrimary' variant='body1'>
-              Enter the email address you registered with and we will send you a
-              link to reset your password.
-            </Typography>
-          </div>
-          <Card elevation={0}>
-            <CardContent>
-              <Form
-                initialValues={requestResetInitialValues}
-                validationSchema={requestResetValidationSchema}
-                onSubmit={({ email }) => {
-                  requestReset({
-                    variables: {
-                      email,
-                    },
-                    errorPolicy: 'all',
-                  }).then(({ data, errors }) => {
-                    setEmailErr(null);
+    <>
+      <NavBarAuth />
+      <div className='center-horizontal center-vertical'>
+        <Grid
+          container
+          spacing={0}
+          direction='column'
+          alignItems='center'
+          justifyContent='center'
+          style={{ minHeight: '100vh' }}
+        >
+          <Grid item xs={11} sm={7} md={6} lg={4}>
+            <div className='text-center my-3 px-sm-5'>
+              <Typography color='textPrimary' variant='h5'>
+                FORGOT PASSWORD
+              </Typography>
+              <Typography color='textPrimary' variant='body1'>
+                Enter the email address you registered with and we will send you
+                a link to reset your password.
+              </Typography>
+            </div>
+            <Card elevation={0}>
+              <CardContent>
+                <Form
+                  initialValues={requestResetInitialValues}
+                  validationSchema={requestResetValidationSchema}
+                  onSubmit={({ email }) => {
+                    requestReset({
+                      variables: {
+                        email,
+                      },
+                      errorPolicy: 'all',
+                    }).then(({ data, errors }) => {
+                      setEmailErr(null);
 
-                    data?.Users?.createPasswordResetCode &&
-                      setRequestSent(true);
+                      data?.Users?.createPasswordResetCode &&
+                        setRequestSent(true);
 
-                    errors &&
-                      errors.map(err => {
-                        err?.state?.username &&
-                          setEmailErr(err?.state?.username);
-                      });
-                  });
-                }}
-              >
-                <div className='text-center my-3 mx-2'>
-                  <TextField
-                    error={emailErr && true}
-                    errorText={emailErr && emailErr[0]}
-                    name='email'
-                    label='Email Adress'
-                    variant='outlined'
-                    size='small'
-                    fullWidth
-                  />
+                      errors &&
+                        errors.map(err => {
+                          err?.state?.username &&
+                            setEmailErr(err?.state?.username);
+                        });
+                    });
+                  }}
+                >
+                  <div className='text-center my-3 mx-2'>
+                    <TextField
+                      error={emailErr && true}
+                      errorText={emailErr && emailErr[0]}
+                      name='email'
+                      label='Email Adress'
+                      variant='outlined'
+                      size='small'
+                      fullWidth
+                    />
 
-                  {requestSent && (
-                    <Alert className='mb-2' severity='success'>
-                      Request sent! Check your email.
-                    </Alert>
-                  )}
+                    {requestSent && (
+                      <Alert className='mb-2' severity='success'>
+                        Request sent! Check your email.
+                      </Alert>
+                    )}
 
-                  <Button disabled={requestSent} fullWidth submit>
-                    Reset Password
-                  </Button>
-                  <div>
-                    <Typography className='center-vertical mt-4'>
-                      <Link color='primary' to='/auth/login'>
-                        Back to login
-                      </Link>
-                    </Typography>
+                    <Button disabled={requestSent} fullWidth submit>
+                      Reset Password
+                    </Button>
+                    <div>
+                      <Typography className='center-vertical mt-4'>
+                        <Link color='primary' to='/auth/login'>
+                          Back to login
+                        </Link>
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-              </Form>
-            </CardContent>
-          </Card>
+                </Form>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 }

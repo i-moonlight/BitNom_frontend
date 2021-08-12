@@ -29,25 +29,25 @@ export default function InvestorSection() {
           variant='outlined'
         >
           <CardContent>
-            <Grid spacing={5} container>
-              <Grid item lg={5}>
-                <img
-                  style={{
-                    width: '100%',
-                    marginRight: -200,
-                    zIndex: 1,
-                  }}
-                  src={investorGraphicImg}
-                  alt=''
-                />
-              </Grid>
-              <Grid item lg={7}>
+            <Grid
+              className='m-2'
+              style={{
+                backgroundImage: `url("${investorGraphicImg}")`,
+              }}
+              spacing={5}
+              container
+            >
+              <Grid item md={5}></Grid>
+              <Grid item md={7}>
                 <img
                   style={{ width: '70%', zIndex: 2 }}
                   src={investorImg}
                   alt=''
                 />
               </Grid>
+            </Grid>
+
+            <Grid className='mx-2 mt-2' spacing={5} container>
               <Grid item lg={12}>
                 <Typography
                   className={classes.sectionText}
@@ -57,7 +57,7 @@ export default function InvestorSection() {
                   Our Investor Page{' '}
                 </Typography>
                 <Grid container>
-                  <Grid item lg={8}>
+                  <Grid item md={8}>
                     <Typography
                       className={classes.sectionText}
                       color='textPrimary'

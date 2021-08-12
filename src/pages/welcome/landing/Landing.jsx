@@ -8,7 +8,7 @@ import Header from './Header';
 import InvestorSection from './InvestorSection';
 import LayersSection from './LayersSection';
 import ServicesSection from './ServicesSection';
-import Sponsors from './Sponsors';
+import SponsorsSection from './SponsorsSection';
 import TransitionSection from './TransitionSection';
 
 export const INVESTOR_CARD_DISPLACEMENT = 200;
@@ -17,7 +17,7 @@ export default function Landing() {
   return (
     <Wrapper>
       <Header />
-      <Sponsors />
+      <SponsorsSection />
       <ProjectSection />
       <InfrastructureSection />
       <TransitionSection />
@@ -29,7 +29,7 @@ export default function Landing() {
   );
 }
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles(theme => ({
   sectionText: {
     lineHeight: '1.8em',
     marginBottom: 16,
@@ -38,5 +38,8 @@ export const useStyles = makeStyles(() => ({
     width: 100,
     height: 100,
     padding: 10,
+  },
+  layersCard: {
+    backgroundColor: theme.palette.background.alt,
   },
 }));
