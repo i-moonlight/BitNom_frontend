@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
 import { login } from '../../store/actions/authActions';
 import { updateInfoInitialValues } from './utilities/initial_values';
@@ -26,79 +27,82 @@ export default function UpdateInfo() {
   }, [state]);
 
   return (
-    <div className='center-horizontal center-vertical'>
-      <Grid
-        container
-        spacing={0}
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
-        style={{ minHeight: '100vh' }}
-      >
-        <Grid item xs={11} sm={7} md={6} lg={4}>
-          <div className='text-center my-3 px-sm-5'>
-            <Typography color='textPrimary' variant='h5'>
-              BEFORE WE PROCEED
-            </Typography>
-            <Typography color='textPrimary' variant='body1'>
-              Please fill out the following details for a better experience.
-            </Typography>
-          </div>
-          <Card elevation={0}>
-            <CardContent>
-              <Form
-                initialValues={updateInfoInitialValues}
-                validationSchema={updateInfoValidationSchema}
-                onSubmit={({ displayName, bio }) => {
-                  updateProfileInfo({
-                    variables: {
-                      displayName,
-                      bio,
-                    },
-                    errorPolicy: 'all',
-                  }).then(({ data, errors }) => {
-                    let userData = data?.Users?.update
-                      ? data?.Users?.update
-                      : {};
+    <>
+      <NavBarAuth />
+      <div className='center-horizontal center-vertical'>
+        <Grid
+          container
+          spacing={0}
+          direction='column'
+          alignItems='center'
+          justifyContent='center'
+          style={{ minHeight: '100vh' }}
+        >
+          <Grid item xs={11} sm={7} md={6} lg={4}>
+            <div className='text-center my-3 px-sm-5'>
+              <Typography color='textPrimary' variant='h5'>
+                BEFORE WE PROCEED
+              </Typography>
+              <Typography color='textPrimary' variant='body1'>
+                Please fill out the following details for a better experience.
+              </Typography>
+            </div>
+            <Card elevation={0}>
+              <CardContent>
+                <Form
+                  initialValues={updateInfoInitialValues}
+                  validationSchema={updateInfoValidationSchema}
+                  onSubmit={({ displayName, bio }) => {
+                    updateProfileInfo({
+                      variables: {
+                        displayName,
+                        bio,
+                      },
+                      errorPolicy: 'all',
+                    }).then(({ data, errors }) => {
+                      let userData = data?.Users?.update
+                        ? data?.Users?.update
+                        : {};
 
-                    errors && console.log(errors);
+                      errors && console.log(errors);
 
-                    dispatch(login(userData, null));
-                  });
-                }}
-              >
-                <div className='text-center my-3 mx-2'>
-                  <TextField
-                    disabled
-                    label={user?._id}
-                    variant='outlined'
-                    fullWidth
-                    adornment={<DoneRounded />}
-                    adornmentType='end'
-                  />
-                  <TextField
-                    name='displayName'
-                    label='Full Name'
-                    variant='outlined'
-                    fullWidth
-                  />
-                  <TextField
-                    name='bio'
-                    label='Your Bio'
-                    variant='outlined'
-                    multiline
-                    rows={3}
-                    fullWidth
-                  />
-                  <Button fullWidth submit>
-                    Update Details
-                  </Button>
-                </div>
-              </Form>
-            </CardContent>
-          </Card>
+                      dispatch(login(userData, null));
+                    });
+                  }}
+                >
+                  <div className='text-center my-3 mx-2'>
+                    <TextField
+                      disabled
+                      label={user?._id}
+                      variant='outlined'
+                      fullWidth
+                      adornment={<DoneRounded />}
+                      adornmentType='end'
+                    />
+                    <TextField
+                      name='displayName'
+                      label='Full Name'
+                      variant='outlined'
+                      fullWidth
+                    />
+                    <TextField
+                      name='bio'
+                      label='Your Bio'
+                      variant='outlined'
+                      multiline
+                      rows={3}
+                      fullWidth
+                    />
+                    <Button fullWidth submit>
+                      Update Details
+                    </Button>
+                  </div>
+                </Form>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 }

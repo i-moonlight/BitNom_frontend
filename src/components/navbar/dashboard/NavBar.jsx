@@ -1,12 +1,12 @@
 import { AppBar, Divider, useTheme } from '@material-ui/core';
 import React, { useState } from 'react';
-import MenuPopover from './MenuPopover';
-import NotificationOptionPopover from './NotificationOptionPopover';
-import NotificationsPopover from './NotificationsPopover';
+import MenuPopover from './popovers/MenuPopover';
+import NotificationOptionPopover from './popovers/NotificationOptionPopover';
+import NotificationsPopover from './popovers/NotificationsPopover';
+import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import StatusBar from './StatusBar';
-import TabOptionsPopover from './TabOptionsPopover';
-import TopTabs from './TopTabs';
+import StatusBar from '../StatusBar';
+import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
@@ -81,7 +81,7 @@ export default function NavBar() {
         notificationId={notificationId}
         handleNotificationsOpen={handleNotificationsOpen}
       />
-      <TopTabs
+      <TabsBar
         value={value}
         handleChange={handleChange}
         tabOptionsId={tabOptionsId}

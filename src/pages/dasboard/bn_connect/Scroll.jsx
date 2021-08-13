@@ -13,16 +13,19 @@ import {
 } from '@material-ui/core';
 import {
   CommentRounded,
+  FavoriteRounded,
   ImageRounded,
   MoreVert,
+  PanToolRounded,
   PersonRounded,
   Send,
   ShareRounded,
+  ThumbDownRounded,
   ThumbUpRounded,
 } from '@material-ui/icons';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../../components/Button';
 //import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../components/TextField';
@@ -37,6 +40,7 @@ import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
+import { useTheme } from '@material-ui/core';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -58,9 +62,12 @@ export default function Scroll({
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
   const [openImage, setOpenImage] = useState(false);
+  const [likeHovered, setLikeHovered] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+
+  const theme = useTheme();
 
   const [
     createComment,
@@ -79,7 +86,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = (ICreateComment) => {
+  const onCreateComment = ICreateComment => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -99,7 +106,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = (e) => {
+  const handleCreateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -110,7 +117,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -118,7 +125,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -205,7 +212,7 @@ export default function Scroll({
               </Grid>
             )}
             {scroll?.images.length > 0 &&
-              scroll?.images?.map((imageURL) => (
+              scroll?.images?.map(imageURL => (
                 <Grid
                   className='mt-3'
                   key={imageURL}
@@ -248,11 +255,62 @@ export default function Scroll({
           }`}
         </CardContent>
         <Divider />
+        <Card
+          style={{
+            position: 'absolute',
+            alignSelf: 'baseline',
+            borderRadius: 10,
+            backgroundColor: theme.palette.background.default,
+            display: likeHovered ? 'block' : 'none',
+            transform: 'translateY(-28px)',
+          }}
+          onMouseEnter={() => setLikeHovered(true)}
+          onMouseLeave={() => setLikeHovered(false)}
+        >
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('love');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<FavoriteRounded />}
+          >
+            Love
+          </Button>
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('dislike');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<ThumbDownRounded />}
+          >
+            Dislike
+          </Button>
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
+              handleCreateReaction('celebrate');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<PanToolRounded />}
+          >
+            Celebrate
+          </Button>
+        </Card>
         <CardActions className='space-around'>
           <Button
             color='default'
             textCase
             onClick={() => handleCreateReaction('like')}
+            onMouseEnter={() => setLikeHovered(true)}
+            onMouseLeave={() => setLikeHovered(false)}
             variant='text'
             startIcon={<ThumbUpRounded />}
           >
@@ -300,7 +358,7 @@ export default function Scroll({
                 multiline
                 rowsMax={10}
                 id='comment-field'
-                onKeyPress={(e) => {
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handleCreateComment(e);
                   }
@@ -310,7 +368,7 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -351,7 +409,7 @@ export default function Scroll({
             open={openImage}
             filesLimit='1'
             onClose={() => setOpenImage(false)}
-            onSave={(files) => {
+            onSave={files => {
               setCommentImage(files[0]);
               setOpenImage(false);
             }}
@@ -359,10 +417,11 @@ export default function Scroll({
             showPreviews={false}
             showFileNames={false}
           />
-          {commentsData &&
+          {openComments &&
+            commentsData &&
             commentsData?.Comments?.get
-              .filter((comment) => !comment.response_to)
-              .map((comment) => (
+              .filter(comment => !comment.response_to)
+              .map(comment => (
                 <Comment
                   scroll={scroll}
                   key={comment._id}

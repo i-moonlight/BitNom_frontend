@@ -1816,6 +1816,11 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@titelmedia/react-apollo-multiple-clients@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@titelmedia/react-apollo-multiple-clients/-/react-apollo-multiple-clients-4.0.5.tgz#aec57cc39be23740e3be7225fdb263cf14682071"
+  integrity sha512-3YyGAgliqmcDkrg3TxAv8qjyxhqaP3PqRnNXz0sAmoOiEZ1jx1gSiz8ArVf2kNF6BwPKSdU4Ch9ruVkqZ/W+hA==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"

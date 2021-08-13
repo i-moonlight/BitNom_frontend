@@ -22,7 +22,6 @@ export const useStyles = makeStyles(theme => ({
       display: 'block',
     },
   },
-
   paperSearch: {
     padding: '0px 4px',
     display: 'flex',
@@ -31,10 +30,6 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(2),
     backgroundColor: alpha(theme.palette.common.white, 0.15),
-
-    // '&:hover': {
-    //   backgroundColor: alpha(theme.palette.common.white, 0.25),
-    // },
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -47,44 +42,6 @@ export const useStyles = makeStyles(theme => ({
     height: 28,
     margin: 4,
   },
-
-  // search: {
-  //   flexGrow: 1,
-  //   display: 'flex',
-  //   borderRadius: theme.shape.borderRadius,
-  //   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  //   '&:hover': {
-  //     backgroundColor: alpha(theme.palette.common.white, 0.25),
-  //   },
-  //   [theme.breakpoints.up('sm')]: {
-  //     marginLeft: theme.spacing(3),
-  //     width: 'auto',
-  //   },
-  // },
-  // searchIcon: {
-  //   padding: theme.spacing(0, 2),
-  //   height: '100%',
-  //   pointerEvents: 'none',
-  // },
-  // divider: {
-  //   // padding: theme.spacing(0, 2),
-  //   // height: 'auto',
-  //   color: theme.palette.text.secondary,
-  // },
-  // inputRoot: {
-  //   color: 'inherit',
-  // },
-  // inputInput: {
-  //   padding: theme.spacing(1, 1, 1, 0),
-  //   // vertical padding + font size from searchIcon
-  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-  //   transition: theme.transitions.create('width'),
-  //   width: '100%',
-  //   [theme.breakpoints.up('md')]: {
-  //     width: '20ch',
-  //   },
-  // },
-
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {

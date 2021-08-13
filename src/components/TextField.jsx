@@ -16,6 +16,7 @@ export default function TextField({
   adornment,
   adornmentType,
   type,
+  fullWidth,
   ...defaultProps
 }) {
   const { handleChange, errors, setFieldTouched, touched } = name
@@ -25,7 +26,7 @@ export default function TextField({
   return (
     <FormControl
       id='formik-input'
-      fullWidth
+      fullWidth={fullWidth && true}
       variant='outlined'
       color='primary'
       style={{

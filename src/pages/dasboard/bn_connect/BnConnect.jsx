@@ -4,8 +4,8 @@ import {
   Container,
   Grid,
   Hidden,
-  Typography,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
@@ -13,15 +13,15 @@ import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScroll from './CreateScroll';
 import CreatePost from './create_scroll/CreatePost';
-import UpdatePost from './update_scroll/UpdatePost';
-import UpdateComment from './update_comment/UpdateComment';
 import FlagResource from './flag_resource/FlagResource';
 import Scroll from './Scroll';
 import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
+import UpdateComment from './update_comment/UpdateComment';
+import UpdatePost from './update_scroll/UpdatePost';
 import UserCard from './UserCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -67,7 +67,7 @@ export default function BnConnect() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard setOpen={open => setCreateScrollOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -76,7 +76,7 @@ export default function BnConnect() {
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
                 setOpenVideo={setOpenVideo}
-                setOpen={(open) => setCreateScrollOpen(open)}
+                setOpen={open => setCreateScrollOpen(open)}
               />
               <Grid item align='center'>
                 {loading && (
@@ -84,15 +84,15 @@ export default function BnConnect() {
                 )}
               </Grid>
               {data?.Posts?.get &&
-                data?.Posts?.get?.map((scroll) => (
+                data?.Posts?.get?.map(scroll => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
                     setUpdateOpen={setUpdateScrollOpen}
                     setUpdateCommentOpen={setUpdateCommentOpen}
                     setOpenFlag={setCreateFlagOpen}
                     setFlaggedResource={setFlaggedResource}
-                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                    setImagePreviewURL={url => setImagePreviewURL(url)}
+                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}
@@ -122,7 +122,7 @@ export default function BnConnect() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -138,7 +138,7 @@ export default function BnConnect() {
         updateScrollOpen={updateScrollOpen}
         postToEdit={postToEdit}
         setPostToEdit={setPostToEdit}
-        setUpdateScrollOpen={(UpdateScrollOpen) =>
+        setUpdateScrollOpen={UpdateScrollOpen =>
           setUpdateScrollOpen(UpdateScrollOpen)
         }
         openImage={openImage}
@@ -154,7 +154,7 @@ export default function BnConnect() {
         updateCommentOpen={updateCommentOpen}
         commentToEdit={commentToEdit}
         setCommentToEdit={setCommentToEdit}
-        setUpdateCommentOpen={(UpdateCommentOpen) =>
+        setUpdateCommentOpen={UpdateCommentOpen =>
           setUpdateCommentOpen(UpdateCommentOpen)
         }
         openImage={openImage}
@@ -170,7 +170,7 @@ export default function BnConnect() {
       />
       <FlagResource
         openFlag={createFlagOpen}
-        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />

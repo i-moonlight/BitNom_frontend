@@ -12,6 +12,7 @@ import {
   Tab,
   Tabs,
   Typography,
+  useTheme,
   withStyles,
 } from '@material-ui/core';
 import {
@@ -34,13 +35,13 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import useColors from '../../../hooks/useColors';
 
 export default function ProfileCard() {
   const [tabValue, setTabValue] = React.useState(0);
   const state = useSelector(state => state);
   const user = state.auth.user;
-  const colors = useColors();
+
+  const theme = useTheme();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -105,7 +106,7 @@ export default function ProfileCard() {
               startIcon={<CalendarTodayOutlined />}
               textCase
               variant='text'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
             >
               Joined April 2016
             </Button>
@@ -113,7 +114,7 @@ export default function ProfileCard() {
               startIcon={<Language />}
               textCase
               variant='text'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
             >
               Website
             </Button>
@@ -121,7 +122,7 @@ export default function ProfileCard() {
               startIcon={<AssignmentIndOutlined />}
               textCase
               variant='text'
-              color={colors.buttonAlt}
+              color={theme.palette.text.primary}
             >
               Portfolio
             </Button>

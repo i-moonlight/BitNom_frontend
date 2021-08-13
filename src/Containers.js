@@ -24,7 +24,16 @@ import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/People';
 import Profile from './pages/dasboard/profile/Profile';
 import SavedItems from './pages/dasboard/SavedItems';
-import Landing from './pages/landing/Landing';
+import NotFound from './pages/not_found/NotFound';
+import Cookie from './pages/welcome/cookie/Cookie';
+import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
+import Faqs from './pages/welcome/faqs/Faqs';
+import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
+import Landing from './pages/welcome/landing/Landing';
+import Privacy from './pages/welcome/privacy/Privacy';
+import RoadMap from './pages/welcome/roadmap/RoadMap';
+import Terms from './pages/welcome/terms/Terms';
+import Redirect from './utilities/Redirect';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -101,6 +110,14 @@ export const AppContainers = () => {
         <ApolloProvider client={usersApolloClient}>
           <Switch>
             <Route exact component={Landing} path='/' />
+            <Route exact component={Faqs} path='/faqs' />
+            <Route exact component={Terms} path='/terms' />
+            <Route exact component={Privacy} path='/privacy_policy' />
+            <Route exact component={Cookie} path='/cookie_policy' />
+            <Route exact component={Disclaimer} path='/disclaimer' />
+            <Route exact component={FeatureRequest} path='/feature_request' />
+            <Route exact component={RoadMap} path='/roadmap' />
+            <Route exact component={Redirect} path='/redirect' />
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route
@@ -124,6 +141,7 @@ export const AppContainers = () => {
               component={CreatePassword}
               path='/auth/password_reset/:key'
             />
+            <Route exact component={NotFound} path='/auth/*' />
           </Switch>
         </ApolloProvider>
         <ApolloProvider client={uploadApolloClient}>

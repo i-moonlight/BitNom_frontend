@@ -18,19 +18,30 @@ import {
   PersonRounded,
   Settings,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
 export default function UserCard({ setOpen }) {
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
+  const card = useRef();
+
+  console.log('card: ', card?.current?.clientHeight);
+
+  const sticky =
+    window.innerHeight < card?.current?.clientHeight + 176
+      ? window.innerHeight - (card?.current?.clientHeight + 24)
+      : 160;
+
   return (
     <div
+      ref={card}
       style={{
         position: 'sticky',
-        top: 176,
+        top: sticky,
+        //176
       }}
     >
       <Card style={{ marginBottom: 16 }} variant={'outlined'}>
