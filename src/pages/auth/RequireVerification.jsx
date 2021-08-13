@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import NavBarAuth from '../../components/navbar/NavBarAuth';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import { login } from '../../store/actions/authActions';
 import { MUTATION_SEND_EMAIL_VERIFICATION } from './utilities/queries';
 

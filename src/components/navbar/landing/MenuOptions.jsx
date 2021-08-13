@@ -9,14 +9,15 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 
-export default function NavBarMenu({ show, items = [] }) {
+export default function MenuOptions({ show, items = [], mobile }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const useStyles = makeStyles(() => ({
     root: {
-      position: 'absolute',
+      position: mobile ? 'static' : 'absolute',
       top: 50,
       display: showMenu || show ? 'block' : 'none',
+      margin: mobile && 16,
     },
     image: {
       width: 30,

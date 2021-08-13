@@ -30,7 +30,7 @@ export default function InvestorSection() {
         >
           <CardContent>
             <Grid
-              className='m-2'
+              // className='m-1'
               style={{
                 backgroundImage: `url("${investorGraphicImg}")`,
               }}
@@ -47,24 +47,25 @@ export default function InvestorSection() {
               </Grid>
             </Grid>
 
-            <Grid className='mx-2 mt-2' spacing={5} container>
+            <Grid className='mx-1 mt-2' spacing={5} container>
               <Grid item lg={12}>
                 <Typography
                   className={classes.sectionText}
                   variant='h6'
                   color='textPrimary'
                 >
-                  Our Investor Page{' '}
+                  Our Investor Page
                 </Typography>
                 <Grid container>
-                  <Grid item md={8}>
+                  <Grid item md={8} sm={10} xs={11}>
                     <Typography
                       className={classes.sectionText}
                       color='textPrimary'
+                      noWrap={false}
                     >
                       The investors utilize diverse accounts on diverse project
                       environments to be well informed of unique and potential
-                      projects All through news, blogs, and other important
+                      projects all through news, blogs, and other important
                       information pols to help navigate their decision. The
                       Ultimate Crypto-Intelligence Suite Your gateway to the
                       cryptocurrency ecosystem.

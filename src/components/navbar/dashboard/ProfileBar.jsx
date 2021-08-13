@@ -20,9 +20,9 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import logo_light from '../../assets/logo_light.svg';
-import Button from '../Button';
-import { useStyles } from '../styles.components';
+import logo_light from '../../../assets/logo_light.svg';
+import Button from '../../Button';
+import { useStyles } from '../../styles.components';
 
 export default function ProfileBar({
   menuId,

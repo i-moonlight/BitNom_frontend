@@ -16,7 +16,7 @@ import {
 } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { signout } from '../../store/actions/authActions';
+import { signout } from '../../../../store/actions/authActions';
 
 export default function MenuPopover({
   menuId,

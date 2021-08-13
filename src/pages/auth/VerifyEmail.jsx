@@ -5,7 +5,7 @@ import { parse } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import NavBarAuth from '../../components/navbar/NavBarAuth';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import { login } from '../../store/actions/authActions';
 import { MUTATION_VERIFY_EMAIL } from './utilities/queries';
 

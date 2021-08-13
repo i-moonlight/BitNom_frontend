@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
-import NavBarAuth from '../../components/navbar/NavBarAuth';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
 import { requestResetInitialValues } from './utilities/initial_values';
 import { MUTATION_REQUEST_RESET } from './utilities/queries';

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
-import NavBarAuth from '../../components/navbar/NavBarAuth';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
 import { login } from '../../store/actions/authActions';
 import { updateInfoInitialValues } from './utilities/initial_values';

@@ -1,10 +1,10 @@
 import { Box } from '@material-ui/core';
 import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
-import { tabs } from '../../store/local/dummy';
-import { useStyles } from '../styles.components';
+import { tabs } from '../../../store/local/dummy';
+import { useStyles } from '../../styles.components';
 
-export default function TopTabs({
+export default function TabsBar({
   value,
   handleChange,
   tabOptionsId,

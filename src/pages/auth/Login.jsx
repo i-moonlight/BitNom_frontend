@@ -8,7 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import DividerText from '../../components/DividerText';
 import Form from '../../components/Form';
-import NavBarAuth from '../../components/navbar/NavBarAuth';
+import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
 import { login } from '../../store/actions/authActions';
 import { loginUserInitialValues } from './utilities/initial_values';

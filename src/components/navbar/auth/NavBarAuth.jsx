@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import logo_light from '../../assets/logo_light.svg';
+import logo_light from '../../../assets/logo_light.svg';
 
 export default function NavBarAuth() {
   const history = useHistory();
