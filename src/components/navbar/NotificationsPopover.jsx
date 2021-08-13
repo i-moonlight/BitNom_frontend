@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -11,6 +12,7 @@ import {
   Popover,
   Typography,
 } from '@material-ui/core';
+import { GET_USER_NOTIFICATIONS } from '../../pages/dasboard/utilities/queries';
 import { MoreVert, PersonRounded, SettingsRounded } from '@material-ui/icons';
 import React from 'react';
 
@@ -22,6 +24,9 @@ export default function NotificationsPopover({
   notificationOptionId,
   handleNotificationOptionOpen,
 }) {
+  const { loading, data } = useQuery(GET_USER_NOTIFICATIONS, {
+    variables: { limit: 20 },
+  });
   return (
     <Popover
       anchorEl={notificationAnchorEl}
@@ -46,7 +51,7 @@ export default function NotificationsPopover({
           </IconButton>
         </div>
         <Divider />
-        {[1, 2, 3].map(item => (
+        {data?.Notification?.get?.slice(0, 3)?.map((item) => (
           <ListItem className='space-between' key={item} divider>
             <ListItemAvatar>
               <Avatar>

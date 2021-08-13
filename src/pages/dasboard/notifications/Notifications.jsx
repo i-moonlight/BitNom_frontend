@@ -1,21 +1,21 @@
+import { useQuery } from '@apollo/client';
 import {
-  Avatar,
-  Card,
-  CardContent,
   Container,
   Divider,
   Grid,
   Hidden,
-  ListItem, ListItemAvatar, ListItemIcon, ListItemText,
-  makeStyles, Typography
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
 } from '@material-ui/core';
-import {
-  Drafts, Inbox, List, MoreVert, PersonRounded
-} from '@material-ui/icons';
+import { Drafts, Inbox, List } from '@material-ui/icons';
 import React from 'react';
 import Screen from '../../../components/Screen';
+import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
+import NotificationsListCard from './NotificationsListCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -23,6 +23,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function Notifications() {
   const classes = useStyles();
+  const { loading, data } = useQuery(GET_USER_NOTIFICATIONS, {
+    variables: { limit: 20 },
+  });
+  const allNotifications = data?.Notification?.get;
 
   return (
     <Screen>
@@ -35,7 +39,7 @@ export default function Notifications() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <NotificationListCard />
+              <NotificationsListCard notifications={allNotifications} />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
           </Grid>
@@ -71,7 +75,7 @@ function SideBarMenu() {
         <ListItem
           button
           selected={selectedIndex === 0}
-          onClick={event => handleListItemClick(event, 0)}
+          onClick={(event) => handleListItemClick(event, 0)}
         >
           <ListItemIcon>
             <Inbox />
@@ -81,7 +85,7 @@ function SideBarMenu() {
         <ListItem
           button
           selected={selectedIndex === 1}
-          onClick={event => handleListItemClick(event, 1)}
+          onClick={(event) => handleListItemClick(event, 1)}
         >
           <ListItemIcon>
             <Drafts />
@@ -94,75 +98,18 @@ function SideBarMenu() {
         <ListItem
           button
           selected={selectedIndex === 2}
-          onClick={event => handleListItemClick(event, 2)}
+          onClick={(event) => handleListItemClick(event, 2)}
         >
           <ListItemText primary='Trash' />
         </ListItem>
         <ListItem
           button
           selected={selectedIndex === 3}
-          onClick={event => handleListItemClick(event, 3)}
+          onClick={(event) => handleListItemClick(event, 3)}
         >
           <ListItemText primary='Spam' />
         </ListItem>
       </List>
     </div>
-  );
-}
-
-function NotificationListCard() {
-  return (
-    <Card>
-      <div className='space-between'>
-        <Typography className='mx-4 my-1' variant='body1'>
-          Notifications
-        </Typography>
-        <Typography className='mx-4 my-1' variant='body1'>
-          Settings
-        </Typography>
-      </div>
-      <Divider />
-      <CardContent>
-        {[1, 2, 3].map(item => (
-          <ListItem className='space-between' key={item} divider>
-            <ListItemAvatar>
-              <Avatar>
-                <PersonRounded />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <div className='center-horizontal'>
-                  <Typography variant='body2' className='mx-1'>
-                    Andy bo Wu{' '}
-                  </Typography>
-                  <Typography variant='body2' color='textSecondary'>
-                    sent a friend request
-                  </Typography>
-                </div>
-              }
-              secondary='50 minutes ago'
-            />
-            <ListItemIcon
-              aria-label='show more'
-              //   aria-controls={notificationOptionId}
-              aria-haspopup='true'
-              //   onClick={handleNotificationOptionOpen}
-              color='inherit'
-              style={{
-                marginRight: 0,
-                paddingRight: 0,
-                minWidth: 20,
-                // '&.MuiListItemIcon-root': {
-                //   minWidth: 20,
-                // },
-              }}
-            >
-              <MoreVert />
-            </ListItemIcon>
-          </ListItem>
-        ))}
-      </CardContent>
-    </Card>
   );
 }

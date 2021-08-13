@@ -59,7 +59,13 @@ const authLink = from([
 //     credentials: 'include',
 //   }),
 // ]);
-
+const notificationsLink = from([
+  errorLink,
+  new HttpLink({
+    uri: backendUri + '/notifications/graphql',
+    credentials: 'include',
+  }),
+]);
 const uploadLink = createUploadLink({
   uri: backendUri + '/bn-social/graphql',
   credentials: 'include',
@@ -79,13 +85,19 @@ const usersApolloClient = new ApolloClient({
   credentials: 'include',
 });
 
+const notificationsApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: notificationsLink,
+  credentials: 'include',
+});
+
 // const socialApolloClient = new ApolloClient({
 //   cache: new InMemoryCache(),
 //   link: socialLink,
 //   credentials: 'include',
 // });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -131,11 +143,6 @@ export const AppContainers = () => {
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />
-            <Route
-              exact
-              component={Notifications}
-              path='/dashboard/notifications'
-            />
             <Route exact component={People} path='/dashboard/people' />
             <Route exact component={Profile} path='/dashboard/profile' />
             <Route
@@ -144,6 +151,13 @@ export const AppContainers = () => {
               path='/dashboard/profile/bookmarks'
             />
           </Switch>
+        </ApolloProvider>
+        <ApolloProvider client={notificationsApolloClient}>
+          <Route
+            exact
+            component={Notifications}
+            path='/dashboard/notifications'
+          />
         </ApolloProvider>
       </BrowserRouter>
     </div>

@@ -54,7 +54,6 @@ export default function Comment({
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: comment?.scroll } },
   });
-
   const handleCommentOptionOpen = (event) => {
     setCommentOptionAnchorEl(event.currentTarget);
   };

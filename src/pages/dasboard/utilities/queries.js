@@ -205,28 +205,25 @@ export const QUERY_LOAD_SCROLLS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
 `;
 
-export const GET_TRENDING_POSTS = gql`
-  query ($data: IGetPosts) {
-    Posts {
-      get(data: $data) {
+export const GET_USER_NOTIFICATIONS = gql`
+  query ($limit: Int!) {
+    Notification {
+      get(limit: $limit) {
         _id
-        author {
-          _id
-          displayName
-        }
-        comments
-        createdAt
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
         content
         content_entities {
           type
@@ -236,8 +233,15 @@ export const GET_TRENDING_POSTS = gql`
             _id
             type
           }
-          url
+          url {
+            _id
+            image
+            displayName
+          }
         }
+        image
+        notify_subscribers_to
+        date
       }
     }
   }
@@ -310,6 +314,15 @@ export const GET_BOOKMARKED_SCROLLS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
@@ -353,6 +366,15 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
@@ -390,6 +412,15 @@ export const QUERY_GET_COMMENTS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
         scroll
         response_to {
           _id
@@ -418,6 +449,25 @@ export const GET_BOOKMARKED_COMMENTS = gql`
         replies
         creation_date
         image
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
         reactions {
           celebrations
           likes
