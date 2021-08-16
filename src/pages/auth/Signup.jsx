@@ -108,7 +108,7 @@ export default function Signup() {
                 Its free to join and gain full access to thousand opportunities
               </Typography>
             </div>
-            <Card>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={createUserInitialValues}

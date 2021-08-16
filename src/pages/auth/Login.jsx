@@ -25,7 +25,6 @@ export default function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = state.auth.user;
-  // const errors = state.auth.err;
 
   const [loginUser, { loading: loginLoading }] =
     useMutation(MUTATION_LOGIN_USER);
@@ -79,7 +78,7 @@ export default function Login() {
                 across the globe.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={loginUserInitialValues}
@@ -103,19 +102,6 @@ export default function Login() {
 
                       dispatch(login(userData, null));
                     });
-
-                    // For debugging
-                    // const mockuserData = {
-                    //   _id: 'mark',
-                    //   email: {
-                    //     address: 'mbenjerminne@gmail.com',
-                    //     verified: true,
-                    //   },
-                    //   displayName: 'Mark Aloo',
-                    // };
-
-                    // dispatch(login(mockuserData, null));
-                    //end debugging
                   }}
                 >
                   <div className='text-center my-3 mx-2'>

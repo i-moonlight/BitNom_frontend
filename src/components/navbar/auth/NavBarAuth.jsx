@@ -8,9 +8,12 @@ import {
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import logo_light from '../../../assets/logo_light.svg';
+import logo from '../../../assets/logo.svg';
+import { useTheme } from '@material-ui/core';
 
 export default function NavBarAuth() {
   const history = useHistory();
+  const theme = useTheme();
 
   return (
     <AppBar
@@ -26,11 +29,20 @@ export default function NavBarAuth() {
             className='center-horizontal c-pointer'
             onClick={() => history.push('/')}
           >
-            <Avatar src={logo_light} style={{ marginRight: 8 }}>
+            <Avatar
+              src={theme.palette.type == 'light' ? logo : logo_light}
+              style={{ marginRight: 8 }}
+            >
               B
             </Avatar>
             <Hidden smDown>
-              <Typography variant='h6' noWrap>
+              <Typography
+                color={
+                  theme.palette.type == 'light' ? 'primary' : 'textPrimary'
+                }
+                variant='h6'
+                noWrap
+              >
                 BITNORM
               </Typography>
             </Hidden>

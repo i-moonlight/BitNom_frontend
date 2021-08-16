@@ -47,7 +47,7 @@ export default function ResetPassword() {
                 a link to reset your password.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={requestResetInitialValues}

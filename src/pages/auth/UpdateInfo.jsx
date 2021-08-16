@@ -47,7 +47,7 @@ export default function UpdateInfo() {
                 Please fill out the following details for a better experience.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={updateInfoInitialValues}

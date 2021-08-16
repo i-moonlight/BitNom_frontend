@@ -47,7 +47,7 @@ export default function CreatePassword({ match }) {
                 Create a new memorable password.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={resetPasswordInitialValues}

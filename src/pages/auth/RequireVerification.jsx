@@ -51,7 +51,7 @@ export default function RequireVerification() {
                 continue.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <div className='text-center my-3 mx-2'>
                   <div className='text-center my-3 px-sm-0'>
