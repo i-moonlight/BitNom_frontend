@@ -46,16 +46,19 @@ export default function TabsBar({
 const BitTab = withStyles(theme => ({
   root: {
     textTransform: 'none',
-    color: '#fff',
+    color: theme.palette.type == 'dark' ? '#fff' : '#000',
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.pxToRem(15),
     marginRight: 0,
     '&:focus': {
       opacity: 1,
-      color: '#fff',
+      color: theme.palette.type == 'dark' ? '#fff' : '#000',
     },
     '&:hover': {
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor:
+        theme.palette.type == 'dark'
+          ? theme.palette.background.paper
+          : theme.palette.background.search,
     },
   },
 }))(props => <Tab disableRipple {...props} />);

@@ -23,7 +23,7 @@ export default function CreateScroll({
 }) {
   const theme = useTheme();
   return (
-    <Card style={{ marginBottom: 12 }}>
+    <Card variant='outlined' style={{ marginBottom: 12 }}>
       <CardContent>
         <CardActionArea
           style={{
@@ -36,7 +36,10 @@ export default function CreateScroll({
             style={{
               padding: 8,
               borderRadius: 8,
-              backgroundColor: alpha(theme.palette.common.white, 0.15),
+              backgroundColor:
+                theme.palette.type == 'dark'
+                  ? alpha(theme.palette.common.white, 0.15)
+                  : theme.palette.background.search,
             }}
           >
             <Typography variant='body2' color='textSecondary'>

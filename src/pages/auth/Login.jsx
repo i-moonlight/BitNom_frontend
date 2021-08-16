@@ -59,7 +59,7 @@ export default function Login() {
   return (
     <>
       <NavBarAuth />
-      <div className='center-horizontal center-vertical'>
+      <div className='center-horizontal center-vertical py-5'>
         <Grid
           container
           spacing={0}

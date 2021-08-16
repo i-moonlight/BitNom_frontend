@@ -32,7 +32,7 @@ export default function RequireVerification() {
   return (
     <>
       <NavBarAuth />
-      <div className='center-horizontal center-vertical'>
+      <div className='center-horizontal center-vertical py-5'>
         <Grid
           container
           spacing={0}

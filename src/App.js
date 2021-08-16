@@ -20,12 +20,15 @@ export default function App() {
       paperAlt: '#333333',
       default: '#171818',
       landing: '#18191a',
+      search: '#242526',
     },
   };
 
   const themeOptionsLight = {
     background: {
       paperAlt: '#333333',
+      search: '#f1f1f1',
+      default: '#F3F2EF',
     },
   };
 

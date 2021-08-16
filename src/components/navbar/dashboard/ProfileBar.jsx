@@ -21,8 +21,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo_light from '../../../assets/logo_light.svg';
+import logo from '../../../assets/logo.svg';
 import Button from '../../Button';
 import { useStyles } from '../../styles.components';
+import { useTheme } from '@material-ui/core';
+import DarkTheme from '../../../utilities/DarkTheme';
 
 export default function ProfileBar({
   menuId,
@@ -34,6 +37,7 @@ export default function ProfileBar({
   const user = state.auth.user;
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
 
   return (
     <Box className={classes.root}>
@@ -43,11 +47,20 @@ export default function ProfileBar({
             className='center-horizontal c-pointer'
             onClick={() => history.push('/')}
           >
-            <Avatar className='c-pointer me-2' src={logo_light}>
+            <Avatar
+              className='me-2'
+              src={theme.palette.type == 'light' ? logo : logo_light}
+            >
               B
             </Avatar>
             <Hidden smDown>
-              <Typography className='c-pointer' variant='h6' noWrap>
+              <Typography
+                color={
+                  theme.palette.type == 'light' ? 'primary' : 'textPrimary'
+                }
+                variant='h6'
+                noWrap
+              >
                 BITNORM
               </Typography>
               <Typography
@@ -60,19 +73,14 @@ export default function ProfileBar({
             </Hidden>
           </div>
 
-          <Paper elevation={0} component='form' className={classes.paperSearch}>
-            {/* <IconButton className={classes.iconButton} aria-label="menu">
-              <Menu />
-            </IconButton> */}
-            <Button
-              textCase
-              // className="py-0"
-              variant='text'
-              // aria-label="account of current user"
-              // aria-controls={menuId}
-              // aria-haspopup="true"
-              // onClick={handleMenuOpen}
-            >
+          {/* <DarkTheme> */}
+          <Paper
+            variant='outlined'
+            elevation={0}
+            component='form'
+            className={classes.paperSearch}
+          >
+            <Button textCase variant='text'>
               <Typography variant='body2' color='textSecondary'>
                 General
               </Typography>
@@ -95,16 +103,9 @@ export default function ProfileBar({
             >
               <Search />
             </IconButton>
-            {/* <IconButton
-              color="primary"
-              className={classes.iconButton}
-              aria-label="directions"
-            >
-              <Directions />
-            </IconButton> */}
           </Paper>
+          {/* </DarkTheme> */}
 
-          {/* <div className={classes.grow} /> */}
           <div className={classes.sectionDesktop}>
             <IconButton
               color='inherit'
