@@ -18,6 +18,7 @@ export default function RequestDisplayCard() {
         backgroundColor: theme.palette.background.default,
         marginTop: 16,
       }}
+      elevation={4}
     >
       <CardContent>
         <Grid container>

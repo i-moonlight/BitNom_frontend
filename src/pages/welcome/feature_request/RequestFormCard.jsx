@@ -15,6 +15,7 @@ export default function RequestFormCard() {
         position: 'sticky',
         top: 132,
       }}
+      elevation={4}
     >
       <CardContent>
         <Typography color='textSecondary'>Request Feature</Typography>

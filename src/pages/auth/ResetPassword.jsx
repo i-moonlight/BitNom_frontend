@@ -28,7 +28,7 @@ export default function ResetPassword() {
   return (
     <>
       <NavBarAuth />
-      <div className='center-horizontal center-vertical'>
+      <div className='center-horizontal center-vertical py-5'>
         <Grid
           container
           spacing={0}
@@ -47,7 +47,7 @@ export default function ResetPassword() {
                 a link to reset your password.
               </Typography>
             </div>
-            <Card elevation={0}>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={requestResetInitialValues}

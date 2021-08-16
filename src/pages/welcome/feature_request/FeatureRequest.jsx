@@ -25,7 +25,10 @@ export default function FeatureRequest() {
 
       <Grid
         style={{
-          backgroundColor: theme.palette.background.paper,
+          backgroundColor:
+            theme.palette.type == 'light'
+              ? '#F5F5F5'
+              : theme.palette.background.paper,
           paddingBottom: 32,
         }}
       >

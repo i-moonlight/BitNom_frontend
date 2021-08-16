@@ -1,3 +1,4 @@
+import { useTheme } from '@material-ui/core';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import sponsor1Img from '../../../assets/landing/sponsor (1).png';
@@ -8,8 +9,13 @@ import sponsor5Img from '../../../assets/landing/sponsor (5).png';
 import sponsor6Img from '../../../assets/landing/sponsor (6).png';
 
 export default function SponsorsSection() {
+  const theme = useTheme();
+
   const useStyles = makeStyles(() => ({
-    root: { backgroundColor: '#242526', overflowY: 'hidden' },
+    root: {
+      backgroundColor: theme.palette.background.paper,
+      overflowY: 'hidden',
+    },
     scroll: { overflowX: 'auto' },
   }));
 

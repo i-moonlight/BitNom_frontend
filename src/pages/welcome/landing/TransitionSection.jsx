@@ -1,3 +1,4 @@
+import { useTheme } from '@material-ui/core';
 import {
   Card,
   CardContent,
@@ -9,12 +10,15 @@ import React from 'react';
 import card4Img from '../../../assets/landing/card (4).svg';
 import card5Img from '../../../assets/landing/card (5).svg';
 import card6Img from '../../../assets/landing/card (6).svg';
+import DarkTheme from '../../../utilities/DarkTheme';
 import { useStyles } from './Landing';
 
 export default function TransitionSection() {
   const classes = useStyles();
+  const theme = useTheme();
+
   return (
-    <Grid style={{ backgroundColor: '#18191a' }}>
+    <Grid style={{ backgroundColor: theme.palette.background.landing }}>
       <Container maxWidth='lg'>
         <Grid spacing={5} container className='py-5'>
           <Grid item md={6}>
@@ -33,25 +37,31 @@ export default function TransitionSection() {
           <Grid item md={6}>
             <Grid container spacing={5}>
               <Grid item lg={3}>
-                <Card className={classes.cardImg}>
-                  <CardContent>
-                    <img style={{ width: '100%' }} src={card4Img} alt='' />
-                  </CardContent>
-                </Card>
+                <DarkTheme>
+                  <Card className={classes.cardImg}>
+                    <CardContent>
+                      <img style={{ width: '100%' }} src={card4Img} alt='' />
+                    </CardContent>
+                  </Card>
+                </DarkTheme>
               </Grid>
               <Grid item lg={3}>
-                <Card className={classes.cardImg}>
-                  <CardContent>
-                    <img style={{ width: '100%' }} src={card5Img} alt='' />
-                  </CardContent>
-                </Card>
+                <DarkTheme>
+                  <Card className={classes.cardImg}>
+                    <CardContent>
+                      <img style={{ width: '100%' }} src={card5Img} alt='' />
+                    </CardContent>
+                  </Card>
+                </DarkTheme>
               </Grid>
               <Grid item lg={3}>
-                <Card className={classes.cardImg}>
-                  <CardContent>
-                    <img style={{ width: '100%' }} src={card6Img} alt='' />
-                  </CardContent>
-                </Card>
+                <DarkTheme>
+                  <Card className={classes.cardImg}>
+                    <CardContent>
+                      <img style={{ width: '100%' }} src={card6Img} alt='' />
+                    </CardContent>
+                  </Card>
+                </DarkTheme>
               </Grid>
               <Grid item lg={3}></Grid>
             </Grid>

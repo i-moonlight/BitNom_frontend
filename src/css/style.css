@@ -16,13 +16,13 @@ body {
 
 a {
   text-decoration: none !important;
-  color: #006097 !important;
+  color: #006097;
   cursor: pointer !important;
 }
 
 a.alt {
-  color: #fff !important;
-  font-weight: bold;
+  color: #fff;
+  font-weight: 500;
 }
 
 small {

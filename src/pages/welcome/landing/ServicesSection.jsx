@@ -1,3 +1,4 @@
+import { useTheme } from '@material-ui/core';
 import { Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import servicesImg from '../../../assets/landing/img3.png';
@@ -5,11 +6,12 @@ import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function ServicesSection() {
   const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <Grid
       style={{
-        backgroundColor: '#242526',
+        backgroundColor: theme.palette.background.paper,
         paddingTop: INVESTOR_CARD_DISPLACEMENT,
       }}
     >

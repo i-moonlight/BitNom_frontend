@@ -5,12 +5,13 @@ import googlePlayImg from '../../assets/google_play.svg';
 import logoImg from '../../assets/logo_light.svg';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
+import DarkTheme from '../../utilities/DarkTheme';
 import { footerLinks } from './welcome.data';
 
 export default function Footer() {
   return (
-    <>
-      <Grid style={{ backgroundColor: '#18191a' }}>
+    <DarkTheme>
+      <Grid style={{ backgroundColor: '#18191a', color: '#fff' }}>
         <Container maxWidth='lg'>
           <Grid container>
             <Grid className='center-horizontal my-3' item md={6} sm={12}>
@@ -109,6 +110,6 @@ export default function Footer() {
           </Grid>
         </Container>
       </Grid>
-    </>
+    </DarkTheme>
   );
 }

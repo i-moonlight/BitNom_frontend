@@ -29,7 +29,7 @@ export default function Landing() {
   );
 }
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(() => ({
   sectionText: {
     lineHeight: '1.8em',
     marginBottom: 16,
@@ -38,8 +38,5 @@ export const useStyles = makeStyles(theme => ({
     width: 100,
     height: 100,
     padding: 10,
-  },
-  layersCard: {
-    backgroundColor: theme.palette.background.alt,
   },
 }));

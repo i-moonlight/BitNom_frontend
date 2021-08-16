@@ -37,7 +37,6 @@ export default function Wrapper({ children }) {
     >
       <NavBarLanding />
       {children}
-
       <Footer />
     </div>
   );

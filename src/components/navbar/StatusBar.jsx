@@ -7,15 +7,23 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Brightness3, ChevronRight } from '@material-ui/icons';
+import {
+  Brightness4Rounded,
+  Brightness7Rounded,
+  ChevronRight,
+} from '@material-ui/icons';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeTheme } from '../../store/actions/themeActions';
 import { status } from '../../store/local/dummy';
 import Button from '../Button';
 import { useStyles } from '../styles.components';
 
 export default function StatusBar() {
+  const palette = useSelector(state => state.theme.palette);
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   return (
     <Box className={classes.root}>
@@ -89,13 +97,29 @@ export default function StatusBar() {
                 USD
               </Button>
 
-              <IconButton size='small'>
-                <Brightness3
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                />
+              <IconButton
+                size='small'
+                onClick={() => {
+                  palette == 'light'
+                    ? dispatch(changeTheme('dark'))
+                    : dispatch(changeTheme('light'));
+                }}
+              >
+                {palette == 'light' ? (
+                  <Brightness4Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                ) : (
+                  <Brightness7Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                )}
               </IconButton>
             </div>
           </Hidden>

@@ -1,4 +1,4 @@
-import { alpha, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -29,7 +29,7 @@ export const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(2),
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: theme.palette.background.paper,
   },
   input: {
     marginLeft: theme.spacing(1),

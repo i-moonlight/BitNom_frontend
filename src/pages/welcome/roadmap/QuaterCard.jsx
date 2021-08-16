@@ -12,7 +12,7 @@ export default function QuaterCard({ title, text, list }) {
 
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
-      <Card className={classes.card}>
+      <Card className={classes.card} elevation={4}>
         <CardContent>
           <Typography gutterBottom>{title}</Typography>
           <Typography variant='body2'>

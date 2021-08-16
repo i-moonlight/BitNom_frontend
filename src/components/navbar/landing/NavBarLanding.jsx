@@ -16,11 +16,13 @@ import {
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import logo_light from '../../../assets/logo_light.svg';
+import logo from '../../../assets/logo.svg';
 import Button from '../../Button';
 import { menuEcosystem, menuProduct } from '../../data.components';
 import NavBarMenu from './MenuOptions';
 import LandingMenuMobile from './LandingMenuMobile';
 import StatusBar from '../StatusBar';
+import { useSelector } from 'react-redux';
 
 export default function NavBarLanding() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,6 +30,7 @@ export default function NavBarLanding() {
   const [showMenuProduct, setShowMenuProduct] = useState(false);
   const theme = useTheme();
   const history = useHistory();
+  const palette = useSelector(state => state.theme.palette);
 
   return (
     <AppBar
@@ -35,7 +38,7 @@ export default function NavBarLanding() {
       style={{
         background: theme.palette.background.default,
       }}
-      elevation={0}
+      elevation={4}
     >
       <StatusBar />
       <Divider />
@@ -45,11 +48,18 @@ export default function NavBarLanding() {
             className='center-horizontal c-pointer'
             onClick={() => history.push('/')}
           >
-            <Avatar src={logo_light} style={{ marginRight: 8 }}>
+            <Avatar
+              src={palette == 'light' ? logo : logo_light}
+              style={{ marginRight: 8 }}
+            >
               B
             </Avatar>
             <Hidden xsDown>
-              <Typography variant='h6' noWrap>
+              <Typography
+                color={palette == 'light' ? 'primary' : 'textPrimary'}
+                variant='h6'
+                noWrap
+              >
                 BITNORM
               </Typography>
             </Hidden>

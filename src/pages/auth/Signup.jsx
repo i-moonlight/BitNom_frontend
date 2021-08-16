@@ -90,7 +90,7 @@ export default function Signup() {
   return (
     <>
       <NavBarAuth />
-      <div className='center-horizontal center-vertical'>
+      <div className='center-horizontal center-vertical py-5'>
         <Grid
           container
           spacing={0}
@@ -108,7 +108,7 @@ export default function Signup() {
                 Its free to join and gain full access to thousand opportunities
               </Typography>
             </div>
-            <Card>
+            <Card elevation={4}>
               <CardContent>
                 <Form
                   initialValues={createUserInitialValues}
