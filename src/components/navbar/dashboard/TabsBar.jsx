@@ -21,7 +21,7 @@ export default function TabsBar({
             value={value}
             onChange={handleChange}
             indicatorColor='primary'
-            // variant='scrollable'
+            variant='scrollable'
             scrollButtons='auto'
           >
             {tabs.map(({ label, menuItems }) => (
