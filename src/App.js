@@ -17,12 +17,17 @@ export default function App() {
     },
     background: {
       paper: '#242526',
+      paperAlt: '#333333',
       default: '#171818',
-      alt: '#444444',
+      landing: '#18191a',
     },
   };
 
-  const themeOptionsLight = {};
+  const themeOptionsLight = {
+    background: {
+      paperAlt: '#333333',
+    },
+  };
 
   const themeOptionsRoot =
     palette == 'light' ? themeOptionsLight : themeOptionsDark;

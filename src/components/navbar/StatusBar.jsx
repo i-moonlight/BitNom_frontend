@@ -7,7 +7,11 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Brightness3, ChevronRight } from '@material-ui/icons';
+import {
+  Brightness4Rounded,
+  Brightness7Rounded,
+  ChevronRight,
+} from '@material-ui/icons';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/actions/themeActions';
@@ -101,12 +105,21 @@ export default function StatusBar() {
                     : dispatch(changeTheme('light'));
                 }}
               >
-                <Brightness3
-                  style={{
-                    width: 20,
-                    height: 20,
-                  }}
-                />
+                {palette == 'light' ? (
+                  <Brightness4Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                ) : (
+                  <Brightness7Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                )}
               </IconButton>
             </div>
           </Hidden>

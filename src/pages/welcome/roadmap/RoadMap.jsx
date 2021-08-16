@@ -35,7 +35,11 @@ export default function RoadMap() {
             <Breadcrumbs aria-label='breadcrumb'>
               {roadMap.map(road => (
                 <Link
-                  className={road?.year != year ? 'alt' : 'fw-bold'}
+                  className={
+                    road?.year != year
+                      ? classes.linkInactive
+                      : classes.linkActive
+                  }
                   key={road?.year}
                   onClick={() => setYear(road?.year)}
                 >
@@ -66,6 +70,15 @@ export default function RoadMap() {
 
 const useStyles = makeStyles(theme => ({
   body: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor:
+      theme.palette.type == 'light'
+        ? '#F5F5F5'
+        : theme.palette.background.paper,
+  },
+  linkInactive: {
+    color: theme.palette.text.disabled,
+  },
+  linkActive: {
+    color: theme.palette.primary.main,
   },
 }));

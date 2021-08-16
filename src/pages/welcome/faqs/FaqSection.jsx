@@ -13,6 +13,7 @@ export default function FaqSection() {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
   return (
     <div className='my-5'>
       <Typography className='my-3' color='textSecondary'>
@@ -24,6 +25,8 @@ export default function FaqSection() {
             key={panel}
             expanded={expanded === panel}
             onChange={handleChange(panel)}
+            className={classes.accordion}
+            elevation={4}
           >
             <AccordionSummary
               expandIcon={<AddCircleRounded color='primary' />}
@@ -56,8 +59,11 @@ const useStyles = makeStyles(theme => ({
     // flexBasis: '33.33%',
     // flexShrink: 0,
   },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
+  accordion: {
+    backgroundColor: theme.palette.background.default,
   },
+  // secondaryHeading: {
+  //   fontSize: theme.typography.pxToRem(15),
+  //   color: theme.palette.text.secondary,
+  // },
 }));

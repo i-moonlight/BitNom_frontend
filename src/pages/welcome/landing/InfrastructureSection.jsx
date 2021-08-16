@@ -8,18 +8,26 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import botImg from '../../../assets/landing/bot.svg';
 import ghostImg from '../../../assets/landing/ghost.svg';
 import infrastructureImg from '../../../assets/landing/infrastructure.svg';
+import DarkTheme from '../../../utilities/DarkTheme';
 import { useStyles } from './Landing';
 
 export default function InfrastructureSection() {
   const classes = useStyles();
   const theme = useTheme();
   const imageContainer = useRef(null);
+  const palette = useSelector(state => state.theme.palette);
 
   return (
-    <Grid style={{ backgroundColor: '#242526' }}>
+    <Grid
+      style={{
+        backgroundColor:
+          palette == 'dark' ? theme.palette.background.paper : '#F6F9FC',
+      }}
+    >
       <Container maxWidth='lg' className='py-5'>
         <Grid container spacing={5}>
           <Grid item md={7} className='my-4'>
@@ -28,7 +36,9 @@ export default function InfrastructureSection() {
               className='d-flex flex-row'
               style={{
                 backgroundColor: theme.palette.background.default,
+                borderRadius: 16,
               }}
+              elevation={4}
             >
               <Hidden xsDown>
                 <img
@@ -84,77 +94,91 @@ export default function InfrastructureSection() {
             </div>
           </Grid>
           <Grid item md={4} sm={6}>
-            <div className='my-5 p-3'>
-              <Card
-                style={{
-                  backgroundColor: theme.palette.background.default,
-                  overflow: 'visible',
-                }}
-              >
-                <CardContent>
-                  <div className='space-between'>
-                    <Typography variant='h5' color='textPrimary'>
-                      Widgets and bots
-                    </Typography>
-                    <img
-                      style={{
-                        height: 100,
-                        position: 'relative',
-                        top: -50,
-                        zIndex: 20,
-                      }}
-                      src={botImg}
-                      alt=''
-                    />
-                  </div>
-                  <Typography
-                    className={classes.sectionText}
-                    color='textPrimary'
-                  >
-                    Learn how to create, backtest and start your own crypto
-                    trading bots
-                  </Typography>
-                </CardContent>
-              </Card>
-            </div>
-          </Grid>
-          <Grid item md={4} sm={6}>
-            <div className='my-5 p-3'>
-              <Card
-                style={{
-                  backgroundColor: theme.palette.background.default,
-                  overflow: 'visible',
-                }}
-              >
-                <CardContent>
-                  <div className='space-between'>
+            <DarkTheme>
+              <div className='my-5 p-3'>
+                <Card
+                  style={{
+                    backgroundColor:
+                      palette == 'dark'
+                        ? theme.palette.background.default
+                        : theme.palette.background.paperAlt,
+                    overflow: 'visible',
+                    borderRadius: 16,
+                  }}
+                  elevation={4}
+                >
+                  <CardContent>
+                    <div className='space-between'>
+                      <Typography variant='h5' color='textPrimary'>
+                        Widgets and bots
+                      </Typography>
+                      <img
+                        style={{
+                          height: 100,
+                          position: 'relative',
+                          top: -50,
+                          zIndex: 20,
+                        }}
+                        src={botImg}
+                        alt=''
+                      />
+                    </div>
                     <Typography
                       className={classes.sectionText}
-                      variant='h5'
                       color='textPrimary'
                     >
-                      Job Board
+                      Learn how to create, backtest and start your own crypto
+                      trading bots
                     </Typography>
-                    <img
-                      style={{
-                        height: 100,
-                        position: 'relative',
-                        top: -50,
-                        zIndex: 20,
-                      }}
-                      src={ghostImg}
-                      alt=''
-                    />
-                  </div>
-                  <Typography
-                    className={classes.sectionText}
-                    color='textPrimary'
-                  >
-                    Stay updated and get the latest job listing conveniently.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </DarkTheme>
+          </Grid>
+          <Grid item md={4} sm={6}>
+            <DarkTheme>
+              <div className='my-5 p-3'>
+                <Card
+                  style={{
+                    backgroundColor:
+                      palette == 'dark'
+                        ? theme.palette.background.default
+                        : theme.palette.background.paperAlt,
+                    overflow: 'visible',
+                    borderRadius: 16,
+                  }}
+                  elevation={4}
+                >
+                  <CardContent>
+                    <div className='space-between'>
+                      <Typography
+                        className={classes.sectionText}
+                        variant='h5'
+                        color='textPrimary'
+                      >
+                        Job Board
+                      </Typography>
+                      <img
+                        style={{
+                          height: 100,
+                          position: 'relative',
+                          top: -50,
+                          zIndex: 20,
+                        }}
+                        src={ghostImg}
+                        alt=''
+                      />
+                    </div>
+                    <Typography
+                      className={classes.sectionText}
+                      color='textPrimary'
+                    >
+                      Stay updated and get the latest job listing conveniently.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            </DarkTheme>
           </Grid>
         </Grid>
       </Container>

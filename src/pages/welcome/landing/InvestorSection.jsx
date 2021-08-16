@@ -1,3 +1,4 @@
+import { useTheme } from '@material-ui/core';
 import {
   Card,
   CardContent,
@@ -12,10 +13,12 @@ import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function InvestorSection() {
   const classes = useStyles();
+  const theme = useTheme();
+
   return (
     <Grid
       style={{
-        backgroundColor: '#18191a',
+        backgroundColor: theme.palette.background.landing,
         marginBottom: -(INVESTOR_CARD_DISPLACEMENT + 150),
       }}
     >
@@ -26,7 +29,8 @@ export default function InvestorSection() {
             bottom: INVESTOR_CARD_DISPLACEMENT,
             borderWidth: 2,
           }}
-          variant='outlined'
+          // variant='outlined'
+          elevation={4}
         >
           <CardContent>
             <Grid
