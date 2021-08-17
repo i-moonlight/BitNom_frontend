@@ -14,6 +14,12 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
     }
   }
 `;
+export const NOTIFICATIONS_SUBSCRIPTION = gql`
+  subscription {
+    emitNew
+  }
+`;
+
 export const MUTATION_CREATE_FILE_IMAGE = gql`
   mutation ($data: ISaveImage!) {
     Image {
@@ -225,6 +231,7 @@ export const GET_USER_NOTIFICATIONS = gql`
       get(limit: $limit) {
         _id
         content
+        tag
         content_entities {
           type
           offset
@@ -243,6 +250,38 @@ export const GET_USER_NOTIFICATIONS = gql`
         notify_subscribers_to
         date
       }
+    }
+  }
+`;
+
+export const MARK_NOTIFICAION_AS_SEEN = gql`
+  mutation ($_id: ID) {
+    Notification {
+      markAsSeen(_id: $_id)
+    }
+  }
+`;
+
+export const MARK_NOTIFICAION_AS_READ = gql`
+  mutation ($_id: ID) {
+    Notification {
+      markAsRead(_id: $_id)
+    }
+  }
+`;
+
+export const DELETE_NOTIFICAION = gql`
+  mutation ($_id: ID!) {
+    Notification {
+      delete(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_UNSUBSCRIBE = gql`
+  mutation ($data: IUnsubscribe!) {
+    Subscription {
+      unsubscribe(data: $data)
     }
   }
 `;

@@ -4,7 +4,11 @@ import {
   from,
   HttpLink,
   InMemoryCache,
+  split,
 } from '@apollo/client';
+import { ApolloLink, Observable } from '@apollo/client/core';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { createClient } from 'graphql-ws';
 import { onError } from '@apollo/client/link/error';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
@@ -42,6 +46,44 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 });
 
 const backendUri = process.env.REACT_APP_BACKEND_URL;
+class WebSocketLink extends ApolloLink {
+  constructor(options) {
+    super();
+    this.client = createClient(options);
+  }
+  request(operation) {
+    return new Observable((sink) => {
+      return this.client.subscribe(
+        Object.assign(Object.assign({}, operation), {
+          query: print(operation.query),
+        }),
+        {
+          next: sink.next.bind(sink),
+          complete: sink.complete.bind(sink),
+          error: (err) => {
+            if (err instanceof Error) {
+              return sink.error(err);
+            }
+            if (err instanceof CloseEvent) {
+              return sink.error(
+                // reason will be available on clean closes
+                new Error(
+                  `Socket closed with event ${err.code} ${err.reason || ''}`
+                )
+              );
+            }
+            return sink.error(
+              new Error(err.map(({ message }) => message).join(', '))
+            );
+          },
+        }
+      );
+    });
+  }
+}
+const wsLink = new WebSocketLink({
+  url: 'ws://localhost:3000/notifications/graphql',
+});
 
 const authLink = from([
   errorLink,
@@ -74,11 +116,6 @@ const uploadLink = createUploadLink({
   },
 });
 
-const uploadApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: uploadLink,
-});
-
 const usersApolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: authLink,
@@ -91,11 +128,22 @@ const notificationsApolloClient = new ApolloClient({
   credentials: 'include',
 });
 
-// const socialApolloClient = new ApolloClient({
-//   cache: new InMemoryCache(),
-//   link: socialLink,
-//   credentials: 'include',
-// });
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  uploadLink
+);
+
+const uploadApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: splitLink,
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {

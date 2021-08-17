@@ -13,9 +13,9 @@ export const status = [
 ];
 
 export const tabs = [
-  {
+  /* {
     label: 'BN Connect',
-  },
+  }, */
   {
     label: 'BN Knowledge Center',
     menuItems: [

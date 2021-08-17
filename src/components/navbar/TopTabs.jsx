@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { tabs } from '../../store/local/dummy';
 import { useStyles } from '../styles.components';
 
@@ -24,13 +25,16 @@ export default function TopTabs({
             // variant='scrollable'
             scrollButtons='auto'
           >
+            <Link to='/dashboard'>
+              <BitTab key={`Bn-Connect`} label={`BN Connect`} />
+            </Link>
             {tabs.map(({ label, menuItems }) => (
               <BitTab
                 key={`${tabOptionsId}`}
                 label={label}
                 aria-controls={tabOptionsId}
                 aria-haspopup='true'
-                onClick={event => {
+                onClick={(event) => {
                   menuItems && setTabOptions(menuItems);
                   menuItems && handleTabOptionsOpen(event);
                 }}
@@ -43,7 +47,7 @@ export default function TopTabs({
   );
 }
 
-const BitTab = withStyles(theme => ({
+const BitTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     color: '#fff',
@@ -58,4 +62,4 @@ const BitTab = withStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);
