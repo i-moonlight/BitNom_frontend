@@ -3,15 +3,15 @@ import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
-  CardMedia,
   CardContent,
+  CardMedia,
   CircularProgress,
-  Divider,
   Dialog,
   DialogActions,
-  DialogTitle,
-  DialogContentText,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   Grid,
   IconButton,
   ListItem,
@@ -25,7 +25,6 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
@@ -36,9 +35,9 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
+  MUTATION_DELETE_POST,
   MUTATION_UPDATE_POST,
   QUERY_LOAD_SCROLLS,
-  MUTATION_DELETE_POST,
 } from '../../utilities/queries';
 
 export default function UpdatePost({

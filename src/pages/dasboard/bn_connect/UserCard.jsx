@@ -19,8 +19,8 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React, { useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
@@ -145,7 +145,7 @@ export default function UserCard({ setOpen }) {
             startIcon={<BookmarkRounded />}
             variant='text'
             className='py-1 my-1'
-            onClick={() => history.push('/dashboard/profile/bookmarks')}
+            onClick={() => history.push('/dashboard/bookmarks')}
           >
             Saved Items
           </Button>

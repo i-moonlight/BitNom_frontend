@@ -4,7 +4,6 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  useTheme,
 } from '@material-ui/core';
 import {
   AssignmentIndOutlined,
@@ -23,7 +22,6 @@ import { getUserInitials } from '../../../utilities/Helpers';
 export default function ProfileCard() {
   const state = useSelector(state => state);
   const user = state.auth.user;
-  const theme = useTheme();
   const userInitials = getUserInitials(user?.displayName);
 
   return (
@@ -84,7 +82,7 @@ export default function ProfileCard() {
               startIcon={<CalendarTodayOutlined />}
               textCase
               variant='text'
-              color={theme.palette.text.primary}
+              color='inherit'
             >
               Joined April 2016
             </Button>
@@ -92,7 +90,7 @@ export default function ProfileCard() {
               startIcon={<Language />}
               textCase
               variant='text'
-              color={theme.palette.text.primary}
+              color='inherit'
             >
               Website
             </Button>
@@ -100,7 +98,7 @@ export default function ProfileCard() {
               startIcon={<AssignmentIndOutlined />}
               textCase
               variant='text'
-              color={theme.palette.text.primary}
+              color='inherit'
             >
               Portfolio
             </Button>

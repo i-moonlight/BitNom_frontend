@@ -16,11 +16,11 @@ import {
 } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+import Button from '../../../../../components/Button';
 import {
   MUTATION_CREATE_BOOKMARK,
   GET_BOOKMARKED_COMMENTS,
-} from '../../utilities/queries';
+} from '../../../utilities/queries';
 
 export default function CommentOptionsPopover({
   comment,

@@ -1,34 +1,32 @@
 import { useQuery } from '@apollo/client';
 import {
+  Card,
+  CardHeader,
   CircularProgress,
   Container,
   Grid,
   Hidden,
-  Card,
-  CardHeader,
   IconButton,
-  Tabs,
-  Tab,
-  Typography,
   makeStyles,
+  Tab,
+  Tabs,
+  Typography,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ImagePreview from '../../../components/ImagePreview';
+import Screen from '../../../components/Screen';
+import FlagResource from '../bn_connect/flag_resource/FlagResource';
+import CreatePost from '../bn_connect/scroll/CreatePost';
+import Scroll from '../bn_connect/scroll/Scroll';
+import UserCard from '../bn_connect/UserCard';
 import {
-  GET_BOOKMARKED_SCROLLS,
   GET_BOOKMARKED_COMMENTS,
+  GET_BOOKMARKED_SCROLLS,
   QUERY_LOAD_SCROLLS,
-} from './utilities/queries';
-import ImagePreview from '../../components/ImagePreview';
-import Screen from '../../components/Screen';
-import CreatePost from './bn_connect/create_scroll/CreatePost';
-import FlagResource from './bn_connect/flag_resource/FlagResource';
-import Scroll from './bn_connect/scroll/Scroll';
-import SuggestedPeople from './bn_connect/SuggestedPeople';
-import TrendingPosts from './bn_connect/TrendingPosts';
-import SavedComment from './bn_connect/SavedComment';
-import UserCard from './bn_connect/UserCard';
+} from '../utilities/queries';
+import SavedComment from './SavedComment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,7 +55,7 @@ export default function SavedItems() {
 
   const classes = useStyles();
 
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
+  const { data } = useQuery(QUERY_LOAD_SCROLLS);
   const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
     GET_BOOKMARKED_SCROLLS,
     {
@@ -76,13 +74,6 @@ export default function SavedItems() {
           sortAscending: false,
         },
       },
-    }
-  );
-
-  const { loading: trendingLoading, data: trendingData } = useQuery(
-    QUERY_LOAD_SCROLLS,
-    {
-      variables: { data: { sortByField: 'comments', limit: 5 } },
     }
   );
 
@@ -282,15 +273,6 @@ export default function SavedItems() {
                   ''
                 )}
               </>
-            </Grid>
-            <Grid item md={4} lg={3}>
-              <Hidden smDown>
-                <TrendingPosts
-                  trending={trendingData?.Posts?.get}
-                  loading={trendingLoading}
-                />
-                <SuggestedPeople />
-              </Hidden>
             </Grid>
           </Grid>
         </Container>

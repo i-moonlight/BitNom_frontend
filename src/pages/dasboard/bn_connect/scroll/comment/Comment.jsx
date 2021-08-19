@@ -6,26 +6,20 @@ import {
   Divider,
   Grid,
   IconButton,
-  ThemeProvider,
   Typography,
   useTheme,
 } from '@material-ui/core';
-import {
-  ImageRounded,
-  MoreHorizRounded,
-  PersonRounded,
-  Send,
-} from '@material-ui/icons';
+import { ImageRounded, MoreHorizRounded, Send } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import TextField from '../../../../components/TextField';
-import { getUserInitials } from '../../../../utilities/Helpers';
-import { contentBodyFactory } from '../../utilities/functions';
+import Button from '../../../../../components/Button';
+import TextField from '../../../../../components/TextField';
+import { getUserInitials } from '../../../../../utilities/Helpers';
+import { contentBodyFactory } from '../../../utilities/functions';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
-} from '../../utilities/queries';
+} from '../../../utilities/queries';
 import CommentOptionsPopover from './CommentOptionsPopover';
 
 const commentOptionId = 'menu-comment-option';

@@ -28,7 +28,7 @@ export default function VerifyEmail() {
         verificationCode: parse(location.search)['?evc'],
       },
       errorPolicy: 'all',
-    }).then(({ data, errors }) => {
+    }).then(({ errors }) => {
       setVerifying(false);
       let userErrors = errors ? errors : null;
       setVerifyErr(userErrors);

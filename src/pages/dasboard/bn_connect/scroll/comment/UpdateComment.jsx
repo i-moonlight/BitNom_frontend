@@ -5,12 +5,12 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  Divider,
   Dialog,
   DialogActions,
-  DialogTitle,
-  DialogContentText,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   Grid,
   IconButton,
   ListItem,
@@ -24,21 +24,20 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
 } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
-import TextField from '../../../../components/TextField';
-import { getUserInitials } from '../../../../utilities/Helpers';
+import Button from '../../../../../components/Button';
+import TextField from '../../../../../components/TextField';
+import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
+  MUTATION_DELETE_COMMENT,
   MUTATION_UPDATE_COMMENT,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-  MUTATION_DELETE_COMMENT,
-} from '../../utilities/queries';
+} from '../../../utilities/queries';
 
 export default function UpdateComment({
   updateCommentOpen,

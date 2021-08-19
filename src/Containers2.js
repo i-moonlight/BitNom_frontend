@@ -21,9 +21,9 @@ import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import BnServices from './pages/dasboard/bn_services/BnServices';
 import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
-import People from './pages/dasboard/People';
+import People from './pages/dasboard/people/People';
 import Profile from './pages/dasboard/profile/Profile';
-import SavedItems from './pages/dasboard/SavedItems';
+import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import NotFound from './pages/not_found/NotFound';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
@@ -165,6 +165,6 @@ const AppRoutes = () => (
     <Route exact component={Notifications} path='/dashboard/notifications' />
     <Route exact component={People} path='/dashboard/people' />
     <Route exact component={Profile} path='/dashboard/profile' />
-    <Route exact component={SavedItems} path='/dashboard/profile/bookmarks' />
+    <Route exact component={SavedItems} path='/dashboard/bookmarks' />
   </Switch>
 );

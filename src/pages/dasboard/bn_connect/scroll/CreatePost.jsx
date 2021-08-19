@@ -19,7 +19,6 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
@@ -34,7 +33,7 @@ import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import ScrollPreview from '../scroll/ScrollPreview';
+import ScrollPreview from './ScrollPreview';
 
 export default function CreatePost({
   open,

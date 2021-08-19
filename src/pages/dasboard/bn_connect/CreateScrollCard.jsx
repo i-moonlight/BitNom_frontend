@@ -14,7 +14,7 @@ import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
 
-export default function CreateScroll({
+export default function CreateScrollCard({
   setOpen,
   setOpenImage,
   setOpenVideo,

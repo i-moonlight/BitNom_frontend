@@ -11,6 +11,7 @@ import {
   Grid,
   IconButton,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import {
   CommentRounded,
@@ -18,7 +19,6 @@ import {
   ImageRounded,
   MoreVert,
   PanToolRounded,
-  PersonRounded,
   Send,
   ShareRounded,
   ThumbDownRounded,
@@ -30,19 +30,18 @@ import React, { useEffect, useState } from 'react';
 import Button from '../../../../components/Button';
 //import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../../components/TextField';
+import { getUserInitials } from '../../../../utilities/Helpers';
+import { contentBodyFactory } from '../../utilities/functions';
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import { contentBodyFactory } from '../../utilities/functions';
-import Comment from './Comment';
+import Comment from './comment/Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
-import { useTheme } from '@material-ui/core';
-import { getUserInitials } from '../../../../utilities/Helpers';
 
 const scrollOptionId = 'menu-scroll-option';
 

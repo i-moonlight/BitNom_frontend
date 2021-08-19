@@ -11,8 +11,7 @@ import { MoreHorizRounded } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-//import TextField from '../../../components/TextField';
-import CommentOptionsPopover from './scroll/CommentOptionsPopover';
+import CommentOptionsPopover from '../bn_connect/scroll/comment/CommentOptionsPopover';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
