@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+<<<<<<< HEAD
 import {
   QUERY_LOAD_SCROLLS,
   NOTIFICATIONS_SUBSCRIPTION,
@@ -23,6 +24,17 @@ import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
 import UpdateComment from './update_comment/UpdateComment';
 import UpdatePost from './update_scroll/UpdatePost';
+=======
+import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
+import CreateScrollCard from './CreateScrollCard';
+import CreatePost from './scroll/CreatePost';
+import FlagResourceModal from './popovers/FlagResourceModal';
+import Scroll from './scroll/Scroll';
+import SuggestedPeopleCard from './SuggestedPeopleCard';
+import TrendingPostsCard from './TrendingPostsCard';
+import UpdateComment from './scroll/comment/UpdateComment';
+import UpdatePost from './scroll/UpdatePost';
+>>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
 import UserCard from './UserCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,10 +63,14 @@ export default function BnConnect() {
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
+<<<<<<< HEAD
   const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { subscriberTopic: '*.' + user._id },
   });
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
+=======
+  const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
+>>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
     variables: { data: {} },
   });
 
@@ -66,10 +82,7 @@ export default function BnConnect() {
     }
   );
 
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <Screen>
@@ -82,7 +95,7 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll
+              <CreateScrollCard
                 setOpenImage={setOpenImage}
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
@@ -121,11 +134,11 @@ export default function BnConnect() {
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
-                <TrendingPosts
+                <TrendingPostsCard
                   trending={trendingData?.Posts?.get}
                   loading={trendingLoading}
                 />
-                <SuggestedPeople />
+                <SuggestedPeopleCard />
               </Hidden>
             </Grid>
           </Grid>
@@ -179,7 +192,7 @@ export default function BnConnect() {
           setImagePreviewURL(null);
         }}
       />
-      <FlagResource
+      <FlagResourceModal
         openFlag={createFlagOpen}
         setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}

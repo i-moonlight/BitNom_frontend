@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import {
   //CircularProgress,
   Container,
@@ -6,12 +5,13 @@ import {
   Hidden,
   makeStyles,
 } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Screen from '../../../components/Screen';
-import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
+import AboutCard from './AboutCard';
+import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -19,13 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile() {
   const classes = useStyles();
-
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
-
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  // const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
 
   return (
     <Screen>
@@ -37,6 +31,8 @@ export default function Profile() {
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <ProfileCard />
+              <InsightCard />
+              <AboutCard />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
           </Grid>

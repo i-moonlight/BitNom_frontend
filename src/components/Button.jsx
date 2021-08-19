@@ -1,28 +1,33 @@
-import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import logo_google from '../assets/components/google.svg';
 import { useFormikContext } from 'formik';
+import React from 'react';
+import logo_google from '../assets/components/google.svg';
 
 export default function Button({
   textCase,
   color,
+  colorAlt,
   submit,
   onClick,
   variant,
+  variantAlt,
   google,
   children,
   ...props
 }) {
   const formikContext = useFormikContext();
 
+  let buttonVariant = variantAlt ? variantAlt : variant;
+  let buttonColor = colorAlt ? colorAlt : color;
+
   return (
     <MuiButton
-      color={color ? color : 'primary'}
-      variant={variant ? variant : 'contained'}
+      color={buttonColor ? buttonColor : 'primary'}
+      variant={buttonVariant ? buttonVariant : 'contained'}
       disableElevation
       style={{
         backgroundColor: google && '#f2f2f2',
-        color: !color && google && '#818181',
+        buttonColor: !buttonColor && google && '#818181',
         textTransform: textCase && 'none',
       }}
       onClick={submit ? formikContext.handleSubmit : onClick}
