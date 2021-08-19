@@ -45,7 +45,8 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
   }
 });
 
-const backendUri = process.env.REACT_APP_BACKEND_URL;
+const backendUri =
+  'http://192.168.0.103:3000' || process.env.REACT_APP_BACKEND_URL;
 class WebSocketLink extends ApolloLink {
   constructor(options) {
     super();
@@ -82,7 +83,7 @@ class WebSocketLink extends ApolloLink {
   }
 }
 const wsLink = new WebSocketLink({
-  url: 'ws://localhost:3000/notifications/graphql',
+  url: 'ws://192.168.0.103:3000/notifications/graphql',
 });
 
 const authLink = from([

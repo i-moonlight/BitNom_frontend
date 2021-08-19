@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 import {
   MARK_NOTIFICAION_AS_READ,
   GET_USER_NOTIFICATIONS,
-  MARK_NOTIFICAION_AS_SEEN,
+  //MARK_NOTIFICAION_AS_SEEN,
   MUTATION_UNSUBSCRIBE,
   DELETE_NOTIFICAION,
 } from '../../pages/dasboard/utilities/queries';
@@ -53,8 +53,9 @@ export default function NotificationOptionPopover({
     console.log(notification?.content_entities[0]?.resource);
     unsubscribe({
       variables: {
-        data: {
-          resource: notification?.content_entities[0]?.resource,
+        resource: {
+          _id: notification?.content_entities[0]?.resource?._id,
+          type: notification?.content_entities[0]?.resource?.type,
         },
       },
       refetchQueries: [
@@ -90,6 +91,7 @@ export default function NotificationOptionPopover({
     });
     handleNotificationOptionClose();
   };
+  console.log(markAsReadData, unsubscribeData, deleteData);
   return (
     <Popover
       anchorEl={notificationOptionAnchorEl}

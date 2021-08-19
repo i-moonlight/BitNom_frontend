@@ -17,6 +17,7 @@ import {
 import CreateScroll from './CreateScroll';
 import CreatePost from './create_scroll/CreatePost';
 import FlagResource from './flag_resource/FlagResource';
+import { useSelector } from 'react-redux';
 import Scroll from './Scroll';
 import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
@@ -47,8 +48,12 @@ export default function BnConnect() {
   const [flaggedResource, setFlaggedResource] = useState(null);
 
   const classes = useStyles();
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
 
-  const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION);
+  const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
+    variables: { subscriberTopic: '*.' + user._id },
+  });
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: {} },
   });

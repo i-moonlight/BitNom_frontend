@@ -1,17 +1,14 @@
 import { useQuery } from '@apollo/client';
 import {
   Container,
-  Divider,
+  Card,
   Grid,
   Hidden,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography,
 } from '@material-ui/core';
-import { Drafts, Inbox } from '@material-ui/icons';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
@@ -20,6 +17,12 @@ import NotificationsListCard from './NotificationsListCard';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
+  },
+  sidebar: {
+    width: '100%',
+    maxWidth: 360,
+    background: 'transparent',
+    //color: theme.typography.textPrimary,
   },
 }));
 
@@ -48,6 +51,7 @@ export default function Notifications() {
               <NotificationsListCard
                 selectedIndex={selectedIndex}
                 notifications={allNotifications}
+                loading={loading}
               />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
@@ -59,18 +63,13 @@ export default function Notifications() {
 }
 
 function SideBarMenu({ selectedIndex, setSelectedIndex }) {
+  const classes = useStyles();
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        maxWidth: 360,
-        color: '#fff',
-      }}
-    >
+    <Card elevation={0} color='text.primary' className={classes.sidebar}>
       <List component='nav' aria-label='secondary mailbox folders'>
         <ListItem
           button
@@ -135,7 +134,16 @@ function SideBarMenu({ selectedIndex, setSelectedIndex }) {
         >
           <ListItemText primary='Forum' />
         </ListItem>
+        <ListItem
+          button
+          dense
+          disableRipple
+          selected={selectedIndex === 7}
+          onClick={(event) => handleListItemClick(event, 7)}
+        >
+          <ListItemText primary='Announcements' />
+        </ListItem>
       </List>
-    </div>
+    </Card>
   );
 }

@@ -15,8 +15,8 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
   }
 `;
 export const NOTIFICATIONS_SUBSCRIPTION = gql`
-  subscription {
-    emitNew
+  subscription ($subscriberTopic: Topic) {
+    liveUpdates(subscriberTopic: $subscriberTopic)
   }
 `;
 
@@ -247,6 +247,12 @@ export const GET_USER_NOTIFICATIONS = gql`
           }
         }
         image
+        to_notify {
+          _id
+          user_id
+          read
+          seen
+        }
         notify_subscribers_to
         date
       }
@@ -279,9 +285,9 @@ export const DELETE_NOTIFICAION = gql`
 `;
 
 export const MUTATION_UNSUBSCRIBE = gql`
-  mutation ($data: IUnsubscribe!) {
+  mutation ($resource: IResource!) {
     Subscription {
-      unsubscribe(data: $data)
+      unsubscribe(resource: $resource)
     }
   }
 `;

@@ -65,3 +65,15 @@ export const truncateText = (str, n) => {
       : subString) + '&hellip;'
   );
 };
+
+export const getCreationTime = (time) => {
+  let ms = new Date().getTime() - time;
+  let seconds = Math.round(ms / 1000);
+  let minutes = Math.round(ms / (1000 * 60));
+  let hours = Math.round(ms / (1000 * 60 * 60));
+  let days = Math.round(ms / (1000 * 60 * 60 * 24));
+  if (seconds < 60) return 'a few seconds ago';
+  else if (minutes < 60) return minutes + ' minutes';
+  else if (hours < 24) return hours + ' hours';
+  else return days + ' days';
+};

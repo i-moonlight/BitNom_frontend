@@ -18,7 +18,6 @@ import {
   Search,
 } from '@material-ui/icons';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo_light from '../../assets/logo_light.svg';
 import Button from '../Button';
@@ -28,7 +27,7 @@ export default function ProfileBar({
   menuId,
   handleMenuOpen,
   notificationId,
-  //handleNotificationsOpen,
+  handleNotificationsOpen,
 }) {
   const state = useSelector((state) => state);
   const user = state.auth.user;
@@ -100,17 +99,15 @@ export default function ProfileBar({
 
           {/* <div className={classes.grow} /> */}
           <div className={classes.sectionDesktop}>
-            <Link to='/dashboard/notifications'>
-              <IconButton
-                color='inherit'
-                aria-label='account of current user'
-                aria-controls={notificationId}
-                aria-haspopup='true'
-                //onClick={handleNotificationsOpen}
-              >
-                <Notifications />
-              </IconButton>
-            </Link>
+            <IconButton
+              color='inherit'
+              aria-label='account of current user'
+              aria-controls={notificationId}
+              aria-haspopup='true'
+              onClick={handleNotificationsOpen}
+            >
+              <Notifications />
+            </IconButton>
             <IconButton color='inherit'>
               <ForumRounded />
             </IconButton>
