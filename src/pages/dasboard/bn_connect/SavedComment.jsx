@@ -12,7 +12,7 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
 //import TextField from '../../../components/TextField';
-import CommentOptionsPopover from './CommentOptionsPopover';
+import CommentOptionsPopover from './scroll/CommentOptionsPopover';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
@@ -32,7 +32,7 @@ export default function SavedComment({
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
-  const handleCommentOptionOpen = (event) => {
+  const handleCommentOptionOpen = event => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -40,7 +40,7 @@ export default function SavedComment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (event) => {
+  const handleCreateReaction = event => {
     event.preventDefault();
     event.stopPropagation();
     createReaction({
@@ -85,11 +85,12 @@ export default function SavedComment({
                   </Typography>
                 </Typography>
                 <IconButton
+                  size='small'
+                  className='m-1 p-1'
                   aria-label='show more'
                   aria-controls={commentOptionId}
                   aria-haspopup='true'
                   onClick={handleCommentOptionOpen}
-                  size='small'
                 >
                   <MoreHorizRounded />
                 </IconButton>

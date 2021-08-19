@@ -11,7 +11,7 @@ import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import ProfileCard from './ProfileCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -22,10 +22,7 @@ export default function Profile() {
 
   const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
 
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <Screen>

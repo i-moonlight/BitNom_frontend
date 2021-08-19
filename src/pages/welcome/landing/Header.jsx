@@ -50,7 +50,7 @@ export default function Header() {
               >
                 Explore BN
               </Button>
-              <IconButton>
+              <IconButton size='small' className='m-1 p-1'>
                 <PlayArrowRounded />
               </IconButton>
             </div>

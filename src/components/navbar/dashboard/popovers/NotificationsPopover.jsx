@@ -41,7 +41,7 @@ export default function NotificationsPopover({
           <Typography style={{ marginLeft: 8 }} variant='body2'>
             Notifications
           </Typography>
-          <IconButton>
+          <IconButton size='small' className='m-1 p-1'>
             <SettingsRounded />
           </IconButton>
         </div>
@@ -72,12 +72,14 @@ export default function NotificationsPopover({
                 marginRight: 0,
                 paddingRight: 0,
                 minWidth: 20,
-                '&.MuiListItemIcon-root': {
+                '&.MuiListItemIconRoot': {
                   minWidth: 20,
                 },
               }}
             >
-              <MoreVert />
+              <IconButton size='small' className='m-1 p-1'>
+                <MoreVert />
+              </IconButton>
             </ListItemIcon>
           </ListItem>
         ))}

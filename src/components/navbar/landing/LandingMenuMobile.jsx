@@ -39,7 +39,11 @@ export default function LandingMenuMobile({ open, onClose }) {
 
   return (
     <List className={classes.root}>
-      <IconButton className={classes.close} onClick={onClose}>
+      <IconButton
+        size='small'
+        className={'m-1 p-1' + classes.close}
+        onClick={onClose}
+      >
         <CloseRounded />
       </IconButton>
       <ListItem button>

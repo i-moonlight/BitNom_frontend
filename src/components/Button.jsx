@@ -6,23 +6,28 @@ import { useFormikContext } from 'formik';
 export default function Button({
   textCase,
   color,
+  colorAlt,
   submit,
   onClick,
   variant,
+  variantAlt,
   google,
   children,
   ...props
 }) {
   const formikContext = useFormikContext();
 
+  let buttonVariant = variantAlt ? variantAlt : variant;
+  let buttonColor = colorAlt ? colorAlt : color;
+
   return (
     <MuiButton
-      color={color ? color : 'primary'}
-      variant={variant ? variant : 'contained'}
+      color={buttonColor ? buttonColor : 'primary'}
+      variant={buttonVariant ? buttonVariant : 'contained'}
       disableElevation
       style={{
         backgroundColor: google && '#f2f2f2',
-        color: !color && google && '#818181',
+        buttonColor: !buttonColor && google && '#818181',
         textTransform: textCase && 'none',
       }}
       onClick={submit ? formikContext.handleSubmit : onClick}

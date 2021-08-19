@@ -18,6 +18,7 @@ export default function App() {
     background: {
       paper: '#242526',
       paperAlt: '#333333',
+      comment: '#333333',
       default: '#171818',
       landing: '#18191a',
       search: '#242526',
@@ -27,6 +28,7 @@ export default function App() {
   const themeOptionsLight = {
     background: {
       paperAlt: '#333333',
+      comment: '#ececec',
       search: '#f1f1f1',
       default: '#F3F2EF',
     },

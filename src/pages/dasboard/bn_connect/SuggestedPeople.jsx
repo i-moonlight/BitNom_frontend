@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { PersonRounded } from '@material-ui/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 
 export default function SuggestedPeople() {
@@ -45,9 +46,11 @@ export default function SuggestedPeople() {
           </ListItem>
         ))}
         <Divider />
-        <Typography variant='body2' className='my-2' color='primary'>
-          Show more
-        </Typography>
+        <Link to='/dashboard/people'>
+          <Typography variant='body2' className='my-2' color='primary'>
+            Show more
+          </Typography>
+        </Link>
       </List>
     </Paper>
   );

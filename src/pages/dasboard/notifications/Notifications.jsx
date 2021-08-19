@@ -6,11 +6,19 @@ import {
   Divider,
   Grid,
   Hidden,
-  ListItem, ListItemAvatar, ListItemIcon, ListItemText,
-  makeStyles, Typography
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
 import {
-  Drafts, Inbox, List, MoreVert, PersonRounded
+  Drafts,
+  Inbox,
+  List,
+  MoreVert,
+  PersonRounded,
 } from '@material-ui/icons';
 import React from 'react';
 import Screen from '../../../components/Screen';
@@ -153,7 +161,7 @@ function NotificationListCard() {
                 marginRight: 0,
                 paddingRight: 0,
                 minWidth: 20,
-                // '&.MuiListItemIcon-root': {
+                // '&.MuiListItemIconRoot': {
                 //   minWidth: 20,
                 // },
               }}

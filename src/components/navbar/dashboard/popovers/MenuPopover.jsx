@@ -16,6 +16,7 @@ import {
 } from '@material-ui/icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { signout } from '../../../../store/actions/authActions';
 
 export default function MenuPopover({
@@ -26,6 +27,7 @@ export default function MenuPopover({
 }) {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const history = useHistory();
 
   return (
     <Popover
@@ -37,7 +39,13 @@ export default function MenuPopover({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem className='py-3' onClick={handleMenuClose}>
+      <MenuItem
+        className='py-3'
+        onClick={() => {
+          handleMenuClose();
+          history.push('/dashboard/profile');
+        }}
+      >
         My Profile
       </MenuItem>
       <MenuItem className='py-3' onClick={handleMenuClose}>

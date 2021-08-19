@@ -14,7 +14,7 @@ import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScroll from './CreateScroll';
 import CreatePost from './create_scroll/CreatePost';
 import FlagResource from './flag_resource/FlagResource';
-import Scroll from './Scroll';
+import Scroll from './scroll/Scroll';
 import SuggestedPeople from './SuggestedPeople';
 import TrendingPosts from './TrendingPosts';
 import UpdateComment from './update_comment/UpdateComment';
@@ -55,10 +55,7 @@ export default function BnConnect() {
     }
   );
 
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <Screen>

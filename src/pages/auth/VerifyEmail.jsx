@@ -21,7 +21,6 @@ export default function VerifyEmail() {
   const [verifyEmail] = useMutation(MUTATION_VERIFY_EMAIL);
 
   useEffect(() => {
-    console.log(user?.email?.verified);
     user?.email?.verified && history.push('/auth/update_info_register');
 
     verifyEmail({
@@ -33,7 +32,6 @@ export default function VerifyEmail() {
       setVerifying(false);
       let userErrors = errors ? errors : null;
       setVerifyErr(userErrors);
-      console.log(data);
 
       setTimeout(() => {
         dispatch(login({}, null));

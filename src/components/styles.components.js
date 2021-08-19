@@ -36,10 +36,11 @@ export const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   iconButton: {
-    padding: 10,
+    padding: theme.spacing(0.7),
+    margin: theme.spacing(0.1),
   },
   divider: {
-    height: 28,
+    height: 24,
     margin: 4,
   },
   sectionDesktop: {

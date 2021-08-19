@@ -37,8 +37,6 @@ export default function Login() {
   });
 
   const responseGoogle = response => {
-    console.log('googleresponse: ', response);
-
     googleLogin({
       variables: {
         token: response.tokenId,

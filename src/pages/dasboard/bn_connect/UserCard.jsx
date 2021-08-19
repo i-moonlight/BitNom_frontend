@@ -19,21 +19,23 @@ import {
   Settings,
 } from '@material-ui/icons';
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
+import { getUserInitials } from '../../../utilities/Helpers';
 
 export default function UserCard({ setOpen }) {
   const state = useSelector(state => state);
   const user = state.auth.user;
   const card = useRef();
-
-  console.log('card: ', card?.current?.clientHeight);
+  const history = useHistory();
 
   const sticky =
     window.innerHeight < card?.current?.clientHeight + 176
       ? window.innerHeight - (card?.current?.clientHeight + 24)
       : 160;
+
+  const userInitials = getUserInitials(user?.displayName);
 
   return (
     <div
@@ -60,7 +62,7 @@ export default function UserCard({ setOpen }) {
           <div className='space-between'>
             <div>
               <Avatar
-                src={user?.image}
+                src={user?.profile_pic}
                 variant='rounded'
                 style={{
                   backgroundColor: '#fed132',
@@ -69,7 +71,7 @@ export default function UserCard({ setOpen }) {
                   height: 80,
                 }}
               >
-                L
+                {userInitials}
               </Avatar>
               <Typography className='pt-1' variant='body2'>
                 {user?.displayName}
@@ -85,10 +87,10 @@ export default function UserCard({ setOpen }) {
                 top: 60,
               }}
             >
-              <IconButton>
+              <IconButton size='small' className='m-1 p-1'>
                 <Notifications />
               </IconButton>
-              <IconButton>
+              <IconButton size='small' className='m-1 p-1'>
                 <Settings />
               </IconButton>
             </div>
@@ -137,25 +139,37 @@ export default function UserCard({ setOpen }) {
         </CardContent>
         <Divider />
         <CardActions className='py-0'>
-          <Link to='/dashboard/profile/bookmarks'>
-            <IconButton>
-              <BookmarkRounded />
-            </IconButton>
-          </Link>
-          <Typography variant='body2'>Saved Items</Typography>
+          <Button
+            color='inherit'
+            textCase
+            startIcon={<BookmarkRounded />}
+            variant='text'
+            className='py-1 my-1'
+            onClick={() => history.push('/dashboard/profile/bookmarks')}
+          >
+            Saved Items
+          </Button>
         </CardActions>
         <Divider />
         <CardActions className='py-0'>
-          <IconButton>
-            <EventRounded />
-          </IconButton>
-          <Typography variant='body2'>
+          <Button
+            color='inherit'
+            textCase
+            startIcon={<EventRounded />}
+            variant='text'
+            className='py-1 my-1 me-3'
+            onClick={() => history.push('/dashboard/events')}
+          >
             Events
-            <Badge badgeContent='3' color='secondary'>
-              <span className='mx-2 '></span>
-            </Badge>
-          </Typography>
-          <IconButton color='primary' style={{ marginLeft: 'auto' }}>
+          </Button>
+          <Badge badgeContent='3' color='error'></Badge>
+          <IconButton
+            size='small'
+            className=' p-1'
+            color='primary'
+            style={{ marginLeft: 'auto' }}
+            onClick={() => history.push('/dashboard/events')}
+          >
             <AddRounded />
           </IconButton>
         </CardActions>

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -26,21 +27,22 @@ import {
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import Button from '../../../components/Button';
+import Button from '../../../../components/Button';
 //import ImagePreview from '../../../components/ImagePreview';
-import TextField from '../../../components/TextField';
+import TextField from '../../../../components/TextField';
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-} from '../utilities/queries';
-import { contentBodyFactory } from '../utilities/functions';
+} from '../../utilities/queries';
+import { contentBodyFactory } from '../../utilities/functions';
 import Comment from './Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import { useTheme } from '@material-ui/core';
+import { getUserInitials } from '../../../../utilities/Helpers';
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -137,24 +139,28 @@ export default function Scroll({
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
   };
-  console.log(scroll);
+
+  const userInitials = getUserInitials(scroll?.author?.displayName);
+
   useEffect(() => {
     if (createCommentData?.Comments?.create) {
       console.log('comment created');
     }
   }, [createCommentData]);
-  console.log(scroll?.content);
+
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
         <CardHeader
           avatar={
-            <Avatar src={scroll?.author?.image} aria-label='recipe'>
-              R
+            <Avatar src={scroll?.author?.profile_pic} aria-label='recipe'>
+              {userInitials}
             </Avatar>
           }
           action={
             <IconButton
+              size='small'
+              className='m-1 p-1'
               aria-label='show more'
               aria-controls={scrollOptionId}
               aria-haspopup='true'
@@ -341,16 +347,18 @@ export default function Scroll({
           )}
         </CardActions>
         <Divider />
-        <CardContent>
+        <CardActionArea onClick={() => setOpenComments(true)}>
           {!openComments && scroll?.comments < 1 && (
-            <Typography color='textSecondary'>
+            <Typography className='mx-3 my-2' color='textSecondary'>
               Be the first to comment
             </Typography>
           )}
-          {openComments && (
+        </CardActionArea>
+        {openComments && (
+          <CardContent>
             <div className='center-horizontal'>
               <Avatar src={scroll?.author?.image} className='mx-2'>
-                <PersonRounded />
+                {userInitials}
               </Avatar>
               <TextField
                 error={createCommentErr && true}
@@ -377,10 +385,11 @@ export default function Scroll({
                 }
                 adornment={
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                     }}
-                    size='small'
                   >
                     <ImageRounded />
                   </IconButton>
@@ -389,55 +398,57 @@ export default function Scroll({
                 value={comment_text}
               />
               <IconButton
-                className='mx-3'
+                size='small'
+                className='m-1 p-1'
+                // className='mx-3'
                 onClick={handleCreateComment}
                 // size='small'
               >
                 <Send />
               </IconButton>
             </div>
-          )}
-          <DropzoneDialog
-            previewGridProps={{ container: { spacing: 1, direction: 'row' } }}
-            showAlerts={['error']}
-            // useChipsForPreview
-            previewText=''
-            acceptedFiles={['image/*']}
-            cancelButtonText={'cancel'}
-            submitButtonText={'submit'}
-            maxFileSize={5000000}
-            open={openImage}
-            filesLimit='1'
-            onClose={() => setOpenImage(false)}
-            onSave={files => {
-              setCommentImage(files[0]);
-              setOpenImage(false);
-            }}
-            showPreviewsInDropzone
-            showPreviews={false}
-            showFileNames={false}
-          />
-          {openComments &&
-            commentsData &&
-            commentsData?.Comments?.get
-              .filter(comment => !comment.response_to)
-              .map(comment => (
-                <Comment
-                  scroll={scroll}
-                  key={comment._id}
-                  setUpdateCommentOpen={setUpdateCommentOpen}
-                  setCommentToEdit={setCommentToEdit}
-                  comment={comment}
-                  setFlaggedResource={setFlaggedResource}
-                  setOpenFlag={setOpenFlag}
-                  setOpenImage={setOpenImage}
-                  onCreateComment={onCreateComment}
-                  setImagePreviewURL={setImagePreviewURL}
-                  setImagePreviewOpen={setImagePreviewOpen}
-                  comment_image={comment_image}
-                />
-              ))}
-        </CardContent>
+
+            <DropzoneDialog
+              previewGridProps={{ container: { spacing: 1, direction: 'row' } }}
+              showAlerts={['error']}
+              // useChipsForPreview
+              previewText=''
+              acceptedFiles={['image/*']}
+              cancelButtonText={'cancel'}
+              submitButtonText={'submit'}
+              maxFileSize={5000000}
+              open={openImage}
+              filesLimit={1}
+              onClose={() => setOpenImage(false)}
+              onSave={files => {
+                setCommentImage(files[0]);
+                setOpenImage(false);
+              }}
+              showPreviewsInDropzone
+              showPreviews={false}
+              showFileNames={false}
+            />
+            {commentsData &&
+              commentsData?.Comments?.get
+                .filter(comment => !comment.response_to)
+                .map(comment => (
+                  <Comment
+                    scroll={scroll}
+                    key={comment._id}
+                    setUpdateCommentOpen={setUpdateCommentOpen}
+                    setCommentToEdit={setCommentToEdit}
+                    comment={comment}
+                    setFlaggedResource={setFlaggedResource}
+                    setOpenFlag={setOpenFlag}
+                    setOpenImage={setOpenImage}
+                    onCreateComment={onCreateComment}
+                    setImagePreviewURL={setImagePreviewURL}
+                    setImagePreviewOpen={setImagePreviewOpen}
+                    comment_image={comment_image}
+                  />
+                ))}
+          </CardContent>
+        )}
       </Card>
       <ScrollOptionsPopover
         scroll={scroll}

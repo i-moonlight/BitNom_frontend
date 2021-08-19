@@ -90,7 +90,7 @@ function PeopleListCard() {
                 marginRight: 0,
                 paddingRight: 0,
                 minWidth: 20,
-                '&.MuiListItemIcon-root': {
+                '&.MuiListItemIconRoot': {
                   minWidth: 20,
                 },
               }}
