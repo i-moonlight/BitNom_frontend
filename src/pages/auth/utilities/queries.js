@@ -36,7 +36,7 @@ export const MUTATION_LOGIN_USER = gql`
         # referralCode
         displayName
         bio
-        profile_pic
+        image
         email {
           address
           verified

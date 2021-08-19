@@ -52,12 +52,8 @@ export default function Comment({
   } = useQuery(QUERY_GET_COMMENTS, {
     variables: { data: { scroll_id: comment?.scroll } },
   });
-<<<<<<< HEAD:src/pages/dasboard/bn_connect/Comment.jsx
-  const handleCommentOptionOpen = (event) => {
-=======
 
-  const handleCommentOptionOpen = event => {
->>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f:src/pages/dasboard/bn_connect/scroll/comment/Comment.jsx
+  const handleCommentOptionOpen = (event) => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -65,7 +61,7 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = event => {
+  const handleCreateReaction = (event) => {
     event.preventDefault();
     event.stopPropagation();
     createReaction({
@@ -85,7 +81,7 @@ export default function Comment({
     });
   };
 
-  const handleCreateReply = e => {
+  const handleCreateReply = (e) => {
     e.preventDefault();
     if (reply.trim() == '') return setReplyErr(true);
     onCreateComment({
@@ -248,12 +244,12 @@ export default function Comment({
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
-                onKeyPress={e => {
+                onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleCreateReply(e);
                   }
                 }}
-                onChange={e =>
+                onChange={(e) =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -301,9 +297,9 @@ export default function Comment({
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            commentInner => commentInner?.response_to?._id === comment?._id
+            (commentInner) => commentInner?.response_to?._id === comment?._id
           )
-          .map(commentInner => (
+          .map((commentInner) => (
             <Comment
               style={{
                 marginLeft: 30,

@@ -7,7 +7,7 @@ import {
   //MARK_NOTIFICAION_AS_SEEN,
   MUTATION_UNSUBSCRIBE,
   DELETE_NOTIFICAION,
-} from '../../pages/dasboard/utilities/queries';
+} from '../../../../pages/dasboard/utilities/queries';
 
 export default function NotificationOptionPopover({
   notificationOptionAnchorEl,

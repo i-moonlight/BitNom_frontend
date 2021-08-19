@@ -10,31 +10,19 @@ import {
 import React, { useEffect, useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
-<<<<<<< HEAD
 import {
   QUERY_LOAD_SCROLLS,
   NOTIFICATIONS_SUBSCRIPTION,
 } from '../utilities/queries';
-import CreateScroll from './CreateScroll';
-import CreatePost from './create_scroll/CreatePost';
-import FlagResource from './flag_resource/FlagResource';
-import { useSelector } from 'react-redux';
-import Scroll from './Scroll';
-import SuggestedPeople from './SuggestedPeople';
-import TrendingPosts from './TrendingPosts';
-import UpdateComment from './update_comment/UpdateComment';
-import UpdatePost from './update_scroll/UpdatePost';
-=======
-import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
+import { useSelector } from 'react-redux';
 import Scroll from './scroll/Scroll';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
 import UpdateComment from './scroll/comment/UpdateComment';
 import UpdatePost from './scroll/UpdatePost';
->>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
 import UserCard from './UserCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,14 +51,10 @@ export default function BnConnect() {
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
-<<<<<<< HEAD
   const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { subscriberTopic: '*.' + user._id },
   });
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
-=======
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
->>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
     variables: { data: {} },
   });
 

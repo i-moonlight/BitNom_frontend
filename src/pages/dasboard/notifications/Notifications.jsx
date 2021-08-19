@@ -4,28 +4,12 @@ import {
   Card,
   Grid,
   Hidden,
-<<<<<<< HEAD
   List,
   ListItem,
   ListItemText,
   makeStyles,
 } from '@material-ui/core';
-=======
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
-import {
-  Drafts,
-  Inbox,
-  List,
-  MoreVert,
-  PersonRounded,
-} from '@material-ui/icons';
->>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
+
 import React from 'react';
 import Screen from '../../../components/Screen';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
@@ -161,66 +145,6 @@ function SideBarMenu({ selectedIndex, setSelectedIndex }) {
           <ListItemText primary='Announcements' />
         </ListItem>
       </List>
-<<<<<<< HEAD
-=======
-    </div>
-  );
-}
-
-function NotificationListCard() {
-  return (
-    <Card>
-      <div className='space-between'>
-        <Typography className='mx-4 my-1' variant='body1'>
-          Notifications
-        </Typography>
-        <Typography className='mx-4 my-1' variant='body1'>
-          Settings
-        </Typography>
-      </div>
-      <Divider />
-      <CardContent>
-        {[1, 2, 3].map(item => (
-          <ListItem className='space-between' key={item} divider>
-            <ListItemAvatar>
-              <Avatar>
-                <PersonRounded />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <div className='center-horizontal'>
-                  <Typography variant='body2' className='mx-1'>
-                    Andy bo Wu{' '}
-                  </Typography>
-                  <Typography variant='body2' color='textSecondary'>
-                    sent a friend request
-                  </Typography>
-                </div>
-              }
-              secondary='50 minutes ago'
-            />
-            <ListItemIcon
-              aria-label='show more'
-              //   aria-controls={notificationOptionId}
-              aria-haspopup='true'
-              //   onClick={handleNotificationOptionOpen}
-              color='inherit'
-              style={{
-                marginRight: 0,
-                paddingRight: 0,
-                minWidth: 20,
-                // '&.MuiListItemIconRoot': {
-                //   minWidth: 20,
-                // },
-              }}
-            >
-              <MoreVert />
-            </ListItemIcon>
-          </ListItem>
-        ))}
-      </CardContent>
->>>>>>> 3542e0c959b769e30ddd9a37f720d3ace060d02f
     </Card>
   );
 }

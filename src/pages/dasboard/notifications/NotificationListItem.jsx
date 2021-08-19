@@ -14,7 +14,7 @@ import {
   notificationBodyFactory,
   getCreationTime,
 } from '../utilities/functions';
-import NotificationOptionPopover from '../../../components/navbar/NotificationOptionPopover';
+import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
 
 const notificationOptionId = 'menu-notification-option';
 

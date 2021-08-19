@@ -25,7 +25,7 @@ import React from 'react';
 import {
   notificationBodyFactory,
   getCreationTime,
-} from '../../pages/dasboard/utilities/functions';
+} from '../../../../pages/dasboard/utilities/functions';
 import { Link } from 'react-router-dom';
 
 export default function NotificationsPopover({
