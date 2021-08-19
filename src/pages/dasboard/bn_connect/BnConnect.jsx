@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
   CircularProgress,
   Container,
@@ -12,12 +12,12 @@ import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import {
   QUERY_LOAD_SCROLLS,
-  NOTIFICATIONS_SUBSCRIPTION,
+  //NOTIFICATIONS_SUBSCRIPTION,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import Scroll from './scroll/Scroll';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
@@ -48,17 +48,18 @@ export default function BnConnect() {
   const [flaggedResource, setFlaggedResource] = useState(null);
 
   const classes = useStyles();
+  /*
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
-  const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
+     const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { subscriberTopic: '*.' + user._id },
-  });
+  }); */
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: {} },
   });
 
-  console.log(subscribeData);
+  //console.log(subscribeData);
   const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {

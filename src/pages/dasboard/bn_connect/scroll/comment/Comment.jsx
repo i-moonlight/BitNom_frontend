@@ -16,6 +16,7 @@ import Button from '../../../../../components/Button';
 import TextField from '../../../../../components/TextField';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import { contentBodyFactory } from '../../../utilities/functions';
+import { useSelector } from 'react-redux';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
@@ -44,6 +45,9 @@ export default function Comment({
   const [reply, setReply] = useState('');
   const [responseTo, setResponseTo] = useState('');
   const [replyErr, setReplyErr] = useState(false);
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
+
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
   const {
     data: commentsData,
@@ -94,7 +98,7 @@ export default function Comment({
   };
 
   const commentUserInitials = getUserInitials(comment?.author?.displayName);
-  const scrollUserInitials = getUserInitials(scroll?.author?.displayName);
+  const currentUserInitials = getUserInitials(user?.displayName);
 
   return (
     <>
@@ -235,7 +239,7 @@ export default function Comment({
           {openReplies && (
             <div className='center-horizontal'>
               <Avatar src={scroll?.author?.profile_pic} className='mx-2'>
-                {scrollUserInitials}
+                {currentUserInitials}
               </Avatar>
               <TextField
                 error={replyErr}

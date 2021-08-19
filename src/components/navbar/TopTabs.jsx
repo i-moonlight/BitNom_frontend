@@ -1,7 +1,6 @@
 import { Box } from '@material-ui/core';
 import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { tabs } from '../../store/local/dummy';
 import { useStyles } from '../styles.components';
 
@@ -25,9 +24,6 @@ export default function TopTabs({
             // variant='scrollable'
             scrollButtons='auto'
           >
-            <Link to='/dashboard'>
-              <BitTab key={`Bn-Connect`} label={`BN Connect`} />
-            </Link>
             {tabs.map(({ label, menuItems }) => (
               <BitTab
                 key={`${tabOptionsId}`}

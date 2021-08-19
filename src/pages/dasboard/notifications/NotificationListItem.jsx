@@ -9,11 +9,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { MoreVert, PersonRounded, FiberManualRecord } from '@material-ui/icons';
+import { MoreVert, FiberManualRecord } from '@material-ui/icons';
 import {
   notificationBodyFactory,
   getCreationTime,
 } from '../utilities/functions';
+import { getUserInitials } from '../../../utilities/Helpers';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
 
 const notificationOptionId = 'menu-notification-option';
@@ -38,9 +39,18 @@ export default function NotificationListItem({ notification }) {
         read = item.read;
       }
     });
-
     return read;
   };
+  const getNotifying = (notification) => {
+    let name;
+    notification?.content_entities?.forEach((item) => {
+      if (item.type === 'resource_tag') {
+        name = item.url.displayName;
+      }
+    });
+    return name;
+  };
+  const userInitials = getUserInitials(getNotifying(notification));
   return (
     <>
       <Card elevation={0}>
@@ -63,11 +73,7 @@ export default function NotificationListItem({ notification }) {
           </div>
 
           <CardHeader
-            avatar={
-              <Avatar aria-label='recipe'>
-                <PersonRounded />
-              </Avatar>
-            }
+            avatar={<Avatar aria-label='recipe'>{userInitials}</Avatar>}
             action={
               <IconButton
                 aria-label='show more'
