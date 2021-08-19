@@ -4,7 +4,7 @@ import AcceptCookies from '../AcceptCookies';
 import InfrastructureSection from './InfrastructureSection';
 import ProjectSection from './ProjectSection';
 import Wrapper from '../Wrapper';
-import Header from './Header';
+import HeaderSection from './HeaderSection';
 import InvestorSection from './InvestorSection';
 import LayersSection from './LayersSection';
 import ServicesSection from './ServicesSection';
@@ -16,7 +16,7 @@ export const INVESTOR_CARD_DISPLACEMENT = 200;
 export default function Landing() {
   return (
     <Wrapper>
-      <Header />
+      <HeaderSection />
       <SponsorsSection />
       <ProjectSection />
       <InfrastructureSection />

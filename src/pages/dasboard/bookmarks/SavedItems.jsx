@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
-import FlagResource from '../bn_connect/flag_resource/FlagResource';
+import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import Scroll from '../bn_connect/scroll/Scroll';
 import UserCard from '../bn_connect/UserCard';
@@ -299,7 +299,7 @@ export default function SavedItems() {
           setImagePreviewURL(null);
         }}
       />
-      <FlagResource
+      <FlagResourceModal
         openFlag={createFlagOpen}
         setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}

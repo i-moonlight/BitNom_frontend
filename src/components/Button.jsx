@@ -1,7 +1,7 @@
-import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import logo_google from '../assets/components/google.svg';
 import { useFormikContext } from 'formik';
+import React from 'react';
+import logo_google from '../assets/components/google.svg';
 
 export default function Button({
   textCase,

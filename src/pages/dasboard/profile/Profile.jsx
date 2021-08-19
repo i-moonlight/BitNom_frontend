@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import Screen from '../../../components/Screen';
+import AboutCard from './AboutCard';
 import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
 
@@ -31,6 +32,7 @@ export default function Profile() {
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <ProfileCard />
               <InsightCard />
+              <AboutCard />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
           </Grid>

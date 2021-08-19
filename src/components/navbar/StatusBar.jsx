@@ -15,9 +15,9 @@ import {
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/actions/themeActions';
-import { status } from '../../store/local/dummy';
+import { status } from '../utilities/data.components';
 import Button from '../Button';
-import { useStyles } from '../styles.components';
+import { useStyles } from '../utilities/styles.components';
 
 export default function StatusBar() {
   const palette = useSelector(state => state.theme.palette);

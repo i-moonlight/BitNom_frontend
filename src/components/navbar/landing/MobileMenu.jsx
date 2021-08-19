@@ -9,10 +9,10 @@ import {
 } from '@material-ui/core';
 import { ChevronRight, CloseRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { menuEcosystem, menuProduct } from '../../data.components';
+import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import MenuOptions from './MenuOptions';
 
-export default function LandingMenuMobile({ open, onClose }) {
+export default function MobileMenu({ open, onClose }) {
   const useStyles = makeStyles(() => ({
     root: {
       position: 'fixed',

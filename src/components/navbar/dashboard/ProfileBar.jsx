@@ -25,7 +25,7 @@ import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
-import { useStyles } from '../../styles.components';
+import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
   menuId,

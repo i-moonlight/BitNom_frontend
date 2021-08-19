@@ -11,7 +11,7 @@ import headerBgImg from '../../../assets/landing/img12.png';
 import Button from '../../../components/Button';
 import DarkTheme from '../../../utilities/DarkTheme';
 
-export default function Header() {
+export default function HeaderSection() {
   const theme = useTheme();
 
   return (

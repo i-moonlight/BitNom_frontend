@@ -13,7 +13,7 @@ import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
-import FlagResource from './flag_resource/FlagResource';
+import FlagResourceModal from './popovers/FlagResourceModal';
 import Scroll from './scroll/Scroll';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
@@ -165,7 +165,7 @@ export default function BnConnect() {
           setImagePreviewURL(null);
         }}
       />
-      <FlagResource
+      <FlagResourceModal
         openFlag={createFlagOpen}
         setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}

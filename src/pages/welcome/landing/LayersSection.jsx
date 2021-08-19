@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import DarkTheme from '../../../utilities/DarkTheme';
-import { platformLayers } from '../welcome.data';
+import { platformLayers } from '../utilities/welcome.data';
 import { INVESTOR_CARD_DISPLACEMENT } from './Landing';
 
 export default function LayersSection() {

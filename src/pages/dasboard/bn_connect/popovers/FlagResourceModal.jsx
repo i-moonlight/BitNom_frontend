@@ -5,18 +5,17 @@ import {
   Divider,
   Grid,
   IconButton,
-  Modal,
-  Typography,
   List,
   ListItem,
   ListItemText,
+  Modal,
+  Typography,
 } from '@material-ui/core';
 import { CloseRounded } from '@material-ui/icons';
 import React, { useEffect } from 'react';
-
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
-export default function FlagResource({
+export default function FlagResourceModal({
   openFlag,
   setOpenFlag,
   flaggedResource,
