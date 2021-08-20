@@ -10,6 +10,11 @@ import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
 import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
+import WorkCard from './WorkCard';
+import EducationCard from './EducationCard';
+import HonorsCard from './HonorsCard';
+import SkillsCard from './SkillsCard';
+import AdditionalInfoCard from './AdditionalInfoCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +38,11 @@ export default function Profile() {
               <ProfileCard />
               <InsightCard />
               <AboutCard />
+              <WorkCard />
+              <EducationCard />
+              <HonorsCard />
+              <SkillsCard />
+              <AdditionalInfoCard />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
           </Grid>
