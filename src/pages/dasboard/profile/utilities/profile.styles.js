@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles(theme => ({
-  workCard: {
+  profileFragment: {
     backgroundColor: theme.palette.background.profileCard,
     marginTop: theme.spacing(2),
   },
@@ -16,5 +16,8 @@ export const useStyles = makeStyles(theme => ({
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
+  },
+  formCard: {
+    backgroundColor: theme.palette.background.profileCard,
   },
 }));

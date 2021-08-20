@@ -13,7 +13,7 @@ export default function HonorFragment({
   const classes = useStyles();
 
   return (
-    <Card className={classes.workCard}>
+    <Card className={classes.profileFragment}>
       <CardContent>
         <div className='d-flex flex-row'>
           <Avatar src={photoURL} variant='rounded'>

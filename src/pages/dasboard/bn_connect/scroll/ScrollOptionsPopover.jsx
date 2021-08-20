@@ -18,8 +18,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import {
-  MUTATION_CREATE_BOOKMARK,
   GET_BOOKMARKED_SCROLLS,
+  MUTATION_CREATE_BOOKMARK,
 } from '../../utilities/queries';
 
 export default function ScrollOptionsPopover({
@@ -33,14 +33,7 @@ export default function ScrollOptionsPopover({
   isScrollOptionOpen,
   handleScrollOptionClose,
 }) {
-  const [
-    createBookmark,
-    {
-      data,
-      //  loading,
-      //   error
-    },
-  ] = useMutation(MUTATION_CREATE_BOOKMARK);
+  const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
   const state = useSelector(state => state);
   const user = state.auth.user;
 
