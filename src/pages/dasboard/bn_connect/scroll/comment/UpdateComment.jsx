@@ -5,12 +5,12 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  Divider,
   Dialog,
   DialogActions,
-  DialogTitle,
-  DialogContentText,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   Grid,
   IconButton,
   ListItem,
@@ -24,20 +24,20 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
 } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
-import TextField from '../../../../components/TextField';
+import Button from '../../../../../components/Button';
+import TextField from '../../../../../components/TextField';
+import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
+  MUTATION_DELETE_COMMENT,
   MUTATION_UPDATE_COMMENT,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-  MUTATION_DELETE_COMMENT,
-} from '../../utilities/queries';
+} from '../../../utilities/queries';
 
 export default function UpdateComment({
   updateCommentOpen,
@@ -53,7 +53,7 @@ export default function UpdateComment({
   const [comment_image, setCommentImage] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [
     updateComment,
@@ -72,7 +72,7 @@ export default function UpdateComment({
     },
   ] = useMutation(MUTATION_DELETE_COMMENT);
 
-  const onDeleteComment = async (id) => {
+  const onDeleteComment = async id => {
     await deleteComment({
       variables: {
         _id: id,
@@ -92,8 +92,7 @@ export default function UpdateComment({
     setFileType(null);
     setCommentToEdit(null);
   };
-  const onUpdateComment = async (IUpdateComment) => {
-    console.log(IUpdateComment);
+  const onUpdateComment = async IUpdateComment => {
     await updateComment({
       variables: {
         data: IUpdateComment,
@@ -127,7 +126,7 @@ export default function UpdateComment({
     }
   }, [commentToEdit]);
 
-  const handleUpdateComment = (e) => {
+  const handleUpdateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '') return setUpdateCommentErr(true);
     onUpdateComment({
@@ -138,12 +137,14 @@ export default function UpdateComment({
     setUpdateCommentOpen(false);
   };
 
-  const handleDeleteComment = (e) => {
+  const handleDeleteComment = e => {
     e.preventDefault();
     onDeleteComment(commentToEdit?._id);
     setOpenDelete(false);
     setUpdateCommentOpen(false);
   };
+
+  const userInitials = getUserInitials(user?.displayName);
 
   return (
     <Modal
@@ -164,7 +165,7 @@ export default function UpdateComment({
             <div className='space-between mx-3 my-2'>
               <Typography variant='body2'></Typography>
               <Typography variant='body1'>Update Comment</Typography>
-              <IconButton size='small'>
+              <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
                     setUpdateCommentOpen(!updateCommentOpen);
@@ -182,9 +183,7 @@ export default function UpdateComment({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.photo}>
-                    <Person />
-                  </Avatar>
+                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
@@ -221,7 +220,7 @@ export default function UpdateComment({
                 rows={5}
                 id='update-comment-field'
                 placeholder='Write Comment'
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -237,13 +236,13 @@ export default function UpdateComment({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     setCommentImage(files[0]);
                   }}
                   dropzoneText={'Drag n drop an image here or click'}
                   acceptedFiles={['image/*']}
                   maxFileSize={5000000}
-                  filesLimit={'1'}
+                  filesLimit={1}
                   showAlerts={['error']}
                   showPreviews={false}
                   showPreviewsInDropzone
@@ -257,7 +256,7 @@ export default function UpdateComment({
                   <div className='space-between mx-3 my-2'>
                     <Typography variant='body2'></Typography>
                     <Typography variant='body1'></Typography>
-                    <IconButton size='small'>
+                    <IconButton size='small' className='m-1 p-1'>
                       <CloseRounded
                         onClick={() => {
                           setFileType(null);
@@ -325,12 +324,13 @@ export default function UpdateComment({
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                       setFileType(null);
                       setCommentImage(null);
                     }}
-                    size='small'
                     style={{
                       marginRight: 10,
                     }}

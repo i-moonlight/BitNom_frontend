@@ -50,8 +50,6 @@ export default function Signup() {
   }, [errors, state]);
 
   const responseGoogle = response => {
-    console.log('googleresponse: ', response);
-
     googleSignup({
       variables: {
         token: response?.tokenId,

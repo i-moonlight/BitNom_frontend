@@ -1,36 +1,34 @@
 import { useQuery } from '@apollo/client';
 import {
+  Card,
+  CardHeader,
   CircularProgress,
   Container,
   Grid,
   Hidden,
-  Card,
-  CardHeader,
   IconButton,
-  Tabs,
-  Tab,
-  Typography,
   makeStyles,
+  Tab,
+  Tabs,
+  Typography,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ImagePreview from '../../../components/ImagePreview';
+import Screen from '../../../components/Screen';
+import FlagResource from '../bn_connect/flag_resource/FlagResource';
+import CreatePost from '../bn_connect/scroll/CreatePost';
+import Scroll from '../bn_connect/scroll/Scroll';
+import UserCard from '../bn_connect/UserCard';
 import {
-  GET_BOOKMARKED_SCROLLS,
   GET_BOOKMARKED_COMMENTS,
+  GET_BOOKMARKED_SCROLLS,
   QUERY_LOAD_SCROLLS,
-} from './utilities/queries';
-import ImagePreview from '../../components/ImagePreview';
-import Screen from '../../components/Screen';
-import CreatePost from './bn_connect/create_scroll/CreatePost';
-import FlagResource from './bn_connect/flag_resource/FlagResource';
-import Scroll from './bn_connect/Scroll';
-import SuggestedPeople from './bn_connect/SuggestedPeople';
-import TrendingPosts from './bn_connect/TrendingPosts';
-import SavedComment from './bn_connect/SavedComment';
-import UserCard from './bn_connect/UserCard';
+} from '../utilities/queries';
+import SavedComment from './SavedComment';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -57,7 +55,7 @@ export default function SavedItems() {
 
   const classes = useStyles();
 
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
+  const { data } = useQuery(QUERY_LOAD_SCROLLS);
   const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
     GET_BOOKMARKED_SCROLLS,
     {
@@ -79,13 +77,6 @@ export default function SavedItems() {
     }
   );
 
-  const { loading: trendingLoading, data: trendingData } = useQuery(
-    QUERY_LOAD_SCROLLS,
-    {
-      variables: { data: { sortByField: 'comments', limit: 5 } },
-    }
-  );
-
   const handleChange = (event, value) => {
     setValue(value);
   };
@@ -99,9 +90,9 @@ export default function SavedItems() {
   useEffect(() => {
     setAllLoading(true);
     const all = [];
-    savedScrolls?.forEach((item) => all.push(item));
-    savedComments?.forEach((item) => all.push(item));
-    let allSaved = all?.map((item) => {
+    savedScrolls?.forEach(item => all.push(item));
+    savedComments?.forEach(item => all.push(item));
+    let allSaved = all?.map(item => {
       let newItem;
       if (item.scroll) {
         newItem = Object.assign(
@@ -120,10 +111,8 @@ export default function SavedItems() {
     setAllLoading(false);
   }, [savedScrolls, savedComments]);
 
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  useEffect(() => {}, [data]);
+
   return (
     <Screen>
       <div className={classes.root}>
@@ -131,7 +120,7 @@ export default function SavedItems() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard setOpen={open => setCreateScrollOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -140,7 +129,12 @@ export default function SavedItems() {
                   <CardHeader
                     avatar={
                       <Link to='/dashboard'>
-                        <IconButton aria-label='back' color='inherit'>
+                        <IconButton
+                          size='small'
+                          className='m-1 p-1'
+                          aria-label='back'
+                          color='inherit'
+                        >
                           <ArrowBack />
                         </IconButton>
                       </Link>
@@ -213,7 +207,7 @@ export default function SavedItems() {
                   !allLoading &&
                   allItems
                     ?.sort((a, b) => b.created - a.created)
-                    .map((item) =>
+                    .map(item =>
                       item.scroll ? (
                         <SavedComment
                           key={item._id}
@@ -225,11 +219,11 @@ export default function SavedItems() {
                         />
                       ) : (
                         <Scroll
-                          setOpen={(open) => setCreateScrollOpen(open)}
+                          setOpen={open => setCreateScrollOpen(open)}
                           setOpenFlag={setCreateFlagOpen}
                           setFlaggedResource={setFlaggedResource}
-                          setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                          setImagePreviewOpen={(open) =>
+                          setImagePreviewURL={url => setImagePreviewURL(url)}
+                          setImagePreviewOpen={open =>
                             setImagePreviewOpen(open)
                           }
                           setSharedPost={setSharedPost}
@@ -240,13 +234,13 @@ export default function SavedItems() {
                     )}
                 {value === 1 &&
                   savedScrolls.length > 0 &&
-                  savedScrolls?.map((scroll) => (
+                  savedScrolls?.map(scroll => (
                     <Scroll
-                      setOpen={(open) => setCreateScrollOpen(open)}
+                      setOpen={open => setCreateScrollOpen(open)}
                       setOpenFlag={setCreateFlagOpen}
                       setFlaggedResource={setFlaggedResource}
-                      setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                      setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                      setImagePreviewURL={url => setImagePreviewURL(url)}
+                      setImagePreviewOpen={open => setImagePreviewOpen(open)}
                       setSharedPost={setSharedPost}
                       key={scroll?._id}
                       scroll={scroll}
@@ -254,7 +248,7 @@ export default function SavedItems() {
                   ))}
                 {value === 2 &&
                   savedComments.length > 0 &&
-                  savedComments?.map((comment) => (
+                  savedComments?.map(comment => (
                     <SavedComment
                       key={comment._id}
                       comment={comment}
@@ -280,21 +274,12 @@ export default function SavedItems() {
                 )}
               </>
             </Grid>
-            <Grid item md={4} lg={3}>
-              <Hidden smDown>
-                <TrendingPosts
-                  trending={trendingData?.Posts?.get}
-                  loading={trendingLoading}
-                />
-                <SuggestedPeople />
-              </Hidden>
-            </Grid>
           </Grid>
         </Container>
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -316,7 +301,7 @@ export default function SavedItems() {
       />
       <FlagResource
         openFlag={createFlagOpen}
-        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />

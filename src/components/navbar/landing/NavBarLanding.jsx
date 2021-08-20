@@ -156,7 +156,8 @@ export default function NavBarLanding() {
             </Button>
             <Hidden mdUp>
               <IconButton
-                className='mx-1'
+                size='small'
+                className='m-1 p-1'
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 <MenuRounded />

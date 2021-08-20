@@ -11,14 +11,14 @@ import React, { useEffect, useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
-import CreateScroll from './CreateScroll';
-import CreatePost from './create_scroll/CreatePost';
+import CreateScrollCard from './CreateScrollCard';
+import CreatePost from './scroll/CreatePost';
 import FlagResource from './flag_resource/FlagResource';
-import Scroll from './Scroll';
-import SuggestedPeople from './SuggestedPeople';
-import TrendingPosts from './TrendingPosts';
-import UpdateComment from './update_comment/UpdateComment';
-import UpdatePost from './update_scroll/UpdatePost';
+import Scroll from './scroll/Scroll';
+import SuggestedPeopleCard from './SuggestedPeopleCard';
+import TrendingPostsCard from './TrendingPostsCard';
+import UpdateComment from './scroll/comment/UpdateComment';
+import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ export default function BnConnect() {
 
   const classes = useStyles();
 
-  const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
+  const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: {} },
   });
   const { loading: trendingLoading, data: trendingData } = useQuery(
@@ -55,10 +55,7 @@ export default function BnConnect() {
     }
   );
 
-  useEffect(() => {
-    console.log(error);
-    console.log(loading);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <Screen>
@@ -71,7 +68,7 @@ export default function BnConnect() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <CreateScroll
+              <CreateScrollCard
                 setOpenImage={setOpenImage}
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
@@ -110,11 +107,11 @@ export default function BnConnect() {
             </Grid>
             <Grid item md={4} lg={3}>
               <Hidden smDown>
-                <TrendingPosts
+                <TrendingPostsCard
                   trending={trendingData?.Posts?.get}
                   loading={trendingLoading}
                 />
-                <SuggestedPeople />
+                <SuggestedPeopleCard />
               </Hidden>
             </Grid>
           </Grid>

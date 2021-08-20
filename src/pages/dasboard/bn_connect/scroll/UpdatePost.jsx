@@ -3,15 +3,15 @@ import { useMutation } from '@apollo/client';
 import {
   Avatar,
   Card,
-  CardMedia,
   CardContent,
+  CardMedia,
   CircularProgress,
-  Divider,
   Dialog,
   DialogActions,
-  DialogTitle,
-  DialogContentText,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
   Grid,
   IconButton,
   ListItem,
@@ -25,7 +25,6 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
@@ -34,10 +33,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
+import { getUserInitials } from '../../../../utilities/Helpers';
 import {
+  MUTATION_DELETE_POST,
   MUTATION_UPDATE_POST,
   QUERY_LOAD_SCROLLS,
-  MUTATION_DELETE_POST,
 } from '../../utilities/queries';
 
 export default function UpdatePost({
@@ -61,7 +61,7 @@ export default function UpdatePost({
   const [scroll_video, setScrollVideo] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [
     updatePost,
@@ -80,7 +80,7 @@ export default function UpdatePost({
     },
   ] = useMutation(MUTATION_DELETE_POST);
 
-  const onDeletePost = async (id) => {
+  const onDeletePost = async id => {
     await deletePost({
       variables: {
         _id: id,
@@ -98,8 +98,7 @@ export default function UpdatePost({
     setOpenVideo(false);
     setPostToEdit(null);
   };
-  const onUpdatePost = async (IUpdatePost) => {
-    console.log(IUpdatePost);
+  const onUpdatePost = async IUpdatePost => {
     await updatePost({
       variables: {
         data: IUpdatePost,
@@ -134,7 +133,7 @@ export default function UpdatePost({
     }
   }, [postToEdit]);
 
-  const handleUpdatePost = (e) => {
+  const handleUpdatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setUpdatePostErr(true);
     onUpdatePost({
@@ -146,12 +145,14 @@ export default function UpdatePost({
     setUpdateScrollOpen(false);
   };
 
-  const handleDeletePost = (e) => {
+  const handleDeletePost = e => {
     e.preventDefault();
     onDeletePost(postToEdit?._id);
     setOpenDelete(false);
     setUpdateScrollOpen(false);
   };
+
+  const userInitials = getUserInitials(user?.displayName);
 
   return (
     <Modal
@@ -172,7 +173,7 @@ export default function UpdatePost({
             <div className='space-between mx-3 my-2'>
               <Typography variant='body2'></Typography>
               <Typography variant='body1'>Update Post</Typography>
-              <IconButton size='small'>
+              <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
                     setUpdateScrollOpen(!updateScrollOpen);
@@ -194,9 +195,7 @@ export default function UpdatePost({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.photo}>
-                    <Person />
-                  </Avatar>
+                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
@@ -231,7 +230,7 @@ export default function UpdatePost({
                 rows={5}
                 id='update-scroll-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -247,7 +246,7 @@ export default function UpdatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
@@ -259,7 +258,7 @@ export default function UpdatePost({
                   }
                   acceptedFiles={openImage ? ['image/*'] : ['video/*']}
                   maxFileSize={5000000}
-                  filesLimit={openImage ? '4' : '1'}
+                  filesLimit={openImage ? 4 : 1}
                   showAlerts={['error']}
                   showPreviews={false}
                   showPreviewsInDropzone
@@ -275,7 +274,7 @@ export default function UpdatePost({
                     <div className='space-between mx-3 my-2'>
                       <Typography variant='body2'></Typography>
                       <Typography variant='body1'></Typography>
-                      <IconButton size='small'>
+                      <IconButton size='small' className='m-1 p-1'>
                         <CloseRounded
                           onClick={() => {
                             setFileType(null);
@@ -296,7 +295,7 @@ export default function UpdatePost({
                         </Grid>
                       )}
                       {postToEdit?.images?.length > 0 &&
-                        postToEdit?.images?.map((imageURL) => (
+                        postToEdit?.images?.map(imageURL => (
                           <Grid
                             className='mt-3'
                             key={imageURL}
@@ -353,6 +352,8 @@ export default function UpdatePost({
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                       setFileType(null);
@@ -361,7 +362,6 @@ export default function UpdatePost({
                       setVideoDisabled(true);
                     }}
                     disabled={imageDisabled}
-                    size='small'
                     style={{
                       marginRight: 10,
                     }}
@@ -369,6 +369,8 @@ export default function UpdatePost({
                     <ImageRounded />
                   </IconButton>
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenVideo(true);
                       setFileType(null);
@@ -377,7 +379,6 @@ export default function UpdatePost({
                       setImageDisabled(true);
                     }}
                     disabled={videoDisabled}
-                    size='small'
                     style={{
                       marginRight: 10,
                     }}

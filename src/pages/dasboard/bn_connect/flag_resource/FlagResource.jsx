@@ -24,7 +24,7 @@ export default function FlagResource({
 }) {
   const [createFlag, { data }] = useMutation(MUTATION_CREATE_FLAG);
 
-  const onCreateFlag = async (ICreateFlag) => {
+  const onCreateFlag = async ICreateFlag => {
     await createFlag({
       variables: {
         data: ICreateFlag,
@@ -38,7 +38,7 @@ export default function FlagResource({
     }
   }, [data]);
 
-  const handleCreateFlag = (reason) => {
+  const handleCreateFlag = reason => {
     onCreateFlag({
       _id: flaggedResource?._id,
       type: flaggedResource?.resourceType,
@@ -66,7 +66,7 @@ export default function FlagResource({
               <Typography variant='body1'>
                 Report this {flaggedResource?.resourceType}
               </Typography>
-              <IconButton size='small'>
+              <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
                     setOpenFlag(false);

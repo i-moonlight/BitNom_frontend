@@ -15,9 +15,9 @@ import {
 } from '@material-ui/core';
 import { PersonRounded } from '@material-ui/icons';
 import React from 'react';
-import Button from '../../components/Button';
-import Screen from '../../components/Screen';
-import UserCard from './bn_connect/UserCard';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import UserCard from '../bn_connect/UserCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,7 +90,7 @@ function PeopleListCard() {
                 marginRight: 0,
                 paddingRight: 0,
                 minWidth: 20,
-                '&.MuiListItemIcon-root': {
+                '&.MuiListItemIconRoot': {
                   minWidth: 20,
                 },
               }}

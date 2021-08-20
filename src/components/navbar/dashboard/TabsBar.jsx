@@ -24,18 +24,31 @@ export default function TabsBar({
             variant='scrollable'
             scrollButtons='auto'
           >
-            {tabs.map(({ label, menuItems }) => (
-              <BitTab
-                key={`${tabOptionsId}`}
-                label={label}
-                aria-controls={tabOptionsId}
-                aria-haspopup='true'
-                onClick={event => {
-                  menuItems && setTabOptions(menuItems);
-                  menuItems && handleTabOptionsOpen(event);
-                }}
-              />
-            ))}
+            {tabs.map(({ label, menuItems }) => {
+              const tabOptionsId2 = tabOptionsId + Math.random() * 1000;
+              return (
+                <BitTab
+                  key={`${tabOptionsId2}-${Math.random}`}
+                  label={label}
+                  aria-controls={tabOptionsId2}
+                  aria-haspopup='true'
+                  onClick={event => {
+                    menuItems && setTabOptions(menuItems);
+                    menuItems && handleTabOptionsOpen(event);
+                  }}
+                />
+              );
+            })}
+            <BitTab
+              style={{ position: 'relative' }}
+              label={'Nouvelle'}
+              aria-controls={'tabOptionsId2'}
+              aria-haspopup='true'
+              // onClick={event => {
+              //   menuItems && setTabOptions(menuItems);
+              //   menuItems && handleTabOptionsOpen(event);
+              // }}
+            />
           </Tabs>
         </Container>
       </Box>

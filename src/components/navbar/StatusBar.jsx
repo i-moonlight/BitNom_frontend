@@ -99,6 +99,7 @@ export default function StatusBar() {
 
               <IconButton
                 size='small'
+                className='m-1 p-1'
                 onClick={() => {
                   palette == 'light'
                     ? dispatch(changeTheme('dark'))

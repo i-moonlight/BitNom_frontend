@@ -3,27 +3,24 @@ import {
   Avatar,
   Card,
   CardContent,
+  Divider,
   Grid,
   IconButton,
   Typography,
+  useTheme,
 } from '@material-ui/core';
-
-import {
-  ImageRounded,
-  MoreHorizRounded,
-  PersonRounded,
-  Send,
-} from '@material-ui/icons';
+import { ImageRounded, MoreHorizRounded, Send } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import TextField from '../../../components/TextField';
-import CommentOptionsPopover from './CommentOptionsPopover';
+import Button from '../../../../../components/Button';
+import TextField from '../../../../../components/TextField';
+import { getUserInitials } from '../../../../../utilities/Helpers';
+import { contentBodyFactory } from '../../../utilities/functions';
 import {
   MUTATION_CREATE_REACTION,
   QUERY_GET_COMMENTS,
-} from '../utilities/queries';
-import { contentBodyFactory } from '../utilities/functions';
+} from '../../../utilities/queries';
+import CommentOptionsPopover from './CommentOptionsPopover';
 
 const commentOptionId = 'menu-comment-option';
 export default function Comment({
@@ -40,6 +37,7 @@ export default function Comment({
   setImagePreviewURL,
   setImagePreviewOpen,
 }) {
+  const theme = useTheme();
   const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
@@ -55,7 +53,7 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
-  const handleCommentOptionOpen = (event) => {
+  const handleCommentOptionOpen = event => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -63,7 +61,7 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (event) => {
+  const handleCreateReaction = event => {
     event.preventDefault();
     event.stopPropagation();
     createReaction({
@@ -83,7 +81,7 @@ export default function Comment({
     });
   };
 
-  const handleCreateReply = (e) => {
+  const handleCreateReply = e => {
     e.preventDefault();
     if (reply.trim() == '') return setReplyErr(true);
     onCreateComment({
@@ -95,14 +93,22 @@ export default function Comment({
     setReply('');
   };
 
+  const commentUserInitials = getUserInitials(comment?.author?.displayName);
+  const scrollUserInitials = getUserInitials(scroll?.author?.displayName);
+
   return (
     <>
       <div style={style} className='d-flex flex-row flex-start'>
-        <Avatar src={comment?.author?.image} className='mx-2'>
-          <PersonRounded />
+        <Avatar src={comment?.author?.profile_pic} className='mx-2'>
+          {commentUserInitials}
         </Avatar>
         <div className='mb-3 flex-1'>
-          <Card variant='outlined'>
+          <Card
+            style={{
+              backgroundColor: theme.palette.background.comment,
+            }}
+            elevation={0}
+          >
             <CardContent>
               <div className='center-horizontal space-between w-100'>
                 <Typography display='inline'>
@@ -115,11 +121,12 @@ export default function Comment({
                   </Typography>
                 </Typography>
                 <IconButton
+                  size='small'
+                  className='m-1 p-1'
                   aria-label='show more'
                   aria-controls={commentOptionId}
                   aria-haspopup='true'
                   onClick={handleCommentOptionOpen}
-                  size='small'
                 >
                   <MoreHorizRounded />
                 </IconButton>
@@ -166,44 +173,69 @@ export default function Comment({
                   </Grid>
                 )}
               </Typography>
-              <br />
-              <Typography variant='body2' color='textSecondary' component='p'>
-                {`${comment?.reactions?.likes} ${
-                  comment?.reactions?.likes === 1 ? 'Like' : 'Likes'
-                } . ${comment?.replies} ${
-                  comment?.replies === 1 ? 'Reply' : 'Replies'
-                }`}
-              </Typography>
             </CardContent>
           </Card>
-          <Typography>
-            <Button
-              color='default'
+          <div className='center-horizontal'>
+            <Typography
+              colorAlt='inherit'
+              component={Button}
+              variantAlt='text'
               onClick={handleCreateReaction}
               textCase
-              variant='text'
+              className='p-0 my-2'
             >
               Like
-            </Button>
-            {comment?.response_to ? '' : '.'}
+            </Typography>
+            <Typography
+              className='mx-1 my-2'
+              variant='body2'
+              color='textSecondary'
+            >
+              {`${comment?.reactions?.likes}`}
+            </Typography>
+            <Divider orientation='vertical' />
+            {/* {comment?.response_to ? '' : '.'} */}
             {!comment?.response_to && (
-              <Button
-                color='default'
+              <Typography
+                colorAlt='inherit'
+                component={Button}
                 onClick={() => {
                   setOpenReplies(true);
                   setResponseTo(comment?._id);
                 }}
                 textCase
-                variant='text'
+                variantAlt='text'
+                className='p-0 my-1'
               >
                 Reply
-              </Button>
+              </Typography>
             )}
-          </Typography>
+            {!comment?.response_to && (
+              <>
+                {' '}
+                <Typography
+                  className='mx-2 my-2'
+                  variant='body2'
+                  color='textSecondary'
+                >
+                  .
+                </Typography>
+                <Typography
+                  className='p-0 my-2'
+                  variant='body2'
+                  color='textSecondary'
+                >
+                  {`${comment?.replies} ${
+                    comment?.replies === 1 ? 'Reply' : 'Replies'
+                  }`}
+                </Typography>
+              </>
+            )}
+          </div>
           {openReplies && (
             <div className='center-horizontal'>
-              <Avatar src={scroll?.author?.image} className='mx-2'>
-                <PersonRounded />
+              <Avatar src={scroll?.author?.profile_pic} className='mx-2'>
+                {scrollUserInitials}
               </Avatar>
               <TextField
                 error={replyErr}
@@ -212,12 +244,12 @@ export default function Comment({
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
-                onKeyPress={(e) => {
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handleCreateReply(e);
                   }
                 }}
-                onChange={(e) =>
+                onChange={e =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -226,10 +258,11 @@ export default function Comment({
                 }
                 adornment={
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                     }}
-                    size='small'
                   >
                     <ImageRounded />
                   </IconButton>
@@ -238,7 +271,9 @@ export default function Comment({
                 value={reply}
               />
               <IconButton
-                className='mx-3'
+                size='small'
+                className='m-1 p-1'
+                // className='mx-3'
                 onClick={handleCreateReply}
                 // size='small'
               >
@@ -262,9 +297,9 @@ export default function Comment({
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
+            commentInner => commentInner?.response_to?._id === comment?._id
           )
-          .map((commentInner) => (
+          .map(commentInner => (
             <Comment
               style={{
                 marginLeft: 30,

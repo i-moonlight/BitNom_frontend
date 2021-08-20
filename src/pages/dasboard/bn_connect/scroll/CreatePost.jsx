@@ -19,7 +19,6 @@ import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
-  Person,
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
@@ -29,11 +28,12 @@ import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
+import { getUserInitials } from '../../../../utilities/Helpers';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import ScrollPreview from '../ScrollPreview';
+import ScrollPreview from './ScrollPreview';
 
 export default function CreatePost({
   open,
@@ -55,7 +55,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const [
     createPost,
@@ -66,7 +66,9 @@ export default function CreatePost({
     },
   ] = useMutation(MUTATION_CREATE_POST);
 
-  const onCreatePost = async (ICreatePost) => {
+  const userInitials = getUserInitials(user?.displayName);
+
+  const onCreatePost = async ICreatePost => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -84,13 +86,9 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
-  useEffect(() => {
-    if (data?.Posts?.create) {
-      //console.log(data);
-    }
-  }, [data]);
+  useEffect(() => {}, [data]);
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     let sharedResource = sharedPost
@@ -126,7 +124,7 @@ export default function CreatePost({
             <div className='space-between mx-3 my-2'>
               <Typography variant='body2'></Typography>
               <Typography variant='body1'>Create Post</Typography>
-              <IconButton size='small'>
+              <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
                     setOpen(!open);
@@ -147,9 +145,7 @@ export default function CreatePost({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.photo}>
-                    <Person />
-                  </Avatar>
+                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
@@ -184,7 +180,7 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -198,7 +194,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
@@ -210,7 +206,7 @@ export default function CreatePost({
                   }
                   acceptedFiles={openImage ? ['image/*'] : ['video/*']}
                   maxFileSize={5000000}
-                  filesLimit={openImage ? '4' : '1'}
+                  filesLimit={openImage ? 4 : 1}
                   showAlerts={['error']}
                   showPreviews={false}
                   showPreviewsInDropzone
@@ -224,12 +220,13 @@ export default function CreatePost({
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                       setVideoDisabled(true);
                     }}
                     disabled={imageDisabled}
-                    size='small'
                     style={{
                       marginRight: 10,
                     }}
@@ -237,12 +234,13 @@ export default function CreatePost({
                     <ImageRounded />
                   </IconButton>
                   <IconButton
+                    size='small'
+                    className='m-1 p-1'
                     onClick={() => {
                       setOpenVideo(true);
                       setImageDisabled(true);
                     }}
                     disabled={videoDisabled}
-                    size='small'
                     style={{
                       marginRight: 10,
                     }}
@@ -252,8 +250,9 @@ export default function CreatePost({
                   {createPostIcons.map(({ Icon }) => {
                     return (
                       <IconButton
-                        key={`${Math.random() * 1000}`}
                         size='small'
+                        className='m-1 p-1'
+                        key={`${Math.random() * 1000}`}
                         style={{
                           marginRight: 10,
                         }}
