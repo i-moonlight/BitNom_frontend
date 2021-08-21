@@ -33,10 +33,17 @@ export default function ScrollOptionsPopover({
   isScrollOptionOpen,
   handleScrollOptionClose,
 }) {
-  const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
+  const [
+    createBookmark,
+    {
+      data,
+      //  loading,
+      //   error
+    },
+  ] = useMutation(MUTATION_CREATE_BOOKMARK);
   const state = useSelector(state => state);
   const user = state.auth.user;
-
+  if (data) console.log(data);
   const handleCreateBookmark = () => {
     createBookmark({
       variables: {

@@ -14,6 +14,12 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
     }
   }
 `;
+export const NOTIFICATIONS_SUBSCRIPTION = gql`
+  subscription ($subscriberTopic: Topic) {
+    liveUpdates(subscriberTopic: $subscriberTopic)
+  }
+`;
+
 export const MUTATION_CREATE_FILE_IMAGE = gql`
   mutation ($data: ISaveImage!) {
     Image {
@@ -204,29 +210,27 @@ export const QUERY_LOAD_SCROLLS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
 `;
 
-export const GET_TRENDING_POSTS = gql`
-  query ($data: IGetPosts) {
-    Posts {
-      get(data: $data) {
+export const GET_USER_NOTIFICATIONS = gql`
+  query ($limit: Int!) {
+    Notification {
+      get(limit: $limit) {
         _id
-        author {
-          _id
-          displayName
-        }
-        comments
-        createdAt
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
         content
+        tag
         content_entities {
           type
           offset
@@ -235,9 +239,54 @@ export const GET_TRENDING_POSTS = gql`
             _id
             type
           }
-          url
+          url {
+            _id
+            image
+            displayName
+          }
         }
+        image
+        to_notify {
+          _id
+          user_id
+          read
+          seen
+        }
+        notify_subscribers_to
+        date
       }
+    }
+  }
+`;
+
+export const MARK_NOTIFICAION_AS_SEEN = gql`
+  mutation ($_id: ID) {
+    Notification {
+      markAsSeen(_id: $_id)
+    }
+  }
+`;
+
+export const MARK_NOTIFICAION_AS_READ = gql`
+  mutation ($_id: ID) {
+    Notification {
+      markAsRead(_id: $_id)
+    }
+  }
+`;
+
+export const DELETE_NOTIFICAION = gql`
+  mutation ($_id: ID!) {
+    Notification {
+      delete(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_UNSUBSCRIBE = gql`
+  mutation ($resource: IResource!) {
+    Subscription {
+      unsubscribe(resource: $resource)
     }
   }
 `;
@@ -309,6 +358,15 @@ export const GET_BOOKMARKED_SCROLLS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
@@ -352,6 +410,15 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
       }
     }
   }
@@ -389,6 +456,15 @@ export const QUERY_GET_COMMENTS = gql`
           }
           url
         }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
         scroll
         response_to {
           _id
@@ -417,6 +493,25 @@ export const GET_BOOKMARKED_COMMENTS = gql`
         replies
         creation_date
         image
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+        }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            image
+          }
+        }
         reactions {
           celebrations
           likes

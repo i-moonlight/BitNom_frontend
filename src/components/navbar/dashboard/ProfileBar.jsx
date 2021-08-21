@@ -33,7 +33,7 @@ export default function ProfileBar({
   notificationId,
   handleNotificationsOpen,
 }) {
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const classes = useStyles();
   const history = useHistory();

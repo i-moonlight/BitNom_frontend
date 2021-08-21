@@ -4,7 +4,11 @@ import {
   from,
   HttpLink,
   InMemoryCache,
+  split,
 } from '@apollo/client';
+import { ApolloLink, Observable } from '@apollo/client/core';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { createClient } from 'graphql-ws';
 import { onError } from '@apollo/client/link/error';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
@@ -50,7 +54,46 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
   }
 });
 
-const backendUri = process.env.REACT_APP_BACKEND_URL;
+const backendUri =
+  'http://192.168.0.103:3000' || process.env.REACT_APP_BACKEND_URL;
+class WebSocketLink extends ApolloLink {
+  constructor(options) {
+    super();
+    this.client = createClient(options);
+  }
+  request(operation) {
+    return new Observable((sink) => {
+      return this.client.subscribe(
+        Object.assign(Object.assign({}, operation), {
+          query: print(operation.query),
+        }),
+        {
+          next: sink.next.bind(sink),
+          complete: sink.complete.bind(sink),
+          error: (err) => {
+            if (err instanceof Error) {
+              return sink.error(err);
+            }
+            if (err instanceof CloseEvent) {
+              return sink.error(
+                // reason will be available on clean closes
+                new Error(
+                  `Socket closed with event ${err.code} ${err.reason || ''}`
+                )
+              );
+            }
+            return sink.error(
+              new Error(err.map(({ message }) => message).join(', '))
+            );
+          },
+        }
+      );
+    });
+  }
+}
+const wsLink = new WebSocketLink({
+  url: 'ws://192.168.0.103:3000/notifications/graphql',
+});
 
 const authLink = from([
   errorLink,
@@ -68,7 +111,13 @@ const authLink = from([
 //     credentials: 'include',
 //   }),
 // ]);
-
+const notificationsLink = from([
+  errorLink,
+  new HttpLink({
+    uri: backendUri + '/notifications/graphql',
+    credentials: 'include',
+  }),
+]);
 const uploadLink = createUploadLink({
   uri: backendUri + '/bn-social/graphql',
   credentials: 'include',
@@ -77,24 +126,36 @@ const uploadLink = createUploadLink({
   },
 });
 
-const uploadApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: uploadLink,
-});
-
 const usersApolloClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: authLink,
   credentials: 'include',
 });
 
-// const socialApolloClient = new ApolloClient({
-//   cache: new InMemoryCache(),
-//   link: socialLink,
-//   credentials: 'include',
-// });
+const notificationsApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: notificationsLink,
+  credentials: 'include',
+});
 
-const useStyles = makeStyles(theme => ({
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  uploadLink
+);
+
+const uploadApolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: splitLink,
+});
+
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
@@ -149,15 +210,17 @@ export const AppContainers = () => {
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />
-            <Route
-              exact
-              component={Notifications}
-              path='/dashboard/notifications'
-            />
             <Route exact component={People} path='/dashboard/people' />
             <Route exact component={Profile} path='/dashboard/profile' />
             <Route exact component={SavedItems} path='/dashboard/bookmarks' />
           </Switch>
+        </ApolloProvider>
+        <ApolloProvider client={notificationsApolloClient}>
+          <Route
+            exact
+            component={Notifications}
+            path='/dashboard/notifications'
+          />
         </ApolloProvider>
       </BrowserRouter>
     </div>

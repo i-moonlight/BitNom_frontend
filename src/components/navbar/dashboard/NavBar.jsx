@@ -11,7 +11,7 @@ import TabsBar from './TabsBar';
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
 const notificationId = 'menu-notifications';
-const notificationOptionId = 'menu-notification-option';
+const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
   const [value, setValue] = useState(0);
@@ -29,7 +29,7 @@ export default function NavBar() {
   const isNotificationOpen = Boolean(notificationAnchorEl);
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
-  const handleMenuOpen = event => {
+  const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -37,7 +37,7 @@ export default function NavBar() {
     setMenuAnchorEl(null);
   };
 
-  const handleTabOptionsOpen = event => {
+  const handleTabOptionsOpen = (event) => {
     setTabOptionAnchorEl(event.currentTarget);
   };
 
@@ -45,7 +45,7 @@ export default function NavBar() {
     setTabOptionAnchorEl(null);
   };
 
-  const handleNotificationsOpen = event => {
+  const handleNotificationsOpen = (event) => {
     setNotificationAnchorEl(event.currentTarget);
   };
 
@@ -53,7 +53,7 @@ export default function NavBar() {
     setNotificationAnchorEl(null);
   };
 
-  const handleNotificationOptionOpen = event => {
+  const handleNotificationOptionOpen = (event) => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
 

@@ -35,6 +35,24 @@ export const contentBodyFactory = (resource) => {
   return newContent;
 };
 
+export const notificationBodyFactory = (notification) => {
+  let newContent = notification?.content;
+  notification?.content_entities?.forEach((entity) => {
+    if (entity.type === 'resource_tag') {
+      let link = `'https://bitnorm.com/users/${entity.url._id}'`;
+      let replacement =
+        ' ' + '<a href=' + link + '><b>' + entity.url.displayName + '</b></a>';
+      let toReplace = ' @' + entity.url._id;
+      //let starting = newContent?.substr(0, entity.offset);
+      //let ending = newContent?.substr(entity.offset + entity.length);
+      newContent = newContent?.replace(toReplace, replacement);
+      console.log(newContent);
+    }
+  });
+
+  return newContent;
+};
+
 export const truncateText = (str, n) => {
   if (str.length <= n) {
     return str;
@@ -46,4 +64,16 @@ export const truncateText = (str, n) => {
       ? subString.substr(0, subString.lastIndexOf(' '))
       : subString) + '&hellip;'
   );
+};
+
+export const getCreationTime = (time) => {
+  let ms = new Date().getTime() - time;
+  let seconds = Math.round(ms / 1000);
+  let minutes = Math.round(ms / (1000 * 60));
+  let hours = Math.round(ms / (1000 * 60 * 60));
+  let days = Math.round(ms / (1000 * 60 * 60 * 24));
+  if (seconds < 60) return 'a few seconds ago';
+  else if (minutes < 60) return minutes + ' minutes';
+  else if (hours < 24) return hours + ' hours';
+  else return days + ' days';
 };
