@@ -15,6 +15,8 @@ import EducationCard from './EducationCard';
 import HonorsCard from './HonorsCard';
 import SkillsCard from './SkillsCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
+import { useQuery } from '@apollo/client';
+import { QUERY_FETCH_PROFILE } from './utilities/queries';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +26,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile() {
   const classes = useStyles();
-  // const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
+  const { error, loading, data } = useQuery(QUERY_FETCH_PROFILE);
+  console.log('profileData:  ', data);
+  console.log('profileErr:  ', error);
 
   return (
     <Screen>

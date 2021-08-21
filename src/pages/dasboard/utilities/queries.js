@@ -26,6 +26,7 @@ export const MUTATION_CREATE_FILE_IMAGE = gql`
     }
   }
 `;
+
 export const MUTATION_CREATE_POST = gql`
   mutation ($data: ICreatePost!) {
     Posts {
@@ -134,8 +135,6 @@ export const MUTATION_DELETE_COMMENT = gql`
     }
   }
 `;
-
-// { limit: 220 }
 
 export const QUERY_LOAD_SCROLLS = gql`
   query ($data: IGetPosts) {

@@ -42,6 +42,15 @@ export const MUTATION_LOGIN_USER = gql`
           verified
         }
         displayName
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
       }
     }
   }

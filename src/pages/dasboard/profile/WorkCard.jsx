@@ -1,12 +1,15 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { AddRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import WorkForm from './forms/WorkForm';
 import WorkFragment from './fragments/WorkFragment';
 
 export default function WorkCard() {
   const [showForm, setShowForm] = useState(false);
+  const state = useSelector(st => st);
+  const work = state.auth.user?.work;
 
   const onClose = () => {
     setShowForm(false);
@@ -30,20 +33,28 @@ export default function WorkCard() {
         </div>
         <div>
           {showForm && <WorkForm onClose={onClose} />}
-          {[0, 1, 2].map(work => (
-            <WorkFragment
-              key={work}
-              title='Product Designer'
-              company='BitNorm'
-              dateFrom='Dec 2019'
-              dateTo='Present'
-              description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
-              labore saepe. Explicabo quidem ut voluptates voluptate cum quaerat
-              molestiae voluptatem magni voluptatum, deserunt incidunt unde ad
-              dicta id consequatur dignissimos!'
-              photoURL='https://picsum.photos/200'
-            />
-          ))}
+          {work?.map(
+            ({
+              _id,
+              company,
+              title,
+              start_date,
+              end_date,
+              current,
+              description,
+            }) => (
+              <WorkFragment
+                key={_id}
+                title={title}
+                company={company}
+                dateFrom={start_date}
+                dateTo={end_date}
+                description={description}
+                photoURL='https://picsum.photos/200'
+                current={current}
+              />
+            )
+          )}
         </div>
       </CardContent>
     </Card>
