@@ -1,11 +1,11 @@
-import React from 'react';
-import { useFormikContext } from 'formik';
 import {
   FormControl,
   InputAdornment,
   InputLabel,
   OutlinedInput,
 } from '@material-ui/core';
+import { useFormikContext } from 'formik';
+import React from 'react';
 
 export default function TextField({
   name,
@@ -16,6 +16,7 @@ export default function TextField({
   adornment,
   adornmentType,
   type,
+  fullWidth,
   ...defaultProps
 }) {
   const { handleChange, errors, setFieldTouched, touched } = name
@@ -25,7 +26,7 @@ export default function TextField({
   return (
     <FormControl
       id='formik-input'
-      fullWidth
+      fullWidth={fullWidth && true}
       variant='outlined'
       color='primary'
       style={{

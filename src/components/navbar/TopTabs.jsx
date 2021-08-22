@@ -30,7 +30,7 @@ export default function TopTabs({
                 label={label}
                 aria-controls={tabOptionsId}
                 aria-haspopup='true'
-                onClick={event => {
+                onClick={(event) => {
                   menuItems && setTabOptions(menuItems);
                   menuItems && handleTabOptionsOpen(event);
                 }}
@@ -43,7 +43,7 @@ export default function TopTabs({
   );
 }
 
-const BitTab = withStyles(theme => ({
+const BitTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     color: '#fff',
@@ -58,4 +58,4 @@ const BitTab = withStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

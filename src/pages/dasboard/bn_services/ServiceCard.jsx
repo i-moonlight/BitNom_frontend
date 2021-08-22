@@ -81,7 +81,7 @@ export default function ServiceCard() {
           <Button fullWidth textCase>
             Subscribe
           </Button>
-          <IconButton>
+          <IconButton size='small' className='m-1 p-1'>
             <ShareRounded />
           </IconButton>
         </CardActions>

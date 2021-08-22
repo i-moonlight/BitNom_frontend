@@ -3,18 +3,27 @@ import {
   Box,
   Container,
   Hidden,
+  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Brightness3, ChevronRight } from '@material-ui/icons';
+import {
+  Brightness4Rounded,
+  Brightness7Rounded,
+  ChevronRight,
+} from '@material-ui/icons';
 import React from 'react';
-import { status } from '../../store/local/dummy';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeTheme } from '../../store/actions/themeActions';
+import { status } from '../utilities/data.components';
 import Button from '../Button';
-import { useStyles } from '../styles.components';
+import { useStyles } from '../utilities/styles.components';
 
 export default function StatusBar() {
+  const palette = useSelector(state => state.theme.palette);
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   return (
     <Box className={classes.root}>
@@ -46,6 +55,7 @@ export default function StatusBar() {
           <Hidden smDown>
             <div className='center-horizontal'>
               <Button
+                className='py-0 mx-1 my-1'
                 textCase
                 variant='text'
                 color='default'
@@ -60,6 +70,7 @@ export default function StatusBar() {
                 English
               </Button>
               <Button
+                className='py-0 mx-1 my-1'
                 textCase
                 variant='text'
                 color='default'
@@ -85,20 +96,32 @@ export default function StatusBar() {
                 </Avatar>{' '}
                 USD
               </Button>
-              <Button
-                textCase
-                variant='text'
-                color='default'
-                // endIcon={
-                //   <ChevronRight
-                //     style={{
-                //       transform: 'rotateZ(90deg)',
-                //     }}
-                //   />
-                // }
+
+              <IconButton
+                size='small'
+                className='m-1 p-1'
+                onClick={() => {
+                  palette == 'light'
+                    ? dispatch(changeTheme('dark'))
+                    : dispatch(changeTheme('light'));
+                }}
               >
-                <Brightness3 />
-              </Button>
+                {palette == 'light' ? (
+                  <Brightness4Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                ) : (
+                  <Brightness7Rounded
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                )}
+              </IconButton>
             </div>
           </Hidden>
         </div>

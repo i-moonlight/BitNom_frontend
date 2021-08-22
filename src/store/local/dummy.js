@@ -3,7 +3,6 @@ import {
   DescriptionRounded,
   WatchLaterRounded,
 } from '@material-ui/icons';
-
 export const status = [
   { title: 'Crypto', value: '6,847' },
   { title: 'Exchange', value: '4,847' },
@@ -48,7 +47,6 @@ export const tabs = [
     ],
   },
 ];
-
 export const scrollVariations = [
   {
     name: 'Brian Sadroe',
