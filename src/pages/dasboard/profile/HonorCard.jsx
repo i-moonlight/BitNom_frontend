@@ -2,12 +2,15 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { AddRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
-import EducationForm from './forms/EducationForm';
-import EducationFragment from './fragments/EducationFragment';
+import HonorForm from './forms/HonorForm';
+import HonorFragment from './fragments/HonorFragment';
 
-export default function EducationCard({ profile }) {
+// eslint-disable-next-line no-unused-vars
+export default function HonorCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
-  const education = profile?.education;
+  // TODO: Rename Honors
+  // const honors = profile?.honors || [];
+  const honors = [];
 
   const onClose = () => {
     setShowForm(false);
@@ -17,7 +20,7 @@ export default function EducationCard({ profile }) {
     <Card className='mb-3'>
       <CardContent>
         <div className='space-between center-horizontal'>
-          <Typography>Education</Typography>
+          <Typography>Honors and Awards</Typography>
           {!showForm && (
             <Button
               onClick={() => setShowForm(true)}
@@ -25,30 +28,30 @@ export default function EducationCard({ profile }) {
               variant='text'
               startIcon={<AddRounded />}
             >
-              Add Education
+              Add Honors and Awards
             </Button>
           )}
         </div>
         <div>
-          {showForm && <EducationForm onClose={onClose} />}
-          {education?.map(
+          {showForm && <HonorForm onClose={onClose} />}
+          {honors?.map(
             ({
               _id,
-              institution,
-              major,
+              organization,
+              name,
               start_date,
               end_date,
-              current,
-              description,
+              expires,
+              url,
             }) => (
-              <EducationFragment
+              <HonorFragment
                 key={_id}
-                school={institution}
-                course={major}
+                honor={name}
+                institution={organization}
                 dateFrom={start_date}
                 dateTo={end_date}
-                current={current}
-                description={description}
+                expires={expires}
+                url={url}
                 photoURL='https://picsum.photos/200'
               />
             )

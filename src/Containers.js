@@ -7,11 +7,11 @@ import {
   split,
 } from '@apollo/client';
 import { ApolloLink, Observable } from '@apollo/client/core';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
 import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
+import { createClient } from 'graphql-ws';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
@@ -23,12 +23,11 @@ import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import BnServices from './pages/dasboard/bn_services/BnServices';
+import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/people/People';
 import Profile from './pages/dasboard/profile/Profile';
-import SavedItems from './pages/dasboard/bookmarks/SavedItems';
-import NotFound from './pages/not_found/NotFound';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
@@ -203,7 +202,7 @@ export const AppContainers = () => {
               path='/dashboard/notifications'
             />
           </Switch>
-          {/* <Route  component={NotFound} path='*' /> */}
+          {/* <Route component={NotFound} path='*' /> */}
         </ApolloProvider>
       </BrowserRouter>
     </div>

@@ -25,7 +25,7 @@ export default function Events() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg' disableGutters>
+        <Container maxWidth='lg'>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
