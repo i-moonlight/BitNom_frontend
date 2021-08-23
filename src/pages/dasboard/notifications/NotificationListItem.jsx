@@ -41,7 +41,7 @@ export default function NotificationListItem({ notification }) {
     });
     return read;
   };
-  const getNotifying = (notification) => {
+  const getNotifyingUser = (notification) => {
     let name;
     notification?.content_entities?.forEach((item) => {
       if (item.type === 'resource_tag') {
@@ -50,7 +50,7 @@ export default function NotificationListItem({ notification }) {
     });
     return name;
   };
-  const userInitials = getUserInitials(getNotifying(notification));
+  const userInitials = getUserInitials(getNotifyingUser(notification));
   return (
     <>
       <Card elevation={0}>

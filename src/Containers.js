@@ -54,8 +54,8 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
   }
 });
 
-const backendUri =
-  'http://192.168.0.103:3000' || process.env.REACT_APP_BACKEND_URL;
+const backendUri = process.env.REACT_APP_BACKEND_URL;
+
 class WebSocketLink extends ApolloLink {
   constructor(options) {
     super();
@@ -91,11 +91,13 @@ class WebSocketLink extends ApolloLink {
     });
   }
 }
+
+//  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: 'ws://192.168.0.103:3000/notifications/graphql',
+  url: process.env.REACT_APP_SOCKET_URL,
 });
 
-const authLink = from([
+const profileLink = from([
   errorLink,
   new HttpLink({
     uri: backendUri + '/users/graphql',
@@ -103,14 +105,6 @@ const authLink = from([
   }),
 ]);
 
-// const socialLink = from([
-//   errorLink,
-//   new HttpLink({
-//     uri: backendUri + '/bn-social/graphql',
-//     // uri: "http://localhost:3000/files/graphql",
-//     credentials: 'include',
-//   }),
-// ]);
 const notificationsLink = from([
   errorLink,
   new HttpLink({
@@ -118,6 +112,7 @@ const notificationsLink = from([
     credentials: 'include',
   }),
 ]);
+
 const uploadLink = createUploadLink({
   uri: backendUri + '/bn-social/graphql',
   credentials: 'include',
@@ -126,17 +121,11 @@ const uploadLink = createUploadLink({
   },
 });
 
-const usersApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: authLink,
-  credentials: 'include',
-});
-
-const notificationsApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: notificationsLink,
-  credentials: 'include',
-});
+const splitNotificationAndUploadLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === 'notifications',
+  notificationsLink,
+  uploadLink
+);
 
 const splitLink = split(
   ({ query }) => {
@@ -147,20 +136,17 @@ const splitLink = split(
     );
   },
   wsLink,
-  uploadLink
+  splitNotificationAndUploadLink
 );
 
-const uploadApolloClient = new ApolloClient({
+const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink,
+  link: ApolloLink.split(
+    (operation) => operation.getContext().clientName === 'users',
+    profileLink,
+    splitLink
+  ),
 });
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    height: '100%',
-  },
-}));
 
 export const AppContainers = () => {
   const classes = useStyles();
@@ -168,8 +154,9 @@ export const AppContainers = () => {
   return (
     <div className={classes.root}>
       <BrowserRouter>
-        <ApolloProvider client={usersApolloClient}>
+        <ApolloProvider client={client}>
           <Switch>
+            {/* Landing */}
             <Route exact component={Landing} path='/' />
             <Route exact component={Faqs} path='/faqs' />
             <Route exact component={Terms} path='/terms' />
@@ -179,6 +166,7 @@ export const AppContainers = () => {
             <Route exact component={FeatureRequest} path='/feature_request' />
             <Route exact component={RoadMap} path='/roadmap' />
             <Route exact component={Redirect} path='/redirect' />
+            {/* Auth */}
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route
@@ -202,27 +190,29 @@ export const AppContainers = () => {
               component={CreatePassword}
               path='/auth/password_reset/:key'
             />
-            <Route exact component={NotFound} path='/auth/*' />
-          </Switch>
-        </ApolloProvider>
-        <ApolloProvider client={uploadApolloClient}>
-          <Switch>
+            {/* Dashboard */}
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />
             <Route exact component={People} path='/dashboard/people' />
             <Route exact component={Profile} path='/dashboard/profile' />
             <Route exact component={SavedItems} path='/dashboard/bookmarks' />
+            <Route
+              exact
+              component={Notifications}
+              path='/dashboard/notifications'
+            />
           </Switch>
-        </ApolloProvider>
-        <ApolloProvider client={notificationsApolloClient}>
-          <Route
-            exact
-            component={Notifications}
-            path='/dashboard/notifications'
-          />
+          {/* <Route  component={NotFound} path='*' /> */}
         </ApolloProvider>
       </BrowserRouter>
     </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    height: '100%',
+  },
+}));
