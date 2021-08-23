@@ -61,7 +61,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable(sink => {
+    return new Observable((sink) => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -69,7 +69,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: err => {
+          error: (err) => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -121,7 +121,7 @@ const uploadLink = createUploadLink({
 });
 
 const splitNotificationAndUploadLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'notifications',
+  (operation) => operation.getContext().clientName === 'notifications',
   notificationsLink,
   uploadLink
 );
@@ -141,7 +141,7 @@ const splitLink = split(
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.split(
-    operation => operation.getContext().clientName === 'users',
+    (operation) => operation.getContext().clientName === 'users',
     profileLink,
     splitLink
   ),
@@ -209,7 +209,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',

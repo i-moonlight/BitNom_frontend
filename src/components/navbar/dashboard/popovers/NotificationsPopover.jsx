@@ -81,7 +81,7 @@ function NotificationPreview() {
         </Grid>
       )}
       {response?.length > 0 &&
-        response?.slice(0, 4)?.map(item => (
+        response?.slice(0, 4)?.map((item) => (
           <ListItem className='space-between' key={item} divider>
             <ListItemAvatar>
               <Avatar>
