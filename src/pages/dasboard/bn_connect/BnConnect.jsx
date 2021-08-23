@@ -56,7 +56,7 @@ export default function BnConnect() {
     variables: { subscriberTopic: '*.' + user._id },
   }); */
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: {} },
+    variables: { data: { limit: 220 } },
   });
 
   //console.log(subscribeData);
@@ -66,8 +66,6 @@ export default function BnConnect() {
       variables: { data: { sortByField: 'comments', limit: 5 } },
     }
   );
-
-  useEffect(() => {}, [data]);
 
   return (
     <Screen>

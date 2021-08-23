@@ -38,11 +38,16 @@ export const contentBodyFactory = (resource) => {
 export const notificationBodyFactory = (notification) => {
   let newContent = notification?.content;
   notification?.content_entities?.forEach((entity) => {
-    if (entity.type === 'resource_tag') {
-      let link = `'https://bitnorm.com/users/${entity.url._id}'`;
+    if (entity?.type === 'resource_tag') {
+      let link = `'https://bitnorm.com/users/${entity?.url?._id}'`;
       let replacement =
-        ' ' + '<a href=' + link + '><b>' + entity.url.displayName + '</b></a>';
-      let toReplace = ' @' + entity.url._id;
+        ' ' +
+        '<a href=' +
+        link +
+        '><b>' +
+        entity?.url?.displayName +
+        '</b></a>';
+      let toReplace = ' @' + entity?.url?._id;
       //let starting = newContent?.substr(0, entity.offset);
       //let ending = newContent?.substr(entity.offset + entity.length);
       newContent = newContent?.replace(toReplace, replacement);
