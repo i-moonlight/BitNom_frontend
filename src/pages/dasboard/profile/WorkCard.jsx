@@ -1,15 +1,13 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { AddRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import WorkForm from './forms/WorkForm';
 import WorkFragment from './fragments/WorkFragment';
 
-export default function WorkCard() {
+export default function WorkCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
-  const state = useSelector(st => st);
-  const work = state.auth.user?.work;
+  const work = profile?.work;
 
   const onClose = () => {
     setShowForm(false);

@@ -19,7 +19,9 @@ export default function ResetPassword() {
   const history = useHistory();
   const user = state.auth.user;
 
-  const [requestReset] = useMutation(MUTATION_REQUEST_RESET);
+  const [requestReset] = useMutation(MUTATION_REQUEST_RESET, {
+    context: { clientName: 'users' },
+  });
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');

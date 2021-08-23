@@ -5,8 +5,12 @@ import Button from '../../../components/Button';
 import HonorForm from './forms/HonorForm';
 import HonorFragment from './fragments/HonorFragment';
 
-export default function HonorsCard() {
+// eslint-disable-next-line no-unused-vars
+export default function HonorCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
+  // TODO: Rename Honors
+  // const honors = profile?.honors || [];
+  const honors = [];
 
   const onClose = () => {
     setShowForm(false);
@@ -30,16 +34,28 @@ export default function HonorsCard() {
         </div>
         <div>
           {showForm && <HonorForm onClose={onClose} />}
-          {[0, 1, 2].map(work => (
-            <HonorFragment
-              key={work}
-              honor='Accessibility: How to design for all'
-              institution='Interaction Design Foundation (IDF)'
-              dateFrom='Dec 2019'
-              dateTo='Present'
-              photoURL='https://picsum.photos/200'
-            />
-          ))}
+          {honors?.map(
+            ({
+              _id,
+              organization,
+              name,
+              start_date,
+              end_date,
+              expires,
+              url,
+            }) => (
+              <HonorFragment
+                key={_id}
+                honor={name}
+                institution={organization}
+                dateFrom={start_date}
+                dateTo={end_date}
+                expires={expires}
+                url={url}
+                photoURL='https://picsum.photos/200'
+              />
+            )
+          )}
         </div>
       </CardContent>
     </Card>

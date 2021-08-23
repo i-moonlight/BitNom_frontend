@@ -19,7 +19,9 @@ export default function UpdateInfo() {
   const history = useHistory();
   const user = state.auth.user;
 
-  const [updateProfileInfo] = useMutation(MUTATION_UPDATE_PROFILE_INFO);
+  const [updateProfileInfo] = useMutation(MUTATION_UPDATE_PROFILE_INFO, {
+    context: { clientName: 'users' },
+  });
 
   useEffect(() => {
     user?.email?.verified && user?.displayName && history.push('/');

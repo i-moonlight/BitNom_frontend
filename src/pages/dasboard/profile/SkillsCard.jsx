@@ -11,9 +11,10 @@ import { Search } from '@material-ui/icons';
 import React from 'react';
 import { useStyles } from './utilities/profile.styles';
 
-export default function SkillsCard() {
+export default function SkillsCard({ profile }) {
   const theme = useTheme();
   const classes = useStyles();
+  const skills = profile?.skills;
 
   return (
     <Card className='mb-3'>
@@ -28,7 +29,7 @@ export default function SkillsCard() {
           component='form'
           className={classes.paperSearch}
         >
-          <Search color='textSecondary' />
+          <Search color='inherit' />
           <InputBase
             className={classes.input}
             placeholder='Search Skill eg "Data Analyst"'
@@ -41,11 +42,11 @@ export default function SkillsCard() {
         </Typography>
 
         <div>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(skill => (
+          {skills?.map(({ _id, name }) => (
             <Chip
               color='primary'
-              key={skill}
-              label='Web Developer'
+              key={_id}
+              label={name}
               className='me-2 mb-2'
               onDelete={() => null}
             />

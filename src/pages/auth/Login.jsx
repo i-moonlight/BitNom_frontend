@@ -14,7 +14,7 @@ import { login } from '../../store/actions/authActions';
 import { loginUserInitialValues } from './utilities/initial_values';
 import {
   MUTATION_GOOGLE_LOGIN,
-  MUTATION_LOGIN_USER,
+  MUTATION_LOGIN_USER_2,
 } from './utilities/queries';
 import { loginUserValidationSchema } from './utilities/validation_schemas';
 
@@ -26,11 +26,17 @@ export default function Login() {
   const history = useHistory();
   const user = state.auth.user;
 
-  const [loginUser, { loading: loginLoading }] =
-    useMutation(MUTATION_LOGIN_USER);
-  const [googleLogin, { loading: googleLoading }] = useMutation(
-    MUTATION_GOOGLE_LOGIN
+  const [loginUser, { loading: loginLoading }] = useMutation(
+    MUTATION_LOGIN_USER_2,
+    { context: { clientName: 'users' } }
   );
+
+  const [googleLogin, { loading: googleLoading }] = useMutation(
+    MUTATION_GOOGLE_LOGIN,
+    { context: { clientName: 'users' } }
+  );
+
+  // useQuery(QUERY, { variables, context: { clientName: 'third-party' } })
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
@@ -95,7 +101,9 @@ export default function Login() {
 
                       errors &&
                         errors.map(err => {
-                          err?.state[''] && setLoginErr(err?.state['']);
+                          err?.state &&
+                            err?.state[''] &&
+                            setLoginErr(err?.state['']);
                         });
 
                       dispatch(login(userData, null));

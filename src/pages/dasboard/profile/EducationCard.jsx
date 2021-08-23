@@ -5,8 +5,9 @@ import Button from '../../../components/Button';
 import EducationForm from './forms/EducationForm';
 import EducationFragment from './fragments/EducationFragment';
 
-export default function EducationCard() {
+export default function EducationCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
+  const education = profile?.education;
 
   const onClose = () => {
     setShowForm(false);
@@ -30,16 +31,28 @@ export default function EducationCard() {
         </div>
         <div>
           {showForm && <EducationForm onClose={onClose} />}
-          {[0, 1, 2].map(work => (
-            <EducationFragment
-              key={work}
-              school='Dedan Kimathi University of Technology'
-              course='BSC Computer Science'
-              dateFrom='Dec 2019'
-              dateTo='Present'
-              photoURL='https://picsum.photos/200'
-            />
-          ))}
+          {education?.map(
+            ({
+              _id,
+              institution,
+              major,
+              start_date,
+              end_date,
+              current,
+              description,
+            }) => (
+              <EducationFragment
+                key={_id}
+                school={institution}
+                course={major}
+                dateFrom={start_date}
+                dateTo={end_date}
+                current={current}
+                description={description}
+                photoURL='https://picsum.photos/200'
+              />
+            )
+          )}
         </div>
       </CardContent>
     </Card>

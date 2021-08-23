@@ -23,7 +23,9 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(DELETE_NOTIFICAION);
+  ] = useMutation(DELETE_NOTIFICAION, {
+    context: { clientName: 'notifications' },
+  });
 
   const [
     unsubscribe,
@@ -32,7 +34,9 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(MUTATION_UNSUBSCRIBE);
+  ] = useMutation(MUTATION_UNSUBSCRIBE, {
+    context: { clientName: 'notifications' },
+  });
 
   const handleDeleteNotification = () => {
     deleteNotification({
@@ -43,6 +47,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 20 },
+          context: { clientName: 'notifications' },
         },
       ],
     });
@@ -62,6 +67,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 20 },
+          context: { clientName: 'notifications' },
         },
       ],
     });
@@ -75,7 +81,9 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(MARK_NOTIFICAION_AS_READ);
+  ] = useMutation(MARK_NOTIFICAION_AS_READ, {
+    context: { clientName: 'notifications' },
+  });
 
   const handleMarkNotificationRead = () => {
     markAsRead({
@@ -86,6 +94,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 20 },
+          context: { clientName: 'notifications' },
         },
       ],
     });

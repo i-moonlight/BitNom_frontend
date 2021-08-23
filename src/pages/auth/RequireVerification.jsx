@@ -22,7 +22,10 @@ export default function RequireVerification() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [sendEmailVerification] = useMutation(MUTATION_SEND_EMAIL_VERIFICATION);
+  const [sendEmailVerification] = useMutation(
+    MUTATION_SEND_EMAIL_VERIFICATION,
+    { context: { clientName: 'users' } }
+  );
 
   useEffect(() => {
     JSON.stringify(user) === '{}' && history.push('/auth/login');
