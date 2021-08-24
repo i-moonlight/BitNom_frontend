@@ -1,8 +1,8 @@
 import { Box } from '@material-ui/core';
 import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
-import { tabs } from '../../../store/local/dummy';
-import { useStyles } from '../../styles.components';
+import { tabs } from '../../utilities/data.components';
+import { useStyles } from '../../utilities/styles.components';
 
 export default function TabsBar({
   value,
@@ -32,7 +32,7 @@ export default function TabsBar({
                   label={label}
                   aria-controls={tabOptionsId2}
                   aria-haspopup='true'
-                  onClick={event => {
+                  onClick={(event) => {
                     menuItems && setTabOptions(menuItems);
                     menuItems && handleTabOptionsOpen(event);
                   }}
@@ -56,7 +56,7 @@ export default function TabsBar({
   );
 }
 
-const BitTab = withStyles(theme => ({
+const BitTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     color: theme.palette.type == 'dark' ? '#fff' : '#000',
@@ -74,4 +74,4 @@ const BitTab = withStyles(theme => ({
           : theme.palette.background.search,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

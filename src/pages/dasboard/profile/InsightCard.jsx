@@ -20,7 +20,7 @@ export default function InsightCard() {
   };
 
   return (
-    <Card style={{ marginBottom: 16 }} variant={'outlined'}>
+    <Card className='mb-3' variant={'outlined'}>
       <CardContent>
         <Typography className='mb-2' variant='body1'>
           Insight Overview

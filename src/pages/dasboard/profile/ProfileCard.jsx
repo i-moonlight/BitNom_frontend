@@ -26,7 +26,7 @@ export default function ProfileCard() {
 
   return (
     <div>
-      <Card style={{ marginBottom: 16 }} variant={'outlined'}>
+      <Card className='mb-3' variant={'outlined'}>
         <CardMedia
           style={{ height: 120 }}
           image={'https://picsum.photos/300/200'}

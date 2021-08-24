@@ -25,6 +25,14 @@ a.alt {
   font-weight: 500;
 }
 
+.text-theme {
+  color: #006097 !important;
+}
+
+.bg-theme {
+  background-color: #006097 !important;
+}
+
 small {
   font-family: 'Nunito', sans-serif !important;
 }

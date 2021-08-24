@@ -1,15 +1,18 @@
-import React from 'react';
-import { useFormikContext } from 'formik';
 import {
   FormControl,
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Typography,
+  useTheme,
 } from '@material-ui/core';
+import { useFormikContext } from 'formik';
+import React from 'react';
 
 export default function TextField({
   name,
   label,
+  labelTop,
   placeholder,
   errorText,
   defaultValue,
@@ -17,71 +20,84 @@ export default function TextField({
   adornmentType,
   type,
   fullWidth,
+  required,
   ...defaultProps
 }) {
+  const theme = useTheme();
   const { handleChange, errors, setFieldTouched, touched } = name
     ? useFormikContext()
     : {};
 
   return (
-    <FormControl
-      id='formik-input'
-      fullWidth={fullWidth && true}
-      variant='outlined'
-      color='primary'
-      style={{
-        marginTop: 8,
-        marginBottom: 8,
-        padding: 0,
-        border: 'none !important',
-      }}
-      size='small'
-    >
-      {label && (
-        <InputLabel
-          style={{ color: errorText && '#F44336' }}
-          htmlFor='formik-input'
-        >
-          {label}
-        </InputLabel>
+    <>
+      {!label && labelTop && (
+        <Typography variant='body2' color='textSecondary' className='mt-2'>
+          {labelTop} {required && '*'}
+        </Typography>
       )}
-      <OutlinedInput
-        fullWidth
-        label={label}
-        error={name && touched[name] && errors[name] && true}
-        defaultValue={defaultValue ? defaultValue : null}
-        placeholder={placeholder}
-        onChange={name && handleChange(name)}
-        onBlur={() => name && setFieldTouched(name)}
-        type={type}
-        startAdornment={
-          adornment && adornmentType !== 'end' ? (
-            <InputAdornment position='start'>{adornment}</InputAdornment>
-          ) : null
-        }
-        endAdornment={
-          adornment && adornmentType === 'end' ? (
-            <InputAdornment position='end'>{adornment}</InputAdornment>
-          ) : null
-        }
-        {...defaultProps}
-      />
-      {name && touched[name] && errors[name] ? (
-        <small
-          className='ml-5 mt-1 text-sm text-start'
-          style={{ color: '#F44336' }}
-        >
-          {errors[name]}
-        </small>
-      ) : null}
-      {errorText && (
-        <small
-          className='ml-5 mt-1 text-sm text-start'
-          style={{ color: '#F44336' }}
-        >
-          {errorText}
-        </small>
-      )}
-    </FormControl>
+      <FormControl
+        id='formik-input'
+        fullWidth={fullWidth && true}
+        variant='outlined'
+        color='primary'
+        style={{
+          marginTop: !label && labelTop ? 2 : 8,
+          marginBottom: 8,
+          padding: 0,
+          border: 'none !important',
+        }}
+        size='small'
+      >
+        {label && (
+          <InputLabel
+            style={{ color: errorText && '#F44336' }}
+            htmlFor='formik-input'
+          >
+            {label}
+          </InputLabel>
+        )}
+
+        <OutlinedInput
+          style={{
+            fontSize: theme.typography.body2.fontSize,
+          }}
+          fullWidth
+          label={label}
+          error={name && touched[name] && errors[name] && true}
+          defaultValue={defaultValue ? defaultValue : null}
+          placeholder={placeholder}
+          onChange={name && handleChange(name)}
+          onBlur={() => name && setFieldTouched(name)}
+          type={type}
+          startAdornment={
+            adornment && adornmentType !== 'end' ? (
+              <InputAdornment position='start'>{adornment}</InputAdornment>
+            ) : null
+          }
+          endAdornment={
+            adornment && adornmentType === 'end' ? (
+              <InputAdornment position='end'>{adornment}</InputAdornment>
+            ) : null
+          }
+          {...defaultProps}
+        />
+        {name && touched[name] && errors[name] ? (
+          <small
+            className='ml-5 mt-1 text-sm text-start'
+            style={{ color: '#F44336' }}
+          >
+            {errors[name]}
+          </small>
+        ) : null}
+        {errorText && (
+          <small
+            className='ml-5 mt-1 text-sm text-start'
+            style={{ color: '#F44336' }}
+          >
+            {errorText}
+          </small>
+        )}
+      </FormControl>
+    </>
   );
 }

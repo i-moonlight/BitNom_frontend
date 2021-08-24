@@ -8,7 +8,7 @@ import {
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useState } from 'react';
-import { roadMap } from '../welcome.data';
+import { roadMap } from '../utilities/welcome.data';
 import Wrapper from '../Wrapper';
 import QuaterCard from './QuaterCard';
 

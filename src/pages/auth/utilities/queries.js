@@ -42,6 +42,15 @@ export const MUTATION_LOGIN_USER = gql`
           verified
         }
         displayName
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
       }
     }
   }
@@ -54,7 +63,7 @@ export const MUTATION_GOOGLE_LOGIN = gql`
         _id
         displayName
         bio
-        image
+        profile_pic
         email {
           address
           verified
@@ -72,7 +81,7 @@ export const MUTATION_GOOGLE_SIGNUP = gql`
         _id
         displayName
         bio
-        image
+        profile_pic
         email {
           address
           verified
@@ -123,12 +132,101 @@ export const MUTATION_UPDATE_PROFILE_INFO = gql`
         # referralCode
         displayName
         bio
-        image
+        profile_pic
         email {
           address
           verified
         }
         displayName
+      }
+    }
+  }
+`;
+
+export const MUTATION_LOGIN_USER_2 = gql`
+  mutation ($username: String!, $password: String!) {
+    Users {
+      login(username: $username, password: $password) {
+        _id
+        displayName
+        bio
+        profile_pic
+        displayName
+        type
+        reputation
+        blocked
+        portfolio
+        website
+        address
+        location
+        gender
+        cover_pic
+        loginType
+        lastSeen
+        paidUntil
+        date
+        bnTokens {
+          walletAddress
+          earned
+          received
+        }
+        socials {
+          social {
+            _id
+            name
+            image
+          }
+          profile
+        }
+        email {
+          address
+          verified
+        }
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
+        education {
+          _id
+          institution
+          major
+          start_date
+          end_date
+          current
+          description
+        }
+        honors {
+          _id
+          organization
+          name
+          start_date
+          end_date
+          expires
+          url
+        }
+        courses {
+          _id
+          name
+          year
+        }
+        projects {
+          _id
+          name
+          year
+        }
+        skills {
+          _id
+          name
+        }
+        languages {
+          _id
+          name
+        }
       }
     }
   }

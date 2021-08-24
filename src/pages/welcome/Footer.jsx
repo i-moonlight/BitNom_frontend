@@ -6,7 +6,7 @@ import logoImg from '../../assets/logo_light.svg';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import DarkTheme from '../../utilities/DarkTheme';
-import { footerLinks } from './welcome.data';
+import { footerLinks } from './utilities/welcome.data';
 
 export default function Footer() {
   return (

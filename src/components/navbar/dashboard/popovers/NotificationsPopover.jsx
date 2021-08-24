@@ -1,26 +1,34 @@
+import { useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
   Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
+  //ListItemIcon,
   ListItemText,
   Popover,
   Typography,
 } from '@material-ui/core';
-import { MoreVert, PersonRounded, SettingsRounded } from '@material-ui/icons';
+import { PersonRounded, SettingsRounded } from '@material-ui/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  getCreationTime,
+  notificationBodyFactory,
+} from '../../../../pages/dasboard/utilities/functions';
+import { QUERY_GET_USER_NOTIFICATIONS } from '../../../utilities/queries.components';
 
 export default function NotificationsPopover({
   notificationAnchorEl,
   notificationId,
   isNotificationOpen,
   handleNotificationsClose,
-  notificationOptionId,
-  handleNotificationOptionOpen,
+  //notificationOptionId,
+  //handleNotificationOptionOpen,
 }) {
   return (
     <Popover
@@ -28,12 +36,11 @@ export default function NotificationsPopover({
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={notificationId}
-      keepMounted
       open={isNotificationOpen}
       onClose={handleNotificationsClose}
     >
       <List
-        style={{ padding: 8, paddingBottom: 0 }}
+        style={{ padding: 8, paddingBottom: 0, width: '300px' }}
         component={Card}
         variant='outlined'
       >
@@ -46,7 +53,35 @@ export default function NotificationsPopover({
           </IconButton>
         </div>
         <Divider />
-        {[1, 2, 3].map(item => (
+        <NotificationPreview />
+        <Divider />
+      </List>
+    </Popover>
+  );
+}
+
+function NotificationPreview() {
+  const {
+    data,
+    //  error,
+    // loading
+  } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
+    context: { clientName: 'users' },
+  });
+
+  let response = data?.Notification?.get;
+
+  return (
+    <>
+      {response?.length < 1 && (
+        <Grid align='center'>
+          <Typography color='Primary' variant='body2'>
+            Nothing here yet.
+          </Typography>
+        </Grid>
+      )}
+      {response?.length > 0 &&
+        response?.slice(0, 4)?.map(item => (
           <ListItem className='space-between' key={item} divider>
             <ListItemAvatar>
               <Avatar>
@@ -56,38 +91,42 @@ export default function NotificationsPopover({
             <ListItemText
               primary={
                 <div>
-                  <Typography variant='body2'>Andy bo Wu</Typography>
-                  <Typography variant='body2'>sent a friend request</Typography>
+                  <Typography
+                    dangerouslySetInnerHTML={{
+                      __html: notificationBodyFactory(item),
+                    }}
+                    className='mx-1'
+                  ></Typography>
                 </div>
               }
-              secondary='50 minutes ago'
+              secondary={getCreationTime(item?.date)}
             />
-            <ListItemIcon
-              aria-label='show more'
-              aria-controls={notificationOptionId}
-              aria-haspopup='true'
-              onClick={handleNotificationOptionOpen}
-              color='inherit'
-              style={{
-                marginRight: 0,
-                paddingRight: 0,
-                minWidth: 20,
-                '&.MuiListItemIconRoot': {
-                  minWidth: 20,
-                },
-              }}
-            >
-              <IconButton size='small' className='m-1 p-1'>
-                <MoreVert />
-              </IconButton>
-            </ListItemIcon>
+            {/* <ListItemIcon
+                      aria-label='show more'
+                      aria-controls={notificationOptionId}
+                      aria-haspopup='true'
+                      onClick={handleNotificationOptionOpen}
+                      color='inherit'
+                      style={{
+                        marginRight: 0,
+                        paddingRight: 0,
+                        minWidth: 20,
+                        '&.MuiListItemIcon-root': {
+                          minWidth: 20,
+                        },
+                      }}
+                    >
+                      <MoreVert />
+                    </ListItemIcon> */}
           </ListItem>
         ))}
-        <Divider />
-        <Typography variant='body2' className='my-2' color='primary'>
-          Show more
-        </Typography>
-      </List>
-    </Popover>
+      {response?.length > 0 && (
+        <Link to='/dashboard/notifications'>
+          <Typography variant='body2' className='my-2' color='primary'>
+            Show more
+          </Typography>
+        </Link>
+      )}
+    </>
   );
 }

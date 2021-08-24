@@ -25,7 +25,7 @@ import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
-import { useStyles } from '../../styles.components';
+import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
   menuId,
@@ -33,7 +33,7 @@ export default function ProfileBar({
   notificationId,
   handleNotificationsOpen,
 }) {
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const classes = useStyles();
   const history = useHistory();
@@ -75,7 +75,6 @@ export default function ProfileBar({
             </Hidden>
           </div>
 
-          {/* <DarkTheme> */}
           <Paper
             variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
             elevation={0}
@@ -109,7 +108,6 @@ export default function ProfileBar({
               <Search />
             </IconButton>
           </Paper>
-          {/* </DarkTheme> */}
 
           <div className={classes.sectionDesktop}>
             <IconButton

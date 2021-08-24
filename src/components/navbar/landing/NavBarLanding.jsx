@@ -14,15 +14,15 @@ import {
   MenuRounded,
 } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import logo_light from '../../../assets/logo_light.svg';
-import logo from '../../../assets/logo.svg';
-import Button from '../../Button';
-import { menuEcosystem, menuProduct } from '../../data.components';
-import NavBarMenu from './MenuOptions';
-import LandingMenuMobile from './LandingMenuMobile';
-import StatusBar from '../StatusBar';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import logo from '../../../assets/logo.svg';
+import logo_light from '../../../assets/logo_light.svg';
+import Button from '../../Button';
+import { menuEcosystem, menuProduct } from '../../utilities/data.components';
+import StatusBar from '../StatusBar';
+import MobileMenu from './MobileMenu';
+import NavBarMenu from './MenuOptions';
 
 export default function NavBarLanding() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -163,10 +163,7 @@ export default function NavBarLanding() {
                 <MenuRounded />
               </IconButton>
             </Hidden>
-            <LandingMenuMobile
-              open={menuOpen}
-              onClose={() => setMenuOpen(false)}
-            />
+            <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
           </div>
         </div>
       </Container>

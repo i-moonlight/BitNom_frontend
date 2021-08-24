@@ -32,9 +32,15 @@ export default function Signup() {
   // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
 
-  const [createUser] = useMutation(MUTATION_CREATE_USER);
-  const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP);
-  const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN);
+  const [createUser] = useMutation(MUTATION_CREATE_USER, {
+    context: { clientName: 'users' },
+  });
+  const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP, {
+    context: { clientName: 'users' },
+  });
+  const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN, {
+    context: { clientName: 'users' },
+  });
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
