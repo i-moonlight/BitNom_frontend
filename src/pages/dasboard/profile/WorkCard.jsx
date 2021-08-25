@@ -43,6 +43,7 @@ export default function WorkCard({ profile }) {
             }) => (
               <WorkFragment
                 key={_id}
+                id={_id}
                 title={title}
                 company={company}
                 dateFrom={start_date}

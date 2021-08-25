@@ -16,8 +16,8 @@ import HonorCard from './HonorCard';
 import SkillsCard from './SkillsCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
 import { useQuery } from '@apollo/client';
-import { QUERY_FETCH_PROFILE } from './utilities/queries';
 import { useSelector } from 'react-redux';
+import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,18 +27,18 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile() {
   const classes = useStyles();
-  const state = useSelector(st => st);
-  const profile = state.auth.user;
+  // const state = useSelector(st => st);
+  // const profile = state.auth.user;
 
   const {
-    error,
+    // error,
     //  loading,
     data,
   } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
-  console.log('profileData:  ', data);
-  console.log('profileErr:  ', error);
+
+  const profile = data?.Users?.profile;
 
   return (
     <Screen>

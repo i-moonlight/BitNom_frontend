@@ -2,22 +2,19 @@
 import { gql } from '@apollo/client';
 
 export const MUTATION_ADD_WORK = gql`
-  mutation {
+  mutation ($data: IWork!) {
     Users {
-      addWork(
-        data: {
-          company: "Amazon"
-          title: "IOT Developer"
-          start_date: "Mar 28, 2019"
-          end_date: "Jan 6,2020"
-          current: false
-          description: "I worked as a software engineer here"
-        }
-      )
+      addWork(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_WORK = gql``;
+export const MUTATION_UPDATE_WORK = gql`
+  mutation ($id: String!, $data: IWork!) {
+    Users {
+      updateWork(_id: $id, data: $data)
+    }
+  }
+`;
 // export const MUTATION_REMOVE_WORK = gql``;
 
 export const MUTATION_ADD_EDUCATION = gql`

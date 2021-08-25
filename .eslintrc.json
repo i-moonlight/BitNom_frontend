@@ -17,7 +17,7 @@
   "rules": {
     "template-curly-spacing": "off",
     "no-unused-vars": "warn",
-    "quotes": [0, { "allowTemplateLiterals": true, "avoidEscape": true }],
+    "quotes": [1, { "allowTemplateLiterals": true, "avoidEscape": true }],
     "react/prop-types": 0,
     "semi": ["error", "always"]
     // "no-undef": "off"

@@ -1,6 +1,9 @@
-import { MenuItem, Popover } from '@material-ui/core';
-import { ChevronRightRounded } from '@material-ui/icons';
-import React from 'react';
+import { MenuItem, Popover, Badge } from "@material-ui/core";
+import { ChevronRightRounded } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import { useSubscription } from "@apollo/client";
+import { NEW_NOTIFICATION_COUNT } from "../../../utilities/queries.components";
+import React from "react";
 
 export default function TabOptionsPopover({
   tabOptionAnchorEl,
@@ -9,11 +12,23 @@ export default function TabOptionsPopover({
   handleTabOptionsClose,
   tabOptions,
 }) {
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
+
+  const { data, loading } = useSubscription(NEW_NOTIFICATION_COUNT, {
+    variables: { _id: "Joe" },
+    context: { clientName: "notifications" },
+  });
+
+  const new_notification = data && data.liveUpdates ? data.liveUpdates : null;
+  const userCount = new_notification?.filter(({ id }) => id === user._id);
+  console.log("new notification ", userCount);
+  if (loading) <p>Loading new notifications</p>;
   return (
     <Popover
       anchorEl={tabOptionAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      transformOrigin={{ vertical: "top", horizontal: "center" }}
       id={tabOptionsId}
       keepMounted
       open={isTabOptionOpen}
@@ -23,14 +38,16 @@ export default function TabOptionsPopover({
         tabOptions.map(({ label }) => (
           <MenuItem
             key={`${Math.random() * 1000}`}
-            className='py-3 space-between'
+            className="py-3 space-between"
             style={{
               width: tabOptionAnchorEl && tabOptionAnchorEl.offsetWidth,
             }}
             onClick={handleTabOptionsClose}
           >
-            {label}
-            <ChevronRightRounded />
+            <Badge badgeContent={4} color="primary">
+              {label}
+              <ChevronRightRounded />
+            </Badge>
           </MenuItem>
         ))}
     </Popover>

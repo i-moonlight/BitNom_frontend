@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   CardContent,
@@ -7,18 +8,116 @@ import {
   Typography,
 } from '@material-ui/core';
 import { SearchRounded } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import React from 'react';
+import { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
+import { workInitialValues } from '../utilities/profile.initialValues';
+import {
+  MUTATION_ADD_WORK,
+  MUTATION_UPDATE_WORK,
+  QUERY_FETCH_PROFILE,
+} from '../utilities/profile.queries';
 import { useStyles } from '../utilities/profile.styles';
+import { workValidation } from '../utilities/profile.validationSchemas';
 
-export default function WorkForm({ onClose }) {
+export default function WorkForm({ onClose, updateData }) {
+  const [current, setCurrent] = useState(updateData?.current);
+  const [localError, setLocalError] = useState(false);
   const classes = useStyles();
+
+  const [
+    addWork,
+    {
+      // addError,
+      // data,
+      addLoading,
+    },
+  ] = useMutation(MUTATION_ADD_WORK, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    updateWork,
+    {
+      // updateError,
+      //  data,
+      updateLoading,
+    },
+  ] = useMutation(MUTATION_UPDATE_WORK, {
+    context: { clientName: 'users' },
+  });
 
   return (
     <div className='mt-2'>
-      <Form>
+      <Form
+        initialValues={updateData || workInitialValues}
+        validationSchema={workValidation}
+        onSubmit={(
+          { company, title, start_date, end_date, description },
+          { resetForm }
+        ) => {
+          setLocalError(null);
+
+          if (!current && end_date == '') {
+            setLocalError("End Date required if you don't currently work here");
+            return;
+          }
+
+          const Iwork = current
+            ? {
+                company,
+                title,
+                start_date,
+                current,
+                description,
+              }
+            : {
+                company,
+                title,
+                start_date,
+                end_date,
+                description,
+              };
+
+          console.log(Iwork);
+
+          updateData ? console.log('upd') : console.log('add');
+
+          updateData
+            ? updateWork({
+                variables: {
+                  id: updateData?.id,
+                  data: Iwork,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              })
+            : addWork({
+                variables: {
+                  data: Iwork,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              });
+        }}
+      >
         <Card className={classes.formCard}>
           <CardContent>
             <TextField
@@ -26,7 +125,7 @@ export default function WorkForm({ onClose }) {
               fullWidth
               name='company'
               labelTop='Company'
-              placeholder='Type to search'
+              placeholder={updateData?.company || 'Type to search'}
               adornmentType='start'
               adornment={<SearchRounded className='p-' />}
             />
@@ -35,20 +134,21 @@ export default function WorkForm({ onClose }) {
               fullWidth
               name='title'
               labelTop='Title'
-              placeholder='Title eg Graphic Designer'
+              placeholder={updateData?.title || 'Title eg Graphic Designer'}
             />
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item sm={6}>
                 <TextField
                   required
                   type='date'
                   name='start_date'
+                  placeholder='2020-01-28'
                   labelTop='Start Date'
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  disabled={current}
                   type='date'
                   name='end_date'
                   labelTop='End Date'
@@ -57,7 +157,14 @@ export default function WorkForm({ onClose }) {
             </Grid>
             <FormControlLabel
               control={
-                <Checkbox checked={false} onChange={null} name='checkedA' />
+                <Checkbox
+                  color='primary'
+                  checked={current}
+                  onChange={() => {
+                    setCurrent(!current);
+                  }}
+                  name='checkedA'
+                />
               }
               label={
                 <Typography variant='body2'>I Currently work here</Typography>
@@ -69,10 +176,13 @@ export default function WorkForm({ onClose }) {
               multiline
               name='description'
               labelTop='Description'
-              placeholder='Describe your work experience'
+              placeholder={
+                updateData?.description || 'Describe your work experience'
+              }
               rows={4}
             />
-            <div className='d-flex justify-content-end'>
+            {localError && <Alert severity='error'>{localError}</Alert>}
+            <div className='d-flex justify-content-end mt-2'>
               <Button
                 onClick={onClose}
                 color='inherit'
@@ -81,7 +191,12 @@ export default function WorkForm({ onClose }) {
               >
                 Cancel
               </Button>
-              <Button size='small' className='ms-2'>
+              <Button
+                disabled={addLoading || updateLoading}
+                size='small'
+                className='ms-2'
+                submit
+              >
                 Save
               </Button>
             </div>
