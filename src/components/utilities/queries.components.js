@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const QUERY_GET_USER_NOTIFICATIONS = gql`
   query {
@@ -31,6 +31,14 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
         notify_subscribers_to
         date
       }
+    }
+  }
+`;
+export const NEW_NOTIFICATION_COUNT = gql`
+  subscription liveUpdates($_id: String!) {
+    liveUpdates(_id: $_id) {
+      count
+      id
     }
   }
 `;

@@ -66,7 +66,7 @@ function NotificationPreview() {
     //  error,
     // loading
   } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
-    context: { clientName: "users" },
+    context: { clientName: "notifications" },
   });
 
   let response = data?.Notification?.get;

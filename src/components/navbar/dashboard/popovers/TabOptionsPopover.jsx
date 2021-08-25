@@ -1,7 +1,8 @@
 import { MenuItem, Popover, Badge } from "@material-ui/core";
 import { ChevronRightRounded } from "@material-ui/icons";
 import { useSelector } from "react-redux";
-import { gql, useSubscription } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
+import { NEW_NOTIFICATION_COUNT } from "../../../utilities/queries.components";
 import React from "react";
 
 export default function TabOptionsPopover({
@@ -16,6 +17,7 @@ export default function TabOptionsPopover({
 
   const { data, loading } = useSubscription(NEW_NOTIFICATION_COUNT, {
     variables: { _id: "Joe" },
+    context: { clientName: "notifications" },
   });
 
   const new_notification = data && data.liveUpdates ? data.liveUpdates : null;
@@ -51,12 +53,3 @@ export default function TabOptionsPopover({
     </Popover>
   );
 }
-
-const NEW_NOTIFICATION_COUNT = gql`
-  subscription liveUpdates($_id: String!) {
-    liveUpdates(_id: $_id) {
-      count
-      id
-    }
-  }
-`;
