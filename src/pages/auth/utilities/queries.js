@@ -1,5 +1,5 @@
 // Auth Pages GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const MUTATION_CREATE_USER = gql`
   mutation (
@@ -36,7 +36,7 @@ export const MUTATION_LOGIN_USER = gql`
         # referralCode
         displayName
         bio
-        image
+        # image
         email {
           address
           verified
@@ -123,7 +123,7 @@ export const MUTATION_UPDATE_PROFILE_INFO = gql`
         # referralCode
         displayName
         bio
-        image
+        # image
         email {
           address
           verified
