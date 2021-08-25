@@ -1,15 +1,9 @@
-import {
-  gql,
-  ApolloClient,
-  InMemoryCache,
-  from,
-  HttpLink,
-} from "@apollo/client";
-import { Query } from "@apollo/client/react/components";
+import { useQuery } from "@apollo/client";
 import {
   Avatar,
   Card,
   Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -18,15 +12,15 @@ import {
   ListItemText,
   Popover,
   Typography,
-  Grid,
 } from "@material-ui/core";
 import { PersonRounded, SettingsRounded } from "@material-ui/icons";
 import React from "react";
-import {
-  notificationBodyFactory,
-  getCreationTime,
-} from "../../../../pages/dasboard/utilities/functions";
 import { Link } from "react-router-dom";
+import {
+  getCreationTime,
+  notificationBodyFactory,
+} from "../../../../pages/dasboard/utilities/functions";
+import { QUERY_GET_USER_NOTIFICATIONS } from "../../../utilities/queries.components";
 
 export default function NotificationsPopover({
   notificationAnchorEl,
@@ -67,86 +61,47 @@ export default function NotificationsPopover({
 }
 
 function NotificationPreview() {
-  const GET_USER_NOTIFICATIONS = gql`
-    query {
-      Notification {
-        get(limit: 5) {
-          _id
-          content
-          tag
-          content_entities {
-            type
-            offset
-            length
-            resource {
-              _id
-              type
-            }
-            url {
-              _id
-              image
-              displayName
-            }
-          }
-          image
-          to_notify {
-            _id
-            user_id
-            read
-            seen
-          }
-          notify_subscribers_to
-          date
-        }
-      }
-    }
-  `;
-  const notificationsLink = from([
-    new HttpLink({
-      uri: "http://localhost:3000/notifications/graphql",
-      credentials: "include",
-    }),
-  ]);
-  const NotificationsClient = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: notificationsLink,
-    credentials: "include",
+  const {
+    data,
+    //  error,
+    // loading
+  } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
+    context: { clientName: "users" },
   });
+
+  let response = data?.Notification?.get;
+
   return (
-    <Query query={GET_USER_NOTIFICATIONS} client={NotificationsClient}>
-      {({ data }) => {
-        let response = data?.Notification?.get;
-        return (
-          <>
-            {response?.length < 1 && (
-              <Grid align="center">
-                <Typography color="Primary" variant="body2">
-                  Nothing here yet.
-                </Typography>
-              </Grid>
-            )}
-            {response?.length > 0 &&
-              response?.slice(0, 4)?.map((item) => (
-                <ListItem className="space-between" key={item} divider>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <PersonRounded />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <div>
-                        <Typography
-                          dangerouslySetInnerHTML={{
-                            __html: notificationBodyFactory(item),
-                          }}
-                          className="mx-1"
-                        ></Typography>
-                      </div>
-                    }
-                    secondary={getCreationTime(item?.date)}
-                  />
-                  {/* <ListItemIcon
+    <>
+      {response?.length < 1 && (
+        <Grid align="center">
+          <Typography color="Primary" variant="body2">
+            Nothing here yet.
+          </Typography>
+        </Grid>
+      )}
+      {response?.length > 0 &&
+        response?.slice(0, 4)?.map((item) => (
+          <ListItem className="space-between" key={item} divider>
+            <ListItemAvatar>
+              <Avatar>
+                <PersonRounded />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <div>
+                  <Typography
+                    dangerouslySetInnerHTML={{
+                      __html: notificationBodyFactory(item),
+                    }}
+                    className="mx-1"
+                  ></Typography>
+                </div>
+              }
+              secondary={getCreationTime(item?.date)}
+            />
+            {/* <ListItemIcon
                       aria-label='show more'
                       aria-controls={notificationOptionId}
                       aria-haspopup='true'
@@ -163,18 +118,15 @@ function NotificationPreview() {
                     >
                       <MoreVert />
                     </ListItemIcon> */}
-                </ListItem>
-              ))}
-            {response?.length > 0 && (
-              <Link to="/dashboard/notifications">
-                <Typography variant="body2" className="my-2" color="primary">
-                  Show more
-                </Typography>
-              </Link>
-            )}
-          </>
-        );
-      }}
-    </Query>
+          </ListItem>
+        ))}
+      {response?.length > 0 && (
+        <Link to="/dashboard/notifications">
+          <Typography variant="body2" className="my-2" color="primary">
+            Show more
+          </Typography>
+        </Link>
+      )}
+    </>
   );
 }

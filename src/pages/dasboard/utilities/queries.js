@@ -32,6 +32,7 @@ export const MUTATION_CREATE_FILE_IMAGE = gql`
     }
   }
 `;
+
 export const MUTATION_CREATE_POST = gql`
   mutation ($data: ICreatePost!) {
     Posts {
@@ -141,8 +142,6 @@ export const MUTATION_DELETE_COMMENT = gql`
   }
 `;
 
-// { limit: 220 }
-
 export const QUERY_LOAD_SCROLLS = gql`
   query ($data: IGetPosts) {
     Posts {
@@ -231,7 +230,7 @@ export const GET_USER_NOTIFICATIONS = gql`
       get(limit: $limit) {
         _id
         content
-        tag
+        #tag
         content_entities {
           type
           offset
@@ -247,12 +246,12 @@ export const GET_USER_NOTIFICATIONS = gql`
           }
         }
         image
-        to_notify {
-          _id
-          user_id
-          read
-          seen
-        }
+        #to_notify {
+        #  _id
+        #  user_id
+        #  read
+        #  seen
+        #}
         notify_subscribers_to
         date
       }

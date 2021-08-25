@@ -18,7 +18,9 @@ export default function VerifyEmail() {
   const state = useSelector(state => state);
   const user = state.auth.user;
 
-  const [verifyEmail] = useMutation(MUTATION_VERIFY_EMAIL);
+  const [verifyEmail] = useMutation(MUTATION_VERIFY_EMAIL, {
+    context: { clientName: 'users' },
+  });
 
   useEffect(() => {
     user?.email?.verified && history.push('/auth/update_info_register');

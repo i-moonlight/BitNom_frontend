@@ -20,7 +20,9 @@ export default function CreatePassword({ match }) {
   const history = useHistory();
   const user = state.auth.user;
 
-  const [resetPassword] = useMutation(MUTATION_RESET_PASSWORD);
+  const [resetPassword] = useMutation(MUTATION_RESET_PASSWORD, {
+    context: { clientName: 'users' },
+  });
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');

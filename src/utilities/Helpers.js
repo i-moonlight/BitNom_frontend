@@ -1,5 +1,6 @@
-export const getUserInitials = nameString => {
-  const fullNames = nameString?.toUpperCase();
-  const initials = fullNames?.match(/\b(\w)/g);
-  return initials;
+export const getUserInitials = (nameString) => {
+  const fullName = nameString?.split(" ");
+  const initials = fullName?.shift()?.charAt(0) + fullName?.pop().charAt(0);
+
+  return initials ? initials?.toUpperCase() : "us".toUpperCase();
 };

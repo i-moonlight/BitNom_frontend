@@ -7,11 +7,11 @@ import {
   split,
 } from "@apollo/client";
 import { ApolloLink, Observable } from "@apollo/client/core";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { createClient } from "graphql-ws";
 import { onError } from "@apollo/client/link/error";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { makeStyles } from "@material-ui/core";
 import { createUploadLink } from "apollo-upload-client";
+import { createClient } from "graphql-ws";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import CreatePassword from "./pages/auth/CreatePassword";
@@ -23,12 +23,11 @@ import UpdateInfo from "./pages/auth/UpdateInfo";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import BnConnect from "./pages/dasboard/bn_connect/BnConnect";
 import BnServices from "./pages/dasboard/bn_services/BnServices";
+import SavedItems from "./pages/dasboard/bookmarks/SavedItems";
 import Events from "./pages/dasboard/events/Events";
 import Notifications from "./pages/dasboard/notifications/Notifications";
 import People from "./pages/dasboard/people/People";
 import Profile from "./pages/dasboard/profile/Profile";
-import SavedItems from "./pages/dasboard/bookmarks/SavedItems";
-import NotFound from "./pages/not_found/NotFound";
 import Cookie from "./pages/welcome/cookie/Cookie";
 import Disclaimer from "./pages/welcome/disclaimer/Disclaimer";
 import Faqs from "./pages/welcome/faqs/Faqs";
@@ -90,11 +89,13 @@ class WebSocketLink extends ApolloLink {
     });
   }
 }
+
+//  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: "ws://localhost:3000/notifications/graphql",
+  url: process.env.REACT_APP_SOCKET_URL,
 });
 
-const authLink = from([
+const profileLink = from([
   errorLink,
   new HttpLink({
     uri: backendUri + "/users/graphql",
@@ -102,14 +103,6 @@ const authLink = from([
   }),
 ]);
 
-// const socialLink = from([
-//   errorLink,
-//   new HttpLink({
-//     uri: backendUri + '/bn-social/graphql',
-//     // uri: "http://localhost:3000/files/graphql",
-//     credentials: 'include',
-//   }),
-// ]);
 const notificationsLink = from([
   errorLink,
   new HttpLink({
@@ -117,6 +110,7 @@ const notificationsLink = from([
     credentials: "include",
   }),
 ]);
+
 const uploadLink = createUploadLink({
   uri: backendUri + "/bn-social/graphql",
   credentials: "include",
@@ -125,17 +119,11 @@ const uploadLink = createUploadLink({
   },
 });
 
-const usersApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: authLink,
-  credentials: "include",
-});
-
-const notificationsApolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: notificationsLink,
-  credentials: "include",
-});
+const splitNotificationAndUploadLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "notifications",
+  notificationsLink,
+  uploadLink
+);
 
 const splitLink = split(
   ({ query }) => {
@@ -146,20 +134,17 @@ const splitLink = split(
     );
   },
   wsLink,
-  uploadLink
+  splitNotificationAndUploadLink
 );
 
-const uploadApolloClient = new ApolloClient({
+const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink,
+  link: ApolloLink.split(
+    (operation) => operation.getContext().clientName === "users",
+    profileLink,
+    splitLink
+  ),
 });
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    height: "100%",
-  },
-}));
 
 export const AppContainers = () => {
   const classes = useStyles();
@@ -167,8 +152,9 @@ export const AppContainers = () => {
   return (
     <div className={classes.root}>
       <BrowserRouter>
-        <ApolloProvider client={usersApolloClient}>
+        <ApolloProvider client={client}>
           <Switch>
+            {/* Landing */}
             <Route exact component={Landing} path="/" />
             <Route exact component={Faqs} path="/faqs" />
             <Route exact component={Terms} path="/terms" />
@@ -178,6 +164,7 @@ export const AppContainers = () => {
             <Route exact component={FeatureRequest} path="/feature_request" />
             <Route exact component={RoadMap} path="/roadmap" />
             <Route exact component={Redirect} path="/redirect" />
+            {/* Auth */}
             <Route exact component={Login} path="/auth/login" />
             <Route exact component={Signup} path="/auth/signup" />
             <Route
@@ -201,27 +188,29 @@ export const AppContainers = () => {
               component={CreatePassword}
               path="/auth/password_reset/:key"
             />
-            <Route exact component={NotFound} path="/auth/*" />
-          </Switch>
-        </ApolloProvider>
-        <ApolloProvider client={uploadApolloClient}>
-          <Switch>
+            {/* Dashboard */}
             <Route exact component={BnConnect} path="/dashboard" />
             <Route exact component={BnServices} path="/dashboard/services" />
             <Route exact component={Events} path="/dashboard/events" />
             <Route exact component={People} path="/dashboard/people" />
             <Route exact component={Profile} path="/dashboard/profile" />
             <Route exact component={SavedItems} path="/dashboard/bookmarks" />
+            <Route
+              exact
+              component={Notifications}
+              path="/dashboard/notifications"
+            />
           </Switch>
-        </ApolloProvider>
-        <ApolloProvider client={notificationsApolloClient}>
-          <Route
-            exact
-            component={Notifications}
-            path="/dashboard/notifications"
-          />
+          {/* <Route component={NotFound} path='*' /> */}
         </ApolloProvider>
       </BrowserRouter>
     </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    height: "100%",
+  },
+}));

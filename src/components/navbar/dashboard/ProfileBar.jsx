@@ -75,7 +75,6 @@ export default function ProfileBar({
             </Hidden>
           </div>
 
-          {/* <DarkTheme> */}
           <Paper
             variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
             elevation={0}
@@ -109,7 +108,6 @@ export default function ProfileBar({
               <Search />
             </IconButton>
           </Paper>
-          {/* </DarkTheme> */}
 
           <div className={classes.sectionDesktop}>
             <IconButton
