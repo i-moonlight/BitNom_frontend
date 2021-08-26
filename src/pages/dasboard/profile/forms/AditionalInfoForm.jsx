@@ -5,6 +5,7 @@ import React from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
+import AditionalInfoFragment from '../fragments/AditionalInfoFragment';
 import { courseAndProjectInitialValues } from '../utilities/profile.initialValues';
 import {
   MUTATION_ADD_COURSE,
@@ -14,7 +15,12 @@ import {
 import { useStyles } from '../utilities/profile.styles';
 import { courseAndProjectValidation } from '../utilities/profile.validationSchemas';
 
-export default function AditionalInfoForm({ onClose, formType, updateData }) {
+export default function AditionalInfoForm({
+  onClose,
+  formType,
+  updateData,
+  profile,
+}) {
   const classes = useStyles();
 
   const [
@@ -39,13 +45,13 @@ export default function AditionalInfoForm({ onClose, formType, updateData }) {
     context: { clientName: 'users' },
   });
 
+  const items = formType == 'project' ? profile?.projects : profile?.courses;
+
   return (
     <div className='mt-2'>
       <Form
         initialValues={courseAndProjectInitialValues}
-        validationSchema={
-          formType == ('course' || 'project') && courseAndProjectValidation
-        }
+        validationSchema={courseAndProjectValidation}
         onSubmit={({ name, year }, { resetForm }) => {
           const ICourseProject = {
             name,
@@ -116,7 +122,7 @@ export default function AditionalInfoForm({ onClose, formType, updateData }) {
                 size='small'
                 variant='text'
               >
-                Cancel
+                Close
               </Button>
               <Button
                 disabled={addProjectLoading || addCourseLoading}
@@ -124,8 +130,20 @@ export default function AditionalInfoForm({ onClose, formType, updateData }) {
                 className='ms-2'
                 submit
               >
-                {updateData ? 'Update' : 'Save'}
+                {updateData ? 'Update' : 'Add'}
               </Button>
+            </div>
+
+            <div className='mt-3'>
+              {items?.map(({ _id, name, year }) => (
+                <AditionalInfoFragment
+                  key={_id}
+                  id={_id}
+                  name={name}
+                  year={year}
+                  formType={formType}
+                />
+              ))}
             </div>
           </CardContent>
         </Card>
