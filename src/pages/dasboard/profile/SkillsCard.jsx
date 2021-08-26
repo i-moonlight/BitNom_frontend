@@ -104,6 +104,7 @@ export default function SkillsCard({ profile }) {
               key={_id}
               label={name}
               className='me-2 mb-2'
+              disabled={removeLoading}
               onDelete={() =>
                 removeSkill({
                   variables: {

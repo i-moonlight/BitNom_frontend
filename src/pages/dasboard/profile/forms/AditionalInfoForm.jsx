@@ -1,8 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Chip, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@material-ui/core';
 import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
@@ -16,8 +15,6 @@ import { useStyles } from '../utilities/profile.styles';
 import { courseAndProjectValidation } from '../utilities/profile.validationSchemas';
 
 export default function AditionalInfoForm({ onClose, formType, updateData }) {
-  const [gender, setGender] = useState('unset');
-  const [localError, setLocalError] = useState(false);
   const classes = useStyles();
 
   const [
@@ -112,7 +109,6 @@ export default function AditionalInfoForm({ onClose, formType, updateData }) {
               placeholder=' Enter the year'
             />
 
-            {localError && <Alert severity='error'>{localError}</Alert>}
             <div className='d-flex justify-content-end mt-2'>
               <Button
                 onClick={onClose}

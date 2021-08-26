@@ -9,7 +9,6 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import {
@@ -21,8 +20,7 @@ import { useStyles } from '../utilities/profile.styles';
 
 export default function LanguagesForm({ onClose, profile }) {
   const [text, setText] = useState('');
-  const [gender, setGender] = useState('unset');
-  const [localError, setLocalError] = useState(false);
+  false;
   const classes = useStyles();
   const theme = useTheme();
   const languages = profile?.languages;
@@ -55,7 +53,6 @@ export default function LanguagesForm({ onClose, profile }) {
         <CardContent>
           <Typography>Add Languages</Typography>
 
-          {localError && <Alert severity='error'>{localError}</Alert>}
           <Paper
             variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
             elevation={0}
@@ -103,6 +100,7 @@ export default function LanguagesForm({ onClose, profile }) {
                 key={_id}
                 label={name}
                 className='me-2 mb-2'
+                disabled={removeLoading}
                 onDelete={() =>
                   removeLanguage({
                     variables: {

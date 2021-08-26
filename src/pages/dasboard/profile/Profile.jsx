@@ -1,23 +1,16 @@
-import {
-  //CircularProgress,
-  Container,
-  Grid,
-  Hidden,
-  makeStyles,
-} from '@material-ui/core';
+import { useQuery } from '@apollo/client';
+import { Container, Grid, Hidden, makeStyles } from '@material-ui/core';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
-import InsightCard from './InsightCard';
-import ProfileCard from './ProfileCard';
-import WorkCard from './WorkCard';
+import AdditionalInfoCard from './AdditionalInfoCard';
 import EducationCard from './EducationCard';
 import HonorCard from './HonorCard';
+import InsightCard from './InsightCard';
+import ProfileCard from './ProfileCard';
 import SkillsCard from './SkillsCard';
-import AdditionalInfoCard from './AdditionalInfoCard';
-import { useQuery } from '@apollo/client';
-import { useSelector } from 'react-redux';
 import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';
+import WorkCard from './WorkCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
