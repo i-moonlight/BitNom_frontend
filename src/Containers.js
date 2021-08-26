@@ -12,6 +12,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
+import { print } from 'graphql';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
@@ -53,7 +54,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
   }
 });
 
-const backendUri = process.env.REACT_APP_BACKEND_URL;
+const backendUri = 'http://localhost:3000'; // process.env.REACT_APP_BACKEND_URL;
 
 class WebSocketLink extends ApolloLink {
   constructor(options) {
@@ -93,7 +94,7 @@ class WebSocketLink extends ApolloLink {
 
 //  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: process.env.REACT_APP_SOCKET_URL,
+  url: 'ws://localhost:3000/notifications/graphql', // process.env.REACT_APP_SOCKET_URL,
 });
 
 const profileLink = from([

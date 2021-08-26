@@ -15,8 +15,11 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
   }
 `;
 export const NOTIFICATIONS_SUBSCRIPTION = gql`
-  subscription ($subscriberTopic: Topic) {
-    liveUpdates(subscriberTopic: $subscriberTopic)
+  subscription newNotifications($_id: String!) {
+    liveUpdates(_id: $_id) {
+      count
+      id
+    }
   }
 `;
 
@@ -230,7 +233,7 @@ export const GET_USER_NOTIFICATIONS = gql`
       get(limit: $limit) {
         _id
         content
-        #tag
+        tag
         content_entities {
           type
           offset
@@ -246,12 +249,12 @@ export const GET_USER_NOTIFICATIONS = gql`
           }
         }
         image
-        #to_notify {
-        #  _id
-        #  user_id
-        #  read
-        #  seen
-        #}
+        to_notify {
+          _id
+          user_id
+          read
+          seen
+        }
         notify_subscribers_to
         date
       }
@@ -259,10 +262,17 @@ export const GET_USER_NOTIFICATIONS = gql`
   }
 `;
 
-export const MARK_NOTIFICAION_AS_SEEN = gql`
-  mutation ($_id: ID) {
-    Notification {
-      markAsSeen(_id: $_id)
+export const QUERY_GET_USERS = gql`
+  query ($params: IGetUsers) {
+    Users {
+      get(params: $params) {
+        _id
+        displayName
+        reputation
+        type
+        bio
+        profile_pic
+      }
     }
   }
 `;

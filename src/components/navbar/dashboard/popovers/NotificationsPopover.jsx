@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import {
   Avatar,
   Card,
@@ -20,13 +19,13 @@ import {
   getCreationTime,
   notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
-import { QUERY_GET_USER_NOTIFICATIONS } from '../../../utilities/queries.components';
 
 export default function NotificationsPopover({
   notificationAnchorEl,
   notificationId,
   isNotificationOpen,
   handleNotificationsClose,
+  notifications,
   //notificationOptionId,
   //handleNotificationOptionOpen,
 }) {
@@ -53,35 +52,25 @@ export default function NotificationsPopover({
           </IconButton>
         </div>
         <Divider />
-        <NotificationPreview />
+        <NotificationPreview notifications={notifications} />
         <Divider />
       </List>
     </Popover>
   );
 }
 
-function NotificationPreview() {
-  const {
-    data,
-    //  error,
-    // loading
-  } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
-    context: { clientName: 'notifications' },
-  });
-
-  let response = data?.Notification?.get;
-
+function NotificationPreview({ notifications }) {
   return (
     <>
-      {response?.length < 1 && (
+      {notifications?.length < 1 && (
         <Grid align='center'>
           <Typography color='Primary' variant='body2'>
             Nothing here yet.
           </Typography>
         </Grid>
       )}
-      {response?.length > 0 &&
-        response?.slice(0, 4)?.map((item) => (
+      {notifications?.length > 0 &&
+        notifications?.slice(0, 4)?.map((item) => (
           <ListItem className='space-between' key={item} divider>
             <ListItemAvatar>
               <Avatar>
@@ -120,7 +109,7 @@ function NotificationPreview() {
                     </ListItemIcon> */}
           </ListItem>
         ))}
-      {response?.length > 0 && (
+      {notifications?.length > 0 && (
         <Link to='/dashboard/notifications'>
           <Typography variant='body2' className='my-2' color='primary'>
             Show more
