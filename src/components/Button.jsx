@@ -24,10 +24,10 @@ export default function Button({
     <MuiButton
       color={buttonColor ? buttonColor : 'primary'}
       variant={buttonVariant ? buttonVariant : 'contained'}
-      disableElevation
+      disableElevation={!google}
       style={{
         backgroundColor: google && '#f2f2f2',
-        buttonColor: !buttonColor && google && '#818181',
+        color: !buttonColor && google && '#818181',
         textTransform: textCase && 'none',
       }}
       onClick={submit ? formikContext.handleSubmit : onClick}

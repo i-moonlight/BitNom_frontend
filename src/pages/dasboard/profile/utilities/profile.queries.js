@@ -8,6 +8,7 @@ export const MUTATION_ADD_WORK = gql`
     }
   }
 `;
+
 export const MUTATION_UPDATE_WORK = gql`
   mutation ($id: String!, $data: IWork!) {
     Users {
@@ -15,91 +16,152 @@ export const MUTATION_UPDATE_WORK = gql`
     }
   }
 `;
-// export const MUTATION_REMOVE_WORK = gql``;
+
+export const MUTATION_REMOVE_WORK = gql`
+  mutation ($id: String!) {
+    Users {
+      removeWork(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_EDUCATION = gql`
-  mutation {
+  mutation ($data: IEducation!) {
     Users {
-      addEducation(
-        data: {
-          major: "Computer Science"
-          institution: "Dedan Kimathi University"
-          start_date: "Mar 20,2019"
-          end_date: "April 23,2021"
-          current: false
-          description: "This is a computer course"
-        }
-      )
+      addEducation(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_EDUCATION = gql``;
-// export const MUTATION_REMOVE_EDUCATION = gql``;
+
+export const MUTATION_UPDATE_EDUCATION = gql`
+  mutation ($id: String!, $data: IEducation!) {
+    Users {
+      updateEducation(_id: $id, data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_EDUCATION = gql`
+  mutation ($id: String!) {
+    Users {
+      removeEducation(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_HONOR = gql`
-  mutation {
+  mutation ($data: IHonors!) {
     Users {
-      addHonor(
-        data: {
-          name: "French MasterClass"
-          organization: "Alliance Francaise"
-          start_date: "Feb 6,2018"
-          end_date: "April 6,2018"
-          expires: false
-          url: "https://www.google.com"
-        }
-      )
+      addHonor(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_HONOR = gql``;
-// export const MUTATION_REMOVE_HONOR = gql``;
+
+export const MUTATION_UPDATE_HONOR = gql`
+  mutation ($id: String!, $data: IHonors!) {
+    Users {
+      updateHonor(_id: $id, data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_HONOR = gql`
+  mutation ($id: String!) {
+    Users {
+      removeHonor(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_SKILL = gql`
-  mutation {
+  mutation ($data: ISkills!) {
     Users {
-      addLanguage(data: { name: "Web Development" })
+      addSkill(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_SKILL = gql``;
-// export const MUTATION_REMOVE_SKILL = gql``;
+
+export const MUTATION_REMOVE_SKILL = gql`
+  mutation ($id: String!) {
+    Users {
+      removeSkill(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_COURSE = gql`
-  mutation {
+  mutation ($data: ICourses!) {
     Users {
-      addCourse(data: { name: "Computer Science", year: "2022" })
+      addCourse(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_COURSE = gql``;
-// export const MUTATION_REMOVE_COURSE = gql``;
+
+export const MUTATION_UPDATE_COURSE = gql`
+  mutation ($id: String!, $data: ICourses!) {
+    Users {
+      updateCourse(_id: $id, data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_COURSE = gql`
+  mutation ($id: String!) {
+    Users {
+      removeCourse(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_PROJECT = gql`
-  mutation {
+  mutation ($data: IProjects!) {
     Users {
-      addProject(data: { name: "Computer Science", year: "2022" })
+      addProject(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_PROJECT = gql``;
-// export const MUTATION_REMOVE_PROJECT = gql``;
+
+export const MUTATION_UPDATE_PROJECT = gql`
+  mutation ($id: String!, $data: IProjects!) {
+    Users {
+      updateProject(_id: $id, data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_PROJECT = gql`
+  mutation ($id: String!) {
+    Users {
+      removeProject(_id: $id)
+    }
+  }
+`;
 
 export const MUTATION_ADD_LANGUAGE = gql`
-  mutation {
+  mutation ($data: ILanguages!) {
     Users {
-      addLanguage(data: { name: "English" })
+      addLanguage(data: $data)
     }
   }
 `;
-// export const MUTATION_UPDATE_LANGUAGE = gql``;
-// export const MUTATION_REMOVE_LANGUAGE = gql``;
+
+export const MUTATION_REMOVE_LANGUAGE = gql`
+  mutation ($id: String!) {
+    Users {
+      removeLanguage(_id: $id)
+    }
+  }
+`;
 
 export const QUERY_FETCH_PROFILE = gql`
   query {
     Users {
       profile {
         _id
+        # reputationPoints
+        # valuePointsCarry
+        # earnedTokens
+        referralCode
         displayName
         bio
         profile_pic
@@ -114,9 +176,18 @@ export const QUERY_FETCH_PROFILE = gql`
         gender
         cover_pic
         loginType
+        profileReached
+        connections
+        searchAppeared
         lastSeen
         paidUntil
         date
+        followers {
+          userId
+        }
+        following {
+          userId
+        }
         bnTokens {
           walletAddress
           earned
@@ -152,15 +223,15 @@ export const QUERY_FETCH_PROFILE = gql`
           current
           description
         }
-        honors {
-          _id
-          organization
-          name
-          start_date
-          end_date
-          expires
-          url
-        }
+        #honors {
+        # _id
+        # organization
+        # name
+        # start_date
+        # end_date
+        # expires
+        #  url
+        #}
         courses {
           _id
           name
@@ -184,103 +255,11 @@ export const QUERY_FETCH_PROFILE = gql`
   }
 `;
 
-export const QUERY_FETCH_PROFILE_BACKUP = gql`
-  query {
+export const MUTATION_UPDATE_PROFILE = gql`
+  mutation ($data: IUpdateUser!) {
     Users {
-      profile {
+      update(data: $data) {
         _id
-        # referralCode
-        displayName
-        bio
-        profile_pic
-        displayName
-        type
-        reputation
-        # reputationPoints
-        # valuePointsCarry
-        blocked
-        portfolio
-        website
-        address
-        location
-        gender
-        cover_pic
-        loginType
-        # profileReached
-        # connections
-        # searchAppeared
-        # earnedTokens
-        lastSeen
-        paidUntil
-        date
-        # followers {
-        #   userId
-        # }
-        # following {
-        #   userId
-        # }
-        bnTokens {
-          walletAddress
-          earned
-          received
-        }
-        socials {
-          social {
-            _id
-            name
-            image
-          }
-          profile
-        }
-        email {
-          address
-          verified
-        }
-        work {
-          _id
-          company
-          title
-          start_date
-          end_date
-          current
-          description
-        }
-        education {
-          _id
-          institution
-          major
-          start_date
-          end_date
-          current
-          description
-        }
-        honors {
-          _id
-          organization
-          name
-          start_date
-          end_date
-          expires
-          url
-        }
-        courses {
-          _id
-          name
-          year
-        }
-        projects {
-          _id
-          name
-          year
-        }
-        skills {
-          _id
-          name
-        }
-        languages {
-          _id
-          name
-        }
       }
     }
   }

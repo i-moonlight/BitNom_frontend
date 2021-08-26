@@ -9,6 +9,8 @@ import {
 import { AddRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import AditionalInfoForm from './forms/AditionalInfoForm';
+import GenderForm from './forms/GenderForm';
+import LanguagesForm from './forms/LanguagesForm';
 
 export default function AdditionalInfoCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
@@ -87,7 +89,13 @@ export default function AdditionalInfoCard({ profile }) {
             </IconButton>
           )}
         </div>
-        {showForm && (
+        {showForm && formType == 'gender' && (
+          <GenderForm onClose={onClose} profile={profile} />
+        )}
+        {showForm && formType == 'language' && (
+          <LanguagesForm onClose={onClose} profile={profile} />
+        )}
+        {showForm && formType !== ('gender' && 'language') && (
           <AditionalInfoForm onClose={onClose} formType={formType} />
         )}
         {!showForm && <Divider />}

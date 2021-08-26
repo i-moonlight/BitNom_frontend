@@ -9,14 +9,14 @@ import {
 } from '@material-ui/core';
 import { SearchRounded } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
 import { workInitialValues } from '../utilities/profile.initialValues';
 import {
   MUTATION_ADD_WORK,
+  MUTATION_REMOVE_WORK,
   MUTATION_UPDATE_WORK,
   QUERY_FETCH_PROFILE,
 } from '../utilities/profile.queries';
@@ -47,6 +47,17 @@ export default function WorkForm({ onClose, updateData }) {
       updateLoading,
     },
   ] = useMutation(MUTATION_UPDATE_WORK, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    removeWork,
+    {
+      // updateError,
+      //  data,
+      removeLoading,
+    },
+  ] = useMutation(MUTATION_REMOVE_WORK, {
     context: { clientName: 'users' },
   });
 
@@ -191,13 +202,38 @@ export default function WorkForm({ onClose, updateData }) {
               >
                 Cancel
               </Button>
+              {updateData && (
+                <Button
+                  disabled={removeLoading}
+                  size='small'
+                  className='ms-2'
+                  onClick={() => {
+                    removeWork({
+                      variables: {
+                        id: updateData?.id,
+                      },
+                      refetchQueries: [
+                        {
+                          query: QUERY_FETCH_PROFILE,
+                          context: { clientName: 'users' },
+                        },
+                      ],
+                    }).then(() => {
+                      // resetForm();
+                      onClose();
+                    });
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
               <Button
                 disabled={addLoading || updateLoading}
                 size='small'
                 className='ms-2'
                 submit
               >
-                Save
+                {updateData ? 'Update' : 'Save'}
               </Button>
             </div>
           </CardContent>

@@ -43,11 +43,12 @@ export default function EducationCard({ profile }) {
             }) => (
               <EducationFragment
                 key={_id}
-                school={institution}
-                course={major}
+                id={_id}
+                current={current}
+                institution={institution}
+                major={major}
                 dateFrom={start_date}
                 dateTo={end_date}
-                current={current}
                 description={description}
                 photoURL='https://picsum.photos/200'
               />
