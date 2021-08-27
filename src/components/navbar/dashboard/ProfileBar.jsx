@@ -30,6 +30,7 @@ import { useStyles } from "../../utilities/styles.components";
 import { useSubscription } from "@apollo/client";
 import { NEW_NOTIFICATION_COUNT } from "../../utilities/queries.components";
 export default function ProfileBar({
+  notifications,
   menuId,
   handleMenuOpen,
   notificationId,
@@ -130,7 +131,7 @@ export default function ProfileBar({
               aria-haspopup="true"
               onClick={handleNotificationsOpen}
             >
-              <Badge badgeContent={userCount?.count} color="primary">
+              <Badge color="primary" badgeContent={notifications}>
                 <Notifications />
               </Badge>
             </IconButton>

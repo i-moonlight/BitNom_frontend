@@ -22,6 +22,18 @@ export default function NotificationsListCard({
 
     return toCheck.some((o) => item.content.includes(o));
   });
+
+  const userContent = notifications?.filter((item) => {
+    let toCheck = [
+      'your post',
+      'your scroll',
+      'your comment',
+      'your article',
+      'your event',
+    ];
+
+    return toCheck.some((o) => item.content.includes(o));
+  });
   return (
     <>
       <Card style={{ padding: '0 8px 10px 8px' }}>
@@ -57,10 +69,18 @@ export default function NotificationsListCard({
               notification={notification}
             />
           ))}
+        {selectedIndex === 3 &&
+          userContent?.length > 0 &&
+          userContent?.map((notification) => (
+            <NotificationListItem
+              key={notification._id}
+              notification={notification}
+            />
+          ))}
         {(selectedIndex === 0 && notifications?.length < 1) ||
         (selectedIndex === 1 && mentions?.length < 1) ||
         (selectedIndex === 2 && reactions?.length < 1) ||
-        selectedIndex === 3 ||
+        (selectedIndex === 3 && userContent?.length < 1) ||
         selectedIndex === 4 ||
         selectedIndex === 5 ||
         selectedIndex === 6 ||
