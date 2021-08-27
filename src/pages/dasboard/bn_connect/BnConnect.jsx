@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import {
   CircularProgress,
   Container,
@@ -7,17 +7,18 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import {
   QUERY_LOAD_SCROLLS,
-  //NOTIFICATIONS_SUBSCRIPTION,
+  QUERY_GET_USERS,
+  NOTIFICATIONS_SUBSCRIPTION,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Scroll from './scroll/Scroll';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
@@ -47,27 +48,33 @@ export default function BnConnect() {
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
 
-  const classes = useStyles();
-  /*
   const state = useSelector((state) => state);
   const user = state.auth.user;
 
-     const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
-    variables: { subscriberTopic: '*.' + user._id },
-  }); */
+  const classes = useStyles();
+
+  const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
+    variables: { _id: user._id },
+  });
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: {} },
+    variables: { data: { limit: 220 } },
   });
 
-  //console.log(subscribeData);
+  const { data: usersData } = useQuery(QUERY_GET_USERS, {
+    params: { data: { limit: 8 } },
+    context: { clientName: 'users' },
+  });
+
+  const suggestedUsers = usersData?.Users?.get?.filter(
+    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+  );
+  console.log(subscribeData);
   const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {
       variables: { data: { sortByField: 'comments', limit: 5 } },
     }
   );
-
-  useEffect(() => {}, [data]);
 
   return (
     <Screen>
@@ -123,7 +130,7 @@ export default function BnConnect() {
                   trending={trendingData?.Posts?.get}
                   loading={trendingLoading}
                 />
-                <SuggestedPeopleCard />
+                <SuggestedPeopleCard suggestedUsers={suggestedUsers} />
               </Hidden>
             </Grid>
           </Grid>

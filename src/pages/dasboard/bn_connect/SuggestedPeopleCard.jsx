@@ -10,12 +10,12 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import { PersonRounded } from '@material-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
+import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function SuggestedPeopleCard() {
+export default function SuggestedPeopleCard({ suggestedUsers }) {
   return (
     <Paper>
       <List
@@ -26,16 +26,24 @@ export default function SuggestedPeopleCard() {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           People you may know
         </Typography>
-        {[1, 2, 3].map(item => (
-          <ListItem key={item} divider>
+        {suggestedUsers?.slice(0, 3)?.map((item) => (
+          <ListItem key={item?._id} divider>
             <ListItemAvatar>
-              <Avatar>
-                <PersonRounded />
+              <Avatar
+                src={
+                  item?.profile_pic
+                    ? process.env.REACT_APP_BACKEND_URL + item?.profile_pic
+                    : ''
+                }
+              >
+                {item?.profile_pic ? '' : getUserInitials(item?.displayName)}
               </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary={<Typography variant='body2'>Andy Bo Wu</Typography>}
-              secondary='@andybowu'
+              primary={
+                <Typography variant='body2'>{item?.displayName}</Typography>
+              }
+              secondary={'@' + item?._id}
             />
             <ListItemIcon>
               {/* <SendRounded /> */}

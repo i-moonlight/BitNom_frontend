@@ -13,13 +13,19 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { PersonRounded } from '@material-ui/icons';
+import {
+  QUERY_GET_USERS,
+  //NOTIFICATIONS_SUBSCRIPTION,
+} from '../utilities/queries';
 import React from 'react';
+import { useQuery } from '@apollo/client';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
+import { getUserInitials } from '../../../utilities/Helpers';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -27,7 +33,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function People() {
   const classes = useStyles();
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
 
+  const { data: usersData } = useQuery(QUERY_GET_USERS, {
+    params: { data: { limit: 20 } },
+    context: { clientName: 'users' },
+  });
+
+  const suggestedUsers = usersData?.Users?.get?.filter(
+    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+  );
   return (
     <Screen>
       <div className={classes.root}>
@@ -39,7 +55,7 @@ export default function People() {
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-              <PeopleListCard />
+              <PeopleListCard suggestedUsers={suggestedUsers} />
             </Grid>
             <Grid item md={4} lg={3}>
               {/* <Hidden smDown></Hidden> */}
@@ -51,7 +67,7 @@ export default function People() {
   );
 }
 
-function PeopleListCard() {
+function PeopleListCard({ suggestedUsers }) {
   return (
     <Card>
       <Typography className='mx-4 my-1' variant='body1'>
@@ -60,25 +76,31 @@ function PeopleListCard() {
 
       <Divider />
       <CardContent>
-        {[1, 2, 3].map(item => (
-          <ListItem className='space-between' key={item} divider>
+        {suggestedUsers?.map((item) => (
+          <ListItem className='space-between' key={item?._id} divider>
             <ListItemAvatar>
-              <Avatar>
-                <PersonRounded />
+              <Avatar
+                src={
+                  item?.profile_pic
+                    ? process.env.REACT_APP_BACKEND_URL + item?.profile_pic
+                    : ''
+                }
+              >
+                {item?.profile_pic ? '' : getUserInitials(item?.displayName)}
               </Avatar>
             </ListItemAvatar>
             <ListItemText
               primary={
                 <div className='center-horizontal'>
                   <Typography variant='body2' className='mx-1'>
-                    Andy bo Wu{' '}
+                    {item?.displayName}{' '}
                   </Typography>
                   <Typography variant='body2' color='textSecondary'>
-                    @andybuwu
+                    {'@' + item?._id}
                   </Typography>
                 </div>
               }
-              secondary='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi, accusamus. Laudantium vitae corrupti totam sed molestias, veniam sunt vero distinctio.'
+              secondary={item?.bio}
             />
             <ListItemIcon
               aria-label='show more'

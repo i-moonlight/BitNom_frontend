@@ -10,6 +10,7 @@ import {
   Paper,
   Typography,
   useTheme,
+  Badge,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -28,6 +29,7 @@ import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
+  notifications,
   menuId,
   handleMenuOpen,
   notificationId,
@@ -119,7 +121,9 @@ export default function ProfileBar({
               aria-haspopup='true'
               onClick={handleNotificationsOpen}
             >
-              <Notifications />
+              <Badge color='primary' badgeContent={notifications}>
+                <Notifications />
+              </Badge>
             </IconButton>
             <IconButton
               size='small'

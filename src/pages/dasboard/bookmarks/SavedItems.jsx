@@ -24,11 +24,10 @@ import UserCard from '../bn_connect/UserCard';
 import {
   GET_BOOKMARKED_COMMENTS,
   GET_BOOKMARKED_SCROLLS,
-  QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -45,8 +44,8 @@ export default function SavedItems() {
   const [value, setValue] = React.useState(0);
   const [allItems, setAllItems] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
-  const [savedScrolls, setSavedScrolls] = useState([]);
-  const [savedComments, setSavedComments] = useState([]);
+  //const [savedScrolls, setSavedScrolls] = useState([]);
+  //const [savedComments, setSavedComments] = useState([]);
   //const [savedArticles, setSavedArticles] = useState([]);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
@@ -55,7 +54,6 @@ export default function SavedItems() {
 
   const classes = useStyles();
 
-  const { data } = useQuery(QUERY_LOAD_SCROLLS);
   const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
     GET_BOOKMARKED_SCROLLS,
     {
@@ -80,28 +78,29 @@ export default function SavedItems() {
   const handleChange = (event, value) => {
     setValue(value);
   };
-  useEffect(() => {
+  /*  useEffect(() => {
     setSavedScrolls(bookmarkedScrolls?.Posts?.getBookmarked);
   }, [bookmarkedScrolls]);
   useEffect(() => {
     setSavedComments(bookmarkedComments?.Comments?.getBookmarked);
-  }, [bookmarkedComments]);
-
+  }, [bookmarkedComments]); */
+  let savedScrolls = bookmarkedScrolls?.Posts?.getBookmarked;
+  let savedComments = bookmarkedComments?.Comments?.getBookmarked;
   useEffect(() => {
     setAllLoading(true);
     const all = [];
-    savedScrolls?.forEach(item => all.push(item));
-    savedComments?.forEach(item => all.push(item));
-    let allSaved = all?.map(item => {
+    savedScrolls?.forEach((item) => all.push(item));
+    savedComments?.forEach((item) => all.push(item));
+    let allSaved = all?.map((item) => {
       let newItem;
-      if (item.scroll) {
+      if (item?.scroll) {
         newItem = Object.assign(
-          { created: item.scroll ? item.creation_date : item.createdAt },
+          { created: item?.scroll ? item?.creation_date : item?.createdAt },
           item
         );
       } else {
         newItem = Object.assign(
-          { created: item.scroll ? item.creation_date : item.createdAt },
+          { created: item?.scroll ? item?.creation_date : item?.createdAt },
           item
         );
       }
@@ -109,9 +108,7 @@ export default function SavedItems() {
     });
     setAllItems(allSaved);
     setAllLoading(false);
-  }, [savedScrolls, savedComments]);
-
-  useEffect(() => {}, [data]);
+  });
 
   return (
     <Screen>
@@ -120,7 +117,7 @@ export default function SavedItems() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={open => setCreateScrollOpen(open)} />
+                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -203,11 +200,11 @@ export default function SavedItems() {
                     </Grid>
                   )}
                 {value === 0 &&
-                  allItems.length > 0 &&
+                  allItems?.length > 0 &&
                   !allLoading &&
                   allItems
                     ?.sort((a, b) => b.created - a.created)
-                    .map(item =>
+                    .map((item) =>
                       item.scroll ? (
                         <SavedComment
                           key={item._id}
@@ -219,11 +216,11 @@ export default function SavedItems() {
                         />
                       ) : (
                         <Scroll
-                          setOpen={open => setCreateScrollOpen(open)}
+                          setOpen={(open) => setCreateScrollOpen(open)}
                           setOpenFlag={setCreateFlagOpen}
                           setFlaggedResource={setFlaggedResource}
-                          setImagePreviewURL={url => setImagePreviewURL(url)}
-                          setImagePreviewOpen={open =>
+                          setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                          setImagePreviewOpen={(open) =>
                             setImagePreviewOpen(open)
                           }
                           setSharedPost={setSharedPost}
@@ -233,22 +230,22 @@ export default function SavedItems() {
                       )
                     )}
                 {value === 1 &&
-                  savedScrolls.length > 0 &&
-                  savedScrolls?.map(scroll => (
+                  savedScrolls?.length > 0 &&
+                  savedScrolls?.map((scroll) => (
                     <Scroll
-                      setOpen={open => setCreateScrollOpen(open)}
+                      setOpen={(open) => setCreateScrollOpen(open)}
                       setOpenFlag={setCreateFlagOpen}
                       setFlaggedResource={setFlaggedResource}
-                      setImagePreviewURL={url => setImagePreviewURL(url)}
-                      setImagePreviewOpen={open => setImagePreviewOpen(open)}
+                      setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                      setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
                       setSharedPost={setSharedPost}
                       key={scroll?._id}
                       scroll={scroll}
                     />
                   ))}
                 {value === 2 &&
-                  savedComments.length > 0 &&
-                  savedComments?.map(comment => (
+                  savedComments?.length > 0 &&
+                  savedComments?.map((comment) => (
                     <SavedComment
                       key={comment._id}
                       comment={comment}
@@ -258,9 +255,9 @@ export default function SavedItems() {
                       setImagePreviewOpen={setImagePreviewOpen}
                     />
                   ))}
-                {((value == 0 && allItems.length < 1) ||
-                  (value == 1 && savedScrolls.length < 1) ||
-                  (value == 2 && savedComments.length < 1)) &&
+                {((value == 0 && allItems?.length < 1) ||
+                  (value == 1 && savedScrolls?.length < 1) ||
+                  (value == 2 && savedComments?.length < 1)) &&
                 !scrollsLoading &&
                 !commentsLoading &&
                 !allLoading ? (
@@ -279,7 +276,7 @@ export default function SavedItems() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={open => setCreateScrollOpen(open)}
+        setOpen={(open) => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -301,7 +298,7 @@ export default function SavedItems() {
       />
       <FlagResourceModal
         openFlag={createFlagOpen}
-        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
+        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />
