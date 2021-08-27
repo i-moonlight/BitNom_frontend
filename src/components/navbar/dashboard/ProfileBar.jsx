@@ -29,6 +29,7 @@ import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
+  notifications,
   menuId,
   handleMenuOpen,
   notificationId,
@@ -120,7 +121,7 @@ export default function ProfileBar({
               aria-haspopup='true'
               onClick={handleNotificationsOpen}
             >
-              <Badge color='primary' badgeContent={0}>
+              <Badge color='primary' badgeContent={notifications}>
                 <Notifications />
               </Badge>
             </IconButton>
