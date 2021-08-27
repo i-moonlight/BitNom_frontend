@@ -32,7 +32,12 @@ export default function Investor() {
 
   return (
     <Wrapper investor>
-      <Container component={Paper} maxWidth='lg' className={classes.container}>
+      <Container
+        elevation={0}
+        component={Paper}
+        maxWidth='lg'
+        className={classes.container}
+      >
         <Grid container spacing={2}>
           <Grid item md={2} lg={3}></Grid>
           <Grid item xs={12} sm={12} md={8} lg={6}>
