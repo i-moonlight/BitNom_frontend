@@ -37,7 +37,7 @@ import Privacy from "./pages/welcome/privacy/Privacy";
 import RoadMap from "./pages/welcome/roadmap/RoadMap";
 import Terms from "./pages/welcome/terms/Terms";
 import Redirect from "./utilities/Redirect";
-
+import { print } from "graphql";
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -119,12 +119,16 @@ const uploadLink = createUploadLink({
   },
 });
 
-const splitNotificationAndUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === "notifications",
-  notificationsLink,
+const profileUploadLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "users",
+  profileLink,
   uploadLink
 );
-
+const btnMainLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "notifications",
+  notificationsLink,
+  profileUploadLink
+);
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -134,16 +138,12 @@ const splitLink = split(
     );
   },
   wsLink,
-  splitNotificationAndUploadLink
+  btnMainLink
 );
 
 const client = new ApolloClient({
+  link: splitLink,
   cache: new InMemoryCache(),
-  link: ApolloLink.split(
-    (operation) => operation.getContext().clientName === "users",
-    profileLink,
-    splitLink
-  ),
 });
 
 export const AppContainers = () => {

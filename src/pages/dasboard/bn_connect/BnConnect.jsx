@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client";
 import {
   CircularProgress,
   Container,
@@ -6,25 +6,25 @@ import {
   Hidden,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import ImagePreview from '../../../components/ImagePreview';
-import Screen from '../../../components/Screen';
+} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import ImagePreview from "../../../components/ImagePreview";
+import Screen from "../../../components/Screen";
 import {
   QUERY_LOAD_SCROLLS,
-  //NOTIFICATIONS_SUBSCRIPTION,
-} from '../utilities/queries';
-import CreateScrollCard from './CreateScrollCard';
-import CreatePost from './scroll/CreatePost';
-import FlagResourceModal from './popovers/FlagResourceModal';
-//import { useSelector } from 'react-redux';
-import Scroll from './scroll/Scroll';
-import SuggestedPeopleCard from './SuggestedPeopleCard';
-import TrendingPostsCard from './TrendingPostsCard';
-import UpdateComment from './scroll/comment/UpdateComment';
-import UpdatePost from './scroll/UpdatePost';
-import UserCard from './UserCard';
 
+  //NOTIFICATIONS_SUBSCRIPTION,
+} from "../utilities/queries";
+import CreateScrollCard from "./CreateScrollCard";
+import CreatePost from "./scroll/CreatePost";
+import FlagResourceModal from "./popovers/FlagResourceModal";
+// import { useSelector } from "react-redux";
+import Scroll from "./scroll/Scroll";
+import SuggestedPeopleCard from "./SuggestedPeopleCard";
+import TrendingPostsCard from "./TrendingPostsCard";
+import UpdateComment from "./scroll/comment/UpdateComment";
+import UpdatePost from "./scroll/UpdatePost";
+import UserCard from "./UserCard";
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
@@ -49,8 +49,7 @@ export default function BnConnect() {
 
   const classes = useStyles();
   /*
-  const state = useSelector((state) => state);
-  const user = state.auth.user;
+
 
      const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { subscriberTopic: '*.' + user._id },
@@ -63,7 +62,7 @@ export default function BnConnect() {
   const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {
-      variables: { data: { sortByField: 'comments', limit: 5 } },
+      variables: { data: { sortByField: "comments", limit: 5 } },
     }
   );
 
@@ -72,7 +71,7 @@ export default function BnConnect() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -87,9 +86,9 @@ export default function BnConnect() {
                 setOpenVideo={setOpenVideo}
                 setOpen={(open) => setCreateScrollOpen(open)}
               />
-              <Grid item align='center'>
+              <Grid item align="center">
                 {loading && (
-                  <CircularProgress color='primary' size={60} thickness={6} />
+                  <CircularProgress color="primary" size={60} thickness={6} />
                 )}
               </Grid>
               {data?.Posts?.get &&
@@ -110,8 +109,8 @@ export default function BnConnect() {
                   />
                 ))}
               {data?.Posts?.get?.length < 1 && (
-                <Grid align='center'>
-                  <Typography color='primary'>
+                <Grid align="center">
+                  <Typography color="primary">
                     There are no scrolls yet..Let yours be the first!!
                   </Typography>
                 </Grid>
