@@ -10,22 +10,21 @@ import {
 import React, { useState } from 'react';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
-import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import {
   QUERY_GET_USERS,
   NOTIFICATIONS_SUBSCRIPTION,
+  QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
+import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import { useSelector } from 'react-redux';
 import Scroll from './scroll/Scroll';
-import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
-import UserCard from './UserCard';
 import UpdateComment from './scroll/comment/UpdateComment';
-import CreatePost from './scroll/CreatePost';
-
+import UpdatePost from './scroll/UpdatePost';
+import UserCard from './UserCard';
 const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),

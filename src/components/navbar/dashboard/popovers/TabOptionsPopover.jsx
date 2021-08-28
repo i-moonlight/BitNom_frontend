@@ -1,6 +1,7 @@
 import { MenuItem, Popover } from '@material-ui/core';
 import { ChevronRightRounded } from '@material-ui/icons';
 import React from 'react';
+
 export default function TabOptionsPopover({
   tabOptionAnchorEl,
   tabOptionsId,

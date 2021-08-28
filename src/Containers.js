@@ -12,7 +12,6 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
-import { print } from 'graphql';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
@@ -33,13 +32,13 @@ import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
 import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
-import Investor from './pages/welcome/investor/Investor';
 import Landing from './pages/welcome/landing/Landing';
 import Privacy from './pages/welcome/privacy/Privacy';
 import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
 import Redirect from './utilities/Redirect';
-
+import { print } from 'graphql';
+import Investor from './pages/welcome/investor/Investor';
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -121,12 +120,16 @@ const uploadLink = createUploadLink({
   },
 });
 
-const splitNotificationAndUploadLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'notifications',
-  notificationsLink,
+const profileUploadLink = ApolloLink.split(
+  operation => operation.getContext().clientName === 'users',
+  profileLink,
   uploadLink
 );
-
+const btnMainLink = ApolloLink.split(
+  operation => operation.getContext().clientName === 'notifications',
+  notificationsLink,
+  profileUploadLink
+);
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -136,16 +139,12 @@ const splitLink = split(
     );
   },
   wsLink,
-  splitNotificationAndUploadLink
+  btnMainLink
 );
 
 const client = new ApolloClient({
+  link: splitLink,
   cache: new InMemoryCache(),
-  link: ApolloLink.split(
-    operation => operation.getContext().clientName === 'users',
-    profileLink,
-    splitLink
-  ),
 });
 
 export const AppContainers = () => {
