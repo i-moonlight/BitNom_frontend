@@ -1,16 +1,21 @@
 import { AppBar, Avatar, Container, useTheme } from '@material-ui/core';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import InvestorTabs from './InvestorTabs';
 
-export default function NavBarInvestor() {
+export default function NavBarInvestor({ onTabValue }) {
   const [tabValue, setTabValue] = useState(0);
   const theme = useTheme();
   const history = useHistory();
   const palette = useSelector(state => state.theme.palette);
+
+  useEffect(() => {
+    () => onTabValue(tabValue);
+  });
 
   return (
     <AppBar
@@ -31,7 +36,10 @@ export default function NavBarInvestor() {
 
           <InvestorTabs
             value={tabValue}
-            handleChange={(e, val) => setTabValue(val)}
+            handleChange={(e, val) => {
+              setTabValue(val);
+              onTabValue(val);
+            }}
           />
 
           <div></div>

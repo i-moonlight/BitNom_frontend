@@ -6,7 +6,7 @@ import NavBarInvestor from '../../components/navbar/investor/NavBarInvestor';
 import NavBarLanding from '../../components/navbar/landing/NavBarLanding';
 import Footer from './Footer';
 
-export default function Wrapper({ children, investor }) {
+export default function Wrapper({ children, investor, onTabValue }) {
   const history = useHistory();
   const state = useSelector(state => state);
   const user = state.auth.user;
@@ -36,7 +36,11 @@ export default function Wrapper({ children, investor }) {
         overflowY: 'hidden',
       }}
     >
-      {investor ? <NavBarInvestor /> : <NavBarLanding />}
+      {investor ? (
+        <NavBarInvestor onTabValue={onTabValue} />
+      ) : (
+        <NavBarLanding />
+      )}
       {children}
       <Footer />
     </div>
