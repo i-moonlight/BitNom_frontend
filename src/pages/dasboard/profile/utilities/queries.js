@@ -1,5 +1,5 @@
 // Profile Form GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const MUTATION_ADD_WORK = gql`
   mutation {
@@ -112,7 +112,7 @@ export const QUERY_FETCH_PROFILE = gql`
         blocked
         portfolio
         website
-        address
+        # address
         location
         gender
         cover_pic
@@ -204,7 +204,7 @@ export const QUERY_FETCH_PROFILE_BACKUP = gql`
         blocked
         portfolio
         website
-        address
+        # address
         location
         gender
         cover_pic

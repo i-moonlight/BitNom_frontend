@@ -12,6 +12,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { makeStyles } from "@material-ui/core";
 import { createUploadLink } from "apollo-upload-client";
 import { createClient } from "graphql-ws";
+import { print } from "graphql";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import CreatePassword from "./pages/auth/CreatePassword";
