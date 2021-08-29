@@ -7,7 +7,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImagePreview from "../../../components/ImagePreview";
 import Screen from "../../../components/Screen";
 import {
@@ -75,6 +75,22 @@ export default function BnConnect() {
   );
   //onesignal
   const OneSignal = window.OneSignal || [];
+  useEffect(() => {
+    OneSignal.push(() => {
+      OneSignal.init({
+        appId: "97869740-c9fd-42b4-80de-bfd368eb1715",
+      });
+
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        if (isEnabled) {
+          var externalUserId = user._id;
+          OneSignal.setExternalUserId(externalUserId);
+        } else {
+          console.log("Push notifications are not enabled yet.");
+        }
+      });
+    });
+  }, [data]);
 
   return (
     <Screen>
