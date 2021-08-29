@@ -35,22 +35,22 @@ export default function NotificationListItem({ notification }) {
   const getReadStatus = (notification) => {
     let read;
     notification.to_notify?.forEach((item) => {
-      if (item.user_id == user._id) {
-        read = item.read;
+      if (item?.user_id == user._id) {
+        read = item?.read;
       }
     });
     return read;
   };
-  const getNotifying = (notification) => {
+  const getNotifyingUser = (notification) => {
     let name;
     notification?.content_entities?.forEach((item) => {
-      if (item.type === 'resource_tag') {
-        name = item.url.displayName;
+      if (item?.type === 'resource_tag') {
+        name = item?.url?.displayName;
       }
     });
     return name;
   };
-  const userInitials = getUserInitials(getNotifying(notification));
+  const userInitials = getUserInitials(getNotifyingUser(notification));
   return (
     <>
       <Card elevation={0}>

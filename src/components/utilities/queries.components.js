@@ -6,7 +6,7 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
       get(limit: 5) {
         _id
         content
-        # tag
+        tag
         content_entities {
           type
           offset
@@ -22,23 +22,23 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
           }
         }
         image
-        #to_notify {
-        #  _id
-        #  user_id
-        #  read
-        #  seen
-        #}
+        to_notify {
+          _id
+          user_id
+          read
+          seen
+        }
         notify_subscribers_to
         date
       }
     }
   }
 `;
-export const NEW_NOTIFICATION_COUNT = gql`
-  subscription liveUpdates($_id: String!) {
-    liveUpdates(_id: $_id) {
-      count
-      id
+
+export const MARK_NOTIFICAION_AS_SEEN = gql`
+  mutation ($_id: ID) {
+    Notification {
+      markAsSeen(_id: $_id)
     }
   }
 `;
