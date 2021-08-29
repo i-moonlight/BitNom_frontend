@@ -27,8 +27,6 @@ import logo_light from "../../../assets/logo_light.svg";
 import { getUserInitials } from "../../../utilities/Helpers";
 import Button from "../../Button";
 import { useStyles } from "../../utilities/styles.components";
-import { useSubscription } from "@apollo/client";
-import { NEW_NOTIFICATION_COUNT } from "../../utilities/queries.components";
 export default function ProfileBar({
   notifications,
   menuId,
@@ -43,16 +41,7 @@ export default function ProfileBar({
   const theme = useTheme();
 
   const userInitials = getUserInitials(user?.displayName);
-  const { data: newCount } = useSubscription(NEW_NOTIFICATION_COUNT, {
-    variables: { _id: "Joe" },
-    context: { clientName: "notifications" },
-  });
 
-  const new_notification =
-    newCount && newCount.liveUpdates ? newCount.liveUpdates : null;
-  console.log("new notification ", new_notification);
-  const userCount = new_notification?.find(({ id }) => id === user._id);
-  console.log("new notification ", userCount);
   return (
     <Box className={classes.root}>
       <Container>
