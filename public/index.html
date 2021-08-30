@@ -26,6 +26,18 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>BitNorm</title>
+    <script
+      src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+      async=""
+    ></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function () {
+        OneSignal.init({
+          appId: "97869740-c9fd-42b4-80de-bfd368eb1715",
+        });
+      });
+    </script>
   </head>
 
   <body>

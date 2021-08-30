@@ -160,6 +160,7 @@ export default function Login() {
                       onFailure={failureGoogle}
                       render={renderProps => (
                         <Button
+                          // color='inherit'
                           onClick={renderProps.onClick}
                           textCase
                           google

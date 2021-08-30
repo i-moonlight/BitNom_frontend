@@ -18,6 +18,7 @@ export default function ServiceCard() {
     <div>
       <Card variant={'outlined'}>
         <CardMedia
+          component='img'
           style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
           // title='Contemplative Reptile'

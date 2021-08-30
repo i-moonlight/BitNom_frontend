@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const MUTATION_FOLLOW_USER = gql`
   mutation ($data: IFollow) {

@@ -1,22 +1,24 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { EditRounded } from '@material-ui/icons';
+import { AddRounded, EditRounded } from '@material-ui/icons';
 import React from 'react';
 import Button from '../../../components/Button';
 
-export default function AboutCard() {
+export default function AboutCard({ profile }) {
   return (
     <Card className='mb-3'>
       <CardContent>
         <div className='space-between center-horizontal'>
           <Typography>About</Typography>
-          <Button textCase variant='text' startIcon={<EditRounded />}>
-            Edit
+          <Button
+            textCase
+            variant='text'
+            startIcon={profile?.bio ? <EditRounded /> : <AddRounded />}
+          >
+            {profile?.bio ? 'Edit Bio' : 'Add Bio'}
           </Button>
         </div>
         <Typography variant='body2' className='mt-2'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-          exercitationem possimus ea vero architecto ipsa non expedita ut in
-          inventore.
+          {profile?.bio}
         </Typography>
       </CardContent>
     </Card>

@@ -2,13 +2,15 @@ import {
   Card,
   CardContent,
   Divider,
-  IconButton,
   MenuItem,
   Typography,
 } from '@material-ui/core';
 import { AddRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
+import Button from '../../../components/Button';
 import AditionalInfoForm from './forms/AditionalInfoForm';
+import GenderForm from './forms/GenderForm';
+import LanguagesForm from './forms/LanguagesForm';
 
 export default function AdditionalInfoCard({ profile }) {
   const [showForm, setShowForm] = useState(false);
@@ -29,20 +31,23 @@ export default function AdditionalInfoCard({ profile }) {
         <div className='space-between center-horizontal mb-2'>
           <Typography>Additional Information (Optional)</Typography>
           {!showForm && (
-            <IconButton
+            <Button
               onClick={() => {
                 setShowFormMenu(!showFormMenu);
               }}
+              startIcon={<AddRounded />}
+              variant='text'
               color='primary'
               size='small'
               className='m-1 p-1'
+              textCase
             >
-              <AddRounded />
+              Edit
               <Card
                 style={{
                   position: 'absolute',
                   top: 33,
-                  right: 5,
+                  right: 0,
                   visibility: showFormMenu ? 'visible' : 'hidden',
                 }}
                 variant='outlined'
@@ -54,7 +59,7 @@ export default function AdditionalInfoCard({ profile }) {
                     setShowForm(true);
                   }}
                 >
-                  Course
+                  Courses
                 </MenuItem>
                 <MenuItem
                   button
@@ -63,7 +68,7 @@ export default function AdditionalInfoCard({ profile }) {
                     setShowForm(true);
                   }}
                 >
-                  Project
+                  Projects
                 </MenuItem>
                 <MenuItem
                   button
@@ -72,7 +77,7 @@ export default function AdditionalInfoCard({ profile }) {
                     setShowForm(true);
                   }}
                 >
-                  Language
+                  Languages
                 </MenuItem>
                 <MenuItem
                   button
@@ -84,11 +89,21 @@ export default function AdditionalInfoCard({ profile }) {
                   Gender
                 </MenuItem>
               </Card>
-            </IconButton>
+            </Button>
           )}
         </div>
-        {showForm && (
-          <AditionalInfoForm onClose={onClose} formType={formType} />
+        {showForm && formType == 'gender' && (
+          <GenderForm onClose={onClose} profile={profile} />
+        )}
+        {showForm && formType == 'language' && (
+          <LanguagesForm onClose={onClose} profile={profile} />
+        )}
+        {showForm && formType !== ('gender' && 'language') && (
+          <AditionalInfoForm
+            onClose={onClose}
+            formType={formType}
+            profile={profile}
+          />
         )}
         {!showForm && <Divider />}
         <div className='mt-3'>

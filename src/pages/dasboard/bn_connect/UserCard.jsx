@@ -49,6 +49,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
         <CardMedia
           style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
+          component='img'
           // title='Contemplative Reptile'
         />
         <CardContent

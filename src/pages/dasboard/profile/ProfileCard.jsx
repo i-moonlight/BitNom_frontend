@@ -14,22 +14,23 @@ import {
   StorageRounded,
   TimelineRounded,
 } from '@material-ui/icons';
+import moment from 'moment';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function ProfileCard() {
-  const state = useSelector(state => state);
-  const user = state.auth.user;
-  const userInitials = getUserInitials(user?.displayName);
+export default function ProfileCard({ profile }) {
+  // const state = useSelector(state => state);
+  // const user = state.auth.user;
+  const profileInitials = getUserInitials(profile?.displayName);
 
   return (
     <div>
       <Card className='mb-3' variant={'outlined'}>
         <CardMedia
-          style={{ height: 120 }}
-          image={'https://picsum.photos/300/200'}
+          style={{ height: 120, backgroundColor: '#ddd' }}
+          image={profile?.cover_pic}
+          component='img'
           // title='Contemplative Reptile'
         />
         <CardContent
@@ -42,7 +43,7 @@ export default function ProfileCard() {
           <div className='d-flex'>
             <div>
               <Avatar
-                src={user?.profile_pic}
+                src={profile?.profile_pic}
                 variant='rounded'
                 style={{
                   backgroundColor: '#fed132',
@@ -51,13 +52,13 @@ export default function ProfileCard() {
                   height: 80,
                 }}
               >
-                {userInitials}
+                {profileInitials}
               </Avatar>
               <Typography className='pt-1' variant='body2'>
-                {user?.displayName}
+                {profile?.displayName}
               </Typography>
               <Typography gutterBottom color='textSecondary' variant='body2'>
-                {`@${user?._id}`}
+                {`@${profile?._id}`}
               </Typography>
             </div>
 
@@ -84,7 +85,7 @@ export default function ProfileCard() {
               variant='text'
               color='inherit'
             >
-              Joined April 2016
+              Joined {moment(profile?.date).format('LL')}
             </Button>
             <Button
               startIcon={<Language />}
@@ -92,7 +93,7 @@ export default function ProfileCard() {
               variant='text'
               color='inherit'
             >
-              Website
+              {profile?.website || 'Website'}
             </Button>
             <Button
               startIcon={<AssignmentIndOutlined />}
@@ -100,14 +101,30 @@ export default function ProfileCard() {
               variant='text'
               color='inherit'
             >
-              Portfolio
+              {profile?.portfolio || 'Portfolio'}
             </Button>
           </div>
           <div className='my-4 space-between'>
-            <IconInfo icon={<StarRounded />} value='39634' text='Reputation' />
-            <IconInfo icon={<StorageRounded />} value='108' text='BN Token' />
-            <IconInfo icon={<TimelineRounded />} value='$200' text='Earnings' />
-            <IconInfo icon={<PeopleRounded />} value='47' text='Connections' />
+            <IconInfo
+              icon={<StarRounded />}
+              value={profile?.reputation}
+              text='Reputation'
+            />
+            <IconInfo
+              icon={<StorageRounded />}
+              value={profile?.bnTokens?.earned}
+              text='BN Token'
+            />
+            <IconInfo
+              icon={<TimelineRounded />}
+              value={'$' + (profile?.earnings || '0')}
+              text='Earnings'
+            />
+            <IconInfo
+              icon={<PeopleRounded />}
+              value={profile?.connections}
+              text='Connections'
+            />
           </div>
         </CardContent>
       </Card>
