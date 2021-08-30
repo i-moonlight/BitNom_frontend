@@ -62,7 +62,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable(sink => {
+    return new Observable((sink) => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -70,7 +70,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: err => {
+          error: (err) => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -94,7 +94,7 @@ class WebSocketLink extends ApolloLink {
 
 //  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: process.env.REACT_APP_SOCKET_URL,
+  url: process.env.REACT_APP_SOCKET_URL + 'notifications/graphql',
 });
 
 const profileLink = from([
@@ -122,12 +122,12 @@ const uploadLink = createUploadLink({
 });
 
 const profileUploadLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'users',
+  (operation) => operation.getContext().clientName === 'users',
   profileLink,
   uploadLink
 );
 const btnMainLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'notifications',
+  (operation) => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
@@ -214,7 +214,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
