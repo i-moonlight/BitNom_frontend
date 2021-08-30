@@ -7,6 +7,7 @@ import {
   split,
 } from '@apollo/client';
 import { ApolloLink, Observable } from '@apollo/client/core';
+
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
@@ -156,6 +157,7 @@ export const AppContainers = () => {
         <ApolloProvider client={client}>
           <Switch>
             {/* Landing */}
+
             <Route exact component={Landing} path='/' />
             <Route exact component={Faqs} path='/faqs' />
             <Route exact component={Terms} path='/terms' />
@@ -192,6 +194,7 @@ export const AppContainers = () => {
               path='/auth/password_reset/:key'
             />
             {/* Dashboard */}
+
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />

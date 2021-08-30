@@ -1,6 +1,22 @@
 // BN Dashboard GraphQL Queries
 import { gql } from "@apollo/client";
 
+export const MUTATION_FOLLOW_USER = gql`
+  mutation ($data: IFollow) {
+    Users {
+      follow(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_UNFOLLOW_USER = gql`
+  mutation ($data: IFollow) {
+    Users {
+      unFollow(data: $data)
+    }
+  }
+`;
+
 export const MUTATION_CREATE_FILE_VIDEO = gql`
   mutation ($data: ISaveVideo!) {
     Video {
@@ -289,6 +305,13 @@ export const DELETE_NOTIFICAION = gql`
   mutation ($_id: ID!) {
     Notification {
       delete(_id: $_id)
+    }
+  }
+`;
+export const MUTATION_MUTE_NOTIFICATIONS = gql`
+  mutation ($resource: IResource!) {
+    Subscription {
+      mute(resource: $resource)
     }
   }
 `;
