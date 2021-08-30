@@ -8,6 +8,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import {
@@ -25,6 +27,7 @@ import TrendingPostsCard from './TrendingPostsCard';
 import UpdateComment from './scroll/comment/UpdateComment';
 import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
+import { QUERY_FETCH_PROFILE } from '../profile/utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,11 +56,25 @@ export default function BnConnect() {
 
   const classes = useStyles();
 
+  const {
+    error: profileError,
+    //  loading,
+    data: profileData,
+  } = useQuery(QUERY_FETCH_PROFILE, {
+    context: { clientName: 'users' },
+  });
+
+  console.log('profileErr:  ', profileError);
+
   const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
     variables: { _id: user._id },
   });
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: { limit: 220 } },
+  });
+
+  const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
+    variables: { data: { author: user?._id, limit: 500 } },
   });
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -78,12 +95,29 @@ export default function BnConnect() {
 
   return (
     <Screen>
+      <ToastContainer
+        position='bottom-left'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className={classes.root}>
         <Container maxWidth='lg'>
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard
+                  profileData={profileData?.Users?.profile}
+                  scrolls={userScrolls?.Posts?.get?.length}
+                  following={profileData?.Users?.profile?.following?.length}
+                  followers={profileData?.Users?.profile?.followers?.length}
+                  setOpen={(open) => setCreateScrollOpen(open)}
+                />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -130,7 +164,10 @@ export default function BnConnect() {
                   trending={trendingData?.Posts?.get}
                   loading={trendingLoading}
                 />
-                <SuggestedPeopleCard suggestedUsers={suggestedUsers} />
+                <SuggestedPeopleCard
+                  profileData={profileData?.Users?.profile}
+                  suggestedUsers={suggestedUsers}
+                />
               </Hidden>
             </Grid>
           </Grid>

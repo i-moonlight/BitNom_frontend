@@ -110,6 +110,12 @@ export const QUERY_FETCH_PROFILE = gql`
         type
         reputation
         blocked
+        followers {
+          userId
+        }
+        following {
+          userId
+        }
         portfolio
         website
         address
