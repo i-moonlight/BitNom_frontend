@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const MUTATION_CREATE_FILE_VIDEO = gql`
   mutation ($data: ISaveVideo!) {

@@ -19,7 +19,12 @@ export default function LinkCard({ link }) {
       variant='outlined'
     >
       <CardActionArea onClick={() => window.open(url, '_blank')}>
-        <CardMedia style={{ height: 140 }} image={image} title={title} />
+        <CardMedia
+          component='img'
+          style={{ height: 140 }}
+          image={image}
+          title={title}
+        />
         <CardContent>
           <Typography gutterBottom variant='body1'>
             {title}

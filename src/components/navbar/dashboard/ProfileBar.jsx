@@ -27,7 +27,6 @@ import logo_light from '../../../assets/logo_light.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
-
 export default function ProfileBar({
   notifications,
   menuId,
@@ -35,14 +34,12 @@ export default function ProfileBar({
   notificationId,
   handleNotificationsOpen,
 }) {
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
-
   const userInitials = getUserInitials(user?.displayName);
-
   return (
     <Box className={classes.root}>
       <Container>
@@ -76,7 +73,6 @@ export default function ProfileBar({
               </Typography>
             </Hidden>
           </div>
-
           <Paper
             variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
             elevation={0}
@@ -110,7 +106,6 @@ export default function ProfileBar({
               <Search />
             </IconButton>
           </Paper>
-
           <div className={classes.sectionDesktop}>
             <IconButton
               size='small'
@@ -132,7 +127,6 @@ export default function ProfileBar({
             >
               <ForumRounded />
             </IconButton>
-
             <Button
               textCase
               className='py-0 ms-3'
@@ -146,7 +140,7 @@ export default function ProfileBar({
               <Avatar
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: '#FED132',
                   marginRight: 12,
                   width: 30,
                   height: 30,

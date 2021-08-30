@@ -46,8 +46,9 @@ export default function HonorCard({ profile }) {
             }) => (
               <HonorFragment
                 key={_id}
-                honor={name}
-                institution={organization}
+                id={_id}
+                name={name}
+                organization={organization}
                 dateFrom={start_date}
                 dateTo={end_date}
                 expires={expires}
