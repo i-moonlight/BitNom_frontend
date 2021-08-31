@@ -77,10 +77,6 @@ export default function BnConnect() {
   const OneSignal = window.OneSignal || [];
   useEffect(() => {
     OneSignal.push(() => {
-      OneSignal.init({
-        appId: "97869740-c9fd-42b4-80de-bfd368eb1715",
-      });
-
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (isEnabled) {
           var externalUserId = user._id;
