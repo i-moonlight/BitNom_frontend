@@ -5,7 +5,7 @@ import {
   MARK_NOTIFICAION_AS_READ,
   GET_USER_NOTIFICATIONS,
   //MARK_NOTIFICAION_AS_SEEN,
-  MUTATION_UNSUBSCRIBE,
+  MUTATION_MUTE_NOTIFICATIONS,
   DELETE_NOTIFICAION,
 } from '../../../../pages/dasboard/utilities/queries';
 
@@ -28,13 +28,13 @@ export default function NotificationOptionPopover({
   });
 
   const [
-    unsubscribe,
+    mute,
     {
-      data: unsubscribeData,
+      data: muteData,
       //  loading,
       //   error
     },
-  ] = useMutation(MUTATION_UNSUBSCRIBE, {
+  ] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
     context: { clientName: 'notifications' },
   });
 
@@ -46,7 +46,7 @@ export default function NotificationOptionPopover({
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
@@ -54,9 +54,9 @@ export default function NotificationOptionPopover({
     handleNotificationOptionClose();
   };
 
-  const handleUnsubscribe = () => {
+  const handleMuteNotifications = () => {
     console.log(notification?.content_entities[0]?.resource);
-    unsubscribe({
+    mute({
       variables: {
         resource: {
           _id: notification?.content_entities[0]?.resource?._id,
@@ -66,7 +66,7 @@ export default function NotificationOptionPopover({
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
@@ -93,14 +93,14 @@ export default function NotificationOptionPopover({
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
     });
     handleNotificationOptionClose();
   };
-  console.log(markAsReadData, unsubscribeData, deleteData);
+  console.log(markAsReadData, muteData, deleteData);
   return (
     <Popover
       anchorEl={notificationOptionAnchorEl}
@@ -123,7 +123,7 @@ export default function NotificationOptionPopover({
         <ListItem button onClick={handleDeleteNotification} divider>
           <ListItemText secondary='Remove This Notification' />
         </ListItem>
-        <ListItem button divider onClick={handleUnsubscribe}>
+        <ListItem button divider onClick={handleMuteNotifications}>
           <ListItemText
             secondary='Turn off Notifications from 
    this account'

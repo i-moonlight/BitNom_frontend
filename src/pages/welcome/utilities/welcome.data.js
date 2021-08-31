@@ -2,6 +2,13 @@ import media2Img from '../../../assets/landing/img7.png';
 import media1Img from '../../../assets/landing/img8.png';
 import media3Img from '../../../assets/landing/img9.png';
 
+import ecosystem1 from '../../../assets/investor/ecosystem1.svg';
+import ecosystem2 from '../../../assets/investor/ecosystem2.svg';
+import ecosystem3 from '../../../assets/investor/ecosystem3.svg';
+import ecosystem4 from '../../../assets/investor/ecosystem4.svg';
+import ecosystem5 from '../../../assets/investor/ecosystem5.svg';
+import ecosystem6 from '../../../assets/investor/ecosystem6.svg';
+
 export const platformLayers = [
   {
     image: media2Img,
@@ -20,12 +27,45 @@ export const platformLayers = [
   },
 ];
 
+export const ecosystem = [
+  {
+    image: ecosystem1,
+    title: 'AI Engine',
+    text: 'Our premium service use advance machine learning training, deployment and inferencing to make accurate predictions on your behalf also featuring an integratable service forfor partners to use as part of their service offerings.',
+  },
+  {
+    image: ecosystem2,
+    title: 'Big Data Engine',
+    text: 'Advanced crypto data warehouse with all the crypto data you would need across the WWW and have easy integratable APIs to access this service',
+  },
+  {
+    image: ecosystem3,
+    title: 'Community Engine',
+    text: 'Featuring crypto forums, blogs and an integrated chat platform for social collaboration.',
+  },
+  {
+    image: ecosystem4,
+    title: 'Indexation Engine',
+    text: 'Our real time coin data service featuring real time analytics and data integration across cryptocurrencies and technologies.',
+  },
+  {
+    image: ecosystem5,
+    title: 'Market Analysis Engine',
+    text: 'Our fundamentals and latest market news analytics service integrated with the partners such as Coingecko',
+  },
+  {
+    image: ecosystem6,
+    title: 'Trading Engine',
+    text: 'Our full fledged trading platform featuring trade management with copy trades and portfolio management wallet integration and payment platform integrations.',
+  },
+];
+
 export const roadMap = [
   {
     year: '2019',
     quaters: [
       {
-        name: 'Q1 2019',
+        name: 'Q1',
         text: null,
         list: [
           'Version 1.0 whitepaper',
@@ -35,7 +75,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q2 2019',
+        name: 'Q2',
         text: null,
         list: [
           'Listing of BN on major exchanges',
@@ -44,7 +84,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q3 2019',
+        name: 'Q3',
         text: null,
         list: [
           'BNConnect feature release marketing',
@@ -53,7 +93,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q4 2019',
+        name: 'Q4',
         text: null,
         list: ['BNMarket platform development'],
       },
@@ -63,7 +103,7 @@ export const roadMap = [
     year: '2020',
     quaters: [
       {
-        name: 'Q1 2020',
+        name: 'Q1',
         text: null,
         list: [
           'Version 1.0 whitepaper',
@@ -73,7 +113,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q2 2020',
+        name: 'Q2',
         text: null,
         list: [
           'Listing of BN on major exchanges',
@@ -82,7 +122,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q3 2020',
+        name: 'Q3',
         text: null,
         list: [
           'BNConnect feature release marketing',
@@ -91,7 +131,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q4 2020',
+        name: 'Q4',
         text: null,
         list: ['BNMarket platform development'],
       },
@@ -101,7 +141,7 @@ export const roadMap = [
     year: '2021',
     quaters: [
       {
-        name: 'Q1 2021',
+        name: 'Q1',
         text: null,
         list: [
           'Version 1.0 whitepaper',
@@ -111,7 +151,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q2 2021',
+        name: 'Q2',
         text: null,
         list: [
           'Listing of BN on major exchanges',
@@ -120,7 +160,7 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q3 2021',
+        name: 'Q3',
         text: null,
         list: [
           'BNConnect feature release marketing',
@@ -129,11 +169,30 @@ export const roadMap = [
         ],
       },
       {
-        name: 'Q4 2021',
+        name: 'Q4',
         text: null,
         list: ['BNMarket platform development'],
       },
     ],
+  },
+];
+
+export const healthCheck = [
+  {
+    title: 'What problem are we solving?',
+    text: 'In a space where information is ridiculously fragmented, BitNorm provides unified, real-time insights across every crypto project’s full range of activities, on every  blockchain (platform) all in one place.',
+  },
+  {
+    title: 'Do you have a prototype?',
+    text: 'In a space where information is ridiculously fragmented, BitNorm provides unified, real-time insights across every crypto project’s full range of activities, on every  blockchain (platform) all in one place.',
+  },
+  {
+    title: 'Is it scalable?',
+    text: 'In a space where information is ridiculously fragmented, BitNorm provides unified, real-time insights across every crypto project’s full range of activities, on every  blockchain (platform) all in one place.',
+  },
+  {
+    title: 'Revenue projections?',
+    text: 'In a space where information is ridiculously fragmented, BitNorm provides unified, real-time insights across every crypto project’s full range of activities, on every  blockchain (platform) all in one place.',
   },
 ];
 

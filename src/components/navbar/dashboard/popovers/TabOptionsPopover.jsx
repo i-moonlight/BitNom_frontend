@@ -1,4 +1,4 @@
-import { MenuItem, Popover, Badge } from "@material-ui/core";
+import { MenuItem, Popover } from "@material-ui/core";
 import { ChevronRightRounded } from "@material-ui/icons";
 import React from "react";
 
@@ -29,10 +29,8 @@ export default function TabOptionsPopover({
             }}
             onClick={handleTabOptionsClose}
           >
-            <Badge badgeContent={4} color="primary">
-              {label}
-              <ChevronRightRounded />
-            </Badge>
+            {label}
+            <ChevronRightRounded />
           </MenuItem>
         ))}
     </Popover>

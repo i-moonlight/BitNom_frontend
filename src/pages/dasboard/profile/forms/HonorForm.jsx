@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   CardContent,
@@ -7,35 +8,146 @@ import {
   Typography,
 } from '@material-ui/core';
 import { SearchRounded } from '@material-ui/icons';
-import React from 'react';
+import { Alert } from '@material-ui/lab';
+import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
+import { honorInitialValues } from '../utilities/profile.initialValues';
+import {
+  MUTATION_ADD_HONOR,
+  MUTATION_REMOVE_HONOR,
+  MUTATION_UPDATE_HONOR,
+  QUERY_FETCH_PROFILE,
+} from '../utilities/profile.queries';
 import { useStyles } from '../utilities/profile.styles';
+import { honorValidation } from '../utilities/profile.validationSchemas';
 
-export default function WorkForm({ onClose }) {
+export default function HonorForm({ onClose, updateData }) {
+  const [expires, setExpires] = useState(updateData?.expires);
+  const [localError, setLocalError] = useState(false);
   const classes = useStyles();
+
+  const [
+    addHonor,
+    {
+      // addError,
+      // data,
+      addLoading,
+    },
+  ] = useMutation(MUTATION_ADD_HONOR, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    updateHonor,
+    {
+      // updateError,
+      //  data,
+      updateLoading,
+    },
+  ] = useMutation(MUTATION_UPDATE_HONOR, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    removeHonor,
+    {
+      // updateError,
+      //  data,
+      removeLoading,
+    },
+  ] = useMutation(MUTATION_REMOVE_HONOR, {
+    context: { clientName: 'users' },
+  });
 
   return (
     <div className='mt-2'>
-      <Form>
+      <Form
+        initialValues={updateData || honorInitialValues}
+        validationSchema={honorValidation}
+        onSubmit={(
+          { organization, name, start_date, end_date, url },
+          { resetForm }
+        ) => {
+          setLocalError(null);
+
+          console.log('Submitting 1');
+
+          if (!expires && end_date == '') {
+            setLocalError('End Date required if the credential expires');
+            return;
+          }
+
+          const IHonors = expires
+            ? {
+                organization,
+                name,
+                start_date,
+                expires,
+                url,
+              }
+            : {
+                organization,
+                name,
+                start_date,
+                end_date,
+                url,
+              };
+
+          console.log(IHonors);
+
+          updateData ? console.log('upd') : console.log('add');
+
+          updateData
+            ? updateHonor({
+                variables: {
+                  id: updateData?.id,
+                  data: IHonors,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              })
+            : addHonor({
+                variables: {
+                  data: IHonors,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              });
+        }}
+      >
         <Card className={classes.formCard}>
           <CardContent>
             <TextField
               required
               fullWidth
               name='name'
-              labelTop='Name'
-              placeholder='Type to search'
+              labelTop='Name of honor'
+              placeholder={updateData?.name || 'Type to search'}
               adornmentType='start'
               adornment={<SearchRounded className='p-' />}
             />
             <TextField
               required
               fullWidth
-              name='organizaton'
+              name='organization'
               labelTop='Issuing Organization'
-              placeholder='Degree Type'
+              placeholder={updateData?.title || 'Degree Type'}
             />
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -48,7 +160,7 @@ export default function WorkForm({ onClose }) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  disabled={expires}
                   type='date'
                   name='end_date'
                   labelTop='End Date'
@@ -57,7 +169,13 @@ export default function WorkForm({ onClose }) {
             </Grid>
             <FormControlLabel
               control={
-                <Checkbox checked={false} onChange={null} name='checkedA' />
+                <Checkbox
+                  checked={expires}
+                  onChange={() => {
+                    setExpires(!expires);
+                  }}
+                  name='checkedA'
+                />
               }
               label={
                 <Typography variant='body2'>
@@ -69,10 +187,11 @@ export default function WorkForm({ onClose }) {
               required
               fullWidth
               multiline
-              name='credenial'
+              name='url'
               labelTop='Credential Url'
               placeholder='Credential / Award URL'
             />
+            {localError && <Alert severity='error'>{localError}</Alert>}
             <div className='d-flex justify-content-end'>
               <Button
                 onClick={onClose}
@@ -82,8 +201,38 @@ export default function WorkForm({ onClose }) {
               >
                 Cancel
               </Button>
-              <Button size='small' className='ms-2'>
-                Save
+              {updateData && (
+                <Button
+                  disabled={removeLoading}
+                  size='small'
+                  className='ms-2'
+                  onClick={() => {
+                    removeHonor({
+                      variables: {
+                        id: updateData?.id,
+                      },
+                      refetchQueries: [
+                        {
+                          query: QUERY_FETCH_PROFILE,
+                          context: { clientName: 'users' },
+                        },
+                      ],
+                    }).then(() => {
+                      // resetForm();
+                      onClose();
+                    });
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
+              <Button
+                disabled={addLoading || updateLoading}
+                size='small'
+                className='ms-2'
+                submit
+              >
+                {updateData ? 'Update' : 'Save'}
               </Button>
             </div>
           </CardContent>

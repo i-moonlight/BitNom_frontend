@@ -7,12 +7,12 @@ import {
   split,
 } from "@apollo/client";
 import { ApolloLink, Observable } from "@apollo/client/core";
+
 import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { makeStyles } from "@material-ui/core";
 import { createUploadLink } from "apollo-upload-client";
 import { createClient } from "graphql-ws";
-import { print } from "graphql";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import CreatePassword from "./pages/auth/CreatePassword";
@@ -38,7 +38,8 @@ import Privacy from "./pages/welcome/privacy/Privacy";
 import RoadMap from "./pages/welcome/roadmap/RoadMap";
 import Terms from "./pages/welcome/terms/Terms";
 import Redirect from "./utilities/Redirect";
-
+import { print } from "graphql";
+import Investor from "./pages/welcome/investor/Investor";
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -93,7 +94,7 @@ class WebSocketLink extends ApolloLink {
 
 //  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: process.env.REACT_APP_SOCKET_URL,
+  url: process.env.REACT_APP_SOCKET_URL + "/notifications/graphql",
 });
 
 const profileLink = from([
@@ -120,12 +121,16 @@ const uploadLink = createUploadLink({
   },
 });
 
-const splitNotificationAndUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === "notifications",
-  notificationsLink,
+const profileUploadLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "users",
+  profileLink,
   uploadLink
 );
-
+const btnMainLink = ApolloLink.split(
+  (operation) => operation.getContext().clientName === "notifications",
+  notificationsLink,
+  profileUploadLink
+);
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -135,16 +140,12 @@ const splitLink = split(
     );
   },
   wsLink,
-  splitNotificationAndUploadLink
+  btnMainLink
 );
 
 const client = new ApolloClient({
+  link: splitLink,
   cache: new InMemoryCache(),
-  link: ApolloLink.split(
-    (operation) => operation.getContext().clientName === "users",
-    profileLink,
-    splitLink
-  ),
 });
 
 export const AppContainers = () => {
@@ -156,6 +157,7 @@ export const AppContainers = () => {
         <ApolloProvider client={client}>
           <Switch>
             {/* Landing */}
+
             <Route exact component={Landing} path="/" />
             <Route exact component={Faqs} path="/faqs" />
             <Route exact component={Terms} path="/terms" />
@@ -165,6 +167,8 @@ export const AppContainers = () => {
             <Route exact component={FeatureRequest} path="/feature_request" />
             <Route exact component={RoadMap} path="/roadmap" />
             <Route exact component={Redirect} path="/redirect" />
+            {/* Investor  */}
+            <Route exact component={Investor} path="/investors" />
             {/* Auth */}
             <Route exact component={Login} path="/auth/login" />
             <Route exact component={Signup} path="/auth/signup" />
@@ -190,6 +194,7 @@ export const AppContainers = () => {
               path="/auth/password_reset/:key"
             />
             {/* Dashboard */}
+
             <Route exact component={BnConnect} path="/dashboard" />
             <Route exact component={BnServices} path="/dashboard/services" />
             <Route exact component={Events} path="/dashboard/events" />

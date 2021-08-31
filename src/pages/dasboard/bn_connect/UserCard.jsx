@@ -24,8 +24,8 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function UserCard({ setOpen }) {
-  const state = useSelector(state => state);
+export default function UserCard({ setOpen, followers, following, scrolls }) {
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();
@@ -36,7 +36,6 @@ export default function UserCard({ setOpen }) {
       : 160;
 
   const userInitials = getUserInitials(user?.displayName);
-
   return (
     <div
       ref={card}
@@ -50,6 +49,7 @@ export default function UserCard({ setOpen }) {
         <CardMedia
           style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
+          component='img'
           // title='Contemplative Reptile'
         />
         <CardContent
@@ -110,7 +110,7 @@ export default function UserCard({ setOpen }) {
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body2'>0</Typography>
+                <Typography variant='body2'>{scrolls}</Typography>
               </div>
             </div>
             <div>
@@ -121,7 +121,7 @@ export default function UserCard({ setOpen }) {
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body2'>0</Typography>
+                <Typography variant='body2'>{following}</Typography>
               </div>
             </div>
             <div>
@@ -132,7 +132,7 @@ export default function UserCard({ setOpen }) {
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body2'>0</Typography>
+                <Typography variant='body2'>{followers}</Typography>
               </div>
             </div>
           </div>
