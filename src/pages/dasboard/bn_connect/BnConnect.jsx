@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
   CircularProgress,
   Container,
@@ -14,8 +14,8 @@ import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import {
   QUERY_GET_USERS,
-  NOTIFICATIONS_SUBSCRIPTION,
   QUERY_LOAD_SCROLLS,
+  QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
@@ -27,7 +27,7 @@ import TrendingPostsCard from './TrendingPostsCard';
 import UpdateComment from './scroll/comment/UpdateComment';
 import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
-import { QUERY_FETCH_PROFILE } from '../profile/utilities/queries';
+import { getFeed } from '../utilities/functions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,24 +53,21 @@ export default function BnConnect() {
 
   const state = useSelector((state) => state);
   const user = state.auth.user;
-
   const classes = useStyles();
 
   const {
-    error: profileError,
     //  loading,
     data: profileData,
   } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
 
-  console.log('profileErr:  ', profileError);
+  let profile = profileData?.Users?.profile;
 
-  const { data: subscribeData } = useSubscription(NOTIFICATIONS_SUBSCRIPTION, {
-    variables: { _id: user._id },
-  });
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: { limit: 220 } },
+    variables: {
+      data: { ids: getFeed(profile), limit: 220 },
+    },
   });
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
@@ -85,11 +82,13 @@ export default function BnConnect() {
   const suggestedUsers = usersData?.Users?.get?.filter(
     (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
-  console.log(subscribeData);
+
   const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {
-      variables: { data: { sortByField: 'comments', limit: 5 } },
+      variables: {
+        data: { ids: getFeed(profile), sortByField: 'comments', limit: 5 },
+      },
     }
   );
 
@@ -112,7 +111,6 @@ export default function BnConnect() {
             <Hidden mdDown>
               <Grid item lg={3}>
                 <UserCard
-                  profileData={profileData?.Users?.profile}
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
@@ -174,6 +172,7 @@ export default function BnConnect() {
         </Container>
       </div>
       <CreatePost
+        profileData={profileData?.Users?.profile}
         open={createScrollOpen}
         setOpen={(open) => setCreateScrollOpen(open)}
         openImage={openImage}

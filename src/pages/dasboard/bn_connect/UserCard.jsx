@@ -20,7 +20,7 @@ import {
 } from '@material-ui/icons';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
@@ -29,7 +29,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();
-
+  const location = useLocation();
   const sticky =
     window.innerHeight < card?.current?.clientHeight + 176
       ? window.innerHeight - (card?.current?.clientHeight + 24)
@@ -174,7 +174,14 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
           </IconButton>
         </CardActions>
       </Card>
-      <Button onClick={setOpen} color='primary' fullWidth>
+      <Button
+        style={{
+          display: location.pathname.includes('people') ? 'none' : 'block',
+        }}
+        onClick={setOpen}
+        color='primary'
+        fullWidth
+      >
         Start Scroll
       </Button>
     </div>

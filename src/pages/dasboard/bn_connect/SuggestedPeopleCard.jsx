@@ -17,9 +17,11 @@ import { useMutation } from '@apollo/client';
 import {
   MUTATION_FOLLOW_USER,
   MUTATION_UNFOLLOW_USER,
+  //QUERY_LOAD_SCROLLS,
+  QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
+//import { getFeed } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { QUERY_FETCH_PROFILE } from '../profile/utilities/queries';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   const getFollowStatus = (user) => {
@@ -46,6 +48,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
             key={user?._id}
             getFollowStatus={getFollowStatus}
             user={user}
+            profileData={profileData}
           />
         ))}
         <Divider />
@@ -94,6 +97,10 @@ function ListItemComponent({ user, getFollowStatus }) {
           query: QUERY_FETCH_PROFILE,
           context: { clientName: 'users' },
         },
+        /*  {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        }, */
       ],
     });
     if (followData?.Users?.follow == true)
@@ -114,6 +121,10 @@ function ListItemComponent({ user, getFollowStatus }) {
           query: QUERY_FETCH_PROFILE,
           context: { clientName: 'users' },
         },
+        /*  {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        }, */
       ],
     });
     if (unFollowData?.Users?.unFollow == true)

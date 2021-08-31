@@ -59,7 +59,7 @@ export default function NavBar() {
       context: { clientName: 'notifications' },
     }
   );
-  console.log('dfsdlffl', subscriptionData);
+  console.log('Subscription Data', subscriptionData);
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);

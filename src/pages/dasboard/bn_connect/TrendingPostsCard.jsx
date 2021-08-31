@@ -15,8 +15,6 @@ import React from 'react';
 import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
-  console.log(trending, loading);
-
   return (
     <Paper
       style={{
@@ -37,7 +35,7 @@ export default function TrendingPostsCard({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending?.slice(0, 3).map(post => (
+          trending?.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar

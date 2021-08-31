@@ -84,7 +84,7 @@ export default function NotificationOptionPopover({
   ] = useMutation(MARK_NOTIFICAION_AS_READ, {
     context: { clientName: 'notifications' },
   });
-  console.log(notification);
+
   const handleMarkNotificationRead = () => {
     markAsRead({
       variables: {
