@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="BitNorm Website" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
       rel="stylesheet"
@@ -26,18 +26,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>BitNorm</title>
-    <script
-      src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
-      async=""
-    ></script>
-    <script>
-      window.OneSignal = window.OneSignal || [];
-      OneSignal.push(function () {
-        OneSignal.init({
-          appId: "97869740-c9fd-42b4-80de-bfd368eb1715",
-        });
-      });
-    </script>
   </head>
 
   <body>
@@ -53,5 +41,17 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script
+      src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+      async=""
+    ></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function () {
+        OneSignal.init({
+          appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+        });
+      });
+    </script>
   </body>
 </html>

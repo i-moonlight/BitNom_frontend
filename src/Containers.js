@@ -41,6 +41,8 @@ import { print } from 'graphql';
 import Investor from './pages/welcome/investor/Investor';
 import { useDispatch } from 'react-redux';
 import { checkSessionTimeOut } from './store/actions/authActions';
+import { changeTheme } from './store/actions/themeActions';
+import { useThemeDetector } from './hooks/useThemeDetector';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -153,12 +155,17 @@ const client = new ApolloClient({
 });
 
 export const AppContainers = () => {
+  const isDarkTheme = useThemeDetector();
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
     dispatch(checkSessionTimeOut());
-  }, []);
+
+    isDarkTheme
+      ? dispatch(changeTheme('dark'))
+      : dispatch(changeTheme('light'));
+  }, [isDarkTheme]);
 
   return (
     <div className={classes.root}>

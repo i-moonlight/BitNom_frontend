@@ -1,21 +1,20 @@
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { AppBar, Divider, useTheme } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useSubscription } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
+import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import {
+  MARK_NOTIFICAION_AS_SEEN,
+  QUERY_GET_USER_NOTIFICATIONS,
+} from '../../utilities/queries.components';
+import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
 import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import StatusBar from '../StatusBar';
 import TabsBar from './TabsBar';
-
-import {
-  QUERY_GET_USER_NOTIFICATIONS,
-  MARK_NOTIFICAION_AS_SEEN,
-} from '../../utilities/queries.components';
-import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
-import { checkSessionTimeOut } from '../../../store/actions/authActions';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
