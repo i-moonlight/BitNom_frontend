@@ -1,5 +1,14 @@
 import React from 'react';
-import { Card, Grid, Divider, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import {
+  Card,
+  Grid,
+  Divider,
+  Typography,
+  CardHeader,
+  IconButton,
+} from '@material-ui/core';
+import { ArrowBack } from '@material-ui/icons';
 import NotificationListItem from './NotificationListItem';
 
 export default function NotificationsListCard({
@@ -37,6 +46,30 @@ export default function NotificationsListCard({
   return (
     <>
       <Card style={{ padding: '0 8px 10px 8px' }}>
+        <CardHeader
+          avatar={
+            <Link to='/dashboard'>
+              <IconButton
+                size='small'
+                className='m-1 p-1'
+                aria-label='back'
+                color='inherit'
+              >
+                <ArrowBack />
+              </IconButton>
+            </Link>
+          }
+          title={
+            <div className='center-horizontal'>
+              <Typography variant='body1'>Notifications</Typography>
+            </div>
+          }
+          subheader={
+            <Typography variant='body2' color='textSecondary'>
+              All your BNSocial notifications in one place.
+            </Typography>
+          }
+        />
         <div className='space-between'>
           <Typography className='mx-4 my-1' variant='body1'>
             Notifications

@@ -29,6 +29,7 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -43,6 +44,7 @@ export default function CreatePost({
   setOpenImage,
   setImageDisabled,
   openVideo,
+  profileData,
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
@@ -55,7 +57,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const [
     createPost,
@@ -68,12 +70,21 @@ export default function CreatePost({
 
   const userInitials = getUserInitials(user?.displayName);
 
-  const onCreatePost = async ICreatePost => {
+  const onCreatePost = async (ICreatePost) => {
     await createPost({
       variables: {
         data: ICreatePost,
       },
-      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+      refetchQueries: [
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        },
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { author: user?._id, limit: 500 } },
+        },
+      ],
     });
     setScrollText('');
     setScrollImages([]);
@@ -88,7 +99,7 @@ export default function CreatePost({
 
   useEffect(() => {}, [data]);
 
-  const handleCreatePost = e => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     let sharedResource = sharedPost
@@ -180,7 +191,7 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -194,7 +205,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);

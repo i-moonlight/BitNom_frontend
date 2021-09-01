@@ -57,14 +57,16 @@ export default function NavBar() {
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      context: { clientName: 'notifications' },
+      // context: { clientName: "notifications" },
     }
   );
-
-  console.log('dfsdlffl', subscriptionData);
+  console.log('Subscription Data', subscriptionData);
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
+    return () => {
+      setNotSeen(subscriptionData?.liveUpdates?.count);
+    };
   }, [subscriptionData]);
 
   const handleMenuOpen = event => {
@@ -126,9 +128,9 @@ export default function NavBar() {
   useEffect(() => {
     dispatch(checkSessionTimeOut());
     let notSeenArray = [];
-    response?.forEach(notification => {
-      notification.to_notify.forEach(item => {
-        if (item?.user_id == user._id && item?.seen == 'false') {
+    response?.forEach((notification) => {
+      notification.to_notify.forEach((item) => {
+        if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
       });

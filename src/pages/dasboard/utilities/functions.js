@@ -9,18 +9,18 @@ export const contentBodyFactory = (resource) => {
       //let ending = newContent?.substr(entity.offset + entity.length);
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'resource_tag') {
-      let link = `'https://bitnorm.com/users/${entity.url}'`;
+      let link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity.url}'`;
       let replacement =
         ' ' + '<a href=' + link + '>' + '@' + entity.url + '</a>';
       let toReplace = ' ' + '@' + entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'hashtag') {
-      let link = `'https://bitnorm.com/hashtags/${entity.url}'`;
+      let link = `${process.env.REACT_APP_BACKEND_URL}/hashtags/${entity.url}'`;
       let replacement = ' ' + '<a href=' + link + '>' + entity.url + '</a>';
       let toReplace = ' ' + entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'cashtag') {
-      let link = `'https://bitnorm.com/cashtags/${entity.url}'`;
+      let link = `${process.env.REACT_APP_BACKEND_URL}/cashtags/${entity.url}'`;
       let replacement = ' ' + '<a href=' + link + '>' + entity.url + '</a>';
       let toReplace = ' ' + entity.url;
       newContent = newContent?.replace(toReplace, replacement);
@@ -39,7 +39,7 @@ export const notificationBodyFactory = (notification) => {
   let newContent = notification?.content;
   notification?.content_entities?.forEach((entity) => {
     if (entity?.type === 'resource_tag') {
-      let link = `'https://bitnorm.com/users/${entity?.url?._id}'`;
+      let link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity?.url?._id}'`;
       let replacement =
         ' ' +
         '<a href=' +
@@ -69,6 +69,15 @@ export const truncateText = (str, n) => {
       ? subString.substr(0, subString.lastIndexOf(' '))
       : subString) + '&hellip;'
   );
+};
+
+export const getFeed = (profileData) => {
+  let ids = [];
+  profileData?.following?.forEach((element) => {
+    ids.push(element.userId);
+  });
+  ids.push(profileData?._id);
+  return ids;
 };
 
 export const getCreationTime = (time) => {
