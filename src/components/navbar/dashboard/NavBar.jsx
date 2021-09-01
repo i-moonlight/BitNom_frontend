@@ -1,7 +1,7 @@
 import { AppBar, Divider, useTheme } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useSubscription } from '@apollo/client';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
@@ -15,6 +15,7 @@ import {
   MARK_NOTIFICAION_AS_SEEN,
 } from '../../utilities/queries.components';
 import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
+import { checkSessionTimeOut } from '../../../store/actions/authActions';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
@@ -23,15 +24,16 @@ const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
   const [value, setValue] = useState(0);
+  const [notSeen, setNotSeen] = useState(0);
   const [tabOptions, setTabOptions] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const [notSeen, setNotSeen] = useState(0);
 
   const theme = useTheme();
+  const dispatch = useDispatch();
   const state = useSelector(state => state);
   const user = state.auth.user;
 
@@ -59,11 +61,13 @@ export default function NavBar() {
       context: { clientName: 'notifications' },
     }
   );
+
   console.log('dfsdlffl', subscriptionData);
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
   }, [subscriptionData]);
+
   const handleMenuOpen = event => {
     setMenuAnchorEl(event.currentTarget);
   };
@@ -96,6 +100,7 @@ export default function NavBar() {
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
+
   const handleMarkAsSeen = () => {
     if (notSeen < 1) return;
     markAsSeen({
@@ -120,6 +125,7 @@ export default function NavBar() {
   let response = data?.Notification?.get;
 
   useEffect(() => {
+    dispatch(checkSessionTimeOut());
     let notSeenArray = [];
     response?.forEach(notification => {
       notification.to_notify.forEach(item => {
