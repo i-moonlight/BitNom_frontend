@@ -157,7 +157,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     //setFollowing(following - 1);
   };
   return (
-    <ListItem divider style={{ display: status && 'none' }}>
+    <ListItem divider>
       <ListItemAvatar>
         <Avatar
           src={
