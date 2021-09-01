@@ -1,25 +1,25 @@
-import { AppBar, Divider, useTheme } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
-import { useQuery, useMutation, useSubscription } from "@apollo/client";
-import { useSelector } from "react-redux";
-import MenuPopover from "./popovers/MenuPopover";
-import NotificationOptionPopover from "./popovers/NotificationOptionPopover";
-import NotificationsPopover from "./popovers/NotificationsPopover";
-import TabOptionsPopover from "./popovers/TabOptionsPopover";
-import ProfileBar from "./ProfileBar";
-import StatusBar from "../StatusBar";
-import TabsBar from "./TabsBar";
+import { AppBar, Divider, useTheme } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, useSubscription } from '@apollo/client';
+import { useSelector } from 'react-redux';
+import MenuPopover from './popovers/MenuPopover';
+import NotificationOptionPopover from './popovers/NotificationOptionPopover';
+import NotificationsPopover from './popovers/NotificationsPopover';
+import TabOptionsPopover from './popovers/TabOptionsPopover';
+import ProfileBar from './ProfileBar';
+import StatusBar from '../StatusBar';
+import TabsBar from './TabsBar';
 
 import {
   QUERY_GET_USER_NOTIFICATIONS,
   MARK_NOTIFICAION_AS_SEEN,
-} from "../../utilities/queries.components";
-import { NOTIFICATIONS_SUBSCRIPTION } from "../../../pages/dasboard/utilities/queries";
+} from '../../utilities/queries.components';
+import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
 
-const menuId = "menu-profile";
-const tabOptionsId = "menu-tab-options";
-const notificationId = "menu-notifications";
-const notificationOptionId = "menu-notifications-option";
+const menuId = 'menu-profile';
+const tabOptionsId = 'menu-tab-options';
+const notificationId = 'menu-notifications';
+const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
   const [value, setValue] = useState(0);
@@ -41,14 +41,14 @@ export default function NavBar() {
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
   const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
-    context: { clientName: "notifications" },
+    context: { clientName: 'notifications' },
   });
 
   const [markAsSeen, { data: markAsSeenData }] = useMutation(
     MARK_NOTIFICAION_AS_SEEN,
     {
       variables: { _id: user?._id },
-      context: { clientName: "notifications" },
+      context: { clientName: 'notifications' },
     }
   );
 
@@ -59,10 +59,13 @@ export default function NavBar() {
       // context: { clientName: "notifications" },
     }
   );
-  console.log("dfsdlffl", subscriptionData);
+  console.log('Subscription Data', subscriptionData);
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
+    return () => {
+      setNotSeen(subscriptionData?.liveUpdates?.count);
+    };
   }, [subscriptionData]);
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
@@ -105,7 +108,7 @@ export default function NavBar() {
       refetchQueries: [
         {
           query: QUERY_GET_USER_NOTIFICATIONS,
-          context: { clientName: "notifications" },
+          context: { clientName: 'notifications' },
         },
       ],
     });
@@ -123,7 +126,7 @@ export default function NavBar() {
     let notSeenArray = [];
     response?.forEach((notification) => {
       notification.to_notify.forEach((item) => {
-        if (item?.user_id === user._id && item?.seen === "false") {
+        if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
       });
@@ -133,7 +136,7 @@ export default function NavBar() {
 
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       style={{
         background: theme.palette.background.default,
       }}

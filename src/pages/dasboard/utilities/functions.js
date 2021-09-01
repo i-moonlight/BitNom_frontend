@@ -71,6 +71,15 @@ export const truncateText = (str, n) => {
   );
 };
 
+export const getFeed = (profileData) => {
+  let ids = [];
+  profileData?.following?.forEach((element) => {
+    ids.push(element.userId);
+  });
+  ids.push(profileData?._id);
+  return ids;
+};
+
 export const getCreationTime = (time) => {
   let ms = new Date().getTime() - time;
   let seconds = Math.round(ms / 1000);

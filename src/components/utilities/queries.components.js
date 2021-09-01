@@ -17,7 +17,7 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
           }
           url {
             _id
-            image
+            profile_pic
             displayName
           }
         }

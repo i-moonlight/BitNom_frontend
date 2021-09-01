@@ -1,5 +1,100 @@
 // BN Dashboard GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
+
+export const QUERY_FETCH_PROFILE = gql`
+  query {
+    Users {
+      profile {
+        _id
+        displayName
+        bio
+        profile_pic
+        displayName
+        type
+        reputation
+        blocked
+        followers {
+          userId
+        }
+        following {
+          userId
+        }
+        portfolio
+        website
+        address
+        location
+        gender
+        cover_pic
+        loginType
+        lastSeen
+        paidUntil
+        date
+        bnTokens {
+          walletAddress
+          earned
+          received
+        }
+        socials {
+          social {
+            _id
+            name
+            image
+          }
+          profile
+        }
+        email {
+          address
+          verified
+        }
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
+        education {
+          _id
+          institution
+          major
+          start_date
+          end_date
+          current
+          description
+        }
+        honors {
+          _id
+          organization
+          name
+          start_date
+          end_date
+          expires
+          url
+        }
+        courses {
+          _id
+          name
+          year
+        }
+        projects {
+          _id
+          name
+          year
+        }
+        skills {
+          _id
+          name
+        }
+        languages {
+          _id
+          name
+        }
+      }
+    }
+  }
+`;
 
 export const MUTATION_FOLLOW_USER = gql`
   mutation ($data: IFollow) {
@@ -107,7 +202,7 @@ export const MUTATION_CREATE_COMMENT = gql`
         _id
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -170,7 +265,7 @@ export const QUERY_LOAD_SCROLLS = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -185,7 +280,7 @@ export const QUERY_LOAD_SCROLLS = gql`
             video
             author {
               _id
-              image
+              profile_pic
               displayName
               reputation
               type
@@ -229,15 +324,15 @@ export const QUERY_LOAD_SCROLLS = gql`
           }
           url
         }
-        # reacted_to_by {
-        #   _id
-        #   reaction_type
-        #   user_id {
-        #     _id
-        #     displayName
-        #     image
-        #   }
-        # }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            profile_pic
+          }
+        }
       }
     }
   }
@@ -260,7 +355,7 @@ export const GET_USER_NOTIFICATIONS = gql`
           }
           url {
             _id
-            image
+            profile_pic
             displayName
           }
         }
@@ -333,7 +428,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -348,7 +443,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
             video
             author {
               _id
-              image
+              profile_pic
               displayName
               reputation
               type
@@ -391,15 +486,15 @@ export const GET_BOOKMARKED_SCROLLS = gql`
           }
           url
         }
-        # reacted_to_by {
-        #   _id
-        #   reaction_type
-        #   user_id {
-        #     _id
-        #     displayName
-        #     image
-        #   }
-        # }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            profile_pic
+          }
+        }
       }
     }
   }
@@ -414,7 +509,7 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -443,15 +538,15 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
           }
           url
         }
-        # reacted_to_by {
-        #   _id
-        #   reaction_type
-        #   user_id {
-        #     _id
-        #     displayName
-        #     image
-        #   }
-        # }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            profile_pic
+          }
+        }
       }
     }
   }
@@ -468,7 +563,7 @@ export const QUERY_GET_COMMENTS = gql`
           type
           displayName
           reputation
-          image
+          profile_pic
         }
         replies
         creation_date
@@ -489,15 +584,15 @@ export const QUERY_GET_COMMENTS = gql`
           }
           url
         }
-        # reacted_to_by {
-        #   _id
-        #   reaction_type
-        #   user_id {
-        #     _id
-        #     displayName
-        #     image
-        #   }
-        # }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            profile_pic
+          }
+        }
         scroll
         response_to {
           _id
@@ -521,7 +616,7 @@ export const GET_BOOKMARKED_COMMENTS = gql`
           type
           displayName
           reputation
-          image
+          profile_pic
         }
         replies
         creation_date
@@ -536,15 +631,15 @@ export const GET_BOOKMARKED_COMMENTS = gql`
           }
           url
         }
-        # reacted_to_by {
-        #   _id
-        #   reaction_type
-        #   user_id {
-        #     _id
-        #     displayName
-        #     image
-        #   }
-        # }
+        reacted_to_by {
+          _id
+          reaction_type
+          user_id {
+            _id
+            displayName
+            profile_pic
+          }
+        }
         reactions {
           celebrations
           likes

@@ -1,5 +1,5 @@
 // Auth Pages GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const MUTATION_CREATE_USER = gql`
   mutation (
@@ -33,7 +33,7 @@ export const MUTATION_LOGIN_USER = gql`
     Users {
       login(username: $username, password: $password) {
         _id
-        # referralCode
+        referralCode
         displayName
         bio
         # profile_pic
@@ -129,10 +129,10 @@ export const MUTATION_UPDATE_PROFILE_INFO = gql`
     Users {
       update(data: { displayName: $displayName, bio: $bio }) {
         _id
-        # referralCode
+        referralCode
         displayName
         bio
-        # profile_pic
+        profile_pic
         email {
           address
           verified
@@ -157,10 +157,10 @@ export const MUTATION_LOGIN_USER_2 = gql`
         blocked
         portfolio
         website
-        # address
-        # location
-        # gender
-        # cover_pic
+        address
+        location
+        gender
+        cover_pic
         loginType
         lastSeen
         paidUntil
@@ -182,51 +182,51 @@ export const MUTATION_LOGIN_USER_2 = gql`
           address
           verified
         }
-        # work {
-        #   _id
-        #   company
-        #   title
-        #   start_date
-        #   end_date
-        #   current
-        #   description
-        # }
-        # education {
-        #   _id
-        #   institution
-        #   major
-        #   start_date
-        #   end_date
-        #   current
-        #   description
-        # }
-        # honors {
-        #   _id
-        #   organization
-        #   name
-        #   start_date
-        #   end_date
-        #   expires
-        #   url
-        # }
-        # courses {
-        #   _id
-        #   name
-        #   year
-        # }
-        # projects {
-        #   _id
-        #   name
-        #   year
-        # }
-        # skills {
-        #   _id
-        #   name
-        # }
-        # languages {
-        #   _id
-        #   name
-        # }
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
+        education {
+          _id
+          institution
+          major
+          start_date
+          end_date
+          current
+          description
+        }
+        honors {
+          _id
+          organization
+          name
+          start_date
+          end_date
+          expires
+          url
+        }
+        courses {
+          _id
+          name
+          year
+        }
+        projects {
+          _id
+          name
+          year
+        }
+        skills {
+          _id
+          name
+        }
+        languages {
+          _id
+          name
+        }
       }
     }
   }

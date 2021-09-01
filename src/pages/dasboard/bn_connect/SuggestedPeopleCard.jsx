@@ -9,19 +9,25 @@ import {
   ListItemText,
   Paper,
   Typography,
+  CircularProgress,
+  Grid,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { useMutation } from '@apollo/client';
 import {
   MUTATION_FOLLOW_USER,
   MUTATION_UNFOLLOW_USER,
+  //QUERY_LOAD_SCROLLS,
+  QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
+//import { getFeed } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { QUERY_FETCH_PROFILE } from '../profile/utilities/queries';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
+  const [notFollowed, setNotFollowed] = useState();
+
   const getFollowStatus = (user) => {
     let status;
     profileData?.following?.forEach((item) => {
@@ -31,6 +37,21 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     });
     return status;
   };
+  useEffect(() => {
+    let notFollowed = [];
+    suggestedUsers?.forEach((user) => {
+      if (!getFollowStatus(user)) notFollowed.push(user);
+    });
+    return () => {
+      setNotFollowed(notFollowed);
+    };
+  });
+
+  /*   let notFollowed = [];
+  suggestedUsers?.forEach((user) => {
+    if (!getFollowStatus(user)) notFollowed.push(user);
+  }); */
+
   return (
     <Paper>
       <List
@@ -41,11 +62,17 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           People you may know
         </Typography>
-        {suggestedUsers?.slice(0, 3)?.map((user) => (
+        {!notFollowed && (
+          <Grid align='center'>
+            <CircularProgress color='primary' size={24} thickness={4} />
+          </Grid>
+        )}
+        {notFollowed?.slice(0, 3)?.map((user) => (
           <ListItemComponent
             key={user?._id}
             getFollowStatus={getFollowStatus}
             user={user}
+            profileData={profileData}
           />
         ))}
         <Divider />
@@ -94,6 +121,10 @@ function ListItemComponent({ user, getFollowStatus }) {
           query: QUERY_FETCH_PROFILE,
           context: { clientName: 'users' },
         },
+        /*  {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        }, */
       ],
     });
     if (followData?.Users?.follow == true)
@@ -114,6 +145,10 @@ function ListItemComponent({ user, getFollowStatus }) {
           query: QUERY_FETCH_PROFILE,
           context: { clientName: 'users' },
         },
+        /*  {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        }, */
       ],
     });
     if (unFollowData?.Users?.unFollow == true)

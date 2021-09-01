@@ -29,6 +29,7 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -43,6 +44,7 @@ export default function CreatePost({
   setOpenImage,
   setImageDisabled,
   openVideo,
+  profileData,
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
@@ -74,7 +76,10 @@ export default function CreatePost({
         data: ICreatePost,
       },
       refetchQueries: [
-        { query: QUERY_LOAD_SCROLLS },
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        },
         {
           query: QUERY_LOAD_SCROLLS,
           variables: { data: { author: user?._id, limit: 500 } },
