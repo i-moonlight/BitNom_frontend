@@ -3,20 +3,29 @@ import React from 'react';
 
 export default function AcceptCookies() {
   const theme = useTheme();
+
+  const accepted = JSON.parse(localStorage.getItem('@AcceptCookies'));
+
   return (
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left',
       }}
-      open={false}
+      open={!accepted}
       autoHideDuration={6000}
-      // onClose={handleClose}
     >
       <SnackbarContent
         action={
           <React.Fragment>
-            <Button color={theme.palette.text.primary} size='small' textCase>
+            <Button
+              color='inherit'
+              size='small'
+              textCase
+              onClick={() => {
+                localStorage.setItem('@AcceptCookies', JSON.stringify(true));
+              }}
+            >
               I Agree
             </Button>
           </React.Fragment>

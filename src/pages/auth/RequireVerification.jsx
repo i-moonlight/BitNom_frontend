@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
-import { login } from '../../store/actions/authActions';
+import { signout } from '../../store/actions/authActions';
 import { MUTATION_SEND_EMAIL_VERIFICATION } from './utilities/queries';
 
 export default function RequireVerification() {
@@ -92,7 +92,7 @@ export default function RequireVerification() {
                       Already verified?{' '}
                       <span
                         onClick={() => {
-                          dispatch(login({}, null));
+                          dispatch(signout());
                         }}
                         style={{
                           color: theme.palette.primary.main,

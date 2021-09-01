@@ -32,7 +32,7 @@ export default function NavBar() {
   const [notSeen, setNotSeen] = useState(0);
 
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(state => state);
   const user = state.auth.user;
 
   const isMenuOpen = Boolean(menuAnchorEl);
@@ -64,7 +64,7 @@ export default function NavBar() {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
   }, [subscriptionData]);
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = event => {
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -72,7 +72,7 @@ export default function NavBar() {
     setMenuAnchorEl(null);
   };
 
-  const handleTabOptionsOpen = (event) => {
+  const handleTabOptionsOpen = event => {
     setTabOptionAnchorEl(event.currentTarget);
   };
 
@@ -80,7 +80,7 @@ export default function NavBar() {
     setTabOptionAnchorEl(null);
   };
 
-  const handleNotificationsOpen = (event) => {
+  const handleNotificationsOpen = event => {
     setNotificationAnchorEl(event.currentTarget);
     handleMarkAsSeen();
   };
@@ -89,7 +89,7 @@ export default function NavBar() {
     setNotificationAnchorEl(null);
   };
 
-  const handleNotificationOptionOpen = (event) => {
+  const handleNotificationOptionOpen = event => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
 
@@ -121,8 +121,8 @@ export default function NavBar() {
 
   useEffect(() => {
     let notSeenArray = [];
-    response?.forEach((notification) => {
-      notification.to_notify.forEach((item) => {
+    response?.forEach(notification => {
+      notification.to_notify.forEach(item => {
         if (item?.user_id == user._id && item?.seen == 'false') {
           notSeenArray.push(notification?._id);
         }
@@ -155,6 +155,7 @@ export default function NavBar() {
         setTabOptions={setTabOptions}
         handleTabOptionsOpen={handleTabOptionsOpen}
       />
+      <Divider />
       <Divider />
       <TabOptionsPopover
         tabOptionAnchorEl={tabOptionAnchorEl}
