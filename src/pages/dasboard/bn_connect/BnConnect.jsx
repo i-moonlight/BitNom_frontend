@@ -151,7 +151,7 @@ export default function BnConnect() {
               {data?.Posts?.get?.length < 1 && (
                 <Grid align='center'>
                   <Typography color='primary'>
-                    There are no scrolls yet..Let yours be the first!!
+                    Start a scroll or follow people you may know to see theirs!!
                   </Typography>
                 </Grid>
               )}

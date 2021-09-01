@@ -9,8 +9,10 @@ import {
   ListItemText,
   Paper,
   Typography,
+  CircularProgress,
+  Grid,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { useMutation } from '@apollo/client';
@@ -24,6 +26,8 @@ import {
 import { getUserInitials } from '../../../utilities/Helpers';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
+  const [notFollowed, setNotFollowed] = useState();
+
   const getFollowStatus = (user) => {
     let status;
     profileData?.following?.forEach((item) => {
@@ -33,6 +37,21 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     });
     return status;
   };
+  useEffect(() => {
+    let notFollowed = [];
+    suggestedUsers?.forEach((user) => {
+      if (!getFollowStatus(user)) notFollowed.push(user);
+    });
+    return () => {
+      setNotFollowed(notFollowed);
+    };
+  });
+
+  /*   let notFollowed = [];
+  suggestedUsers?.forEach((user) => {
+    if (!getFollowStatus(user)) notFollowed.push(user);
+  }); */
+
   return (
     <Paper>
       <List
@@ -43,7 +62,12 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
         <Typography style={{ marginLeft: 8 }} variant='body1'>
           People you may know
         </Typography>
-        {suggestedUsers?.slice(0, 3)?.map((user) => (
+        {!notFollowed && (
+          <Grid align='center'>
+            <CircularProgress color='primary' size={24} thickness={4} />
+          </Grid>
+        )}
+        {notFollowed?.slice(0, 3)?.map((user) => (
           <ListItemComponent
             key={user?._id}
             getFollowStatus={getFollowStatus}
@@ -133,7 +157,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     //setFollowing(following - 1);
   };
   return (
-    <ListItem divider>
+    <ListItem divider style={{ display: status && 'none' }}>
       <ListItemAvatar>
         <Avatar
           src={

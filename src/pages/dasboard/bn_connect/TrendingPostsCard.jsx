@@ -72,7 +72,7 @@ export default function TrendingPostsCard({ trending, loading }) {
         {!loading && trending?.length === 0 && (
           <Grid align='center'>
             <Typography color='Primary' variant='body2'>
-              Trending posts will appear hear..start commenting.
+              Trending posts will appear hear..start participating.
             </Typography>
           </Grid>
         )}

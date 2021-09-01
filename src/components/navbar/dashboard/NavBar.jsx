@@ -60,9 +60,13 @@ export default function NavBar() {
     }
   );
   console.log('Subscription Data', subscriptionData);
+
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
+    return () => {
+      setNotSeen(subscriptionData?.liveUpdates?.count);
+    };
   }, [subscriptionData]);
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
