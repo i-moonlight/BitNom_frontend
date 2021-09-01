@@ -56,11 +56,10 @@ export default function NavBar() {
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      context: { clientName: 'notifications' },
+      // context: { clientName: "notifications" },
     }
   );
   console.log('Subscription Data', subscriptionData);
-
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
@@ -127,7 +126,7 @@ export default function NavBar() {
     let notSeenArray = [];
     response?.forEach((notification) => {
       notification.to_notify.forEach((item) => {
-        if (item?.user_id == user._id && item?.seen == 'false') {
+        if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
       });

@@ -1,6 +1,6 @@
-import { MenuItem, Popover } from '@material-ui/core';
-import { ChevronRightRounded } from '@material-ui/icons';
-import React from 'react';
+import { MenuItem, Popover } from "@material-ui/core";
+import { ChevronRightRounded } from "@material-ui/icons";
+import React from "react";
 
 export default function TabOptionsPopover({
   tabOptionAnchorEl,
@@ -12,8 +12,8 @@ export default function TabOptionsPopover({
   return (
     <Popover
       anchorEl={tabOptionAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      transformOrigin={{ vertical: "top", horizontal: "center" }}
       id={tabOptionsId}
       keepMounted
       open={isTabOptionOpen}
@@ -23,7 +23,7 @@ export default function TabOptionsPopover({
         tabOptions.map(({ label }) => (
           <MenuItem
             key={`${Math.random() * 1000}`}
-            className='py-3 space-between'
+            className="py-3 space-between"
             style={{
               width: tabOptionAnchorEl && tabOptionAnchorEl.offsetWidth,
             }}

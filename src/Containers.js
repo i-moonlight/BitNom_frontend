@@ -96,7 +96,6 @@ class WebSocketLink extends ApolloLink {
 const wsLink = new WebSocketLink({
   url: process.env.REACT_APP_SOCKET_URL + ':443/notifications/graphql',
 });
-
 const profileLink = from([
   errorLink,
   new HttpLink({

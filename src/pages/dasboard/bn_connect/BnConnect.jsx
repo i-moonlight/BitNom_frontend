@@ -7,7 +7,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import ImagePreview from '../../../components/ImagePreview';
@@ -50,7 +50,6 @@ export default function BnConnect() {
   const [postToEdit, setPostToEdit] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
-
   const state = useSelector((state) => state);
   const user = state.auth.user;
   const classes = useStyles();
@@ -61,7 +60,6 @@ export default function BnConnect() {
   } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
-
   let profile = profileData?.Users?.profile;
 
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
@@ -91,6 +89,20 @@ export default function BnConnect() {
       },
     }
   );
+  //onesignal
+  const OneSignal = window.OneSignal || [];
+  useEffect(() => {
+    OneSignal.push(() => {
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        if (isEnabled) {
+          var externalUserId = user._id;
+          OneSignal.setExternalUserId(externalUserId);
+        } else {
+          console.log('Push notifications are not enabled yet.');
+        }
+      });
+    });
+  }, [data]);
 
   return (
     <Screen>
