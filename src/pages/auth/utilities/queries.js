@@ -36,7 +36,7 @@ export const MUTATION_LOGIN_USER = gql`
         # referralCode
         displayName
         bio
-        profile_pic
+        # profile_pic
         email {
           address
           verified
@@ -132,7 +132,7 @@ export const MUTATION_UPDATE_PROFILE_INFO = gql`
         # referralCode
         displayName
         bio
-        profile_pic
+        # profile_pic
         email {
           address
           verified
@@ -150,17 +150,17 @@ export const MUTATION_LOGIN_USER_2 = gql`
         _id
         displayName
         bio
-        profile_pic
+        # profile_pic
         displayName
         type
         reputation
         blocked
         portfolio
         website
-        address
-        location
-        gender
-        cover_pic
+        # address
+        # location
+        # gender
+        # cover_pic
         loginType
         lastSeen
         paidUntil
@@ -182,51 +182,51 @@ export const MUTATION_LOGIN_USER_2 = gql`
           address
           verified
         }
-        work {
-          _id
-          company
-          title
-          start_date
-          end_date
-          current
-          description
-        }
-        education {
-          _id
-          institution
-          major
-          start_date
-          end_date
-          current
-          description
-        }
-        honors {
-          _id
-          organization
-          name
-          start_date
-          end_date
-          expires
-          url
-        }
-        courses {
-          _id
-          name
-          year
-        }
-        projects {
-          _id
-          name
-          year
-        }
-        skills {
-          _id
-          name
-        }
-        languages {
-          _id
-          name
-        }
+        # work {
+        #   _id
+        #   company
+        #   title
+        #   start_date
+        #   end_date
+        #   current
+        #   description
+        # }
+        # education {
+        #   _id
+        #   institution
+        #   major
+        #   start_date
+        #   end_date
+        #   current
+        #   description
+        # }
+        # honors {
+        #   _id
+        #   organization
+        #   name
+        #   start_date
+        #   end_date
+        #   expires
+        #   url
+        # }
+        # courses {
+        #   _id
+        #   name
+        #   year
+        # }
+        # projects {
+        #   _id
+        #   name
+        #   year
+        # }
+        # skills {
+        #   _id
+        #   name
+        # }
+        # languages {
+        #   _id
+        #   name
+        # }
       }
     }
   }

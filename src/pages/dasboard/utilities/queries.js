@@ -229,15 +229,15 @@ export const QUERY_LOAD_SCROLLS = gql`
           }
           url
         }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            image
-          }
-        }
+        # reacted_to_by {
+        #   _id
+        #   reaction_type
+        #   user_id {
+        #     _id
+        #     displayName
+        #     image
+        #   }
+        # }
       }
     }
   }
@@ -391,15 +391,15 @@ export const GET_BOOKMARKED_SCROLLS = gql`
           }
           url
         }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            image
-          }
-        }
+        # reacted_to_by {
+        #   _id
+        #   reaction_type
+        #   user_id {
+        #     _id
+        #     displayName
+        #     image
+        #   }
+        # }
       }
     }
   }
@@ -443,15 +443,15 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
           }
           url
         }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            image
-          }
-        }
+        # reacted_to_by {
+        #   _id
+        #   reaction_type
+        #   user_id {
+        #     _id
+        #     displayName
+        #     image
+        #   }
+        # }
       }
     }
   }
@@ -489,15 +489,15 @@ export const QUERY_GET_COMMENTS = gql`
           }
           url
         }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            image
-          }
-        }
+        # reacted_to_by {
+        #   _id
+        #   reaction_type
+        #   user_id {
+        #     _id
+        #     displayName
+        #     image
+        #   }
+        # }
         scroll
         response_to {
           _id
@@ -536,15 +536,15 @@ export const GET_BOOKMARKED_COMMENTS = gql`
           }
           url
         }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            image
-          }
-        }
+        # reacted_to_by {
+        #   _id
+        #   reaction_type
+        #   user_id {
+        #     _id
+        #     displayName
+        #     image
+        #   }
+        # }
         reactions {
           celebrations
           likes

@@ -11,14 +11,14 @@ import {
   ListItemText,
   Popover,
   Typography,
-} from '@material-ui/core';
-import { PersonRounded, SettingsRounded } from '@material-ui/icons';
-import React from 'react';
-import { Link } from 'react-router-dom';
+} from "@material-ui/core";
+import { PersonRounded, SettingsRounded } from "@material-ui/icons";
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   getCreationTime,
   notificationBodyFactory,
-} from '../../../../pages/dasboard/utilities/functions';
+} from "../../../../pages/dasboard/utilities/functions";
 
 export default function NotificationsPopover({
   notificationAnchorEl,
@@ -32,22 +32,22 @@ export default function NotificationsPopover({
   return (
     <Popover
       anchorEl={notificationAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       id={notificationId}
       open={isNotificationOpen}
       onClose={handleNotificationsClose}
     >
       <List
-        style={{ padding: 8, paddingBottom: 0, width: '300px' }}
+        style={{ padding: 8, paddingBottom: 0, width: "300px" }}
         component={Card}
-        variant='outlined'
+        variant="outlined"
       >
-        <div className='space-between center-horizontal'>
-          <Typography style={{ marginLeft: 8 }} variant='body2'>
+        <div className="space-between center-horizontal">
+          <Typography style={{ marginLeft: 8 }} variant="body2">
             Notifications
           </Typography>
-          <IconButton size='small' className='m-1 p-1'>
+          <IconButton size="small" className="m-1 p-1">
             <SettingsRounded />
           </IconButton>
         </div>
@@ -63,15 +63,15 @@ function NotificationPreview({ notifications }) {
   return (
     <>
       {notifications?.length < 1 && (
-        <Grid align='center'>
-          <Typography color='Primary' variant='body2'>
+        <Grid align="center">
+          <Typography color="Primary" variant="body2">
             Nothing here yet.
           </Typography>
         </Grid>
       )}
       {notifications?.length > 0 &&
-        notifications?.slice(0, 4)?.map(item => (
-          <ListItem className='space-between' key={item} divider>
+        notifications?.slice(0, 4)?.map((item) => (
+          <ListItem className="space-between" key={item} divider>
             <ListItemAvatar>
               <Avatar>
                 <PersonRounded />
@@ -84,7 +84,7 @@ function NotificationPreview({ notifications }) {
                     dangerouslySetInnerHTML={{
                       __html: notificationBodyFactory(item),
                     }}
-                    className='mx-1'
+                    className="mx-1"
                   ></Typography>
                 </div>
               }
@@ -110,8 +110,8 @@ function NotificationPreview({ notifications }) {
           </ListItem>
         ))}
       {notifications?.length > 0 && (
-        <Link to='/dashboard/notifications'>
-          <Typography variant='body2' className='my-2' color='primary'>
+        <Link to="/dashboard/notifications">
+          <Typography variant="body2" className="my-2" color="primary">
             Show more
           </Typography>
         </Link>
