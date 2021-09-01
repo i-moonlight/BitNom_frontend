@@ -12,7 +12,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
 import Login from './pages/auth/Login';
@@ -39,6 +39,9 @@ import Terms from './pages/welcome/terms/Terms';
 import Redirect from './utilities/Redirect';
 import { print } from 'graphql';
 import Investor from './pages/welcome/investor/Investor';
+import { useDispatch } from 'react-redux';
+import { checkSessionTimeOut } from './store/actions/authActions';
+
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -125,11 +128,13 @@ const profileUploadLink = ApolloLink.split(
   profileLink,
   uploadLink
 );
+
 const btnMainLink = ApolloLink.split(
   operation => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -148,7 +153,12 @@ const client = new ApolloClient({
 });
 
 export const AppContainers = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    dispatch(checkSessionTimeOut());
+  }, []);
 
   return (
     <div className={classes.root}>
