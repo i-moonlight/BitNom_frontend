@@ -14,11 +14,12 @@ import {
   ListItemText,
   makeStyles,
   Typography,
+  Tab,
+  Tabs,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import {
-  QUERY_GET_USERS,
   MUTATION_FOLLOW_USER,
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
@@ -40,15 +41,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function People() {
+export default function Connections() {
+  const [value, setValue] = React.useState(0);
   const classes = useStyles();
   const state = useSelector((state) => state);
   const user = state.auth.user;
-
-  const { data: usersData } = useQuery(QUERY_GET_USERS, {
-    params: { data: { limit: 20 } },
-    context: { clientName: 'users' },
-  });
 
   const {
     //error: profileError,
@@ -62,18 +59,21 @@ export default function People() {
     variables: { data: { author: user?._id, limit: 500 } },
   });
 
-  const suggestedUsers = usersData?.Users?.get?.filter(
-    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
-  );
-
   const getFollowStatus = (user) => {
     let status;
     profileData?.Users?.profile?.following?.forEach((item) => {
-      if (item?.userId?._id == user?._id) {
-        status = item?.userId?._id;
+      if (item?.userId?._id === user?.userId?._id) {
+        status = true;
       }
     });
     return status;
+  };
+
+  const followers = profileData?.Users?.profile?.followers;
+  const following = profileData?.Users?.profile?.following;
+
+  const handleChange = (event, value) => {
+    setValue(value);
   };
   return (
     <Screen>
@@ -106,22 +106,65 @@ export default function People() {
                   }
                   title={
                     <div className='center-horizontal'>
-                      <Typography variant='body1'>
-                        People you may know
-                      </Typography>
+                      <Typography variant='body1'>Connections</Typography>
                     </div>
                   }
                 />
-
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor='primary'
+                  variant='fullWidth'
+                  /* classes={{
+              root: classes.tabsRoot,
+              indicator: classes.displayNone,
+            }} */
+                >
+                  <Tab
+                    key={'Followers'}
+                    label={'Followers'}
+                    disableRipple
+                    style={{ textTransform: 'none' }}
+                  />
+                  <Tab
+                    key={'Following'}
+                    label={'Following'}
+                    disableRipple
+                    style={{ textTransform: 'none' }}
+                  />
+                </Tabs>
                 <Divider />
                 <CardContent>
-                  {suggestedUsers?.map((user) => (
-                    <ListItemComponent
-                      key={user?._id}
-                      getFollowStatus={getFollowStatus}
-                      item={user}
-                    />
-                  ))}
+                  {value === 0 &&
+                    followers?.length > 0 &&
+                    followers?.map((follower) => (
+                      <ListItemComponent
+                        key={follower?.userId?._id}
+                        getFollowStatus={getFollowStatus}
+                        item={follower}
+                      />
+                    ))}
+                  {value === 1 &&
+                    following?.length > 0 &&
+                    following?.map((follow) => (
+                      <ListItemComponent
+                        key={follow?.userId?._id}
+                        getFollowStatus={getFollowStatus}
+                        item={follow}
+                      />
+                    ))}
+                  {(value === 0 && followers?.length < 1) ||
+                  (value === 1 && following?.length < 1) ? (
+                    <Grid align='center'>
+                      <Typography variant='body1' color='primary'>
+                        {value === 0
+                          ? 'You have no followers yet.'
+                          : 'You have not followed anyone.'}
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    ''
+                  )}
                 </CardContent>
               </Card>
             </Grid>
@@ -138,7 +181,11 @@ export default function People() {
 function ListItemComponent({ item, getFollowStatus }) {
   const [status, setStatus] = React.useState();
   React.useEffect(() => {
-    if (getFollowStatus(item)) setStatus(true);
+    if (getFollowStatus(item)) {
+      setStatus(true);
+    } else {
+      setStatus(false);
+    }
   }, [getFollowStatus(item)]);
 
   const [
@@ -194,37 +241,39 @@ function ListItemComponent({ item, getFollowStatus }) {
     });
     if (unFollowData?.Users?.unFollow == true)
       console.log(unFollowData?.Users?.unFollow);
-    setStatus();
+    setStatus(false);
     //setFollowing(following - 1);
   };
   return (
-    <ListItem className='space-between' key={item?._id} divider>
+    <ListItem className='space-between' key={item?.userId?._id} divider>
       <ListItemAvatar>
         <Avatar
           src={
-            item?.profile_pic
-              ? process.env.REACT_APP_BACKEND_URL + item?.profile_pic
+            item?.userId?.profile_pic
+              ? process.env.REACT_APP_BACKEND_URL + item?.userId?.profile_pic
               : ''
           }
           style={{
             backgroundColor: '#fed132',
           }}
         >
-          {item?.profile_pic ? '' : getUserInitials(item?.displayName)}
+          {item?.userId?.profile_pic
+            ? ''
+            : getUserInitials(item?.userId?.displayName)}
         </Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={
           <div className='center-horizontal'>
             <Typography variant='body2' className='mx-1'>
-              {item?.displayName}{' '}
+              {item?.userId?.displayName}{' '}
             </Typography>
             <Typography variant='body2' color='textSecondary'>
-              {'@' + item?._id}
+              {'@' + item?.userId?._id}
             </Typography>
           </div>
         }
-        secondary={item?.bio}
+        secondary={item?.userId?.bio}
       />
       <ListItemIcon
         aria-label='show more'
@@ -235,23 +284,28 @@ function ListItemComponent({ item, getFollowStatus }) {
         style={{
           marginRight: 0,
           paddingRight: 0,
-          minWidth: 20,
+          minWidth: 30,
           '&.MuiListItemIconRoot': {
-            minWidth: 20,
+            minWidth: 30,
           },
         }}
       >
-        <Button
-          onClick={() =>
-            status ? handleUnFollowUser(item?._id) : handleFollowUser(item?._id)
-          }
-          className='mx-2'
-          size='small'
-          variant='outlined'
-          color='primary'
-        >
-          {status ? 'Unfollow' : 'Follow'}
-        </Button>
+        {status !== undefined && (
+          <Button
+            onClick={() =>
+              status
+                ? handleUnFollowUser(item?.userId?._id)
+                : handleFollowUser(item?.userId?._id)
+            }
+            className='mx-2'
+            size='small'
+            variant='outlined'
+            color='primary'
+          >
+            {status === true && 'Unfollow'}
+            {status === false && 'Follow'}
+          </Button>
+        )}
       </ListItemIcon>
     </ListItem>
   );

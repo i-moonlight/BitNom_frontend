@@ -27,7 +27,7 @@ export default function Signup() {
   const [justRegistered, setJustRegistered] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
@@ -47,7 +47,7 @@ export default function Signup() {
     // justRegistered && history.push('/auth/login');
 
     errors &&
-      errors.map(err => {
+      errors.map((err) => {
         err?.state?.email ? setEmailErr(err?.state?.email) : setEmailErr(null);
         err?.state?._id
           ? setUsernameErr(err?.state?._id)
@@ -55,7 +55,7 @@ export default function Signup() {
       });
   }, [errors, state]);
 
-  const responseGoogle = response => {
+  const responseGoogle = (response) => {
     googleSignup({
       variables: {
         token: response?.tokenId,
@@ -87,7 +87,7 @@ export default function Signup() {
     });
   };
 
-  const failureGoogle = response => {
+  const failureGoogle = (response) => {
     console.log('googleErr: ', response);
   };
 
@@ -207,7 +207,7 @@ export default function Signup() {
                     </Button>
                     <DividerText>or</DividerText>
                     {googleErr &&
-                      googleErr.map(err => (
+                      googleErr.map((err) => (
                         <Alert
                           className='mb-2'
                           key={Math.random() * 100}
@@ -222,7 +222,7 @@ export default function Signup() {
                       buttonText='Login Google'
                       onSuccess={responseGoogle}
                       onFailure={failureGoogle}
-                      render={renderProps => (
+                      render={(renderProps) => (
                         <Button
                           onClick={renderProps.onClick}
                           textCase

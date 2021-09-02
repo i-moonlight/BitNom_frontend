@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Card,
@@ -8,13 +8,28 @@ import {
   CardHeader,
   IconButton,
 } from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+import { ArrowBack, MoreVert } from '@material-ui/icons';
+
 import NotificationListItem from './NotificationListItem';
+import NotificationSettingsPopover from './NotificationSettingsPopover';
+
+const notificationSettingsId = 'notification-setting-menu';
 
 export default function NotificationsListCard({
   notifications,
   selectedIndex,
 }) {
+  const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
+    useState(null);
+
+  const isNotificationSettingsOpen = Boolean(notificationSettingsAnchorEl);
+  const handleNotificationSettingsClose = () => {
+    setNotificationSettingsAnchorEl(null);
+  };
+  const handleNotificationSettingsOpen = (event) => {
+    setNotificationSettingsAnchorEl(event.currentTarget);
+  };
+
   const mentions = [];
   notifications?.forEach((item) => {
     if (item.tag === 'Mention') {
@@ -43,10 +58,26 @@ export default function NotificationsListCard({
 
     return toCheck.some((o) => item.content.includes(o));
   });
+
+  const userProfile = notifications?.filter((item) => {
+    let toCheck = ['followed you', 'invited you'];
+
+    return toCheck.some((o) => item.content.includes(o));
+  });
   return (
     <>
       <Card style={{ padding: '0 8px 10px 8px' }}>
         <CardHeader
+          action={
+            <IconButton
+              aria-label='notification settings'
+              aria-controls={notificationSettingsId}
+              aria-haspopup='true'
+              onClick={handleNotificationSettingsOpen}
+            >
+              <MoreVert />
+            </IconButton>
+          }
           avatar={
             <Link to='/dashboard'>
               <IconButton
@@ -70,14 +101,6 @@ export default function NotificationsListCard({
             </Typography>
           }
         />
-        <div className='space-between'>
-          <Typography className='mx-4 my-1' variant='body1'>
-            Notifications
-          </Typography>
-          <Typography className='mx-4 my-1' variant='body1'>
-            Settings
-          </Typography>
-        </div>
         <Divider />
         {selectedIndex === 0 &&
           notifications?.map((notification) => (
@@ -110,11 +133,19 @@ export default function NotificationsListCard({
               notification={notification}
             />
           ))}
+        {selectedIndex === 4 &&
+          userProfile?.length > 0 &&
+          userProfile?.map((notification) => (
+            <NotificationListItem
+              key={notification._id}
+              notification={notification}
+            />
+          ))}
         {(selectedIndex === 0 && notifications?.length < 1) ||
         (selectedIndex === 1 && mentions?.length < 1) ||
         (selectedIndex === 2 && reactions?.length < 1) ||
         (selectedIndex === 3 && userContent?.length < 1) ||
-        selectedIndex === 4 ||
+        (selectedIndex === 4 && userProfile?.length < 1) ||
         selectedIndex === 5 ||
         selectedIndex === 6 ||
         selectedIndex === 7 ? (
@@ -127,6 +158,12 @@ export default function NotificationsListCard({
           ''
         )}
       </Card>
+      <NotificationSettingsPopover
+        notificationSettingsAnchorEl={notificationSettingsAnchorEl}
+        notificationSettingsId={notificationSettingsId}
+        isNotificationSettingsOpen={isNotificationSettingsOpen}
+        handleNotificationSettingsClose={handleNotificationSettingsClose}
+      />
     </>
   );
 }

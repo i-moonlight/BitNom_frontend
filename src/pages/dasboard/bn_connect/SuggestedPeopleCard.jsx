@@ -31,8 +31,8 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   const getFollowStatus = (user) => {
     let status;
     profileData?.following?.forEach((item) => {
-      if (item?.userId === user?._id) {
-        status = item?.userId;
+      if (item?.userId?._id === user?._id) {
+        status = item?.userId?._id;
       }
     });
     return status;
@@ -165,6 +165,9 @@ function ListItemComponent({ user, getFollowStatus }) {
               ? process.env.REACT_APP_BACKEND_URL + user?.profile_pic
               : ''
           }
+          style={{
+            backgroundColor: '#fed132',
+          }}
         >
           {user?.profile_pic ? '' : getUserInitials(user?.displayName)}
         </Avatar>

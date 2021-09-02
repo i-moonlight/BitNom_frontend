@@ -73,7 +73,16 @@ export default function NotificationListItem({ notification }) {
           </div>
 
           <CardHeader
-            avatar={<Avatar aria-label='recipe'>{userInitials}</Avatar>}
+            avatar={
+              <Avatar
+                style={{
+                  backgroundColor: '#fed132',
+                }}
+                aria-label='recipe'
+              >
+                {userInitials}
+              </Avatar>
+            }
             action={
               <IconButton
                 aria-label='show more'

@@ -71,7 +71,7 @@ deploy_on_server:
   variables:
     REACT_APP_API_GATEWAY: "/graphql"
     REACT_APP_BACKEND_URL: "https://bitnorm.com"
-    REACT_APP_SOCKET_URL: "ws://bitnorm.com"
+    REACT_APP_SOCKET_URL: "wss://bitnorm.com"
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP

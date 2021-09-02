@@ -183,7 +183,14 @@ export default function UpdateComment({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
+                  <Avatar
+                    style={{
+                      backgroundColor: '#fed132',
+                    }}
+                    src={user?.profile_pic}
+                  >
+                    {userInitials}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
