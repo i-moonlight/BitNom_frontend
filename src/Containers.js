@@ -13,7 +13,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CreatePassword from './pages/auth/CreatePassword';
 import Login from './pages/auth/Login';
@@ -41,6 +41,11 @@ import Terms from './pages/welcome/terms/Terms';
 import Redirect from './utilities/Redirect';
 import { print } from 'graphql';
 import Investor from './pages/welcome/investor/Investor';
+import { useDispatch } from 'react-redux';
+import { checkSessionTimeOut } from './store/actions/authActions';
+import { changeTheme } from './store/actions/themeActions';
+import { useThemeDetector } from './hooks/useThemeDetector';
+
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if (graphqlErrors) {
@@ -63,7 +68,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable((sink) => {
+    return new Observable(sink => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -71,7 +76,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: (err) => {
+          error: err => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -122,15 +127,17 @@ const uploadLink = createUploadLink({
 });
 
 const profileUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'users',
+  operation => operation.getContext().clientName === 'users',
   profileLink,
   uploadLink
 );
+
 const btnMainLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'notifications',
+  operation => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -149,7 +156,17 @@ const client = new ApolloClient({
 });
 
 export const AppContainers = () => {
+  const isDarkTheme = useThemeDetector();
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    dispatch(checkSessionTimeOut());
+
+    isDarkTheme
+      ? dispatch(changeTheme('dark'))
+      : dispatch(changeTheme('light'));
+  }, [isDarkTheme]);
 
   return (
     <div className={classes.root}>
@@ -219,7 +236,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',

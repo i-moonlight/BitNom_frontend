@@ -17,8 +17,8 @@ export default function Button({
 }) {
   const formikContext = useFormikContext();
 
-  let buttonVariant = variantAlt ? variantAlt : variant;
-  let buttonColor = colorAlt ? colorAlt : color;
+  const buttonVariant = variantAlt ? variantAlt : variant;
+  const buttonColor = colorAlt ? colorAlt : color;
 
   return (
     <MuiButton

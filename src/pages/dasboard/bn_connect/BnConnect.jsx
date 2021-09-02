@@ -29,7 +29,7 @@ import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
 import { getFeed } from '../utilities/functions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -50,7 +50,7 @@ export default function BnConnect() {
   const [postToEdit, setPostToEdit] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const classes = useStyles();
 
@@ -60,7 +60,7 @@ export default function BnConnect() {
   } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
-  let profile = profileData?.Users?.profile;
+  const profile = profileData?.Users?.profile;
 
   const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: {
@@ -78,7 +78,7 @@ export default function BnConnect() {
   });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+    item => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
 
   const { loading: trendingLoading, data: trendingData } = useQuery(
@@ -126,7 +126,7 @@ export default function BnConnect() {
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
-                  setOpen={(open) => setCreateScrollOpen(open)}
+                  setOpen={open => setCreateScrollOpen(open)}
                 />
               </Grid>
             </Hidden>
@@ -136,7 +136,7 @@ export default function BnConnect() {
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
                 setOpenVideo={setOpenVideo}
-                setOpen={(open) => setCreateScrollOpen(open)}
+                setOpen={open => setCreateScrollOpen(open)}
               />
               <Grid item align='center'>
                 {loading && (
@@ -144,15 +144,15 @@ export default function BnConnect() {
                 )}
               </Grid>
               {data?.Posts?.get &&
-                data?.Posts?.get?.map((scroll) => (
+                data?.Posts?.get?.map(scroll => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
                     setUpdateOpen={setUpdateScrollOpen}
                     setUpdateCommentOpen={setUpdateCommentOpen}
                     setOpenFlag={setCreateFlagOpen}
                     setFlaggedResource={setFlaggedResource}
-                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                    setImagePreviewURL={url => setImagePreviewURL(url)}
+                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}
@@ -186,7 +186,7 @@ export default function BnConnect() {
       <CreatePost
         profileData={profileData?.Users?.profile}
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -202,7 +202,7 @@ export default function BnConnect() {
         updateScrollOpen={updateScrollOpen}
         postToEdit={postToEdit}
         setPostToEdit={setPostToEdit}
-        setUpdateScrollOpen={(UpdateScrollOpen) =>
+        setUpdateScrollOpen={UpdateScrollOpen =>
           setUpdateScrollOpen(UpdateScrollOpen)
         }
         openImage={openImage}
@@ -218,7 +218,7 @@ export default function BnConnect() {
         updateCommentOpen={updateCommentOpen}
         commentToEdit={commentToEdit}
         setCommentToEdit={setCommentToEdit}
-        setUpdateCommentOpen={(UpdateCommentOpen) =>
+        setUpdateCommentOpen={UpdateCommentOpen =>
           setUpdateCommentOpen(UpdateCommentOpen)
         }
         openImage={openImage}
@@ -234,7 +234,7 @@ export default function BnConnect() {
       />
       <FlagResourceModal
         openFlag={createFlagOpen}
-        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />

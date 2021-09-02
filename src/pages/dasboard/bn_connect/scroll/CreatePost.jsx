@@ -57,7 +57,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -70,7 +70,7 @@ export default function CreatePost({
 
   const userInitials = getUserInitials(user?.displayName);
 
-  const onCreatePost = async (ICreatePost) => {
+  const onCreatePost = async ICreatePost => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -99,13 +99,13 @@ export default function CreatePost({
 
   useEffect(() => {}, [data]);
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    let sharedResource = sharedPost
+    const sharedResource = sharedPost
       ? { _id: sharedPost?._id, type: 'post' }
       : null;
-    let flag = sharedPost ? sharedPost?.is_flag : null;
+    const flag = sharedPost ? sharedPost?.is_flag : null;
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
@@ -198,7 +198,7 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -212,7 +212,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);

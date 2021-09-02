@@ -28,9 +28,9 @@ import { getUserInitials } from '../../../utilities/Helpers';
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   const [notFollowed, setNotFollowed] = useState();
 
-  const getFollowStatus = (user) => {
+  const getFollowStatus = user => {
     let status;
-    profileData?.following?.forEach((item) => {
+    profileData?.following?.forEach(item => {
       if (item?.userId?._id === user?._id) {
         status = item?.userId?._id;
       }
@@ -38,12 +38,12 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     return status;
   };
   useEffect(() => {
-    let notFollowed = [];
-    suggestedUsers?.forEach((user) => {
-      if (!getFollowStatus(user)) notFollowed.push(user);
+    const notFollowedInner = [];
+    suggestedUsers?.forEach(user => {
+      if (!getFollowStatus(user)) notFollowedInner.push(user);
     });
     return () => {
-      setNotFollowed(notFollowed);
+      setNotFollowed(notFollowedInner);
     };
   });
 
@@ -67,7 +67,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
             <CircularProgress color='primary' size={24} thickness={4} />
           </Grid>
         )}
-        {notFollowed?.slice(0, 3)?.map((user) => (
+        {notFollowed?.slice(0, 3)?.map(user => (
           <ListItemComponent
             key={user?._id}
             getFollowStatus={getFollowStatus}
@@ -108,7 +108,7 @@ function ListItemComponent({ user, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = (user_id) => {
+  const handleFollowUser = user_id => {
     followUser({
       variables: {
         data: {
@@ -132,7 +132,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = (user_id) => {
+  const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
         data: {

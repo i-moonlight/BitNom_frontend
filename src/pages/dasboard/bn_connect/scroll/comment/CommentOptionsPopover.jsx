@@ -41,7 +41,7 @@ export default function CommentOptionsPopover({
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   useEffect(() => {

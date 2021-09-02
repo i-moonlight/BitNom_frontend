@@ -44,7 +44,7 @@ export default function ScrollOptionsPopover({
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const handleCreateBookmark = () => {

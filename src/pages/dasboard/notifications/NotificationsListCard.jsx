@@ -26,29 +26,29 @@ export default function NotificationsListCard({
   const handleNotificationSettingsClose = () => {
     setNotificationSettingsAnchorEl(null);
   };
-  const handleNotificationSettingsOpen = (event) => {
+  const handleNotificationSettingsOpen = event => {
     setNotificationSettingsAnchorEl(event.currentTarget);
   };
 
   const mentions = [];
-  notifications?.forEach((item) => {
+  notifications?.forEach(item => {
     if (item.tag === 'Mention') {
       mentions.push(item);
     }
   });
-  notifications?.forEach((item) => {
+  notifications?.forEach(item => {
     if (item.content.includes('commented on')) {
       mentions.push(item);
     }
   });
-  const reactions = notifications?.filter((item) => {
-    let toCheck = ['liked', 'loved', 'celebrated', 'disliked'];
+  const reactions = notifications?.filter(item => {
+    const toCheck = ['liked', 'loved', 'celebrated', 'disliked'];
 
-    return toCheck.some((o) => item.content.includes(o));
+    return toCheck.some(o => item.content.includes(o));
   });
 
-  const userContent = notifications?.filter((item) => {
-    let toCheck = [
+  const userContent = notifications?.filter(item => {
+    const toCheck = [
       'your post',
       'your scroll',
       'your comment',
@@ -56,13 +56,13 @@ export default function NotificationsListCard({
       'your event',
     ];
 
-    return toCheck.some((o) => item.content.includes(o));
+    return toCheck.some(o => item.content.includes(o));
   });
 
-  const userProfile = notifications?.filter((item) => {
-    let toCheck = ['followed you', 'invited you'];
+  const userProfile = notifications?.filter(item => {
+    const toCheck = ['followed you', 'invited you'];
 
-    return toCheck.some((o) => item.content.includes(o));
+    return toCheck.some(o => item.content.includes(o));
   });
   return (
     <>
@@ -103,7 +103,7 @@ export default function NotificationsListCard({
         />
         <Divider />
         {selectedIndex === 0 &&
-          notifications?.map((notification) => (
+          notifications?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -111,7 +111,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 1 &&
           mentions?.length > 0 &&
-          mentions?.map((notification) => (
+          mentions?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -119,7 +119,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 2 &&
           reactions?.length > 0 &&
-          reactions?.map((notification) => (
+          reactions?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -127,7 +127,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 3 &&
           userContent?.length > 0 &&
-          userContent?.map((notification) => (
+          userContent?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -135,7 +135,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 4 &&
           userProfile?.length > 0 &&
-          userProfile?.map((notification) => (
+          userProfile?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}

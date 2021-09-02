@@ -105,23 +105,6 @@ function NotificationPreview({ notifications }) {
               }
               secondary={getCreationTime(item?.date)}
             />
-            {/* <ListItemIcon
-                      aria-label='show more'
-                      aria-controls={notificationOptionId}
-                      aria-haspopup='true'
-                      onClick={handleNotificationOptionOpen}
-                      color='inherit'
-                      style={{
-                        marginRight: 0,
-                        paddingRight: 0,
-                        minWidth: 20,
-                        '&.MuiListItemIcon-root': {
-                          minWidth: 20,
-                        },
-                      }}
-                    >
-                      <MoreVert />
-                    </ListItemIcon> */}
           </ListItem>
         ))}
       {notifications?.length > 0 && (

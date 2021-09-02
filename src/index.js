@@ -11,7 +11,7 @@ import rootReducer from './store/reducers/rootReducer';
 // Save to local storage // Use Local Storage Persistance
 const saveToLocalStorage = state => {
   try {
-    let stringState = JSON.stringify(state);
+    const stringState = JSON.stringify(state);
     localStorage.setItem('@knjhffkgjbmbmnccmnvfseab', stringState);
   } catch (err) {
     console.log(err);
@@ -21,7 +21,7 @@ const saveToLocalStorage = state => {
 // Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
   try {
-    let stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
+    const stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
     if (stringState === null) return undefined;
     return JSON.parse(stringState);
   } catch (err) {

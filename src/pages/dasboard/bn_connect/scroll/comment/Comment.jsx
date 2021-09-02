@@ -45,7 +45,7 @@ export default function Comment({
   const [reply, setReply] = useState('');
   const [responseTo, setResponseTo] = useState('');
   const [replyErr, setReplyErr] = useState(false);
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -57,7 +57,7 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
-  const handleCommentOptionOpen = (event) => {
+  const handleCommentOptionOpen = event => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -65,7 +65,7 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (event) => {
+  const handleCreateReaction = event => {
     event.preventDefault();
     event.stopPropagation();
     createReaction({
@@ -85,7 +85,7 @@ export default function Comment({
     });
   };
 
-  const handleCreateReply = (e) => {
+  const handleCreateReply = e => {
     e.preventDefault();
     if (reply.trim() == '') return setReplyErr(true);
     onCreateComment({
@@ -260,12 +260,12 @@ export default function Comment({
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
-                onKeyPress={(e) => {
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handleCreateReply(e);
                   }
                 }}
-                onChange={(e) =>
+                onChange={e =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -313,9 +313,9 @@ export default function Comment({
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
+            commentInner => commentInner?.response_to?._id === comment?._id
           )
-          .map((commentInner) => (
+          .map(commentInner => (
             <Comment
               style={{
                 marginLeft: 30,

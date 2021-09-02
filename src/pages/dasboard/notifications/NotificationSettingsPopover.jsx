@@ -13,7 +13,7 @@ export default function NotificationSettingsPopover({
   isNotificationSettingsOpen,
   handleNotificationSettingsClose,
 }) {
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [

@@ -183,10 +183,24 @@ export const QUERY_FETCH_PROFILE = gql`
         paidUntil
         date
         followers {
-          userId
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
         }
         following {
-          userId
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
         }
         bnTokens {
           walletAddress

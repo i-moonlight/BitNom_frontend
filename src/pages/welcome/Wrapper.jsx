@@ -8,7 +8,7 @@ import Footer from './Footer';
 
 export default function Wrapper({ children, investor, onTabValue }) {
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const toTop = useRef(null);
 

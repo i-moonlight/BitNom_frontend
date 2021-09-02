@@ -15,7 +15,7 @@ export default function VerifyEmail() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [verifyEmail] = useMutation(MUTATION_VERIFY_EMAIL, {
@@ -32,7 +32,7 @@ export default function VerifyEmail() {
       errorPolicy: 'all',
     }).then(({ errors }) => {
       setVerifying(false);
-      let userErrors = errors ? errors : null;
+      const userErrors = errors ? errors : null;
       setVerifyErr(userErrors);
 
       setTimeout(() => {

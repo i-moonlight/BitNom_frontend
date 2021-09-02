@@ -35,7 +35,7 @@ export default function TrendingPostsCard({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending?.slice(0, 3).map((post) => (
+          trending?.slice(0, 3).map(post => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar
@@ -71,7 +71,7 @@ export default function TrendingPostsCard({ trending, loading }) {
             </ListItem>
           ))}
         {!loading && trending?.length === 0 && (
-          <Grid align='center'>
+          <Grid className='p-2'>
             <Typography color='Primary' variant='body2'>
               Trending posts will appear hear..start participating.
             </Typography>
