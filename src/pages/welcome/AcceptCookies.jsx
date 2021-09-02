@@ -4,7 +4,10 @@ import React from 'react';
 export default function AcceptCookies() {
   const theme = useTheme();
 
-  const accepted = JSON.parse(localStorage.getItem('@AcceptCookies'));
+  const accepted = true;
+  // localStorage.getItem('@AcceptCookies')
+  //   ? JSON.parse(localStorage.getItem('@AcceptCookies'))
+  //   : false;
 
   return (
     <Snackbar
