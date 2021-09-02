@@ -20,7 +20,7 @@ import Button from '../Button';
 import { useStyles } from '../utilities/styles.components';
 
 export default function StatusBar() {
-  const palette = useSelector(state => state.theme.palette);
+  const palette = useSelector(st => st.theme.palette);
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();

@@ -22,7 +22,6 @@
     "semi": ["error", "always"],
     "no-undef": 2,
     "prefer-const": 1,
-    "no-shadow": 1,
-    "camelcase": 1
+    "no-shadow": 1
   }
 }

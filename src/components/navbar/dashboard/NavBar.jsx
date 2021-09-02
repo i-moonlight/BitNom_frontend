@@ -12,32 +12,26 @@ import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
-import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import TabsBar from './TabsBar';
+import TabsBar2 from './TabsBar2';
 
 const menuId = 'menu-profile';
-const tabOptionsId = 'menu-tab-options';
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
-  const [value, setValue] = useState(0);
   const [notSeen, setNotSeen] = useState(0);
-  const [tabOptions, setTabOptions] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const isMenuOpen = Boolean(menuAnchorEl);
-  const isTabOptionOpen = Boolean(tabOptionAnchorEl);
   const isNotificationOpen = Boolean(notificationAnchorEl);
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
@@ -78,14 +72,6 @@ export default function NavBar() {
     setMenuAnchorEl(null);
   };
 
-  const handleTabOptionsOpen = event => {
-    setTabOptionAnchorEl(event.currentTarget);
-  };
-
-  const handleTabOptionsClose = () => {
-    setTabOptionAnchorEl(null);
-  };
-
   const handleNotificationsOpen = event => {
     setNotificationAnchorEl(event.currentTarget);
     handleMarkAsSeen();
@@ -120,17 +106,13 @@ export default function NavBar() {
     console.log(markAsSeenData);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  let response = data?.Notification?.get;
+  const response = data?.Notification?.get;
 
   useEffect(() => {
     dispatch(checkSessionTimeOut());
-    let notSeenArray = [];
-    response?.forEach((notification) => {
-      notification.to_notify.forEach((item) => {
+    const notSeenArray = [];
+    response?.forEach(notification => {
+      notification.to_notify.forEach(item => {
         if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
@@ -156,22 +138,11 @@ export default function NavBar() {
         notificationId={notificationId}
         handleNotificationsOpen={handleNotificationsOpen}
       />
-      <TabsBar
-        value={value}
-        handleChange={handleChange}
-        tabOptionsId={tabOptionsId}
-        setTabOptions={setTabOptions}
-        handleTabOptionsOpen={handleTabOptionsOpen}
-      />
+
+      <TabsBar2 />
       <Divider />
       <Divider />
-      <TabOptionsPopover
-        tabOptionAnchorEl={tabOptionAnchorEl}
-        tabOptionsId={tabOptionsId}
-        isTabOptionOpen={isTabOptionOpen}
-        handleTabOptionsClose={handleTabOptionsClose}
-        tabOptions={tabOptions}
-      />
+
       <MenuPopover
         menuId={menuId}
         menuAnchorEl={menuAnchorEl}

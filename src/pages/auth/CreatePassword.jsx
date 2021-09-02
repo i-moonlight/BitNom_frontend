@@ -16,7 +16,7 @@ import { resetPasswordValidationSchema } from './utilities/validation_schemas';
 export default function CreatePassword({ match }) {
   const [resetErr, setResetErr] = useState(null);
   const [requestSent, setRequestSent] = useState(false);
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const history = useHistory();
   const user = state.auth.user;
 

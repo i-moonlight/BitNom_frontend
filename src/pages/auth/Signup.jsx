@@ -27,7 +27,7 @@ export default function Signup() {
   const [justRegistered, setJustRegistered] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
@@ -47,7 +47,7 @@ export default function Signup() {
     // justRegistered && history.push('/auth/login');
 
     errors &&
-      errors.map((err) => {
+      errors.map(err => {
         err?.state?.email ? setEmailErr(err?.state?.email) : setEmailErr(null);
         err?.state?._id
           ? setUsernameErr(err?.state?._id)
@@ -55,15 +55,17 @@ export default function Signup() {
       });
   }, [errors, state]);
 
-  const responseGoogle = (response) => {
+  const responseGoogle = response => {
     googleSignup({
       variables: {
         token: response?.tokenId,
       },
       errorPolicy: 'all',
-    }).then(({ data, errors }) => {
-      let userData = data?.Users?.googleSignup ? data?.Users?.googleSignup : {};
-      let userErrors = errors ? errors : null;
+    }).then(({ data, errors: err }) => {
+      const userData = data?.Users?.googleSignup
+        ? data?.Users?.googleSignup
+        : {};
+      const userErrors = err ? err : null;
       setGoogleErr(userErrors);
 
       dispatch(register(userData, null));
@@ -76,18 +78,18 @@ export default function Signup() {
             token: response.tokenId,
           },
           errorPolicy: 'all',
-        }).then(({ data, errors }) => {
-          let userData = data?.Users?.googleLogin
-            ? data?.Users?.googleLogin
+        }).then(({ data: googleData }) => {
+          const googleUserData = googleData?.Users?.googleLogin
+            ? googleData?.Users?.googleLogin
             : {};
-          let userErrors = errors ? errors : null;
-          setGoogleErr(userErrors);
-          dispatch(login(userData, null));
+          const googleUserErrors = errors ? errors : null;
+          setGoogleErr(googleUserErrors);
+          dispatch(login(googleUserData, null));
         });
     });
   };
 
-  const failureGoogle = (response) => {
+  const failureGoogle = response => {
     console.log('googleErr: ', response);
   };
 
@@ -130,11 +132,11 @@ export default function Signup() {
                         invitationCode: null,
                       },
                       errorPolicy: 'all',
-                    }).then(({ data, errors }) => {
-                      let userData = data?.Users?.create
+                    }).then(({ data, errors: err }) => {
+                      const userData = data?.Users?.create
                         ? data?.Users?.create
                         : {};
-                      let userErrors = errors ? errors : null;
+                      const userErrors = err ? err : null;
                       setErrors(userErrors);
 
                       dispatch(register(userData, null));
@@ -207,7 +209,7 @@ export default function Signup() {
                     </Button>
                     <DividerText>or</DividerText>
                     {googleErr &&
-                      googleErr.map((err) => (
+                      googleErr.map(err => (
                         <Alert
                           className='mb-2'
                           key={Math.random() * 100}
@@ -222,7 +224,7 @@ export default function Signup() {
                       buttonText='Login Google'
                       onSuccess={responseGoogle}
                       onFailure={failureGoogle}
-                      render={(renderProps) => (
+                      render={renderProps => (
                         <Button
                           onClick={renderProps.onClick}
                           textCase

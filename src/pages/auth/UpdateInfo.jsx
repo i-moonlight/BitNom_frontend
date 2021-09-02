@@ -14,7 +14,7 @@ import { MUTATION_UPDATE_PROFILE_INFO } from './utilities/queries';
 import { updateInfoValidationSchema } from './utilities/validation_schemas';
 
 export default function UpdateInfo() {
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const dispatch = useDispatch();
   const history = useHistory();
   const user = state.auth.user;
@@ -62,7 +62,7 @@ export default function UpdateInfo() {
                       },
                       errorPolicy: 'all',
                     }).then(({ data, errors }) => {
-                      let userData = data?.Users?.update
+                      const userData = data?.Users?.update
                         ? data?.Users?.update
                         : {};
 

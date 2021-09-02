@@ -11,7 +11,7 @@ export default function NavBarInvestor({ onTabValue }) {
   const [tabValue, setTabValue] = useState(0);
   const theme = useTheme();
   const history = useHistory();
-  const palette = useSelector(state => state.theme.palette);
+  const palette = useSelector(st => st.theme.palette);
 
   useEffect(() => {
     () => onTabValue(tabValue);

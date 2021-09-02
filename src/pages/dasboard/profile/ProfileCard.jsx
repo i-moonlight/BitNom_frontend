@@ -20,7 +20,7 @@ import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
 export default function ProfileCard({ profile }) {
-  // const state = useSelector(state => state);
+  // const state = useSelector(st => st);
   // const user = state.auth.user;
   const profileInitials = getUserInitials(profile?.displayName);
 

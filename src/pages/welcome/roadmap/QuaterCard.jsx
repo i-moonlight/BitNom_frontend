@@ -17,9 +17,9 @@ export default function QuaterCard({ title, text, list }) {
           <Typography gutterBottom>{title}</Typography>
           <Typography variant='body2'>
             {text}
-            {list?.map(list => (
+            {list?.map(ls => (
               <li className='mx-0' key={list}>
-                {list}
+                {ls}
               </li>
             ))}
           </Typography>

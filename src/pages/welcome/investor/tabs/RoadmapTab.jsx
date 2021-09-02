@@ -52,9 +52,9 @@ const RoadMapCard = ({ text, list }) => (
       <CardContent>
         <Typography color='textPrimary'>{text}</Typography>
         <Typography color='textPrimary'>
-          {list?.map(list => (
-            <li className='mx-0' key={list}>
-              <Typography>- {list}</Typography>
+          {list?.map(ls => (
+            <li className='mx-0' key={ls}>
+              <Typography>- {ls}</Typography>
             </li>
           ))}
         </Typography>

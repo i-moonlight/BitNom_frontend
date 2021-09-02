@@ -68,4 +68,32 @@ export const useStyles = makeStyles(theme => ({
   textTheme: {
     color: theme.palette.primary.main,
   },
+  topTabs: {
+    minWidth: 170,
+    textAlign: 'center',
+    cursor: 'pointer',
+    backgroundColor: 'inherit',
+    '&:hover': {
+      backgroundColor:
+        theme.palette.type == 'dark'
+          ? theme.palette.background.paper
+          : theme.palette.background.search,
+    },
+  },
+  topTabsActive: {
+    width: '100%',
+    minWidth: 170,
+    textAlign: 'center',
+    cursor: 'pointer',
+    backgroundColor: 'inherit',
+    borderBottomWidth: 2,
+    borderBottomColor: theme.palette.primary.main,
+    borderBottomStyle: 'solid',
+    '&:hover': {
+      backgroundColor:
+        theme.palette.type == 'dark'
+          ? theme.palette.background.paper
+          : theme.palette.background.search,
+    },
+  },
 }));

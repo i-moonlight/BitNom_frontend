@@ -34,7 +34,7 @@ import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function People() {
   const classes = useStyles();
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -63,13 +63,13 @@ export default function People() {
   });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+    item => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
 
-  const getFollowStatus = (user) => {
+  const getFollowStatus = usr => {
     let status;
-    profileData?.Users?.profile?.following?.forEach((item) => {
-      if (item?.userId?._id == user?._id) {
+    profileData?.Users?.profile?.following?.forEach(item => {
+      if (item?.userId?._id == usr?._id) {
         status = item?.userId?._id;
       }
     });
@@ -115,11 +115,11 @@ export default function People() {
 
                 <Divider />
                 <CardContent>
-                  {suggestedUsers?.map((user) => (
+                  {suggestedUsers?.map(usr => (
                     <ListItemComponent
-                      key={user?._id}
+                      key={usr?._id}
                       getFollowStatus={getFollowStatus}
-                      item={user}
+                      item={usr}
                     />
                   ))}
                 </CardContent>
@@ -157,7 +157,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = (user_id) => {
+  const handleFollowUser = user_id => {
     followUser({
       variables: {
         data: {
@@ -177,7 +177,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = (user_id) => {
+  const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
         data: {

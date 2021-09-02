@@ -9,9 +9,9 @@ export const login = (userdata, errors) => {
     let err = null;
     dispatch({ type: 'USER_LOGIN_ERROR', err });
 
-    const login_date = new Date().getTime();
+    const loginDate = new Date().getTime();
 
-    let user = { ...userdata, login_date };
+    const user = { ...userdata, loginDate };
 
     dispatch({ type: 'USER_LOGIN', user });
     setBusy(false);
@@ -32,7 +32,7 @@ export const register = (userdata, errors) => {
     let err = null;
     dispatch({ type: 'USER_LOGIN_ERROR', err });
 
-    let user = userdata;
+    const user = userdata;
     dispatch({ type: 'USER_REGISTER', user });
     setBusy(false);
 
@@ -61,19 +61,19 @@ export const checkSessionTimeOut = () => {
 
     setBusy(true);
 
-    let hours = 24;
-    let now = new Date().getTime();
+    const hours = 24;
+    const now = new Date().getTime();
 
-    let userData = getState().auth.user;
+    const userData = getState().auth.user;
 
     if (!userData.login_date) {
       return;
     }
 
-    let login_date = userData.login_date;
-    let time_diff = now - login_date;
+    const loginDate = userData.login_date;
+    const timeDiff = now - loginDate;
 
-    if (time_diff > hours * 60 * 60 * 1000) {
+    if (timeDiff > hours * 60 * 60 * 1000) {
       dispatch({ type: 'USER_LOGOUT' });
       setBusy(false);
     }

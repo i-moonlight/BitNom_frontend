@@ -14,7 +14,7 @@ import { signout } from '../../store/actions/authActions';
 import { MUTATION_SEND_EMAIL_VERIFICATION } from './utilities/queries';
 
 export default function RequireVerification() {
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const dispatch = useDispatch();
   const theme = useTheme();
   const history = useHistory();

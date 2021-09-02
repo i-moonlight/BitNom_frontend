@@ -6,7 +6,7 @@ import './css/style.css';
 import Routes from './Routes';
 
 export default function App() {
-  const palette = useSelector(state => state.theme.palette);
+  const palette = useSelector(st => st.theme.palette);
 
   const themeOptionsDark = {
     primary: {

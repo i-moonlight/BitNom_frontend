@@ -25,7 +25,7 @@ import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
 export default function UserCard({ setOpen, followers, following, scrolls }) {
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();

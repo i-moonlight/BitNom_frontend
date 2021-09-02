@@ -12,7 +12,7 @@ import React from 'react';
 
 export default function InsightCard({ profile }) {
   const [tabValue, setTabValue] = React.useState(0);
-  //   const state = useSelector(state => state);
+  //   const state = useSelector(st => st);
   //   const user = state.auth.user;
 
   const handleTabChange = (event, newValue) => {

@@ -15,7 +15,7 @@ import { requestResetValidationSchema } from './utilities/validation_schemas';
 export default function ResetPassword() {
   const [emailErr, setEmailErr] = useState(null);
   const [requestSent, setRequestSent] = useState(false);
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const history = useHistory();
   const user = state.auth.user;
 
