@@ -2,11 +2,11 @@ import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import {
-  MARK_NOTIFICAION_AS_READ,
+  MARK_NOTIFICATION_AS_READ,
   GET_USER_NOTIFICATIONS,
   //MARK_NOTIFICAION_AS_SEEN,
   MUTATION_MUTE_NOTIFICATIONS,
-  DELETE_NOTIFICAION,
+  DELETE_NOTIFICATION,
 } from '../../../../pages/dasboard/utilities/queries';
 
 export default function NotificationOptionPopover({
@@ -23,7 +23,7 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(DELETE_NOTIFICAION, {
+  ] = useMutation(DELETE_NOTIFICATION, {
     context: { clientName: 'notifications' },
   });
 
@@ -81,14 +81,14 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(MARK_NOTIFICAION_AS_READ, {
+  ] = useMutation(MARK_NOTIFICATION_AS_READ, {
     context: { clientName: 'notifications' },
   });
 
   const handleMarkNotificationRead = () => {
     markAsRead({
       variables: {
-        _id: notification?._id,
+        data: { _id: notification?._id },
       },
       refetchQueries: [
         {
@@ -121,11 +121,11 @@ export default function NotificationOptionPopover({
           <ListItemText secondary='Mark as read' />
         </ListItem>
         <ListItem button onClick={handleDeleteNotification} divider>
-          <ListItemText secondary='Remove This Notification' />
+          <ListItemText secondary='Remove this notification' />
         </ListItem>
         <ListItem button divider onClick={handleMuteNotifications}>
           <ListItemText
-            secondary='Turn off Notifications from 
+            secondary='Turn off notifications from 
    this account'
           />
         </ListItem>

@@ -14,10 +14,24 @@ export const QUERY_FETCH_PROFILE = gql`
         reputation
         blocked
         followers {
-          userId
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
         }
         following {
-          userId
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
         }
         portfolio
         website
@@ -388,15 +402,15 @@ export const QUERY_GET_USERS = gql`
   }
 `;
 
-export const MARK_NOTIFICAION_AS_READ = gql`
-  mutation ($_id: ID) {
+export const MARK_NOTIFICATION_AS_READ = gql`
+  mutation ($data: IMarkAsRead) {
     Notification {
-      markAsRead(_id: $_id)
+      markAsRead(data: $data)
     }
   }
 `;
 
-export const DELETE_NOTIFICAION = gql`
+export const DELETE_NOTIFICATION = gql`
   mutation ($_id: ID!) {
     Notification {
       delete(_id: $_id)

@@ -50,6 +50,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                     style={{
                       display: post?.images?.length > 0 ? 'none' : 'block',
                     }}
+                    color='primary'
                   />
                 </Avatar>
               </ListItemAvatar>

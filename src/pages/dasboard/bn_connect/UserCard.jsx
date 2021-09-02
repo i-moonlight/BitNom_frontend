@@ -113,18 +113,10 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
                 <Typography variant='body2'>{scrolls}</Typography>
               </div>
             </div>
-            <div>
-              <Typography variant='body2'>Following</Typography>
-              <div className='center-horizontal'>
-                <PersonRounded
-                  color='primary'
-                  className='mx-2'
-                  fontSize='small'
-                />
-                <Typography variant='body2'>{following}</Typography>
-              </div>
-            </div>
-            <div>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/connections')}
+            >
               <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
@@ -133,6 +125,20 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
                   fontSize='small'
                 />
                 <Typography variant='body2'>{followers}</Typography>
+              </div>
+            </div>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/connections')}
+            >
+              <Typography variant='body2'>Following</Typography>
+              <div className='center-horizontal'>
+                <PersonRounded
+                  color='primary'
+                  className='mx-2'
+                  fontSize='small'
+                />
+                <Typography variant='body2'>{following}</Typography>
               </div>
             </div>
           </div>
@@ -176,7 +182,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
       </Card>
       <Button
         style={{
-          display: location.pathname.includes('people') ? 'none' : 'block',
+          display: location.pathname.includes('dashboard/') ? 'none' : 'block',
         }}
         onClick={setOpen}
         color='primary'

@@ -61,7 +61,7 @@ export default function UpdatePost({
   const [scroll_video, setScrollVideo] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector(state => state);
+  const state = useSelector((state) => state);
   const user = state.auth.user;
   const [
     updatePost,
@@ -80,7 +80,7 @@ export default function UpdatePost({
     },
   ] = useMutation(MUTATION_DELETE_POST);
 
-  const onDeletePost = async id => {
+  const onDeletePost = async (id) => {
     await deletePost({
       variables: {
         _id: id,
@@ -98,7 +98,7 @@ export default function UpdatePost({
     setOpenVideo(false);
     setPostToEdit(null);
   };
-  const onUpdatePost = async IUpdatePost => {
+  const onUpdatePost = async (IUpdatePost) => {
     await updatePost({
       variables: {
         data: IUpdatePost,
@@ -133,7 +133,7 @@ export default function UpdatePost({
     }
   }, [postToEdit]);
 
-  const handleUpdatePost = e => {
+  const handleUpdatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setUpdatePostErr(true);
     onUpdatePost({
@@ -145,7 +145,7 @@ export default function UpdatePost({
     setUpdateScrollOpen(false);
   };
 
-  const handleDeletePost = e => {
+  const handleDeletePost = (e) => {
     e.preventDefault();
     onDeletePost(postToEdit?._id);
     setOpenDelete(false);
@@ -195,7 +195,14 @@ export default function UpdatePost({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
+                  <Avatar
+                    style={{
+                      backgroundColor: '#fed132',
+                    }}
+                    src={user?.profile_pic}
+                  >
+                    {userInitials}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
@@ -230,7 +237,7 @@ export default function UpdatePost({
                 rows={5}
                 id='update-scroll-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -246,7 +253,7 @@ export default function UpdatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
@@ -295,7 +302,7 @@ export default function UpdatePost({
                         </Grid>
                       )}
                       {postToEdit?.images?.length > 0 &&
-                        postToEdit?.images?.map(imageURL => (
+                        postToEdit?.images?.map((imageURL) => (
                           <Grid
                             className='mt-3'
                             key={imageURL}

@@ -64,7 +64,8 @@ export default function NavBar() {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
     return () => {
-      setNotSeen(subscriptionData?.liveUpdates?.count);
+      if (subscriptionData?.liveUpdates?.id === user?._id)
+        setNotSeen(subscriptionData?.liveUpdates?.count);
     };
   }, [subscriptionData]);
   const handleMenuOpen = (event) => {

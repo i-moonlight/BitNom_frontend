@@ -103,7 +103,13 @@ export default function Comment({
   return (
     <>
       <div style={style} className='d-flex flex-row flex-start'>
-        <Avatar src={comment?.author?.profile_pic} className='mx-2'>
+        <Avatar
+          style={{
+            backgroundColor: '#fed132',
+          }}
+          src={comment?.author?.profile_pic}
+          className='mx-2'
+        >
           {commentUserInitials}
         </Avatar>
         <div className='mb-3 flex-1'>
@@ -238,7 +244,13 @@ export default function Comment({
           </div>
           {openReplies && (
             <div className='center-horizontal'>
-              <Avatar src={scroll?.author?.profile_pic} className='mx-2'>
+              <Avatar
+                style={{
+                  backgroundColor: '#fed132',
+                }}
+                src={scroll?.author?.profile_pic}
+                className='mx-2'
+              >
                 {currentUserInitials}
               </Avatar>
               <TextField

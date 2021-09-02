@@ -36,7 +36,7 @@ export const MUTATION_LOGIN_USER = gql`
         referralCode
         displayName
         bio
-        # profile_pic
+        profile_pic
         email {
           address
           verified
@@ -150,7 +150,7 @@ export const MUTATION_LOGIN_USER_2 = gql`
         _id
         displayName
         bio
-        # profile_pic
+        profile_pic
         displayName
         type
         reputation

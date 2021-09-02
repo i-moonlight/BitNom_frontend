@@ -74,7 +74,7 @@ export const truncateText = (str, n) => {
 export const getFeed = (profileData) => {
   let ids = [];
   profileData?.following?.forEach((element) => {
-    ids.push(element.userId);
+    ids.push(element.userId._id);
   });
   ids.push(profileData?._id);
   return ids;
