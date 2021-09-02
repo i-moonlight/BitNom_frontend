@@ -15,6 +15,7 @@ import {
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
@@ -24,6 +25,8 @@ import UserCard from '../bn_connect/UserCard';
 import {
   GET_BOOKMARKED_COMMENTS,
   GET_BOOKMARKED_SCROLLS,
+  QUERY_FETCH_PROFILE,
+  QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
 
@@ -52,6 +55,8 @@ export default function SavedItems() {
   const [sharedPost, setSharedPost] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
 
+  const state = useSelector((state) => state);
+  const user = state.auth.user;
   const classes = useStyles();
 
   const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
@@ -74,6 +79,17 @@ export default function SavedItems() {
       },
     }
   );
+
+  const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
+    variables: { data: { author: user?._id, limit: 500 } },
+  });
+
+  const {
+    //  loading,
+    data: profileData,
+  } = useQuery(QUERY_FETCH_PROFILE, {
+    context: { clientName: 'users' },
+  });
 
   const handleChange = (event, value) => {
     setValue(value);
@@ -117,7 +133,11 @@ export default function SavedItems() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <UserCard setOpen={(open) => setCreateScrollOpen(open)} />
+                <UserCard
+                  scrolls={userScrolls?.Posts?.get?.length}
+                  following={profileData?.Users?.profile?.following?.length}
+                  followers={profileData?.Users?.profile?.followers?.length}
+                />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>

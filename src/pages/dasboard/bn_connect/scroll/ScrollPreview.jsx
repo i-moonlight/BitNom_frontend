@@ -11,17 +11,26 @@ import {
 //import { MoreVert } from '@material-ui/icons';
 import moment from 'moment';
 import React from 'react';
+import { getUserInitials } from '../../../../utilities/Helpers';
+import { contentBodyFactory } from '../../utilities/functions';
 
 //const scrollOptionId = 'menu-scroll-option';
 
 export default function ScrollPreview({ scroll }) {
+  const authorInitials = getUserInitials(scroll?.author?.displayName);
   return (
     <>
       <Card variant='outlined' style={{ marginBottom: 16, marginTop: 16 }}>
         <CardHeader
           avatar={
-            <Avatar src={scroll?.author?.image} aria-label='recipe'>
-              R
+            <Avatar
+              style={{
+                backgroundColor: '#fed132',
+              }}
+              src={scroll?.author?.image}
+              aria-label='recipe'
+            >
+              {authorInitials}
             </Avatar>
           }
           title={
@@ -38,7 +47,11 @@ export default function ScrollPreview({ scroll }) {
         />
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
-            {scroll?.content}
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: contentBodyFactory(scroll),
+              }}
+            ></Typography>
             <br />
             <Grid container spacing={2} className='mb-2'>
               {scroll?.video && (

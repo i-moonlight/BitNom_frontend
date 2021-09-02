@@ -28,6 +28,7 @@ import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/people/People';
+import Connections from './pages/dasboard/people/Connections';
 import Profile from './pages/dasboard/profile/Profile';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
@@ -94,7 +95,7 @@ class WebSocketLink extends ApolloLink {
 
 //  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: process.env.REACT_APP_SOCKET_URL + ':443/notifications/graphql',
+  url: process.env.REACT_APP_SOCKET_URL + '/notifications/graphql',
 });
 const profileLink = from([
   errorLink,
@@ -198,6 +199,11 @@ export const AppContainers = () => {
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />
             <Route exact component={People} path='/dashboard/people' />
+            <Route
+              exact
+              component={Connections}
+              path='/dashboard/connections'
+            />
             <Route exact component={Profile} path='/dashboard/profile' />
             <Route exact component={SavedItems} path='/dashboard/bookmarks' />
             <Route
