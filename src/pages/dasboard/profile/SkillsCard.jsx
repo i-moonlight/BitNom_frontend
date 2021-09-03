@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   CardContent,
@@ -8,13 +9,42 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
+import Button from '../../../components/Button';
+import {
+  MUTATION_ADD_SKILL,
+  MUTATION_REMOVE_SKILL,
+  QUERY_FETCH_PROFILE,
+} from './utilities/profile.queries';
 import { useStyles } from './utilities/profile.styles';
 
 export default function SkillsCard({ profile }) {
+  const [text, setText] = useState('');
   const theme = useTheme();
   const classes = useStyles();
   const skills = profile?.skills;
+
+  const [
+    addSkill,
+    {
+      // addError,
+      // data,
+      addLoading,
+    },
+  ] = useMutation(MUTATION_ADD_SKILL, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    removeSkill,
+    {
+      // removeError,
+      // data,
+      removeLoading,
+    },
+  ] = useMutation(MUTATION_REMOVE_SKILL, {
+    context: { clientName: 'users' },
+  });
 
   return (
     <Card className='mb-3'>
@@ -31,9 +61,35 @@ export default function SkillsCard({ profile }) {
         >
           <Search color='inherit' />
           <InputBase
+            value={text}
+            onChange={e => setText(e.target.value)}
             className={classes.input}
             placeholder='Search Skill eg "Data Analyst"'
             inputProps={{ 'aria-label': 'search bitnorm' }}
+            endAdornment={
+              <Button
+                onClick={() => {
+                  addSkill({
+                    variables: {
+                      data: { name: text },
+                    },
+                    refetchQueries: [
+                      {
+                        query: QUERY_FETCH_PROFILE,
+                        context: { clientName: 'users' },
+                      },
+                    ],
+                  }).then(() => {
+                    setText('');
+                  });
+                }}
+                disabled={addLoading}
+                size='small'
+                className='my-1'
+              >
+                Add
+              </Button>
+            }
           />
         </Paper>
 
@@ -48,7 +104,20 @@ export default function SkillsCard({ profile }) {
               key={_id}
               label={name}
               className='me-2 mb-2'
-              onDelete={() => null}
+              disabled={removeLoading}
+              onDelete={() =>
+                removeSkill({
+                  variables: {
+                    id: _id,
+                  },
+                  refetchQueries: [
+                    {
+                      query: QUERY_FETCH_PROFILE,
+                      context: { clientName: 'users' },
+                    },
+                  ],
+                })
+              }
             />
           ))}
         </div>

@@ -53,7 +53,7 @@ export default function UpdateComment({
   const [comment_image, setCommentImage] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const [
     updateComment,
@@ -72,7 +72,7 @@ export default function UpdateComment({
     },
   ] = useMutation(MUTATION_DELETE_COMMENT);
 
-  const onDeleteComment = async (id) => {
+  const onDeleteComment = async id => {
     await deleteComment({
       variables: {
         _id: id,
@@ -92,7 +92,7 @@ export default function UpdateComment({
     setFileType(null);
     setCommentToEdit(null);
   };
-  const onUpdateComment = async (IUpdateComment) => {
+  const onUpdateComment = async IUpdateComment => {
     await updateComment({
       variables: {
         data: IUpdateComment,
@@ -126,7 +126,7 @@ export default function UpdateComment({
     }
   }, [commentToEdit]);
 
-  const handleUpdateComment = (e) => {
+  const handleUpdateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '') return setUpdateCommentErr(true);
     onUpdateComment({
@@ -137,7 +137,7 @@ export default function UpdateComment({
     setUpdateCommentOpen(false);
   };
 
-  const handleDeleteComment = (e) => {
+  const handleDeleteComment = e => {
     e.preventDefault();
     onDeleteComment(commentToEdit?._id);
     setOpenDelete(false);
@@ -183,7 +183,14 @@ export default function UpdateComment({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
+                  <Avatar
+                    style={{
+                      backgroundColor: '#fed132',
+                    }}
+                    src={user?.profile_pic}
+                  >
+                    {userInitials}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}
@@ -220,7 +227,7 @@ export default function UpdateComment({
                 rows={5}
                 id='update-comment-field'
                 placeholder='Write Comment'
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -236,7 +243,7 @@ export default function UpdateComment({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     setCommentImage(files[0]);
                   }}
                   dropzoneText={'Drag n drop an image here or click'}

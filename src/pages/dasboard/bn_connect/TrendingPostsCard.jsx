@@ -15,8 +15,6 @@ import React from 'react';
 import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
-  console.log(trending, loading);
-
   return (
     <Paper
       style={{
@@ -52,6 +50,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                     style={{
                       display: post?.images?.length > 0 ? 'none' : 'block',
                     }}
+                    color='primary'
                   />
                 </Avatar>
               </ListItemAvatar>
@@ -72,9 +71,9 @@ export default function TrendingPostsCard({ trending, loading }) {
             </ListItem>
           ))}
         {!loading && trending?.length === 0 && (
-          <Grid align='center'>
+          <Grid className='p-2'>
             <Typography color='Primary' variant='body2'>
-              Trending posts will appear hear..start commenting.
+              Trending posts will appear hear..start participating.
             </Typography>
           </Grid>
         )}

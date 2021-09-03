@@ -13,6 +13,14 @@ export const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     backgroundColor: theme.palette.background.profileCard,
   },
+  paperSearchAlt: {
+    padding: '0px 4px',
+    display: 'flex',
+    flexGrow: 1,
+    alignItems: 'center',
+    marginTop: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper,
+  },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,

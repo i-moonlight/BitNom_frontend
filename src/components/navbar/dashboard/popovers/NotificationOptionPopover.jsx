@@ -2,11 +2,11 @@ import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import {
-  MARK_NOTIFICAION_AS_READ,
+  MARK_NOTIFICATION_AS_READ,
   GET_USER_NOTIFICATIONS,
   //MARK_NOTIFICAION_AS_SEEN,
-  MUTATION_UNSUBSCRIBE,
-  DELETE_NOTIFICAION,
+  MUTATION_MUTE_NOTIFICATIONS,
+  DELETE_NOTIFICATION,
 } from '../../../../pages/dasboard/utilities/queries';
 
 export default function NotificationOptionPopover({
@@ -23,18 +23,18 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(DELETE_NOTIFICAION, {
+  ] = useMutation(DELETE_NOTIFICATION, {
     context: { clientName: 'notifications' },
   });
 
   const [
-    unsubscribe,
+    mute,
     {
-      data: unsubscribeData,
+      data: muteData,
       //  loading,
       //   error
     },
-  ] = useMutation(MUTATION_UNSUBSCRIBE, {
+  ] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
     context: { clientName: 'notifications' },
   });
 
@@ -46,7 +46,7 @@ export default function NotificationOptionPopover({
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
@@ -54,9 +54,9 @@ export default function NotificationOptionPopover({
     handleNotificationOptionClose();
   };
 
-  const handleUnsubscribe = () => {
+  const handleMuteNotifications = () => {
     console.log(notification?.content_entities[0]?.resource);
-    unsubscribe({
+    mute({
       variables: {
         resource: {
           _id: notification?.content_entities[0]?.resource?._id,
@@ -66,7 +66,7 @@ export default function NotificationOptionPopover({
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
@@ -81,26 +81,26 @@ export default function NotificationOptionPopover({
       //  loading,
       //   error
     },
-  ] = useMutation(MARK_NOTIFICAION_AS_READ, {
+  ] = useMutation(MARK_NOTIFICATION_AS_READ, {
     context: { clientName: 'notifications' },
   });
-  console.log(notification);
+
   const handleMarkNotificationRead = () => {
     markAsRead({
       variables: {
-        _id: notification?._id,
+        data: { _id: notification?._id },
       },
       refetchQueries: [
         {
           query: GET_USER_NOTIFICATIONS,
-          variables: { limit: 20 },
+          variables: { limit: 99 },
           context: { clientName: 'notifications' },
         },
       ],
     });
     handleNotificationOptionClose();
   };
-  console.log(markAsReadData, unsubscribeData, deleteData);
+  console.log(markAsReadData, muteData, deleteData);
   return (
     <Popover
       anchorEl={notificationOptionAnchorEl}
@@ -121,11 +121,11 @@ export default function NotificationOptionPopover({
           <ListItemText secondary='Mark as read' />
         </ListItem>
         <ListItem button onClick={handleDeleteNotification} divider>
-          <ListItemText secondary='Remove This Notification' />
+          <ListItemText secondary='Remove this notification' />
         </ListItem>
-        <ListItem button divider onClick={handleUnsubscribe}>
+        <ListItem button divider onClick={handleMuteNotifications}>
           <ListItemText
-            secondary='Turn off Notifications from 
+            secondary='Turn off notifications from 
    this account'
           />
         </ListItem>

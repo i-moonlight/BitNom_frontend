@@ -17,17 +17,17 @@ export default function Button({
 }) {
   const formikContext = useFormikContext();
 
-  let buttonVariant = variantAlt ? variantAlt : variant;
-  let buttonColor = colorAlt ? colorAlt : color;
+  const buttonVariant = variantAlt ? variantAlt : variant;
+  const buttonColor = colorAlt ? colorAlt : color;
 
   return (
     <MuiButton
       color={buttonColor ? buttonColor : 'primary'}
       variant={buttonVariant ? buttonVariant : 'contained'}
-      disableElevation
+      disableElevation={!google}
       style={{
         backgroundColor: google && '#f2f2f2',
-        buttonColor: !buttonColor && google && '#818181',
+        color: !buttonColor && google && '#818181',
         textTransform: textCase && 'none',
       }}
       onClick={submit ? formikContext.handleSubmit : onClick}

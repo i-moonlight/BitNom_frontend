@@ -19,7 +19,9 @@
     "no-unused-vars": "warn",
     "quotes": [0, { "allowTemplateLiterals": true, "avoidEscape": true }],
     "react/prop-types": 0,
-    "semi": ["error", "always"]
-    // "no-undef": "off"
+    "semi": ["error", "always"],
+    "no-undef": 2,
+    "prefer-const": 1,
+    "no-shadow": 1
   }
 }

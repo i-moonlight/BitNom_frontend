@@ -27,7 +27,7 @@ export default function Signup() {
   const [justRegistered, setJustRegistered] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
@@ -61,9 +61,11 @@ export default function Signup() {
         token: response?.tokenId,
       },
       errorPolicy: 'all',
-    }).then(({ data, errors }) => {
-      let userData = data?.Users?.googleSignup ? data?.Users?.googleSignup : {};
-      let userErrors = errors ? errors : null;
+    }).then(({ data, errors: err }) => {
+      const userData = data?.Users?.googleSignup
+        ? data?.Users?.googleSignup
+        : {};
+      const userErrors = err ? err : null;
       setGoogleErr(userErrors);
 
       dispatch(register(userData, null));
@@ -76,13 +78,13 @@ export default function Signup() {
             token: response.tokenId,
           },
           errorPolicy: 'all',
-        }).then(({ data, errors }) => {
-          let userData = data?.Users?.googleLogin
-            ? data?.Users?.googleLogin
+        }).then(({ data: googleData }) => {
+          const googleUserData = googleData?.Users?.googleLogin
+            ? googleData?.Users?.googleLogin
             : {};
-          let userErrors = errors ? errors : null;
-          setGoogleErr(userErrors);
-          dispatch(login(userData, null));
+          const googleUserErrors = errors ? errors : null;
+          setGoogleErr(googleUserErrors);
+          dispatch(login(googleUserData, null));
         });
     });
   };
@@ -130,11 +132,11 @@ export default function Signup() {
                         invitationCode: null,
                       },
                       errorPolicy: 'all',
-                    }).then(({ data, errors }) => {
-                      let userData = data?.Users?.create
+                    }).then(({ data, errors: err }) => {
+                      const userData = data?.Users?.create
                         ? data?.Users?.create
                         : {};
-                      let userErrors = errors ? errors : null;
+                      const userErrors = err ? err : null;
                       setErrors(userErrors);
 
                       dispatch(register(userData, null));

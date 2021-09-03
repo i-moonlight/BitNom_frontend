@@ -15,8 +15,11 @@ import {
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
 import React from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
+
 import {
   GET_BOOKMARKED_SCROLLS,
   MUTATION_CREATE_BOOKMARK,
@@ -41,9 +44,9 @@ export default function ScrollOptionsPopover({
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
-  if (data) console.log(data);
+
   const handleCreateBookmark = () => {
     createBookmark({
       variables: {
@@ -63,6 +66,16 @@ export default function ScrollOptionsPopover({
         },
       ],
     });
+    if (data?.Bookmarks?.create == true)
+      toast.success('Added to saved items', {
+        position: 'bottom-left',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    console.log(data?.Bookmarks?.create, 'dlfdslfj');
     handleScrollOptionClose();
   };
   const handleReportScroll = () => {

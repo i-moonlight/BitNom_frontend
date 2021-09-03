@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   Card,
   CardContent,
@@ -7,34 +8,145 @@ import {
   Typography,
 } from '@material-ui/core';
 import { SearchRounded } from '@material-ui/icons';
-import React from 'react';
+import { Alert } from '@material-ui/lab';
+import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
+import { educationInitialValues } from '../utilities/profile.initialValues';
+import {
+  MUTATION_ADD_EDUCATION,
+  MUTATION_REMOVE_EDUCATION,
+  MUTATION_UPDATE_EDUCATION,
+  QUERY_FETCH_PROFILE,
+} from '../utilities/profile.queries';
 import { useStyles } from '../utilities/profile.styles';
+import { educationValidation } from '../utilities/profile.validationSchemas';
 
-export default function EducationForm({ onClose }) {
+export default function EducationForm({ onClose, updateData }) {
+  const [current, setCurrent] = useState(updateData?.current);
+  const [localError, setLocalError] = useState(false);
   const classes = useStyles();
+
+  const [
+    addEducation,
+    {
+      // addError,
+      // data,
+      addLoading,
+    },
+  ] = useMutation(MUTATION_ADD_EDUCATION, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    updateEducation,
+    {
+      // updateError,
+      //  data,
+      updateLoading,
+    },
+  ] = useMutation(MUTATION_UPDATE_EDUCATION, {
+    context: { clientName: 'users' },
+  });
+
+  const [
+    removeEducation,
+    {
+      // updateError,
+      //  data,
+      removeLoading,
+    },
+  ] = useMutation(MUTATION_REMOVE_EDUCATION, {
+    context: { clientName: 'users' },
+  });
 
   return (
     <div className='mt-2'>
-      <Form>
+      <Form
+        initialValues={updateData || educationInitialValues}
+        validationSchema={educationValidation}
+        onSubmit={(
+          { institution, major, start_date, end_date, description },
+          { resetForm }
+        ) => {
+          setLocalError(null);
+
+          if (!current && end_date == '') {
+            setLocalError(
+              "End Date required if you aren't currently pursuing this"
+            );
+            return;
+          }
+
+          const IEducation = current
+            ? {
+                institution,
+                major,
+                start_date,
+                current,
+                description,
+              }
+            : {
+                institution,
+                major,
+                start_date,
+                end_date,
+                description,
+              };
+
+          console.log(IEducation);
+
+          updateData ? console.log('upd') : console.log('add');
+
+          updateData
+            ? updateEducation({
+                variables: {
+                  id: updateData?.id,
+                  data: IEducation,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              })
+            : addEducation({
+                variables: {
+                  data: IEducation,
+                },
+                refetchQueries: [
+                  {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                  },
+                ],
+              }).then(() => {
+                resetForm();
+                onClose();
+              });
+        }}
+      >
         <Card className={classes.formCard}>
           <CardContent>
             <TextField
               required
               fullWidth
-              name='education'
-              labelTop='Education'
-              placeholder='Type to search'
+              name='institution'
+              labelTop='Institution'
+              placeholder={updateData?.institution || 'Type to search'}
               adornmentType='start'
               adornment={<SearchRounded className='p-' />}
             />
             <TextField
               required
               fullWidth
-              name='degree'
-              labelTop='Degree &amp; Major'
+              name='major'
+              labelTop={updateData?.major || 'Degree &amp; Major'}
               placeholder='Degree Type'
             />
             <Grid container spacing={2}>
@@ -48,7 +160,7 @@ export default function EducationForm({ onClose }) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  disabled={current}
                   type='date'
                   name='end_date'
                   labelTop='End Date'
@@ -57,7 +169,13 @@ export default function EducationForm({ onClose }) {
             </Grid>
             <FormControlLabel
               control={
-                <Checkbox checked={false} onChange={null} name='checkedA' />
+                <Checkbox
+                  checked={current}
+                  onChange={() => {
+                    setCurrent(!current);
+                  }}
+                  name='checkedA'
+                />
               }
               label={
                 <Typography variant='body2'>
@@ -71,9 +189,10 @@ export default function EducationForm({ onClose }) {
               multiline
               name='description'
               labelTop='Description'
-              placeholder='Describe your education'
+              placeholder={updateData?.description || 'Describe your education'}
               rows={4}
             />
+            {localError && <Alert severity='error'>{localError}</Alert>}
             <div className='d-flex justify-content-end'>
               <Button
                 onClick={onClose}
@@ -83,8 +202,38 @@ export default function EducationForm({ onClose }) {
               >
                 Cancel
               </Button>
-              <Button size='small' className='ms-2'>
-                Save
+              {updateData && (
+                <Button
+                  disabled={removeLoading}
+                  size='small'
+                  className='ms-2'
+                  onClick={() => {
+                    removeEducation({
+                      variables: {
+                        id: updateData?.id,
+                      },
+                      refetchQueries: [
+                        {
+                          query: QUERY_FETCH_PROFILE,
+                          context: { clientName: 'users' },
+                        },
+                      ],
+                    }).then(() => {
+                      // resetForm();
+                      onClose();
+                    });
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
+              <Button
+                disabled={addLoading || updateLoading}
+                size='small'
+                className='ms-2'
+                submit
+              >
+                {updateData ? 'Update' : 'Save'}
               </Button>
             </div>
           </CardContent>

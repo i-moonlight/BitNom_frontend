@@ -67,3 +67,9 @@ export const tabs = [
     ],
   },
 ];
+
+export const investorTabs = [
+  { label: 'Investor page' },
+  { label: 'Ecosystem' },
+  { label: 'Roadmap' },
+];

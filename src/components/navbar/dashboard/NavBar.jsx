@@ -1,42 +1,37 @@
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { AppBar, Divider, useTheme } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useSubscription } from '@apollo/client';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
+import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import {
+  MARK_NOTIFICAION_AS_SEEN,
+  QUERY_GET_USER_NOTIFICATIONS,
+} from '../../utilities/queries.components';
+import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
-import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import StatusBar from '../StatusBar';
-import TabsBar from './TabsBar';
-
-import {
-  QUERY_GET_USER_NOTIFICATIONS,
-  MARK_NOTIFICAION_AS_SEEN,
-} from '../../utilities/queries.components';
-import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
+import TabsBar2 from './TabsBar2';
 
 const menuId = 'menu-profile';
-const tabOptionsId = 'menu-tab-options';
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
-  const [value, setValue] = useState(0);
-  const [tabOptions, setTabOptions] = useState(null);
+  const [notSeen, setNotSeen] = useState(0);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const [notSeen, setNotSeen] = useState(0);
 
   const theme = useTheme();
-  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const isMenuOpen = Boolean(menuAnchorEl);
-  const isTabOptionOpen = Boolean(tabOptionAnchorEl);
   const isNotificationOpen = Boolean(notificationAnchorEl);
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
@@ -56,15 +51,20 @@ export default function NavBar() {
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      context: { clientName: 'notifications' },
+      // context: { clientName: "notifications" },
     }
   );
-  console.log('dfsdlffl', subscriptionData);
+  console.log('Subscription Data', subscriptionData);
   useEffect(() => {
     if (subscriptionData?.liveUpdates?.id === user?._id)
       setNotSeen(subscriptionData?.liveUpdates?.count);
+    return () => {
+      if (subscriptionData?.liveUpdates?.id === user?._id)
+        setNotSeen(subscriptionData?.liveUpdates?.count);
+    };
   }, [subscriptionData]);
-  const handleMenuOpen = (event) => {
+
+  const handleMenuOpen = event => {
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -72,15 +72,7 @@ export default function NavBar() {
     setMenuAnchorEl(null);
   };
 
-  const handleTabOptionsOpen = (event) => {
-    setTabOptionAnchorEl(event.currentTarget);
-  };
-
-  const handleTabOptionsClose = () => {
-    setTabOptionAnchorEl(null);
-  };
-
-  const handleNotificationsOpen = (event) => {
+  const handleNotificationsOpen = event => {
     setNotificationAnchorEl(event.currentTarget);
     handleMarkAsSeen();
   };
@@ -89,13 +81,14 @@ export default function NavBar() {
     setNotificationAnchorEl(null);
   };
 
-  const handleNotificationOptionOpen = (event) => {
+  const handleNotificationOptionOpen = event => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
 
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
+
   const handleMarkAsSeen = () => {
     if (notSeen < 1) return;
     markAsSeen({
@@ -113,17 +106,14 @@ export default function NavBar() {
     console.log(markAsSeenData);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  let response = data?.Notification?.get;
+  const response = data?.Notification?.get;
 
   useEffect(() => {
-    let notSeenArray = [];
-    response?.forEach((notification) => {
-      notification.to_notify.forEach((item) => {
-        if (item?.user_id == user._id && item?.seen == 'false') {
+    dispatch(checkSessionTimeOut());
+    const notSeenArray = [];
+    response?.forEach(notification => {
+      notification.to_notify.forEach(item => {
+        if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
       });
@@ -148,21 +138,11 @@ export default function NavBar() {
         notificationId={notificationId}
         handleNotificationsOpen={handleNotificationsOpen}
       />
-      <TabsBar
-        value={value}
-        handleChange={handleChange}
-        tabOptionsId={tabOptionsId}
-        setTabOptions={setTabOptions}
-        handleTabOptionsOpen={handleTabOptionsOpen}
-      />
+
+      <TabsBar2 />
       <Divider />
-      <TabOptionsPopover
-        tabOptionAnchorEl={tabOptionAnchorEl}
-        tabOptionsId={tabOptionsId}
-        isTabOptionOpen={isTabOptionOpen}
-        handleTabOptionsClose={handleTabOptionsClose}
-        tabOptions={tabOptions}
-      />
+      <Divider />
+
       <MenuPopover
         menuId={menuId}
         menuAnchorEl={menuAnchorEl}

@@ -1,5 +1,130 @@
 // BN Dashboard GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
+
+export const QUERY_FETCH_PROFILE = gql`
+  query {
+    Users {
+      profile {
+        _id
+        displayName
+        bio
+        profile_pic
+        displayName
+        type
+        reputation
+        blocked
+        followers {
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
+        }
+        following {
+          userId {
+            _id
+            profile_pic
+            displayName
+            reputation
+            type
+            bio
+          }
+        }
+        portfolio
+        website
+        address
+        location
+        gender
+        cover_pic
+        loginType
+        lastSeen
+        paidUntil
+        date
+        bnTokens {
+          walletAddress
+          earned
+          received
+        }
+        socials {
+          social {
+            _id
+            name
+            image
+          }
+          profile
+        }
+        email {
+          address
+          verified
+        }
+        work {
+          _id
+          company
+          title
+          start_date
+          end_date
+          current
+          description
+        }
+        education {
+          _id
+          institution
+          major
+          start_date
+          end_date
+          current
+          description
+        }
+        #honors {
+        #  _id
+        # organization
+        #  name
+        # start_date
+        # end_date
+        # expires
+        # url
+        #}
+        courses {
+          _id
+          name
+          year
+        }
+        projects {
+          _id
+          name
+          year
+        }
+        skills {
+          _id
+          name
+        }
+        languages {
+          _id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const MUTATION_FOLLOW_USER = gql`
+  mutation ($data: IFollow) {
+    Users {
+      follow(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_UNFOLLOW_USER = gql`
+  mutation ($data: IFollow) {
+    Users {
+      unFollow(data: $data)
+    }
+  }
+`;
 
 export const MUTATION_CREATE_FILE_VIDEO = gql`
   mutation ($data: ISaveVideo!) {
@@ -91,7 +216,7 @@ export const MUTATION_CREATE_COMMENT = gql`
         _id
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -154,7 +279,7 @@ export const QUERY_LOAD_SCROLLS = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -169,7 +294,7 @@ export const QUERY_LOAD_SCROLLS = gql`
             video
             author {
               _id
-              image
+              profile_pic
               displayName
               reputation
               type
@@ -219,7 +344,7 @@ export const QUERY_LOAD_SCROLLS = gql`
           user_id {
             _id
             displayName
-            image
+            profile_pic
           }
         }
       }
@@ -244,7 +369,7 @@ export const GET_USER_NOTIFICATIONS = gql`
           }
           url {
             _id
-            image
+            profile_pic
             displayName
           }
         }
@@ -277,18 +402,25 @@ export const QUERY_GET_USERS = gql`
   }
 `;
 
-export const MARK_NOTIFICAION_AS_READ = gql`
-  mutation ($_id: ID) {
+export const MARK_NOTIFICATION_AS_READ = gql`
+  mutation ($data: IMarkAsRead) {
     Notification {
-      markAsRead(_id: $_id)
+      markAsRead(data: $data)
     }
   }
 `;
 
-export const DELETE_NOTIFICAION = gql`
+export const DELETE_NOTIFICATION = gql`
   mutation ($_id: ID!) {
     Notification {
       delete(_id: $_id)
+    }
+  }
+`;
+export const MUTATION_MUTE_NOTIFICATIONS = gql`
+  mutation ($resource: IResource!) {
+    Subscription {
+      mute(resource: $resource)
     }
   }
 `;
@@ -310,7 +442,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -325,7 +457,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
             video
             author {
               _id
-              image
+              profile_pic
               displayName
               reputation
               type
@@ -374,7 +506,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
           user_id {
             _id
             displayName
-            image
+            profile_pic
           }
         }
       }
@@ -391,7 +523,7 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
         video
         author {
           _id
-          image
+          profile_pic
           displayName
           reputation
           type
@@ -426,7 +558,7 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
           user_id {
             _id
             displayName
-            image
+            profile_pic
           }
         }
       }
@@ -445,7 +577,7 @@ export const QUERY_GET_COMMENTS = gql`
           type
           displayName
           reputation
-          image
+          profile_pic
         }
         replies
         creation_date
@@ -472,7 +604,7 @@ export const QUERY_GET_COMMENTS = gql`
           user_id {
             _id
             displayName
-            image
+            profile_pic
           }
         }
         scroll
@@ -498,7 +630,7 @@ export const GET_BOOKMARKED_COMMENTS = gql`
           type
           displayName
           reputation
-          image
+          profile_pic
         }
         replies
         creation_date
@@ -519,7 +651,7 @@ export const GET_BOOKMARKED_COMMENTS = gql`
           user_id {
             _id
             displayName
-            image
+            profile_pic
           }
         }
         reactions {

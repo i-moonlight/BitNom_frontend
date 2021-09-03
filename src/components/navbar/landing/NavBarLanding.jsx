@@ -30,7 +30,7 @@ export default function NavBarLanding() {
   const [showMenuProduct, setShowMenuProduct] = useState(false);
   const theme = useTheme();
   const history = useHistory();
-  const palette = useSelector(state => state.theme.palette);
+  const palette = useSelector(st => st.theme.palette);
 
   return (
     <AppBar

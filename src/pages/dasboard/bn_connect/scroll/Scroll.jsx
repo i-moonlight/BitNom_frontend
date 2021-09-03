@@ -30,6 +30,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '../../../../components/Button';
 //import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../../components/TextField';
+import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { contentBodyFactory } from '../../utilities/functions';
 import {
@@ -69,6 +70,8 @@ export default function Scroll({
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
 
   const theme = useTheme();
+  const state = useSelector(st => st);
+  const user = state.auth.user;
 
   const [
     createComment,
@@ -139,7 +142,8 @@ export default function Scroll({
     });
   };
 
-  const userInitials = getUserInitials(scroll?.author?.displayName);
+  const authorInitials = getUserInitials(scroll?.author?.displayName);
+  const currentUserInitials = getUserInitials(user?.displayName);
 
   useEffect(() => {
     if (createCommentData?.Comments?.create) {
@@ -152,8 +156,14 @@ export default function Scroll({
       <Card style={{ marginBottom: 16 }}>
         <CardHeader
           avatar={
-            <Avatar src={scroll?.author?.profile_pic} aria-label='recipe'>
-              {userInitials}
+            <Avatar
+              style={{
+                backgroundColor: '#fed132',
+              }}
+              src={scroll?.author?.profile_pic}
+              aria-label='recipe'
+            >
+              {authorInitials}
             </Avatar>
           }
           action={
@@ -356,8 +366,14 @@ export default function Scroll({
         {openComments && (
           <CardContent>
             <div className='center-horizontal'>
-              <Avatar src={scroll?.author?.image} className='mx-2'>
-                {userInitials}
+              <Avatar
+                style={{
+                  backgroundColor: '#fed132',
+                }}
+                src={scroll?.author?.image}
+                className='mx-2'
+              >
+                {currentUserInitials}
               </Avatar>
               <TextField
                 error={createCommentErr && true}

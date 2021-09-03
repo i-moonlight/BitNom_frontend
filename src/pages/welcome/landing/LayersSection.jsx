@@ -46,7 +46,11 @@ export default function LayersSection() {
             {platformLayers.map(card => (
               <Grid key={`${card?.text}`} item md={3} sm={6}>
                 <Card className={classes.layersCard}>
-                  <CardMedia style={{ height: 140 }} image={card?.image} />
+                  <CardMedia
+                    component='img'
+                    style={{ height: 140 }}
+                    image={card?.image}
+                  />
                   <CardContent className={classes.layersCard}>
                     <Typography gutterBottom variant='h5' component='h2'>
                       {card?.title}

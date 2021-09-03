@@ -20,23 +20,22 @@ import {
 } from '@material-ui/icons';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function UserCard({ setOpen }) {
-  const state = useSelector(state => state);
+export default function UserCard({ setOpen, followers, following, scrolls }) {
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();
-
+  const location = useLocation();
   const sticky =
     window.innerHeight < card?.current?.clientHeight + 176
       ? window.innerHeight - (card?.current?.clientHeight + 24)
       : 160;
 
   const userInitials = getUserInitials(user?.displayName);
-
   return (
     <div
       ref={card}
@@ -50,6 +49,7 @@ export default function UserCard({ setOpen }) {
         <CardMedia
           style={{ height: 100 }}
           image={'https://picsum.photos/300/200'}
+          component='img'
           // title='Contemplative Reptile'
         />
         <CardContent
@@ -110,21 +110,13 @@ export default function UserCard({ setOpen }) {
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body2'>0</Typography>
+                <Typography variant='body2'>{scrolls}</Typography>
               </div>
             </div>
-            <div>
-              <Typography variant='body2'>Following</Typography>
-              <div className='center-horizontal'>
-                <PersonRounded
-                  color='primary'
-                  className='mx-2'
-                  fontSize='small'
-                />
-                <Typography variant='body2'>0</Typography>
-              </div>
-            </div>
-            <div>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/connections')}
+            >
               <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
                 <PersonRounded
@@ -132,7 +124,21 @@ export default function UserCard({ setOpen }) {
                   className='mx-2'
                   fontSize='small'
                 />
-                <Typography variant='body2'>0</Typography>
+                <Typography variant='body2'>{followers}</Typography>
+              </div>
+            </div>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/connections')}
+            >
+              <Typography variant='body2'>Following</Typography>
+              <div className='center-horizontal'>
+                <PersonRounded
+                  color='primary'
+                  className='mx-2'
+                  fontSize='small'
+                />
+                <Typography variant='body2'>{following}</Typography>
               </div>
             </div>
           </div>
@@ -174,7 +180,14 @@ export default function UserCard({ setOpen }) {
           </IconButton>
         </CardActions>
       </Card>
-      <Button onClick={setOpen} color='primary' fullWidth>
+      <Button
+        style={{
+          display: location.pathname.includes('dashboard/') ? 'none' : 'block',
+        }}
+        onClick={setOpen}
+        color='primary'
+        fullWidth
+      >
         Start Scroll
       </Button>
     </div>

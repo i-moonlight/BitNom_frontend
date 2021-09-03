@@ -1,30 +1,54 @@
-import React from 'react';
-import { Card, Grid, Divider, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Card,
+  Grid,
+  Divider,
+  Typography,
+  CardHeader,
+  IconButton,
+} from '@material-ui/core';
+import { ArrowBack, MoreVert } from '@material-ui/icons';
+
 import NotificationListItem from './NotificationListItem';
+import NotificationSettingsPopover from './NotificationSettingsPopover';
+
+const notificationSettingsId = 'notification-setting-menu';
 
 export default function NotificationsListCard({
   notifications,
   selectedIndex,
 }) {
+  const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
+    useState(null);
+
+  const isNotificationSettingsOpen = Boolean(notificationSettingsAnchorEl);
+  const handleNotificationSettingsClose = () => {
+    setNotificationSettingsAnchorEl(null);
+  };
+  const handleNotificationSettingsOpen = event => {
+    setNotificationSettingsAnchorEl(event.currentTarget);
+  };
+
   const mentions = [];
-  notifications?.forEach((item) => {
+  notifications?.forEach(item => {
     if (item.tag === 'Mention') {
       mentions.push(item);
     }
   });
-  notifications?.forEach((item) => {
+  notifications?.forEach(item => {
     if (item.content.includes('commented on')) {
       mentions.push(item);
     }
   });
-  const reactions = notifications?.filter((item) => {
-    let toCheck = ['liked', 'loved', 'celebrated', 'disliked'];
+  const reactions = notifications?.filter(item => {
+    const toCheck = ['liked', 'loved', 'celebrated', 'disliked'];
 
-    return toCheck.some((o) => item.content.includes(o));
+    return toCheck.some(o => item.content.includes(o));
   });
 
-  const userContent = notifications?.filter((item) => {
-    let toCheck = [
+  const userContent = notifications?.filter(item => {
+    const toCheck = [
       'your post',
       'your scroll',
       'your comment',
@@ -32,22 +56,54 @@ export default function NotificationsListCard({
       'your event',
     ];
 
-    return toCheck.some((o) => item.content.includes(o));
+    return toCheck.some(o => item.content.includes(o));
+  });
+
+  const userProfile = notifications?.filter(item => {
+    const toCheck = ['followed you', 'invited you'];
+
+    return toCheck.some(o => item.content.includes(o));
   });
   return (
     <>
       <Card style={{ padding: '0 8px 10px 8px' }}>
-        <div className='space-between'>
-          <Typography className='mx-4 my-1' variant='body1'>
-            Notifications
-          </Typography>
-          <Typography className='mx-4 my-1' variant='body1'>
-            Settings
-          </Typography>
-        </div>
+        <CardHeader
+          action={
+            <IconButton
+              aria-label='notification settings'
+              aria-controls={notificationSettingsId}
+              aria-haspopup='true'
+              onClick={handleNotificationSettingsOpen}
+            >
+              <MoreVert />
+            </IconButton>
+          }
+          avatar={
+            <Link to='/dashboard'>
+              <IconButton
+                size='small'
+                className='m-1 p-1'
+                aria-label='back'
+                color='inherit'
+              >
+                <ArrowBack />
+              </IconButton>
+            </Link>
+          }
+          title={
+            <div className='center-horizontal'>
+              <Typography variant='body1'>Notifications</Typography>
+            </div>
+          }
+          subheader={
+            <Typography variant='body2' color='textSecondary'>
+              All your BNSocial notifications in one place.
+            </Typography>
+          }
+        />
         <Divider />
         {selectedIndex === 0 &&
-          notifications?.map((notification) => (
+          notifications?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -55,7 +111,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 1 &&
           mentions?.length > 0 &&
-          mentions?.map((notification) => (
+          mentions?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -63,7 +119,7 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 2 &&
           reactions?.length > 0 &&
-          reactions?.map((notification) => (
+          reactions?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -71,7 +127,15 @@ export default function NotificationsListCard({
           ))}
         {selectedIndex === 3 &&
           userContent?.length > 0 &&
-          userContent?.map((notification) => (
+          userContent?.map(notification => (
+            <NotificationListItem
+              key={notification._id}
+              notification={notification}
+            />
+          ))}
+        {selectedIndex === 4 &&
+          userProfile?.length > 0 &&
+          userProfile?.map(notification => (
             <NotificationListItem
               key={notification._id}
               notification={notification}
@@ -81,7 +145,7 @@ export default function NotificationsListCard({
         (selectedIndex === 1 && mentions?.length < 1) ||
         (selectedIndex === 2 && reactions?.length < 1) ||
         (selectedIndex === 3 && userContent?.length < 1) ||
-        selectedIndex === 4 ||
+        (selectedIndex === 4 && userProfile?.length < 1) ||
         selectedIndex === 5 ||
         selectedIndex === 6 ||
         selectedIndex === 7 ? (
@@ -94,6 +158,12 @@ export default function NotificationsListCard({
           ''
         )}
       </Card>
+      <NotificationSettingsPopover
+        notificationSettingsAnchorEl={notificationSettingsAnchorEl}
+        notificationSettingsId={notificationSettingsId}
+        isNotificationSettingsOpen={isNotificationSettingsOpen}
+        handleNotificationSettingsClose={handleNotificationSettingsClose}
+      />
     </>
   );
 }

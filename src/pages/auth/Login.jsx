@@ -21,7 +21,7 @@ import { loginUserValidationSchema } from './utilities/validation_schemas';
 export default function Login() {
   const [loginErr, setLoginErr] = useState(null);
   const [googleErr, setGoogleErr] = useState(null);
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const dispatch = useDispatch();
   const history = useHistory();
   const user = state.auth.user;
@@ -49,8 +49,8 @@ export default function Login() {
       },
       errorPolicy: 'all',
     }).then(({ data, errors }) => {
-      let userData = data?.Users?.googleLogin ? data?.Users?.googleLogin : {};
-      let userErrors = errors ? errors : null;
+      const userData = data?.Users?.googleLogin ? data?.Users?.googleLogin : {};
+      const userErrors = errors ? errors : null;
       setGoogleErr(userErrors);
       dispatch(login(userData, null));
     });
@@ -95,7 +95,7 @@ export default function Login() {
                       },
                       errorPolicy: 'all',
                     }).then(({ data, errors }) => {
-                      let userData = data?.Users?.login
+                      const userData = data?.Users?.login
                         ? data?.Users?.login
                         : {};
 
@@ -160,6 +160,7 @@ export default function Login() {
                       onFailure={failureGoogle}
                       render={renderProps => (
                         <Button
+                          // color='inherit'
                           onClick={renderProps.onClick}
                           textCase
                           google

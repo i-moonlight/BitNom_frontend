@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const QUERY_GET_USER_NOTIFICATIONS = gql`
   query {
@@ -17,7 +17,7 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
           }
           url {
             _id
-            image
+            profile_pic
             displayName
           }
         }

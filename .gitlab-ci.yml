@@ -58,9 +58,9 @@ install_dependencies:
 # testing_testing:
 #   stage: test
 #   variables:
-#     REACT_APP_WS: "ws://bitnorm.com"
+#     REACT_APP_SOCKET_URL: "ws://bitnorm.com"
 #   script:
-#     - export REACT_APP_WS=$REACT_APP_WS
+#     - export REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
 #     - npm test
 
 deploy_on_server:
@@ -71,13 +71,13 @@ deploy_on_server:
   variables:
     REACT_APP_API_GATEWAY: "/graphql"
     REACT_APP_BACKEND_URL: "https://bitnorm.com"
-    REACT_APP_WS: "ws://bitnorm.com"
+    REACT_APP_SOCKET_URL: "wss://bitnorm.com"
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP
   script:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
-    - export REACT_APP_WS=$REACT_APP_WS
+    - export REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
     - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
@@ -95,13 +95,13 @@ deploy_demo:
   variables:
     REACT_APP_API_GATEWAY: "graphql"
     REACT_APP_BACKEND_URL: "https://dev.bitnorm.com"
-    REACT_APP_WS: "wss://dev.bitnorm.com"
+    REACT_APP_SOCKET_URL: "wss://dev.bitnorm.com"
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP
   script:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
-    - export REACT_APP_WS=$REACT_APP_WS
+    - export REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
     - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/

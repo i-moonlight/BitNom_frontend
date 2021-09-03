@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
-export default function InsightCard() {
+export default function InsightCard({ profile }) {
   const [tabValue, setTabValue] = React.useState(0);
-  //   const state = useSelector(state => state);
+  //   const state = useSelector(st => st);
   //   const user = state.auth.user;
 
   const handleTabChange = (event, newValue) => {
@@ -28,7 +28,7 @@ export default function InsightCard() {
         <Card variant='outlined'>
           <CardContent>
             <div className='space-between'>
-              <Insight text='Profile Reached' value={108} />
+              <Insight text='Profile Reached' value={profile?.profileReached} />
               <Divider
                 style={{
                   width: 1,
@@ -36,7 +36,7 @@ export default function InsightCard() {
                 }}
                 orientation='vertical'
               />
-              <Insight text='Connection Gained' value={24} />
+              <Insight text='Connection Gained' value={profile?.connections} />
               <Divider
                 style={{
                   width: 1,
@@ -44,7 +44,7 @@ export default function InsightCard() {
                 }}
                 orientation='vertical'
               />
-              <Insight text='Search Appeared' value={5} />
+              <Insight text='Search Appeared' value={profile?.searchAppeared} />
             </div>
           </CardContent>
         </Card>

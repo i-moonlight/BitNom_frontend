@@ -61,7 +61,7 @@ export default function UpdatePost({
   const [scroll_video, setScrollVideo] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const [
     updatePost,
@@ -195,7 +195,14 @@ export default function UpdatePost({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
+                  <Avatar
+                    style={{
+                      backgroundColor: '#fed132',
+                    }}
+                    src={user?.profile_pic}
+                  >
+                    {userInitials}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}

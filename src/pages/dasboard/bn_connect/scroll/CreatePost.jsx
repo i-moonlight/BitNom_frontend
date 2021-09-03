@@ -29,6 +29,7 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -43,6 +44,7 @@ export default function CreatePost({
   setOpenImage,
   setImageDisabled,
   openVideo,
+  profileData,
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
@@ -55,7 +57,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   const theme = useTheme();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -73,7 +75,16 @@ export default function CreatePost({
       variables: {
         data: ICreatePost,
       },
-      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+      refetchQueries: [
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { ids: getFeed(profileData), limit: 220 } },
+        },
+        {
+          query: QUERY_LOAD_SCROLLS,
+          variables: { data: { author: user?._id, limit: 500 } },
+        },
+      ],
     });
     setScrollText('');
     setScrollImages([]);
@@ -91,10 +102,10 @@ export default function CreatePost({
   const handleCreatePost = e => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    let sharedResource = sharedPost
+    const sharedResource = sharedPost
       ? { _id: sharedPost?._id, type: 'post' }
       : null;
-    let flag = sharedPost ? sharedPost?.is_flag : null;
+    const flag = sharedPost ? sharedPost?.is_flag : null;
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
@@ -145,7 +156,14 @@ export default function CreatePost({
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <ListItem className='p-0'>
                 <ListItemAvatar>
-                  <Avatar src={user?.profile_pic}>{userInitials}</Avatar>
+                  <Avatar
+                    style={{
+                      backgroundColor: '#fed132',
+                    }}
+                    src={user?.profile_pic}
+                  >
+                    {userInitials}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={user?.displayName}

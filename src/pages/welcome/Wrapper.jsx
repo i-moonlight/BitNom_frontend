@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import NavBarInvestor from '../../components/navbar/investor/NavBarInvestor';
 import NavBarLanding from '../../components/navbar/landing/NavBarLanding';
 import Footer from './Footer';
 
-export default function Wrapper({ children }) {
+export default function Wrapper({ children, investor, onTabValue }) {
   const history = useHistory();
-  const state = useSelector(state => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const toTop = useRef(null);
 
@@ -30,12 +31,16 @@ export default function Wrapper({ children }) {
       ref={toTop}
       style={{
         width: '100%',
-        paddingTop: 116,
+        paddingTop: investor ? 32 : 116,
         minHeight: '100vh',
         overflowY: 'hidden',
       }}
     >
-      <NavBarLanding />
+      {investor ? (
+        <NavBarInvestor onTabValue={onTabValue} />
+      ) : (
+        <NavBarLanding />
+      )}
       {children}
       <Footer />
     </div>

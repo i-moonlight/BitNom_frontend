@@ -19,7 +19,7 @@ export default function InfrastructureSection() {
   const classes = useStyles();
   const theme = useTheme();
   const imageContainer = useRef(null);
-  const palette = useSelector(state => state.theme.palette);
+  const palette = useSelector(st => st.theme.palette);
 
   return (
     <Grid

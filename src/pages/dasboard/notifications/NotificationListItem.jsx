@@ -22,28 +22,28 @@ const notificationOptionId = 'menu-notification-option';
 export default function NotificationListItem({ notification }) {
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const state = useSelector((state) => state);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
-  const handleNotificationOptionOpen = (event) => {
+  const handleNotificationOptionOpen = event => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
-  const getReadStatus = (notification) => {
+  const getReadStatus = ntfn => {
     let read;
-    notification.to_notify?.forEach((item) => {
+    ntfn.to_notify?.forEach(item => {
       if (item?.user_id == user._id) {
         read = item?.read;
       }
     });
     return read;
   };
-  const getNotifyingUser = (notification) => {
+  const getNotifyingUser = ntfn => {
     let name;
-    notification?.content_entities?.forEach((item) => {
+    ntfn?.content_entities?.forEach(item => {
       if (item?.type === 'resource_tag') {
         name = item?.url?.displayName;
       }
@@ -73,7 +73,16 @@ export default function NotificationListItem({ notification }) {
           </div>
 
           <CardHeader
-            avatar={<Avatar aria-label='recipe'>{userInitials}</Avatar>}
+            avatar={
+              <Avatar
+                style={{
+                  backgroundColor: '#fed132',
+                }}
+                aria-label='recipe'
+              >
+                {userInitials}
+              </Avatar>
+            }
             action={
               <IconButton
                 aria-label='show more'
