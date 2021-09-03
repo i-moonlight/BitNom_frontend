@@ -115,7 +115,7 @@ export default function NavBar() {
         }
       });
     });
-    //setNotSeen(notSeenArray.length);
+    setNotSeen(notSeenArray.length);
   }, [data?.Notification?.get]);
 
   return (
