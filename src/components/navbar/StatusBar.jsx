@@ -47,7 +47,7 @@ export default function StatusBar() {
                   style={{ marginRight: 16 }}
                   noWrap
                 >
-                  {title}: <span className={classes.textTheme}>{value}</span>
+                  {title}: <span className='text-link'>{value}</span>
                 </Typography>
               </div>
             ))}

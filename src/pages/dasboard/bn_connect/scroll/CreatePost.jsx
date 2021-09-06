@@ -13,7 +13,6 @@ import {
   ListItemText,
   Modal,
   Typography,
-  useTheme,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -56,7 +55,6 @@ export default function CreatePost({
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
-  const theme = useTheme();
   const state = useSelector(st => st);
   const user = state.auth.user;
   const [
@@ -132,7 +130,7 @@ export default function CreatePost({
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
+            <div className='space-between mx-3 my-2 center-horizontal'>
               <Typography variant='body2'></Typography>
               <Typography variant='body1'>Create Post</Typography>
               <IconButton size='small' className='m-1 p-1'>
@@ -170,10 +168,10 @@ export default function CreatePost({
                   secondary={
                     <Button
                       textCase
+                      variant='text'
                       style={{
-                        backgroundColor: theme.palette.background.default,
+                        // backgroundColor: theme.palette.background.default,
                         padding: '0px 10px',
-                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={

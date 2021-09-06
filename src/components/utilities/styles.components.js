@@ -69,20 +69,17 @@ export const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
   },
   topTabs: {
-    minWidth: 170,
+    minWidth: 200,
     textAlign: 'center',
     cursor: 'pointer',
     backgroundColor: 'inherit',
     '&:hover': {
-      backgroundColor:
-        theme.palette.type == 'dark'
-          ? theme.palette.background.paper
-          : theme.palette.background.search,
+      backgroundColor: theme.palette.background.paper,
     },
   },
   topTabsActive: {
     width: '100%',
-    minWidth: 170,
+    minWidth: 200,
     textAlign: 'center',
     cursor: 'pointer',
     backgroundColor: 'inherit',
@@ -90,10 +87,11 @@ export const useStyles = makeStyles(theme => ({
     borderBottomColor: theme.palette.primary.main,
     borderBottomStyle: 'solid',
     '&:hover': {
-      backgroundColor:
-        theme.palette.type == 'dark'
-          ? theme.palette.background.paper
-          : theme.palette.background.search,
+      backgroundColor: theme.palette.background.paper,
     },
+  },
+  menuPopover: {
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
   },
 }));

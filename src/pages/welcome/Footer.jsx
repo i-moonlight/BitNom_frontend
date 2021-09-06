@@ -20,15 +20,17 @@ export default function Footer() {
               </Typography>
             </Grid>
             <Grid item md={6} sm={12} className='my-3'>
-              <div className='center-horizontal'>
-                <TextField
-                  style={{ flex: 1 }}
-                  fullWidth={false}
-                  placeholder='Enter Your Email'
-                />
-                <Button className='mx-2' textCase>
-                  <Typography noWrap>Subscribe</Typography>
-                </Button>
+              <div className='w-100'>
+                <div className='center-horizontal justify-content-end'>
+                  <TextField
+                    style={{ flex: 1 }}
+                    fullWidth={false}
+                    placeholder='Enter Your Email'
+                  />
+                  <Button className='mx-2' textCase>
+                    <Typography noWrap>Subscribe</Typography>
+                  </Button>
+                </div>
               </div>
             </Grid>
           </Grid>
