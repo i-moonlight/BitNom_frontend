@@ -30,7 +30,7 @@ export default function RequestDisplayCard() {
           <Grid sm={11}>
             <div className='space-between center-horizontal'>
               <div className='center-horizontal'>
-                <Avatar style={{ width: 30, height: 30 }}>L</Avatar>
+                <Avatar style={{ width: 30, height: 30 }}>MA</Avatar>
                 <Typography variant='body2' className='mx-2'>
                   Mark Aloo
                 </Typography>

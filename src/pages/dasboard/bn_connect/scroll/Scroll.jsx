@@ -32,7 +32,10 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { contentBodyFactory } from '../../utilities/functions';
+import {
+  contentBodyFactory,
+  generateRandomColor,
+} from '../../utilities/functions';
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
@@ -158,7 +161,7 @@ export default function Scroll({
           avatar={
             <Avatar
               style={{
-                backgroundColor: '#fed132',
+                backgroundColor: generateRandomColor(),
               }}
               src={scroll?.author?.profile_pic}
               aria-label='recipe'
@@ -368,7 +371,7 @@ export default function Scroll({
             <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.image}
                 className='mx-2'

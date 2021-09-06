@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
 export default function UserCard({ setOpen, followers, following, scrolls }) {
   const state = useSelector(st => st);
@@ -65,7 +66,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
                 src={user?.profile_pic}
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,

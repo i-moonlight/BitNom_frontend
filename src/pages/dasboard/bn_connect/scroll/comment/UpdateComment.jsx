@@ -32,6 +32,7 @@ import { useSelector } from 'react-redux';
 import Button from '../../../../../components/Button';
 import TextField from '../../../../../components/TextField';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { generateRandomColor } from '../../../utilities/functions';
 import {
   MUTATION_DELETE_COMMENT,
   MUTATION_UPDATE_COMMENT,
@@ -185,7 +186,7 @@ export default function UpdateComment({
                 <ListItemAvatar>
                   <Avatar
                     style={{
-                      backgroundColor: '#fed132',
+                      backgroundColor: generateRandomColor(),
                     }}
                     src={user?.profile_pic}
                   >

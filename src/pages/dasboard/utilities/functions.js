@@ -74,7 +74,7 @@ export const truncateText = (str, n) => {
 export const getFeed = profileData => {
   const ids = [];
   profileData?.following?.forEach(element => {
-    ids.push(element.userId._id);
+    ids.push(element?.userId?._id);
   });
   ids.push(profileData?._id);
   return ids;
@@ -91,3 +91,12 @@ export const getCreationTime = time => {
   else if (hours < 24) return hours + ' hours';
   else return days + ' days';
 };
+
+export function generateRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

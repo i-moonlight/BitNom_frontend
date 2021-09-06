@@ -41,7 +41,7 @@ export default function EducationFragment({
         <CardContent>
           <div className='d-flex flex-row'>
             <Avatar src={photoURL} variant='rounded'>
-              J
+              ED
             </Avatar>
             <div className='mx-3 w-100'>
               <div className='center-horizontal space-between '>

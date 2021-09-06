@@ -15,7 +15,10 @@ import React, { useState } from 'react';
 import Button from '../../../../../components/Button';
 import TextField from '../../../../../components/TextField';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { contentBodyFactory } from '../../../utilities/functions';
+import {
+  contentBodyFactory,
+  generateRandomColor,
+} from '../../../utilities/functions';
 import { useSelector } from 'react-redux';
 import {
   MUTATION_CREATE_REACTION,
@@ -105,7 +108,7 @@ export default function Comment({
       <div style={style} className='d-flex flex-row flex-start'>
         <Avatar
           style={{
-            backgroundColor: '#fed132',
+            backgroundColor: generateRandomColor(),
           }}
           src={comment?.author?.profile_pic}
           className='mx-2'
@@ -246,7 +249,7 @@ export default function Comment({
             <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.profile_pic}
                 className='mx-2'
