@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const QUERY_FETCH_PROFILE = gql`
   query {
@@ -140,7 +140,7 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
   }
 `;
 export const NOTIFICATIONS_SUBSCRIPTION = gql`
-  subscription newNotifications($_id: String!) {
+  subscription liveUpdates($_id: String) {
     liveUpdates(_id: $_id) {
       count
       id
