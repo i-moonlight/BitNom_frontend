@@ -25,7 +25,7 @@ import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
 export default function UserCard({ setOpen, followers, following, scrolls }) {
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();
@@ -102,8 +102,11 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>
-            <div>
-              <Typography variant='body2'>Scrolls</Typography>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/profile/posts')}
+            >
+              <Typography variant='body2'>Posts</Typography>
               <div className='center-horizontal'>
                 <CollectionsBookmarkRounded
                   color='primary'
@@ -115,7 +118,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             </div>
             <div
               style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/connections')}
+              onClick={() => history.push('/dashboard/profile/connections')}
             >
               <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
@@ -129,7 +132,11 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             </div>
             <div
               style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/connections')}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                history.push('/dashboard/profile/connections');
+              }}
             >
               <Typography variant='body2'>Following</Typography>
               <div className='center-horizontal'>
@@ -151,7 +158,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             startIcon={<BookmarkRounded />}
             variant='text'
             className='py-1 my-1'
-            onClick={() => history.push('/dashboard/bookmarks')}
+            onClick={() => history.push('/dashboard/profile/bookmarks')}
           >
             Saved Items
           </Button>
@@ -188,7 +195,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
         color='primary'
         fullWidth
       >
-        Start Scroll
+        Create Post
       </Button>
     </div>
   );

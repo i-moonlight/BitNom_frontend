@@ -30,6 +30,7 @@ import Notifications from './pages/dasboard/notifications/Notifications';
 import People from './pages/dasboard/people/People';
 import Connections from './pages/dasboard/people/Connections';
 import Profile from './pages/dasboard/profile/Profile';
+import Posts from './pages/dasboard/profile/UserPosts';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
@@ -68,7 +69,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable(sink => {
+    return new Observable((sink) => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -76,7 +77,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: err => {
+          error: (err) => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -127,13 +128,13 @@ const uploadLink = createUploadLink({
 });
 
 const profileUploadLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'users',
+  (operation) => operation.getContext().clientName === 'users',
   profileLink,
   uploadLink
 );
 
 const btnMainLink = ApolloLink.split(
-  operation => operation.getContext().clientName === 'notifications',
+  (operation) => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
@@ -219,10 +220,15 @@ export const AppContainers = () => {
             <Route
               exact
               component={Connections}
-              path='/dashboard/connections'
+              path='/dashboard/profile/connections'
             />
+            <Route exact component={Posts} path='/dashboard/profile/posts' />
             <Route exact component={Profile} path='/dashboard/profile' />
-            <Route exact component={SavedItems} path='/dashboard/bookmarks' />
+            <Route
+              exact
+              component={SavedItems}
+              path='/dashboard/profile/bookmarks'
+            />
             <Route
               exact
               component={Notifications}
@@ -236,7 +242,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',

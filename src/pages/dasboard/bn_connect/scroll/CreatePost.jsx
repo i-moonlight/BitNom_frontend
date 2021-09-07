@@ -13,7 +13,7 @@ import {
   ListItemText,
   Modal,
   Typography,
-  useTheme,
+  //useTheme,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -56,8 +56,8 @@ export default function CreatePost({
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
-  const theme = useTheme();
-  const state = useSelector(st => st);
+  //const theme = useTheme();
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -70,7 +70,7 @@ export default function CreatePost({
 
   const userInitials = getUserInitials(user?.displayName);
 
-  const onCreatePost = async ICreatePost => {
+  const onCreatePost = async (ICreatePost) => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -99,7 +99,7 @@ export default function CreatePost({
 
   useEffect(() => {}, [data]);
 
-  const handleCreatePost = e => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     const sharedResource = sharedPost
@@ -171,7 +171,7 @@ export default function CreatePost({
                     <Button
                       textCase
                       style={{
-                        backgroundColor: theme.palette.background.default,
+                        //backgroundColor: theme.palette.background.default,
                         padding: '0px 10px',
                         textTransform: 'none',
                       }}
@@ -198,11 +198,11 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value
+                      : e.target.value.substring(0, 250)
                   )
                 }
                 value={scroll_text}
@@ -212,7 +212,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
