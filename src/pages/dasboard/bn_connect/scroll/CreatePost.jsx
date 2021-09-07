@@ -22,7 +22,7 @@ import {
   VideocamRounded,
 } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
@@ -94,8 +94,6 @@ export default function CreatePost({
     setOpenImage(false);
     setOpenVideo(false);
   };
-
-  useEffect(() => {}, [data]);
 
   const handleCreatePost = e => {
     e.preventDefault();

@@ -182,6 +182,7 @@ export default function Connections() {
 
 function ListItemComponent({ item, getFollowStatus }) {
   const [status, setStatus] = React.useState();
+
   React.useEffect(() => {
     if (getFollowStatus(item)) {
       setStatus(true);

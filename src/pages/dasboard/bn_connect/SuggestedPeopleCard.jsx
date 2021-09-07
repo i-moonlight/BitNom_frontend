@@ -92,7 +92,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
 
 function ListItemComponent({ user, getFollowStatus }) {
   const [status, setStatus] = React.useState();
-  React.useEffect(() => {
+  useEffect(() => {
     if (getFollowStatus(user)) setStatus(true);
   }, [getFollowStatus(user)]);
 

@@ -93,6 +93,7 @@ export default function UpdateComment({
     setFileType(null);
     setCommentToEdit(null);
   };
+
   const onUpdateComment = async IUpdateComment => {
     await updateComment({
       variables: {
@@ -112,6 +113,7 @@ export default function UpdateComment({
     setFileType(null);
     setCommentToEdit(null);
   };
+
   useEffect(() => {
     if (data?.Comment?.update) {
       console.log(data, deleteData);

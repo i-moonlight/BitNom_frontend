@@ -69,6 +69,7 @@ export default function SavedItems() {
       },
     }
   );
+
   const { data: bookmarkedComments, loading: commentsLoading } = useQuery(
     GET_BOOKMARKED_COMMENTS,
     {
@@ -94,19 +95,23 @@ export default function SavedItems() {
   const handleChange = (event, val) => {
     setValue(val);
   };
+
   /*  useEffect(() => {
     setSavedScrolls(bookmarkedScrolls?.Posts?.getBookmarked);
   }, [bookmarkedScrolls]);
   useEffect(() => {
     setSavedComments(bookmarkedComments?.Comments?.getBookmarked);
   }, [bookmarkedComments]); */
+
   const savedScrolls = bookmarkedScrolls?.Posts?.getBookmarked;
   const savedComments = bookmarkedComments?.Comments?.getBookmarked;
+
   useEffect(() => {
     setAllLoading(true);
     const all = [];
     savedScrolls?.forEach(item => all.push(item));
     savedComments?.forEach(item => all.push(item));
+
     const allSaved = all?.map(item => {
       let newItem;
       if (item?.scroll) {
@@ -122,9 +127,10 @@ export default function SavedItems() {
       }
       return newItem;
     });
+
     setAllItems(allSaved);
     setAllLoading(false);
-  });
+  }, [profileData, bookmarkedComments, bookmarkedScrolls]);
 
   return (
     <Screen>
