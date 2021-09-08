@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NOTIFICATIONS_SUBSCRIPTION } from "../../../pages/dasboard/utilities/queries";
 import { checkSessionTimeOut } from "../../../store/actions/authActions";
-import { setCount } from "../../../store/actions/countActions";
+import { setCount, resetCount } from "../../../store/actions/countActions";
 import {
   MARK_NOTIFICAION_AS_SEEN,
   QUERY_GET_USER_NOTIFICATIONS,
@@ -21,7 +21,6 @@ const notificationId = "menu-notifications";
 const notificationOptionId = "menu-notifications-option";
 
 export default function NavBar() {
-  const [notSeen, setNotSeen] = useState(0);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
@@ -82,7 +81,6 @@ export default function NavBar() {
   };
 
   const handleMarkAsSeen = () => {
-    if (notSeen < 1) return;
     markAsSeen({
       variables: {
         _id: user?._id,
@@ -94,8 +92,7 @@ export default function NavBar() {
         },
       ],
     });
-    setNotSeen(0);
-    dispatch(setCount(null));
+    dispatch(resetCount());
     console.log(markAsSeenData);
   };
 
