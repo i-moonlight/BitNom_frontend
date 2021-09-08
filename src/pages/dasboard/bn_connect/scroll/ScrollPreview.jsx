@@ -12,7 +12,11 @@ import {
 import moment from 'moment';
 import React from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { contentBodyFactory, getReactionsSum } from '../../utilities/functions';
+import {
+  contentBodyFactory,
+  getReactionsSum,
+  generateRandomColor,
+} from '../../utilities/functions';
 
 //const scrollOptionId = 'menu-scroll-option';
 
@@ -25,7 +29,7 @@ export default function ScrollPreview({ scroll }) {
           avatar={
             <Avatar
               style={{
-                backgroundColor: '#fed132',
+                backgroundColor: generateRandomColor(),
               }}
               src={scroll?.author?.image}
               aria-label='recipe'

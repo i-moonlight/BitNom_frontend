@@ -140,7 +140,8 @@ export default function Signup() {
                       setErrors(userErrors);
 
                       dispatch(register(userData, null));
-                      !userErrors && setJustRegistered(justRegisteredState);
+                      !userErrors?.state &&
+                        setJustRegistered(justRegisteredState);
                     });
                   }}
                 >

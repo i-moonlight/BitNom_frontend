@@ -35,7 +35,11 @@ import ReactionButton from '../../../../components/ReactionButton';
 import TextField from '../../../../components/TextField';
 import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { contentBodyFactory, getReactionsSum } from '../../utilities/functions';
+import {
+  contentBodyFactory,
+  getReactionsSum,
+  generateRandomColor,
+} from '../../utilities/functions';
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
@@ -241,7 +245,7 @@ export default function Scroll({
           avatar={
             <Avatar
               style={{
-                backgroundColor: '#fed132',
+                backgroundColor: generateRandomColor(),
               }}
               src={
                 process.env.REACT_APP_BACKEND_URL + scroll?.author?.profile_pic
@@ -485,7 +489,7 @@ export default function Scroll({
             <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.image}
                 className='mx-2'

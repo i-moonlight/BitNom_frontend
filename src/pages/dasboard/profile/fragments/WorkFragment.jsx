@@ -42,7 +42,7 @@ export default function WorkFragment({
         <CardContent>
           <div className='d-flex flex-row'>
             <Avatar src={photoURL} variant='rounded'>
-              J
+              WK
             </Avatar>
             <div className='mx-3  w-100'>
               <div className='center-horizontal space-between'>

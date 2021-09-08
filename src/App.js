@@ -27,6 +27,12 @@ export default function App() {
   };
 
   const themeOptionsLight = {
+    primary: {
+      main: '#006097',
+    },
+    secondary: {
+      main: '#FB5E5E',
+    },
     background: {
       paperAlt: '#333333',
       comment: '#ececec',

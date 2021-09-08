@@ -93,3 +93,12 @@ export const getCreationTime = (time) => {
   else if (hours < 24) return hours + ' hours';
   else return days + ' days';
 };
+
+export function generateRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

@@ -65,6 +65,7 @@ export default function SavedItems() {
       },
     }
   );
+
   const { data: bookmarkedComments, loading: commentsLoading } = useQuery(
     GET_BOOKMARKED_COMMENTS,
     {
@@ -118,6 +119,7 @@ export default function SavedItems() {
       }
       return newItem;
     });
+
     setAllItems(allSaved);
     setAllLoading(false);
   }, [savedScrolls, savedComments]);

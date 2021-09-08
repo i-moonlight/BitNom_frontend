@@ -13,6 +13,7 @@ import { MoreVert, FiberManualRecord } from '@material-ui/icons';
 import {
   notificationBodyFactory,
   getCreationTime,
+  generateRandomColor,
 } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
@@ -76,7 +77,7 @@ export default function NotificationListItem({ notification }) {
             avatar={
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 aria-label='recipe'
               >

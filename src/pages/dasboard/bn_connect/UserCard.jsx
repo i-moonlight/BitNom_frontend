@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
 export default function UserCard({ setOpen, followers, following, scrolls }) {
   const state = useSelector((st) => st);
@@ -65,7 +66,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
                 src={user?.profile_pic}
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,
@@ -169,14 +170,20 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             color='inherit'
             textCase
             startIcon={<EventRounded />}
+            endIcon={
+              <Badge
+                className='ms-2 me-3'
+                badgeContent='3'
+                color='error'
+              ></Badge>
+            }
             variant='text'
             className='py-1 my-1 me-3'
             onClick={() => history.push('/dashboard/events')}
           >
             Events
           </Button>
-          <Badge badgeContent='3' color='error'></Badge>
-          <IconButton
+          {/* <IconButton
             size='small'
             className=' p-1'
             color='primary'
@@ -184,7 +191,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             onClick={() => history.push('/dashboard/events')}
           >
             <AddRounded />
-          </IconButton>
+          </IconButton> */}
         </CardActions>
       </Card>
       <Button

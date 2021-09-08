@@ -16,6 +16,7 @@ import { SettingsRounded } from '@material-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+  generateRandomColor,
   getCreationTime,
   notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
@@ -61,9 +62,9 @@ export default function NotificationsPopover({
 }
 
 function NotificationPreview({ notifications }) {
-  const getNotifyingUser = (notification) => {
+  const getNotifyingUser = notification => {
     let name;
-    notification?.content_entities?.forEach((item) => {
+    notification?.content_entities?.forEach(item => {
       if (item?.type === 'resource_tag') {
         name = item?.url?.displayName;
       }
@@ -81,12 +82,12 @@ function NotificationPreview({ notifications }) {
         </Grid>
       )}
       {notifications?.length > 0 &&
-        notifications?.slice(0, 4)?.map((item) => (
+        notifications?.slice(0, 4)?.map(item => (
           <ListItem className='space-between' key={item} divider>
             <ListItemAvatar>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
               >
                 {getUserInitials(getNotifyingUser(item))}

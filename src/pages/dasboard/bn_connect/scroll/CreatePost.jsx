@@ -23,13 +23,13 @@ import {
   VideocamRounded,
 } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { getFeed } from '../../utilities/functions';
+import { generateRandomColor, getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -97,8 +97,6 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
-  useEffect(() => {}, [data]);
-
   const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
@@ -118,6 +116,7 @@ export default function CreatePost({
 
   return (
     <Modal
+      data={data}
       style={{
         outline: 'none',
 
@@ -132,7 +131,7 @@ export default function CreatePost({
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
+            <div className='space-between mx-3 my-2 center-horizontal'>
               <Typography variant='body2'></Typography>
               <Typography variant='body1'>Create Post</Typography>
               <IconButton size='small' className='m-1 p-1'>
@@ -158,7 +157,7 @@ export default function CreatePost({
                 <ListItemAvatar>
                   <Avatar
                     style={{
-                      backgroundColor: '#fed132',
+                      backgroundColor: generateRandomColor(),
                     }}
                     src={user?.profile_pic}
                   >
@@ -170,10 +169,10 @@ export default function CreatePost({
                   secondary={
                     <Button
                       textCase
+                      variant='text'
                       style={{
                         //backgroundColor: theme.palette.background.default,
                         padding: '0px 10px',
-                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
