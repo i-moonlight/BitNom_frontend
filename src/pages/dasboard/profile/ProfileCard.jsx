@@ -18,6 +18,7 @@ import moment from 'moment';
 import React from 'react';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
 export default function ProfileCard({ profile }) {
   // const state = useSelector(st => st);
@@ -46,7 +47,7 @@ export default function ProfileCard({ profile }) {
                 src={profile?.profile_pic}
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,

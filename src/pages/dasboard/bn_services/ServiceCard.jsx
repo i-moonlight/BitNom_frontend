@@ -12,6 +12,7 @@ import {
 import { ShareRounded } from '@material-ui/icons';
 import React from 'react';
 import Button from '../../../components/Button';
+import { generateRandomColor } from '../utilities/functions';
 
 export default function ServiceCard() {
   return (
@@ -35,7 +36,7 @@ export default function ServiceCard() {
               <Avatar
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,

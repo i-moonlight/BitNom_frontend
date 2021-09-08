@@ -71,8 +71,9 @@ export default function NavBarLanding() {
                 color={theme.palette.text.primary}
                 variant='text'
                 textCase
+                size='large'
               >
-                Home
+                <Typography>Home</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -89,7 +90,7 @@ export default function NavBarLanding() {
                   }, 500)
                 }
               >
-                Ecosystem
+                <Typography>Ecosystem</Typography>
                 <NavBarMenu show={showMenuEcosystem} items={menuEcosystem} />
               </Button>
               <Button
@@ -107,7 +108,7 @@ export default function NavBarLanding() {
                   }, 300)
                 }
               >
-                Product
+                <Typography>Product</Typography>
                 <NavBarMenu show={showMenuProduct} items={menuProduct} />
               </Button>
               <Button
@@ -116,7 +117,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                BN for Business
+                <Typography>BN for Business</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -124,7 +125,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                Learn
+                <Typography>Learn</Typography>
               </Button>
             </div>
           </Hidden>
@@ -138,7 +139,7 @@ export default function NavBarLanding() {
                 history.push('/auth/login');
               }}
             >
-              Sign In
+              <Typography>Sign In</Typography>
             </Button>
             <Button
               textCase
@@ -151,8 +152,10 @@ export default function NavBarLanding() {
                 history.push('/auth/signup');
               }}
             >
-              Explore
-              <Hidden xsDown> BN</Hidden>
+              <Typography>
+                Explore
+                <Hidden smDown> BN</Hidden>
+              </Typography>
             </Button>
             <Hidden mdUp>
               <IconButton

@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
+import { generateRandomColor } from '../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
@@ -40,6 +41,9 @@ export default function ProfileBar({
   const history = useHistory();
   const theme = useTheme();
   const userInitials = getUserInitials(user?.displayName);
+
+  console.log('up', user?.profile_pic);
+
   return (
     <Box className={classes.root}>
       <Container>
@@ -140,12 +144,15 @@ export default function ProfileBar({
               <Avatar
                 variant='rounded'
                 style={{
-                  backgroundColor: '#FED132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 30,
                   height: 30,
                 }}
-                source={user?.profile_pic}
+                src={
+                  user?.profile_pic ||
+                  `https://ui-avatars.com/api/?name=${userInitials}&background=random`
+                }
               >
                 {userInitials}
               </Avatar>

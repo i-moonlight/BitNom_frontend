@@ -23,7 +23,7 @@ export const platformLayers = [
   {
     image: media1Img,
     title: 'BN Knowledge Center',
-    text: 'It is at the heart of the BN product. It is the driving force of both BNConnect and BNMarketplace',
+    text: 'It is at the heart of the BN product. It is also the driving force of both BN Connect and BN Marketplace alike',
   },
 ];
 

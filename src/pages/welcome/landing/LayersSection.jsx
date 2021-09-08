@@ -42,41 +42,46 @@ export default function LayersSection() {
               </Typography>
             </Grid>
           </Grid>
-          <Grid spacing={2} container className='pb-5'>
-            {platformLayers.map(card => (
-              <Grid key={`${card?.text}`} item md={3} sm={6}>
-                <Card className={classes.layersCard}>
-                  <CardMedia
-                    component='img'
-                    style={{ height: 140 }}
-                    image={card?.image}
-                  />
-                  <CardContent className={classes.layersCard}>
-                    <Typography gutterBottom variant='h5' component='h2'>
-                      {card?.title}
-                    </Typography>
-                    <Typography
-                      className={classes.sectionText}
-                      variant='body2'
-                      color='textSecondary'
-                      component='p'
-                    >
-                      {card?.text}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-            <Grid item lg={3}></Grid>
-          </Grid>
+          <div className='m-5'>
+            <Grid spacing={2} container className='pb-5 '>
+              {platformLayers.map(card => (
+                <Grid key={`${card?.text}`} item md={4} sm={6}>
+                  <Card className={classes.layersCard}>
+                    <CardMedia
+                      component='img'
+                      style={{ height: 140 }}
+                      image={card?.image}
+                    />
+                    <CardContent className={classes.layersCard}>
+                      <Typography gutterBottom variant='h5' component='h2'>
+                        {card?.title}
+                      </Typography>
+                      <Typography
+                        className={classes.sectionText}
+                        variant='body2'
+                        color='textSecondary'
+                        component='p'
+                      >
+                        {card?.text}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+              <Grid item lg={3}></Grid>
+            </Grid>
+          </div>
         </Container>
       </Grid>
     </DarkTheme>
   );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   layersCard: {
     backgroundColor: '#333333',
+  },
+  cards: {
+    margin: theme.breakpoints.up('sm') ? 50 : 0,
   },
 }));

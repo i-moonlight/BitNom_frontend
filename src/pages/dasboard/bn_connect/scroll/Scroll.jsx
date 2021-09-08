@@ -12,7 +12,9 @@ import {
   IconButton,
   Typography,
   useTheme,
+  makeStyles,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import {
   CommentRounded,
   FavoriteRounded,
@@ -28,14 +30,20 @@ import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import Button from '../../../../components/Button';
+import ReactionButton from '../../../../components/ReactionButton';
 //import ImagePreview from '../../../components/ImagePreview';
 import TextField from '../../../../components/TextField';
 import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { contentBodyFactory } from '../../utilities/functions';
+import {
+  contentBodyFactory,
+  getReactionsSum,
+  generateRandomColor,
+} from '../../utilities/functions';
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
+  MUTATION_REMOVE_REACTION,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
@@ -43,6 +51,35 @@ import Comment from './comment/Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
+
+const useStyles = makeStyles((theme) => ({
+  clickableTypography: {
+    color: 'inherit',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    [theme.breakpoints.down('md')]: {
+      textDecoration: 'underline',
+    },
+  },
+  replies: {
+    color: 'inherit',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  red: {
+    color: red[500],
+  },
+  green: {
+    color: green[500],
+  },
+  primary: {
+    color: '#006097',
+  },
+}));
 
 const scrollOptionId = 'menu-scroll-option';
 
@@ -55,11 +92,16 @@ export default function Scroll({
   setUpdateCommentOpen,
   setFlaggedResource,
   setOpenFlag,
+  setOpenReactions,
+  setResourceReactions,
   setOpen,
   setImagePreviewOpen,
   setImagePreviewURL,
 }) {
+  const classes = useStyles();
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
+  const [userReaction, setUserReaction] = useState();
+  const [reactionIcon, setReactionIcon] = useState();
   const [openComments, setOpenComments] = useState(false);
   const [comment_text, setCommentText] = useState('');
   const [comment_image, setCommentImage] = useState(null);
@@ -68,9 +110,10 @@ export default function Scroll({
   const [createCommentErr, setCreateCommentErr] = useState(false);
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+  const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
 
   const theme = useTheme();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const [
@@ -90,7 +133,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -110,7 +153,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -121,7 +164,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -129,7 +172,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
@@ -140,6 +183,45 @@ export default function Scroll({
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
+    setUserReaction(reaction);
+    setIcon(reaction);
+  };
+
+  const handleRemoveReaction = () => {
+    removeReaction({
+      variables: {
+        data: {
+          _id: scroll?._id,
+          type: 'post',
+        },
+      },
+      refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+    });
+    setIcon();
+    setUserReaction();
+  };
+
+  const getUserReaction = (resource) => {
+    let reaction;
+    resource?.reacted_to_by?.forEach((item) => {
+      if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
+    });
+    console.log(resource, 'JSL');
+    return reaction;
+  };
+
+  const setIcon = (reaction) => {
+    if (reaction === 'like') {
+      setReactionIcon(<ThumbUpRounded className={classes.primary} />);
+    } else if (reaction === 'love') {
+      setReactionIcon(<FavoriteRounded className={classes.red} />);
+    } else if (reaction === 'dislike') {
+      setReactionIcon(<ThumbDownRounded className={classes.primary} />);
+    } else if (reaction === 'celebrate') {
+      setReactionIcon(<PanToolRounded className={classes.green} />);
+    } else {
+      setReactionIcon();
+    }
   };
 
   const authorInitials = getUserInitials(scroll?.author?.displayName);
@@ -150,6 +232,11 @@ export default function Scroll({
       console.log('comment created');
     }
   }, [createCommentData]);
+  useEffect(() => {
+    const reaction = getUserReaction(scroll);
+    setUserReaction(reaction);
+    setIcon(reaction);
+  }, []);
 
   return (
     <>
@@ -158,9 +245,11 @@ export default function Scroll({
           avatar={
             <Avatar
               style={{
-                backgroundColor: '#fed132',
+                backgroundColor: generateRandomColor(),
               }}
-              src={scroll?.author?.profile_pic}
+              src={
+                process.env.REACT_APP_BACKEND_URL + scroll?.author?.profile_pic
+              }
               aria-label='recipe'
             >
               {authorInitials}
@@ -227,7 +316,7 @@ export default function Scroll({
               </Grid>
             )}
             {scroll?.images.length > 0 &&
-              scroll?.images?.map(imageURL => (
+              scroll?.images?.map((imageURL) => (
                 <Grid
                   className='mt-3'
                   key={imageURL}
@@ -263,11 +352,31 @@ export default function Scroll({
             <ScrollPreview scroll={scroll?.shared_resource?._id} />
           )}
           <br />
-          {`${scroll?.reactions?.likes} ${
-            scroll?.reactions?.likes === 1 ? 'Like' : 'Likes'
-          } . ${scroll?.comments} ${
-            scroll?.comments === 1 ? 'Comment' : 'Comments'
-          }`}
+
+          <Typography display='inline'>
+            <Typography
+              onClick={() => {
+                setOpenReactions(true);
+                setResourceReactions(scroll);
+              }}
+              display='inline'
+              className={classes.clickableTypography}
+            >
+              {`${getReactionsSum(scroll)} ${
+                getReactionsSum(scroll) === 1 ? 'Reaction' : 'Reactions'
+              }`}
+            </Typography>
+            {' . '}
+            <Typography
+              onClick={() => setOpenComments(true)}
+              className={classes.replies}
+              display='inline'
+            >
+              {`${scroll?.comments} ${
+                scroll?.comments === 1 ? 'Comment' : 'Comments'
+              }`}
+            </Typography>
+          </Typography>
         </CardContent>
         <Divider />
         <Card
@@ -286,11 +395,23 @@ export default function Scroll({
             color='default'
             textCase
             onClick={() => {
+              handleCreateReaction('like');
+              setLikeHovered(false);
+            }}
+            variant='text'
+            startIcon={<ThumbUpRounded className={classes.primary} />}
+          >
+            Like
+          </Button>
+          <Button
+            color='default'
+            textCase
+            onClick={() => {
               handleCreateReaction('love');
               setLikeHovered(false);
             }}
             variant='text'
-            startIcon={<FavoriteRounded />}
+            startIcon={<FavoriteRounded className={classes.red} />}
           >
             Love
           </Button>
@@ -302,7 +423,7 @@ export default function Scroll({
               setLikeHovered(false);
             }}
             variant='text'
-            startIcon={<ThumbDownRounded />}
+            startIcon={<ThumbDownRounded className={classes.primary} />}
           >
             Dislike
           </Button>
@@ -314,23 +435,23 @@ export default function Scroll({
               setLikeHovered(false);
             }}
             variant='text'
-            startIcon={<PanToolRounded />}
+            startIcon={<PanToolRounded className={classes.green} />}
           >
             Celebrate
           </Button>
         </Card>
         <CardActions className='space-around'>
-          <Button
-            color='default'
-            textCase
-            onClick={() => handleCreateReaction('like')}
+          <ReactionButton
+            handleRemoveReaction={handleRemoveReaction}
+            reaction={userReaction}
             onMouseEnter={() => setLikeHovered(true)}
+            setLikeHovered={setLikeHovered}
             onMouseLeave={() => setLikeHovered(false)}
             variant='text'
-            startIcon={<ThumbUpRounded />}
-          >
-            Like
-          </Button>
+            color='default'
+            textCase
+            startIcon={reactionIcon}
+          />
           <Button
             color='default'
             textCase
@@ -368,7 +489,7 @@ export default function Scroll({
             <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.image}
                 className='mx-2'
@@ -381,7 +502,7 @@ export default function Scroll({
                 multiline
                 rowsMax={10}
                 id='comment-field'
-                onKeyPress={e => {
+                onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleCreateComment(e);
                   }
@@ -391,11 +512,11 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value
+                      : e.target.value.substring(0, 250)
                   )
                 }
                 adornment={
@@ -435,7 +556,7 @@ export default function Scroll({
               open={openImage}
               filesLimit={1}
               onClose={() => setOpenImage(false)}
-              onSave={files => {
+              onSave={(files) => {
                 setCommentImage(files[0]);
                 setOpenImage(false);
               }}
@@ -445,8 +566,8 @@ export default function Scroll({
             />
             {commentsData &&
               commentsData?.Comments?.get
-                .filter(comment => !comment.response_to)
-                .map(comment => (
+                .filter((comment) => !comment.response_to)
+                .map((comment) => (
                   <Comment
                     scroll={scroll}
                     key={comment._id}
@@ -455,6 +576,8 @@ export default function Scroll({
                     comment={comment}
                     setFlaggedResource={setFlaggedResource}
                     setOpenFlag={setOpenFlag}
+                    setOpenReactions={setOpenReactions}
+                    setResourceReactions={setResourceReactions}
                     setOpenImage={setOpenImage}
                     onCreateComment={onCreateComment}
                     setImagePreviewURL={setImagePreviewURL}

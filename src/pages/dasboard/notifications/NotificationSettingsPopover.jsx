@@ -13,7 +13,7 @@ export default function NotificationSettingsPopover({
   isNotificationSettingsOpen,
   handleNotificationSettingsClose,
 }) {
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const [
@@ -61,10 +61,10 @@ export default function NotificationSettingsPopover({
         variant='outlined'
       >
         <ListItem button divider onClick={handleMarkAllNotificationsRead}>
-          <ListItemText secondary='Mark all as read' />
+          <ListItemText primary='Mark all as read' />
         </ListItem>
         <ListItem button divider>
-          <ListItemText secondary='Settings' />
+          <ListItemText primary='Settings' />
         </ListItem>
       </List>
     </Popover>

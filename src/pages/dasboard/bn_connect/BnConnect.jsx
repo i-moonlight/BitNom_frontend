@@ -20,6 +20,7 @@ import {
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
+import ReactionsModal from './popovers/ReactionsModal';
 import { useSelector } from 'react-redux';
 import Scroll from './scroll/Scroll';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
@@ -29,7 +30,7 @@ import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
 import { getFeed } from '../utilities/functions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -40,6 +41,8 @@ export default function BnConnect() {
   const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
   const [updateCommentOpen, setUpdateCommentOpen] = useState(false);
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
+  const [openReactions, setOpenReactions] = useState(false);
+  const [resourceReactions, setResourceReactions] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const [videoDisabled, setVideoDisabled] = useState(false);
@@ -50,7 +53,7 @@ export default function BnConnect() {
   const [postToEdit, setPostToEdit] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const classes = useStyles();
 
@@ -78,7 +81,7 @@ export default function BnConnect() {
   });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    item => item?._id !== 'bn-ai' && item?._id !== user?._id
+    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
 
   const { loading: trendingLoading, data: trendingData } = useQuery(
@@ -126,7 +129,7 @@ export default function BnConnect() {
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
-                  setOpen={open => setCreateScrollOpen(open)}
+                  setOpen={(open) => setCreateScrollOpen(open)}
                 />
               </Grid>
             </Hidden>
@@ -136,7 +139,7 @@ export default function BnConnect() {
                 setImageDisabled={setImageDisabled}
                 setVideoDisabled={setVideoDisabled}
                 setOpenVideo={setOpenVideo}
-                setOpen={open => setCreateScrollOpen(open)}
+                setOpen={(open) => setCreateScrollOpen(open)}
               />
               <Grid item align='center'>
                 {loading && (
@@ -144,15 +147,17 @@ export default function BnConnect() {
                 )}
               </Grid>
               {data?.Posts?.get &&
-                data?.Posts?.get?.map(scroll => (
+                data?.Posts?.get?.map((scroll) => (
                   <Scroll
                     setOpen={() => setCreateScrollOpen(true)}
                     setUpdateOpen={setUpdateScrollOpen}
                     setUpdateCommentOpen={setUpdateCommentOpen}
                     setOpenFlag={setCreateFlagOpen}
                     setFlaggedResource={setFlaggedResource}
-                    setImagePreviewURL={url => setImagePreviewURL(url)}
-                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
+                    setOpenReactions={setOpenReactions}
+                    setResourceReactions={setResourceReactions}
+                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
                     setSharedPost={setSharedPost}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}
@@ -163,7 +168,7 @@ export default function BnConnect() {
               {data?.Posts?.get?.length < 1 && (
                 <Grid align='center'>
                   <Typography color='primary'>
-                    Start a scroll or follow people you may know to see theirs!!
+                    Create a post or follow people you may know to see theirs!!
                   </Typography>
                 </Grid>
               )}
@@ -186,7 +191,7 @@ export default function BnConnect() {
       <CreatePost
         profileData={profileData?.Users?.profile}
         open={createScrollOpen}
-        setOpen={open => setCreateScrollOpen(open)}
+        setOpen={(open) => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -202,7 +207,7 @@ export default function BnConnect() {
         updateScrollOpen={updateScrollOpen}
         postToEdit={postToEdit}
         setPostToEdit={setPostToEdit}
-        setUpdateScrollOpen={UpdateScrollOpen =>
+        setUpdateScrollOpen={(UpdateScrollOpen) =>
           setUpdateScrollOpen(UpdateScrollOpen)
         }
         openImage={openImage}
@@ -218,7 +223,7 @@ export default function BnConnect() {
         updateCommentOpen={updateCommentOpen}
         commentToEdit={commentToEdit}
         setCommentToEdit={setCommentToEdit}
-        setUpdateCommentOpen={UpdateCommentOpen =>
+        setUpdateCommentOpen={(UpdateCommentOpen) =>
           setUpdateCommentOpen(UpdateCommentOpen)
         }
         openImage={openImage}
@@ -234,9 +239,15 @@ export default function BnConnect() {
       />
       <FlagResourceModal
         openFlag={createFlagOpen}
-        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
+        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
+      />
+      <ReactionsModal
+        openReactions={openReactions}
+        setOpenReactions={setOpenReactions}
+        resourceReactions={resourceReactions}
+        setResourceReactions={setResourceReactions}
       />
     </Screen>
   );

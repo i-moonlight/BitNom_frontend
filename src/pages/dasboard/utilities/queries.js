@@ -177,10 +177,26 @@ export const MUTATION_CREATE_REACTION = gql`
   }
 `;
 
+export const MUTATION_REMOVE_REACTION = gql`
+  mutation ($data: IRemoveReaction!) {
+    Reactions {
+      delete(data: $data)
+    }
+  }
+`;
+
 export const MUTATION_CREATE_BOOKMARK = gql`
   mutation ($data: ICreateBookmark!) {
     Bookmarks {
       create(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_BOOKMARK = gql`
+  mutation ($data: IRemoveBookmark!) {
+    Bookmarks {
+      delete(data: $data)
     }
   }
 `;
@@ -240,6 +256,10 @@ export const MUTATION_CREATE_COMMENT = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         creation_date
         bookmarks
@@ -317,6 +337,10 @@ export const QUERY_LOAD_SCROLLS = gql`
                 type
               }
               url
+              mentioned {
+                _id
+                displayName
+              }
             }
           }
         }
@@ -337,6 +361,10 @@ export const QUERY_LOAD_SCROLLS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -479,6 +507,10 @@ export const GET_BOOKMARKED_SCROLLS = gql`
                 type
               }
               url
+              mentioned {
+                _id
+                displayName
+              }
             }
           }
         }
@@ -499,6 +531,10 @@ export const GET_BOOKMARKED_SCROLLS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -551,6 +587,10 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -597,6 +637,10 @@ export const QUERY_GET_COMMENTS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -644,6 +688,10 @@ export const GET_BOOKMARKED_COMMENTS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id

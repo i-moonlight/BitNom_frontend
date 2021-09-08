@@ -16,7 +16,7 @@ body {
 
 a {
   text-decoration: none !important;
-  color: #006097;
+  color: #0ea0f3;
   cursor: pointer !important;
 }
 
@@ -27,6 +27,10 @@ a.alt {
 
 .text-theme {
   color: #006097 !important;
+}
+
+.text-link {
+  color: #0ea0f3 !important;
 }
 
 .bg-theme {

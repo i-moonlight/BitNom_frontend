@@ -20,7 +20,7 @@ export default function HeaderSection() {
         backgroundColor: theme.palette.background.landing,
       }}
     >
-      <Container container component={Grid} maxWidth='lg'>
+      <Container container component={Grid} maxWidth='md'>
         <Grid
           style={{
             backgroundImage: `url('${headerBgImg}')`,
@@ -33,14 +33,22 @@ export default function HeaderSection() {
           className='mt-5 mb-5'
         >
           <DarkTheme>
-            <Typography variant='h3' color='textPrimary' className='mb-2 mt-4'>
+            <Typography
+              variant='h3'
+              color='textPrimary'
+              className='mb-2 mt-4 text-center'
+            >
               The Ultimate Crypto-Intelligence Suite
             </Typography>
-            <Typography variant='h6' color='textPrimary' className='my-2'>
+            <Typography
+              variant='h6'
+              color='textPrimary'
+              className='my-2 text-center'
+            >
               BitNorm is an ever-expanding ecosystem of interconnected apps and
               services, built for a decentralized future.
             </Typography>
-            <div className='center-horizontal mt-2 mb-5'>
+            <div className='center-horizontal mt-2 mb-5 justify-content-center'>
               <Button
                 color={theme.palette.text.primary}
                 size='large'
@@ -54,7 +62,11 @@ export default function HeaderSection() {
                 <PlayArrowRounded />
               </IconButton>
             </div>
-            <Typography variant='body2' color='textPrimary' className='mt-5'>
+            <Typography
+              variant='body2'
+              color='textPrimary'
+              className='mt-5 text-center'
+            >
               BN crypto token is NOW available.{' '}
               <a href='' className='alt'>
                 Click here to buy

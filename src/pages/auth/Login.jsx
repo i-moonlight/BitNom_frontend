@@ -40,7 +40,7 @@ export default function Login() {
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-  });
+  }, [user, history]);
 
   const responseGoogle = response => {
     googleLogin({

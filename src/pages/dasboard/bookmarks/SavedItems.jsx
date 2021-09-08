@@ -18,9 +18,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
-import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
-import Scroll from '../bn_connect/scroll/Scroll';
 import UserCard from '../bn_connect/UserCard';
 import {
   GET_BOOKMARKED_COMMENTS,
@@ -29,8 +27,9 @@ import {
   QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
+import SavedPost from './SavedPost';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -38,8 +37,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function SavedItems() {
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
-  //const [trending, setTrending] = useState([]);
-  const [createFlagOpen, setCreateFlagOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openVideo, setOpenVideo] = useState(false);
   const [videoDisabled, setVideoDisabled] = useState(false);
@@ -47,15 +44,14 @@ export default function SavedItems() {
   const [value, setValue] = React.useState(0);
   const [allItems, setAllItems] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
-  //const [savedScrolls, setSavedScrolls] = useState([]);
-  //const [savedComments, setSavedComments] = useState([]);
+  const [savedScrolls, setSavedScrolls] = useState([]);
+  const [savedComments, setSavedComments] = useState([]);
   //const [savedArticles, setSavedArticles] = useState([]);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
   const [sharedPost, setSharedPost] = useState(null);
-  const [flaggedResource, setFlaggedResource] = useState(null);
 
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const classes = useStyles();
 
@@ -69,6 +65,7 @@ export default function SavedItems() {
       },
     }
   );
+
   const { data: bookmarkedComments, loading: commentsLoading } = useQuery(
     GET_BOOKMARKED_COMMENTS,
     {
@@ -94,20 +91,20 @@ export default function SavedItems() {
   const handleChange = (event, val) => {
     setValue(val);
   };
-  /*  useEffect(() => {
+  useEffect(() => {
     setSavedScrolls(bookmarkedScrolls?.Posts?.getBookmarked);
   }, [bookmarkedScrolls]);
   useEffect(() => {
     setSavedComments(bookmarkedComments?.Comments?.getBookmarked);
-  }, [bookmarkedComments]); */
-  const savedScrolls = bookmarkedScrolls?.Posts?.getBookmarked;
-  const savedComments = bookmarkedComments?.Comments?.getBookmarked;
+  }, [bookmarkedComments]);
+  /* const savedScrolls = bookmarkedScrolls?.Posts?.getBookmarked;
+  const savedComments = bookmarkedComments?.Comments?.getBookmarked; */
   useEffect(() => {
     setAllLoading(true);
     const all = [];
-    savedScrolls?.forEach(item => all.push(item));
-    savedComments?.forEach(item => all.push(item));
-    const allSaved = all?.map(item => {
+    savedScrolls?.forEach((item) => all.push(item));
+    savedComments?.forEach((item) => all.push(item));
+    const allSaved = all?.map((item) => {
       let newItem;
       if (item?.scroll) {
         newItem = Object.assign(
@@ -122,9 +119,10 @@ export default function SavedItems() {
       }
       return newItem;
     });
+
     setAllItems(allSaved);
     setAllLoading(false);
-  });
+  }, [savedScrolls, savedComments]);
 
   return (
     <Screen>
@@ -190,8 +188,8 @@ export default function SavedItems() {
                       style={{ textTransform: 'none' }}
                     />
                     <Tab
-                      key={'Scrolls'}
-                      label={'Scrolls'}
+                      key={'Posts'}
+                      label={'Posts'}
                       disableRipple
                       style={{ textTransform: 'none' }}
                     />
@@ -224,26 +222,20 @@ export default function SavedItems() {
                   !allLoading &&
                   allItems
                     ?.sort((a, b) => b.created - a.created)
-                    .map(item =>
+                    .map((item) =>
                       item.scroll ? (
                         <SavedComment
                           key={item._id}
                           comment={item}
-                          setFlaggedResource={setFlaggedResource}
-                          setOpenFlag={createFlagOpen}
                           setImagePreviewURL={setImagePreviewURL}
                           setImagePreviewOpen={setImagePreviewOpen}
                         />
                       ) : (
-                        <Scroll
-                          setOpen={open => setCreateScrollOpen(open)}
-                          setOpenFlag={setCreateFlagOpen}
-                          setFlaggedResource={setFlaggedResource}
-                          setImagePreviewURL={url => setImagePreviewURL(url)}
-                          setImagePreviewOpen={open =>
+                        <SavedPost
+                          setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                          setImagePreviewOpen={(open) =>
                             setImagePreviewOpen(open)
                           }
-                          setSharedPost={setSharedPost}
                           key={item?._id}
                           scroll={item}
                         />
@@ -251,26 +243,20 @@ export default function SavedItems() {
                     )}
                 {value === 1 &&
                   savedScrolls?.length > 0 &&
-                  savedScrolls?.map(scroll => (
-                    <Scroll
-                      setOpen={open => setCreateScrollOpen(open)}
-                      setOpenFlag={setCreateFlagOpen}
-                      setFlaggedResource={setFlaggedResource}
-                      setImagePreviewURL={url => setImagePreviewURL(url)}
-                      setImagePreviewOpen={open => setImagePreviewOpen(open)}
-                      setSharedPost={setSharedPost}
+                  savedScrolls?.map((scroll) => (
+                    <SavedPost
+                      setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                      setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
                       key={scroll?._id}
                       scroll={scroll}
                     />
                   ))}
                 {value === 2 &&
                   savedComments?.length > 0 &&
-                  savedComments?.map(comment => (
+                  savedComments?.map((comment) => (
                     <SavedComment
                       key={comment._id}
                       comment={comment}
-                      setFlaggedResource={setFlaggedResource}
-                      setOpenFlag={setCreateFlagOpen}
                       setImagePreviewURL={setImagePreviewURL}
                       setImagePreviewOpen={setImagePreviewOpen}
                     />
@@ -296,7 +282,7 @@ export default function SavedItems() {
       </div>
       <CreatePost
         open={createScrollOpen}
-        setOpen={open => setCreateScrollOpen(open)}
+        setOpen={(open) => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -315,12 +301,6 @@ export default function SavedItems() {
           setImagePreviewOpen(false);
           setImagePreviewURL(null);
         }}
-      />
-      <FlagResourceModal
-        openFlag={createFlagOpen}
-        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
-        flaggedResource={flaggedResource}
-        setFlaggedResource={setFlaggedResource}
       />
     </Screen>
   );

@@ -43,7 +43,7 @@ export default function CreateScrollCard({
             }}
           >
             <Typography variant='body2' color='textSecondary'>
-              Start a scroll
+              Create a post
             </Typography>
           </Card>
         </CardActionArea>
