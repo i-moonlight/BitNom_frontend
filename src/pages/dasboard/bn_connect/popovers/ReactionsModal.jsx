@@ -71,10 +71,9 @@ export default function ReactionsModal({
   );
 
   const celebrations = resourceReactions?.reacted_to_by?.filter(
-    (reaction) => reaction?.reaction_type === 'celebration'
+    (reaction) => reaction?.reaction_type === 'celebrate'
   );
 
-  console.log(resourceReactions?.reacted_to_by, 'dfkfjkf');
   return (
     <Modal
       style={{
