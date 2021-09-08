@@ -47,6 +47,7 @@ install_dependencies:
   script:
     - npm i -g npm
     - npm install
+    - npm run build
   artifacts:
     paths:
       - node_modules/
