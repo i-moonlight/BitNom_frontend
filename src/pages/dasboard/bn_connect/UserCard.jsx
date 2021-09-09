@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
-  AddRounded,
+  //AddRounded,
   BookmarkRounded,
   CollectionsBookmarkRounded,
   EventRounded,
