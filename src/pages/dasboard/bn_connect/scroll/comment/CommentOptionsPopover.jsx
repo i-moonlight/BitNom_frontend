@@ -20,6 +20,8 @@ import Button from '../../../../../components/Button';
 import {
   MUTATION_CREATE_BOOKMARK,
   GET_BOOKMARKED_COMMENTS,
+  MUTATION_UNFOLLOW_USER,
+  QUERY_FETCH_PROFILE,
 } from '../../../utilities/queries';
 
 export default function CommentOptionsPopover({
@@ -41,8 +43,35 @@ export default function CommentOptionsPopover({
       //   error
     },
   ] = useMutation(MUTATION_CREATE_BOOKMARK);
-  const state = useSelector(st => st);
+  const [
+    unFollowUser,
+    {
+      data: unFollowData,
+      //  loading,
+      //   error
+    },
+  ] = useMutation(MUTATION_UNFOLLOW_USER);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
+
+  const handleUnFollowUser = (user_id) => {
+    unFollowUser({
+      variables: {
+        data: {
+          user_id: user_id,
+        },
+      },
+      context: { clientName: 'users' },
+      refetchQueries: [
+        {
+          query: QUERY_FETCH_PROFILE,
+          context: { clientName: 'users' },
+        },
+      ],
+    });
+    if (unFollowData?.Users?.unFollow == true)
+      console.log(unFollowData?.Users?.unFollow);
+  };
 
   useEffect(() => {
     if (bookmarkData?.bookmarks?.create == true) {
@@ -128,7 +157,11 @@ export default function CommentOptionsPopover({
           </ListItem>
         )}
         {user?._id !== comment?.author?._id && (
-          <ListItem button divider>
+          <ListItem
+            button
+            divider
+            onClick={() => handleUnFollowUser(comment?.author?._id)}
+          >
             <ListItemIcon>
               <PersonAddDisabledOutlined />
             </ListItemIcon>
