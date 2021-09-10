@@ -28,7 +28,7 @@ export default function NavBar() {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const isMenuOpen = Boolean(menuAnchorEl);
@@ -51,11 +51,11 @@ export default function NavBar() {
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      // context: { clientName: "notifications" },
+      context: { clientName: 'notifications' },
     }
   );
 
-  const handleMenuOpen = event => {
+  const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -63,7 +63,7 @@ export default function NavBar() {
     setMenuAnchorEl(null);
   };
 
-  const handleNotificationsOpen = event => {
+  const handleNotificationsOpen = (event) => {
     setNotificationAnchorEl(event.currentTarget);
     handleMarkAsSeen();
   };
@@ -72,7 +72,7 @@ export default function NavBar() {
     setNotificationAnchorEl(null);
   };
 
-  const handleNotificationOptionOpen = event => {
+  const handleNotificationOptionOpen = (event) => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
 
@@ -109,14 +109,14 @@ export default function NavBar() {
   useEffect(() => {
     dispatch(checkSessionTimeOut());
     const notSeenArray = [];
-    response?.forEach(notification => {
-      notification.to_notify.forEach(item => {
+    response?.forEach((notification) => {
+      notification.to_notify.forEach((item) => {
         if (item?.user_id === user._id && item?.seen === 'false') {
           notSeenArray.push(notification?._id);
         }
       });
     });
-    setNotSeen(notSeenArray.length);
+    //setNotSeen(notSeenArray.length);
   }, [data?.Notification?.get]);
 
   return (

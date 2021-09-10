@@ -82,7 +82,7 @@ export default function CreatePost({
         },
         {
           query: QUERY_LOAD_SCROLLS,
-          variables: { data: { author: user?._id, limit: 500 } },
+          variables: { data: { author: user?._id, limit: 220 } },
         },
       ],
     });
