@@ -6,7 +6,7 @@ import HonorForm from './forms/HonorForm';
 import HonorFragment from './fragments/HonorFragment';
 
 // eslint-disable-next-line no-unused-vars
-export default function HonorCard({ profile }) {
+export default function HonorCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
   // TODO: Rename Honors
   // const honors = profile?.honors || [];
@@ -21,7 +21,7 @@ export default function HonorCard({ profile }) {
       <CardContent>
         <div className='space-between center-horizontal'>
           <Typography>Honors and Awards</Typography>
-          {!showForm && (
+          {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase

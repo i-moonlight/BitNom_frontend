@@ -9,23 +9,23 @@ export const contentBodyFactory = resource => {
       //let ending = newContent?.substr(entity.offset + entity.length);
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'resource_tag') {
-      const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity.url}'`;
+      const link = `${location.origin}/users/${entity.url}`;
       const replacement =
         '<a href=' + link + '>' + entity.mentioned?.displayName + '</a>';
       const toReplace = '@' + entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'hashtag') {
-      const link = `${process.env.REACT_APP_BACKEND_URL}/hashtags/${entity.url}'`;
+      const link = `${location.origin}/hashtags/${entity.url}`;
       const replacement = '<a href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'cashtag') {
-      const link = `${process.env.REACT_APP_BACKEND_URL}/cashtags/${entity.url}'`;
+      const link = `${location.origin}/cashtags/${entity.url}`;
       const replacement = '<a href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'email') {
-      const link = `'mailto:${entity.url}'`;
+      const link = `'mailto:${entity.url}`;
       const replacement = '<a href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
@@ -38,7 +38,7 @@ export const notificationBodyFactory = notification => {
   let newContent = notification?.content;
   notification?.content_entities?.forEach(entity => {
     if (entity?.type === 'resource_tag') {
-      const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity?.url?._id}'`;
+      const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity?.url?._id}`;
       const replacement =
         '<a href=' + link + '><b>' + entity?.url?.displayName + '</b></a>';
       const toReplace = '@' + entity?.url?._id;
