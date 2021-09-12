@@ -72,7 +72,7 @@ export default function BnConnect() {
   });
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: { author: user?._id, limit: 500 } },
+    variables: { data: { author: user?._id, limit: 220 } },
   });
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {

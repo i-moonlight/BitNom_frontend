@@ -34,7 +34,7 @@ export default function UserPosts() {
   const classes = useStyles();
 
   const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: { author: user?._id, limit: 500 } },
+    variables: { data: { author: user?._id, limit: 220 } },
   });
 
   const {

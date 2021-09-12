@@ -71,7 +71,7 @@ export default function InvestorTab() {
         </Typography>
       </section>
 
-      <section className='my-3'>
+      {/* <section className='my-3'>
         <Card>
           <CardContent>
             <Form
@@ -105,7 +105,7 @@ export default function InvestorTab() {
             </Form>
           </CardContent>
         </Card>
-      </section>
+      </section> */}
 
       <section className='my-4'>
         <Typography gutterBottom className='text-bold'>

@@ -49,6 +49,7 @@ export default function TabsBar2() {
                   }}
                 >
                   <Typography
+                    className='fw-bold'
                     color='textPrimary'
                     noWrap
                     style={{
@@ -89,7 +90,9 @@ export default function TabsBar2() {
                           }}
                           onClick={() => setHoveredTab(-1)}
                         >
-                          <Typography color='textPrimary'>{option}</Typography>
+                          <Typography className='fw-bold' color='textPrimary'>
+                            {option}
+                          </Typography>
                         </MenuItem>
                       ))}
                   </div>

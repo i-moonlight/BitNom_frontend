@@ -39,7 +39,7 @@ import {
 } from '../../../utilities/queries';
 import CommentOptionsPopover from './CommentOptionsPopover';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   clickableTypography: {
     color: 'inherit',
     cursor: 'pointer',
@@ -95,7 +95,7 @@ export default function Comment({
   const [likeHovered, setLikeHovered] = useState(false);
   const [responseTo, setResponseTo] = useState('');
   const [replyErr, setReplyErr] = useState(false);
-  const state = useSelector((st) => st);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -108,7 +108,7 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
-  const handleCommentOptionOpen = (event) => {
+  const handleCommentOptionOpen = event => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -116,7 +116,7 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -152,7 +152,7 @@ export default function Comment({
     setUserReaction();
   };
 
-  const handleCreateReply = (e) => {
+  const handleCreateReply = e => {
     e.preventDefault();
     if (reply.trim() == '') return setReplyErr(true);
     onCreateComment({
@@ -164,9 +164,9 @@ export default function Comment({
     setReply('');
   };
 
-  const getUserReaction = (resource) => {
+  const getUserReaction = resource => {
     let reaction;
-    resource?.reacted_to_by?.forEach((item) => {
+    resource?.reacted_to_by?.forEach(item => {
       if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
     });
     console.log(resource, 'JSL');
@@ -403,18 +403,19 @@ export default function Comment({
                 {currentUserInitials}
               </Avatar>
               <TextField
+                fullWidth
                 error={replyErr}
                 multiline
                 errorText={replyErr && 'The reply cannot be empty'}
                 rowsMax={10}
                 id='reply-field'
                 placeholder='Reply'
-                onKeyPress={(e) => {
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handleCreateReply(e);
                   }
                 }}
-                onChange={(e) =>
+                onChange={e =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -424,7 +425,6 @@ export default function Comment({
                 adornment={
                   <IconButton
                     size='small'
-                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                     }}
@@ -464,9 +464,9 @@ export default function Comment({
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            (commentInner) => commentInner?.response_to?._id === comment?._id
+            commentInner => commentInner?.response_to?._id === comment?._id
           )
-          .map((commentInner) => (
+          .map(commentInner => (
             <Comment
               style={{
                 marginLeft: 30,
