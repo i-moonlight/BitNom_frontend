@@ -116,6 +116,7 @@ export default function NavBar() {
         }
       });
     });
+    dispatch(setCount(notSeenArray.length));
   }, [data?.Notification?.get]);
   const _count = state.count.count;
   return (
