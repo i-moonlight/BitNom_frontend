@@ -1,15 +1,18 @@
 import {
   Card,
   CardContent,
+  CardHeader,
   Container,
   Divider,
   Grid,
   Hidden,
+  IconButton,
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { EventRounded, RoomRounded } from '@material-ui/icons';
+import { ArrowBack, EventRounded, RoomRounded } from '@material-ui/icons';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 
@@ -83,10 +86,27 @@ function CreateEventCard() {
 function EventListCard() {
   return (
     <Card>
-      <Typography className='mx-4 my-1' variant='h6'>
-        Your Events
-      </Typography>
+      <CardHeader
+        avatar={
+          <Link to='/dashboard'>
+            <IconButton
+              size='small'
+              className='m-1 p-1'
+              aria-label='back'
+              color='inherit'
+            >
+              <ArrowBack />
+            </IconButton>
+          </Link>
+        }
+        title={
+          <div className='center-horizontal'>
+            <Typography variant='h6'>Events</Typography>
+          </div>
+        }
+      />
       <Divider />
+
       <CardContent>
         {[1, 2, 3].map(() => (
           <>

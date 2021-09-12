@@ -292,11 +292,3 @@ export const QUERY_FETCH_PROFILE_BY_ID = gql`
     }
   }
 `;
-
-// export const MUTATION_REMOVE_LANGUAGE = gql`
-//   mutation ($id: String!) {
-//     Users {
-//       removeLanguage(_id: $id)
-//     }
-//   }
-// `;
