@@ -8,7 +8,7 @@ export const contentBodyFactory = (resource) => {
       //let starting = newContent?.substr(0, entity.offset);
       //let ending = newContent?.substr(entity.offset + entity.length);
       newContent = newContent?.replace(toReplace, replacement);
-    } else if (entity.type === 'resource_tag') {
+    } else if (entity.type === 'resource_tag' && entity.mentioned !== null) {
       const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity.url}'`;
       const replacement =
         '<a href=' + link + '>' + entity.mentioned.displayName + '</a>';
