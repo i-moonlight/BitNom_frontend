@@ -49,8 +49,8 @@ export default function Login() {
       },
       errorPolicy: 'all',
     }).then(({ data, errors }) => {
-      const userData = data?.Users?.googleLogin ? data?.Users?.googleLogin : {};
-      const userErrors = errors ? errors : null;
+      const userData = data?.Users?.googleLogin || {};
+      const userErrors = errors || null;
       setGoogleErr(userErrors);
       dispatch(login(userData, null));
     });

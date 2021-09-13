@@ -5,7 +5,7 @@ import Button from '../../../components/Button';
 import EducationForm from './forms/EducationForm';
 import EducationFragment from './fragments/EducationFragment';
 
-export default function EducationCard({ profile }) {
+export default function EducationCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
   const education = profile?.education;
 
@@ -18,7 +18,7 @@ export default function EducationCard({ profile }) {
       <CardContent>
         <div className='space-between center-horizontal'>
           <Typography>Education</Typography>
-          {!showForm && (
+          {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase

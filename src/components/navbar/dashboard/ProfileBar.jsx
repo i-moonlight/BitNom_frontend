@@ -23,7 +23,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
+import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
+import logo_light_full from '../../../assets/logo_light_full.svg';
 import { generateRandomColor } from '../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
@@ -52,22 +54,28 @@ export default function ProfileBar({
             className='center-horizontal c-pointer'
             onClick={() => history.push('/')}
           >
-            <Avatar
-              className='me-1'
-              src={theme.palette.type == 'light' ? logo : logo_light}
-            >
-              B
-            </Avatar>
             <Hidden smDown>
-              <Typography
-                color={
-                  theme.palette.type == 'light' ? 'primary' : 'textPrimary'
-                }
-                variant='h6'
-                noWrap
+              <div>
+                <img
+                  style={{
+                    height: 40,
+                  }}
+                  src={
+                    theme.palette.type == 'light' ? logo_full : logo_light_full
+                  }
+                  alt=''
+                />
+              </div>
+            </Hidden>
+            <Hidden mdUp>
+              <Avatar
+                className='me-1'
+                src={theme.palette.type == 'light' ? logo : logo_light}
               >
-                BITNORM
-              </Typography>
+                B
+              </Avatar>
+            </Hidden>
+            <Hidden smDown>
               <Typography
                 style={{ marginLeft: 16, color: '#F59301' }}
                 variant='body2'

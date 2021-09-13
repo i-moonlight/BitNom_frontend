@@ -153,127 +153,141 @@ export const MUTATION_REMOVE_LANGUAGE = gql`
   }
 `;
 
-export const QUERY_FETCH_PROFILE = gql`
-  query {
-    Users {
-      profile {
-        _id
-        # reputationPoints
-        # valuePointsCarry
-        # earnedTokens
-        referralCode
-        displayName
-        bio
-        profile_pic
-        displayName
-        type
-        reputation
-        blocked
-        portfolio
-        website
-        address
-        location
-        gender
-        cover_pic
-        loginType
-        profileReached
-        connections
-        searchAppeared
-        lastSeen
-        paidUntil
-        date
-        followers {
-          userId {
-            _id
-            profile_pic
-            displayName
-            reputation
-            type
-            bio
-          }
-        }
-        following {
-          userId {
-            _id
-            profile_pic
-            displayName
-            reputation
-            type
-            bio
-          }
-        }
-        bnTokens {
-          walletAddress
-          earned
-          received
-        }
-        socials {
-          social {
-            _id
-            name
-            image
-          }
-          profile
-        }
-        email {
-          address
-          verified
-        }
-        work {
-          _id
-          company
-          title
-          start_date
-          end_date
-          current
-          description
-        }
-        education {
-          _id
-          institution
-          major
-          start_date
-          end_date
-          current
-          description
-        }
-        #honors {
-        # _id
-        # organization
-        # name
-        # start_date
-        # end_date
-        # expires
-        #  url
-        #}
-        courses {
-          _id
-          name
-          year
-        }
-        projects {
-          _id
-          name
-          year
-        }
-        skills {
-          _id
-          name
-        }
-        languages {
-          _id
-          name
-        }
-      }
-    }
-  }
-`;
-
 export const MUTATION_UPDATE_PROFILE = gql`
   mutation ($data: IUpdateUser!) {
     Users {
       update(data: $data) {
         _id
+      }
+    }
+  }
+`;
+
+const userSubFields = `
+  _id
+  # reputationPoints
+  # valuePointsCarry
+  # earnedTokens
+  referralCode
+  displayName
+  bio
+  profile_pic
+  displayName
+  type
+  reputation
+  blocked
+  portfolio
+  website
+  address
+  location
+  gender
+  cover_pic
+  loginType
+  profileReached
+  connections
+  searchAppeared
+  lastSeen
+  paidUntil
+  date
+  followers {
+    userId {
+      _id
+      profile_pic
+      displayName
+      reputation
+      type
+      bio
+    }
+  }
+  following {
+    userId {
+      _id
+      profile_pic
+      displayName
+      reputation
+      type
+      bio
+    }
+  }
+  bnTokens {
+    walletAddress
+    earned
+    received
+  }
+  socials {
+    social {
+      _id
+      name
+      image
+    }
+    profile
+  }
+  email {
+    address
+    verified
+  }
+  work {
+    _id
+    company
+    title
+    start_date
+    end_date
+    current
+    description
+  }
+  education {
+    _id
+    institution
+    major
+    start_date
+    end_date
+    current
+    description
+  }
+  #honors {
+  # _id
+  # organization
+  # name
+  # start_date
+  # end_date
+  # expires
+  #  url
+  #}
+  courses {
+    _id
+    name
+    year
+  }
+  projects {
+    _id
+    name
+    year
+  }
+  skills {
+    _id
+    name
+  }
+  languages {
+    _id
+    name
+  }
+`;
+
+export const QUERY_FETCH_PROFILE = gql`
+  query {
+    Users {
+      profile {
+        ${userSubFields}
+      }
+    }
+  }
+`;
+
+export const QUERY_FETCH_PROFILE_BY_ID = gql`
+  query ($id: String!) {
+    Users {
+      getById(_id: $id) {
+        ${userSubFields}
       }
     }
   }

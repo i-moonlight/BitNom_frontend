@@ -14,6 +14,7 @@ import {
   ListItemText,
   makeStyles,
   Typography,
+  List,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
@@ -51,11 +52,7 @@ export default function People() {
     context: { clientName: 'users' },
   });
 
-  const {
-    //error: profileError,
-    //  loading,
-    data: profileData,
-  } = useQuery(QUERY_FETCH_PROFILE, {
+  const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
 
@@ -76,6 +73,7 @@ export default function People() {
     });
     return status;
   };
+
   return (
     <Screen>
       <div className={classes.root}>
@@ -107,22 +105,21 @@ export default function People() {
                   }
                   title={
                     <div className='center-horizontal'>
-                      <Typography variant='body1'>
-                        People you may know
-                      </Typography>
+                      <Typography variant='h6'>People you may know</Typography>
                     </div>
                   }
                 />
-
                 <Divider />
                 <CardContent>
-                  {suggestedUsers?.map(usr => (
-                    <ListItemComponent
-                      key={usr?._id}
-                      getFollowStatus={getFollowStatus}
-                      item={usr}
-                    />
-                  ))}
+                  <List>
+                    {suggestedUsers?.map(usr => (
+                      <ListItemComponent
+                        key={usr?._id}
+                        getFollowStatus={getFollowStatus}
+                        item={usr}
+                      />
+                    ))}
+                  </List>
                 </CardContent>
               </Card>
             </Grid>
@@ -150,6 +147,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_FOLLOW_USER);
+
   const [
     unFollowUser,
     {
@@ -158,6 +156,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
+
   const handleFollowUser = user_id => {
     followUser({
       variables: {
@@ -178,6 +177,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
+
   const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
@@ -198,8 +198,9 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus();
     //setFollowing(following - 1);
   };
+
   return (
-    <ListItem className='space-between' key={item?._id} divider>
+    <ListItem className='space-between' key={item?._id}>
       <ListItemAvatar>
         <Avatar
           src={
@@ -211,7 +212,7 @@ function ListItemComponent({ item, getFollowStatus }) {
             backgroundColor: generateRandomColor(),
           }}
         >
-          {item?.profile_pic ? '' : getUserInitials(item?.displayName)}
+          {getUserInitials(item?.displayName)}
         </Avatar>
       </ListItemAvatar>
       <ListItemText
