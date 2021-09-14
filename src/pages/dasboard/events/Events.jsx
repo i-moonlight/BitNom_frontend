@@ -10,13 +10,16 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { ArrowBack, EventRounded, RoomRounded } from '@material-ui/icons';
-import React from 'react';
+import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
+import { ArrowBack, EventRounded, RoomRounded } from '@material-ui/icons';
+import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
+import { QUERY_FETCH_PROFILE } from '../utilities/queries';
+import CreateEvent from './CreateEvent';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -24,6 +27,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Events() {
   const classes = useStyles();
+  const [createEventOpen, setCreateEventOpen] = useState(false);
+  const {
+    //  loading,
+    data: profileData,
+  } = useQuery(QUERY_FETCH_PROFILE, {
+    context: { clientName: 'users' },
+  });
 
   return (
     <Screen>
@@ -32,7 +42,7 @@ export default function Events() {
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
-                <CreateEventCard />
+                <CreateEventCard setOpen={(open) => setCreateEventOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
@@ -44,11 +54,16 @@ export default function Events() {
           </Grid>
         </Container>
       </div>
+      <CreateEvent
+        profileData={profileData?.Users?.profile}
+        open={createEventOpen}
+        setOpen={(open) => setCreateEventOpen(open)}
+      />
     </Screen>
   );
 }
 
-function CreateEventCard() {
+function CreateEventCard({ setOpen }) {
   return (
     <div
       style={{
@@ -75,7 +90,7 @@ function CreateEventCard() {
             <Typography variant='body2' className='mb-3'>
               Host an event on BitNorm and invite your network
             </Typography>
-            <Button>create Event</Button>
+            <Button onClick={() => setOpen(true)}>create Event</Button>
           </div>
         </CardContent>
       </Card>

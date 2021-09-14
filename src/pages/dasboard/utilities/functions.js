@@ -1,6 +1,6 @@
-export const contentBodyFactory = resource => {
+export const contentBodyFactory = (resource) => {
   let newContent = resource?.content;
-  resource?.content_entities?.forEach(entity => {
+  resource?.content_entities?.forEach((entity) => {
     if (entity.type === 'url') {
       const link = `${entity.url}`;
       const replacement = '<a href=' + link + '>' + entity.url + '</a>';
@@ -8,8 +8,8 @@ export const contentBodyFactory = resource => {
       //let starting = newContent?.substr(0, entity.offset);
       //let ending = newContent?.substr(entity.offset + entity.length);
       newContent = newContent?.replace(toReplace, replacement);
-    } else if (entity.type === 'resource_tag') {
-      const link = `${location.origin}/users/${entity.url}`;
+    } else if (entity.type === 'resource_tag' && entity.mentioned !== null) {
+      const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity.url}'`;
       const replacement =
         '<a href=' + link + '>' + entity.mentioned?.displayName + '</a>';
       const toReplace = '@' + entity.url;
@@ -34,9 +34,9 @@ export const contentBodyFactory = resource => {
   return newContent;
 };
 
-export const notificationBodyFactory = notification => {
+export const notificationBodyFactory = (notification) => {
   let newContent = notification?.content;
-  notification?.content_entities?.forEach(entity => {
+  notification?.content_entities?.forEach((entity) => {
     if (entity?.type === 'resource_tag') {
       const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity?.url?._id}`;
       const replacement =
@@ -64,7 +64,7 @@ export const truncateText = (str, n) => {
   );
 };
 
-export const getReactionsSum = resource => {
+export const getReactionsSum = (resource) => {
   return (
     resource?.reactions?.likes +
     resource?.reactions?.dislikes +
@@ -73,16 +73,16 @@ export const getReactionsSum = resource => {
   );
 };
 
-export const getFeed = profileData => {
+export const getFeed = (profileData) => {
   const ids = [];
-  profileData?.following?.forEach(element => {
+  profileData?.following?.forEach((element) => {
     ids.push(element.userId?._id);
   });
   ids.push(profileData?._id);
   return ids;
 };
 
-export const getCreationTime = time => {
+export const getCreationTime = (time) => {
   const ms = new Date().getTime() - time;
   const seconds = Math.round(ms / 1000);
   const minutes = Math.round(ms / (1000 * 60));
