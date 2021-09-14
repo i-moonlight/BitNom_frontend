@@ -20,7 +20,7 @@ import HonorCard from './HonorCard';
 import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
 import SkillsCard from './SkillsCard';
-import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';
+import { QUERY_FETCH_PROFILE_BY_ID } from './utilities/profile.queries';
 import WorkCard from './WorkCard';
 
 const useStyles = makeStyles(theme => ({
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Profile() {
+export default function ProfileView() {
   const classes = useStyles();
   // const state = useSelector(st => st);
   // const profile = state.auth.user;
@@ -38,11 +38,14 @@ export default function Profile() {
     // error,
     //  loading,
     data,
-  } = useQuery(QUERY_FETCH_PROFILE, {
+  } = useQuery(QUERY_FETCH_PROFILE_BY_ID, {
+    variables: {
+      id: 'Influence',
+    },
     context: { clientName: 'users' },
   });
 
-  const profile = data?.Users?.profile;
+  const profile = data?.Users?.getById;
 
   return (
     <Screen>
@@ -70,21 +73,21 @@ export default function Profile() {
                   title={
                     <div className='center-horizontal'>
                       <Typography variant='body1'>
-                        {profile.displayName}&apos;s Profile
+                        {profile?.displayName}&apos;s Profile
                       </Typography>
                     </div>
                   }
                 />
               </Card>
 
-              <ProfileCard profile={profile} />
-              <InsightCard profile={profile} />
-              <AboutCard profile={profile} />
-              <WorkCard profile={profile} />
-              <EducationCard profile={profile} />
-              <HonorCard profile={profile} />
-              <SkillsCard profile={profile} />
-              <AdditionalInfoCard profile={profile} />
+              <ProfileCard profile={profile} profileView />
+              <InsightCard profile={profile} profileView />
+              <AboutCard profile={profile} profileView />
+              <WorkCard profile={profile} profileView />
+              <EducationCard profile={profile} profileView />
+              <HonorCard profile={profile} profileView />
+              <SkillsCard profile={profile} profileView />
+              <AdditionalInfoCard profile={profile} profileView />
             </Grid>
             <Grid item md={4} lg={3}></Grid>
           </Grid>

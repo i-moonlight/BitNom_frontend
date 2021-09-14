@@ -46,6 +46,7 @@ import { useDispatch } from 'react-redux';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
 import { useThemeDetector } from './hooks/useThemeDetector';
+import ProfileView from './pages/dasboard/profile/ProfileView';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -69,7 +70,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable((sink) => {
+    return new Observable(sink => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -77,7 +78,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: (err) => {
+          error: err => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -128,13 +129,13 @@ const uploadLink = createUploadLink({
 });
 
 const profileUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'users',
+  operation => operation.getContext().clientName === 'users',
   profileLink,
   uploadLink
 );
 
 const btnMainLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'notifications',
+  operation => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
@@ -175,7 +176,6 @@ export const AppContainers = () => {
         <ApolloProvider client={client}>
           <Switch>
             {/* Landing */}
-
             <Route exact component={Landing} path='/' />
             <Route exact component={Faqs} path='/faqs' />
             <Route exact component={Terms} path='/terms' />
@@ -212,7 +212,6 @@ export const AppContainers = () => {
               path='/auth/password_reset/:key'
             />
             {/* Dashboard */}
-
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
             <Route exact component={Events} path='/dashboard/events' />
@@ -234,6 +233,7 @@ export const AppContainers = () => {
               component={Notifications}
               path='/dashboard/notifications'
             />
+            <Route exact component={ProfileView} path='/users/:id' />
           </Switch>
           {/* <Route component={NotFound} path='*' /> */}
         </ApolloProvider>
@@ -242,7 +242,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',

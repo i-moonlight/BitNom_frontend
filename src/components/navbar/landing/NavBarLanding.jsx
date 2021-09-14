@@ -73,7 +73,7 @@ export default function NavBarLanding() {
                 textCase
                 size='large'
               >
-                <Typography>Home</Typography>
+                <Typography className='fw-bold'>Home</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -90,7 +90,7 @@ export default function NavBarLanding() {
                   }, 500)
                 }
               >
-                <Typography>Ecosystem</Typography>
+                <Typography className='fw-bold'>Ecosystem</Typography>
                 <NavBarMenu show={showMenuEcosystem} items={menuEcosystem} />
               </Button>
               <Button
@@ -108,7 +108,7 @@ export default function NavBarLanding() {
                   }, 300)
                 }
               >
-                <Typography>Product</Typography>
+                <Typography className='fw-bold'>Product</Typography>
                 <NavBarMenu show={showMenuProduct} items={menuProduct} />
               </Button>
               <Button
@@ -117,7 +117,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                <Typography>BN for Business</Typography>
+                <Typography className='fw-bold'>BN for Business</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -125,7 +125,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                <Typography>Learn</Typography>
+                <Typography className='fw-bold'>Learn</Typography>
               </Button>
             </div>
           </Hidden>
@@ -139,7 +139,7 @@ export default function NavBarLanding() {
                 history.push('/auth/login');
               }}
             >
-              <Typography>Sign In</Typography>
+              <Typography className='fw-bold'>Sign In</Typography>
             </Button>
             <Button
               textCase
@@ -152,7 +152,7 @@ export default function NavBarLanding() {
                 history.push('/auth/signup');
               }}
             >
-              <Typography>
+              <Typography className='fw-bold'>
                 Explore
                 <Hidden smDown> BN</Hidden>
               </Typography>

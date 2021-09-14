@@ -12,7 +12,7 @@ import AditionalInfoForm from './forms/AditionalInfoForm';
 import GenderForm from './forms/GenderForm';
 import LanguagesForm from './forms/LanguagesForm';
 
-export default function AdditionalInfoCard({ profile }) {
+export default function AdditionalInfoCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
   const [showFormMenu, setShowFormMenu] = useState(false);
   const [formType, setFormType] = useState('course');
@@ -30,7 +30,7 @@ export default function AdditionalInfoCard({ profile }) {
       <CardContent>
         <div className='space-between center-horizontal mb-2'>
           <Typography>Additional Information (Optional)</Typography>
-          {!showForm && (
+          {!showForm && !profileView && (
             <Button
               onClick={() => {
                 setShowFormMenu(!showFormMenu);

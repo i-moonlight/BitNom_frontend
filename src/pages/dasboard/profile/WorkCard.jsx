@@ -5,7 +5,7 @@ import Button from '../../../components/Button';
 import WorkForm from './forms/WorkForm';
 import WorkFragment from './fragments/WorkFragment';
 
-export default function WorkCard({ profile }) {
+export default function WorkCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
   const work = profile?.work;
 
@@ -18,7 +18,7 @@ export default function WorkCard({ profile }) {
       <CardContent>
         <div className='space-between center-horizontal'>
           <Typography>Work Experience</Typography>
-          {!showForm && (
+          {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase

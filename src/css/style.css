@@ -41,6 +41,10 @@ small {
   font-family: 'Nunito', sans-serif !important;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scroll-hidden::-webkit-scrollbar {
   display: none;

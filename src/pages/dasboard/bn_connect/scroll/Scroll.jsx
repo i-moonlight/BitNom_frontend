@@ -52,7 +52,7 @@ import Comment from './comment/Comment';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   clickableTypography: {
     color: 'inherit',
     cursor: 'pointer',
@@ -113,7 +113,7 @@ export default function Scroll({
   const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
 
   const theme = useTheme();
-  const state = useSelector((st) => st);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [
@@ -133,7 +133,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = (ICreateComment) => {
+  const onCreateComment = ICreateComment => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -153,7 +153,7 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = (e) => {
+  const handleCreateComment = e => {
     e.preventDefault();
     if (comment_text.trim() == '' && !comment_image)
       return setCreateCommentErr(true);
@@ -164,7 +164,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = (event) => {
+  const handleScrollOptionOpen = event => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -172,7 +172,7 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = (reaction) => {
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
@@ -201,16 +201,16 @@ export default function Scroll({
     setUserReaction();
   };
 
-  const getUserReaction = (resource) => {
+  const getUserReaction = resource => {
     let reaction;
-    resource?.reacted_to_by?.forEach((item) => {
+    resource?.reacted_to_by?.forEach(item => {
       if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
     });
     console.log(resource, 'JSL');
     return reaction;
   };
 
-  const setIcon = (reaction) => {
+  const setIcon = reaction => {
     if (reaction === 'like') {
       setReactionIcon(<ThumbUpRounded className={classes.primary} />);
     } else if (reaction === 'love') {
@@ -244,6 +244,7 @@ export default function Scroll({
         <CardHeader
           avatar={
             <Avatar
+              className='c-poiter'
               style={{
                 backgroundColor: generateRandomColor(),
               }}
@@ -316,7 +317,7 @@ export default function Scroll({
               </Grid>
             )}
             {scroll?.images.length > 0 &&
-              scroll?.images?.map((imageURL) => (
+              scroll?.images?.map(imageURL => (
                 <Grid
                   className='mt-3'
                   key={imageURL}
@@ -497,12 +498,13 @@ export default function Scroll({
                 {currentUserInitials}
               </Avatar>
               <TextField
+                fullWidth
                 error={createCommentErr && true}
                 errorText={createCommentErr && 'The comment cannot be empty'}
                 multiline
                 rowsMax={10}
                 id='comment-field'
-                onKeyPress={(e) => {
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handleCreateComment(e);
                   }
@@ -512,7 +514,7 @@ export default function Scroll({
                     ? ''
                     : 'Be the first to comment..'
                 }
-                onChange={(e) =>
+                onChange={e =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -556,7 +558,7 @@ export default function Scroll({
               open={openImage}
               filesLimit={1}
               onClose={() => setOpenImage(false)}
-              onSave={(files) => {
+              onSave={files => {
                 setCommentImage(files[0]);
                 setOpenImage(false);
               }}
@@ -566,8 +568,8 @@ export default function Scroll({
             />
             {commentsData &&
               commentsData?.Comments?.get
-                .filter((comment) => !comment.response_to)
-                .map((comment) => (
+                .filter(comment => !comment.response_to)
+                .map(comment => (
                   <Comment
                     scroll={scroll}
                     key={comment._id}
