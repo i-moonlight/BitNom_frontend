@@ -69,9 +69,7 @@ export default function Profile() {
                   }
                   title={
                     <div className='center-horizontal'>
-                      <Typography variant='body1'>
-                        {profile.displayName}&apos;s Profile
-                      </Typography>
+                      <Typography variant='body1'>Your Profile</Typography>
                     </div>
                   }
                 />
