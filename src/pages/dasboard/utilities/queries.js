@@ -169,6 +169,40 @@ export const MUTATION_CREATE_POST = gql`
   }
 `;
 
+export const MUTATION_CREATE_EVENT = gql`
+  mutation ($data: ICreateEvent!) {
+    Events {
+      create(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
 export const MUTATION_CREATE_REACTION = gql`
   mutation ($data: ICreateReaction!) {
     Reactions {
