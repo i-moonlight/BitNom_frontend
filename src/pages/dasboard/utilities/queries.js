@@ -187,6 +187,136 @@ export const MUTATION_CREATE_EVENT = gql`
           type
           lat
           long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const MUTATION_UPDATE_EVENT = gql`
+  mutation ($data: IUpdateEvent!) {
+    Events {
+      update(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const MUTATION_DELETE_EVENT = gql`
+  mutation ($_id: ID!) {
+    Events {
+      delete(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_ATTEND_EVENT = gql`
+  mutation ($_id: ID!) {
+    Events {
+      attendEvent(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_EVENT_ATTENDANCE = gql`
+  mutation ($_id: ID!) {
+    Events {
+      removeAttendance(_id: $_id)
+    }
+  }
+`;
+
+export const QUERY_LOAD_EVENTS = gql`
+  query ($data: IGetEvents) {
+    Events {
+      get(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const QUERY_EVENT_BY_ID = gql`
+  query ($_id: ID!) {
+    Events {
+      getById(_id: $_id) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
         }
         link
         attendees {
@@ -376,7 +506,33 @@ export const QUERY_LOAD_SCROLLS = gql`
                 displayName
               }
             }
+            image
+            description
+            title
+            host {
+              _id
+              displayName
+              profile_pic
+              bio
+            }
+            location {
+              type
+              lat
+              long
+              address
+            }
+            link
+            attendees {
+              attendee {
+                _id
+                displayName
+                profile_pic
+                bio
+              }
+            }
+            date
           }
+          type
         }
         is_flag
         reactions {

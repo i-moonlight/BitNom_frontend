@@ -15,18 +15,35 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core';
 import { CloseRounded, ImageRounded } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+//import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
-import moment from 'moment';
+//import moment from 'moment';
 import Button from '../../../components/Button';
-import { MUTATION_CREATE_EVENT, QUERY_LOAD_EVENTS } from '../utilities/queries';
+
+import {
+  MUTATION_UPDATE_EVENT,
+  QUERY_EVENT_BY_ID,
+  MUTATION_DELETE_EVENT,
+  QUERY_LOAD_EVENTS,
+} from '../utilities/queries';
 import LocationInput from './LocationInput';
 
-export default function CreateEvent({ open, setOpen }) {
+export default function UpdateEvent({
+  openUpdate,
+  setOpenUpdate,
+  eventToEdit,
+  setEventToEdit,
+}) {
   const [descriptionErr, setDescriptionErr] = useState(false);
   const [linkErr, setLinkErr] = useState(false);
   const [locationErr, setLocationErr] = useState(false);
@@ -36,38 +53,106 @@ export default function CreateEvent({ open, setOpen }) {
 
   const [eventDescription, setEventDescription] = useState('');
   const [eventLink, setEventLink] = useState('');
-  const [eventImage, setEventImage] = useState(null);
+  const [eventImage, setEventImage] = useState(undefined);
   const [eventDate, setEventDate] = useState('');
   const [eventTitle, setEventTitle] = useState('');
   const [locationType, setLocationType] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [address, setAddress] = useState('');
+  const [file, setFile] = useState(null);
   const [openImage, setOpenImage] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   //const theme = useTheme();
-  const state = useSelector((st) => st);
-  const user = state.auth.user;
+  //const state = useSelector((st) => st);
+  //const user = state.auth.user;
+  const history = useHistory();
   const [
-    createEvent,
+    updateEvent,
     {
       loading,
       data,
       //  error
     },
-  ] = useMutation(MUTATION_CREATE_EVENT);
+  ] = useMutation(MUTATION_UPDATE_EVENT);
 
-  const onCreateEvent = async (ICreateEvent) => {
-    await createEvent({
+  const [
+    deleteEvent,
+    {
+      //loading: deleteLoading,
+      data: deleteData,
+      //  error
+    },
+  ] = useMutation(MUTATION_DELETE_EVENT);
+
+  const onUpdateEvent = async (IUpdateEvent) => {
+    await updateEvent({
       variables: {
-        data: ICreateEvent,
+        data: IUpdateEvent,
       },
       refetchQueries: [
         {
-          query: QUERY_LOAD_EVENTS,
-          variables: { data: { host: user?._id, limit: 220 } },
+          query: QUERY_EVENT_BY_ID,
+          variables: { _id: eventToEdit?._id },
         },
       ],
     });
+  };
+
+  useEffect(() => {
+    function getSetDate(date) {
+      var now = new Date(date);
+      var offset = now.getTimezoneOffset() * 60000;
+      var adjustedDate = new Date(now.getTime() - offset);
+      var formattedDate = adjustedDate.toISOString().substring(0, 16); // For minute precision
+      return formattedDate;
+    }
+    if (eventToEdit?.image?.trim() !== '' && eventToEdit?.image !== null) {
+      setFile(true);
+    }
+    if (eventToEdit) {
+      setEventTitle(eventToEdit?.title);
+      setEventDescription(eventToEdit?.description);
+      setEventDate(getSetDate(eventToEdit?.date));
+      setLatitude(eventToEdit?.location?.lat);
+      setLongitude(eventToEdit?.location?.long);
+      setLocationType(eventToEdit?.location?.type);
+      setEventLink(eventToEdit?.link);
+      setAddress(eventToEdit?.location?.address);
+    }
+  }, [eventToEdit]);
+
+  const onDeleteEvent = async (id) => {
+    await deleteEvent({
+      variables: {
+        _id: id,
+      },
+      refetchQueries: [{ query: QUERY_LOAD_EVENTS }],
+    });
+    console.log(deleteData);
+    setEventLink('');
+    setEventImage(null);
+    setEventTitle('');
+    setEventDescription('');
+    setDescriptionErr(false);
+    setTitleErr(false);
+    setLinkErr(false);
+    setDateErr(false);
+    setLocationErr(false);
+    setEventDate('');
+    setLocationType('');
+    setOpenImage(false);
+    setLatitude('');
+    setAddress('');
+    setLongitude('');
+    history.push(`/dashboard/events`);
+  };
+
+  const handleDeleteEvent = (e) => {
+    e.preventDefault();
+    onDeleteEvent(eventToEdit?._id);
+    setOpenDelete(false);
+    setOpenUpdate(false);
   };
 
   const handleSelectLocation = (location) => {
@@ -83,7 +168,7 @@ export default function CreateEvent({ open, setOpen }) {
       .catch((error) => console.error('Error', error));
   };
 
-  const handleCreateEvent = (e) => {
+  const handleUpdateEvent = (e) => {
     e.preventDefault();
     if (eventTitle.trim() == '') {
       setErrorText('The event title must be provided');
@@ -110,11 +195,12 @@ export default function CreateEvent({ open, setOpen }) {
       setErrorText('Face-to-face events must have a Location');
       return setLocationErr(true);
     }
-    onCreateEvent({
+    onUpdateEvent({
+      event_id: eventToEdit?._id,
       title: eventTitle,
       image: eventImage,
       description: eventDescription,
-      date: eventDate,
+      date: new Date(eventDate).toISOString(),
       link: eventLink,
       location: {
         type: locationType,
@@ -138,7 +224,8 @@ export default function CreateEvent({ open, setOpen }) {
     setLatitude('');
     setAddress('');
     setLongitude('');
-    setOpen(false);
+    setOpenUpdate(false);
+    setEventToEdit(null);
   };
 
   return (
@@ -152,7 +239,7 @@ export default function CreateEvent({ open, setOpen }) {
         },
       }}
       className='center-horizontal center-vertical w-100'
-      open={open}
+      open={openUpdate}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
@@ -164,7 +251,7 @@ export default function CreateEvent({ open, setOpen }) {
               <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
-                    setOpen(!open);
+                    setOpenUpdate(!openUpdate);
                     setEventLink('');
                     setEventImage(null);
                     setEventTitle('');
@@ -180,6 +267,7 @@ export default function CreateEvent({ open, setOpen }) {
                     setLatitude('');
                     setAddress('');
                     setLongitude('');
+                    setEventToEdit(null);
                   }}
                 />
               </IconButton>
@@ -198,6 +286,7 @@ export default function CreateEvent({ open, setOpen }) {
                     errorText={errorText}
                     className='mb-2'
                     label='Title'
+                    value={eventTitle}
                     onChange={(e) => setEventTitle(e.target.value)}
                   />
                   <TextField
@@ -209,6 +298,7 @@ export default function CreateEvent({ open, setOpen }) {
                     errorText={errorText}
                     variant='standard'
                     name='description'
+                    value={eventDescription}
                     className='mb-2'
                     label='Description'
                     //rows={5}
@@ -249,7 +339,7 @@ export default function CreateEvent({ open, setOpen }) {
                         type='datetime-local'
                         error={dateErr}
                         errorText={errorText}
-                        defaultValue={moment.utc(new Date())}
+                        defaultValue={eventDate}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -276,6 +366,7 @@ export default function CreateEvent({ open, setOpen }) {
                     error={linkErr}
                     errorText={errorText}
                     className='mb-2'
+                    value={eventLink}
                     label='Link'
                     onChange={(e) => setEventLink(e.target.value)}
                   />
@@ -302,10 +393,75 @@ export default function CreateEvent({ open, setOpen }) {
                       }}
                     />
                   </div>
+                  {eventToEdit?.image?.trim() !== '' && file !== null && (
+                    <Card>
+                      <div className='space-between mx-3 my-2'>
+                        <Typography variant='body2'></Typography>
+                        <Typography variant='body1'></Typography>
+                        <IconButton size='small' className='m-1 p-1'>
+                          <CloseRounded
+                            onClick={() => {
+                              setFile(null);
+                              setEventImage(null);
+                            }}
+                          />
+                        </IconButton>
+                      </div>
+                      <Grid container spacing={2} className='mb-2'>
+                        <Grid
+                          className='mt-3'
+                          key={eventToEdit?.image}
+                          item
+                          xs={12}
+                        >
+                          <div
+                            style={{
+                              height: 200,
+                              borderRadius: 8,
+                              width: '100%',
+                              backgroundImage:
+                                'url(' +
+                                process.env.REACT_APP_BACKEND_URL +
+                                eventToEdit?.image +
+                                ')',
+                              backgroundSize: 'cover',
+                              backgroundColor: 'rgba(0,0,0,0.2)',
+                              backgroundBlendMode: 'soft-light',
+                              cursor: 'pointer',
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Card>
+                  )}
                 </CardContent>
               </Card>
-
               {/* <Divider /> */}
+              <Dialog
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogTitle id='alert-dialog-title'>
+                  {'Delete this event?'}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id='alert-dialog-description'>
+                    This can’t be undone and it will be removed from your
+                    profile, the timeline of any accounts that follow you, and
+                    from the BNConnect platform.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setOpenDelete(false)} color='primary'>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleDeleteEvent} color='primary' autoFocus>
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>
                   <IconButton
@@ -313,6 +469,8 @@ export default function CreateEvent({ open, setOpen }) {
                     className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
+                      setFile(null);
+                      setEventImage(null);
                     }}
                     style={{
                       marginRight: 10,
@@ -321,12 +479,27 @@ export default function CreateEvent({ open, setOpen }) {
                     <ImageRounded />
                   </IconButton>
                 </div>
-                {!loading && <Button onClick={handleCreateEvent}>Save</Button>}
-                {loading && (
-                  <Button size='small' style={{ margin: '0' }}>
-                    <CircularProgress size={24} thickness={4} />
+                <div>
+                  <Button
+                    style={{
+                      backgroundColor: '#ba000d',
+                      color: '#FFFFFF',
+                      marginRight: '12px',
+                    }}
+                    variant='contained'
+                    onClick={() => setOpenDelete(true)}
+                  >
+                    Delete
                   </Button>
-                )}
+                  {!loading && (
+                    <Button onClick={handleUpdateEvent}>Update</Button>
+                  )}
+                  {loading && (
+                    <Button size='small' style={{ margin: '0' }}>
+                      <CircularProgress size={24} thickness={4} />
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
