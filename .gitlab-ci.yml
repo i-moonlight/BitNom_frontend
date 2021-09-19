@@ -76,6 +76,7 @@ deploy_on_server:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
     - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+    - export REACT_APP_MAPS_KEY=$GOOGLE_API_KEY
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
     - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME/
@@ -100,6 +101,7 @@ deploy_demo:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
     - export REACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL
     - export REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+    - export REACT_APP_MAPS_KEY=$GOOGLE_API_KEY
     - npm run build
     - rsync -av -e ssh --delete ../$CI_PROJECT_NAME/build/ bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
     - rsync -av -e ssh  ../$CI_PROJECT_NAME/frontend-dev.service bitnorm@$DEPLOYMENT_SERVER_IP:/home/bitnorm/v1-$CI_PROJECT_NAME-dev/
