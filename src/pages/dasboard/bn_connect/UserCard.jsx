@@ -25,7 +25,13 @@ import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { generateRandomColor } from '../utilities/functions';
 
-export default function UserCard({ setOpen, followers, following, scrolls }) {
+export default function UserCard({
+  setOpen,
+  followers,
+  following,
+  scrolls,
+  events,
+}) {
   const state = useSelector((st) => st);
   const user = state.auth.user;
   const card = useRef();
@@ -173,7 +179,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             endIcon={
               <Badge
                 className='ms-2 me-3'
-                badgeContent='3'
+                badgeContent={events}
                 color='error'
               ></Badge>
             }

@@ -24,6 +24,7 @@ import {
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
+  QUERY_LOAD_EVENTS,
   //NOTIFICATIONS_SUBSCRIPTION,
 } from '../utilities/queries';
 import React from 'react';
@@ -36,7 +37,7 @@ import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { generateRandomColor } from '../utilities/functions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function People() {
   const classes = useStyles();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -59,14 +60,19 @@ export default function People() {
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: { author: user?._id, limit: 500 } },
   });
+  const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
+    variables: {
+      data: { host: user?._id, limit: 20 },
+    },
+  });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    item => item?._id !== 'bn-ai' && item?._id !== user?._id
+    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
 
-  const getFollowStatus = usr => {
+  const getFollowStatus = (usr) => {
     let status;
-    profileData?.Users?.profile?.following?.forEach(item => {
+    profileData?.Users?.profile?.following?.forEach((item) => {
       if (item?.userId?._id == usr?._id) {
         status = item?.userId?._id;
       }
@@ -85,6 +91,7 @@ export default function People() {
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
                   scrolls={userScrolls?.Posts?.get?.length}
+                  events={userEvents?.Events?.get?.length}
                 />
               </Grid>
             </Hidden>
@@ -112,7 +119,7 @@ export default function People() {
                 <Divider />
                 <CardContent>
                   <List>
-                    {suggestedUsers?.map(usr => (
+                    {suggestedUsers?.map((usr) => (
                       <ListItemComponent
                         key={usr?._id}
                         getFollowStatus={getFollowStatus}
@@ -157,7 +164,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
 
-  const handleFollowUser = user_id => {
+  const handleFollowUser = (user_id) => {
     followUser({
       variables: {
         data: {
@@ -178,7 +185,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     //setFollowing(following + 1);
   };
 
-  const handleUnFollowUser = user_id => {
+  const handleUnFollowUser = (user_id) => {
     unFollowUser({
       variables: {
         data: {
