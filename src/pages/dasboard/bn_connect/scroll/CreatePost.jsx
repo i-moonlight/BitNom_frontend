@@ -103,9 +103,9 @@ export default function CreatePost({
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     let sharedResourceType;
-    if (sharedResource.__typename === 'OPost') {
+    if (sharedResource?.__typename === 'OPost') {
       sharedResourceType = 'post';
-    } else if (sharedResource.__typename === 'OEvent') {
+    } else if (sharedResource?.__typename === 'OEvent') {
       sharedResourceType = 'event';
     }
     const shared = sharedResource
