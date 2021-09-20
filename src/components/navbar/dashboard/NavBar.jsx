@@ -93,7 +93,6 @@ export default function NavBar() {
       ],
     });
     dispatch(resetCount());
-    console.log(markAsSeenData);
   };
 
   const response = data?.Notification?.get;
@@ -119,6 +118,15 @@ export default function NavBar() {
     dispatch(setCount(notSeenArray.length));
   }, [data?.Notification?.get]);
   const _count = state.count.count;
+  useEffect(() => {
+    const logo = document.getElementById("favicon");
+    if (_count > 0) {
+      logo.href = "logo_badge.svg";
+    } else {
+      logo.href = "logo.svg";
+    }
+  }, [_count]);
+
   return (
     <AppBar
       position="fixed"
