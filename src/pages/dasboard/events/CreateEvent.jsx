@@ -287,6 +287,7 @@ export default function CreateEvent({ open, setOpen }) {
                   >
                     <DropzoneArea
                       clearOnUnmount
+                      //clickable={true}
                       onChange={(files) => {
                         setEventImage(files[0]);
                       }}
@@ -295,6 +296,7 @@ export default function CreateEvent({ open, setOpen }) {
                       maxFileSize={5000000}
                       filesLimit={1}
                       showAlerts={['error']}
+                      //dropzoneClass='create-event-dropzone'
                       showPreviews={false}
                       showPreviewsInDropzone
                       previewGridProps={{
@@ -312,6 +314,9 @@ export default function CreateEvent({ open, setOpen }) {
                     size='small'
                     className='m-1 p-1'
                     onClick={() => {
+                      /*  document
+                        .getElementsByClassName('create-event-dropzone')[0]
+                        .click(); */
                       setOpenImage(true);
                     }}
                     style={{

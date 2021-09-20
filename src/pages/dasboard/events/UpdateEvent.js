@@ -107,7 +107,7 @@ export default function UpdateEvent({
       var formattedDate = adjustedDate.toISOString().substring(0, 16); // For minute precision
       return formattedDate;
     }
-    if (eventToEdit?.image?.trim() !== '' && eventToEdit?.image !== null) {
+    if (eventToEdit?.image !== null && eventToEdit?.image?.trim() !== '') {
       setFile(true);
     }
     if (eventToEdit) {
@@ -393,47 +393,42 @@ export default function UpdateEvent({
                       }}
                     />
                   </div>
-                  {eventToEdit?.image?.trim() !== '' && file !== null && (
-                    <Card>
-                      <div className='space-between mx-3 my-2'>
-                        <Typography variant='body2'></Typography>
-                        <Typography variant='body1'></Typography>
-                        <IconButton size='small' className='m-1 p-1'>
-                          <CloseRounded
-                            onClick={() => {
-                              setFile(null);
-                              setEventImage(null);
-                            }}
-                          />
-                        </IconButton>
-                      </div>
-                      <Grid container spacing={2} className='mb-2'>
-                        <Grid
-                          className='mt-3'
-                          key={eventToEdit?.image}
-                          item
-                          xs={12}
-                        >
-                          <div
-                            style={{
-                              height: 200,
-                              borderRadius: 8,
-                              width: '100%',
-                              backgroundImage:
-                                'url(' +
-                                process.env.REACT_APP_BACKEND_URL +
-                                eventToEdit?.image +
-                                ')',
-                              backgroundSize: 'cover',
-                              backgroundColor: 'rgba(0,0,0,0.2)',
-                              backgroundBlendMode: 'soft-light',
-                              cursor: 'pointer',
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
-                    </Card>
-                  )}
+                  {eventToEdit?.image !== null &&
+                    eventToEdit?.image?.trim() !== '' &&
+                    file !== null && (
+                      <Card
+                        style={{
+                          height: 300,
+                          borderRadius: 8,
+                          width: '100%',
+                          backgroundImage:
+                            'url(' +
+                            process.env.REACT_APP_BACKEND_URL +
+                            eventToEdit?.image +
+                            ')',
+                          backgroundSize: 'cover',
+                          backgroundColor: 'rgba(0,0,0,0.2)',
+                          backgroundBlendMode: 'soft-light',
+                        }}
+                      >
+                        <div className='space-between mx-3 my-2'>
+                          <Typography variant='body2'></Typography>
+                          <Typography variant='body1'></Typography>
+                          <IconButton
+                            color='primary'
+                            size='small'
+                            className='m-1 p-1'
+                          >
+                            <CloseRounded
+                              onClick={() => {
+                                setFile(null);
+                                setEventImage(null);
+                              }}
+                            />
+                          </IconButton>
+                        </div>
+                      </Card>
+                    )}
                 </CardContent>
               </Card>
               {/* <Divider /> */}

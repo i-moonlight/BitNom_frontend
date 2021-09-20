@@ -454,11 +454,8 @@ export const MUTATION_DELETE_COMMENT = gql`
   }
 `;
 
-export const QUERY_LOAD_SCROLLS = gql`
-  query ($data: IGetPosts) {
-    Posts {
-      get(data: $data) {
-        _id
+const postSubFields = `
+ _id
         images
         video
         author {
@@ -565,6 +562,13 @@ export const QUERY_LOAD_SCROLLS = gql`
             profile_pic
           }
         }
+  `;
+
+export const QUERY_LOAD_SCROLLS = gql`
+  query ($data: IGetPosts) {
+    Posts {
+      get(data: $data) {
+         ${postSubFields}
       }
     }
   }
@@ -655,86 +659,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
   query ($data: IGetBookmarked) {
     Posts {
       getBookmarked(data: $data) {
-        _id
-        images
-        video
-        author {
-          _id
-          profile_pic
-          displayName
-          reputation
-          type
-        }
-        comments
-        bookmarks
-        createdAt
-        shared_resource {
-          _id {
-            _id
-            images
-            video
-            author {
-              _id
-              profile_pic
-              displayName
-              reputation
-              type
-            }
-            comments
-            reactions {
-              likes
-              dislikes
-              loves
-              celebrations
-            }
-            content
-            content_entities {
-              type
-              offset
-              length
-              resource {
-                _id
-                type
-              }
-              url
-              mentioned {
-                _id
-                displayName
-              }
-            }
-          }
-        }
-        is_flag
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
-        content
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
+         ${postSubFields}
       }
     }
   }
@@ -744,53 +669,7 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
   query GetByID($_id: ID!) {
     Posts {
       getById(_id: $_id) {
-        _id
-        images
-        video
-        author {
-          _id
-          profile_pic
-          displayName
-          reputation
-          type
-        }
-        comments
-        bookmarks
-        shared_resource {
-          _id
-        }
-        createdAt
-        is_flag
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
-        content
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
+         ${postSubFields}
       }
     }
   }
