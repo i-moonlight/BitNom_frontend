@@ -169,6 +169,170 @@ export const MUTATION_CREATE_POST = gql`
   }
 `;
 
+export const MUTATION_CREATE_EVENT = gql`
+  mutation ($data: ICreateEvent!) {
+    Events {
+      create(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const MUTATION_UPDATE_EVENT = gql`
+  mutation ($data: IUpdateEvent!) {
+    Events {
+      update(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const MUTATION_DELETE_EVENT = gql`
+  mutation ($_id: ID!) {
+    Events {
+      delete(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_ATTEND_EVENT = gql`
+  mutation ($_id: ID!) {
+    Events {
+      attendEvent(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_EVENT_ATTENDANCE = gql`
+  mutation ($_id: ID!) {
+    Events {
+      removeAttendance(_id: $_id)
+    }
+  }
+`;
+
+export const QUERY_LOAD_EVENTS = gql`
+  query ($data: IGetEvents) {
+    Events {
+      get(data: $data) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
+export const QUERY_EVENT_BY_ID = gql`
+  query ($_id: ID!) {
+    Events {
+      getById(_id: $_id) {
+        _id
+        image
+        description
+        title
+        host {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        location {
+          type
+          lat
+          long
+          address
+        }
+        link
+        attendees {
+          attendee {
+            _id
+            displayName
+            profile_pic
+            bio
+          }
+        }
+        date
+      }
+    }
+  }
+`;
+
 export const MUTATION_CREATE_REACTION = gql`
   mutation ($data: ICreateReaction!) {
     Reactions {
@@ -177,10 +341,26 @@ export const MUTATION_CREATE_REACTION = gql`
   }
 `;
 
+export const MUTATION_REMOVE_REACTION = gql`
+  mutation ($data: IRemoveReaction!) {
+    Reactions {
+      delete(data: $data)
+    }
+  }
+`;
+
 export const MUTATION_CREATE_BOOKMARK = gql`
   mutation ($data: ICreateBookmark!) {
     Bookmarks {
       create(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_REMOVE_BOOKMARK = gql`
+  mutation ($data: IRemoveBookmark!) {
+    Bookmarks {
+      delete(data: $data)
     }
   }
 `;
@@ -240,6 +420,10 @@ export const MUTATION_CREATE_COMMENT = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         creation_date
         bookmarks
@@ -317,8 +501,38 @@ export const QUERY_LOAD_SCROLLS = gql`
                 type
               }
               url
+              mentioned {
+                _id
+                displayName
+              }
             }
+            image
+            description
+            title
+            host {
+              _id
+              displayName
+              profile_pic
+              bio
+            }
+            location {
+              type
+              lat
+              long
+              address
+            }
+            link
+            attendees {
+              attendee {
+                _id
+                displayName
+                profile_pic
+                bio
+              }
+            }
+            date
           }
+          type
         }
         is_flag
         reactions {
@@ -337,6 +551,10 @@ export const QUERY_LOAD_SCROLLS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -479,6 +697,10 @@ export const GET_BOOKMARKED_SCROLLS = gql`
                 type
               }
               url
+              mentioned {
+                _id
+                displayName
+              }
             }
           }
         }
@@ -499,6 +721,10 @@ export const GET_BOOKMARKED_SCROLLS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -551,6 +777,10 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -597,6 +827,10 @@ export const QUERY_GET_COMMENTS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id
@@ -644,6 +878,10 @@ export const GET_BOOKMARKED_COMMENTS = gql`
             type
           }
           url
+          mentioned {
+            _id
+            displayName
+          }
         }
         reacted_to_by {
           _id

@@ -41,13 +41,14 @@ export default function StatusBar() {
             {status.map(({ title, value }) => (
               <div key={`${Math.random() * 1000}`}>
                 <Typography
+                  className='fw-bold'
                   variant='body2'
                   color='textSecondary'
                   key={title}
                   style={{ marginRight: 16 }}
                   noWrap
                 >
-                  {title}: <span className={classes.textTheme}>{value}</span>
+                  {title}: <span className='text-link'>{value}</span>
                 </Typography>
               </div>
             ))}
@@ -55,7 +56,7 @@ export default function StatusBar() {
           <Hidden smDown>
             <div className='center-horizontal'>
               <Button
-                className='py-0 mx-1 my-1'
+                className='py-0 mx-1 my-1 fw-bold'
                 textCase
                 variant='text'
                 color='default'
@@ -70,7 +71,7 @@ export default function StatusBar() {
                 English
               </Button>
               <Button
-                className='py-0 mx-1 my-1'
+                className='py-0 mx-1 my-1 fw-bold'
                 textCase
                 variant='text'
                 color='default'

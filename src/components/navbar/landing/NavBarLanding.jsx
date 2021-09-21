@@ -71,8 +71,9 @@ export default function NavBarLanding() {
                 color={theme.palette.text.primary}
                 variant='text'
                 textCase
+                size='large'
               >
-                Home
+                <Typography className='fw-bold'>Home</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -89,7 +90,7 @@ export default function NavBarLanding() {
                   }, 500)
                 }
               >
-                Ecosystem
+                <Typography className='fw-bold'>Ecosystem</Typography>
                 <NavBarMenu show={showMenuEcosystem} items={menuEcosystem} />
               </Button>
               <Button
@@ -107,7 +108,7 @@ export default function NavBarLanding() {
                   }, 300)
                 }
               >
-                Product
+                <Typography className='fw-bold'>Product</Typography>
                 <NavBarMenu show={showMenuProduct} items={menuProduct} />
               </Button>
               <Button
@@ -116,7 +117,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                BN for Business
+                <Typography className='fw-bold'>BN for Business</Typography>
               </Button>
               <Button
                 className='mx-2'
@@ -124,7 +125,7 @@ export default function NavBarLanding() {
                 variant='text'
                 textCase
               >
-                Learn
+                <Typography className='fw-bold'>Learn</Typography>
               </Button>
             </div>
           </Hidden>
@@ -138,7 +139,7 @@ export default function NavBarLanding() {
                 history.push('/auth/login');
               }}
             >
-              Sign In
+              <Typography className='fw-bold'>Sign In</Typography>
             </Button>
             <Button
               textCase
@@ -151,8 +152,10 @@ export default function NavBarLanding() {
                 history.push('/auth/signup');
               }}
             >
-              Explore
-              <Hidden xsDown> BN</Hidden>
+              <Typography className='fw-bold'>
+                Explore
+                <Hidden smDown> BN</Hidden>
+              </Typography>
             </Button>
             <Hidden mdUp>
               <IconButton

@@ -16,7 +16,7 @@ body {
 
 a {
   text-decoration: none !important;
-  color: #006097;
+  color: #0ea0f3;
   cursor: pointer !important;
 }
 
@@ -29,12 +29,20 @@ a.alt {
   color: #006097 !important;
 }
 
+.text-link {
+  color: #0ea0f3 !important;
+}
+
 .bg-theme {
   background-color: #006097 !important;
 }
 
 small {
   font-family: 'Nunito', sans-serif !important;
+}
+
+.c-pointer {
+  cursor: pointer;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

@@ -24,6 +24,7 @@ import {
 } from '../utilities/queries';
 //import { getFeed } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   const [notFollowed, setNotFollowed] = useState();
@@ -37,15 +38,18 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     });
     return status;
   };
+
   useEffect(() => {
     const notFollowedInner = [];
+
     suggestedUsers?.forEach(user => {
       if (!getFollowStatus(user)) notFollowedInner.push(user);
     });
+
     return () => {
       setNotFollowed(notFollowedInner);
     };
-  });
+  }, [suggestedUsers]);
 
   /*   let notFollowed = [];
   suggestedUsers?.forEach((user) => {
@@ -88,9 +92,12 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
 
 function ListItemComponent({ user, getFollowStatus }) {
   const [status, setStatus] = React.useState();
-  React.useEffect(() => {
-    if (getFollowStatus(user)) setStatus(true);
-  }, [getFollowStatus(user)]);
+
+  useEffect(() => {
+    if (getFollowStatus(user)) {
+      setStatus(true);
+    }
+  }, [user]);
 
   const [
     followUser,
@@ -108,6 +115,7 @@ function ListItemComponent({ user, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
+
   const handleFollowUser = user_id => {
     followUser({
       variables: {
@@ -132,6 +140,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
+
   const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
@@ -156,6 +165,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     setStatus();
     //setFollowing(following - 1);
   };
+
   return (
     <ListItem divider>
       <ListItemAvatar>
@@ -166,7 +176,7 @@ function ListItemComponent({ user, getFollowStatus }) {
               : ''
           }
           style={{
-            backgroundColor: '#fed132',
+            backgroundColor: generateRandomColor(),
           }}
         >
           {user?.profile_pic ? '' : getUserInitials(user?.displayName)}

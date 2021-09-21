@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { green, red } from '@material-ui/core/colors';
 import {
   Avatar,
   Card,
@@ -8,20 +9,64 @@ import {
   IconButton,
   Typography,
   useTheme,
+  makeStyles,
 } from '@material-ui/core';
-import { ImageRounded, MoreHorizRounded, Send } from '@material-ui/icons';
+import {
+  ImageRounded,
+  MoreHorizRounded,
+  Send,
+  ThumbDownRounded,
+  ThumbUpRounded,
+  PanToolRounded,
+  FavoriteRounded,
+} from '@material-ui/icons';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../../../../components/Button';
+import ReactionButton from '../../../../../components/ReactionButton';
 import TextField from '../../../../../components/TextField';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { contentBodyFactory } from '../../../utilities/functions';
+import {
+  contentBodyFactory,
+  getReactionsSum,
+  generateRandomColor,
+} from '../../../utilities/functions';
 import { useSelector } from 'react-redux';
 import {
   MUTATION_CREATE_REACTION,
+  MUTATION_REMOVE_REACTION,
   QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
 import CommentOptionsPopover from './CommentOptionsPopover';
+
+const useStyles = makeStyles(theme => ({
+  clickableTypography: {
+    color: 'inherit',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    [theme.breakpoints.down('md')]: {
+      textDecoration: 'underline',
+    },
+  },
+  replies: {
+    color: 'inherit',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  red: {
+    color: red[500],
+  },
+  green: {
+    color: green[500],
+  },
+  primary: {
+    color: '#006097',
+  },
+}));
 
 const commentOptionId = 'menu-comment-option';
 export default function Comment({
@@ -35,20 +80,26 @@ export default function Comment({
   setUpdateCommentOpen,
   setFlaggedResource,
   setOpenFlag,
+  setOpenReactions,
+  setResourceReactions,
   setImagePreviewURL,
   setImagePreviewOpen,
 }) {
+  const classes = useStyles();
   const theme = useTheme();
   const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
   const [reply, setReply] = useState('');
+  const [userReaction, setUserReaction] = useState();
+  const [likeHovered, setLikeHovered] = useState(false);
   const [responseTo, setResponseTo] = useState('');
   const [replyErr, setReplyErr] = useState(false);
   const state = useSelector(st => st);
   const user = state.auth.user;
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+  const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
   const {
     data: commentsData,
     // loading: commentsLoading,
@@ -65,15 +116,13 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = event => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleCreateReaction = reaction => {
     createReaction({
       variables: {
         data: {
           _id: comment?._id,
           type: 'comment',
-          reaction: 'like',
+          reaction: reaction,
         },
       },
       refetchQueries: [
@@ -83,6 +132,24 @@ export default function Comment({
         },
       ],
     });
+    setUserReaction(reaction);
+  };
+  const handleRemoveReaction = () => {
+    removeReaction({
+      variables: {
+        data: {
+          _id: comment?._id,
+          type: 'comment',
+        },
+      },
+      refetchQueries: [
+        {
+          query: QUERY_GET_COMMENTS,
+          variables: { data: { scroll_id: comment?.scroll } },
+        },
+      ],
+    });
+    setUserReaction();
   };
 
   const handleCreateReply = e => {
@@ -97,6 +164,20 @@ export default function Comment({
     setReply('');
   };
 
+  const getUserReaction = resource => {
+    let reaction;
+    resource?.reacted_to_by?.forEach(item => {
+      if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
+    });
+    console.log(resource, 'JSL');
+    return reaction;
+  };
+
+  useEffect(() => {
+    const reaction = getUserReaction(comment);
+    setUserReaction(reaction);
+  }, []);
+
   const commentUserInitials = getUserInitials(comment?.author?.displayName);
   const currentUserInitials = getUserInitials(user?.displayName);
 
@@ -105,7 +186,7 @@ export default function Comment({
       <div style={style} className='d-flex flex-row flex-start'>
         <Avatar
           style={{
-            backgroundColor: '#fed132',
+            backgroundColor: generateRandomColor(),
           }}
           src={comment?.author?.profile_pic}
           className='mx-2'
@@ -185,23 +266,91 @@ export default function Comment({
               </Typography>
             </CardContent>
           </Card>
-          <div className='center-horizontal'>
-            <Typography
-              colorAlt='inherit'
-              component={Button}
-              variantAlt='text'
-              onClick={handleCreateReaction}
+          <Card
+            style={{
+              position: 'absolute',
+              alignSelf: 'baseline',
+              borderRadius: 10,
+              backgroundColor: theme.palette.background.default,
+              display: likeHovered ? 'block' : 'none',
+              transform: 'translateY(-28px)',
+              zIndex: 10,
+            }}
+            onMouseEnter={() => setLikeHovered(true)}
+            onMouseLeave={() => setLikeHovered(false)}
+          >
+            <Button
+              color='default'
               textCase
-              className='p-0 my-2'
+              onClick={() => {
+                handleCreateReaction('like');
+                setLikeHovered(false);
+              }}
+              variant='text'
+              startIcon={<ThumbUpRounded className={classes.primary} />}
             >
               Like
-            </Typography>
+            </Button>
+            <Button
+              color='default'
+              textCase
+              onClick={() => {
+                handleCreateReaction('love');
+                setLikeHovered(false);
+              }}
+              variant='text'
+              startIcon={<FavoriteRounded className={classes.red} />}
+            >
+              Love
+            </Button>
+            <Button
+              color='default'
+              textCase
+              onClick={() => {
+                handleCreateReaction('dislike');
+                setLikeHovered(false);
+              }}
+              variant='text'
+              startIcon={<ThumbDownRounded className={classes.primary} />}
+            >
+              Dislike
+            </Button>
+            <Button
+              color='default'
+              textCase
+              onClick={() => {
+                handleCreateReaction('celebrate');
+                setLikeHovered(false);
+              }}
+              variant='text'
+              startIcon={<PanToolRounded className={classes.green} />}
+            >
+              Celebrate
+            </Button>
+          </Card>
+          <div className='center-horizontal'>
+            <ReactionButton
+              handleRemoveReaction={handleRemoveReaction}
+              reaction={userReaction}
+              setLikeHovered={setLikeHovered}
+              onMouseEnter={() => setLikeHovered(true)}
+              onMouseLeave={() => setLikeHovered(false)}
+              variant='text'
+              color='default'
+              textCase
+            />
             <Typography
-              className='mx-1 my-2'
+              className={classes.clickableTypography}
               variant='body2'
               color='textSecondary'
+              onClick={() => {
+                setOpenReactions(true);
+                setResourceReactions(comment);
+              }}
             >
-              {`${comment?.reactions?.likes}`}
+              {`${getReactionsSum(comment)} ${
+                getReactionsSum(comment) === 1 ? 'Reaction' : 'Reactions'
+              }`}
             </Typography>
             <Divider orientation='vertical' />
             {/* {comment?.response_to ? '' : '.'} */}
@@ -246,7 +395,7 @@ export default function Comment({
             <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.profile_pic}
                 className='mx-2'
@@ -254,6 +403,7 @@ export default function Comment({
                 {currentUserInitials}
               </Avatar>
               <TextField
+                fullWidth
                 error={replyErr}
                 multiline
                 errorText={replyErr && 'The reply cannot be empty'}
@@ -269,13 +419,12 @@ export default function Comment({
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value
+                      : e.target.value.substring(0, 250)
                   )
                 }
                 adornment={
                   <IconButton
                     size='small'
-                    className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                     }}
@@ -302,6 +451,8 @@ export default function Comment({
       <CommentOptionsPopover
         setFlaggedResource={setFlaggedResource}
         setOpenFlag={setOpenFlag}
+        setOpenReactions={setOpenReactions}
+        setResourceReactions={setResourceReactions}
         setUpdateCommentOpen={setUpdateCommentOpen}
         setCommentToEdit={setCommentToEdit}
         comment={comment}
@@ -328,6 +479,8 @@ export default function Comment({
               setImagePreviewOpen={setImagePreviewOpen}
               setFlaggedResource={setFlaggedResource}
               setOpenFlag={setOpenFlag}
+              setOpenReactions={setOpenReactions}
+              setResourceReactions={setResourceReactions}
             />
           ))}
     </>

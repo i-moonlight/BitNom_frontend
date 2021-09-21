@@ -18,8 +18,9 @@ import moment from 'moment';
 import React from 'react';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
-export default function ProfileCard({ profile }) {
+export default function ProfileCard({ profile, profileView }) {
   // const state = useSelector(st => st);
   // const user = state.auth.user;
   const profileInitials = getUserInitials(profile?.displayName);
@@ -46,7 +47,7 @@ export default function ProfileCard({ profile }) {
                 src={profile?.profile_pic}
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,
@@ -73,9 +74,11 @@ export default function ProfileCard({ profile }) {
               <Typography className='text-success' variant='body2'>
                 Online
               </Typography>
-              <Typography color='primary' variant='body2'>
-                Edit Profile
-              </Typography>
+              {!profileView && (
+                <Typography color='primary' variant='body2'>
+                  Edit Profile
+                </Typography>
+              )}
             </div>
           </div>
           <div className='my-4 center-horizontal'>

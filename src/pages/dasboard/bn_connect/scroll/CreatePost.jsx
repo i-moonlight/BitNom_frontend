@@ -13,7 +13,7 @@ import {
   ListItemText,
   Modal,
   Typography,
-  useTheme,
+  //useTheme,
 } from '@material-ui/core';
 import {
   ChevronRight,
@@ -23,13 +23,14 @@ import {
   VideocamRounded,
 } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { getFeed } from '../../utilities/functions';
+import EventPreview from '../../events/EventPreview';
+import { generateRandomColor, getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -48,16 +49,16 @@ export default function CreatePost({
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
-  sharedPost,
-  setSharedPost,
+  sharedResource,
+  setSharedResource,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
 
   const [scroll_text, setScrollText] = useState('');
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
-  const theme = useTheme();
-  const state = useSelector(st => st);
+  //const theme = useTheme();
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -69,8 +70,9 @@ export default function CreatePost({
   ] = useMutation(MUTATION_CREATE_POST);
 
   const userInitials = getUserInitials(user?.displayName);
+  console.log(sharedResource, 'RESOURDE');
 
-  const onCreatePost = async ICreatePost => {
+  const onCreatePost = async (ICreatePost) => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -82,14 +84,14 @@ export default function CreatePost({
         },
         {
           query: QUERY_LOAD_SCROLLS,
-          variables: { data: { author: user?._id, limit: 500 } },
+          variables: { data: { author: user?._id, limit: 220 } },
         },
       ],
     });
     setScrollText('');
     setScrollImages([]);
     setScrollVideo(null);
-    setSharedPost(null);
+    setSharedResource(null);
     setCreatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
@@ -97,20 +99,24 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
-  useEffect(() => {}, [data]);
-
-  const handleCreatePost = e => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    const sharedResource = sharedPost
-      ? { _id: sharedPost?._id, type: 'post' }
+    let sharedResourceType;
+    if (sharedResource?.__typename === 'OPost') {
+      sharedResourceType = 'post';
+    } else if (sharedResource?.__typename === 'OEvent') {
+      sharedResourceType = 'event';
+    }
+    const shared = sharedResource
+      ? { _id: sharedResource?._id, type: sharedResourceType }
       : null;
-    const flag = sharedPost ? sharedPost?.is_flag : null;
+    const flag = sharedResource ? sharedResource?.is_flag : null;
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
       video: scroll_video,
-      shared_resource: sharedResource,
+      shared_resource: shared,
       is_flag: flag,
     });
     setOpen(false);
@@ -118,6 +124,7 @@ export default function CreatePost({
 
   return (
     <Modal
+      data={data}
       style={{
         outline: 'none',
 
@@ -132,9 +139,11 @@ export default function CreatePost({
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
+            <div className='space-between mx-3 my-2 center-horizontal'>
               <Typography variant='body2'></Typography>
-              <Typography variant='body1'>Create Post</Typography>
+              <Typography variant='body1'>
+                {sharedResource ? `Share to your followers` : 'Create Post'}
+              </Typography>
               <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
@@ -144,7 +153,7 @@ export default function CreatePost({
                     setScrollImages([]);
                     setScrollVideo(null);
                     setCreatePostErr(false);
-                    setSharedPost(null);
+                    setSharedResource(null);
                     setImageDisabled(false);
                     setVideoDisabled(false);
                   }}
@@ -158,7 +167,7 @@ export default function CreatePost({
                 <ListItemAvatar>
                   <Avatar
                     style={{
-                      backgroundColor: '#fed132',
+                      backgroundColor: generateRandomColor(),
                     }}
                     src={user?.profile_pic}
                   >
@@ -170,10 +179,10 @@ export default function CreatePost({
                   secondary={
                     <Button
                       textCase
+                      variant='text'
                       style={{
-                        backgroundColor: theme.palette.background.default,
+                        //backgroundColor: theme.palette.background.default,
                         padding: '0px 10px',
-                        textTransform: 'none',
                       }}
                       startIcon={<Public />}
                       endIcon={
@@ -198,11 +207,11 @@ export default function CreatePost({
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value
+                      : e.target.value.substring(0, 250)
                   )
                 }
                 value={scroll_text}
@@ -212,7 +221,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
@@ -233,7 +242,12 @@ export default function CreatePost({
                   }}
                 />
               </Card>
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
+              {sharedResource && sharedResource?.__typename === 'OPost' && (
+                <ScrollPreview scroll={sharedResource} />
+              )}
+              {sharedResource && sharedResource?.__typename === 'OEvent' && (
+                <EventPreview event={sharedResource} />
+              )}
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>

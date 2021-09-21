@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
-  AddRounded,
+  //AddRounded,
   BookmarkRounded,
   CollectionsBookmarkRounded,
   EventRounded,
@@ -23,9 +23,16 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
-export default function UserCard({ setOpen, followers, following, scrolls }) {
-  const state = useSelector(st => st);
+export default function UserCard({
+  setOpen,
+  followers,
+  following,
+  scrolls,
+  events,
+}) {
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const card = useRef();
   const history = useHistory();
@@ -65,7 +72,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
                 src={user?.profile_pic}
                 variant='rounded'
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: generateRandomColor(),
                   marginRight: 12,
                   width: 80,
                   height: 80,
@@ -102,8 +109,11 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
           <div className='center-horizontal space-between'>
-            <div>
-              <Typography variant='body2'>Scrolls</Typography>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => history.push('/dashboard/profile/posts')}
+            >
+              <Typography variant='body2'>Posts</Typography>
               <div className='center-horizontal'>
                 <CollectionsBookmarkRounded
                   color='primary'
@@ -115,7 +125,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             </div>
             <div
               style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/connections')}
+              onClick={() => history.push('/dashboard/profile/connections')}
             >
               <Typography variant='body2'>Followers</Typography>
               <div className='center-horizontal'>
@@ -129,7 +139,11 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             </div>
             <div
               style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/connections')}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                history.push('/dashboard/profile/connections');
+              }}
             >
               <Typography variant='body2'>Following</Typography>
               <div className='center-horizontal'>
@@ -151,7 +165,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             startIcon={<BookmarkRounded />}
             variant='text'
             className='py-1 my-1'
-            onClick={() => history.push('/dashboard/bookmarks')}
+            onClick={() => history.push('/dashboard/profile/bookmarks')}
           >
             Saved Items
           </Button>
@@ -162,14 +176,20 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             color='inherit'
             textCase
             startIcon={<EventRounded />}
+            endIcon={
+              <Badge
+                className='ms-2 me-3'
+                badgeContent={events}
+                color='error'
+              ></Badge>
+            }
             variant='text'
             className='py-1 my-1 me-3'
             onClick={() => history.push('/dashboard/events')}
           >
             Events
           </Button>
-          <Badge badgeContent='3' color='error'></Badge>
-          <IconButton
+          {/* <IconButton
             size='small'
             className=' p-1'
             color='primary'
@@ -177,7 +197,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
             onClick={() => history.push('/dashboard/events')}
           >
             <AddRounded />
-          </IconButton>
+          </IconButton> */}
         </CardActions>
       </Card>
       <Button
@@ -188,7 +208,7 @@ export default function UserCard({ setOpen, followers, following, scrolls }) {
         color='primary'
         fullWidth
       >
-        Start Scroll
+        Create Post
       </Button>
     </div>
   );

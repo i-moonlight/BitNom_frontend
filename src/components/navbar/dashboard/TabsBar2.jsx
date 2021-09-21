@@ -8,6 +8,7 @@ export default function TabsBar2() {
   const [activeTab, setActiveTab] = useState(0);
   const [hoveredTab, setHoveredTab] = useState(-1);
   const [activeTabWidth, setActiveTabWidth] = useState(147);
+  // const [activeTabOffset, setActiveTabOffset] = useState(0);
   const classes = useStyles();
 
   return (
@@ -41,27 +42,42 @@ export default function TabsBar2() {
                   onMouseEnter={e => {
                     setActiveTabWidth(e.target.offsetWidth);
                     setHoveredTab(index);
+                    // setActiveTabOffset(e.target.offsetLeft);
                   }}
                   onMouseLeave={() => {
                     setHoveredTab(-1);
                   }}
                 >
                   <Typography
+                    className='fw-bold'
+                    color='textPrimary'
                     noWrap
                     style={{
                       paddingTop: 12,
                       paddingBottom: 12,
-                      paddingRight: 30,
-                      paddingLeft: 30,
                     }}
                   >
-                    {label}
+                    <span className='center-horizontal justify-content-center'>
+                      {label}
+                      {/* {activeTabOffset} */}
+                      {menuItems && (
+                        <ChevronRightRounded
+                          style={{
+                            transform: 'rotate(90deg)',
+                            marginLeft: 5,
+                          }}
+                        />
+                      )}
+                    </span>
                   </Typography>
                   <div
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: '#222',
-                    }}
+                    className={classes.menuPopover}
+                    style={
+                      {
+                        // offset: `${activeTabOffset}px 0px`,
+                        // right: activeTabOffset,
+                      }
+                    }
                   >
                     {index === hoveredTab &&
                       menuItems &&
@@ -72,9 +88,11 @@ export default function TabsBar2() {
                           style={{
                             width: activeTabWidth,
                           }}
-                          // onClick={handleTabOptionsClose}
+                          onClick={() => setHoveredTab(-1)}
                         >
-                          {option}
+                          <Typography className='fw-bold' color='textPrimary'>
+                            {option}
+                          </Typography>
                         </MenuItem>
                       ))}
                   </div>

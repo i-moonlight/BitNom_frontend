@@ -39,19 +39,16 @@ export default function NavBar() {
     context: { clientName: "notifications" },
   });
 
-  const [markAsSeen, { data: markAsSeenData }] = useMutation(
-    MARK_NOTIFICAION_AS_SEEN,
-    {
-      variables: { _id: user?._id },
-      context: { clientName: "notifications" },
-    }
-  );
+  const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
+    variables: { _id: user?._id },
+    context: { clientName: "notifications" },
+  });
 
   const { data: subscriptionData } = useSubscription(
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      // context: { clientName: "notifications" },
+      context: { clientName: "notifications" },
     }
   );
 
@@ -105,6 +102,7 @@ export default function NavBar() {
       dispatch(setCount(count));
     }
   }, [subscriptionData]);
+
   useEffect(() => {
     dispatch(checkSessionTimeOut());
     const notSeenArray = [];

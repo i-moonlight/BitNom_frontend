@@ -33,7 +33,6 @@ export const MUTATION_LOGIN_USER = gql`
     Users {
       login(username: $username, password: $password) {
         _id
-        referralCode
         displayName
         bio
         profile_pic
@@ -129,7 +128,6 @@ export const MUTATION_UPDATE_PROFILE_INFO = gql`
     Users {
       update(data: { displayName: $displayName, bio: $bio }) {
         _id
-        referralCode
         displayName
         bio
         profile_pic

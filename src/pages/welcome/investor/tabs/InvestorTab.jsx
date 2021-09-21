@@ -4,20 +4,17 @@ import {
   AccordionSummary,
   alpha,
   Card,
-  CardContent,
   makeStyles,
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { ArrowForwardRounded, ExpandMore, Help } from '@material-ui/icons';
+import { ExpandMore, Help } from '@material-ui/icons';
 import React from 'react';
 import headerBg from '../../../../assets/investor/header.svg';
 import techImg from '../../../../assets/investor/image_4.png';
 import tokenImg from '../../../../assets/investor/image_5.png';
 import investorBg from '../../../../assets/investor/investors.svg';
 import Button from '../../../../components/Button';
-import Form from '../../../../components/Form';
-import TextField from '../../../../components/TextField';
 import DarkTheme from '../../../../utilities/DarkTheme';
 import { healthCheck } from '../../utilities/welcome.data';
 
@@ -71,7 +68,7 @@ export default function InvestorTab() {
         </Typography>
       </section>
 
-      <section className='my-3'>
+      {/* <section className='my-3'>
         <Card>
           <CardContent>
             <Form
@@ -105,7 +102,7 @@ export default function InvestorTab() {
             </Form>
           </CardContent>
         </Card>
-      </section>
+      </section> */}
 
       <section className='my-4'>
         <Typography gutterBottom className='text-bold'>

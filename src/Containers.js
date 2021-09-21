@@ -26,10 +26,12 @@ import BnConnect from "./pages/dasboard/bn_connect/BnConnect";
 import BnServices from "./pages/dasboard/bn_services/BnServices";
 import SavedItems from "./pages/dasboard/bookmarks/SavedItems";
 import Events from "./pages/dasboard/events/Events";
+import EventView from "./pages/dasboard/events/EventView";
 import Notifications from "./pages/dasboard/notifications/Notifications";
 import People from "./pages/dasboard/people/People";
 import Connections from "./pages/dasboard/people/Connections";
 import Profile from "./pages/dasboard/profile/Profile";
+import Posts from "./pages/dasboard/profile/UserPosts";
 import Cookie from "./pages/welcome/cookie/Cookie";
 import Disclaimer from "./pages/welcome/disclaimer/Disclaimer";
 import Faqs from "./pages/welcome/faqs/Faqs";
@@ -45,6 +47,7 @@ import { useDispatch } from "react-redux";
 import { checkSessionTimeOut } from "./store/actions/authActions";
 import { changeTheme } from "./store/actions/themeActions";
 import { useThemeDetector } from "./hooks/useThemeDetector";
+import ProfileView from "./pages/dasboard/profile/ProfileView";
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -174,7 +177,6 @@ export const AppContainers = () => {
         <ApolloProvider client={client}>
           <Switch>
             {/* Landing */}
-
             <Route exact component={Landing} path="/" />
             <Route exact component={Faqs} path="/faqs" />
             <Route exact component={Terms} path="/terms" />
@@ -211,23 +213,29 @@ export const AppContainers = () => {
               path="/auth/password_reset/:key"
             />
             {/* Dashboard */}
-
             <Route exact component={BnConnect} path="/dashboard" />
             <Route exact component={BnServices} path="/dashboard/services" />
             <Route exact component={Events} path="/dashboard/events" />
+            <Route exact component={EventView} path="/dashboard/events/:id" />
             <Route exact component={People} path="/dashboard/people" />
             <Route
               exact
               component={Connections}
-              path="/dashboard/connections"
+              path="/dashboard/profile/connections"
             />
+            <Route exact component={Posts} path="/dashboard/profile/posts" />
             <Route exact component={Profile} path="/dashboard/profile" />
-            <Route exact component={SavedItems} path="/dashboard/bookmarks" />
+            <Route
+              exact
+              component={SavedItems}
+              path="/dashboard/profile/bookmarks"
+            />
             <Route
               exact
               component={Notifications}
               path="/dashboard/notifications"
             />
+            <Route exact component={ProfileView} path="/users/:id" />
           </Switch>
           {/* <Route component={NotFound} path='*' /> */}
         </ApolloProvider>

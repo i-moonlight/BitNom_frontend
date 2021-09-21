@@ -14,6 +14,7 @@ import {
   ListItemText,
   makeStyles,
   Typography,
+  List,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
@@ -23,6 +24,7 @@ import {
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
+  QUERY_LOAD_EVENTS,
   //NOTIFICATIONS_SUBSCRIPTION,
 } from '../utilities/queries';
 import React from 'react';
@@ -33,8 +35,9 @@ import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -42,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function People() {
   const classes = useStyles();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -50,31 +53,33 @@ export default function People() {
     context: { clientName: 'users' },
   });
 
-  const {
-    //error: profileError,
-    //  loading,
-    data: profileData,
-  } = useQuery(QUERY_FETCH_PROFILE, {
+  const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
     context: { clientName: 'users' },
   });
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: { author: user?._id, limit: 500 } },
   });
+  const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
+    variables: {
+      data: { host: user?._id, limit: 20 },
+    },
+  });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    item => item?._id !== 'bn-ai' && item?._id !== user?._id
+    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
   );
 
-  const getFollowStatus = usr => {
+  const getFollowStatus = (usr) => {
     let status;
-    profileData?.Users?.profile?.following?.forEach(item => {
+    profileData?.Users?.profile?.following?.forEach((item) => {
       if (item?.userId?._id == usr?._id) {
         status = item?.userId?._id;
       }
     });
     return status;
   };
+
   return (
     <Screen>
       <div className={classes.root}>
@@ -86,6 +91,7 @@ export default function People() {
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
                   scrolls={userScrolls?.Posts?.get?.length}
+                  events={userEvents?.Events?.get?.length}
                 />
               </Grid>
             </Hidden>
@@ -106,22 +112,21 @@ export default function People() {
                   }
                   title={
                     <div className='center-horizontal'>
-                      <Typography variant='body1'>
-                        People you may know
-                      </Typography>
+                      <Typography variant='h6'>People you may know</Typography>
                     </div>
                   }
                 />
-
                 <Divider />
                 <CardContent>
-                  {suggestedUsers?.map(usr => (
-                    <ListItemComponent
-                      key={usr?._id}
-                      getFollowStatus={getFollowStatus}
-                      item={usr}
-                    />
-                  ))}
+                  <List>
+                    {suggestedUsers?.map((usr) => (
+                      <ListItemComponent
+                        key={usr?._id}
+                        getFollowStatus={getFollowStatus}
+                        item={usr}
+                      />
+                    ))}
+                  </List>
                 </CardContent>
               </Card>
             </Grid>
@@ -149,6 +154,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_FOLLOW_USER);
+
   const [
     unFollowUser,
     {
@@ -157,7 +163,8 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = user_id => {
+
+  const handleFollowUser = (user_id) => {
     followUser({
       variables: {
         data: {
@@ -177,7 +184,8 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = user_id => {
+
+  const handleUnFollowUser = (user_id) => {
     unFollowUser({
       variables: {
         data: {
@@ -197,8 +205,9 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus();
     //setFollowing(following - 1);
   };
+
   return (
-    <ListItem className='space-between' key={item?._id} divider>
+    <ListItem className='space-between' key={item?._id}>
       <ListItemAvatar>
         <Avatar
           src={
@@ -207,10 +216,10 @@ function ListItemComponent({ item, getFollowStatus }) {
               : ''
           }
           style={{
-            backgroundColor: '#fed132',
+            backgroundColor: generateRandomColor(),
           }}
         >
-          {item?.profile_pic ? '' : getUserInitials(item?.displayName)}
+          {getUserInitials(item?.displayName)}
         </Avatar>
       </ListItemAvatar>
       <ListItemText

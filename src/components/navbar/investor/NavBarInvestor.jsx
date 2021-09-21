@@ -15,7 +15,7 @@ export default function NavBarInvestor({ onTabValue }) {
 
   useEffect(() => {
     () => onTabValue(tabValue);
-  });
+  }, [onTabValue]);
 
   return (
     <AppBar

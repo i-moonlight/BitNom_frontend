@@ -24,7 +24,7 @@ import {
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
-  //NOTIFICATIONS_SUBSCRIPTION,
+  QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
@@ -34,8 +34,9 @@ import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from '../utilities/functions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 export default function Connections() {
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const {
@@ -59,9 +60,15 @@ export default function Connections() {
     variables: { data: { author: user?._id, limit: 500 } },
   });
 
-  const getFollowStatus = usr => {
+  const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
+    variables: {
+      data: { host: user?._id, limit: 20 },
+    },
+  });
+
+  const getFollowStatus = (usr) => {
     let status;
-    profileData?.Users?.profile?.following?.forEach(item => {
+    profileData?.Users?.profile?.following?.forEach((item) => {
       if (item?.userId?._id === usr?.userId?._id) {
         status = true;
       }
@@ -87,6 +94,7 @@ export default function Connections() {
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
                   scrolls={userScrolls?.Posts?.get?.length}
+                  events={userEvents?.Events?.get?.length}
                 />
               </Grid>
             </Hidden>
@@ -138,7 +146,7 @@ export default function Connections() {
                 <CardContent>
                   {value === 0 &&
                     followers?.length > 0 &&
-                    followers?.map(follower => (
+                    followers?.map((follower) => (
                       <ListItemComponent
                         key={follower?.userId?._id}
                         getFollowStatus={getFollowStatus}
@@ -147,7 +155,7 @@ export default function Connections() {
                     ))}
                   {value === 1 &&
                     following?.length > 0 &&
-                    following?.map(follow => (
+                    following?.map((follow) => (
                       <ListItemComponent
                         key={follow?.userId?._id}
                         getFollowStatus={getFollowStatus}
@@ -181,6 +189,7 @@ export default function Connections() {
 
 function ListItemComponent({ item, getFollowStatus }) {
   const [status, setStatus] = React.useState();
+
   React.useEffect(() => {
     if (getFollowStatus(item)) {
       setStatus(true);
@@ -205,7 +214,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = user_id => {
+  const handleFollowUser = (user_id) => {
     followUser({
       variables: {
         data: {
@@ -225,7 +234,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = user_id => {
+  const handleUnFollowUser = (user_id) => {
     unFollowUser({
       variables: {
         data: {
@@ -255,7 +264,7 @@ function ListItemComponent({ item, getFollowStatus }) {
               : ''
           }
           style={{
-            backgroundColor: '#fed132',
+            backgroundColor: generateRandomColor(),
           }}
         >
           {item?.userId?.profile_pic
