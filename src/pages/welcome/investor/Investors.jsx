@@ -1,4 +1,4 @@
-import { alpha, Box, makeStyles, Paper } from '@material-ui/core';
+import { Box, Paper } from '@material-ui/core';
 import React, { useState } from 'react';
 import Wrapper from '../Wrapper';
 import EcosystemTab from './tabs/EcosystemTab';
@@ -7,7 +7,7 @@ import RoadmapTab from './tabs/RoadmapTab';
 
 export default function Investor() {
   const [tabValue, setTabValue] = useState(0);
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const onTabValue = val => {
     console.log(val);
@@ -84,23 +84,23 @@ const TabPanel = props => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-  },
-  container: {
-    backgroundColor: theme.palette.background.default,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: 'bold',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  accordionCard: {
-    backgroundColor: theme.palette.background.default,
-  },
-  accordion: {
-    backgroundColor: alpha(theme.palette.primary.main, 0.075),
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   root: {
+//     width: '100%',
+//   },
+//   container: {
+//     backgroundColor: theme.palette.background.default,
+//   },
+//   heading: {
+//     fontSize: theme.typography.pxToRem(15),
+//     fontWeight: 'bold',
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   accordionCard: {
+//     backgroundColor: theme.palette.background.default,
+//   },
+//   accordion: {
+//     backgroundColor: alpha(theme.palette.primary.main, 0.075),
+//   },
+// }));

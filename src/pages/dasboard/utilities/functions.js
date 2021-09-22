@@ -1,6 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 export const contentBodyFactory = resource => {
   let newContent = resource?.content;
 
@@ -14,9 +11,8 @@ export const contentBodyFactory = resource => {
       const link = `${location.origin}/users/${entity.url}`;
       const replacement =
         '<a href=' + link + '>' + entity.mentioned?.displayName + '</a>';
-      const replacement2 = `<Link to="${link}">${entity.mentioned?.displayName}</Link>`;
       const toReplace = '@' + entity.url;
-      newContent = newContent?.replace(toReplace, replacement2);
+      newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'hashtag') {
       const link = `${location.origin}/hashtags/${entity.url}`;
       const replacement = '<a href=' + link + '>' + entity.url + '</a>';
