@@ -10,7 +10,6 @@ export default function Investor() {
   // const classes = useStyles();
 
   const onTabValue = val => {
-    console.log(val);
     setTabValue(val);
   };
 
