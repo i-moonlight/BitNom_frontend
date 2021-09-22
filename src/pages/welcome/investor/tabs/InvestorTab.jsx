@@ -11,7 +11,6 @@ import {
   IconButton,
   makeStyles,
   Typography,
-  useTheme,
 } from '@material-ui/core';
 import {
   ChevronRightRounded,
@@ -39,7 +38,6 @@ import { healthCheck } from '../../utilities/welcome.data';
 export default function InvestorTab() {
   const [expanded, setExpanded] = React.useState(healthCheck[0].title);
   const classes = useStyles();
-  const theme = useTheme();
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
