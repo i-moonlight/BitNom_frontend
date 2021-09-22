@@ -17,6 +17,7 @@ export default function DarkTheme({ children }) {
         paperAlt: '#333333',
         default: '#171818',
         landing: '#18191a',
+        investor: '#000000',
       },
     },
   });

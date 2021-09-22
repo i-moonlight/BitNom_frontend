@@ -7,14 +7,16 @@ import {
   split,
 } from '@apollo/client';
 import { ApolloLink, Observable } from '@apollo/client/core';
-
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { makeStyles } from '@material-ui/core';
 import { createUploadLink } from 'apollo-upload-client';
+import { print } from 'graphql';
 import { createClient } from 'graphql-ws';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { useThemeDetector } from './hooks/useThemeDetector';
 import CreatePassword from './pages/auth/CreatePassword';
 import Login from './pages/auth/Login';
 import RequireVerification from './pages/auth/RequireVerification';
@@ -22,31 +24,29 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Signup from './pages/auth/Signup';
 import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
+import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import BnServices from './pages/dasboard/bn_services/BnServices';
 import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import Events from './pages/dasboard/events/Events';
 import Notifications from './pages/dasboard/notifications/Notifications';
-import People from './pages/dasboard/people/People';
 import Connections from './pages/dasboard/people/Connections';
+import People from './pages/dasboard/people/People';
 import Profile from './pages/dasboard/profile/Profile';
+import ProfileView from './pages/dasboard/profile/ProfileView';
 import Posts from './pages/dasboard/profile/UserPosts';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
 import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
+import Investor from './pages/welcome/investor/Investors';
 import Landing from './pages/welcome/landing/Landing';
 import Privacy from './pages/welcome/privacy/Privacy';
 import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
-import Redirect from './utilities/Redirect';
-import { print } from 'graphql';
-import Investor from './pages/welcome/investor/Investor';
-import { useDispatch } from 'react-redux';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
-import { useThemeDetector } from './hooks/useThemeDetector';
-import ProfileView from './pages/dasboard/profile/ProfileView';
+import Redirect from './utilities/Redirect';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -175,8 +175,7 @@ export const AppContainers = () => {
       <BrowserRouter>
         <ApolloProvider client={client}>
           <Switch>
-            {/* Landing */}
-            <Route exact component={Landing} path='/' />
+            {/* Landing */} <Route exact component={Landing} path='/' />
             <Route exact component={Faqs} path='/faqs' />
             <Route exact component={Terms} path='/terms' />
             <Route exact component={Privacy} path='/privacy_policy' />
@@ -186,8 +185,7 @@ export const AppContainers = () => {
             <Route exact component={RoadMap} path='/roadmap' />
             <Route exact component={Redirect} path='/redirect' />
             {/* Investor  */}
-            <Route exact component={Investor} path='/investors' />
-            {/* Auth */}
+            <Route exact component={Investor} path='/investors' /> {/* Auth */}
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route
@@ -214,6 +212,7 @@ export const AppContainers = () => {
             {/* Dashboard */}
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
+            <Route exact component={BnChat} path='/dashboard/chat' />
             <Route exact component={Events} path='/dashboard/events' />
             <Route exact component={People} path='/dashboard/people' />
             <Route

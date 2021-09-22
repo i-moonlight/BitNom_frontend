@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
+import Button from '../../Button';
 import InvestorTabs from './InvestorTabs';
 
 export default function NavBarInvestor({ onTabValue }) {
@@ -26,9 +27,9 @@ export default function NavBarInvestor({ onTabValue }) {
       elevation={0}
     >
       <Container maxWidth='lg'>
-        <div className='space-between my-3'>
+        <div className='d-flex align-items-center my-3 '>
           <div
-            className='center-horizontal c-pointer'
+            className='center-horizontal c-pointer me-5 pe-5'
             onClick={() => history.push('/')}
           >
             <Avatar src={palette == 'light' ? logo : logo_light}>B</Avatar>
@@ -42,7 +43,9 @@ export default function NavBarInvestor({ onTabValue }) {
             }}
           />
 
-          <div></div>
+          <div className='ms-auto'>
+            <Button textCase>Support</Button>
+          </div>
         </div>
       </Container>
     </AppBar>
