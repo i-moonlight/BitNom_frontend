@@ -25,6 +25,7 @@ import {
   GET_BOOKMARKED_SCROLLS,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
+  QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
 import SavedPost from './SavedPost';
@@ -78,7 +79,12 @@ export default function SavedItems() {
   );
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-    variables: { data: { author: user?._id, limit: 500 } },
+    variables: { data: { author: user?._id, limit: 220 } },
+  });
+  const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
+    variables: {
+      data: { host: user?._id, limit: 20 },
+    },
   });
 
   const {
@@ -135,6 +141,7 @@ export default function SavedItems() {
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
+                  events={userEvents?.Events?.get?.length}
                 />
               </Grid>
             </Hidden>

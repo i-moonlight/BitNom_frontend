@@ -29,6 +29,7 @@ import Button from '../../../../components/Button';
 import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import EventPreview from '../../events/EventPreview';
 import { generateRandomColor, getFeed } from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
@@ -48,8 +49,8 @@ export default function CreatePost({
   videoDisabled,
   setOpenVideo,
   setVideoDisabled,
-  sharedPost,
-  setSharedPost,
+  sharedResource,
+  setSharedResource,
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
 
@@ -69,6 +70,7 @@ export default function CreatePost({
   ] = useMutation(MUTATION_CREATE_POST);
 
   const userInitials = getUserInitials(user?.displayName);
+  console.log(sharedResource, 'RESOURDE');
 
   const onCreatePost = async (ICreatePost) => {
     await createPost({
@@ -89,7 +91,7 @@ export default function CreatePost({
     setScrollText('');
     setScrollImages([]);
     setScrollVideo(null);
-    setSharedPost(null);
+    setSharedResource(null);
     setCreatePostErr(false);
     setImageDisabled(false);
     setVideoDisabled(false);
@@ -100,15 +102,21 @@ export default function CreatePost({
   const handleCreatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == '') return setCreatePostErr(true);
-    const sharedResource = sharedPost
-      ? { _id: sharedPost?._id, type: 'post' }
+    let sharedResourceType;
+    if (sharedResource?.__typename === 'OPost') {
+      sharedResourceType = 'post';
+    } else if (sharedResource?.__typename === 'OEvent') {
+      sharedResourceType = 'event';
+    }
+    const shared = sharedResource
+      ? { _id: sharedResource?._id, type: sharedResourceType }
       : null;
-    const flag = sharedPost ? sharedPost?.is_flag : null;
+    const flag = sharedResource ? sharedResource?.is_flag : null;
     onCreatePost({
       content: scroll_text,
       images: scroll_images,
       video: scroll_video,
-      shared_resource: sharedResource,
+      shared_resource: shared,
       is_flag: flag,
     });
     setOpen(false);
@@ -133,7 +141,9 @@ export default function CreatePost({
           <Card>
             <div className='space-between mx-3 my-2 center-horizontal'>
               <Typography variant='body2'></Typography>
-              <Typography variant='body1'>Create Post</Typography>
+              <Typography variant='body1'>
+                {sharedResource ? `Share to your followers` : 'Create Post'}
+              </Typography>
               <IconButton size='small' className='m-1 p-1'>
                 <CloseRounded
                   onClick={() => {
@@ -143,7 +153,7 @@ export default function CreatePost({
                     setScrollImages([]);
                     setScrollVideo(null);
                     setCreatePostErr(false);
-                    setSharedPost(null);
+                    setSharedResource(null);
                     setImageDisabled(false);
                     setVideoDisabled(false);
                   }}
@@ -232,7 +242,12 @@ export default function CreatePost({
                   }}
                 />
               </Card>
-              {sharedPost && <ScrollPreview scroll={sharedPost} />}
+              {sharedResource && sharedResource?.__typename === 'OPost' && (
+                <ScrollPreview scroll={sharedResource} />
+              )}
+              {sharedResource && sharedResource?.__typename === 'OEvent' && (
+                <EventPreview event={sharedResource} />
+              )}
               {/* <Divider /> */}
               <div className='space-between mt-1'>
                 <div className='center-horizontal'>

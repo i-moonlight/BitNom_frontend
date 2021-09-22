@@ -23,7 +23,7 @@ import SkillsCard from './SkillsCard';
 import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';
 import WorkCard from './WorkCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },

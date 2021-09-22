@@ -16,6 +16,7 @@ import {
   QUERY_GET_USERS,
   QUERY_LOAD_SCROLLS,
   QUERY_FETCH_PROFILE,
+  QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
 import CreatePost from './scroll/CreatePost';
@@ -50,7 +51,7 @@ export default function BnConnect() {
   const [imageDisabled, setImageDisabled] = useState(false);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
   const [imagePreviewURL, setImagePreviewURL] = useState(null);
-  const [sharedPost, setSharedPost] = useState(null);
+  const [sharedResource, setSharedResource] = useState(null);
   const [postToEdit, setPostToEdit] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [flaggedResource, setFlaggedResource] = useState(null);
@@ -74,6 +75,11 @@ export default function BnConnect() {
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
     variables: { data: { author: user?._id, limit: 220 } },
+  });
+  const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
+    variables: {
+      data: { host: user?._id, limit: 20 },
+    },
   });
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -136,7 +142,8 @@ export default function BnConnect() {
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
-                  setOpen={open => setCreateScrollOpen(open)}
+                  setOpen={(open) => setCreateScrollOpen(open)}
+                  events={userEvents?.Events?.get?.length}
                 />
               </Grid>
             </Hidden>
@@ -163,9 +170,9 @@ export default function BnConnect() {
                     setFlaggedResource={setFlaggedResource}
                     setOpenReactions={setOpenReactions}
                     setResourceReactions={setResourceReactions}
-                    setImagePreviewURL={url => setImagePreviewURL(url)}
-                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
-                    setSharedPost={setSharedPost}
+                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
+                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                    setSharedResource={setSharedResource}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}
                     key={scroll?._id}
@@ -207,8 +214,8 @@ export default function BnConnect() {
         setOpenImage={setOpenImage}
         openVideo={openVideo}
         setOpenVideo={setOpenVideo}
-        sharedPost={sharedPost}
-        setSharedPost={setSharedPost}
+        sharedResource={sharedResource}
+        setSharedResource={setSharedResource}
       />
       <UpdatePost
         updateScrollOpen={updateScrollOpen}

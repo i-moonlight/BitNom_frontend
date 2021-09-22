@@ -21,6 +21,7 @@ import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
+import EventPreview from '../events/EventPreview';
 
 const savedItemOptionId = 'menu-savedItem-option';
 
@@ -162,9 +163,14 @@ export default function SavedPost({
                   </Grid>
                 ))}
             </Grid>
-            {scroll?.shared_resource?._id && (
-              <ScrollPreview scroll={scroll?.shared_resource?._id} />
-            )}
+            {scroll?.shared_resource?._id &&
+              scroll?.shared_resource?.type === 'post' && (
+                <ScrollPreview scroll={scroll?.shared_resource?._id} />
+              )}
+            {scroll?.shared_resource?._id &&
+              scroll?.shared_resource?.type === 'event' && (
+                <EventPreview event={scroll?.shared_resource?._id} />
+              )}
 
             <br />
             <Typography display='inline'>
