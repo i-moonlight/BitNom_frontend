@@ -22,7 +22,7 @@ export default function NavBarInvestor({ onTabValue }) {
     <AppBar
       position='static'
       style={{
-        background: theme.palette.background.default,
+        background: '#000',
       }}
       elevation={0}
     >
