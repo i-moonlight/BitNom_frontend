@@ -276,7 +276,7 @@ export default function EventView({ match }) {
                               height: 80,
                             }}
                           >
-                            {moment.utc(event?.date)._d.getDate()}
+                            {moment.utc(event?.startDate)._d.getDate()}
                           </Avatar>
                           <Typography
                             className='pt-1'
@@ -284,7 +284,7 @@ export default function EventView({ match }) {
                             color='primary'
                             gutterBottom
                           >
-                            {new Date(event?.date).toUTCString()}
+                            {new Date(event?.startDate).toUTCString()}
                           </Typography>
                           <Typography
                             gutterBottom

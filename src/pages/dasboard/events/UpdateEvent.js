@@ -63,6 +63,7 @@ export default function UpdateEvent({
   const [file, setFile] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [previewURL, setPreviewURL] = useState();
   //const theme = useTheme();
   //const state = useSelector((st) => st);
   //const user = state.auth.user;
@@ -131,6 +132,7 @@ export default function UpdateEvent({
     });
     console.log(deleteData);
     setEventLink('');
+    setPreviewURL();
     setEventImage(null);
     setEventTitle('');
     setEventDescription('');
@@ -211,6 +213,7 @@ export default function UpdateEvent({
     });
     setEventLink('');
     setEventImage(null);
+    setPreviewURL();
     setEventTitle('');
     setEventDescription('');
     setDescriptionErr(false);
@@ -254,6 +257,7 @@ export default function UpdateEvent({
                     setOpenUpdate(!openUpdate);
                     setEventLink('');
                     setEventImage(null);
+                    setPreviewURL();
                     setEventTitle('');
                     setEventDescription('');
                     setDescriptionErr(false);
@@ -378,8 +382,12 @@ export default function UpdateEvent({
                   >
                     <DropzoneArea
                       clearOnUnmount
+                      clickable={true}
                       onChange={(files) => {
                         setEventImage(files[0]);
+                        if (files[0]) {
+                          setPreviewURL(URL.createObjectURL(files[0]));
+                        }
                       }}
                       dropzoneText={'Drag n drop event banner or click'}
                       acceptedFiles={['image/*']}
@@ -387,6 +395,7 @@ export default function UpdateEvent({
                       filesLimit={1}
                       showAlerts={['error']}
                       showPreviews={false}
+                      dropzoneClass='create-event-dropzone'
                       showPreviewsInDropzone
                       previewGridProps={{
                         container: { spacing: 1, direction: 'row' },
@@ -429,6 +438,37 @@ export default function UpdateEvent({
                         </div>
                       </Card>
                     )}
+                  {previewURL && (
+                    <Card
+                      style={{
+                        height: 300,
+                        borderRadius: 8,
+                        width: '100%',
+                        backgroundImage: 'url(' + previewURL + ')',
+                        backgroundSize: 'cover',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        backgroundBlendMode: 'soft-light',
+                      }}
+                    >
+                      <div className='space-between mx-3 my-2'>
+                        <Typography variant='body2'></Typography>
+                        <Typography variant='body1'></Typography>
+                        <IconButton
+                          color='primary'
+                          size='small'
+                          className='m-1 p-1'
+                        >
+                          <CloseRounded
+                            onClick={() => {
+                              //setFile(null);
+                              setEventImage(null);
+                              setPreviewURL();
+                            }}
+                          />
+                        </IconButton>
+                      </div>
+                    </Card>
+                  )}
                 </CardContent>
               </Card>
               {/* <Divider /> */}
@@ -463,9 +503,11 @@ export default function UpdateEvent({
                     size='small'
                     className='m-1 p-1'
                     onClick={() => {
-                      setOpenImage(true);
                       setFile(null);
                       setEventImage(null);
+                      document
+                        .getElementsByClassName('create-event-dropzone')[0]
+                        .click();
                     }}
                     style={{
                       marginRight: 10,

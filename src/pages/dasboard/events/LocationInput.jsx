@@ -100,7 +100,7 @@ export default function LocationInput({
   return (
     <Autocomplete
       id='google-map-demo'
-      style={{ width: 300 }}
+      style={{ width: '100%' }}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }
@@ -121,12 +121,17 @@ export default function LocationInput({
       renderInput={(params) => (
         <TextField
           {...params}
-          label='Choose Location'
-          variant='standard'
+          label='Event venue'
+          variant='outlined'
           fullWidth
           error={locationErr}
-          errorText={errorText}
-          className='mb-2'
+          className='mt-3 mb-2'
+          helperText={
+            <Typography variant='body2' className='space-between'>
+              <span>{locationErr && errorText}</span>
+              <span></span>
+            </Typography>
+          }
         />
       )}
       renderOption={(option) => {

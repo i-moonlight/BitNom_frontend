@@ -183,6 +183,15 @@ export const MUTATION_CREATE_EVENT = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -198,7 +207,6 @@ export const MUTATION_CREATE_EVENT = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -218,6 +226,15 @@ export const MUTATION_UPDATE_EVENT = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -233,7 +250,6 @@ export const MUTATION_UPDATE_EVENT = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -277,6 +293,15 @@ export const QUERY_LOAD_EVENTS = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -292,7 +317,6 @@ export const QUERY_LOAD_EVENTS = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -312,6 +336,15 @@ export const QUERY_EVENT_BY_ID = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -327,7 +360,6 @@ export const QUERY_EVENT_BY_ID = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -617,6 +649,19 @@ export const QUERY_GET_USERS = gql`
         displayName
         reputation
         type
+        bio
+        profile_pic
+      }
+    }
+  }
+`;
+
+export const QUERY_SEARCH_USERS = gql`
+  query ($params: ISearchUsers) {
+    Users {
+      search(params: $params) {
+        _id
+        displayName
         bio
         profile_pic
       }
