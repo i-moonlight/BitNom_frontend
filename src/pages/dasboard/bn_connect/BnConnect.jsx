@@ -30,6 +30,7 @@ import UpdateComment from './scroll/comment/UpdateComment';
 import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
 import { getFeed } from '../utilities/functions';
+import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles(theme => ({
   root: {

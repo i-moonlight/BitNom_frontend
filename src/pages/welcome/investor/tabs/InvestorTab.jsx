@@ -60,7 +60,7 @@ export default function InvestorTab() {
                       A one-stop data aggregator for the cryptocurrency
                       ecosystem
                     </Typography>
-                    <Typography variant='h5' className='mb-3'>
+                    <Typography variant='h6' className='mb-3'>
                       BitNorm creates an ecosystem that is fueled by information
                       sharing
                     </Typography>
@@ -69,18 +69,20 @@ export default function InvestorTab() {
                     </Button>
                   </div>
                 </Grid>
-                <Grid item sm={6}>
-                  <div className=' h-100 w-100 pt-4'>
-                    <img className='w-100' src={landingImg} alt='' />
-                  </div>
-                </Grid>
+                <Hidden xsDown>
+                  <Grid item sm={6}>
+                    <div className=' h-100 w-100 pt-4'>
+                      <img className='w-100' src={landingImg} alt='' />
+                    </div>
+                  </Grid>
+                </Hidden>
               </Grid>
             </Paper>
           </Container>
         </section>
 
         <section
-          className=' h-100 w-100 pb-4'
+          className=' h-100 w-100 py-4'
           style={{ backgroundColor: '#000' }}
         >
           <Container>
@@ -94,7 +96,7 @@ export default function InvestorTab() {
               <Grid container spacing={2}>
                 <Grid item sm={12} md={8}>
                   <Card style={{ backgroundColor: '#11141C', height: '100%' }}>
-                    <CardContent className=' h-100 m-0 pb-0'>
+                    <CardContent className='m-0 pb-0'>
                       <Grid container spacing={2} className='h-100'>
                         <Grid item xs={12} sm={6} md={4} className='h-100'>
                           <div className='d-flex flex-column bg-white p-3 text-black justify-content-between'>
@@ -115,7 +117,7 @@ export default function InvestorTab() {
                             <img
                               src={logoImg}
                               alt=''
-                              className='w-50 align-self-baseline'
+                              className='w-50 align-self-baseline mt-3'
                             />
                           </div>
                         </Grid>
@@ -237,12 +239,14 @@ export default function InvestorTab() {
                       >
                         <CardContent>
                           <div className='d-flex p-2 '>
-                            <img
-                              src={igImg}
-                              alt=''
-                              className='mx-5'
-                              style={{ height: 50 }}
-                            />
+                            <Hidden smDown>
+                              <img
+                                src={igImg}
+                                alt=''
+                                className='mx-5'
+                                style={{ height: 50 }}
+                              />
+                            </Hidden>
                             <div>
                               <Typography className='lead'>
                                 WHO WILL BITNORM ULTIMATELY SERVE?
@@ -271,7 +275,9 @@ export default function InvestorTab() {
                 <Grid item xs={12} sm={6}>
                   <Card style={{ backgroundColor: '#11141C' }}>
                     <CardContent>
-                      <Typography variant='h5'>Problem</Typography>
+                      <Typography gutterBottom variant='h5'>
+                        Problem
+                      </Typography>
                       <Typography className='lead'>
                         Crypto investors/traders have to maintain multiple
                         accounts on multiple platforms to have a overview of
@@ -283,8 +289,10 @@ export default function InvestorTab() {
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant='h5    '>Solution</Typography>
-                  <Typography className='lead'>
+                  <Typography gutterBottom variant='h5' className='text-white'>
+                    Solution
+                  </Typography>
+                  <Typography className='lead text-white'>
                     BITNORM solves this problem by combining all of this
                     much-needed functionality and data with one simple use
                     ecosystem platform. BITNORM creates its own token called BN
@@ -306,16 +314,17 @@ export default function InvestorTab() {
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-1'>
-              <Divider className='color-white bg-white' />
+              <Divider className='color-whit bg-whit' />
             </div>
           </Container>
         </section>
 
         <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className='py-4'>
+            <div className='py-3'>
               <Card
                 style={{ backgroundImage: 'linear-gradient(#0B072B,#072438)' }}
+                className='py-3'
               >
                 <Grid container spacing={2} alignItems='center'>
                   <Grid item xs={12} sm={3}>
@@ -324,20 +333,26 @@ export default function InvestorTab() {
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <Typography color='primary'>BN</Typography>
-                    <Typography>Sumbol</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <Typography color='primary'>
-                      0x42edc1c5ff57Ff5240C90E2D8DfA269D77D68013
-                    </Typography>
-                    <Typography>Smart Contract address</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <div className='w-100 text-end'>
-                      <img src={token1Img} alt='' className='w-75' />
+                    <div className='px-3'>
+                      <Typography color='primary'>BN</Typography>
+                      <Typography>Symbol</Typography>
                     </div>
                   </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <div className='px-3'>
+                      <Typography noWrap color='primary'>
+                        0x42edc1c5ff57Ff5240C90E2D8DfA269D77D68013
+                      </Typography>
+                      <Typography>Smart Contract address</Typography>
+                    </div>
+                  </Grid>
+                  <Hidden smDown>
+                    <Grid item xs={12} sm={3}>
+                      <div className='w-100 text-end'>
+                        <img src={token1Img} alt='' className='w-75' />
+                      </div>
+                    </Grid>
+                  </Hidden>
                 </Grid>
               </Card>
             </div>
@@ -349,8 +364,10 @@ export default function InvestorTab() {
             <div className='py-4'>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant='h4'>BN Token</Typography>
-                  <Typography gutterBottom className='lead'>
+                  <Typography gutterBottom variant='h5' className='text-white'>
+                    BN Token
+                  </Typography>
+                  <Typography gutterBottom className='lead text-white'>
                     BN token is a utility, Ethereum ERC20- token, specially
                     designed for the BitNorm ecosystem. ERC20 tokens enable a
                     uniform, standard set of rules governing how tokens behave
@@ -359,7 +376,7 @@ export default function InvestorTab() {
                     a first-mover advantage and continues to have the largest
                     market cap.
                   </Typography>
-                  <Typography gutterBottom className='lead'>
+                  <Typography gutterBottom className='lead text-white'>
                     ERC20 allows for seamless interaction with other smart
                     contracts and decentralized applications on the Ethereum
                     blockchain.
@@ -427,7 +444,7 @@ export default function InvestorTab() {
           <Container>
             <div className='py-4'>
               <Card style={{ backgroundColor: '#161922' }}>
-                <div className='my-5 mx-5'>
+                <div className='my-5 mx-3'>
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
@@ -503,7 +520,7 @@ export default function InvestorTab() {
 
         <section className='py-5' style={{ backgroundColor: '#0C0F19' }}>
           <Container>
-            <Typography className='my-2 mx-2 fw-bold'>
+            <Typography className='my-2 mx-2 fw-bold text-white'>
               Investor Health Check
             </Typography>
             <Card elevation={0} style={{ backgroundColor: '#0C0F19' }}>

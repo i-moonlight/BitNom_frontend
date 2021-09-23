@@ -1,6 +1,5 @@
-import React from 'react';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
+import React from 'react';
 
 export default function DarkTheme({ children }) {
   //Create MUI Theme
@@ -23,9 +22,5 @@ export default function DarkTheme({ children }) {
     },
   });
 
-  return (
-    <ThemeProvider theme={providerTheme}>
-      <Paper>{children}</Paper>
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={providerTheme}>{children}</ThemeProvider>;
 }
