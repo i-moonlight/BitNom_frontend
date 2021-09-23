@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client";
 import {
   CircularProgress,
   Container,
@@ -6,30 +6,30 @@ import {
   Hidden,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import { ToastContainer } from 'react-toastify';
+} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 
-import ImagePreview from '../../../components/ImagePreview';
-import Screen from '../../../components/Screen';
+import ImagePreview from "../../../components/ImagePreview";
+import Screen from "../../../components/Screen";
 import {
   QUERY_GET_USERS,
   QUERY_LOAD_SCROLLS,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
-import CreateScrollCard from './CreateScrollCard';
-import CreatePost from './scroll/CreatePost';
-import FlagResourceModal from './popovers/FlagResourceModal';
-import ReactionsModal from './popovers/ReactionsModal';
-import { useSelector } from 'react-redux';
-import Scroll from './scroll/Scroll';
-import SuggestedPeopleCard from './SuggestedPeopleCard';
-import TrendingPostsCard from './TrendingPostsCard';
-import UpdateComment from './scroll/comment/UpdateComment';
-import UpdatePost from './scroll/UpdatePost';
-import UserCard from './UserCard';
-import { getFeed } from '../utilities/functions';
+} from "../utilities/queries";
+import CreateScrollCard from "./CreateScrollCard";
+import CreatePost from "./scroll/CreatePost";
+import FlagResourceModal from "./popovers/FlagResourceModal";
+import ReactionsModal from "./popovers/ReactionsModal";
+import { useSelector } from "react-redux";
+import Scroll from "./scroll/Scroll";
+import SuggestedPeopleCard from "./SuggestedPeopleCard";
+import TrendingPostsCard from "./TrendingPostsCard";
+import UpdateComment from "./scroll/comment/UpdateComment";
+import UpdatePost from "./scroll/UpdatePost";
+import UserCard from "./UserCard";
+import { getFeed } from "../utilities/functions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +62,7 @@ export default function BnConnect() {
     //  loading,
     data: profileData,
   } = useQuery(QUERY_FETCH_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
   const profile = profileData?.Users?.profile;
 
@@ -83,31 +83,35 @@ export default function BnConnect() {
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
     params: { data: { limit: 8 } },
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+    (item) => item?._id !== "bn-ai" && item?._id !== user?._id
   );
 
   const { loading: trendingLoading, data: trendingData } = useQuery(
     QUERY_LOAD_SCROLLS,
     {
       variables: {
-        data: { ids: getFeed(profile), sortByField: 'comments', limit: 5 },
+        data: { ids: getFeed(profile), sortByField: "comments", limit: 5 },
       },
     }
   );
   //onesignal
+
   const OneSignal = window.OneSignal || [];
   useEffect(() => {
     OneSignal.push(() => {
+      OneSignal.init({
+        appId: "97869740-c9fd-42b4-80de-bfd368eb1715",
+      });
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (isEnabled) {
           var externalUserId = user._id;
           OneSignal.setExternalUserId(externalUserId);
         } else {
-          console.log('Push notifications are not enabled yet.');
+          console.log("Push notifications are not enabled yet.");
         }
       });
     });
@@ -116,7 +120,7 @@ export default function BnConnect() {
   return (
     <Screen>
       <ToastContainer
-        position='bottom-left'
+        position="bottom-left"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -127,7 +131,7 @@ export default function BnConnect() {
         pauseOnHover
       />
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -148,9 +152,9 @@ export default function BnConnect() {
                 setOpenVideo={setOpenVideo}
                 setOpen={(open) => setCreateScrollOpen(open)}
               />
-              <Grid item align='center'>
+              <Grid item align="center">
                 {loading && (
-                  <CircularProgress color='primary' size={60} thickness={6} />
+                  <CircularProgress color="primary" size={60} thickness={6} />
                 )}
               </Grid>
               {data?.Posts?.get &&
@@ -173,8 +177,8 @@ export default function BnConnect() {
                   />
                 ))}
               {data?.Posts?.get?.length < 1 && (
-                <Grid align='center'>
-                  <Typography color='primary'>
+                <Grid align="center">
+                  <Typography color="primary">
                     Create a post or follow people you may know to see theirs!!
                   </Typography>
                 </Grid>

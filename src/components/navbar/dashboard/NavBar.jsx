@@ -1,26 +1,26 @@
-import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import { AppBar, Divider, useTheme } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { NOTIFICATIONS_SUBSCRIPTION } from '../../../pages/dasboard/utilities/queries';
-import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { AppBar, Divider, useTheme } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NOTIFICATIONS_SUBSCRIPTION } from "../../../pages/dasboard/utilities/queries";
+import { checkSessionTimeOut } from "../../../store/actions/authActions";
+import { setCount, resetCount } from "../../../store/actions/countActions";
 import {
   MARK_NOTIFICAION_AS_SEEN,
   QUERY_GET_USER_NOTIFICATIONS,
-} from '../../utilities/queries.components';
-import StatusBar from '../StatusBar';
-import MenuPopover from './popovers/MenuPopover';
-import NotificationOptionPopover from './popovers/NotificationOptionPopover';
-import NotificationsPopover from './popovers/NotificationsPopover';
-import ProfileBar from './ProfileBar';
-import TabsBar2 from './TabsBar2';
+} from "../../utilities/queries.components";
+import StatusBar from "../StatusBar";
+import MenuPopover from "./popovers/MenuPopover";
+import NotificationOptionPopover from "./popovers/NotificationOptionPopover";
+import NotificationsPopover from "./popovers/NotificationsPopover";
+import ProfileBar from "./ProfileBar";
+import TabsBar2 from "./TabsBar2";
 
-const menuId = 'menu-profile';
-const notificationId = 'menu-notifications';
-const notificationOptionId = 'menu-notifications-option';
+const menuId = "menu-profile";
+const notificationId = "menu-notifications";
+const notificationOptionId = "menu-notifications-option";
 
 export default function NavBar() {
-  const [notSeen, setNotSeen] = useState(0);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
@@ -36,22 +36,19 @@ export default function NavBar() {
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
   const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
-    context: { clientName: 'notifications' },
+    context: { clientName: "notifications" },
   });
 
-  const [markAsSeen, { data: markAsSeenData }] = useMutation(
-    MARK_NOTIFICAION_AS_SEEN,
-    {
-      variables: { _id: user?._id },
-      context: { clientName: 'notifications' },
-    }
-  );
+  const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
+    variables: { _id: user?._id },
+    context: { clientName: "notifications" },
+  });
 
   const { data: subscriptionData } = useSubscription(
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      context: { clientName: 'notifications' },
+      context: { clientName: "notifications" },
     }
   );
 
@@ -81,7 +78,6 @@ export default function NavBar() {
   };
 
   const handleMarkAsSeen = () => {
-    if (notSeen < 1) return;
     markAsSeen({
       variables: {
         _id: user?._id,
@@ -89,21 +85,22 @@ export default function NavBar() {
       refetchQueries: [
         {
           query: QUERY_GET_USER_NOTIFICATIONS,
-          context: { clientName: 'notifications' },
+          context: { clientName: "notifications" },
         },
       ],
     });
-    setNotSeen(0);
-    console.log(markAsSeenData);
+    dispatch(resetCount());
   };
 
   const response = data?.Notification?.get;
-
-  /*  if (subscriptionData?.liveUpdates?.id === user?._id)
-     setNotSeen(subscriptionData?.liveUpdates?.count); */
   useEffect(() => {
-    setNotSeen(subscriptionData?.liveUpdates?.count);
-    console.log('Subscription Data', subscriptionData);
+    const count =
+      subscriptionData && subscriptionData.liveUpdates.count
+        ? subscriptionData.liveUpdates.count
+        : null;
+    if (count !== null) {
+      dispatch(setCount(count));
+    }
   }, [subscriptionData]);
 
   useEffect(() => {
@@ -111,17 +108,26 @@ export default function NavBar() {
     const notSeenArray = [];
     response?.forEach((notification) => {
       notification.to_notify.forEach((item) => {
-        if (item?.user_id === user._id && item?.seen === 'false') {
+        if (item?.user_id === user._id && item?.seen === "false") {
           notSeenArray.push(notification?._id);
         }
       });
     });
-    //setNotSeen(notSeenArray.length);
+    dispatch(setCount(notSeenArray.length));
   }, [data?.Notification?.get]);
+  const _count = state.count.count;
+  useEffect(() => {
+    const logo = document.getElementById("favicon");
+    if (_count > 0) {
+      logo.href = "logo_badge.svg";
+    } else {
+      logo.href = "logo.svg";
+    }
+  }, [_count]);
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       style={{
         background: theme.palette.background.default,
       }}
@@ -130,7 +136,7 @@ export default function NavBar() {
       <StatusBar />
       <Divider />
       <ProfileBar
-        notifications={notSeen}
+        notifications={_count}
         menuId={menuId}
         handleMenuOpen={handleMenuOpen}
         notificationId={notificationId}
