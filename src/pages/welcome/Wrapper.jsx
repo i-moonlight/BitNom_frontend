@@ -31,7 +31,7 @@ export default function Wrapper({ children, investor, onTabValue }) {
       ref={toTop}
       style={{
         width: '100%',
-        paddingTop: investor ? 32 : 116,
+        paddingTop: investor ? 0 : 116,
         minHeight: '100vh',
         overflowY: 'hidden',
       }}

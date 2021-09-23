@@ -10,6 +10,7 @@ import {
   Hidden,
   IconButton,
   makeStyles,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import {
@@ -48,35 +49,38 @@ export default function InvestorTab() {
       <div>
         <section style={{ backgroundColor: '#000' }}>
           <Container maxWidth='lg'>
-            <Grid container spacing={2}>
-              <Grid item sm={6}>
-                <div className='my-5 py-5'>
-                  <Typography variant='h4' className='mt-5 mb-2'>
-                    BitNorm Investor Page
-                  </Typography>
-                  <Typography variant='h3' className='mb-3'>
-                    A one-stop data aggregator for the cryptocurrency ecosystem
-                  </Typography>
-                  <Typography variant='h5' className='mb-3'>
-                    BitNorm creates an ecosystem that is fueled by information
-                    sharing
-                  </Typography>
-                  <Button textCase size='large'>
-                    Get Started
-                  </Button>
-                </div>
+            <Paper style={{ backgroundColor: '#000' }}>
+              <Grid container spacing={2}>
+                <Grid item sm={6}>
+                  <div className='mt-4 pt-2'>
+                    <Typography variant='h5' className='mt-5 mb-2'>
+                      BitNorm Investor Page
+                    </Typography>
+                    <Typography variant='h4' className='mb-3'>
+                      A one-stop data aggregator for the cryptocurrency
+                      ecosystem
+                    </Typography>
+                    <Typography variant='h5' className='mb-3'>
+                      BitNorm creates an ecosystem that is fueled by information
+                      sharing
+                    </Typography>
+                    <Button textCase size='large'>
+                      Get Started
+                    </Button>
+                  </div>
+                </Grid>
+                <Grid item sm={6}>
+                  <div className=' h-100 w-100 pt-4'>
+                    <img className='w-100' src={landingImg} alt='' />
+                  </div>
+                </Grid>
               </Grid>
-              <Grid item sm={6}>
-                <div className=' h-100 w-100 my-5 py-5'>
-                  <img className='w-100' src={landingImg} alt='' />
-                </div>
-              </Grid>
-            </Grid>
+            </Paper>
           </Container>
         </section>
 
         <section
-          className=' h-100 w-100 py-4'
+          className=' h-100 w-100 pb-4'
           style={{ backgroundColor: '#000' }}
         >
           <Container>
@@ -88,25 +92,22 @@ export default function InvestorTab() {
           <Container>
             <div className='py-4'>
               <Grid container spacing={2}>
-                <Grid item sm={8}>
-                  <Card style={{ backgroundColor: '#11141C' }}>
-                    <CardContent>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
-                          <div className='d-flex flex-column bg-white p-3 text-black h-100 justify-content-between'>
+                <Grid item sm={12} md={8}>
+                  <Card style={{ backgroundColor: '#11141C', height: '100%' }}>
+                    <CardContent className=' h-100 m-0 pb-0'>
+                      <Grid container spacing={2} className='h-100'>
+                        <Grid item xs={12} sm={6} md={4} className='h-100'>
+                          <div className='d-flex flex-column bg-white p-3 text-black justify-content-between'>
                             <div>
                               <div className='d-flex align-items-center justify-content-between '>
-                                <Typography
-                                  variant='body2'
-                                  className='text-uppercase'
-                                >
+                                <Typography className='lead text-uppercase'>
                                   White Paper
                                 </Typography>
-                                <Typography variant='body2'>
+                                <Typography className='lead'>
                                   9 months ago
                                 </Typography>
                               </div>
-                              <Typography variant='h6' className='fw-bold my-2'>
+                              <Typography className='lead fw-bold my-2'>
                                 First in line: Early technology adopters around
                                 the globe
                               </Typography>
@@ -118,46 +119,57 @@ export default function InvestorTab() {
                             />
                           </div>
                         </Grid>
-                        <Grid item xs={12} sm={8}>
-                          <Typography variant='h6' gutterBottom>
-                            BitNorm, an all in one platform combining several
-                            aspects that we call engines that collectively work
-                            together to realize natural and seamless access to
-                            the information within the cryptocurrencies
-                            ecosystem.
-                          </Typography>
-                          <Typography variant='h6' gutterBottom>
-                            This information is presented in multiple formats to
-                            cater for both the varying goals of our users and
-                            the diversity of our audience
-                          </Typography>
-                          <Divider />
-                          <div className='d-flex align-items-center justify-content-between'>
-                            <Button
-                              color='inherit'
-                              textCase
-                              variant='text'
-                              className='mt-2'
-                              endIcon={<CloudDownload />}
-                            >
-                              Download Whitepaper
-                            </Button>
-                            <Button
-                              color='inherit'
-                              textCase
-                              variant='text'
-                              className='mt-2'
-                              startIcon={<ShareRounded />}
-                            >
-                              Share
-                            </Button>
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={8}
+                          justifyContent='space-between'
+                          className=' d-flex flex-column'
+                        >
+                          <div>
+                            <Typography className='lead' gutterBottom>
+                              BitNorm, an all in one platform combining several
+                              aspects that we call engines that collectively
+                              work together to realize natural and seamless
+                              access to the information within the
+                              cryptocurrencies ecosystem.
+                            </Typography>
+                            <Typography className='lead' gutterBottom>
+                              This information is presented in multiple formats
+                              to cater for both the varying goals of our users
+                              and the diversity of our audience
+                            </Typography>
+                          </div>
+                          <div>
+                            <Divider />
+                            <div className='d-flex align-items-center justify-content-between mt-auto'>
+                              <Button
+                                color='inherit'
+                                textCase
+                                variant='text'
+                                className='mt-2'
+                                endIcon={<CloudDownload />}
+                              >
+                                Download Whitepaper
+                              </Button>
+                              <Button
+                                color='inherit'
+                                textCase
+                                variant='text'
+                                className='mt-2'
+                                startIcon={<ShareRounded />}
+                              >
+                                Share
+                              </Button>
+                            </div>
                           </div>
                         </Grid>
                       </Grid>
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item sm={12} md={4}>
                   <Card
                     style={{
                       backgroundImage: 'linear-gradient(#006097,#07A1FB)',
@@ -192,10 +204,10 @@ export default function InvestorTab() {
                 <Grid item xs={12}>
                   <Card style={{ backgroundColor: '#11141C' }}>
                     <CardContent>
-                      <Typography gutterBottom variant='h4'>
+                      <Typography gutterBottom variant='h5'>
                         Base Concept
                       </Typography>
-                      <Typography variant='h6' gutterBottom>
+                      <Typography className='lead' gutterBottom>
                         Bitnorm will design a platform that will merge all type
                         of crypto users together where they will be able to
                         share amongst one another useful information about the
@@ -206,7 +218,7 @@ export default function InvestorTab() {
                         andsome relevant data engines that will be useful for
                         the users to make polite financial decision.
                       </Typography>
-                      <Typography variant='h6' gutterBottom>
+                      <Typography className='lead' gutterBottom>
                         Bitnorm Platform will be useful for Crypto investors ,
                         most especially users who are new to the industry . They
                         will receive guides and relevant information to succeed
@@ -225,12 +237,17 @@ export default function InvestorTab() {
                       >
                         <CardContent>
                           <div className='d-flex p-2 '>
-                            <img src={igImg} alt='' className='w-10 mx-5' />
+                            <img
+                              src={igImg}
+                              alt=''
+                              className='mx-5'
+                              style={{ height: 50 }}
+                            />
                             <div>
-                              <Typography variant='h6'>
+                              <Typography className='lead'>
                                 WHO WILL BITNORM ULTIMATELY SERVE?
                               </Typography>
-                              <Typography variant='h6'>
+                              <Typography className='lead'>
                                 Our goal, therefore, is to unite learners,
                                 professionals, and businesses all under one roof
                                 with each one of the benefits from the other.
@@ -254,8 +271,8 @@ export default function InvestorTab() {
                 <Grid item xs={12} sm={6}>
                   <Card style={{ backgroundColor: '#11141C' }}>
                     <CardContent>
-                      <Typography variant='h4'>Problem</Typography>
-                      <Typography variant='h6'>
+                      <Typography variant='h5'>Problem</Typography>
+                      <Typography className='lead'>
                         Crypto investors/traders have to maintain multiple
                         accounts on multiple platforms to have a overview of
                         their trading signals, latest crypto news, blogs, forums
@@ -266,8 +283,8 @@ export default function InvestorTab() {
                   </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant='h4'>Solution</Typography>
-                  <Typography variant='h6'>
+                  <Typography variant='h5    '>Solution</Typography>
+                  <Typography className='lead'>
                     BITNORM solves this problem by combining all of this
                     much-needed functionality and data with one simple use
                     ecosystem platform. BITNORM creates its own token called BN
@@ -333,7 +350,7 @@ export default function InvestorTab() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant='h4'>BN Token</Typography>
-                  <Typography gutterBottom variant='h6'>
+                  <Typography gutterBottom className='lead'>
                     BN token is a utility, Ethereum ERC20- token, specially
                     designed for the BitNorm ecosystem. ERC20 tokens enable a
                     uniform, standard set of rules governing how tokens behave
@@ -342,7 +359,7 @@ export default function InvestorTab() {
                     a first-mover advantage and continues to have the largest
                     market cap.
                   </Typography>
-                  <Typography gutterBottom variant='h6'>
+                  <Typography gutterBottom className='lead'>
                     ERC20 allows for seamless interaction with other smart
                     contracts and decentralized applications on the Ethereum
                     blockchain.
@@ -521,15 +538,13 @@ export default function InvestorTab() {
           <Container>
             <Card style={{ backgroundColor: '#11141C' }}>
               <CardContent>
-                <Typography variant='h6' className='mb-3 mt-1'>
-                  Our Team
-                </Typography>
+                <Typography className='lead mb-3 mt-1'>Our Team</Typography>
                 <Grid container spacing={2}>
                   {[1, 2, 3].map(item => (
                     <TeamCard key={item} />
                   ))}
                 </Grid>
-                <Typography variant='h6' className='mb-3 mt-5'>
+                <Typography className='lead mb-3 mt-5'>
                   Development Team
                 </Typography>
                 <Grid container spacing={2}>
@@ -537,9 +552,7 @@ export default function InvestorTab() {
                     <TeamCard key={item} />
                   ))}
                 </Grid>
-                <Typography variant='h6' className='mb-3 mt-5'>
-                  Moderators
-                </Typography>
+                <Typography className='lead mb-3 mt-5'>Moderators</Typography>
                 <Grid container spacing={2}>
                   {[1, 2, 3].map(item => (
                     <TeamCard key={item} />
