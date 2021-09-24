@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import './css/bootstrap_utilities.css';
+import './css/bootstrap.css';
 import './css/style.css';
 import Routes from './Routes';
 

@@ -148,8 +148,9 @@ export default function WorkForm({ onClose, updateData }) {
               placeholder={updateData?.title || 'Title eg Graphic Designer'}
             />
             <Grid container spacing={2}>
-              <Grid item sm={6}>
+              <Grid item sm={6} xs={12}>
                 <TextField
+                  fullWidth
                   required
                   type='date'
                   name='start_date'
@@ -157,8 +158,9 @@ export default function WorkForm({ onClose, updateData }) {
                   labelTop='Start Date'
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item sm={6} xs={12}>
                 <TextField
+                  fullWidth
                   disabled={current}
                   type='date'
                   name='end_date'
