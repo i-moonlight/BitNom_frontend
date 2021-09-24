@@ -172,7 +172,7 @@ function EventListCard({ events, loading }) {
               >
                 <Hidden smDown>
                   <Typography color='textSecondary' variant='body2'>
-                    {new Date(event?.date).toUTCString()}
+                    {new Date(event?.startDate).toUTCString()}
                   </Typography>
                 </Hidden>
                 <Typography
