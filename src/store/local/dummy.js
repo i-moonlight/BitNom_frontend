@@ -3,6 +3,7 @@ import {
   DescriptionRounded,
   WatchLaterRounded,
 } from '@material-ui/icons';
+
 export const status = [
   { title: 'Crypto', value: '6,847' },
   { title: 'Exchange', value: '4,847' },
@@ -47,41 +48,8 @@ export const tabs = [
     ],
   },
 ];
+
 export const scrollVariations = [
-  {
-    name: 'Brian Sadroe',
-    username: '@briansadroe',
-    hashtags: ['#bitnorm', '#cryptoexchange', '#cryptocurrency'],
-    text: 'The two major cycles comparison\n We front-ran the ATH and dropped over 30% in the first cycle. Proper alt season started during the recovery.\n Similarities are there... (Blue line is $ETH/ $BTC)',
-  },
-  {
-    name: 'Brian Sadroe',
-    videos: [''],
-    username: '@briansadroe',
-    hashtags: ['#bitnorm', '#cryptoexchange', '#cryptocurrency'],
-    text: 'The two major cycles comparison\n We front-ran the ATH and dropped over 30% in the first cycle. Proper alt season started during the recovery.\n Similarities are there... (Blue line is $ETH/ $BTC)',
-  },
-  {
-    name: 'Brian Sadroe',
-    images: [''],
-    username: '@briansadroe',
-    hashtags: ['#bitnorm', '#cryptoexchange', '#cryptocurrency'],
-    text: 'Today, is the International Day of the Elimination of Violence Against Women &amp; the launch of #16DaysofActivism that will conclude on 10 December 2020, which is International Humanights Day.',
-  },
-  {
-    name: 'Brian Sadroe',
-    images: ['', ''],
-    username: '@briansadroe',
-    hashtags: ['#bitnorm', '#cryptoexchange', '#cryptocurrency'],
-    text: 'Today, is the International Day of the Elimination of Violence Against Women &amp; the launch of #16DaysofActivism that will conclude on 10 December 2020, which is International Humanights Day.',
-  },
-  {
-    name: 'Brian Sadroe',
-    images: ['', '', '', ''],
-    username: '@briansadroe',
-    hashtags: ['#bitnorm', '#cryptoexchange', '#cryptocurrency'],
-    text: 'Today, is the International Day of the Elimination of Violence Against Women &amp; the launch of #16DaysofActivism that will conclude on 10 December 2020, which is International Humanights Day.',
-  },
   {
     name: 'Brian Sadroe',
     username: '@briansadroe',

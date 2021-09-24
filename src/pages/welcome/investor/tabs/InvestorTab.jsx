@@ -22,7 +22,8 @@ import {
   MailRounded,
   ShareRounded,
 } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import igImg from '../../../../assets/investor/ig.png';
 import supplyImg from '../../../../assets/investor/image_5.png';
 import landingImg from '../../../../assets/investor/landing.png';
@@ -30,14 +31,18 @@ import learnImg from '../../../../assets/investor/learn.svg';
 import modelImg from '../../../../assets/investor/model.png';
 import scrollImg from '../../../../assets/investor/scroll.svg';
 import token1Img from '../../../../assets/investor/token1.png';
+import roadmapImg from '../../../../assets/investor/roadmap.png';
 import token2Img from '../../../../assets/investor/token2.png';
 import logoImg from '../../../../assets/logo_full.svg';
 import Button from '../../../../components/Button';
 import DarkTheme from '../../../../utilities/DarkTheme';
-import { healthCheck } from '../../utilities/welcome.data';
+import { healthCheck, roadMap } from '../../utilities/welcome.data';
+
+const ROADMAP_DISPLACEMENT = 100;
 
 export default function InvestorTab() {
-  const [expanded, setExpanded] = React.useState(healthCheck[0].title);
+  const [expanded, setExpanded] = useState(healthCheck[0].title);
+  const [year, setYear] = useState('2021');
   const classes = useStyles();
 
   const handleChange = panel => (event, isExpanded) => {
@@ -80,7 +85,6 @@ export default function InvestorTab() {
             </Paper>
           </Container>
         </section>
-
         <section
           className=' h-100 w-100 py-4'
           style={{ backgroundColor: '#000' }}
@@ -89,7 +93,6 @@ export default function InvestorTab() {
             <img className='w-100' src={scrollImg} alt='' />
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -198,7 +201,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -267,7 +269,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -310,7 +311,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-1'>
@@ -318,7 +318,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-3'>
@@ -358,7 +357,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -418,7 +416,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-
         {/* <section style={{ backgroundColor: theme.palette.background.paper }}>
           <Container>
             <div className='py-5'>
@@ -439,7 +436,6 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section> */}
-
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -517,6 +513,68 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
+        <section
+          style={{
+            backgroundColor: '#000',
+            paddingBottom: ROADMAP_DISPLACEMENT,
+          }}
+        >
+          <Container>
+            <div className='py-4'>
+              <Paper style={{ backgroundColor: '#000' }}>
+                <div className='my-5 mx-3'>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant='h5'>BitNorm Roadmap</Typography>
+                      <Typography variant='body2'>
+                        The highwayto building a legacy that will foster
+                        innovation.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Card>
+                        {roadMap.map(road => (
+                          <Button
+                            color={road?.year != year && 'inherit'}
+                            className='mx-2'
+                            variant={road?.year != year && 'text'}
+                            key={road?.year}
+                            onClick={() => setYear(road?.year)}
+                          >
+                            {road?.year}
+                          </Button>
+                        ))}
+                      </Card>
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    spacing={3}
+                    className='mt-4'
+                    style={{
+                      backgroundImage: `url('${roadmapImg}')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundOrigin: '20px 0px',
+                    }}
+                  >
+                    {roadMap
+                      .filter(road => road?.year == year)[0]
+                      .quaters.map(({ name, text, list }, index) => (
+                        <QuaterCard
+                          key={name}
+                          index={index}
+                          name={name}
+                          text={text}
+                          list={list}
+                        />
+                      ))}
+                  </Grid>
+                </div>
+              </Paper>
+            </div>
+          </Container>
+        </section>
 
         <section className='py-5' style={{ backgroundColor: '#0C0F19' }}>
           <Container>
@@ -550,7 +608,6 @@ export default function InvestorTab() {
             </Card>
           </Container>
         </section>
-
         <section className='py-5' style={{ backgroundColor: '#000' }}>
           <Container>
             <Card style={{ backgroundColor: '#11141C' }}>
@@ -604,6 +661,33 @@ function TeamCard() {
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
+    </Grid>
+  );
+}
+
+function QuaterCard({ index, name, text, list }) {
+  return (
+    <Grid
+      item
+      xs={12}
+      sm={6}
+      md={3}
+      style={{
+        position: index % 2 != 0 && 'relative',
+        top: ROADMAP_DISPLACEMENT,
+      }}
+    >
+      <Card elevation={0} className='h-100'>
+        <CardContent>
+          <Typography variant='h6'>{name}</Typography>
+          <Typography className='lead my-2'>{text}</Typography>
+          <Typography className='lead'>
+            {list.map(ls => (
+              <li key={ls}>{ls}</li>
+            ))}
+          </Typography>
         </CardContent>
       </Card>
     </Grid>
