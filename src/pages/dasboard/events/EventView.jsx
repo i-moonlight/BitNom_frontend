@@ -449,6 +449,41 @@ export default function EventView({ match }) {
                                 />
                                 Public
                               </Typography>
+                              <Typography
+                                display='inline-flex'
+                                className='center-horizontal'
+                              >
+                                <Typography variant='body2'>
+                                  Tagged with :
+                                </Typography>
+                                <Typography
+                                  display='inline-flex'
+                                  className='center-horizontal'
+                                >
+                                  {event?.tags?.map((tag) => (
+                                    <Typography
+                                      variant='body2'
+                                      color='primary'
+                                      style={{
+                                        margin: '0px 4px',
+                                        textDecoration: 'underline',
+                                      }}
+                                      key={tag}
+                                      href='#'
+                                    >
+                                      {tag}
+                                    </Typography>
+                                  ))}
+                                </Typography>
+                              </Typography>
+                              <Typography display='inline-flex'>
+                                <Typography variant='body2'>
+                                  Ends On :
+                                </Typography>
+                                <Typography color='primary' variant='body2'>
+                                  {String(new Date(event?.endDate))}
+                                </Typography>
+                              </Typography>
                             </div>
                             {event?.location?.type === 'physical' && (
                               <div>

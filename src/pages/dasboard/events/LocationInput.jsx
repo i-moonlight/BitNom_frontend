@@ -5,7 +5,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import parse from 'autosuggest-highlight/parse';
+//import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
 function loadScript(src, position, id) {
@@ -33,9 +33,10 @@ export default function LocationInput({
   handleSelectLocation,
   locationErr,
   errorText,
+  selectedLocation,
+  setSelectedLocation,
 }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
@@ -72,7 +73,7 @@ export default function LocationInput({
     }
 
     if (inputValue === '') {
-      setOptions(value ? [value] : []);
+      setOptions(selectedLocation ? [selectedLocation] : []);
       return undefined;
     }
 
@@ -80,8 +81,8 @@ export default function LocationInput({
       if (active) {
         let newOptions = [];
 
-        if (value) {
-          newOptions = [value];
+        if (selectedLocation) {
+          newOptions = [selectedLocation];
         }
 
         if (results) {
@@ -95,7 +96,7 @@ export default function LocationInput({
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [selectedLocation, inputValue, fetch]);
 
   return (
     <Autocomplete
@@ -109,10 +110,10 @@ export default function LocationInput({
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value}
+      value={selectedLocation}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
+        setSelectedLocation(newValue);
         handleSelectLocation(newValue);
       }}
       onInputChange={(event, newInputValue) => {
@@ -135,12 +136,12 @@ export default function LocationInput({
         />
       )}
       renderOption={(option) => {
-        const matches =
+        /*  const matches =
           option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
           matches.map((match) => [match.offset, match.offset + match.length])
-        );
+        ); */
 
         return (
           <Grid container alignItems='center'>
@@ -148,17 +149,23 @@ export default function LocationInput({
               <LocationOnIcon className={classes.icon} />
             </Grid>
             <Grid item xs>
-              {parts.map((part, index) => (
-                <span
-                  key={index}
-                  style={{ fontWeight: part.highlight ? 700 : 400 }}
-                >
-                  {part.text}
-                </span>
-              ))}
+              <span
+                key={
+                  option === 'string'
+                    ? option
+                    : option.structured_formatting.main_text
+                }
+                //style={{ fontWeight: part.highlight ? 700 : 400 }}
+              >
+                {option === 'string'
+                  ? option
+                  : option.structured_formatting.main_text}
+              </span>
 
               <Typography variant='body2' color='textSecondary'>
-                {option.structured_formatting.secondary_text}
+                {option === 'string'
+                  ? option
+                  : option.structured_formatting.secondary_text}
               </Typography>
             </Grid>
           </Grid>

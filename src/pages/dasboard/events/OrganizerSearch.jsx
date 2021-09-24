@@ -1,74 +1,55 @@
 import React, { useState } from 'react';
-import {
-  TextField,
-  Grid,
-  makeStyles,
-  Typography,
-  Avatar,
-} from '@material-ui/core';
+import { TextField, Grid, Typography, Avatar } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { PersonRounded, ImageRounded, Search } from '@material-ui/icons';
-import parse from 'autosuggest-highlight/parse';
+//import parse from 'autosuggest-highlight/parse';
 import { generateRandomColor } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2),
-  },
-}));
 
 function OrganizerSearch({
   searchResults,
+  searchedValues,
+  setSearchedValues,
   loading,
   initialTerm,
   updateSearchTerm,
   setEventOrganizers,
+  eventOrganizers,
   setOrganizerErr,
   setErrorText,
+  organizersErr,
 }) {
-  const classes = useStyles();
   const [term, setTerm] = useState(initialTerm);
-  const [value, setValue] = React.useState();
   const [inputValue, setInputValue] = React.useState('');
 
   return (
     <Autocomplete
       options={searchResults || []}
       loading={loading}
-      value={value}
+      value={searchedValues}
       onChange={(event, newValue) => {
-        console.log(newValue, 'VALUE');
-        if (value?.length === 3) {
-          setErrorText('You can only add up to 3 friends');
-          return setOrganizerErr(true);
-        }
-        /* const exist = value?.filter(
-          (organizer) => organizer?.id === organizerName
-        );
-
-        if (exist.length) {
-          setErrorText(`${organizerName} is already added!`);
-          return setOrganizerErr(true);
-        } */
         setErrorText('');
         setOrganizerErr(false);
-        setValue(newValue);
+        setSearchedValues(newValue);
         setEventOrganizers([...newValue]);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-        console.log(newInputValue, 'INVALUE');
+        if (eventOrganizers?.length === 3) {
+          setErrorText('You can only add up to 3 friends');
+          return setOrganizerErr(true);
+        } else {
+          setInputValue(newInputValue);
+        }
       }}
       multiple
       filterSelectedOptions
-      getOptionLabel={(option) => option?._id}
+      getOptionLabel={(option) => option?.displayName}
       renderInput={(params) => (
         <TextField
           {...params}
           value={term}
           variant='outlined'
+          error={organizersErr}
           onChange={(e) => {
             updateSearchTerm(e.target.value);
             setTerm(e.target.value);

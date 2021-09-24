@@ -105,9 +105,10 @@ export default function CreateEvent({ open, setOpen }) {
   const [previewURL, setPreviewURL] = useState();
   const [tagText, setTagText] = useState('');
   const [eventTags, setEventTags] = useState([]);
-  const [organizerName, setOrganizerName] = useState('');
   const [eventOrganizers, setEventOrganizers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchedValues, setSearchedValues] = useState();
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   //const theme = useTheme();
   const state = useSelector((st) => st);
@@ -256,7 +257,6 @@ export default function CreateEvent({ open, setOpen }) {
     setLinkErr(false);
     setDateErr(false);
     setLocationErr(false);
-    setOrganizerName('');
     setEventOrganizers([]);
     setEventStartDate('');
     setEventEndDate('');
@@ -316,7 +316,6 @@ export default function CreateEvent({ open, setOpen }) {
                     setEventTags([]);
                     setTagText('');
                     setPreviewURL();
-                    setOrganizerName('');
                     setEventOrganizers([]);
                   }}
                 />
@@ -424,83 +423,27 @@ export default function CreateEvent({ open, setOpen }) {
                         </Typography>
                       </div>
                       <>
-                        {/* <Paper
-                          elevation={0}
-                          component='form'
-                          className={classes.paperSearch}
-                        >
-                          
-                          <InputBase
-                            value={organizerName}
-                            //onChange={(e) => setTagText(e.target.value)}
-                            variant='outlinedInput'
-                            onChange={(e) =>
-                              setOrganizerName(
-                                organizerName?.length >= 15
-                                  ? e.target.value.substring(
-                                      0,
-                                      e.target.value.length - 1
-                                    )
-                                  : e.target.value.substring(0, 15)
-                              )
-                            }
-                            className={classes.input}
-                            placeholder='eg "@username"'
-                            inputProps={{ 'aria-label': 'add organizers' }}
-                            endAdornment={
-                              <Button
-                                onClick={() => {
-                                  if (!organizerName.length) return;
-                                  const exist = eventOrganizers?.filter(
-                                    (organizer) => organizer === organizerName
-                                  );
-
-                                  if (exist.length) {
-                                    setErrorText(
-                                      `${organizerName} is already added!`
-                                    );
-                                    return setOrganizerErr(true);
-                                  }
-                                  setErrorText('');
-                                  setOrganizerErr(false);
-                                  setEventOrganizers([
-                                    ...eventOrganizers,
-                                    organizerName,
-                                  ]);
-                                  setOrganizerName('');
-                                }}
-                                //disabled={addLoading}
-                                size='small'
-                                className='my-1'
-                                style={{
-                                  display:
-                                    eventOrganizers?.length === 3 && 'none',
-                                }}
-                              >
-                                Add
-                              </Button>
-                            }
-                          />
-                        </Paper> */}
+                        <Typography variant='body2' color='error'>
+                          {organizersErr && errorText}
+                        </Typography>
                         <OrganizerSearch
                           loading={usersLoading}
                           searchResults={usersData?.Users?.search}
+                          searchedValues={searchedValues}
+                          setSearchedValues={setSearchedValues}
                           initialTerm={searchTerm}
                           updateSearchTerm={setSearchTermDebounced}
                           setEventOrganizers={setEventOrganizers}
                           setOrganizerErr={setOrganizerErr}
                           setErrorText={setErrorText}
+                          eventOrganizers={eventOrganizers}
+                          organizersErr={organizersErr}
                         />
                         <Typography
                           variant='body2'
                           className='mt-2 mb-2 space-between'
                         >
                           <span>{`${eventOrganizers?.length}/3 friends`}</span>
-                        </Typography>
-                        <Typography variant='body2' className='mt-2 mb-2'>
-                          <Typography color='error'>
-                            {organizersErr && errorText}
-                          </Typography>
                         </Typography>
                       </>
                       <div>
@@ -546,20 +489,27 @@ export default function CreateEvent({ open, setOpen }) {
                             onChange={(e) =>
                               setTagText(
                                 tagText?.length >= 20
-                                  ? e.target.value.substring(
-                                      0,
-                                      e.target.value.length - 1
+                                  ? '#'.concat(
+                                      e.target.value
+                                        .replace(/#/g, '')
+                                        .replace(/\s/g, '')
+                                        .substring(0, e.target.value.length - 1)
                                     )
-                                  : e.target.value.substring(0, 20)
+                                  : '#'.concat(
+                                      e.target.value
+                                        .replace(/#/g, '')
+                                        .replace(/\s/g, '')
+                                        .substring(0, 20)
+                                    )
                               )
                             }
                             className={classes.input}
-                            placeholder='eg "#Crypto"'
+                            placeholder='eg "CryptoEvent"'
                             inputProps={{ 'aria-label': 'add tags' }}
                             endAdornment={
                               <Button
                                 onClick={() => {
-                                  if (!tagText.length) return;
+                                  if (tagText.length < 3) return;
                                   const exist = eventTags?.filter(
                                     (tag) => tag === tagText
                                   );
@@ -686,6 +636,8 @@ export default function CreateEvent({ open, setOpen }) {
                           handleSelectLocation={handleSelectLocation}
                           locationErr={locationErr}
                           errorText={errorText}
+                          selectedLocation={selectedLocation}
+                          setSelectedLocation={setSelectedLocation}
                         />
                       </Grid>
                       <Typography
