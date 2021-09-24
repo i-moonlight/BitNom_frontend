@@ -1,5 +1,5 @@
-import React from 'react';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import React from 'react';
 
 export default function DarkTheme({ children }) {
   //Create MUI Theme
@@ -17,6 +17,7 @@ export default function DarkTheme({ children }) {
         paperAlt: '#333333',
         default: '#171818',
         landing: '#18191a',
+        investor: '#000000',
       },
     },
   });

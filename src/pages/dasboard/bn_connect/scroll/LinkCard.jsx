@@ -11,7 +11,7 @@ import { LinkOutlined } from '@material-ui/icons';
 import React from 'react';
 
 export default function LinkCard({ link }) {
-  const { image, title, description, url, hostname } = link;
+  const { image, title, description, url, hostname } = link || {};
 
   return (
     <Card

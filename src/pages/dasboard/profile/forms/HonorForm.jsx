@@ -147,19 +147,21 @@ export default function HonorForm({ onClose, updateData }) {
               fullWidth
               name='organization'
               labelTop='Issuing Organization'
-              placeholder={updateData?.title || 'Degree Type'}
+              placeholder={updateData?.title || 'Organization Name'}
             />
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item sm={6} xs={12}>
                 <TextField
+                  fullWidth
                   required
                   type='date'
                   name='start_date'
                   labelTop='Start Date'
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item sm={6} xs={12}>
                 <TextField
+                  fullWidth
                   disabled={expires}
                   type='date'
                   name='end_date'
