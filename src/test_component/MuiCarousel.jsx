@@ -66,7 +66,7 @@ export default function MuiCarousel() {
           cycleNavigation
           animation='slide'
         >
-          {splitted?.map((split, indexUpper) => (
+          {splitted?.map(split => (
             <Grid key={split[0]?.title} container spacing={3}>
               {split?.map(({ title, text }, index) => (
                 <EcosystemCard
