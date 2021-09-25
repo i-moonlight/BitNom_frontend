@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Slide } from 'material-auto-rotating-carousel';
 import AutoRotatingCarousel from 'material-auto-rotating-carousel/lib/AutoRotatingCarousel';
 import { blue, green, red } from '@material-ui/core/colors';
-import Button from './components/Button';
+import Button from '../components/Button';
 
-export default function TestComponent() {
+export default function TrainerCarousel() {
   const [state, setState] = useState({ open: false });
 
   return (

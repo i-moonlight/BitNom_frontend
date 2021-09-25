@@ -46,7 +46,7 @@ import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
-import TestComponent from './TestComponent';
+import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
 
 //GraphQL and Apollo Client Setup
