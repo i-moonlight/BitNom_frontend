@@ -84,7 +84,7 @@ function OrganizerSearch({
               </span>
 
               <Typography variant='body2' color='textSecondary'>
-                {`@${option?.displayName}`}
+                {`@${option?._id}`}
               </Typography>
             </Grid>
           </Grid>

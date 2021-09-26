@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { MoreVert, FiberManualRecord } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 import {
   notificationBodyFactory,
   getCreationTime,
@@ -23,28 +24,39 @@ const notificationOptionId = 'menu-notification-option';
 export default function NotificationListItem({ notification }) {
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
+  const history = useHistory();
 
   const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
-  const handleNotificationOptionOpen = event => {
+  const handleNotificationOptionOpen = (event) => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
-  const getReadStatus = ntfn => {
+  let link;
+  if (notification?.link_to_resource?.type === 'post') {
+    link = `#`;
+  } else if (notification?.link_to_resource?.type === 'event') {
+    link = `/dashboard/events/${notification?.link_to_resource?._id}`;
+  } else if (notification?.link_to_resource?.type === 'comment') {
+    link = `#`;
+  } else if (notification?.link_to_resource?.type === 'user') {
+    link = `#`;
+  }
+  const getReadStatus = (ntfn) => {
     let read;
-    ntfn.to_notify?.forEach(item => {
+    ntfn.to_notify?.forEach((item) => {
       if (item?.user_id == user._id) {
         read = item?.read;
       }
     });
     return read;
   };
-  const getNotifyingUser = ntfn => {
+  const getNotifyingUser = (ntfn) => {
     let name;
-    ntfn?.content_entities?.forEach(item => {
+    ntfn?.content_entities?.forEach((item) => {
       if (item?.type === 'resource_tag') {
         name = item?.url?.displayName;
       }
@@ -60,7 +72,10 @@ export default function NotificationListItem({ notification }) {
             display: 'grid',
             alignItems: 'center',
             gridTemplateColumns: '1fr 22fr',
+            zIndex: 1,
+            cursor: 'pointer',
           }}
+          onClick={() => history.push(link)}
         >
           <div>
             <FiberManualRecord
