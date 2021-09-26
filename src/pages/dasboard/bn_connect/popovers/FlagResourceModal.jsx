@@ -23,7 +23,7 @@ export default function FlagResourceModal({
 }) {
   const [createFlag, { data }] = useMutation(MUTATION_CREATE_FLAG);
 
-  const onCreateFlag = async ICreateFlag => {
+  const onCreateFlag = async (ICreateFlag) => {
     await createFlag({
       variables: {
         data: ICreateFlag,
@@ -37,7 +37,7 @@ export default function FlagResourceModal({
     }
   }, [data]);
 
-  const handleCreateFlag = reason => {
+  const handleCreateFlag = (reason) => {
     onCreateFlag({
       _id: flaggedResource?._id,
       type: flaggedResource?.resourceType,
@@ -109,7 +109,7 @@ export default function FlagResourceModal({
                 </ListItem>
                 <ListItem button divider>
                   <ListItemText
-                    primary={`Unfollow the author of this ${flaggedResource?.resourceType}`}
+                    primary={`Unfollow the owner of this ${flaggedResource?.resourceType}`}
                   />
                 </ListItem>
                 <Divider />

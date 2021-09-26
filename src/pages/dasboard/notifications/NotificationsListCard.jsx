@@ -54,7 +54,7 @@ export default function NotificationsListCard({
   });
 
   const userProfile = notifications?.filter((item) => {
-    const toCheck = ['followed you', 'invited you'];
+    const toCheck = ['followed you', 'invited you', 'added you'];
 
     return toCheck.some((o) => item.content.includes(o));
   });
