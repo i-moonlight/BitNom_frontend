@@ -24,7 +24,7 @@ import {
   ShareRounded,
 } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-import Carousel from 'react-material-ui-carousel';
+// import Carousel from 'react-material-ui-carousel';
 import igImg from '../../../../assets/investor/ig.png';
 import supplyImg from '../../../../assets/investor/image_5.png';
 import landingImg from '../../../../assets/investor/landing.png';
@@ -481,27 +481,27 @@ export default function InvestorTab() {
                   </Typography>
                 </Grid>
               </Grid>
-              <Carousel
+              {/* <Carousel
                 autoPlay
                 indicators
                 // navButtonsAlwaysVisible
                 // navButtonsAlwaysInvisible
                 cycleNavigation
                 animation='slide'
-              >
-                {splittedEcosystem?.map(item => (
-                  <Grid key={item[0]?.title} container spacing={3}>
-                    {item?.map(({ title, text, id }) => (
-                      <EcosystemCard
-                        key={title}
-                        title={title}
-                        text={text}
-                        index={id}
-                      />
-                    ))}
-                  </Grid>
-                ))}
-              </Carousel>
+              > */}
+              {splittedEcosystem?.map(item => (
+                <Grid key={item[0]?.title} container spacing={3}>
+                  {item?.map(({ title, text, id }) => (
+                    <EcosystemCard
+                      key={title}
+                      title={title}
+                      text={text}
+                      index={id}
+                    />
+                  ))}
+                </Grid>
+              ))}
+              {/* </Carousel> */}
               <Grid container spacing={3}>
                 <Card variant='outlined' className='mt-4'>
                   <Accordion
