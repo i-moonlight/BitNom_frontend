@@ -144,3 +144,23 @@ ul li::before {
   width: 1em; /* Also needed for space (tweak if needed) */
   margin-left: -1.5em; /* Also needed for space (tweak if needed) */
 }
+
+/*  */
+.cover-upload-dropzone {
+  /* position: absolute !important; */
+  opacity: 0.9;
+  min-height: 120px !important;
+  background-color: transparent !important;
+}
+
+.profile-upload-dropzone {
+  /* position: absolute !important; */
+  opacity: 0.9;
+  min-height: 80px !important;
+  min-width: 80px !important;
+  height: 80px !important;
+  width: 80px !important;
+  background-color: transparent !important;
+  /* visibility: hidden; */
+}
+/*  */

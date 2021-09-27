@@ -24,7 +24,7 @@ export default function TextField({
   ...defaultProps
 }) {
   const theme = useTheme();
-  const { handleChange, errors, setFieldTouched, touched } = name
+  const { handleChange, errors, setFieldTouched, touched, values } = name
     ? useFormikContext()
     : {};
 
@@ -61,6 +61,7 @@ export default function TextField({
           style={{
             fontSize: theme.typography.body2.fontSize,
           }}
+          value={name && values[name]}
           fullWidth
           label={label}
           error={name && touched[name] && errors[name] && true}
