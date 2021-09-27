@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Container, Typography } from '@material-ui/core';
 import {
   Timeline,
   TimelineConnector,
@@ -14,34 +14,36 @@ import { roadMap } from '../../utilities/welcome.data';
 
 export default function RoadmapTab() {
   return (
-    <div>
-      {roadMap.map(({ year, quaters }) => {
-        return (
-          <div key={year}>
-            <Timeline align='alternate'>
-              {quaters.map(({ name, text, list }, index) => (
-                <TimelineItem key={list[0]}>
-                  <TimelineOppositeContent>
-                    <RoadMapCard text={text} list={list} />
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
+    <div className='bg-black py-5'>
+      <Container maxWidth='lg'>
+        {roadMap.map(({ year, quaters }) => {
+          return (
+            <div key={year}>
+              <Timeline align='alternate'>
+                {quaters.map(({ name, text, list }, index) => (
+                  <TimelineItem key={list[0]}>
+                    <TimelineOppositeContent>
+                      <RoadMapCard text={text} list={list} />
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
 
-                  <TimelineContent>
-                    <YearQuaterText
-                      year={year}
-                      quater={name}
-                      even={index % 2 == 0}
-                    />
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
-          </div>
-        );
-      })}
+                    <TimelineContent>
+                      <YearQuaterText
+                        year={year}
+                        quater={name}
+                        even={index % 2 == 0}
+                      />
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </div>
+          );
+        })}
+      </Container>
     </div>
   );
 }

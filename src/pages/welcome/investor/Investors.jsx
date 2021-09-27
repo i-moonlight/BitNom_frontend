@@ -5,7 +5,7 @@ import EcosystemTab from './tabs/EcosystemTab';
 import InvestorTab from './tabs/InvestorTab';
 import RoadmapTab from './tabs/RoadmapTab';
 
-export default function Investor() {
+export default function Investors() {
   const [tabValue, setTabValue] = useState(0);
   // const classes = useStyles();
 
@@ -25,43 +25,6 @@ export default function Investor() {
         <TabPanel value={tabValue} index={2}>
           <RoadmapTab />
         </TabPanel>
-        {/* <section
-          className='my-5 text-center'
-          style={{
-            backgroundColor: '#006097',
-            backgroundImage: `url('${bottomBg}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            width: '100%',
-            borderRadius: 20,
-            // height: 200,
-          }}
-        >
-          <div className='p-4 px-5'>
-            <DarkTheme>
-              <Typography color='textPrimary' gutterBottom className='fw-bold'>
-                WHO WILL BITNORM ULTIMATELY SERVE?
-              </Typography>
-              <Typography color='textPrimary' gutterBottom className='my-4'>
-                Underlying all activities on the BitNorm application are 3 key
-                ideologies: learn, share, and profit. Our goal, therefore, is to
-                unite learners, professionals, and businesses all under one roof
-                with each one of the benefits from the other.
-              </Typography>
-              <Button
-                size='large'
-                className='px-5'
-                variant='outlined'
-                style={{
-                  color: '#fff',
-                  borderColor: '#fff',
-                }}
-              >
-                Get Started
-              </Button>
-            </DarkTheme>
-          </div>
-        </section> */}
       </Paper>
     </Wrapper>
   );

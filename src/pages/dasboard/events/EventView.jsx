@@ -32,7 +32,11 @@ import moment from 'moment';
 import Button from '../../../components/Button';
 import { Link } from 'react-router-dom';
 import Screen from '../../../components/Screen';
-import { generateRandomColor } from '../utilities/functions';
+import {
+  contentBodyFactory,
+  generateRandomColor,
+  getDateOrdinal,
+} from '../utilities/functions';
 import {
   QUERY_FETCH_PROFILE,
   QUERY_EVENT_BY_ID,
@@ -45,6 +49,12 @@ import CreateEventCard from './CreateEventCard';
 import GoogleApiWrapper from './EventMap';
 import AttendeeComponent from './AttendeeComponent';
 import CreatePost from '../bn_connect/scroll/CreatePost';
+import InviteFriends from './InviteFriends';
+import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
+
+import EventOptionsPopover from './EventOptionsPopover';
+
+const eventOptionsId = 'event-options-menu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '3fr 2fr',
     },
   },
+
+  endTime: {
+    color: theme.palette.primary.main,
+  },
   avatar: {
     backgroundColor: generateRandomColor(),
     marginRight: '8px',
@@ -68,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EventView({ match }) {
+  const [eventOptionsAnchorEl, setEventOptionsAnchorEl] = useState(null);
+
+  const [openInvite, setOpenInvite] = useState(false);
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [updateEventOpen, setUpdateEventOpen] = useState(false);
   const [eventToEdit, setEventToEdit] = useState(null);
@@ -79,10 +96,12 @@ export default function EventView({ match }) {
   const [videoDisabled, setVideoDisabled] = useState(false);
   const [imageDisabled, setImageDisabled] = useState(false);
   const [sharedResource, setSharedResource] = useState(null);
+  const [flaggedResource, setFlaggedResource] = useState(null);
   const [createScrollOpen, setCreateScrollOpen] = useState(false);
+  const [createFlagOpen, setCreateFlagOpen] = useState(false);
 
   const classes = useStyles();
-
+  const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
   const { loading: eventLoading, data: eventData } = useQuery(
     QUERY_EVENT_BY_ID,
     {
@@ -94,7 +113,6 @@ export default function EventView({ match }) {
     context: { clientName: 'users' },
   });
 
-  const event = eventData?.Events?.getById;
   const profile = profileData?.Users?.profile;
 
   const [
@@ -131,10 +149,17 @@ export default function EventView({ match }) {
     );
   };
 
+  const handleEventOptionsClose = () => {
+    setEventOptionsAnchorEl(null);
+  };
+  const handleEventOptionsOpen = (e) => {
+    setEventOptionsAnchorEl(e.currentTarget);
+  };
+
   const handleAttendEvent = () => {
     attendEvent({
       variables: {
-        _id: event?._id,
+        _id: eventData?.Events?.getById?._id,
       },
       refetchQueries: [
         {
@@ -148,7 +173,7 @@ export default function EventView({ match }) {
   const handleRemoveAttendance = () => {
     removeAttendance({
       variables: {
-        _id: event?._id,
+        _id: eventData?.Events?.getById?._id,
       },
       refetchQueries: [
         {
@@ -157,7 +182,7 @@ export default function EventView({ match }) {
         },
       ],
     });
-    console.log(removeAttendanceData, attendData);
+    if (!attendData) console.log(removeAttendanceData, attendData);
   };
 
   const handleChange = (e, val) => {
@@ -173,26 +198,23 @@ export default function EventView({ match }) {
     });
     return status;
   };
-
-  useEffect(() => {
-    if (getAttendeeStatus(event)) {
-      setAttendanceText('Attending');
-    } else {
-      setAttendanceText('Attend');
-    }
-  }, [event]);
-
   const getAttendeeStatus = (input) => {
-    let status;
+    let status = false;
     input?.attendees?.forEach((item) => {
       if (item?.attendee?._id === profile?._id) {
-        status = true;
-      } else {
-        status = false;
+        return (status = true);
       }
     });
     return status;
   };
+
+  useEffect(() => {
+    if (getAttendeeStatus(eventData?.Events?.getById) == true) {
+      setAttendanceText('Attending');
+    } else {
+      setAttendanceText('Attend');
+    }
+  }, [eventData]);
 
   return (
     <Screen>
@@ -225,7 +247,7 @@ export default function EventView({ match }) {
                   <CircularProgress color='primary' size={60} thickness={6} />
                 )}
               </Grid>
-              {event && (
+              {eventData?.Events?.getById && (
                 <div>
                   <Hidden lgUp>
                     <Grid item lg={3}>
@@ -250,8 +272,10 @@ export default function EventView({ match }) {
                     <CardMedia
                       style={{ height: 200, backgroundColor: '#ddd' }}
                       image={
-                        event?.image && event?.image !== null
-                          ? process.env.REACT_APP_BACKEND_URL + event?.image
+                        eventData?.Events?.getById?.image &&
+                        eventData?.Events?.getById?.image !== null
+                          ? process.env.REACT_APP_BACKEND_URL +
+                            eventData?.Events?.getById?.image
                           : 'https://picsum.photos/400/500'
                       }
                       component='img'
@@ -276,7 +300,11 @@ export default function EventView({ match }) {
                               height: 80,
                             }}
                           >
-                            {moment.utc(event?.date)._d.getDate()}
+                            {getDateOrdinal(
+                              moment
+                                .utc(eventData?.Events?.getById?.startDate)
+                                ._d.getDate()
+                            )}
                           </Avatar>
                           <Typography
                             className='pt-1'
@@ -284,21 +312,31 @@ export default function EventView({ match }) {
                             color='primary'
                             gutterBottom
                           >
-                            {new Date(event?.date).toUTCString()}
+                            {moment(
+                              eventData?.Events?.getById?.startDate
+                            ).format('ddd, MMMM Do YYYY, h:mm a')}
                           </Typography>
                           <Typography
                             gutterBottom
                             color='textSecondary'
                             variant='body1'
                           >
-                            {event?.title}
+                            {eventData?.Events?.getById?.title}
                           </Typography>
                           <Typography
                             gutterBottom
                             color='textSecondary'
                             variant='body2'
                           >
-                            {`${event?.attendees?.length} Going`}
+                            {`${
+                              eventData?.Events?.getById?.attendees?.length
+                            } ${
+                              new Date(
+                                eventData?.Events?.getById?.endDate
+                              ).getTime() < new Date().getTime()
+                                ? 'Attended'
+                                : 'Going'
+                            }`}
                           </Typography>
                         </div>
 
@@ -312,12 +350,19 @@ export default function EventView({ match }) {
                         >
                           <Typography></Typography>
                           <Typography className='text-success' variant='body2'>
-                            {event?.host?._id === profile?._id ? (
+                            {eventData?.Events?.getById?.host?._id ===
+                            profile?._id ? (
                               <Button
-                                //onClick={handleAttendEvent}
+                                style={{
+                                  display:
+                                    new Date(
+                                      eventData?.Events?.getById?.endDate
+                                    ).getTime() < new Date().getTime() &&
+                                    'none',
+                                }}
                                 color='primary'
                                 onClick={() => {
-                                  setEventToEdit(event);
+                                  setEventToEdit(eventData?.Events?.getById);
                                   setUpdateEventOpen(true);
                                 }}
                               >
@@ -325,20 +370,32 @@ export default function EventView({ match }) {
                               </Button>
                             ) : (
                               <Button
+                                style={{
+                                  display:
+                                    new Date(
+                                      eventData?.Events?.getById?.endDate
+                                    ).getTime() < new Date().getTime() &&
+                                    'none',
+                                }}
                                 color='primary'
-                                onMouseEnter={() =>
-                                  getAttendeeStatus(event) &&
-                                  setAttendanceText('Remove Attendance')
+                                onMouseOver={() =>
+                                  getAttendeeStatus(
+                                    eventData?.Events?.getById
+                                  ) && setAttendanceText('Remove Attendance')
                                 }
                                 onMouseLeave={() => {
-                                  if (getAttendeeStatus(event)) {
+                                  if (
+                                    getAttendeeStatus(
+                                      eventData?.Events?.getById
+                                    )
+                                  ) {
                                     setAttendanceText('Attending');
                                   } else {
                                     setAttendanceText('Attend');
                                   }
                                 }}
                                 onClick={
-                                  getAttendeeStatus(event)
+                                  getAttendeeStatus(eventData?.Events?.getById)
                                     ? handleRemoveAttendance
                                     : handleAttendEvent
                                 }
@@ -384,26 +441,34 @@ export default function EventView({ match }) {
                             size='small'
                             variant='outlined'
                             color='primary'
+                            onClick={() => {
+                              setOpenInvite(true);
+                            }}
                             style={{
                               display:
-                                event?.host?._id !== profile?._id && 'none',
+                                (eventData?.Events?.getById?.host?._id !==
+                                  profile?._id ||
+                                  new Date(
+                                    eventData?.Events?.getById?.endDate
+                                  ).getTime() < new Date().getTime()) &&
+                                'none',
                             }}
                           >
                             Invite friends
                           </Button>
                         </Hidden>
-                        <Tooltip title='Share to followers'>
+                        <Tooltip title='Share this event'>
                           <IconButton>
                             <ShareOutlined
                               onClick={() => {
                                 setCreateScrollOpen(true);
-                                setSharedResource(event);
+                                setSharedResource(eventData?.Events?.getById);
                               }}
                               color='primary'
                             />
                           </IconButton>
                         </Tooltip>
-                        <IconButton>
+                        <IconButton onClick={handleEventOptionsOpen}>
                           <MoreHorizRounded />
                         </IconButton>
                       </Grid>
@@ -422,6 +487,7 @@ export default function EventView({ match }) {
                                 display='inline-flex'
                                 className='center-horizontal'
                                 variant='body2'
+                                gutterBottom
                               >
                                 <Launch
                                   fontSize='small'
@@ -431,17 +497,18 @@ export default function EventView({ match }) {
                                 <Typography
                                   style={{ marginLeft: '2px' }}
                                   component='a'
-                                  href={event?.link}
+                                  href={eventData?.Events?.getById?.link}
                                   target='_blank'
                                   rel='noreferrer'
                                 >
-                                  {event?.link}
+                                  {eventData?.Events?.getById?.link}
                                 </Typography>
                               </Typography>
                               <Typography
                                 display='inline-flex'
                                 className='center-horizontal'
                                 variant='body2'
+                                gutterBottom
                               >
                                 <Public
                                   fontSize='small'
@@ -449,12 +516,88 @@ export default function EventView({ match }) {
                                 />
                                 Public
                               </Typography>
+
+                              <Typography
+                                display='inline'
+                                className='center-horizontal'
+                                variant='body2'
+                              >
+                                <span>
+                                  End date :{' '}
+                                  <span className={classes.endTime}>
+                                    {moment(
+                                      eventData?.Events?.getById?.endDate
+                                    ).format('ddd, MMMM Do YYYY, h:mm a')}
+                                  </span>
+                                </span>
+                              </Typography>
+                              <Typography
+                                display='inline-flex'
+                                className='center-horizontal'
+                                gutterBottom
+                              >
+                                <Typography variant='body2'>
+                                  Organizers :
+                                </Typography>
+                                <Typography
+                                  display='inline-flex'
+                                  className='center-horizontal'
+                                >
+                                  {eventData?.Events?.getById?.organizers?.map(
+                                    (org) => (
+                                      <Typography
+                                        variant='body2'
+                                        component='a'
+                                        style={{
+                                          margin: '0px 4px',
+                                        }}
+                                        key={org?._id}
+                                        href='#'
+                                      >
+                                        {org?.displayName}
+                                      </Typography>
+                                    )
+                                  )}
+                                </Typography>
+                              </Typography>
+                              <Typography
+                                display='inline-flex'
+                                className='center-horizontal'
+                                gutterBottom
+                              >
+                                <Typography variant='body2'>Tags :</Typography>
+                                <Typography
+                                  display='inline-flex'
+                                  className='center-horizontal'
+                                >
+                                  {eventData?.Events?.getById?.tags?.map(
+                                    (tag) => (
+                                      <Typography
+                                        variant='body2'
+                                        component='a'
+                                        style={{
+                                          margin: '0px 4px',
+                                        }}
+                                        key={tag}
+                                        href='#'
+                                      >
+                                        {tag}
+                                      </Typography>
+                                    )
+                                  )}
+                                </Typography>
+                              </Typography>
                             </div>
-                            {event?.location?.type === 'physical' && (
+                            {eventData?.Events?.getById?.location?.type ===
+                              'physical' && (
                               <div>
                                 <GoogleApiWrapper
-                                  latitude={event?.location?.lat}
-                                  longitude={event?.location?.long}
+                                  latitude={
+                                    eventData?.Events?.getById?.location?.lat
+                                  }
+                                  longitude={
+                                    eventData?.Events?.getById?.location?.long
+                                  }
                                 />
                                 <div className='center-horizontal'>
                                   <RoomRounded color='primary' />
@@ -469,7 +612,8 @@ export default function EventView({ match }) {
                                       rel='noreferrer'
                                     >
                                       {truncateText(
-                                        event?.location?.address,
+                                        eventData?.Events?.getById?.location
+                                          ?.address,
                                         40
                                       )}
                                     </a>
@@ -486,7 +630,13 @@ export default function EventView({ match }) {
                             Description
                           </Typography>
                           <Typography component='p' variant='body2'>
-                            {event?.description}
+                            <Typography
+                              dangerouslySetInnerHTML={{
+                                __html: contentBodyFactory(
+                                  eventData?.Events?.getById
+                                ),
+                              }}
+                            ></Typography>
                           </Typography>
                         </CardContent>
                       </Card>
@@ -502,7 +652,7 @@ export default function EventView({ match }) {
                                 className={classes.avatar}
                               ></Avatar>
                               <Typography variant='body1'>
-                                {event?.host?.displayName}
+                                {eventData?.Events?.getById?.host?.displayName}
                               </Typography>
                             </div>
                             <Typography>
@@ -516,7 +666,7 @@ export default function EventView({ match }) {
                             variant='body1'
                             component='p'
                           >
-                            {event?.host?.bio}
+                            {eventData?.Events?.getById?.host?.bio}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -525,26 +675,29 @@ export default function EventView({ match }) {
                   {value === 1 && (
                     <Card className='mb-3'>
                       <CardContent>
-                        {event?.attendees?.length > 0 ? (
+                        {eventData?.Events?.getById?.attendees?.length > 0 ? (
                           <>
                             <Typography variant='body1'>
                               Attending Event
                             </Typography>
                             <List>
-                              {event?.attendees?.map((user) => (
-                                <AttendeeComponent
-                                  item={user}
-                                  key={user?.attendee?._id}
-                                  getFollowStatus={getFollowStatus}
-                                  profile={profile}
-                                />
-                              ))}
+                              {eventData?.Events?.getById?.attendees?.map(
+                                (user) => (
+                                  <AttendeeComponent
+                                    item={user}
+                                    key={user?.attendee?._id}
+                                    getFollowStatus={getFollowStatus}
+                                    profile={profile}
+                                  />
+                                )
+                              )}
                             </List>
                           </>
                         ) : (
                           <Grid align='center'>
                             <Typography variant='body1' color='primary'>
-                              {event?.host?._id === profile?._id
+                              {eventData?.Events?.getById?.host?._id ===
+                              profile?._id
                                 ? 'Your event has not attendees yet. Invite your friends. or share to your followers'
                                 : '0 Attendees'}
                             </Typography>
@@ -579,6 +732,29 @@ export default function EventView({ match }) {
         setOpenVideo={setOpenVideo}
         sharedResource={sharedResource}
         setSharedResource={setSharedResource}
+      />
+      <InviteFriends
+        setOpenInvite={setOpenInvite}
+        profile={profile}
+        openInvite={openInvite}
+        event={eventData?.Events?.getById}
+      />
+      <EventOptionsPopover
+        event={eventData?.Events?.getById}
+        profile={profile}
+        eventOptionsAnchorEl={eventOptionsAnchorEl}
+        eventOptionsId={eventOptionsId}
+        setOpenInvite={setOpenInvite}
+        isEventOptionsOpen={isEventOptionsOpen}
+        setFlaggedResource={setFlaggedResource}
+        setOpenFlag={setCreateFlagOpen}
+        handleEventOptionsClose={handleEventOptionsClose}
+      />
+      <FlagResourceModal
+        openFlag={createFlagOpen}
+        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        flaggedResource={flaggedResource}
+        setFlaggedResource={setFlaggedResource}
       />
       <UpdateEvent
         profileData={profileData?.Users?.profile}

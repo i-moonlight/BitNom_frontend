@@ -21,6 +21,10 @@ export const QUERY_GET_USER_NOTIFICATIONS = gql`
             displayName
           }
         }
+        link_to_resource {
+          _id
+          type
+        }
         image
         to_notify {
           _id

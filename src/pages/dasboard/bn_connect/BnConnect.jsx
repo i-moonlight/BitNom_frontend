@@ -104,6 +104,9 @@ export default function BnConnect() {
   const OneSignal = window.OneSignal || [];
   useEffect(() => {
     OneSignal.push(() => {
+      OneSignal.init({
+        appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+      });
       OneSignal.isPushNotificationsEnabled(function (isEnabled) {
         if (isEnabled) {
           var externalUserId = user._id;
@@ -142,7 +145,7 @@ export default function BnConnect() {
                   scrolls={userScrolls?.Posts?.get?.length}
                   following={profileData?.Users?.profile?.following?.length}
                   followers={profileData?.Users?.profile?.followers?.length}
-                  setOpen={(open) => setCreateScrollOpen(open)}
+                  setOpen={open => setCreateScrollOpen(open)}
                   events={userEvents?.Events?.get?.length}
                 />
               </Grid>
@@ -170,8 +173,8 @@ export default function BnConnect() {
                     setFlaggedResource={setFlaggedResource}
                     setOpenReactions={setOpenReactions}
                     setResourceReactions={setResourceReactions}
-                    setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                    setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+                    setImagePreviewURL={url => setImagePreviewURL(url)}
+                    setImagePreviewOpen={open => setImagePreviewOpen(open)}
                     setSharedResource={setSharedResource}
                     setCommentToEdit={setCommentToEdit}
                     setPostToEdit={setPostToEdit}

@@ -140,7 +140,7 @@ export const MUTATION_CREATE_FILE_VIDEO = gql`
   }
 `;
 export const NOTIFICATIONS_SUBSCRIPTION = gql`
-  subscription newNotifications($_id: String!) {
+  subscription liveUpdates($_id: String) {
     liveUpdates(_id: $_id) {
       count
       id
@@ -183,6 +183,15 @@ export const MUTATION_CREATE_EVENT = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -198,7 +207,6 @@ export const MUTATION_CREATE_EVENT = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -218,6 +226,15 @@ export const MUTATION_UPDATE_EVENT = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -233,7 +250,6 @@ export const MUTATION_UPDATE_EVENT = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -243,6 +259,14 @@ export const MUTATION_DELETE_EVENT = gql`
   mutation ($_id: ID!) {
     Events {
       delete(_id: $_id)
+    }
+  }
+`;
+
+export const MUTATION_INVITE_FRIENDS_TO_EVENT = gql`
+  mutation ($data: InviteFriends) {
+    Events {
+      inviteFriends(data: $data)
     }
   }
 `;
@@ -277,6 +301,15 @@ export const QUERY_LOAD_EVENTS = gql`
           profile_pic
           bio
         }
+        tags
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -292,7 +325,6 @@ export const QUERY_LOAD_EVENTS = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -312,6 +344,29 @@ export const QUERY_EVENT_BY_ID = gql`
           profile_pic
           bio
         }
+        tags
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+          mentioned {
+            _id
+            displayName
+          }
+        }
+        organizers {
+          _id
+          displayName
+          profile_pic
+          bio
+        }
+        endDate
+        startDate
         location {
           type
           lat
@@ -327,7 +382,6 @@ export const QUERY_EVENT_BY_ID = gql`
             bio
           }
         }
-        date
       }
     }
   }
@@ -454,11 +508,8 @@ export const MUTATION_DELETE_COMMENT = gql`
   }
 `;
 
-export const QUERY_LOAD_SCROLLS = gql`
-  query ($data: IGetPosts) {
-    Posts {
-      get(data: $data) {
-        _id
+const postSubFields = `
+ _id
         images
         video
         author {
@@ -530,7 +581,8 @@ export const QUERY_LOAD_SCROLLS = gql`
                 bio
               }
             }
-            date
+            endDate
+            startDate
           }
           type
         }
@@ -565,6 +617,13 @@ export const QUERY_LOAD_SCROLLS = gql`
             profile_pic
           }
         }
+  `;
+
+export const QUERY_LOAD_SCROLLS = gql`
+  query ($data: IGetPosts) {
+    Posts {
+      get(data: $data) {
+         ${postSubFields}
       }
     }
   }
@@ -591,6 +650,10 @@ export const GET_USER_NOTIFICATIONS = gql`
             displayName
           }
         }
+        link_to_resource {
+          _id
+          type
+        }
         image
         to_notify {
           _id
@@ -613,6 +676,19 @@ export const QUERY_GET_USERS = gql`
         displayName
         reputation
         type
+        bio
+        profile_pic
+      }
+    }
+  }
+`;
+
+export const QUERY_SEARCH_USERS = gql`
+  query ($params: ISearchUsers) {
+    Users {
+      search(params: $params) {
+        _id
+        displayName
         bio
         profile_pic
       }
@@ -655,86 +731,7 @@ export const GET_BOOKMARKED_SCROLLS = gql`
   query ($data: IGetBookmarked) {
     Posts {
       getBookmarked(data: $data) {
-        _id
-        images
-        video
-        author {
-          _id
-          profile_pic
-          displayName
-          reputation
-          type
-        }
-        comments
-        bookmarks
-        createdAt
-        shared_resource {
-          _id {
-            _id
-            images
-            video
-            author {
-              _id
-              profile_pic
-              displayName
-              reputation
-              type
-            }
-            comments
-            reactions {
-              likes
-              dislikes
-              loves
-              celebrations
-            }
-            content
-            content_entities {
-              type
-              offset
-              length
-              resource {
-                _id
-                type
-              }
-              url
-              mentioned {
-                _id
-                displayName
-              }
-            }
-          }
-        }
-        is_flag
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
-        content
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
+         ${postSubFields}
       }
     }
   }
@@ -744,53 +741,7 @@ export const QUERY_GET_SCROLL_BY_ID = gql`
   query GetByID($_id: ID!) {
     Posts {
       getById(_id: $_id) {
-        _id
-        images
-        video
-        author {
-          _id
-          profile_pic
-          displayName
-          reputation
-          type
-        }
-        comments
-        bookmarks
-        shared_resource {
-          _id
-        }
-        createdAt
-        is_flag
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
-        content
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
+         ${postSubFields}
       }
     }
   }

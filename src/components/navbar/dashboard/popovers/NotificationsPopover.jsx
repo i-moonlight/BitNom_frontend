@@ -21,6 +21,7 @@ import {
   notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { useHistory } from 'react-router-dom';
 
 export default function NotificationsPopover({
   notificationAnchorEl,
@@ -62,16 +63,6 @@ export default function NotificationsPopover({
 }
 
 function NotificationPreview({ notifications }) {
-  const getNotifyingUser = notification => {
-    let name;
-    notification?.content_entities?.forEach(item => {
-      if (item?.type === 'resource_tag') {
-        name = item?.url?.displayName;
-      }
-    });
-    return name;
-  };
-
   return (
     <>
       {notifications?.length < 1 && (
@@ -82,32 +73,9 @@ function NotificationPreview({ notifications }) {
         </Grid>
       )}
       {notifications?.length > 0 &&
-        notifications?.slice(0, 4)?.map(item => (
-          <ListItem className='space-between' key={item} divider>
-            <ListItemAvatar>
-              <Avatar
-                style={{
-                  backgroundColor: generateRandomColor(),
-                }}
-              >
-                {getUserInitials(getNotifyingUser(item))}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <div>
-                  <Typography
-                    dangerouslySetInnerHTML={{
-                      __html: notificationBodyFactory(item),
-                    }}
-                    className='mx-1'
-                  ></Typography>
-                </div>
-              }
-              secondary={getCreationTime(item?.date)}
-            />
-          </ListItem>
-        ))}
+        notifications
+          ?.slice(0, 4)
+          ?.map((item) => <ListItemComponent key={item._id} item={item} />)}
       {notifications?.length > 0 && (
         <Link to='/dashboard/notifications'>
           <Typography variant='body2' className='my-2' color='primary'>
@@ -116,5 +84,61 @@ function NotificationPreview({ notifications }) {
         </Link>
       )}
     </>
+  );
+}
+
+function ListItemComponent({ item }) {
+  const history = useHistory();
+  let link;
+  if (item?.link_to_resource?.type === 'post') {
+    link = `#`;
+  } else if (item?.link_to_resource?.type === 'event') {
+    link = `/dashboard/events/${item?.link_to_resource?._id}`;
+  } else if (item?.link_to_resource?.type === 'comment') {
+    link = `#`;
+  } else if (item?.link_to_resource?.type === 'user') {
+    link = `#`;
+  }
+
+  const getNotifyingUser = (notification) => {
+    let name;
+    notification?.content_entities?.forEach((entity) => {
+      if (entity?.type === 'resource_tag') {
+        name = entity?.url?.displayName;
+      }
+    });
+    return name;
+  };
+  return (
+    <ListItem
+      button
+      onClick={() => history.push(link)}
+      className='space-between'
+      key={item}
+      divider
+    >
+      <ListItemAvatar>
+        <Avatar
+          style={{
+            backgroundColor: generateRandomColor(),
+          }}
+        >
+          {getUserInitials(getNotifyingUser(item))}
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={
+          <div>
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: notificationBodyFactory(item),
+              }}
+              className='mx-1'
+            ></Typography>
+          </div>
+        }
+        secondary={getCreationTime(item?.date)}
+      />
+    </ListItem>
   );
 }

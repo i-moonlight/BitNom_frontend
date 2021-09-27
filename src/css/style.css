@@ -29,12 +29,28 @@ a.alt {
   color: #006097 !important;
 }
 
+.text-wite {
+  color: #fff !important;
+}
+
+.text-black {
+  color: #000 !important;
+}
+
 .text-link {
   color: #0ea0f3 !important;
 }
 
 .bg-theme {
   background-color: #006097 !important;
+}
+
+.bg-white {
+  background-color: #fff !important;
+}
+
+.bg-black {
+  background-color: #000 !important;
 }
 
 small {
@@ -57,7 +73,6 @@ small {
 }
 
 /* Display Flex */
-
 .center-vertical {
   display: flex;
   flex-direction: column;
@@ -94,4 +109,23 @@ small {
   justify-content: space-around !important;
 }
 
-/*  */
+/* Border Radius */
+.br-1 {
+  border-radius: 0.25em;
+}
+
+.br-2 {
+  border-radius: 0.5em;
+}
+
+.br-3 {
+  border-radius: 0.75em;
+}
+
+.br-4 {
+  border-radius: 1em;
+}
+
+.br-5 {
+  border-radius: 1.25em;
+}

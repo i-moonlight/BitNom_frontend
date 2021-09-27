@@ -3,6 +3,7 @@ import { Card, Hidden, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { RoomRounded, VideocamRounded } from '@material-ui/icons';
 import React from 'react';
+import moment from 'moment';
 
 function EventPreview({ event }) {
   const history = useHistory();
@@ -12,11 +13,9 @@ function EventPreview({ event }) {
     }
     const useWordBoundary = b || true;
     const subString = str.substr(0, n - 1); // the original check
-    return (
-      (useWordBoundary
-        ? subString.substr(0, subString.lastIndexOf(' '))
-        : subString) + '...'
-    );
+    return useWordBoundary
+      ? subString.substr(0, subString.lastIndexOf(' '))
+      : subString;
   };
   return (
     <Card
@@ -61,7 +60,7 @@ function EventPreview({ event }) {
       >
         <Hidden smDown>
           <Typography color='textSecondary' variant='body2'>
-            {new Date(event?.date).toUTCString()}
+            {moment(event?.startDate).format('ddd, MMMM Do YYYY, h:mm a')}
           </Typography>
         </Hidden>
         <Typography style={{ textTransform: 'uppercase' }} variant='body2'>
@@ -103,7 +102,11 @@ function EventPreview({ event }) {
         )}
 
         <Typography variant='body2'>
-          {`${event?.attendees?.length} Going`}
+          {`${event?.attendees?.length} ${
+            new Date(event?.endDate).getTime() < new Date().getTime()
+              ? 'Attended'
+              : 'Going'
+          }`}
         </Typography>
       </div>
     </Card>

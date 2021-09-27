@@ -180,7 +180,7 @@ export default function UserCard({
               <Badge
                 className='ms-2 me-3'
                 badgeContent={events}
-                color='error'
+                color='primary'
               ></Badge>
             }
             variant='text'

@@ -24,7 +24,6 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Signup from './pages/auth/Signup';
 import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
-import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import BnServices from './pages/dasboard/bn_services/BnServices';
 import SavedItems from './pages/dasboard/bookmarks/SavedItems';
@@ -40,7 +39,7 @@ import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
 import Faqs from './pages/welcome/faqs/Faqs';
 import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
-import Investor from './pages/welcome/investor/Investors';
+import Investors from './pages/welcome/investor/Investors';
 import Landing from './pages/welcome/landing/Landing';
 import Privacy from './pages/welcome/privacy/Privacy';
 import RoadMap from './pages/welcome/roadmap/RoadMap';
@@ -71,7 +70,7 @@ class WebSocketLink extends ApolloLink {
     this.client = createClient(options);
   }
   request(operation) {
-    return new Observable((sink) => {
+    return new Observable(sink => {
       return this.client.subscribe(
         Object.assign(Object.assign({}, operation), {
           query: print(operation.query),
@@ -79,7 +78,7 @@ class WebSocketLink extends ApolloLink {
         {
           next: sink.next.bind(sink),
           complete: sink.complete.bind(sink),
-          error: (err) => {
+          error: err => {
             if (err instanceof Error) {
               return sink.error(err);
             }
@@ -103,7 +102,7 @@ class WebSocketLink extends ApolloLink {
 
 //  Add REACT_APP_SOCKET_URL=ws://localhost:3000/notifications/graphql to .env
 const wsLink = new WebSocketLink({
-  url: process.env.REACT_APP_SOCKET_URL + '/notifications/graphql',
+  url: process.env.REACT_APP_SOCKET_URL,
 });
 const profileLink = from([
   errorLink,
@@ -130,13 +129,13 @@ const uploadLink = createUploadLink({
 });
 
 const profileUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'users',
+  operation => operation.getContext().clientName === 'users',
   profileLink,
   uploadLink
 );
 
 const btnMainLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === 'notifications',
+  operation => operation.getContext().clientName === 'notifications',
   notificationsLink,
   profileUploadLink
 );
@@ -176,7 +175,8 @@ export const AppContainers = () => {
       <BrowserRouter>
         <ApolloProvider client={client}>
           <Switch>
-            {/* Landing */} <Route exact component={Landing} path='/' />
+            {/* Landing */}
+            <Route exact component={Landing} path='/' />
             <Route exact component={Faqs} path='/faqs' />
             <Route exact component={Terms} path='/terms' />
             <Route exact component={Privacy} path='/privacy_policy' />
@@ -186,7 +186,8 @@ export const AppContainers = () => {
             <Route exact component={RoadMap} path='/roadmap' />
             <Route exact component={Redirect} path='/redirect' />
             {/* Investor  */}
-            <Route exact component={Investor} path='/investors' /> {/* Auth */}
+            <Route exact component={Investors} path='/investors' />
+            {/* Auth */}
             <Route exact component={Login} path='/auth/login' />
             <Route exact component={Signup} path='/auth/signup' />
             <Route
@@ -213,7 +214,6 @@ export const AppContainers = () => {
             {/* Dashboard */}
             <Route exact component={BnConnect} path='/dashboard' />
             <Route exact component={BnServices} path='/dashboard/services' />
-            <Route exact component={BnChat} path='/dashboard/chat' />
             <Route exact component={Events} path='/dashboard/events' />
             <Route exact component={EventView} path='/dashboard/events/:id' />
             <Route exact component={People} path='/dashboard/people' />
@@ -243,7 +243,7 @@ export const AppContainers = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
