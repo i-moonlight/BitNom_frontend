@@ -98,7 +98,7 @@ export default function InviteFriends({
                 options={profile?.followers}
                 disableCloseOnSelect
                 onChange={(newValue) => {
-                  setSelectedFriends([...newValue]);
+                  setSelectedFriends(newValue);
                 }}
                 getOptionLabel={(option) => option?.userId?.displayName}
                 renderOption={(option, { selected }) => (
