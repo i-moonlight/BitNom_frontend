@@ -1,44 +1,33 @@
-import {
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  makeStyles,
-} from '@material-ui/core';
-import React, { useEffect } from 'react';
-import Screen from '../../../components/Screen';
-
-const useStyles = makeStyles(theme => ({
+import { Container, makeStyles } from "@material-ui/core";
+import React from "react";
+import Screen from "../../../components/Screen";
+import Chat from "./pages";
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper,
+  },
+  devider: {
+    height: "70vh",
+    margin: 4,
+  },
+  sidebar: {
+    width: "33%",
+    borderRight: "1px solid #ddd",
+  },
+  threadView: {
+    width: "67%",
   },
 }));
 
 export default function BnChat() {
   const classes = useStyles();
 
-  useEffect(() => {
-    //
-  }, []);
-
   return (
     <Screen>
-      <div className={classes.root}>
-        <Container maxWidth='lg'>
-          <Grid container spacing={2}>
-            <Grid item lg={4}>
-              <Card>
-                <CardContent>Left</CardContent>
-              </Card>
-            </Grid>
-            <Grid item lg={8}>
-              <Card>
-                <CardContent>right</CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </div>
+      <Container maxWidth="lg">
+        <Chat />
+      </Container>
     </Screen>
   );
 }
