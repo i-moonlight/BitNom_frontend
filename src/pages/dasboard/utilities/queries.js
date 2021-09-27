@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const QUERY_FETCH_PROFILE = gql`
   query {
@@ -263,6 +263,14 @@ export const MUTATION_DELETE_EVENT = gql`
   }
 `;
 
+export const MUTATION_INVITE_FRIENDS_TO_EVENT = gql`
+  mutation ($data: InviteFriends) {
+    Events {
+      inviteFriends(data: $data)
+    }
+  }
+`;
+
 export const MUTATION_ATTEND_EVENT = gql`
   mutation ($_id: ID!) {
     Events {
@@ -337,6 +345,20 @@ export const QUERY_EVENT_BY_ID = gql`
           bio
         }
         tags
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+          mentioned {
+            _id
+            displayName
+          }
+        }
         organizers {
           _id
           displayName
@@ -559,7 +581,8 @@ const postSubFields = `
                 bio
               }
             }
-            date
+            endDate
+            startDate
           }
           type
         }
@@ -626,6 +649,10 @@ export const GET_USER_NOTIFICATIONS = gql`
             profile_pic
             displayName
           }
+        }
+        link_to_resource {
+          _id
+          type
         }
         image
         to_notify {

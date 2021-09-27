@@ -1,9 +1,23 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { EventRounded } from '@material-ui/icons';
+import {
+  Card,
+  CardContent,
+  Typography,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  List,
+} from '@material-ui/core';
+import { EventRounded, KeyboardArrowRight } from '@material-ui/icons';
+import { useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 
-function CreateEventCard({ setOpen }) {
+function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
+  const location = useLocation();
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
   return (
     <div
       style={{
@@ -33,6 +47,38 @@ function CreateEventCard({ setOpen }) {
             <Button onClick={() => setOpen(true)}>create Event</Button>
           </div>
         </CardContent>
+        <List
+          style={{
+            display: location.pathname.includes('events/') && 'none',
+          }}
+          component='nav'
+          aria-label='secondary mailbox folder'
+        >
+          <ListItem
+            button
+            disablePadding
+            disableRipple
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 0)}
+          >
+            <ListItemText primary='Upcoming events' />
+            <ListItemSecondaryAction>
+              <KeyboardArrowRight />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem
+            button
+            disablePadding
+            disableRipple
+            selected={selectedIndex === 1}
+            onClick={(event) => handleListItemClick(event, 1)}
+          >
+            <ListItemText primary='Past events' />
+            <ListItemSecondaryAction>
+              <KeyboardArrowRight />
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
       </Card>
     </div>
   );
