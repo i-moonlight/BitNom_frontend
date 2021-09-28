@@ -29,31 +29,37 @@ export const platformLayers = [
 
 export const ecosystem = [
   {
+    id: 0,
     image: ecosystem1,
     title: 'AI Engine',
     text: 'Our premium service use advance machine learning training, deployment and inferencing to make accurate predictions on your behalf also featuring an integratable service forfor partners to use as part of their service offerings.',
   },
   {
+    id: 1,
     image: ecosystem2,
     title: 'Big Data Engine',
     text: 'Advanced crypto data warehouse with all the crypto data you would need across the WWW and have easy integratable APIs to access this service',
   },
   {
+    id: 2,
     image: ecosystem3,
     title: 'Community Engine',
     text: 'Featuring crypto forums, blogs and an integrated chat platform for social collaboration.',
   },
   {
+    id: 3,
     image: ecosystem4,
     title: 'Indexation Engine',
     text: 'Our real time coin data service featuring real time analytics and data integration across cryptocurrencies and technologies.',
   },
   {
+    id: 4,
     image: ecosystem5,
     title: 'Market Analysis Engine',
     text: 'Our fundamentals and latest market news analytics service integrated with the partners such as Coingecko',
   },
   {
+    id: 5,
     image: ecosystem6,
     title: 'Trading Engine',
     text: 'Our full fledged trading platform featuring trade management with copy trades and portfolio management wallet integration and payment platform integrations.',

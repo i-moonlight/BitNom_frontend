@@ -28,3 +28,11 @@ export const courseAndProjectValidation = Yup.object().shape({
   name: Yup.string().required().label('Name'),
   year: Yup.string().required().label('Year'),
 });
+
+export const bioValidation = Yup.object().shape({
+  bio: Yup.string().required().min(50).max(120).label('Bio'),
+});
+
+export const profileValidation = Yup.object().shape({
+  displayName: Yup.string().required().label('Name'),
+});

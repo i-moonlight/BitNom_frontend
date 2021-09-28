@@ -1,27 +1,39 @@
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { AddRounded, EditRounded } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../../../components/Button';
+import AboutForm from './forms/AboutForm';
 
 export default function AboutCard({ profile, profileView }) {
+  const [showForm, setShowForm] = useState(false);
+
+  const onClose = () => {
+    setShowForm(false);
+  };
+
   return (
     <Card className='mb-3'>
       <CardContent>
         <div className='space-between center-horizontal'>
           <Typography>About</Typography>
-          {!profileView && (
+          {!profileView && !showForm && (
             <Button
               textCase
               variant='text'
-              startIcon={profile?.bio ? <EditRounded /> : <AddRounded />}
+              // startIcon={profile?.bio ? <EditRounded /> : <AddRounded />}
+              onClick={() => setShowForm(true)}
             >
-              {profile?.bio ? 'Edit Bio' : 'Add Bio'}
+              Edit Bio
             </Button>
           )}
         </div>
-        <Typography variant='body2' className='mt-2'>
-          {profile?.bio}
-        </Typography>
+        {showForm && (
+          <AboutForm onClose={onClose} updateData={{ bio: profile?.bio }} />
+        )}
+        {!showForm && (
+          <Typography variant='body2' className='mt-2'>
+            {profile?.bio}
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );

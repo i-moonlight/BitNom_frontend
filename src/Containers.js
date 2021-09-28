@@ -46,6 +46,7 @@ import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
+import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
 
 //GraphQL and Apollo Client Setup
@@ -185,6 +186,7 @@ export const AppContainers = () => {
             <Route exact component={FeatureRequest} path='/feature_request' />
             <Route exact component={RoadMap} path='/roadmap' />
             <Route exact component={Redirect} path='/redirect' />
+            <Route exact component={TestComponent} path='/test-component' />
             {/* Investor  */}
             <Route exact component={Investors} path='/investors' />
             {/* Auth */}
