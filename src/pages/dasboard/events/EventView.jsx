@@ -504,18 +504,6 @@ export default function EventView({ match }) {
                                   {eventData?.Events?.getById?.link}
                                 </Typography>
                               </Typography>
-                              <Typography
-                                display='inline-flex'
-                                className='center-horizontal'
-                                variant='body2'
-                                gutterBottom
-                              >
-                                <Public
-                                  fontSize='small'
-                                  style={{ marginRight: '5px' }}
-                                />
-                                Public
-                              </Typography>
 
                               <Typography
                                 display='inline'
@@ -586,6 +574,18 @@ export default function EventView({ match }) {
                                     )
                                   )}
                                 </Typography>
+                              </Typography>
+                              <Typography
+                                display='inline-flex'
+                                className='center-horizontal'
+                                variant='body2'
+                                gutterBottom
+                              >
+                                <Public
+                                  fontSize='small'
+                                  style={{ marginRight: '5px' }}
+                                />
+                                Public
                               </Typography>
                             </div>
                             {eventData?.Events?.getById?.location?.type ===
@@ -737,7 +737,7 @@ export default function EventView({ match }) {
         setOpenInvite={setOpenInvite}
         profile={profile}
         openInvite={openInvite}
-        event={eventData?.Events?.getById}
+        eventId={eventData?.Events?.getById?._id}
       />
       <EventOptionsPopover
         event={eventData?.Events?.getById}
