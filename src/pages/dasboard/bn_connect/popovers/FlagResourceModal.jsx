@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { CloseRounded } from '@material-ui/icons';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
 export default function FlagResourceModal({
@@ -29,13 +29,12 @@ export default function FlagResourceModal({
         data: ICreateFlag,
       },
     });
-    setFlaggedResource(null);
-  };
-  useEffect(() => {
-    if (data?.Flags?.create) {
-      setOpenFlag(false);
+    if (!data?.Flags?.create) {
+      console.log('Already Flagged');
     }
-  }, [data]);
+    setFlaggedResource(null);
+    setOpenFlag(false);
+  };
 
   const handleCreateFlag = (reason) => {
     onCreateFlag({

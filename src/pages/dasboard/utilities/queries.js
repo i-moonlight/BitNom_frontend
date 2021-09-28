@@ -1,6 +1,7 @@
 // BN Dashboard GraphQL Queries
 import { gql } from '@apollo/client';
 
+// Users
 export const QUERY_FETCH_PROFILE = gql`
   query {
     Users {
@@ -110,6 +111,34 @@ export const QUERY_FETCH_PROFILE = gql`
   }
 `;
 
+export const QUERY_GET_USERS = gql`
+  query ($params: IGetUsers) {
+    Users {
+      get(params: $params) {
+        _id
+        displayName
+        reputation
+        type
+        bio
+        profile_pic
+      }
+    }
+  }
+`;
+
+export const QUERY_SEARCH_USERS = gql`
+  query ($params: ISearchUsers) {
+    Users {
+      search(params: $params) {
+        _id
+        displayName
+        bio
+        profile_pic
+      }
+    }
+  }
+`;
+
 export const MUTATION_FOLLOW_USER = gql`
   mutation ($data: IFollow) {
     Users {
@@ -161,19 +190,10 @@ export const MUTATION_CREATE_FILE_IMAGE = gql`
   }
 `;
 
-export const MUTATION_CREATE_POST = gql`
-  mutation ($data: ICreatePost!) {
-    Posts {
-      create(data: $data)
-    }
-  }
-`;
+//Events
 
-export const MUTATION_CREATE_EVENT = gql`
-  mutation ($data: ICreateEvent!) {
-    Events {
-      create(data: $data) {
-        _id
+const eventSubFields = `
+_id
         image
         description
         title
@@ -190,6 +210,7 @@ export const MUTATION_CREATE_EVENT = gql`
           profile_pic
           bio
         }
+        is_flag
         endDate
         startDate
         location {
@@ -207,6 +228,33 @@ export const MUTATION_CREATE_EVENT = gql`
             bio
           }
         }
+`;
+
+export const QUERY_LOAD_EVENTS = gql`
+  query ($data: IGetEvents) {
+    Events {
+      get(data: $data) {
+        ${eventSubFields}
+      }
+    }
+  }
+`;
+
+export const QUERY_EVENT_BY_ID = gql`
+  query ($_id: ID!) {
+    Events {
+      getById(_id: $_id) {
+         ${eventSubFields}
+      }
+    }
+  }
+`;
+
+export const MUTATION_CREATE_EVENT = gql`
+  mutation ($data: ICreateEvent!) {
+    Events {
+      create(data: $data) {
+         ${eventSubFields}
       }
     }
   }
@@ -216,40 +264,7 @@ export const MUTATION_UPDATE_EVENT = gql`
   mutation ($data: IUpdateEvent!) {
     Events {
       update(data: $data) {
-        _id
-        image
-        description
-        title
-        host {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        tags
-        organizers {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        endDate
-        startDate
-        location {
-          type
-          lat
-          long
-          address
-        }
-        link
-        attendees {
-          attendee {
-            _id
-            displayName
-            profile_pic
-            bio
-          }
-        }
+        ${eventSubFields}
       }
     }
   }
@@ -287,105 +302,7 @@ export const MUTATION_REMOVE_EVENT_ATTENDANCE = gql`
   }
 `;
 
-export const QUERY_LOAD_EVENTS = gql`
-  query ($data: IGetEvents) {
-    Events {
-      get(data: $data) {
-        _id
-        image
-        description
-        title
-        host {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        tags
-        organizers {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        endDate
-        startDate
-        location {
-          type
-          lat
-          long
-          address
-        }
-        link
-        attendees {
-          attendee {
-            _id
-            displayName
-            profile_pic
-            bio
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const QUERY_EVENT_BY_ID = gql`
-  query ($_id: ID!) {
-    Events {
-      getById(_id: $_id) {
-        _id
-        image
-        description
-        title
-        host {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        tags
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        organizers {
-          _id
-          displayName
-          profile_pic
-          bio
-        }
-        endDate
-        startDate
-        location {
-          type
-          lat
-          long
-          address
-        }
-        link
-        attendees {
-          attendee {
-            _id
-            displayName
-            profile_pic
-            bio
-          }
-        }
-      }
-    }
-  }
-`;
+// Reactions , Bookmarks , Flags
 
 export const MUTATION_CREATE_REACTION = gql`
   mutation ($data: ICreateReaction!) {
@@ -427,86 +344,7 @@ export const MUTATION_CREATE_FLAG = gql`
   }
 `;
 
-export const MUTATION_UPDATE_POST = gql`
-  mutation ($data: IUpdatePost!) {
-    Posts {
-      update(data: $data)
-    }
-  }
-`;
-
-export const MUTATION_DELETE_POST = gql`
-  mutation ($_id: ID!) {
-    Posts {
-      delete(_id: $_id)
-    }
-  }
-`;
-
-export const MUTATION_CREATE_COMMENT = gql`
-  mutation ($data: ICreateComment!) {
-    Comments {
-      create(data: $data) {
-        _id
-        author {
-          _id
-          profile_pic
-          displayName
-          reputation
-          type
-        }
-        content
-        replies
-        image
-        scroll
-        response_to {
-          _id
-          author {
-            _id
-          }
-        }
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        creation_date
-        bookmarks
-        reactions {
-          likes
-          dislikes
-          loves
-          celebrations
-        }
-      }
-    }
-  }
-`;
-
-export const MUTATION_UPDATE_COMMENT = gql`
-  mutation ($data: IUpdateComment!) {
-    Comments {
-      update(data: $data)
-    }
-  }
-`;
-
-export const MUTATION_DELETE_COMMENT = gql`
-  mutation ($_id: ID!) {
-    Comments {
-      delete(_id: $_id)
-    }
-  }
-`;
+//Posts
 
 const postSubFields = `
  _id
@@ -628,6 +466,139 @@ export const QUERY_LOAD_SCROLLS = gql`
     }
   }
 `;
+export const GET_BOOKMARKED_SCROLLS = gql`
+  query ($data: IGetBookmarked) {
+    Posts {
+      getBookmarked(data: $data) {
+         ${postSubFields}
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_SCROLL_BY_ID = gql`
+  query GetByID($_id: ID!) {
+    Posts {
+      getById(_id: $_id) {
+         ${postSubFields}
+      }
+    }
+  }
+`;
+
+export const MUTATION_CREATE_POST = gql`
+  mutation ($data: ICreatePost!) {
+    Posts {
+      create(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_UPDATE_POST = gql`
+  mutation ($data: IUpdatePost!) {
+    Posts {
+      update(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_DELETE_POST = gql`
+  mutation ($_id: ID!) {
+    Posts {
+      delete(_id: $_id)
+    }
+  }
+`;
+
+//Comments
+
+const commentSubFields = `
+  _id
+  author {
+    _id
+    profile_pic
+    displayName
+    reputation
+    type
+  }
+  content
+  replies
+  image
+  scroll
+  response_to {
+    _id
+    author {
+      _id
+    }
+  }
+  content_entities {
+    type
+    offset
+    length
+    resource {
+      _id
+      type
+    }
+    url
+    mentioned {
+      _id
+      displayName
+    }
+  }
+  creation_date
+  bookmarks
+  reactions {
+    likes
+    dislikes
+    loves
+    celebrations
+  }`;
+
+export const QUERY_GET_COMMENTS = gql`
+  query ($data: IGetComments!) {
+    Comments {
+      get(data: $data) {
+       ${commentSubFields}
+      }
+    }
+  }
+`;
+
+export const GET_BOOKMARKED_COMMENTS = gql`
+  query ($data: IGetBookmarked) {
+    Comments {
+      getBookmarked(data: $data) {
+       ${commentSubFields}
+      }
+    }
+  }
+`;
+
+export const MUTATION_CREATE_COMMENT = gql`
+  mutation ($data: ICreateComment!) {
+    Comments {
+      create(data: $data) {
+        ${commentSubFields}
+      }
+    }
+  }
+`;
+
+export const MUTATION_UPDATE_COMMENT = gql`
+  mutation ($data: IUpdateComment!) {
+    Comments {
+      update(data: $data)
+    }
+  }
+`;
+
+export const MUTATION_DELETE_COMMENT = gql`
+  mutation ($_id: ID!) {
+    Comments {
+      delete(_id: $_id)
+    }
+  }
+`;
 
 export const GET_USER_NOTIFICATIONS = gql`
   query ($limit: Int!) {
@@ -668,34 +639,6 @@ export const GET_USER_NOTIFICATIONS = gql`
   }
 `;
 
-export const QUERY_GET_USERS = gql`
-  query ($params: IGetUsers) {
-    Users {
-      get(params: $params) {
-        _id
-        displayName
-        reputation
-        type
-        bio
-        profile_pic
-      }
-    }
-  }
-`;
-
-export const QUERY_SEARCH_USERS = gql`
-  query ($params: ISearchUsers) {
-    Users {
-      search(params: $params) {
-        _id
-        displayName
-        bio
-        profile_pic
-      }
-    }
-  }
-`;
-
 export const MARK_NOTIFICATION_AS_READ = gql`
   mutation ($data: IMarkAsRead) {
     Notification {
@@ -723,140 +666,6 @@ export const MUTATION_UNSUBSCRIBE = gql`
   mutation ($resource: IResource!) {
     Subscription {
       unsubscribe(resource: $resource)
-    }
-  }
-`;
-
-export const GET_BOOKMARKED_SCROLLS = gql`
-  query ($data: IGetBookmarked) {
-    Posts {
-      getBookmarked(data: $data) {
-         ${postSubFields}
-      }
-    }
-  }
-`;
-
-export const QUERY_GET_SCROLL_BY_ID = gql`
-  query GetByID($_id: ID!) {
-    Posts {
-      getById(_id: $_id) {
-         ${postSubFields}
-      }
-    }
-  }
-`;
-
-export const QUERY_GET_COMMENTS = gql`
-  query ($data: IGetComments!) {
-    Comments {
-      get(data: $data) {
-        _id
-        content
-        author {
-          _id
-          type
-          displayName
-          reputation
-          profile_pic
-        }
-        replies
-        creation_date
-        image
-        reactions {
-          celebrations
-          likes
-          dislikes
-          loves
-        }
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
-        scroll
-        response_to {
-          _id
-          author {
-            _id
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_BOOKMARKED_COMMENTS = gql`
-  query ($data: IGetBookmarked) {
-    Comments {
-      getBookmarked(data: $data) {
-        _id
-        content
-        author {
-          _id
-          type
-          displayName
-          reputation
-          profile_pic
-        }
-        replies
-        creation_date
-        image
-        content_entities {
-          type
-          offset
-          length
-          resource {
-            _id
-            type
-          }
-          url
-          mentioned {
-            _id
-            displayName
-          }
-        }
-        reacted_to_by {
-          _id
-          reaction_type
-          user_id {
-            _id
-            displayName
-            profile_pic
-          }
-        }
-        reactions {
-          celebrations
-          likes
-          dislikes
-          loves
-        }
-        scroll
-        response_to {
-          _id
-          author {
-            _id
-          }
-        }
-      }
     }
   }
 `;
