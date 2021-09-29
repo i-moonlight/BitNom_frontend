@@ -30,16 +30,14 @@ import supplyImg from '../../../../assets/investor/image_5.png';
 import landingImg from '../../../../assets/investor/landing.png';
 import learnImg from '../../../../assets/investor/learn.svg';
 import modelImg from '../../../../assets/investor/model.png';
-import roadmapImg from '../../../../assets/investor/roadmap.png';
 import scrollImg from '../../../../assets/investor/scroll.svg';
-import avatarImg from '../../../../assets/investor/avatar.png';
 import token1Img from '../../../../assets/investor/token1.png';
 import token2Img from '../../../../assets/investor/token2.png';
 import logoImg from '../../../../assets/logo_full.svg';
 import Button from '../../../../components/Button';
+import { team } from '../../../../store/local/dummy';
 import DarkTheme from '../../../../utilities/DarkTheme';
 import { ecosystem, healthCheck, roadMap } from '../../utilities/welcome.data';
-import { team } from '../../../../store/local/dummy';
 
 const ROADMAP_DISPLACEMENT = 100;
 
@@ -135,12 +133,11 @@ export default function InvestorTab() {
                           <div className='d-flex flex-column bg-white p-3 text-black justify-content-between'>
                             <div>
                               <div className='d-flex align-items-center justify-content-between '>
-                                <Typography className='lead text-uppercase'>
+                                <small className='text-uppercase'>
                                   White Paper
-                                </Typography>
-                                <Typography className='lead'>
-                                  9 months ago
-                                </Typography>
+                                </small>
+
+                                <small> 9 months ago</small>
                               </div>
                               <Typography className='lead fw-bold my-2'>
                                 First in line: Early technology adopters around

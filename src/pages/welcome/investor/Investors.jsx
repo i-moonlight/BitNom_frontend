@@ -1,9 +1,7 @@
 import { Box, Paper } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import Wrapper from '../Wrapper';
-import EcosystemTab from './tabs/EcosystemTab';
 import InvestorTab from './tabs/InvestorTab';
-import RoadmapTab from './tabs/RoadmapTab';
 
 export default function Investors() {
   const onTabValue = val => {
