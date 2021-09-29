@@ -25,7 +25,8 @@ export default function TextField({
 }) {
   const theme = useTheme();
   const { handleChange, errors, setFieldTouched, touched, values } = name
-    ? useFormikContext()
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useFormikContext()
     : {};
 
   return (
