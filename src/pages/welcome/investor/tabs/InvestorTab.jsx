@@ -39,6 +39,7 @@ import logoImg from '../../../../assets/logo_full.svg';
 import Button from '../../../../components/Button';
 import DarkTheme from '../../../../utilities/DarkTheme';
 import { ecosystem, healthCheck, roadMap } from '../../utilities/welcome.data';
+import { team } from '../../../../store/local/dummy';
 
 const ROADMAP_DISPLACEMENT = 100;
 
@@ -405,9 +406,10 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
+
         <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className='py-4'>
+            <div className='py-5'>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography
@@ -436,7 +438,7 @@ export default function InvestorTab() {
                       size='large'
                       textCase
                       variant='outlined'
-                      className='mt-2'
+                      className='mt-3'
                       endIcon={<ChevronRightRounded />}
                     >
                       Buy BN
@@ -445,7 +447,7 @@ export default function InvestorTab() {
                       size='large'
                       textCase
                       variant='text'
-                      className='mt-2'
+                      className='mt-3'
                       endIcon={<ChevronRightRounded />}
                     >
                       Visit Price / Chart
@@ -468,7 +470,8 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-        <section style={{ backgroundColor: '#0C0F19' }}>
+
+        <section id='ecosystem' style={{ backgroundColor: '#0C0F19' }}>
           <Container>
             <div className='py-5'>
               <Grid container spacing={3}>
@@ -490,19 +493,21 @@ export default function InvestorTab() {
                 animation='slide'
               > */}
               {splittedEcosystem?.map(item => (
-                <Grid key={item[0]?.title} container spacing={3}>
-                  {item?.map(({ title, text, id }) => (
-                    <EcosystemCard
-                      key={title}
-                      title={title}
-                      text={text}
-                      index={id}
-                    />
-                  ))}
-                </Grid>
+                <div className='mb-4' key={item[0]?.title}>
+                  <Grid container spacing={3}>
+                    {item?.map(({ title, text, id }) => (
+                      <EcosystemCard
+                        key={title}
+                        title={title}
+                        text={text}
+                        index={id}
+                      />
+                    ))}
+                  </Grid>
+                </div>
               ))}
               {/* </Carousel> */}
-              <Grid container spacing={3}>
+              <Grid container>
                 <Card variant='outlined' className='mt-4'>
                   <Accordion
                     expanded={expanded2}
@@ -578,6 +583,7 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
+
         <section style={{ backgroundColor: '#000' }}>
           <Container>
             <div className='py-4'>
@@ -727,7 +733,9 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
+
         <section
+          id='roadmap'
           style={{
             backgroundColor: '#000',
             paddingBottom: query > 1 && ROADMAP_DISPLACEMENT,
@@ -750,7 +758,7 @@ export default function InvestorTab() {
                         {roadMap.map(road => (
                           <Button
                             color={road?.year != year && 'inherit'}
-                            className='mx-2'
+                            className='me-2'
                             variant={road?.year != year && 'text'}
                             key={road?.year}
                             onClick={() => setYear(road?.year)}
@@ -765,12 +773,14 @@ export default function InvestorTab() {
                     container
                     spacing={3}
                     className='mt-4'
-                    style={{
-                      backgroundImage: `url('${roadmapImg}')`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundOrigin: '20px 0px',
-                    }}
+                    style={
+                      {
+                        // backgroundImage: `url('${roadmapImg}')`,
+                        // backgroundSize: 'cover',
+                        // backgroundPosition: 'center',
+                        // backgroundOrigin: '20px 0px',
+                      }
+                    }
                   >
                     {roadMap
                       .filter(road => road?.year == year)[0]
@@ -824,29 +834,59 @@ export default function InvestorTab() {
             </Card>
           </Container>
         </section>
+
         <section className='py-5' style={{ backgroundColor: '#000' }}>
           <Container>
             <Card style={{ backgroundColor: '#11141C' }}>
               <CardContent>
-                <Typography className='lead mb-3 mt-1'>Our Team</Typography>
+                <Typography className='lead mb-3 mt-1'>
+                  A word from our CEO
+                </Typography>
+                <Card>
+                  <CardContent>
+                    <Grid container spacing={2}>
+                      <Grid xs={12} sm={4}>
+                        <img src={team[0].image} alt='' className='w-100' />
+                      </Grid>
+                      <Grid xs={12} sm={8}>
+                        <div className='d-flex flex-column  mx-3'>
+                          <Typography>{team[0].name}</Typography>
+                          <Typography color='primary'>
+                            {team[0].role}
+                          </Typography>
+                          <Typography variant='body2'>
+                            {team[0].desc}
+                          </Typography>
+                          <div className='mt-4'>
+                            <IconButton size='small'>
+                              <MailRounded />
+                            </IconButton>
+                            <IconButton size='small'>
+                              <LinkedIn />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+                <Typography className='lead mb-3 mt-5'>Our Advisors</Typography>
                 <Grid container spacing={2}>
-                  {[1, 2, 3].map(item => (
-                    <TeamCard key={item} />
-                  ))}
+                  {team
+                    .filter(({ category }) => category === 'advisor')
+                    .map(member => (
+                      <TeamCard key={member?.name} member={member} />
+                    ))}
                 </Grid>
                 <Typography className='lead mb-3 mt-5'>
                   Development Team
                 </Typography>
                 <Grid container spacing={2}>
-                  {[1, 2, 3].map(item => (
-                    <TeamCard key={item} />
-                  ))}
-                </Grid>
-                <Typography className='lead mb-3 mt-5'>Moderators</Typography>
-                <Grid container spacing={2}>
-                  {[1, 2, 3].map(item => (
-                    <TeamCard key={item} />
-                  ))}
+                  {team
+                    .filter(({ category }) => category === 'dev')
+                    .map(member => (
+                      <TeamCard key={member?.name} member={member} />
+                    ))}
                 </Grid>
               </CardContent>
             </Card>
@@ -857,16 +897,25 @@ export default function InvestorTab() {
   );
 }
 
-function TeamCard() {
+function TeamCard({ member }) {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card elevation={0} style={{ backgroundColor: '#1E2126' }}>
         <CardContent>
           <div className='d-flex'>
-            <img src={avatarImg} alt='' className='w-25' />
+            {member?.image && (
+              <div
+                className='w-25'
+                style={{
+                  backgroundImage: `url('${member?.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              ></div>
+            )}
             <div className='d-flex flex-column  mx-3'>
-              <Typography>Alwin de Romijn</Typography>
-              <Typography color='primary'>CEO and Founder</Typography>
+              <Typography>{member?.name}</Typography>
+              <Typography color='primary'>{member?.role}</Typography>
               <div className='mt-4'>
                 <IconButton size='small'>
                   <MailRounded />
@@ -890,15 +939,30 @@ export function EcosystemCard({ index, title, text }) {
         elevation={0}
         className='h-100 br-3'
         style={{
-          backgroundImage: 'linear-gradient(#707070,#191c22)',
+          backgroundImage: 'linear-gradient(#F36E6C,#006097)',
+          '&:hover': {
+            backgroundImage: 'linear-gradient(#707070,#191c22)',
+          },
         }}
       >
-        <CardContent className='mx-2'>
-          <Typography variant='h6' className='my-4 fw-bold'>
-            0{index + 1}.
-          </Typography>
-          <Typography className='lead my-4 fw-bold'>{title}</Typography>
-          <Typography className='lead'>{text}</Typography>
+        <CardContent
+          style={{
+            backgroundC: '#fed132',
+          }}
+          className='h-100 br-3 p-2 m-0'
+        >
+          <div
+            className='h-100 br-3 p-3'
+            style={{
+              backgroundColor: '#0C0F19',
+            }}
+          >
+            <Typography variant='h6' className='py-4 fw-bold'>
+              0{index + 1}.
+            </Typography>
+            <Typography className='lead my-4 fw-bold'>{title}</Typography>
+            <Typography className='lead mb-3'>{text}</Typography>
+          </div>
         </CardContent>
       </Card>
     </Grid>

@@ -6,24 +6,24 @@ import InvestorTab from './tabs/InvestorTab';
 import RoadmapTab from './tabs/RoadmapTab';
 
 export default function Investors() {
-  const [tabValue, setTabValue] = useState(0);
-  // const classes = useStyles();
-
   const onTabValue = val => {
-    setTabValue(val);
+    switch (val) {
+      case 1:
+        window.location.hash = '#ecosystem';
+        break;
+      case 2:
+        window.location.hash = '#roadmap';
+        break;
+      default:
+        window.location.hash = '#';
+    }
   };
 
   return (
     <Wrapper investor onTabValue={onTabValue}>
       <Paper>
-        <TabPanel value={tabValue} index={0}>
+        <TabPanel value={0} index={0}>
           <InvestorTab />
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          <EcosystemTab />
-        </TabPanel>
-        <TabPanel value={tabValue} index={2}>
-          <RoadmapTab />
         </TabPanel>
       </Paper>
     </Wrapper>
@@ -45,24 +45,3 @@ const TabPanel = props => {
     </div>
   );
 };
-
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     width: '100%',
-//   },
-//   container: {
-//     backgroundColor: theme.palette.background.default,
-//   },
-//   heading: {
-//     fontSize: theme.typography.pxToRem(15),
-//     fontWeight: 'bold',
-//     display: 'flex',
-//     alignItems: 'center',
-//   },
-//   accordionCard: {
-//     backgroundColor: theme.palette.background.default,
-//   },
-//   accordion: {
-//     backgroundColor: alpha(theme.palette.primary.main, 0.075),
-//   },
-// }));
