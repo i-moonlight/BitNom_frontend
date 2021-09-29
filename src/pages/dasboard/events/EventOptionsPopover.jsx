@@ -20,8 +20,8 @@ export default function EventOptionsPopover({
   eventOptionsId,
   isEventOptionsOpen,
   handleEventOptionsClose,
-  //setFlaggedResource,
-  //setOpenFlag,
+  setFlaggedResource,
+  setOpenFlag,
   setOpenInvite,
   profile,
   event,
@@ -29,12 +29,12 @@ export default function EventOptionsPopover({
   //const state = useSelector((st) => st);
   //const user = state.auth.user;
 
-  /*  const handleReportEvent = () => {
+  const handleReportEvent = () => {
     const resource = Object.assign({ resourceType: 'event' }, event);
     setFlaggedResource(resource);
     handleEventOptionsClose();
     setOpenFlag(true);
-  }; */
+  };
 
   return (
     <Popover
@@ -83,7 +83,7 @@ export default function EventOptionsPopover({
             secondary='Invite friends to your event'
           />
         </ListItem>
-        <ListItem button divider>
+        <ListItem button divider onClick={handleReportEvent}>
           <ListItemIcon>
             <FlagOutlined />
           </ListItemIcon>

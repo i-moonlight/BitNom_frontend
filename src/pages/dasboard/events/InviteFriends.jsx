@@ -28,7 +28,7 @@ const icon = <CheckBoxOutlineBlank fontSize='small' />;
 const checkedIcon = <CheckBox color='primary' fontSize='small' />;
 
 export default function InviteFriends({
-  event,
+  eventId,
   openInvite,
   setOpenInvite,
   profile,
@@ -48,15 +48,16 @@ export default function InviteFriends({
   const onInviteFriends = async (friends) => {
     await inviteFriends({
       variables: {
-        data: { ids: friends, event_id: event?._id },
+        data: { ids: friends, event_id: eventId },
       },
     });
     if (!data) console.log('');
   };
 
   const handleInviteFriends = () => {
-    if (selectedFriends?.length < 1) return;
-    const ids = selectedFriends?.map((friend) => friend?.userId?._id);
+    if (!selectedFriends?.length) return;
+    const ids = [];
+    selectedFriends.forEach((friend) => ids.push(friend?.userId?._id));
     onInviteFriends(ids);
     setOpenInvite(false);
   };
@@ -97,8 +98,8 @@ export default function InviteFriends({
                 id='invite-friends-to-event'
                 options={profile?.followers}
                 disableCloseOnSelect
-                onChange={(newValue) => {
-                  setSelectedFriends(newValue);
+                onChange={(event, value) => {
+                  setSelectedFriends(value);
                 }}
                 getOptionLabel={(option) => option?.userId?.displayName}
                 renderOption={(option, { selected }) => (

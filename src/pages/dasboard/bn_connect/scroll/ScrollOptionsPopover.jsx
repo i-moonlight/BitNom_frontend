@@ -140,7 +140,7 @@ export default function ScrollOptionsPopover({
             <BookmarkBorderRounded />
           </ListItemIcon>
           <ListItemText
-            primary='Save this scroll'
+            primary='Save this post'
             secondary='Add this to your bookmarks'
           />
         </ListItem>
@@ -149,8 +149,8 @@ export default function ScrollOptionsPopover({
             <FlagOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Report this scroll'
-            secondary='Im concerned about this scroll'
+            primary='Report this post'
+            secondary='Im concerned about this post'
           />
         </ListItem>
         {user?._id === scroll?.author?._id && (
@@ -158,7 +158,7 @@ export default function ScrollOptionsPopover({
             <ListItemIcon>
               <FileCopyOutlined />
             </ListItemIcon>
-            <ListItemText primary='Edit this scroll' />
+            <ListItemText primary='Edit this post' />
           </ListItem>
         )}
         {user?._id !== scroll?.author?._id && (
