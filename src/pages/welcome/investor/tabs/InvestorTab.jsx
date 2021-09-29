@@ -209,7 +209,14 @@ export default function InvestorTab() {
                     }}
                   >
                     <CardContent>
-                      <img src={learnImg} alt='' className='w-50' />
+                      <img
+                        style={{
+                          maxHeight: 200,
+                        }}
+                        src={learnImg}
+                        alt=''
+                        className='w-50 '
+                      />
                       <br />
                       <Button
                         size='large'
