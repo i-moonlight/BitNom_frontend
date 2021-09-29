@@ -21,7 +21,7 @@ import {
   FavoriteRounded,
 } from '@material-ui/icons';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Button from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import TextField from '../../../../../components/TextField';
@@ -164,19 +164,22 @@ export default function Comment({
     setReply('');
   };
 
-  const getUserReaction = resource => {
-    let reaction;
-    resource?.reacted_to_by?.forEach(item => {
-      if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
-    });
-    console.log(resource, 'JSL');
-    return reaction;
-  };
+  const getUserReaction = useCallback(
+    resource => {
+      let reaction;
+      resource?.reacted_to_by?.forEach(item => {
+        if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
+      });
+      console.log(resource, 'JSL');
+      return reaction;
+    },
+    [user?._id]
+  );
 
   useEffect(() => {
     const reaction = getUserReaction(comment);
     setUserReaction(reaction);
-  }, []);
+  }, [comment, getUserReaction]);
 
   const commentUserInitials = getUserInitials(comment?.author?.displayName);
   const currentUserInitials = getUserInitials(user?.displayName);

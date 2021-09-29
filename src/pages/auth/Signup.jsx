@@ -29,7 +29,6 @@ export default function Signup() {
   const history = useHistory();
   const state = useSelector(st => st);
   const user = state.auth.user;
-  // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
 
   const [createUser] = useMutation(MUTATION_CREATE_USER, {
@@ -44,7 +43,7 @@ export default function Signup() {
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-    // justRegistered && history.push('/auth/login');
+    justRegistered && history.push('/auth/login');
 
     errors &&
       errors.map(err => {
@@ -53,7 +52,7 @@ export default function Signup() {
           ? setUsernameErr(err?.state?._id)
           : setUsernameErr(null);
       });
-  }, [errors, state]);
+  }, [errors, history, justRegistered, user]);
 
   const responseGoogle = response => {
     googleSignup({
@@ -69,8 +68,6 @@ export default function Signup() {
       setGoogleErr(userErrors);
 
       dispatch(register(userData, null));
-      // console.log(userData);
-      // dispatch(login(userData,null));
 
       !userErrors &&
         googleLogin({

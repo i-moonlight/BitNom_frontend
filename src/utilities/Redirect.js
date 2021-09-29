@@ -9,7 +9,7 @@ export default function Redirect() {
     const loc = location.search.slice(6);
     window.open(loc, '_blank');
     history.goBack();
-  }, []);
+  }, [history]);
 
   return <NotFound />;
 }

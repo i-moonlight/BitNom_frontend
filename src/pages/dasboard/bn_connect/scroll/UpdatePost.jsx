@@ -117,11 +117,12 @@ export default function UpdatePost({
     setOpenVideo(false);
     setPostToEdit(null);
   };
+
   useEffect(() => {
     if (data?.Posts?.update) {
       console.log(data, deleteData);
     }
-  }, [data]);
+  }, [data, deleteData]);
 
   useEffect(() => {
     if (postToEdit?.images.length > 0) {

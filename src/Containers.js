@@ -169,7 +169,7 @@ export const AppContainers = () => {
     isDarkTheme
       ? dispatch(changeTheme('dark'))
       : dispatch(changeTheme('light'));
-  }, [isDarkTheme]);
+  }, [dispatch, isDarkTheme]);
 
   return (
     <div className={classes.root}>

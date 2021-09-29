@@ -35,7 +35,7 @@ export default function BnServices() {
     console.log(error);
     console.log(loading);
     if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
-  }, [data]);
+  }, [data, error, loading]);
 
   return (
     <Screen>
