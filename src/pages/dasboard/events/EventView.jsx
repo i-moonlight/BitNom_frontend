@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery, useMutation } from '@apollo/client';
 import {
   Card,
@@ -25,8 +26,12 @@ import {
   Launch,
   Public,
   RoomRounded,
-  ShareOutlined,
+  BookmarkBorderRounded,
 } from '@material-ui/icons';
+//import IosShareIcon from '@material-ui/icons/IosShare'
+//import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
+
+import { ToastContainer, toast } from 'react-toastify';
 import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import Button from '../../../components/Button';
@@ -42,11 +47,12 @@ import {
   QUERY_EVENT_BY_ID,
   MUTATION_ATTEND_EVENT,
   MUTATION_REMOVE_EVENT_ATTENDANCE,
+  MUTATION_CREATE_BOOKMARK,
 } from '../utilities/queries';
 import CreateEvent from './CreateEvent';
 import UpdateEvent from './UpdateEvent';
 import CreateEventCard from './CreateEventCard';
-import GoogleApiWrapper from './EventMap';
+import MapContainer from './EventMap';
 import AttendeeComponent from './AttendeeComponent';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import InviteFriends from './InviteFriends';
@@ -133,6 +139,15 @@ export default function EventView({ match }) {
     },
   ] = useMutation(MUTATION_REMOVE_EVENT_ATTENDANCE);
 
+  const [
+    createBookmark,
+    {
+      data,
+      //  loading,
+      //   error
+    },
+  ] = useMutation(MUTATION_CREATE_BOOKMARK);
+
   // const state = useSelector(st => st);
   // const profile = state.auth.user;
 
@@ -185,6 +200,28 @@ export default function EventView({ match }) {
     if (!attendData) console.log(removeAttendanceData, attendData);
   };
 
+  const handleCreateBookmark = () => {
+    createBookmark({
+      variables: {
+        data: {
+          _id: eventData?.Events?.getById?._id,
+          type: 'event',
+        },
+      },
+    });
+    toast.success('Added to saved items', {
+      position: 'bottom-left',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    if (!data?.Bookmarks?.create) console.log('Bookmarked');
+    handleEventOptionsClose();
+  };
+
   const handleChange = (e, val) => {
     setValue(val);
   };
@@ -198,6 +235,7 @@ export default function EventView({ match }) {
     });
     return status;
   };
+
   const getAttendeeStatus = useCallback(
     input => {
       let status = false;
@@ -221,6 +259,17 @@ export default function EventView({ match }) {
 
   return (
     <Screen>
+      <ToastContainer
+        position='bottom-left'
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className={classes.root}>
         <Container maxWidth='lg'>
           <Grid container spacing={2}>
@@ -455,20 +504,30 @@ export default function EventView({ match }) {
                                     eventData?.Events?.getById?.endDate
                                   ).getTime() < new Date().getTime()) &&
                                 'none',
+                              marginRight: '3px',
                             }}
                           >
                             Invite friends
                           </Button>
+
+                          <Tooltip title='Save this event'>
+                            <IconButton
+                              onClick={() => {
+                                handleCreateBookmark();
+                              }}
+                            >
+                              <BookmarkBorderRounded color='primary' />
+                            </IconButton>
+                          </Tooltip>
                         </Hidden>
                         <Tooltip title='Share this event'>
-                          <IconButton>
-                            <ShareOutlined
-                              onClick={() => {
-                                setCreateScrollOpen(true);
-                                setSharedResource(eventData?.Events?.getById);
-                              }}
-                              color='primary'
-                            />
+                          <IconButton
+                            onClick={() => {
+                              setCreateScrollOpen(true);
+                              setSharedResource(eventData?.Events?.getById);
+                            }}
+                          >
+                            <Launch color='primary' />
                           </IconButton>
                         </Tooltip>
                         <IconButton onClick={handleEventOptionsOpen}>
@@ -496,7 +555,7 @@ export default function EventView({ match }) {
                                   fontSize='small'
                                   style={{ marginRight: '5px' }}
                                 />
-                                Join here :
+                                Link :
                                 <Typography
                                   style={{ marginLeft: '2px' }}
                                   component='a'
@@ -594,7 +653,7 @@ export default function EventView({ match }) {
                             {eventData?.Events?.getById?.location?.type ===
                               'physical' && (
                               <div>
-                                <GoogleApiWrapper
+                                <MapContainer
                                   latitude={
                                     eventData?.Events?.getById?.location?.lat
                                   }
@@ -609,7 +668,7 @@ export default function EventView({ match }) {
                                     style={{ textDecoration: 'underline' }}
                                   >
                                     <a
-                                      href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
+                                      href={`https://www.google.com/maps/@?api=1&map_action=map&center=${eventData?.Events?.getById?.location?.lat}%2C${eventData?.Events?.getById?.location?.long}`}
                                       style={{ color: 'inherit' }}
                                       target='_blank'
                                       rel='noreferrer'
@@ -752,6 +811,7 @@ export default function EventView({ match }) {
         setFlaggedResource={setFlaggedResource}
         setOpenFlag={setCreateFlagOpen}
         handleEventOptionsClose={handleEventOptionsClose}
+        handleCreateBookmark={handleCreateBookmark}
       />
       <FlagResourceModal
         openFlag={createFlagOpen}
