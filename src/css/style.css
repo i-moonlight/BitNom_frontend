@@ -153,6 +153,14 @@ ul li::before {
   background-color: transparent !important;
 }
 
+.event-upload-dropzone {
+  /* position: absolute !important; */
+  opacity: 0.9;
+  height: '100%';
+  background-color: transparent !important;
+  border: 1px solid transparent;
+}
+
 .profile-upload-dropzone {
   /* position: absolute !important; */
   opacity: 0.9;

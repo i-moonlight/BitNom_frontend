@@ -14,7 +14,8 @@ import {
   FlagOutlined,
   PersonAddDisabledOutlined,
 } from '@material-ui/icons';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import Button from '../../../../../components/Button';
 import {
@@ -69,15 +70,10 @@ export default function CommentOptionsPopover({
         },
       ],
     });
-    if (unFollowData?.Users?.unFollow == true)
-      console.log(unFollowData?.Users?.unFollow);
+    if (!unFollowData?.Users?.unFollow)
+      console.log('Not followed');
   };
 
-  useEffect(() => {
-    if (bookmarkData?.bookmarks?.create == true) {
-      console.log(bookmarkData?.bookmarks?.create);
-    }
-  }, [bookmarkData]);
 
   const handleCreateBookmark = () => {
     createBookmark({
@@ -98,6 +94,16 @@ export default function CommentOptionsPopover({
         },
       ],
     });
+       toast.success('Added to saved items', {
+        position: 'bottom-left',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
+    if(!bookmarkData?.bookmarks?.create) console.log('Bookmarked');
     handleCommentOptionClose();
   };
 

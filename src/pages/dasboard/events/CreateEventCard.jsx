@@ -78,6 +78,18 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
               <KeyboardArrowRight />
             </ListItemSecondaryAction>
           </ListItem>
+          <ListItem
+            button
+            disablePadding
+            disableRipple
+            selected={selectedIndex === 2}
+            onClick={(event) => handleListItemClick(event, 2)}
+          >
+            <ListItemText primary='Saved events' />
+            <ListItemSecondaryAction>
+              <KeyboardArrowRight />
+            </ListItemSecondaryAction>
+          </ListItem>
         </List>
       </Card>
     </div>

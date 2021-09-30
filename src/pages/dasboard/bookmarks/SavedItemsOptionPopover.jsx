@@ -18,6 +18,7 @@ import {
   MUTATION_REMOVE_BOOKMARK,
   GET_BOOKMARKED_COMMENTS,
   GET_BOOKMARKED_SCROLLS,
+  GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 
 export default function SavedItemsOptionPopover({
@@ -64,6 +65,14 @@ export default function SavedItemsOptionPopover({
             },
           },
         },
+        {
+          query: GET_BOOKMARKED_EVENTS,
+          variables: {
+            data: {
+              sortAscending: true,
+            },
+          },
+        },
       ],
     });
     handleSavedItemOptionClose();
@@ -97,7 +106,11 @@ export default function SavedItemsOptionPopover({
             <ListItemIcon>
               <PersonAddDisabledOutlined />
             </ListItemIcon>
-            <ListItemText primary={`Unfollow @${savedItem?.author?._id}`} />
+            <ListItemText
+              primary={`Unfollow @${
+                savedItem?.author?._id || savedItem?.host?._id
+              }`}
+            />
           </ListItem>
         )}
       </List>

@@ -240,6 +240,16 @@ export const QUERY_LOAD_EVENTS = gql`
   }
 `;
 
+export const GET_BOOKMARKED_EVENTS = gql`
+  query ($data: IGetBookmarked) {
+    Events {
+      getBookmarked(data: $data) {
+         ${eventSubFields}
+      }
+    }
+  }
+`;
+
 export const QUERY_EVENT_BY_ID = gql`
   query ($_id: ID!) {
     Events {
