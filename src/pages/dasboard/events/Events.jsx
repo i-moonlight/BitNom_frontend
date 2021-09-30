@@ -18,7 +18,11 @@ import { ArrowBack, RoomRounded, VideocamRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Screen from '../../../components/Screen';
-import { QUERY_FETCH_PROFILE, QUERY_LOAD_EVENTS } from '../utilities/queries';
+import {
+  QUERY_FETCH_PROFILE,
+  QUERY_LOAD_EVENTS,
+  GET_BOOKMARKED_EVENTS,
+} from '../utilities/queries';
 import CreateEvent from './CreateEvent';
 import CreateEventCard from './CreateEventCard';
 
@@ -43,6 +47,17 @@ export default function Events() {
     context: { clientName: 'users' },
   });
 
+  const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
+    GET_BOOKMARKED_EVENTS,
+    {
+      variables: {
+        data: {
+          sortAscending: true,
+        },
+      },
+    }
+  );
+
   const { loading: eventsLoading, data: eventsData } = useQuery(
     QUERY_LOAD_EVENTS,
     {
@@ -66,11 +81,13 @@ export default function Events() {
                 />
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={12} md={8} lg={6}>
+            <Grid item xs={12} sm={12} md={8} lg={7}>
               <EventListCard
                 selectedIndex={selectedIndex}
                 loading={eventsLoading}
                 events={eventsData?.Events?.get}
+                savedEvents={bookmarkedEvents?.Events?.getBookmarked}
+                bookmarksLoading={bookmarksLoading}
               />
             </Grid>
             <Grid item md={4} lg={3}>
@@ -88,7 +105,13 @@ export default function Events() {
   );
 }
 
-function EventListCard({ events, loading, selectedIndex }) {
+function EventListCard({
+  events,
+  loading,
+  selectedIndex,
+  savedEvents,
+  bookmarksLoading,
+}) {
   const upcomingEvents = events?.filter(
     (event) => new Date(event?.endDate).getTime() > new Date().getTime()
   );
@@ -120,7 +143,10 @@ function EventListCard({ events, loading, selectedIndex }) {
       <Divider />
       <CardContent>
         <Grid item align='center'>
-          {loading && (
+          {(selectedIndex === 0 || selectedIndex === 1) && loading && (
+            <CircularProgress color='primary' size={60} thickness={6} />
+          )}
+          {selectedIndex === 2 && bookmarksLoading && (
             <CircularProgress color='primary' size={60} thickness={6} />
           )}
         </Grid>
@@ -138,12 +164,23 @@ function EventListCard({ events, loading, selectedIndex }) {
             </Typography>
           </Grid>
         )}
+        {selectedIndex === 2 && savedEvents?.length < 1 && (
+          <Grid align='center'>
+            <Typography variant='body1' color='primary'>
+              You have not saved any events.
+            </Typography>
+          </Grid>
+        )}
         {selectedIndex === 0 &&
           upcomingEvents?.map((event) => (
             <EventPreview key={event?._id} event={event} />
           ))}
         {selectedIndex === 1 &&
           pastEvents?.map((event) => (
+            <EventPreview key={event?._id} event={event} />
+          ))}
+        {selectedIndex === 2 &&
+          savedEvents?.map((event) => (
             <EventPreview key={event?._id} event={event} />
           ))}
       </CardContent>

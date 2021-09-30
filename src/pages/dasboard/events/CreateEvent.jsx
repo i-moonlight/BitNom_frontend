@@ -18,7 +18,7 @@ import {
 
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
-import { CloseRounded, ImageRounded } from '@material-ui/icons';
+import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -101,7 +101,6 @@ export default function CreateEvent({ open, setOpen }) {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [address, setAddress] = useState('');
-  const [openImage, setOpenImage] = useState(false);
   const [previewURL, setPreviewURL] = useState();
   const [tagText, setTagText] = useState('');
   const [eventTags, setEventTags] = useState([]);
@@ -261,7 +260,6 @@ export default function CreateEvent({ open, setOpen }) {
     setEventStartDate('');
     setEventEndDate('');
     setLocationType('');
-    setOpenImage(false);
     setLatitude('');
     setAddress('');
     setLongitude('');
@@ -309,7 +307,6 @@ export default function CreateEvent({ open, setOpen }) {
                     setEventStartDate('');
                     setEventEndDate('');
                     setLocationType('');
-                    setOpenImage(false);
                     setLatitude('');
                     setAddress('');
                     setLongitude('');
@@ -325,7 +322,63 @@ export default function CreateEvent({ open, setOpen }) {
             <Divider />
             <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
               <Card elevation={0}>
-                <CardContent>
+                <div
+                  style={{
+                    //backgroundImage: previewURL && `url('${previewURL}')`,
+                    /*  backgroundImage: 'url(' + previewURL + ')',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundColor: '#aaa',
+                    marginBottom: '5px', */
+                    height: 300,
+                    borderRadius: 8,
+                    width: '100%',
+                    backgroundImage: 'url(' + previewURL + ')',
+                    backgroundSize: 'cover',
+                    backgroundColor: '#aaa',
+                    backgroundBlendMode: 'soft-light',
+                    marginBottom: '15px',
+                  }}
+                >
+                  <div className='space-between mx-3 my-2'>
+                    <Typography variant='body2'></Typography>
+                    <Typography variant='body1'></Typography>
+                    <IconButton
+                      color='primary'
+                      size='small'
+                      className='m-1 p-1'
+                    >
+                      <CloseRounded
+                        onClick={() => {
+                          setEventImage(null);
+                          setPreviewURL();
+                        }}
+                      />
+                    </IconButton>
+                  </div>
+                  <DropzoneArea
+                    dropzoneClass='event-upload-dropzone'
+                    clearOnUnmount
+                    Icon={CameraAltRounded}
+                    dropzoneText={' '}
+                    acceptedFiles={['image/*']}
+                    maxFileSize={5000000}
+                    filesLimit={1}
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone={false}
+                    previewGridProps={{
+                      container: { spacing: 1, direction: 'row' },
+                    }}
+                    onChange={(files) => {
+                      setEventImage(files[0]);
+                      if (files[0]) {
+                        setPreviewURL(URL.createObjectURL(files[0]));
+                      }
+                    }}
+                  />
+                </div>
+                <div>
                   <TextField
                     required
                     fullWidth
@@ -699,87 +752,12 @@ export default function CreateEvent({ open, setOpen }) {
                   <Typography color='error' variant='body2'>
                     {dateErr && errorText}
                   </Typography>
-
-                  <div
-                    style={{
-                      display: openImage ? 'block' : 'none',
-                    }}
-                    className='mt-2'
-                  >
-                    <DropzoneArea
-                      clearOnUnmount
-                      clickable={true}
-                      onChange={(files) => {
-                        setEventImage(files[0]);
-                        if (files[0]) {
-                          setPreviewURL(URL.createObjectURL(files[0]));
-                        }
-                      }}
-                      dropzoneText={'Drag n drop event banner or click'}
-                      acceptedFiles={['image/*']}
-                      maxFileSize={5000000}
-                      filesLimit={1}
-                      showAlerts={['error']}
-                      dropzoneClass='create-event-dropzone'
-                      showPreviews={false}
-                      showPreviewsInDropzone
-                      previewGridProps={{
-                        container: { spacing: 1, direction: 'row' },
-                      }}
-                    />
-                  </div>
-                  {previewURL && (
-                    <Card
-                      style={{
-                        height: 300,
-                        borderRadius: 8,
-                        width: '100%',
-                        backgroundImage: 'url(' + previewURL + ')',
-                        backgroundSize: 'cover',
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        backgroundBlendMode: 'soft-light',
-                      }}
-                    >
-                      <div className='space-between mx-3 my-2'>
-                        <Typography variant='body2'></Typography>
-                        <Typography variant='body1'></Typography>
-                        <IconButton
-                          color='primary'
-                          size='small'
-                          className='m-1 p-1'
-                        >
-                          <CloseRounded
-                            onClick={() => {
-                              //setFile(null);
-                              setEventImage(null);
-                              setPreviewURL();
-                            }}
-                          />
-                        </IconButton>
-                      </div>
-                    </Card>
-                  )}
-                </CardContent>
+                </div>
               </Card>
 
               {/* <Divider /> */}
               <div className='space-between mt-1'>
-                <div className='center-horizontal'>
-                  <IconButton
-                    size='small'
-                    className='m-1 p-1'
-                    onClick={() => {
-                      document
-                        .getElementsByClassName('create-event-dropzone')[0]
-                        .click();
-                    }}
-                    style={{
-                      marginRight: 10,
-                    }}
-                  >
-                    <ImageRounded />
-                  </IconButton>
-                </div>
+                <div className='center-horizontal'></div>
                 {!loading && <Button onClick={handleCreateEvent}>Save</Button>}
                 {loading && (
                   <Button size='small' style={{ margin: '0' }}>

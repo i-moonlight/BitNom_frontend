@@ -23,12 +23,14 @@ import UserCard from '../bn_connect/UserCard';
 import {
   GET_BOOKMARKED_COMMENTS,
   GET_BOOKMARKED_SCROLLS,
+  GET_BOOKMARKED_EVENTS,
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
   QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
 import SavedPost from './SavedPost';
+import SavedEvent from './SavedEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,8 +45,6 @@ export default function SavedItems() {
   const [videoDisabled, setVideoDisabled] = useState(false);
   const [imageDisabled, setImageDisabled] = useState(false);
   const [value, setValue] = React.useState(0);
-  const [allItems, setAllItems] = useState([]);
-  const [allLoading, setAllLoading] = useState(false);
   const [savedScrolls, setSavedScrolls] = useState([]);
   const [savedComments, setSavedComments] = useState([]);
   //const [savedArticles, setSavedArticles] = useState([]);
@@ -62,6 +62,17 @@ export default function SavedItems() {
       variables: {
         data: {
           sortAscending: false,
+        },
+      },
+    }
+  );
+
+  const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
+    GET_BOOKMARKED_EVENTS,
+    {
+      variables: {
+        data: {
+          sortAscending: true,
         },
       },
     }
@@ -105,30 +116,6 @@ export default function SavedItems() {
   }, [bookmarkedComments]);
   /* const savedScrolls = bookmarkedScrolls?.Posts?.getBookmarked;
   const savedComments = bookmarkedComments?.Comments?.getBookmarked; */
-  useEffect(() => {
-    setAllLoading(true);
-    const all = [];
-    savedScrolls?.forEach((item) => all.push(item));
-    savedComments?.forEach((item) => all.push(item));
-    const allSaved = all?.map((item) => {
-      let newItem;
-      if (item?.scroll) {
-        newItem = Object.assign(
-          { created: item?.scroll ? item?.creation_date : item?.createdAt },
-          item
-        );
-      } else {
-        newItem = Object.assign(
-          { created: item?.scroll ? item?.creation_date : item?.createdAt },
-          item
-        );
-      }
-      return newItem;
-    });
-
-    setAllItems(allSaved);
-    setAllLoading(false);
-  }, [savedScrolls, savedComments]);
 
   return (
     <Screen>
@@ -145,7 +132,7 @@ export default function SavedItems() {
                 />
               </Grid>
             </Hidden>
-            <Grid item xs={12} sm={12} md={8} lg={6}>
+            <Grid item xs={12} sm={12} md={8} lg={7}>
               <>
                 <Card variant='outlined' style={{ marginBottom: 12 }}>
                   <CardHeader
@@ -177,23 +164,7 @@ export default function SavedItems() {
                     value={value}
                     onChange={handleChange}
                     indicatorColor='primary'
-                    /* classes={{
-              root: classes.tabsRoot,
-              indicator: classes.displayNone,
-            }} */
                   >
-                    <Tab
-                      /* classes={{
-                    root: classes.tabRootButton,
-                    label: classes.tabLabel,
-                    selected: classes.tabSelected,
-                    wrapper: classes.tabWrapper,
-                  }} */
-                      key={'allItems'}
-                      label={'All'}
-                      disableRipple
-                      style={{ textTransform: 'none' }}
-                    />
                     <Tab
                       key={'Posts'}
                       label={'Posts'}
@@ -206,49 +177,26 @@ export default function SavedItems() {
                       disableRipple
                       style={{ textTransform: 'none' }}
                     />
-                    {/* <Tab
-              key={'Articles'}
-              label={'Articles'}
-              style={{ textTransform: 'none' }}
-              disableRipple
-            /> */}
+                    <Tab
+                      key={'Events'}
+                      label={'Events'}
+                      disableRipple
+                      style={{ textTransform: 'none' }}
+                    />
+                    <Tab
+                      key={'Articles'}
+                      label={'Articles'}
+                      disableRipple
+                      style={{ textTransform: 'none' }}
+                    />
                   </Tabs>
                 </Card>
+                {value === 0 && scrollsLoading && (
+                  <Grid align='center'>
+                    <CircularProgress color='primary' size={24} thickness={4} />
+                  </Grid>
+                )}
                 {value === 0 &&
-                  (scrollsLoading || commentsLoading || allLoading) && (
-                    <Grid align='center'>
-                      <CircularProgress
-                        color='primary'
-                        size={24}
-                        thickness={4}
-                      />
-                    </Grid>
-                  )}
-                {value === 0 &&
-                  allItems?.length > 0 &&
-                  !allLoading &&
-                  allItems
-                    ?.sort((a, b) => b.created - a.created)
-                    .map((item) =>
-                      item.scroll ? (
-                        <SavedComment
-                          key={item._id}
-                          comment={item}
-                          setImagePreviewURL={setImagePreviewURL}
-                          setImagePreviewOpen={setImagePreviewOpen}
-                        />
-                      ) : (
-                        <SavedPost
-                          setImagePreviewURL={(url) => setImagePreviewURL(url)}
-                          setImagePreviewOpen={(open) =>
-                            setImagePreviewOpen(open)
-                          }
-                          key={item?._id}
-                          scroll={item}
-                        />
-                      )
-                    )}
-                {value === 1 &&
                   savedScrolls?.length > 0 &&
                   savedScrolls?.map((scroll) => (
                     <SavedPost
@@ -258,7 +206,7 @@ export default function SavedItems() {
                       scroll={scroll}
                     />
                   ))}
-                {value === 2 &&
+                {value === 1 &&
                   savedComments?.length > 0 &&
                   savedComments?.map((comment) => (
                     <SavedComment
@@ -268,12 +216,18 @@ export default function SavedItems() {
                       setImagePreviewOpen={setImagePreviewOpen}
                     />
                   ))}
-                {((value == 0 && allItems?.length < 1) ||
-                  (value == 1 && savedScrolls?.length < 1) ||
-                  (value == 2 && savedComments?.length < 1)) &&
+                {value === 2 &&
+                  bookmarkedEvents?.Events?.getBookmarked?.length > 0 &&
+                  bookmarkedEvents?.Events?.getBookmarked?.map((event) => (
+                    <SavedEvent key={event._id} event={event} />
+                  ))}
+                {((value == 0 && savedScrolls?.length < 1) ||
+                  (value == 1 && savedComments?.length < 1) ||
+                  (value == 2 &&
+                    bookmarkedEvents?.Events?.getBookmarked?.length < 1)) &&
                 !scrollsLoading &&
                 !commentsLoading &&
-                !allLoading ? (
+                !bookmarksLoading ? (
                   <Grid align='center'>
                     <Typography variant='body1' color='primary'>
                       No Saved items here yet..start bookmarking!!

@@ -95,8 +95,7 @@ export default function ScrollOptionsPopover({
         },
       ],
     });
-    if (data?.Bookmarks?.create == true)
-      toast.success('Added to saved items', {
+    toast.success('Added to saved items', {
         position: 'bottom-left',
         autoClose: 3000,
         hideProgressBar: true,
@@ -104,7 +103,8 @@ export default function ScrollOptionsPopover({
         pauseOnHover: true,
         draggable: true,
       });
-    console.log(data?.Bookmarks?.create, 'dlfdslfj');
+      
+    if(!data?.Bookmarks?.create) console.log('Bookmarked');
     handleScrollOptionClose();
   };
   const handleReportScroll = () => {
