@@ -34,16 +34,23 @@ export default function Signup() {
   const [createUser] = useMutation(MUTATION_CREATE_USER, {
     context: { clientName: 'users' },
   });
+
   const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP, {
     context: { clientName: 'users' },
   });
+
   const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN, {
     context: { clientName: 'users' },
   });
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-    justRegistered && history.push('/auth/login');
+
+    if (justRegistered) {
+      setTimeout(() => {
+        history.push('/auth/login');
+      }, 2000);
+    }
 
     errors &&
       errors.map(err => {
@@ -180,7 +187,7 @@ export default function Signup() {
                         key={Math.random() * 100}
                         severity='success'
                       >
-                        Registration Successful. Continue to login.
+                        Registration Successful. Redirecting to login.
                       </Alert>
                     )}
 

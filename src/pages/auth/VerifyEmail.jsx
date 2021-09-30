@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
-import { signout } from '../../store/actions/authActions';
+import { verifySuccess } from '../../store/actions/authActions';
 import { MUTATION_VERIFY_EMAIL } from './utilities/queries';
 
 export default function VerifyEmail() {
@@ -41,12 +41,18 @@ export default function VerifyEmail() {
         console.log('verem data: ', data);
 
         setTimeout(() => {
-          dispatch(signout());
-          history.push('/auth/login');
+          user?.email ? dispatch(verifySuccess()) : history.push('/auth/login');
         }, 2000);
       }
     });
-  }, [dispatch, history, location.search, user?.email?.verified, verifyEmail]);
+  }, [
+    dispatch,
+    history,
+    location.search,
+    user?.email,
+    user?.email?.verified,
+    verifyEmail,
+  ]);
 
   return (
     <>
