@@ -10,34 +10,40 @@ import {
   Hidden,
   IconButton,
   makeStyles,
+  Modal,
   Paper,
   Typography,
   useMediaQuery,
-} from "@material-ui/core";
+} from '@material-ui/core';
 import {
   ChevronRightRounded,
+  CloseRounded,
   CloudDownload,
   ExpandMore,
   Help,
   LinkedIn,
   MailRounded,
   ShareRounded,
-} from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
-// import Carousel from 'react-material-ui-carousel';
-import igImg from "../../../../assets/investor/ig.png";
-import supplyImg from "../../../../assets/investor/image_5.png";
-import landingImg from "../../../../assets/investor/landing.png";
-import learnImg from "../../../../assets/investor/learn.svg";
-import modelImg from "../../../../assets/investor/model.png";
-import scrollImg from "../../../../assets/investor/scroll.svg";
-import token1Img from "../../../../assets/investor/token1.png";
-import token2Img from "../../../../assets/investor/token2.png";
-import logoImg from "../../../../assets/logo_full.svg";
-import Button from "../../../../components/Button";
-import { team } from "../../../../store/local/dummy";
-import DarkTheme from "../../../../utilities/DarkTheme";
-import { ecosystem, healthCheck, roadMap } from "../../utilities/welcome.data";
+} from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
+import Carousel from 'react-material-ui-carousel';
+import igImg from '../../../../assets/investor/ig.png';
+import supplyImg from '../../../../assets/investor/image_5.png';
+import learnImg from '../../../../assets/investor/learn.svg';
+import modelImg from '../../../../assets/investor/model.png';
+import scrollImg from '../../../../assets/investor/scroll.svg';
+import token1Img from '../../../../assets/investor/token1.png';
+import token2Img from '../../../../assets/investor/token2.png';
+import logoImg from '../../../../assets/logo_full.svg';
+import Button from '../../../../components/Button';
+import DarkTheme from '../../../../utilities/DarkTheme';
+import {
+  ecosystem,
+  healthCheck,
+  roadMap,
+  team,
+} from '../../utilities/welcome.data';
+import DonateCard from '../DonateCard';
 
 const ROADMAP_DISPLACEMENT = 100;
 
@@ -45,7 +51,7 @@ export default function InvestorTab() {
   const [expanded, setExpanded] = useState(healthCheck[0].title);
   const [expanded2, setExpanded2] = useState(false);
   const [query, setQuery] = useState(1);
-  const [year, setYear] = useState("2021");
+  const [year, setYear] = useState('2021');
   const classes = useStyles();
 
   const splittedEcosystem = [];
@@ -60,12 +66,12 @@ export default function InvestorTab() {
     splittedEcosystem.push(temporary);
   }
 
-  const xs = useMediaQuery("(min-width:10px) and (max-width:599px)");
-  const sm = useMediaQuery("(min-width:600px) and (max-width:959px)");
-  const md = useMediaQuery("(min-width:960px)  and (max-width:1279px)");
-  const lg = useMediaQuery("(min-width:1280px)");
+  const xs = useMediaQuery('(min-width:10px) and (max-width:599px)');
+  const sm = useMediaQuery('(min-width:600px) and (max-width:959px)');
+  const md = useMediaQuery('(min-width:960px)  and (max-width:1279px)');
+  const lg = useMediaQuery('(min-width:1280px)');
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -80,33 +86,31 @@ export default function InvestorTab() {
   return (
     <DarkTheme>
       <div>
-        <section style={{ backgroundColor: "#000" }}>
-          <Container maxWidth="lg">
-            <Paper style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
+          <Container maxWidth='lg'>
+            <Paper style={{ backgroundColor: '#000' }}>
               <Grid container spacing={2}>
                 <Grid item sm={6}>
-                  <div className="mt-4 pt-2">
-                    <Typography variant="h5" className="mt-5 mb-2">
+                  <div className='mt-4 pt-2'>
+                    <Typography variant='h5' className='mt-5 mb-2'>
                       BitNorm Investor Page
                     </Typography>
-                    <Typography variant="h4" className="mb-3">
+                    <Typography variant='h4' className='mb-3'>
                       A one-stop data aggregator for the cryptocurrency
                       ecosystem
                     </Typography>
-                    <Typography variant="h6" className="mb-3">
+                    <Typography variant='h6' className='mb-3'>
                       BitNorm creates an ecosystem that is fueled by information
                       sharing
                     </Typography>
-                    <Button textCase size="large">
+                    <Button textCase size='large'>
                       Get Started
                     </Button>
                   </div>
                 </Grid>
                 <Hidden xsDown>
                   <Grid item sm={6}>
-                    <div className=" h-100 w-100 pt-4">
-                      <img className="w-100" src={landingImg} alt="" />
-                    </div>
+                    <DonateCard />
                   </Grid>
                 </Hidden>
               </Grid>
@@ -114,40 +118,40 @@ export default function InvestorTab() {
           </Container>
         </section>
         <section
-          className=" h-100 w-100 py-4"
-          style={{ backgroundColor: "#000" }}
+          className=' h-100 w-100 py-4'
+          style={{ backgroundColor: '#000' }}
         >
           <Container>
-            <img className="w-100" src={scrollImg} alt="" />
+            <img className='w-100' src={scrollImg} alt='' />
           </Container>
         </section>
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-4">
+            <div className='py-4'>
               <Grid container spacing={2}>
                 <Grid item sm={12} md={8}>
-                  <Card style={{ backgroundColor: "#11141C", height: "100%" }}>
-                    <CardContent className="m-0 pb-0">
-                      <Grid container spacing={2} className="h-100">
-                        <Grid item xs={12} sm={6} md={4} className="h-100">
-                          <div className="d-flex flex-column bg-white p-3 text-black justify-content-between">
+                  <Card style={{ backgroundColor: '#11141C', height: '100%' }}>
+                    <CardContent className='m-0 pb-0'>
+                      <Grid container spacing={2} className='h-100'>
+                        <Grid item xs={12} sm={6} md={4} className='h-100'>
+                          <div className='d-flex flex-column bg-white p-3 text-black justify-content-between'>
                             <div>
-                              <div className="d-flex align-items-center justify-content-between ">
-                                <small className="text-uppercase">
+                              <div className='d-flex align-items-center justify-content-between '>
+                                <small className='text-uppercase'>
                                   White Paper
                                 </small>
 
                                 <small> 9 months ago</small>
                               </div>
-                              <Typography className="lead fw-bold my-2">
+                              <Typography className='lead fw-bold my-2'>
                                 First in line: Early technology adopters around
                                 the globe
                               </Typography>
                             </div>
                             <img
                               src={logoImg}
-                              alt=""
-                              className="w-50 align-self-baseline mt-3"
+                              alt=''
+                              className='w-50 align-self-baseline mt-3'
                             />
                           </div>
                         </Grid>
@@ -156,18 +160,18 @@ export default function InvestorTab() {
                           xs={12}
                           sm={6}
                           md={8}
-                          justifyContent="space-between"
-                          className=" d-flex flex-column"
+                          justifyContent='space-between'
+                          className=' d-flex flex-column'
                         >
                           <div>
-                            <Typography className="lead" gutterBottom>
+                            <Typography className='lead' gutterBottom>
                               BitNorm, an all in one platform combining several
                               aspects that we call engines that collectively
                               work together to realize natural and seamless
                               access to the information within the
                               cryptocurrencies ecosystem.
                             </Typography>
-                            <Typography className="lead" gutterBottom>
+                            <Typography className='lead' gutterBottom>
                               This information is presented in multiple formats
                               to cater for both the varying goals of our users
                               and the diversity of our audience
@@ -175,21 +179,21 @@ export default function InvestorTab() {
                           </div>
                           <div>
                             <Divider />
-                            <div className="d-flex align-items-center justify-content-between mt-auto">
+                            <div className='d-flex align-items-center justify-content-between mt-auto'>
                               <Button
-                                color="inherit"
+                                color='inherit'
                                 textCase
-                                variant="text"
-                                className="mt-2"
+                                variant='text'
+                                className='mt-2'
                                 endIcon={<CloudDownload />}
                               >
                                 Download Whitepaper
                               </Button>
                               <Button
-                                color="inherit"
+                                color='inherit'
                                 textCase
-                                variant="text"
-                                className="mt-2"
+                                variant='text'
+                                className='mt-2'
                                 startIcon={<ShareRounded />}
                               >
                                 Share
@@ -204,8 +208,8 @@ export default function InvestorTab() {
                 <Grid item sm={12} md={4}>
                   <Card
                     style={{
-                      backgroundImage: "linear-gradient(#006097,#07A1FB)",
-                      height: "100%",
+                      backgroundImage: 'linear-gradient(#006097,#07A1FB)',
+                      height: '100%',
                     }}
                   >
                     <CardContent>
@@ -214,16 +218,16 @@ export default function InvestorTab() {
                           maxHeight: 200,
                         }}
                         src={learnImg}
-                        alt=""
-                        className="w-50 "
+                        alt=''
+                        className='w-50 '
                       />
                       <br />
                       <Button
-                        size="large"
-                        color="inherit"
+                        size='large'
+                        color='inherit'
                         textCase
-                        variant="text"
-                        className="mt-2"
+                        variant='text'
+                        className='mt-2'
                         endIcon={<ChevronRightRounded />}
                       >
                         Learn More
@@ -235,19 +239,19 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-4">
+            <div className='py-4'>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Card style={{ backgroundColor: "#11141C" }}>
+                  <Card style={{ backgroundColor: '#11141C' }}>
                     <CardContent>
                       <Typography
-                        className="text-uppercase"
+                        className='text-uppercase'
                         gutterBottom
-                        variant="h5"
+                        variant='h5'
                       >
-                        Base{" "}
+                        Base{' '}
                         <span
                           style={
                             {
@@ -259,7 +263,7 @@ export default function InvestorTab() {
                           Concept
                         </span>
                       </Typography>
-                      <Typography className="lead" gutterBottom>
+                      <Typography className='lead' gutterBottom>
                         Bitnorm will design a platform that will merge all type
                         of crypto users together where they will be able to
                         share amongst one another useful information about the
@@ -270,7 +274,7 @@ export default function InvestorTab() {
                         andsome relevant data engines that will be useful for
                         the users to make polite financial decision.
                       </Typography>
-                      <Typography className="lead" gutterBottom>
+                      <Typography className='lead' gutterBottom>
                         Bitnorm Platform will be useful for Crypto investors ,
                         most especially users who are new to the industry . They
                         will receive guides and relevant information to succeed
@@ -282,26 +286,26 @@ export default function InvestorTab() {
                       </Typography>
                       <Card
                         style={{
-                          backgroundColor: "#0C0F19",
+                          backgroundColor: '#0C0F19',
                           marginTop: 20,
                           borderRadius: 20,
                         }}
                       >
                         <CardContent>
-                          <div className="d-flex p-2 ">
+                          <div className='d-flex p-2 '>
                             <Hidden smDown>
                               <img
                                 src={igImg}
-                                alt=""
-                                className="mx-5"
+                                alt=''
+                                className='mx-5'
                                 style={{ height: 50 }}
                               />
                             </Hidden>
                             <div>
-                              <Typography className="lead">
+                              <Typography className='lead'>
                                 WHO WILL BITNORM ULTIMATELY SERVE?
                               </Typography>
-                              <Typography className="lead">
+                              <Typography className='lead'>
                                 Our goal, therefore, is to unite learners,
                                 professionals, and businesses all under one roof
                                 with each one of the benefits from the other.
@@ -317,17 +321,17 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-4">
+            <div className='py-4'>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <Card style={{ backgroundColor: "#11141C" }}>
+                  <Card style={{ backgroundColor: '#11141C' }}>
                     <CardContent>
-                      <Typography gutterBottom variant="h5" className="fw-bold">
+                      <Typography gutterBottom variant='h5' className='fw-bold'>
                         Problem
                       </Typography>
-                      <Typography className="lead">
+                      <Typography className='lead'>
                         Crypto investors/traders have to maintain multiple
                         accounts on multiple platforms to have a overview of
                         their trading signals, latest crypto news, blogs, forums
@@ -339,14 +343,14 @@ export default function InvestorTab() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography
-                    color="textSecondary"
+                    color='textSecondary'
                     gutterBottom
-                    variant="h5"
-                    className="fw-bold"
+                    variant='h5'
+                    className='fw-bold'
                   >
                     Solution
                   </Typography>
-                  <Typography className="lead text-white">
+                  <Typography className='lead text-white'>
                     BITNORM solves this problem by combining all of this
                     much-needed functionality and data with one simple use
                     ecosystem platform. BITNORM creates its own token called BN
@@ -364,35 +368,35 @@ export default function InvestorTab() {
             </div>
           </Container>
         </section>
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-1">
-              <Divider className="color-whit bg-whit" />
+            <div className='py-1'>
+              <Divider className='color-whit bg-whit' />
             </div>
           </Container>
         </section>
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-3">
+            <div className='py-3'>
               <Card
-                style={{ backgroundImage: "linear-gradient(#0B072B,#072438)" }}
-                className="py-3"
+                style={{ backgroundImage: 'linear-gradient(#0B072B,#072438)' }}
+                className='py-3'
               >
-                <Grid container spacing={2} alignItems="center">
+                <Grid container spacing={2} alignItems='center'>
                   <Grid item xs={12} sm={3}>
-                    <div className="w-100 text-center">
-                      <img src={token2Img} alt="" className="w-75" />
+                    <div className='w-100 text-center'>
+                      <img src={token2Img} alt='' className='w-75' />
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <div className="px-3">
-                      <Typography color="primary">BN</Typography>
+                    <div className='px-3'>
+                      <Typography color='primary'>BN</Typography>
                       <Typography>Symbol</Typography>
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <div className="px-3">
-                      <Typography noWrap color="primary">
+                    <div className='px-3'>
+                      <Typography noWrap color='primary'>
                         0x42edc1c5ff57Ff5240C90E2D8DfA269D77D68013
                       </Typography>
                       <Typography>Smart Contract address</Typography>
@@ -400,8 +404,8 @@ export default function InvestorTab() {
                   </Grid>
                   <Hidden smDown>
                     <Grid item xs={12} sm={3}>
-                      <div className="w-100 text-end">
-                        <img src={token1Img} alt="" className="w-75" />
+                      <div className='w-100 text-end'>
+                        <img src={token1Img} alt='' className='w-75' />
                       </div>
                     </Grid>
                   </Hidden>
@@ -411,19 +415,19 @@ export default function InvestorTab() {
           </Container>
         </section>
 
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-5">
+            <div className='py-5'>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography
                     gutterBottom
-                    variant="h5"
-                    className="text-white fw-bold"
+                    variant='h5'
+                    className='text-white fw-bold'
                   >
                     BN Token
                   </Typography>
-                  <Typography gutterBottom className="lead text-white">
+                  <Typography gutterBottom className='lead text-white'>
                     BN token is a utility, Ethereum ERC20- token, specially
                     designed for the BitNorm ecosystem. ERC20 tokens enable a
                     uniform, standard set of rules governing how tokens behave
@@ -432,26 +436,26 @@ export default function InvestorTab() {
                     a first-mover advantage and continues to have the largest
                     market cap.
                   </Typography>
-                  <Typography gutterBottom className="lead text-white">
+                  <Typography gutterBottom className='lead text-white'>
                     ERC20 allows for seamless interaction with other smart
                     contracts and decentralized applications on the Ethereum
                     blockchain.
                   </Typography>
                   <div>
                     <Button
-                      size="large"
+                      size='large'
                       textCase
-                      variant="outlined"
-                      className="mt-3"
+                      variant='outlined'
+                      className='mt-3'
                       endIcon={<ChevronRightRounded />}
                     >
                       Buy BN
                     </Button>
                     <Button
-                      size="large"
+                      size='large'
                       textCase
-                      variant="text"
-                      className="mt-3"
+                      variant='text'
+                      className='mt-3'
                       endIcon={<ChevronRightRounded />}
                     >
                       Visit Price / Chart
@@ -460,13 +464,13 @@ export default function InvestorTab() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <div>
-                    <div className="w-100 bg-white text-center mb-2 br-1 py-2 fw-bold">
-                      <Typography color="primary">
+                    <div className='w-100 bg-white text-center mb-2 br-1 py-2 fw-bold'>
+                      <Typography color='primary'>
                         Maximum Supply: 200M
                       </Typography>
                     </div>
-                    <div className="w-100 br-2 bg-white py-1 text-center">
-                      <img className="w-75" src={supplyImg} alt="" />
+                    <div className='w-100 br-2 bg-white py-1 text-center'>
+                      <img className='w-75' src={supplyImg} alt='' />
                     </div>
                   </div>
                 </Grid>
@@ -475,55 +479,33 @@ export default function InvestorTab() {
           </Container>
         </section>
 
-        <section id="ecosystem" style={{ backgroundColor: "#0C0F19" }}>
+        <section id='ecosystem' style={{ backgroundColor: '#0C0F19' }}>
           <Container>
-            <div className="py-5">
+            <div className='py-5'>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Typography
-                    variant="h5"
-                    className="text-center text-white mb-3"
+                    variant='h5'
+                    className='text-center text-white mb-3'
                   >
                     BitNorm&apos;s Ecosystem
                   </Typography>
                 </Grid>
               </Grid>
-              {/* <Carousel
-                autoPlay
-                indicators
-                // navButtonsAlwaysVisible
-                // navButtonsAlwaysInvisible
-                cycleNavigation
-                animation='slide'
-              > */}
-              {splittedEcosystem?.map((item) => (
-                <div className="mb-4" key={item[0]?.title}>
-                  <Grid container spacing={3}>
-                    {item?.map(({ title, text, id }) => (
-                      <EcosystemCard
-                        key={title}
-                        title={title}
-                        text={text}
-                        index={id}
-                      />
-                    ))}
-                  </Grid>
-                </div>
-              ))}
-              {/* </Carousel> */}
+
               <Grid container>
-                <Card variant="outlined" className="mt-4">
+                <Card variant='outlined' className='mt-4 mb-5'>
                   <Accordion
                     expanded={expanded2}
                     onChange={() => setExpanded2(!expanded2)}
                     elevation={0}
                   >
                     <AccordionSummary
-                      expandIcon={<ExpandMore color="primary" />}
+                      expandIcon={<ExpandMore color='primary' />}
                       aria-controls={`coming-soon-content`}
                     >
                       <Typography
-                        color="inherit"
+                        color='inherit'
                         //  className={classes.heading}
                       >
                         Coming Soon
@@ -531,11 +513,11 @@ export default function InvestorTab() {
                     </AccordionSummary>
                     <AccordionDetails>
                       <div>
-                        <div className="my-2">
-                          <Typography className="fw-bold">
+                        <div className='my-2'>
+                          <Typography className='fw-bold'>
                             1. BN Social
                           </Typography>
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             It is a BitNorm&apos;s social media tool that allows
                             users from all over the world to connect and share
                             ideas about cryptocurrencies. BN Social allows users
@@ -543,22 +525,22 @@ export default function InvestorTab() {
                             their activity and interests in cryptocurrencies.
                           </Typography>
                         </div>
-                        <div className="my-2">
-                          <Typography className="fw-bold">
+                        <div className='my-2'>
+                          <Typography className='fw-bold'>
                             2. Job Board
                           </Typography>
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             This will be a feature that will help our users find
                             Cryptocurrency &amp; Bitcoin jobs. Start your new
                             &amp; exciting career in emerging blockchain
                             technology companies.
                           </Typography>
                         </div>
-                        <div className="my-2">
-                          <Typography className="fw-bold">
+                        <div className='my-2'>
+                          <Typography className='fw-bold'>
                             3. Investment Portfolio
                           </Typography>
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             Now you will be able to keep track, all your
                             investment accounts in one place. BitNorm will
                             automatically pulls your investment accounts from
@@ -567,11 +549,11 @@ export default function InvestorTab() {
                             stock, mutual fund, ETF, and option you own
                           </Typography>
                         </div>
-                        <div className="my-2">
-                          <Typography className="fw-bold">
+                        <div className='my-2'>
+                          <Typography className='fw-bold'>
                             4. Services
                           </Typography>
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             It is also BitNorm&apos;s open marketplace. Products
                             and services listed on BNMarket can be purchased
                             using BN tokens. BNMarket provided sellers with a
@@ -584,19 +566,43 @@ export default function InvestorTab() {
                   </Accordion>
                 </Card>
               </Grid>
+
+              <Carousel
+                autoPlay
+                indicators
+                // navButtonsAlwaysVisible
+                // navButtonsAlwaysInvisible
+                cycleNavigation
+                animation='slide'
+              >
+                {splittedEcosystem?.map(item => (
+                  <div className='mb-4' key={item[0]?.title}>
+                    <Grid container spacing={3}>
+                      {item?.map(({ title, text, id }) => (
+                        <EcosystemCard
+                          key={title}
+                          title={title}
+                          text={text}
+                          index={id}
+                        />
+                      ))}
+                    </Grid>
+                  </div>
+                ))}
+              </Carousel>
             </div>
           </Container>
         </section>
 
-        <section style={{ backgroundColor: "#000" }}>
+        <section style={{ backgroundColor: '#000' }}>
           <Container>
-            <div className="py-4">
-              <Card style={{ backgroundColor: "#161922" }}>
-                <div className="my-5 mx-3">
+            <div className='py-4'>
+              <Card style={{ backgroundColor: '#161922' }}>
+                <div className='my-5 mx-3'>
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <Typography variant="h5">BUSINESS MODEL</Typography>
+                        <Typography variant='h5'>BUSINESS MODEL</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography>
@@ -608,27 +614,27 @@ export default function InvestorTab() {
                     </Grid>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6} md={4}>
-                        <div className="my-5">
-                          <Typography className="my-4 fw-bold ">
+                        <div className='my-5'>
+                          <Typography className='my-4 fw-bold '>
                             <span
                               style={{
                                 zIndex: 3,
-                                position: "absolute",
+                                position: 'absolute',
                               }}
                             >
                               01.
                             </span>
                             <div
                               style={{
-                                backgroundColor: "#D483F5",
-                                alignSelf: "baseline",
+                                backgroundColor: '#D483F5',
+                                alignSelf: 'baseline',
                                 width: 40,
                                 height: 40,
                                 borderRadius: 20,
                               }}
                             ></div>
                           </Typography>
-                          <Typography className="my-4 fw-bold">
+                          <Typography className='my-4 fw-bold'>
                             Community Engine
                           </Typography>
                           <Typography>
@@ -636,27 +642,27 @@ export default function InvestorTab() {
                             chat platform for social collaboration.
                           </Typography>
                         </div>
-                        <div className="my-5">
-                          <Typography className="my-4 fw-bold">
+                        <div className='my-5'>
+                          <Typography className='my-4 fw-bold'>
                             <span
                               style={{
                                 zIndex: 3,
-                                position: "absolute",
+                                position: 'absolute',
                               }}
                             >
                               02.
                             </span>
                             <div
                               style={{
-                                backgroundColor: "#D483F5",
-                                alignSelf: "baseline",
+                                backgroundColor: '#D483F5',
+                                alignSelf: 'baseline',
                                 width: 40,
                                 height: 40,
                                 borderRadius: 20,
                               }}
                             ></div>
                           </Typography>
-                          <Typography className="my-4 fw-bold">
+                          <Typography className='my-4 fw-bold'>
                             Community Engine
                           </Typography>
                           <Typography>
@@ -667,33 +673,33 @@ export default function InvestorTab() {
                       </Grid>
                       <Hidden smDown>
                         <Grid item xs={12} sm={6} md={4}>
-                          <div className="w-100">
-                            <img src={modelImg} alt="" className="w-75" />
+                          <div className='w-100'>
+                            <img src={modelImg} alt='' className='w-75' />
                           </div>
                         </Grid>
                       </Hidden>
                       <Grid item xs={12} sm={6} md={4}>
-                        <div className="my-5">
-                          <Typography className="my-4 fw-bold">
+                        <div className='my-5'>
+                          <Typography className='my-4 fw-bold'>
                             <span
                               style={{
                                 zIndex: 3,
-                                position: "absolute",
+                                position: 'absolute',
                               }}
                             >
                               03.
                             </span>
                             <div
                               style={{
-                                backgroundColor: "#D483F5",
-                                alignSelf: "baseline",
+                                backgroundColor: '#D483F5',
+                                alignSelf: 'baseline',
                                 width: 40,
                                 height: 40,
                                 borderRadius: 20,
                               }}
                             ></div>
                           </Typography>
-                          <Typography className="my-4 fw-bold">
+                          <Typography className='my-4 fw-bold'>
                             Community Engine
                           </Typography>
                           <Typography>
@@ -701,27 +707,27 @@ export default function InvestorTab() {
                             chat platform for social collaboration.
                           </Typography>
                         </div>
-                        <div className="my-5">
-                          <Typography className="my-4 fw-bold">
+                        <div className='my-5'>
+                          <Typography className='my-4 fw-bold'>
                             <span
                               style={{
                                 zIndex: 3,
-                                position: "absolute",
+                                position: 'absolute',
                               }}
                             >
                               04.
                             </span>
                             <div
                               style={{
-                                backgroundColor: "#D483F5",
-                                alignSelf: "baseline",
+                                backgroundColor: '#D483F5',
+                                alignSelf: 'baseline',
                                 width: 40,
                                 height: 40,
                                 borderRadius: 20,
                               }}
                             ></div>
                           </Typography>
-                          <Typography className="my-4 fw-bold">
+                          <Typography className='my-4 fw-bold'>
                             Community Engine
                           </Typography>
                           <Typography>
@@ -739,31 +745,34 @@ export default function InvestorTab() {
         </section>
 
         <section
-          id="roadmap"
+          id='roadmap'
           style={{
-            backgroundColor: "#000",
+            backgroundColor: '#000',
             paddingBottom: query > 1 && ROADMAP_DISPLACEMENT,
           }}
         >
           <Container>
-            <div className="py-4">
-              <Paper style={{ backgroundColor: "#000" }}>
-                <div className="my-5 mx-3">
+            <div className='py-4'>
+              <Paper style={{ backgroundColor: '#000' }}>
+                <div className='my-5 mx-3'>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <Typography variant="h5">BitNorm Roadmap</Typography>
-                      <Typography variant="body2">
+                      <Typography variant='h5'>BitNorm Roadmap</Typography>
+                      <Typography variant='body2'>
                         The highwayto building a legacy that will foster
                         innovation.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Card>
-                        {roadMap.map((road) => (
+                        {roadMap.map(road => (
                           <Button
-                            color={road?.year != year && "inherit"}
-                            className="me-2"
-                            variant={road?.year != year && "text"}
+                            style={{
+                              backgroundColor: road?.year == year && road?.bg,
+                            }}
+                            color={road?.year != year && 'inherit'}
+                            className='me-2'
+                            variant={road?.year != year && 'text'}
                             key={road?.year}
                             onClick={() => setYear(road?.year)}
                           >
@@ -776,7 +785,7 @@ export default function InvestorTab() {
                   <Grid
                     container
                     spacing={3}
-                    className="mt-4"
+                    className='mt-4'
                     style={
                       {
                         // backgroundImage: `url('${roadmapImg}')`,
@@ -787,10 +796,11 @@ export default function InvestorTab() {
                     }
                   >
                     {roadMap
-                      .filter((road) => road?.year == year)[0]
-                      .quaters.map(({ name, text, list }, index) => (
+                      .filter(road => road?.year == year)[0]
+                      .quaters.map(({ name, text, list, state }, index) => (
                         <QuaterCard
                           key={name}
+                          state={state}
                           index={index}
                           name={name}
                           text={text}
@@ -806,12 +816,12 @@ export default function InvestorTab() {
           </Container>
         </section>
 
-        <section className="py-5" style={{ backgroundColor: "#0C0F19" }}>
+        <section className='py-5' style={{ backgroundColor: '#0C0F19' }}>
           <Container>
-            <Typography className="my-2 mx-2 fw-bold text-white">
+            <Typography className='my-2 mx-2 fw-bold text-white'>
               Investor Health Check
             </Typography>
-            <Card elevation={0} style={{ backgroundColor: "#0C0F19" }}>
+            <Card elevation={0} style={{ backgroundColor: '#0C0F19' }}>
               {healthCheck.map(({ title, text }) => (
                 <Accordion
                   key={title}
@@ -819,15 +829,15 @@ export default function InvestorTab() {
                   onChange={handleChange(title)}
                   className={classes.accordion}
                   elevation={0}
-                  variant="outlined"
+                  variant='outlined'
                 >
                   <AccordionSummary
-                    expandIcon={<ExpandMore color="primary" />}
+                    expandIcon={<ExpandMore color='primary' />}
                     aria-controls={`${title}bh-content`}
                     id={`${title}bh-header`}
                   >
-                    <Typography color="primary" className={classes.heading}>
-                      <Help className="me-2" /> {title}
+                    <Typography color='primary' className={classes.heading}>
+                      <Help className='me-2' /> {title}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -839,33 +849,40 @@ export default function InvestorTab() {
           </Container>
         </section>
 
-        <section className="py-5" style={{ backgroundColor: "#000" }}>
+        <section className='py-5' style={{ backgroundColor: '#000' }}>
           <Container>
-            <Card style={{ backgroundColor: "#11141C" }}>
+            <Card style={{ backgroundColor: '#11141C' }}>
               <CardContent>
-                <Typography className="lead mb-3 mt-1">
+                <Typography className='lead mb-3 mt-1'>
                   A word from our CEO
                 </Typography>
                 <Card>
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid xs={12} sm={4}>
-                        <img src={team[0].image} alt="" className="w-100" />
+                        <div
+                          className='bg-white h-100 br-2'
+                          style={{
+                            backgroundImage: `url('${team[0].image}')`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }}
+                        ></div>
                       </Grid>
                       <Grid xs={12} sm={8}>
-                        <div className="d-flex flex-column  mx-3">
+                        <div className='d-flex flex-column mx-3 h-100'>
                           <Typography>{team[0].name}</Typography>
-                          <Typography color="primary">
+                          <Typography color='primary'>
                             {team[0].role}
                           </Typography>
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             {team[0].desc}
                           </Typography>
-                          <div className="mt-4">
-                            <IconButton size="small">
+                          <div className='mt-4'>
+                            <IconButton size='small'>
                               <MailRounded />
                             </IconButton>
-                            <IconButton size="small">
+                            <IconButton size='small'>
                               <LinkedIn />
                             </IconButton>
                           </div>
@@ -874,21 +891,21 @@ export default function InvestorTab() {
                     </Grid>
                   </CardContent>
                 </Card>
-                <Typography className="lead mb-3 mt-5">Our Advisors</Typography>
+                <Typography className='lead mb-3 mt-5'>Our Advisors</Typography>
                 <Grid container spacing={2}>
                   {team
-                    .filter(({ category }) => category === "advisor")
-                    .map((member) => (
-                      <TeamCard key={member?.name} member={member} />
+                    .filter(({ category }) => category === 'advisor')
+                    .map(member => (
+                      <TeamCard key={member?.name} member={member} desc />
                     ))}
                 </Grid>
-                <Typography className="lead mb-3 mt-5">
+                <Typography className='lead mb-3 mt-5'>
                   Development Team
                 </Typography>
                 <Grid container spacing={2}>
                   {team
-                    .filter(({ category }) => category === "dev")
-                    .map((member) => (
+                    .filter(({ category }) => category === 'dev')
+                    .map(member => (
                       <TeamCard key={member?.name} member={member} />
                     ))}
                 </Grid>
@@ -901,71 +918,81 @@ export default function InvestorTab() {
   );
 }
 
-function TeamCard({ member }) {
+function TeamCard({ member, desc }) {
+  const [descOpen, setDescOpen] = useState(false);
+
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Card elevation={0} style={{ backgroundColor: "#1E2126" }}>
-        <CardContent>
-          <div className="d-flex">
-            {member?.image && (
-              <div
-                className="w-25"
-                style={{
-                  backgroundImage: `url('${member?.image}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              ></div>
-            )}
-            <div className="d-flex flex-column  mx-3">
-              <Typography>{member?.name}</Typography>
-              <Typography color="primary">{member?.role}</Typography>
-              <div className="mt-4">
-                <IconButton size="small">
-                  <MailRounded />
-                </IconButton>
-                <IconButton size="small">
-                  <LinkedIn />
-                </IconButton>
+    <>
+      <Grid item xs={12} sm={6} md={4}>
+        <Card elevation={0} style={{ backgroundColor: '#1E2126' }}>
+          <CardContent>
+            <div className='d-flex'>
+              {member?.image && (
+                <div
+                  className='w-25'
+                  style={{
+                    backgroundImage: `url('${member?.image}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                ></div>
+              )}
+              <div className='d-flex flex-column  mx-3 w-100'>
+                <Typography>{member?.name}</Typography>
+                <Typography color='primary'>{member?.role}</Typography>
+                <div className='mt-4 d-flex align-items-center justify-content-between w-100 '>
+                  <div>
+                    <IconButton size='small'>
+                      <MailRounded />
+                    </IconButton>
+                    <IconButton size='small'>
+                      <LinkedIn />
+                    </IconButton>
+                  </div>
+                  {desc && (
+                    <Typography
+                      color='primary'
+                      className='c-pointer'
+                      onClick={() => {
+                        setDescOpen(true);
+                      }}
+                    >
+                      Read more ...
+                    </Typography>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
+      <DescriptionModal
+        open={descOpen}
+        content={member.desc}
+        onClose={() => {
+          setDescOpen(false);
+        }}
+      />
+    </>
   );
 }
 
 export function EcosystemCard({ index, title, text }) {
+  const classes = useStyles();
+
   return (
     <Grid item xs={12} sm={6} md={4} style={{}}>
-      <Card
-        elevation={0}
-        className="h-100 br-3"
-        style={{
-          backgroundImage: "linear-gradient(#F36E6C,#006097)",
-          "&:hover": {
-            backgroundImage: "linear-gradient(#707070,#191c22)",
-          },
-        }}
-      >
-        <CardContent
-          style={{
-            backgroundC: "#fed132",
-          }}
-          className="h-100 br-3 p-2 m-0"
-        >
+      <Card elevation={0} className={classes.ecosystemCard}>
+        <CardContent className='h-100 br-3 p-2 m-0'>
           <div
-            className="h-100 br-3 p-3"
-            style={{
-              backgroundColor: "#0C0F19",
-            }}
+            // className='h-100 br-3 p-3'
+            className={classes.ecosystemCardContent}
           >
-            <Typography variant="h6" className="py-4 fw-bold">
+            <Typography variant='h6' className='py-4 fw-bold'>
               0{index + 1}.
             </Typography>
-            <Typography className="lead my-4 fw-bold">{title}</Typography>
-            <Typography className="lead mb-3">{text}</Typography>
+            <Typography className='lead my-4 fw-bold'>{title}</Typography>
+            <Typography className='lead mb-3'>{text}</Typography>
           </div>
         </CardContent>
       </Card>
@@ -973,7 +1000,17 @@ export function EcosystemCard({ index, title, text }) {
   );
 }
 
-function QuaterCard({ index, name, text, list, year, query }) {
+function QuaterCard({ index, name, text, list, year, query, state }) {
+  const classes = useStyles();
+
+  let completeStatusColor = '#02F1AF';
+  if (state == 'ongoing') {
+    completeStatusColor = '#FFC000';
+  }
+  if (state == 'upcoming') {
+    completeStatusColor = '#019FF9';
+  }
+
   return (
     <Grid
       item
@@ -981,52 +1018,114 @@ function QuaterCard({ index, name, text, list, year, query }) {
       sm={6}
       md={3}
       style={{
-        position: query > 1 && index % 2 != 0 && "relative",
+        position: query > 1 && index % 2 != 0 && 'relative',
         top: ROADMAP_DISPLACEMENT,
       }}
     >
-      <Card
-        elevation={0}
-        className="h-100 br-3"
-        style={{
-          backgroundColor: "#1E2126",
-          ":&hover": {
-            borderWidth: 5,
-            borderStyle: "solid",
-            borderImage: "linear-gradient(to right bottom, #260B3C, #a053df)",
-            borderImageSlice: 1,
-          },
-        }}
-      >
-        <CardContent>
-          <Typography className="fw-bold" variant="h6">
-            {name} {year}
-          </Typography>
-          <Typography className="lead my-2">{text}</Typography>
-          <Typography className="lead">
-            <ul>
-              {list.map((ls) => (
-                <li key={ls} className="">
-                  {ls}
-                </li>
-              ))}
-            </ul>
-          </Typography>
+      <Card elevation={0} className={classes.quaterCard}>
+        <CardContent className='h-100 br-3 p-2 m-0'>
+          <div className={classes.quaterCardContent}>
+            <Typography className='fw-bold' variant='h6'>
+              {name} {year}{' '}
+              <span className={`fw-normal `}>
+                <small style={{ color: completeStatusColor }}>{state}</small>
+              </span>
+            </Typography>
+            <Typography className='lead my-2'>{text}</Typography>
+            <Typography className='lead'>
+              <ul>
+                {list.map(ls => (
+                  <li key={ls} className=''>
+                    {ls}
+                  </li>
+                ))}
+              </ul>
+            </Typography>
+          </div>
         </CardContent>
       </Card>
     </Grid>
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+function DescriptionModal({ content, open, onClose }) {
+  return (
+    <Modal open={open} className='center-horizontal center-vertical w-100 '>
+      <Grid container>
+        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
+        <Grid item lg={6} md={8} sm={10} xs={10}>
+          <Card>
+            <CardContent>
+              <div className='mx-2'>
+                <div className='d-flex justify-content-end mb-2'>
+                  <IconButton onClick={onClose}>
+                    <CloseRounded />
+                  </IconButton>
+                </div>
+                <Typography>{content}</Typography>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
+      </Grid>
+    </Modal>
+  );
+}
+
+const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
   },
   accordion: {
-    backgroundColor: "#fff",
-    color: "#000",
+    backgroundColor: '#fff',
+    color: '#000',
+  },
+  ecosystemCard: {
+    height: '100%',
+    borderRadius: '0.75em',
+    backgroundImage: 'linear-gradient(#707070,#191c22)',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundImage: 'linear-gradient(#F36E6C,#006097)',
+    },
+  },
+  ecosystemCardContent: {
+    height: '100%',
+    borderRadius: '0.75em',
+    padding: '1rem',
+    margin: 0,
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: '#0C0F19',
+    },
+  },
+  quaterCard: {
+    height: '100%',
+    borderRadius: '0.75em',
+    backgroundColor: '#1E2126',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundImage: 'linear-gradient(#F36E6C,#006097)',
+    },
+  },
+  quaterCardContent: {
+    height: '100%',
+    borderRadius: '0.75em',
+    padding: '1rem',
+    margin: 0,
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: '#0C0F19',
+    },
   },
 }));
+
+// className='h-100 br-3 p-3'
+// style={{
+//   backgroundColor: '#0C0F19',
+// }}
