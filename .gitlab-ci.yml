@@ -46,7 +46,7 @@ install_dependencies:
   stage: build
   script:
     - npm i -g npm
-    - npm install
+    - npm install --legacy-peer-deps
     - npm run build
   artifacts:
     paths:
