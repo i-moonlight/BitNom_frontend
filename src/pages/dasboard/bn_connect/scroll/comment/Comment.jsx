@@ -30,8 +30,9 @@ import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
-} from "../../../utilities/functions";
-import { useSelector } from "react-redux";
+} from '../../../utilities/functions';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   MUTATION_CREATE_REACTION,
   MUTATION_REMOVE_REACTION,
@@ -97,6 +98,7 @@ export default function Comment({
   const [replyErr, setReplyErr] = useState(false);
   const state = useSelector((st) => st);
   const user = state.auth.user;
+  const history = useHistory();
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
   const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
@@ -176,6 +178,14 @@ export default function Comment({
     [user?._id]
   );
 
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+  };
+
   useEffect(() => {
     const reaction = getUserReaction(comment);
     setUserReaction(reaction);
@@ -227,9 +237,11 @@ export default function Comment({
               </div>
               <Typography variant="body2" color="textSecondary" component="p">
                 <Typography
+                  onClick={(e) => contentClickHandler(e)}
                   dangerouslySetInnerHTML={{
                     __html: contentBodyFactory(comment),
                   }}
+                  style={{ zIndex: 2 }}
                 ></Typography>
 
                 {comment?.image.length > 0 && (
@@ -411,10 +423,17 @@ export default function Comment({
                 multiline
                 errorText={replyErr && "The reply cannot be empty"}
                 rowsMax={10}
+<<<<<<< HEAD
                 id="reply-field"
                 placeholder="Reply"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
+=======
+                id='reply-field'
+                placeholder='Reply'
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+>>>>>>> 211df661de929f238b30e5e7261caeedef87e0c8
                     handleCreateReply(e);
                   }
                 }}

@@ -32,9 +32,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import Button from "../../../../components/Button";
 import ReactionButton from "../../../../components/ReactionButton";
 //import ImagePreview from '../../../components/ImagePreview';
-import TextField from "../../../../components/TextField";
-import { useSelector } from "react-redux";
-import { getUserInitials } from "../../../../utilities/Helpers";
+import TextField from '../../../../components/TextField';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { getUserInitials } from '../../../../utilities/Helpers';
 import {
   contentBodyFactory,
   getReactionsSum,
@@ -86,6 +87,7 @@ const scrollOptionId = "menu-scroll-option";
 
 export default function Scroll({
   scroll,
+  profileData,
   setSharedResource,
   setPostToEdit,
   setCommentToEdit,
@@ -116,6 +118,7 @@ export default function Scroll({
   const theme = useTheme();
   const state = useSelector((st) => st);
   const user = state.auth.user;
+  const history = useHistory();
 
   const [
     createComment,
@@ -215,7 +218,11 @@ export default function Scroll({
 
   const setIcon = useCallback(
     (reaction) => {
+<<<<<<< HEAD
       if (reaction === "like") {
+=======
+      if (reaction === 'like') {
+>>>>>>> 211df661de929f238b30e5e7261caeedef87e0c8
         setReactionIcon(<ThumbUpRounded className={classes.primary} />);
       } else if (reaction === "love") {
         setReactionIcon(<FavoriteRounded className={classes.red} />);
@@ -229,6 +236,14 @@ export default function Scroll({
     },
     [classes.green, classes.primary, classes.red]
   );
+
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+  };
 
   const authorInitials = getUserInitials(scroll?.author?.displayName);
   const currentUserInitials = getUserInitials(user?.displayName);
@@ -290,27 +305,12 @@ export default function Scroll({
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             <Typography
+              onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: contentBodyFactory(scroll),
               }}
+              style={{ zIndex: 2 }}
             ></Typography>
-            {/* <br />
-            {scroll?.content_entities?.map((entity) => {
-              let colortext = scroll?.content?.slice(
-                entity?.offset,
-                entity?.offset + entity?.length
-              );
-
-              return (
-                <a
-                  href={entity?.url}
-                  className='mx-1 mt-1'
-                  key={entity?.offset}
-                >
-                  {colortext}
-                </a>
-              );
-            })} */}
           </Typography>
           <Grid container spacing={2} className="mb-2">
             {scroll?.video && (
@@ -514,9 +514,15 @@ export default function Scroll({
                 errorText={createCommentErr && "The comment cannot be empty"}
                 multiline
                 rowsMax={10}
+<<<<<<< HEAD
                 id="comment-field"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
+=======
+                id='comment-field'
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+>>>>>>> 211df661de929f238b30e5e7261caeedef87e0c8
                     handleCreateComment(e);
                   }
                 }}
@@ -582,6 +588,7 @@ export default function Scroll({
                 .filter((comment) => !comment.response_to)
                 .map((comment) => (
                   <Comment
+                    profileData={profileData}
                     scroll={scroll}
                     key={comment._id}
                     setUpdateCommentOpen={setUpdateCommentOpen}
