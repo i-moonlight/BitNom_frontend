@@ -13,7 +13,7 @@ import { MoreHorizRounded } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../utilities/Helpers';
-//import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
@@ -23,7 +23,14 @@ export default function SavedComment({
   setImagePreviewURL,
   setImagePreviewOpen,
 }) {
-  //const history = useHistory();
+  const history = useHistory();
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+  };
   const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] = useState(null);
   const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
 
@@ -83,9 +90,11 @@ export default function SavedComment({
           <CardContent>
             <Typography variant='body2' color='textSecondary' component='p'>
               <Typography
+                onClick={(e) => contentClickHandler(e)}
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(comment),
                 }}
+                style={{ zIndex: 2 }}
               ></Typography>
 
               {comment?.image.length > 0 && (

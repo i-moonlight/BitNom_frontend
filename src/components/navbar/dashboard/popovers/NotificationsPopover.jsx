@@ -109,6 +109,14 @@ function ListItemComponent({ item }) {
     });
     return name;
   };
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+    //console.log(targetLink.href.substring(location.origin.length), 'LINK');
+  };
   return (
     <ListItem
       button
@@ -130,10 +138,12 @@ function ListItemComponent({ item }) {
         primary={
           <div>
             <Typography
+              onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: notificationBodyFactory(item),
               }}
               className='mx-1'
+              style={{ zIndex: 2 }}
             ></Typography>
           </div>
         }

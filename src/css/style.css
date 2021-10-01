@@ -172,3 +172,45 @@ ul li::before {
   /* visibility: hidden; */
 }
 /*  */
+
+.mentions-textarea__control {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.mentions-textarea__input {
+  background-color: #fff;
+  border-radius: 3px;
+  transition: 0.3s ease-in-out;
+  padding: 9px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: inherit;
+  border: 1px solid #dedede;
+  font-size: 14px;
+}
+.mentions-textarea__input:focus:active {
+  outline: none;
+  border: 1px solid #3fb9de;
+}
+.mentions-textarea__input::placeholder {
+  color: #a4b0be;
+  font-size: 14px;
+}
+
+.mentions-textarea__highlighter {
+  padding: 10px;
+}
+.mentions-textarea__suggestions__list {
+  background-color: #3fb9de;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  max-height: 200px;
+  overflow: auto;
+}
+.mentions-textarea__suggestions__item {
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+.mentions-textarea__suggestions__item — focused {
+  background-color: #daf4fa;
+}

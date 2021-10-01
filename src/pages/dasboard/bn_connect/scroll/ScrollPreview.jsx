@@ -11,6 +11,7 @@ import {
 //import { MoreVert } from '@material-ui/icons';
 import moment from 'moment';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
   contentBodyFactory,
@@ -21,6 +22,14 @@ import {
 //const scrollOptionId = 'menu-scroll-option';
 
 export default function ScrollPreview({ scroll }) {
+  const history = useHistory();
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+  };
   const authorInitials = getUserInitials(scroll?.author?.displayName);
   return (
     <>
@@ -52,9 +61,11 @@ export default function ScrollPreview({ scroll }) {
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
             <Typography
+              onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: contentBodyFactory(scroll),
               }}
+              style={{ zIndex: 2 }}
             ></Typography>
             <br />
             <Grid container spacing={2} className='mb-2'>

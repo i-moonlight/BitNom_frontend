@@ -12,9 +12,18 @@ import {
 } from '@material-ui/core';
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
+  const history = useHistory();
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+  };
   return (
     <Paper
       style={{
@@ -35,7 +44,7 @@ export default function TrendingPostsCard({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending?.slice(0, 3).map(post => (
+          trending?.slice(0, 3).map((post) => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar
@@ -57,6 +66,8 @@ export default function TrendingPostsCard({ trending, loading }) {
               <ListItemText
                 primary={
                   <Typography
+                    onClick={(e) => contentClickHandler(e)}
+                    style={{ zIndex: 2 }}
                     dangerouslySetInnerHTML={{
                       __html: truncateText(contentBodyFactory(post), 90),
                     }}

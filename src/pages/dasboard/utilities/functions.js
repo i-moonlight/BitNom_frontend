@@ -4,11 +4,12 @@ export const contentBodyFactory = (resource) => {
   resource?.content_entities?.forEach((entity) => {
     if (entity.type === 'url') {
       const link = `${entity.url}`;
-      const replacement = '<a href=' + link + '>' + entity.url + '</a>';
+      const replacement =
+        '<a style={{zIndex: 2}} href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'resource_tag' && entity.mentioned !== null) {
-      const link = `${location.origin}/users/${entity.url}`;
+      const link = `/users/${entity?.mentioned?._id}`;
       const replacement =
         '<a style={{zIndex: 2}} href=' +
         link +
@@ -18,18 +19,21 @@ export const contentBodyFactory = (resource) => {
       const toReplace = '@' + entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'hashtag') {
-      const link = `${location.origin}/hashtags/${entity.url}`;
-      const replacement = '<a href=' + link + '>' + entity.url + '</a>';
+      const link = `/hashtags/${entity.url}`;
+      const replacement =
+        '<a style={{zIndex: 2}} href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'cashtag') {
-      const link = `${location.origin}/cashtags/${entity.url}`;
-      const replacement = '<a href=' + link + '>' + entity.url + '</a>';
+      const link = `/cashtags/${entity.url}`;
+      const replacement =
+        '<a style={{zIndex: 2}} href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === 'email') {
       const link = `'mailto:${entity.url}`;
-      const replacement = '<a href=' + link + '>' + entity.url + '</a>';
+      const replacement =
+        '<a style={{zIndex: 2}} href=' + link + '>' + entity.url + '</a>';
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     }
@@ -42,7 +46,7 @@ export const notificationBodyFactory = (notification) => {
   let newContent = notification?.content;
   notification?.content_entities?.forEach((entity) => {
     if (entity?.type === 'resource_tag') {
-      const link = `${process.env.REACT_APP_BACKEND_URL}/users/${entity?.url?._id}`;
+      const link = `/users/${entity?.url?._id}`;
       const replacement =
         '<a style={{zIndex: 2}} href=' +
         link +
