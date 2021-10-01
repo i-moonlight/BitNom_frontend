@@ -22,11 +22,12 @@ import {
   Public,
   VideocamRounded,
 } from '@material-ui/icons';
+import { MentionsInput, Mention } from 'react-mentions';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
-import TextField from '../../../../components/TextField';
+//import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
@@ -99,8 +100,16 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
+  const mentions = profileData?.followers?.map?.((item) => {
+    return {
+      id: item?.userId?._id,
+      display: item?.userId?.displayName,
+    };
+  });
+
   const handleCreatePost = (e) => {
     e.preventDefault();
+
     if (scroll_text.trim() == '') return setCreatePostErr(true);
     let sharedResourceType;
     if (sharedResource?.__typename === 'OPost') {
@@ -113,7 +122,7 @@ export default function CreatePost({
       : null;
     const flag = sharedResource ? sharedResource?.is_flag : null;
     onCreatePost({
-      content: scroll_text,
+      content: scroll_text.replace(/\/\*.+?\*\//g, ''),
       images: scroll_images,
       video: scroll_video,
       shared_resource: shared,
@@ -198,12 +207,41 @@ export default function CreatePost({
                   }
                 />
               </ListItem>
-              <TextField
+              <MentionsInput
+                spellcheck='false'
+                className='mentions-textarea'
+                id='content-field'
+                placeholder="What's happening"
+                onChange={(e) =>
+                  setScrollText(
+                    scroll_text?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value.substring(0, 250)
+                  )
+                }
+                value={scroll_text}
+              >
+                <Mention
+                  markup='@__id__/*__display__*/'
+                  displayTransform={(id, display) => display}
+                  trigger='@'
+                  data={mentions}
+                  appendSpaceOnAdd={true}
+                  style={{
+                    fontWeight: 900,
+                    //color: '#7eb1cf',
+                  }}
+                />
+              </MentionsInput>
+              <Typography color='error' variant='body2'>
+                {createPostErr && 'The post content cannot be empty'}
+              </Typography>
+              {/* <TextField
                 fullWidth
                 multiline
                 variant='standard'
                 error={createPostErr && true}
-                errorText={createPostErr && 'The post content cannot be empty'}
+                errorText=
                 rows={5}
                 id='content-field'
                 placeholder="What's happening"
@@ -215,7 +253,7 @@ export default function CreatePost({
                   )
                 }
                 value={scroll_text}
-              />
+              /> */}
               <Card
                 style={{ display: openImage || openVideo ? 'block' : 'none' }}
               >

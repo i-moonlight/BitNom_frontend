@@ -13,10 +13,9 @@ import {
 import { MoreVert } from '@material-ui/icons';
 
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
-
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -41,6 +40,14 @@ export default function SavedPost({
     setSavedItemOptionAnchorEl(null);
   };
   const location = useLocation();
+  const history = useHistory();
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(window.location.origin.length));
+  };
   const authorInitials = getUserInitials(scroll?.author?.displayName);
 
   return (
@@ -66,9 +73,7 @@ export default function SavedPost({
               <IconButton
                 size='small'
                 style={{
-                  display: location.pathname.includes('posts')
-                    ? 'none'
-                    : 'block',
+                  display: location.pathname.includes('posts') && 'none',
                 }}
                 className='m-1 p-1'
                 aria-label='show more'
@@ -98,9 +103,11 @@ export default function SavedPost({
           <CardContent>
             <Typography variant='body2' color='textSecondary' component='p'>
               <Typography
+                onClick={(e) => contentClickHandler(e)}
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(scroll),
                 }}
+                style={{ zIndex: 2 }}
               ></Typography>
               {/* <br />
             {scroll?.content_entities?.map((entity) => {

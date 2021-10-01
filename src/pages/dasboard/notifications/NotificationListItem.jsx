@@ -63,6 +63,14 @@ export default function NotificationListItem({ notification }) {
     });
     return name;
   };
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(targetLink.href.substring(location.origin.length));
+    //console.log(targetLink.href.substring(location.origin.length), 'LINK');
+  };
   const userInitials = getUserInitials(getNotifyingUser(notification));
   return (
     <>
@@ -113,10 +121,12 @@ export default function NotificationListItem({ notification }) {
             title={
               <div className='center-horizontal'>
                 <Typography
+                  onClick={(e) => contentClickHandler(e)}
                   dangerouslySetInnerHTML={{
                     __html: notificationBodyFactory(notification),
                   }}
                   className='mx-1'
+                  style={{ zIndex: 2 }}
                 ></Typography>
               </div>
             }
