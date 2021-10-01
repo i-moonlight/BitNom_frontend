@@ -15,7 +15,7 @@ export default function NavBarInvestor({ onTabValue }) {
 
   useEffect(() => {
     () => onTabValue(tabValue);
-  }, [onTabValue]);
+  }, [onTabValue, tabValue]);
 
   return (
     <DarkTheme>
@@ -23,7 +23,7 @@ export default function NavBarInvestor({ onTabValue }) {
         position='static'
         style={{
           background: '#000',
-          paddingTop: 32,
+          paddingTop: 16,
         }}
         elevation={0}
       >
@@ -31,7 +31,7 @@ export default function NavBarInvestor({ onTabValue }) {
           <Container maxWidth='lg'>
             <div className='d-flex align-items-center my-3 '>
               <div
-                className='center-horizontal c-pointer'
+                className='center-horizontal c-pointer me-3'
                 onClick={() => history.push('/')}
               >
                 <Avatar src={palette == 'light' ? logo : logo_light}>B</Avatar>

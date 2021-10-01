@@ -101,8 +101,9 @@ export default function BnConnect() {
   );
   //onesignal
 
-  const OneSignal = window.OneSignal || [];
   useEffect(() => {
+    const OneSignal = window.OneSignal || [];
+
     OneSignal.push(() => {
       OneSignal.init({
         appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
@@ -116,7 +117,7 @@ export default function BnConnect() {
         }
       });
     });
-  }, [data]);
+  }, [user._id]);
 
   return (
     <Screen>

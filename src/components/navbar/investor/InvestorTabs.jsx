@@ -7,7 +7,7 @@ export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
     <Tabs
       value={value}
       onChange={handleChange}
-      indicatorColor='primary'
+      indicatorColor='transparent'
       variant='scrollable'
       scrollButtons='auto'
     >
@@ -33,6 +33,7 @@ const BitTab = withStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.pxToRem(15),
     marginRight: 0,
+
     // '&:focus': {
     //   opacity: 1,
     //   color: theme.palette.type == 'dark' ? '#fff' : '#000',

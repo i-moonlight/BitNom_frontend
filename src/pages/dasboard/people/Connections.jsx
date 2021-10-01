@@ -36,7 +36,7 @@ import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { generateRandomColor } from '../utilities/functions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Connections() {
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
-  const state = useSelector((st) => st);
+  const state = useSelector(st => st);
   const user = state.auth.user;
 
   const {
@@ -66,9 +66,9 @@ export default function Connections() {
     },
   });
 
-  const getFollowStatus = (usr) => {
+  const getFollowStatus = usr => {
     let status;
-    profileData?.Users?.profile?.following?.forEach((item) => {
+    profileData?.Users?.profile?.following?.forEach(item => {
       if (item?.userId?._id === usr?.userId?._id) {
         status = true;
       }
@@ -146,7 +146,7 @@ export default function Connections() {
                 <CardContent>
                   {value === 0 &&
                     followers?.length > 0 &&
-                    followers?.map((follower) => (
+                    followers?.map(follower => (
                       <ListItemComponent
                         key={follower?.userId?._id}
                         getFollowStatus={getFollowStatus}
@@ -155,7 +155,7 @@ export default function Connections() {
                     ))}
                   {value === 1 &&
                     following?.length > 0 &&
-                    following?.map((follow) => (
+                    following?.map(follow => (
                       <ListItemComponent
                         key={follow?.userId?._id}
                         getFollowStatus={getFollowStatus}
@@ -196,7 +196,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     } else {
       setStatus(false);
     }
-  }, [getFollowStatus(item)]);
+  }, [getFollowStatus, item]);
 
   const [
     followUser,
@@ -214,7 +214,7 @@ function ListItemComponent({ item, getFollowStatus }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = (user_id) => {
+  const handleFollowUser = user_id => {
     followUser({
       variables: {
         data: {
@@ -234,7 +234,7 @@ function ListItemComponent({ item, getFollowStatus }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = (user_id) => {
+  const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
         data: {

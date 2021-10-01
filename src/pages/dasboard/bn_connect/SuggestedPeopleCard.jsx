@@ -12,7 +12,7 @@ import {
   CircularProgress,
   Grid,
 } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { useMutation } from '@apollo/client';
@@ -29,15 +29,18 @@ import { generateRandomColor } from '../utilities/functions';
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   const [notFollowed, setNotFollowed] = useState();
 
-  const getFollowStatus = user => {
-    let status;
-    profileData?.following?.forEach(item => {
-      if (item?.userId?._id === user?._id) {
-        status = item?.userId?._id;
-      }
-    });
-    return status;
-  };
+  const getFollowStatus = useCallback(
+    user => {
+      let status;
+      profileData?.following?.forEach(item => {
+        if (item?.userId?._id === user?._id) {
+          status = item?.userId?._id;
+        }
+      });
+      return status;
+    },
+    [profileData?.following]
+  );
 
   useEffect(() => {
     const notFollowedInner = [];
@@ -49,7 +52,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     return () => {
       setNotFollowed(notFollowedInner);
     };
-  }, [suggestedUsers]);
+  }, [getFollowStatus, suggestedUsers]);
 
   /*   let notFollowed = [];
   suggestedUsers?.forEach((user) => {
@@ -97,7 +100,7 @@ function ListItemComponent({ user, getFollowStatus }) {
     if (getFollowStatus(user)) {
       setStatus(true);
     }
-  }, [user]);
+  }, [getFollowStatus, user]);
 
   const [
     followUser,

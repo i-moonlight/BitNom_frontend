@@ -29,22 +29,28 @@ export default function Signup() {
   const history = useHistory();
   const state = useSelector(st => st);
   const user = state.auth.user;
-  // const errors = state.auth.err;
   const justRegisteredState = state.auth.justRegistered;
 
   const [createUser] = useMutation(MUTATION_CREATE_USER, {
     context: { clientName: 'users' },
   });
+
   const [googleSignup] = useMutation(MUTATION_GOOGLE_SIGNUP, {
     context: { clientName: 'users' },
   });
+
   const [googleLogin] = useMutation(MUTATION_GOOGLE_LOGIN, {
     context: { clientName: 'users' },
   });
 
   useEffect(() => {
     JSON.stringify(user) !== '{}' && history.push('/');
-    // justRegistered && history.push('/auth/login');
+
+    if (justRegistered) {
+      setTimeout(() => {
+        history.push('/auth/login');
+      }, 2000);
+    }
 
     errors &&
       errors.map(err => {
@@ -53,7 +59,7 @@ export default function Signup() {
           ? setUsernameErr(err?.state?._id)
           : setUsernameErr(null);
       });
-  }, [errors, state]);
+  }, [errors, history, justRegistered, user]);
 
   const responseGoogle = response => {
     googleSignup({
@@ -69,8 +75,6 @@ export default function Signup() {
       setGoogleErr(userErrors);
 
       dispatch(register(userData, null));
-      // console.log(userData);
-      // dispatch(login(userData,null));
 
       !userErrors &&
         googleLogin({
@@ -183,7 +187,7 @@ export default function Signup() {
                         key={Math.random() * 100}
                         severity='success'
                       >
-                        Registration Successful. Continue to login.
+                        Registration Successful. Redirecting to login.
                       </Alert>
                     )}
 

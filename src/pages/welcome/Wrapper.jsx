@@ -24,7 +24,7 @@ export default function Wrapper({ children, investor, onTabValue }) {
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [history, user]);
 
   return (
     <div

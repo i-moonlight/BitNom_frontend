@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery, useMutation } from '@apollo/client';
 import {
   Card,
@@ -31,7 +32,7 @@ import {
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 
 import { ToastContainer, toast } from 'react-toastify';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import Button from '../../../components/Button';
 import { Link } from 'react-router-dom';
@@ -61,7 +62,7 @@ import EventOptionsPopover from './EventOptionsPopover';
 
 const eventOptionsId = 'event-options-menu';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -166,7 +167,7 @@ export default function EventView({ match }) {
   const handleEventOptionsClose = () => {
     setEventOptionsAnchorEl(null);
   };
-  const handleEventOptionsOpen = (e) => {
+  const handleEventOptionsOpen = e => {
     setEventOptionsAnchorEl(e.currentTarget);
   };
 
@@ -225,24 +226,28 @@ export default function EventView({ match }) {
     setValue(val);
   };
 
-  const getFollowStatus = (usr) => {
+  const getFollowStatus = usr => {
     let status;
-    profileData?.Users?.profile?.following?.forEach((item) => {
+    profileData?.Users?.profile?.following?.forEach(item => {
       if (item?.userId?._id === usr?.attendee?._id) {
         status = true;
       }
     });
     return status;
   };
-  const getAttendeeStatus = (input) => {
-    let status = false;
-    input?.attendees?.forEach((item) => {
-      if (item?.attendee?._id === profile?._id) {
-        return (status = true);
-      }
-    });
-    return status;
-  };
+
+  const getAttendeeStatus = useCallback(
+    input => {
+      let status = false;
+      input?.attendees?.forEach(item => {
+        if (item?.attendee?._id === profile?._id) {
+          return (status = true);
+        }
+      });
+      return status;
+    },
+    [profile?._id]
+  );
 
   useEffect(() => {
     if (getAttendeeStatus(eventData?.Events?.getById) == true) {
@@ -250,7 +255,7 @@ export default function EventView({ match }) {
     } else {
       setAttendanceText('Attend');
     }
-  }, [eventData]);
+  }, [eventData?.Events?.getById, getAttendeeStatus]);
 
   return (
     <Screen>
@@ -285,7 +290,7 @@ export default function EventView({ match }) {
                     }
                   />
                 </Card>
-                <CreateEventCard setOpen={(open) => setCreateEventOpen(open)} />
+                <CreateEventCard setOpen={open => setCreateEventOpen(open)} />
               </Grid>
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={7}>
@@ -589,7 +594,7 @@ export default function EventView({ match }) {
                                   className='center-horizontal'
                                 >
                                   {eventData?.Events?.getById?.organizers?.map(
-                                    (org) => (
+                                    org => (
                                       <Typography
                                         variant='body2'
                                         component='a'
@@ -616,7 +621,7 @@ export default function EventView({ match }) {
                                   className='center-horizontal'
                                 >
                                   {eventData?.Events?.getById?.tags?.map(
-                                    (tag) => (
+                                    tag => (
                                       <Typography
                                         variant='body2'
                                         component='a'
@@ -739,7 +744,7 @@ export default function EventView({ match }) {
                             </Typography>
                             <List>
                               {eventData?.Events?.getById?.attendees?.map(
-                                (user) => (
+                                user => (
                                   <AttendeeComponent
                                     item={user}
                                     key={user?.attendee?._id}
@@ -773,12 +778,12 @@ export default function EventView({ match }) {
       <CreateEvent
         profileData={profileData?.Users?.profile}
         open={createEventOpen}
-        setOpen={(open) => setCreateEventOpen(open)}
+        setOpen={open => setCreateEventOpen(open)}
       />
       <CreatePost
         profileData={profileData?.Users?.profile}
         open={createScrollOpen}
-        setOpen={(open) => setCreateScrollOpen(open)}
+        setOpen={open => setCreateScrollOpen(open)}
         openImage={openImage}
         imageDisabled={imageDisabled}
         videoDisabled={videoDisabled}
@@ -810,14 +815,14 @@ export default function EventView({ match }) {
       />
       <FlagResourceModal
         openFlag={createFlagOpen}
-        setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}
+        setOpenFlag={openFlag => setCreateFlagOpen(openFlag)}
         flaggedResource={flaggedResource}
         setFlaggedResource={setFlaggedResource}
       />
       <UpdateEvent
         profileData={profileData?.Users?.profile}
         openUpdate={updateEventOpen}
-        setOpenUpdate={(open) => setUpdateEventOpen(open)}
+        setOpenUpdate={open => setUpdateEventOpen(open)}
         eventToEdit={eventToEdit}
         setEventToEdit={setEventToEdit}
       />

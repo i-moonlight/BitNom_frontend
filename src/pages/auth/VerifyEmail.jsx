@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
-import { login } from '../../store/actions/authActions';
+import { verifySuccess } from '../../store/actions/authActions';
 import { MUTATION_VERIFY_EMAIL } from './utilities/queries';
 
 export default function VerifyEmail() {
@@ -30,17 +30,29 @@ export default function VerifyEmail() {
         verificationCode: parse(location.search)['?evc'],
       },
       errorPolicy: 'all',
-    }).then(({ errors }) => {
+    }).then(({ errors, data }) => {
       setVerifying(false);
       const userErrors = errors ? errors : null;
       setVerifyErr(userErrors);
 
-      setTimeout(() => {
-        dispatch(login({}, null));
-        history.push('/auth/login');
-      }, 2000);
+      if (errors) {
+        console.log('verem errors: ', errors);
+      } else {
+        console.log('verem data: ', data);
+
+        setTimeout(() => {
+          user?.email ? dispatch(verifySuccess()) : history.push('/auth/login');
+        }, 2000);
+      }
     });
-  }, [state]);
+  }, [
+    dispatch,
+    history,
+    location.search,
+    user?.email,
+    user?.email?.verified,
+    verifyEmail,
+  ]);
 
   return (
     <>

@@ -118,7 +118,7 @@ export default function UpdateComment({
     if (data?.Comment?.update) {
       console.log(data, deleteData);
     }
-  }, [data]);
+  }, [data, deleteData]);
 
   useEffect(() => {
     if (commentToEdit?.image.trim() !== '') {

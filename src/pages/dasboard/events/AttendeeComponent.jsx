@@ -12,7 +12,7 @@ import {
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 
 import Button from '../../../components/Button';
@@ -22,13 +22,13 @@ import { generateRandomColor } from '../utilities/functions';
 function AttendeeComponent({ item, getFollowStatus, profile }) {
   const [status, setStatus] = React.useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (getFollowStatus(item)) {
       setStatus(true);
     } else {
       setStatus(false);
     }
-  }, [getFollowStatus(item)]);
+  }, [getFollowStatus, item]);
 
   const [
     followUser,
@@ -38,6 +38,7 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
       //   error
     },
   ] = useMutation(MUTATION_FOLLOW_USER);
+
   const [
     unFollowUser,
     {
@@ -46,7 +47,8 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
       //   error
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
-  const handleFollowUser = (user_id) => {
+
+  const handleFollowUser = user_id => {
     followUser({
       variables: {
         data: {
@@ -66,7 +68,8 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
     setStatus(true);
     //setFollowing(following + 1);
   };
-  const handleUnFollowUser = (user_id) => {
+
+  const handleUnFollowUser = user_id => {
     unFollowUser({
       variables: {
         data: {

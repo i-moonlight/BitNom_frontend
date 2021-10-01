@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const initialState = {
   user: {},
   err: null,
@@ -34,6 +35,18 @@ export default function authReducer(state = initialState, action) {
       return {
         ...state,
         justRegistered: true,
+        err: null,
+      };
+    case 'USER_VERIFY_SUCCESS':
+      const unmutedState = state;
+      const newUser = {
+        ...unmutedState.user,
+        email: { ...unmutedState.user.email, verified: true },
+      };
+
+      return {
+        ...state,
+        user: newUser,
         err: null,
       };
     case 'USER_RESET':

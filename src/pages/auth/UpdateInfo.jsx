@@ -26,7 +26,7 @@ export default function UpdateInfo() {
   useEffect(() => {
     user?.email?.verified && user?.displayName && history.push('/');
     JSON.stringify(user) === '{}' && history.push('/auth/login');
-  }, [state]);
+  }, [history, user]);
 
   return (
     <>

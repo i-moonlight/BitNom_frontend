@@ -5,7 +5,7 @@ before_script:
   ## Install ssh-agent if not already installed, it is required by Docker.
   ## (change apt-get to yum if you use an RPM-based image)
   ##
-  - "which ssh-agent || ( apk upgrade --update && apk add openssh-client rsync )"
+  - 'which ssh-agent || ( apk upgrade --update && apk add openssh-client rsync )'
 
   ##
   ## Run ssh-agent (inside the build environment)
@@ -66,9 +66,9 @@ deploy_on_server:
     refs:
       - main
   variables:
-    REACT_APP_API_GATEWAY: "/graphql"
-    REACT_APP_BACKEND_URL: "https://bitnorm.com"
-    REACT_APP_SOCKET_URL: "wss://bitnorm.com"
+    REACT_APP_API_GATEWAY: '/graphql'
+    REACT_APP_BACKEND_URL: 'https://bitnorm.com'
+    REACT_APP_SOCKET_URL: 'wss://bitnorm.com'
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP
@@ -91,9 +91,9 @@ deploy_demo:
     refs:
       - development
   variables:
-    REACT_APP_API_GATEWAY: "graphql"
-    REACT_APP_BACKEND_URL: "https://dev.bitnorm.com"
-    REACT_APP_SOCKET_URL: "wss://dev.bitnorm.com"
+    REACT_APP_API_GATEWAY: 'graphql'
+    REACT_APP_BACKEND_URL: 'https://dev.bitnorm.com'
+    REACT_APP_SOCKET_URL: 'wss://dev.bitnorm.com'
   environment:
     name: staging
     url: $DEPLOYMENT_SERVER_IP

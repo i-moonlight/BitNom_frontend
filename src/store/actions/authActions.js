@@ -41,6 +41,19 @@ export const register = (userdata, errors) => {
   };
 };
 
+export const verifySuccess = () => {
+  return dispatch => {
+    const setBusy = busy => {
+      dispatch({ type: 'REGISTER_BUSY', busy });
+    };
+
+    setBusy(true);
+
+    dispatch({ type: 'USER_VERIFY_SUCCESS' });
+    setBusy(true);
+  };
+};
+
 export const signout = () => {
   return dispatch => {
     // const [, , removeCookie] = useCookies(['connect.sid']);
