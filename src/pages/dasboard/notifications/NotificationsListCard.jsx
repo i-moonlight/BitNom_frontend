@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   Grid,
@@ -7,13 +7,13 @@ import {
   Typography,
   CardHeader,
   IconButton,
-} from '@material-ui/core';
-import { ArrowBack, MoreVert } from '@material-ui/icons';
+} from "@material-ui/core";
+import { ArrowBack, MoreVert } from "@material-ui/icons";
 
-import NotificationListItem from './NotificationListItem';
-import NotificationSettingsPopover from './NotificationSettingsPopover';
+import NotificationListItem from "./NotificationListItem";
+import NotificationSettingsPopover from "./NotificationSettingsPopover";
 
-const notificationSettingsId = 'notification-setting-menu';
+const notificationSettingsId = "notification-setting-menu";
 
 export default function NotificationsListCard({
   notifications,
@@ -32,65 +32,65 @@ export default function NotificationsListCard({
 
   const mentions = [];
   notifications?.forEach((item) => {
-    if (item.tag === 'Mention') {
+    if (item.tag === "Mention") {
       mentions.push(item);
     }
   });
   notifications?.forEach((item) => {
-    if (item.content.includes('commented on')) {
+    if (item.content.includes("commented on")) {
       mentions.push(item);
     }
   });
   const reactions = notifications?.filter((item) => {
-    const toCheck = ['liked', 'loved', 'celebrated', 'disliked'];
+    const toCheck = ["liked", "loved", "celebrated", "disliked"];
 
     return toCheck.some((o) => item.content.includes(o));
   });
 
   const userContent = notifications?.filter((item) => {
-    const toCheck = ['your post', 'your comment', 'your article', 'your event'];
+    const toCheck = ["your post", "your comment", "your article", "your event"];
 
     return toCheck.some((o) => item.content.includes(o));
   });
 
   const userProfile = notifications?.filter((item) => {
-    const toCheck = ['followed you', 'invited you', 'added you'];
+    const toCheck = ["followed you", "invited you", "added you"];
 
     return toCheck.some((o) => item.content.includes(o));
   });
   return (
     <>
-      <Card style={{ padding: '0 8px 10px 8px' }}>
+      <Card style={{ padding: "0 8px 10px 8px" }}>
         <CardHeader
           action={
             <IconButton
-              aria-label='notification settings'
+              aria-label="notification settings"
               aria-controls={notificationSettingsId}
-              aria-haspopup='true'
+              aria-haspopup="true"
               onClick={handleNotificationSettingsOpen}
             >
               <MoreVert />
             </IconButton>
           }
           avatar={
-            <Link to='/dashboard'>
+            <Link to="/dashboard">
               <IconButton
-                size='small'
-                className='m-1 p-1'
-                aria-label='back'
-                color='inherit'
+                size="small"
+                className="m-1 p-1"
+                aria-label="back"
+                color="inherit"
               >
                 <ArrowBack />
               </IconButton>
             </Link>
           }
           title={
-            <div className='center-horizontal'>
-              <Typography variant='body1'>Notifications</Typography>
+            <div className="center-horizontal">
+              <Typography variant="body1">Notifications</Typography>
             </div>
           }
           subheader={
-            <Typography variant='body2' color='textSecondary'>
+            <Typography variant="body2" color="textSecondary">
               All your BNSocial notifications in one place.
             </Typography>
           }
@@ -143,13 +143,13 @@ export default function NotificationsListCard({
         selectedIndex === 5 ||
         selectedIndex === 6 ||
         selectedIndex === 7 ? (
-          <Grid align='center'>
-            <Typography variant='body1' color='primary'>
+          <Grid align="center">
+            <Typography variant="body1" color="primary">
               Nothing here yet.
             </Typography>
           </Grid>
         ) : (
-          ''
+          ""
         )}
       </Card>
       <NotificationSettingsPopover

@@ -10,21 +10,21 @@ import {
   makeStyles,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
-import moment from 'moment';
-import { useQuery } from '@apollo/client';
-import { Link, useHistory } from 'react-router-dom';
-import { ArrowBack, RoomRounded, VideocamRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Screen from '../../../components/Screen';
+} from "@material-ui/core";
+import moment from "moment";
+import { useQuery } from "@apollo/client";
+import { Link, useHistory } from "react-router-dom";
+import { ArrowBack, RoomRounded, VideocamRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Screen from "../../../components/Screen";
 import {
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_EVENTS,
   GET_BOOKMARKED_EVENTS,
-} from '../utilities/queries';
-import CreateEvent from './CreateEvent';
-import CreateEventCard from './CreateEventCard';
+} from "../utilities/queries";
+import CreateEvent from "./CreateEvent";
+import CreateEventCard from "./CreateEventCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +44,7 @@ export default function Events() {
     //  loading,
     data: profileData,
   } = useQuery(QUERY_FETCH_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
@@ -70,7 +70,7 @@ export default function Events() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -123,50 +123,50 @@ function EventListCard({
     <Card>
       <CardHeader
         avatar={
-          <Link to='/dashboard'>
+          <Link to="/dashboard">
             <IconButton
-              size='small'
-              className='m-1 p-1'
-              aria-label='back'
-              color='inherit'
+              size="small"
+              className="m-1 p-1"
+              aria-label="back"
+              color="inherit"
             >
               <ArrowBack />
             </IconButton>
           </Link>
         }
         title={
-          <div className='center-horizontal'>
-            <Typography variant='h6'>Events</Typography>
+          <div className="center-horizontal">
+            <Typography variant="h6">Events</Typography>
           </div>
         }
       />
       <Divider />
       <CardContent>
-        <Grid item align='center'>
+        <Grid item align="center">
           {(selectedIndex === 0 || selectedIndex === 1) && loading && (
-            <CircularProgress color='primary' size={60} thickness={6} />
+            <CircularProgress color="primary" size={60} thickness={6} />
           )}
           {selectedIndex === 2 && bookmarksLoading && (
-            <CircularProgress color='primary' size={60} thickness={6} />
+            <CircularProgress color="primary" size={60} thickness={6} />
           )}
         </Grid>
         {selectedIndex === 0 && upcomingEvents?.length < 1 && (
-          <Grid align='center'>
-            <Typography variant='body1' color='primary'>
+          <Grid align="center">
+            <Typography variant="body1" color="primary">
               You have no upcoming events.
             </Typography>
           </Grid>
         )}
         {selectedIndex === 1 && pastEvents?.length < 1 && (
-          <Grid align='center'>
-            <Typography variant='body1' color='primary'>
+          <Grid align="center">
+            <Typography variant="body1" color="primary">
               You have no past events.
             </Typography>
           </Grid>
         )}
         {selectedIndex === 2 && savedEvents?.length < 1 && (
-          <Grid align='center'>
-            <Typography variant='body1' color='primary'>
+          <Grid align="center">
+            <Typography variant="body1" color="primary">
               You have not saved any events.
             </Typography>
           </Grid>
@@ -198,8 +198,8 @@ function EventPreview({ event }) {
     const subString = str.substr(0, n - 1); // the original check
     return (
       (useWordBoundary
-        ? subString.substr(0, subString.lastIndexOf(' '))
-        : subString) + '...'
+        ? subString.substr(0, subString.lastIndexOf(" "))
+        : subString) + "..."
     );
   };
   return (
@@ -208,20 +208,20 @@ function EventPreview({ event }) {
       key={event?._id}
       onClick={() => history.push(`/dashboard/events/${event?._id}`)}
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-start",
         marginBottom: 20,
-        cursor: 'pointer',
+        cursor: "pointer",
       }}
     >
       <div
         style={{
           backgroundImage:
-            event?.image !== null && event?.image?.trim() !== ''
-              ? 'url(' + process.env.REACT_APP_BACKEND_URL + event?.image + ')'
-              : `url('${'https://picsum.photos/200/300'}')`,
-          backgroundSize: 'cover',
+            event?.image !== null && event?.image?.trim() !== ""
+              ? "url(" + process.env.REACT_APP_BACKEND_URL + event?.image + ")"
+              : `url('${"https://picsum.photos/200/300"}')`,
+          backgroundSize: "cover",
           width: 170,
           height: 110,
           borderRadius: 8,
@@ -231,48 +231,48 @@ function EventPreview({ event }) {
 
       <div
         style={{
-          display: 'grid',
+          display: "grid",
 
-          alignItems: 'stretch',
+          alignItems: "stretch",
           height: 110,
         }}
       >
         <Hidden smDown>
-          <Typography color='textSecondary' variant='body2'>
-            {moment(event?.startDate).format('ddd, MMMM Do YYYY, h:mm a')}
+          <Typography color="textSecondary" variant="body2">
+            {moment(event?.startDate).format("ddd, MMMM Do YYYY, h:mm a")}
           </Typography>
         </Hidden>
-        <Typography style={{ textTransform: 'uppercase' }} variant='body2'>
-          {event?.location?.type === 'physical'
+        <Typography style={{ textTransform: "uppercase" }} variant="body2">
+          {event?.location?.type === "physical"
             ? event?.title
             : `${event?.title} (Virtual) `}
         </Typography>
-        {event?.location?.type === 'physical' ? (
-          <div className='center-horizontal'>
-            <RoomRounded color='primary' />
-            <Typography color='primary' style={{ textDecoration: 'underline' }}>
+        {event?.location?.type === "physical" ? (
+          <div className="center-horizontal">
+            <RoomRounded color="primary" />
+            <Typography color="primary" style={{ textDecoration: "underline" }}>
               <a
                 href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                style={{ color: 'inherit', zIndex: '3' }}
+                style={{ color: "inherit", zIndex: "3" }}
                 onClick={(e) => e.stopPropagation()}
-                target='_blank'
-                rel='noreferrer'
+                target="_blank"
+                rel="noreferrer"
               >
                 {truncateText(event?.location?.address, 40)}
               </a>
             </Typography>
           </div>
         ) : (
-          <div className='center-horizontal'>
-            <VideocamRounded color='primary' />
-            <Typography color='primary' style={{ textDecoration: 'underline' }}>
+          <div className="center-horizontal">
+            <VideocamRounded color="primary" />
+            <Typography color="primary" style={{ textDecoration: "underline" }}>
               <a
                 //component='a'
                 href={event?.link}
-                style={{ color: 'inherit', zIndex: '3' }}
+                style={{ color: "inherit", zIndex: "3" }}
                 onClick={(e) => e.stopPropagation()}
-                target='_blank'
-                rel='noreferrer'
+                target="_blank"
+                rel="noreferrer"
               >
                 Online
               </a>
@@ -280,11 +280,11 @@ function EventPreview({ event }) {
           </div>
         )}
 
-        <Typography variant='body2'>
+        <Typography variant="body2">
           {`${event?.attendees?.length} ${
             new Date(event?.endDate).getTime() < new Date().getTime()
-              ? 'Attended'
-              : 'Going'
+              ? "Attended"
+              : "Going"
           }`}
         </Typography>
       </div>

@@ -1,25 +1,25 @@
-import React from 'react';
+import React from "react";
 
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 function MapContainer({ latitude, longitude }) {
   return (
     <div
-      className='map-area'
+      className="map-area"
       style={{
-        width: '250px',
-        height: '200px',
+        width: "250px",
+        height: "200px",
       }}
     >
       <LoadScript
-        libraries={['places']}
+        libraries={["places"]}
         googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
       >
         <GoogleMap
           mapContainerStyle={{
             //position: 'relative',
-            width: '250px',
-            height: '200px',
+            width: "250px",
+            height: "200px",
           }}
           center={{
             lat: Number(latitude),

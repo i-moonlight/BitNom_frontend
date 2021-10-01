@@ -1,12 +1,12 @@
-import { useMutation } from '@apollo/client';
-import { Card, CardContent, Chip, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+import { useMutation } from "@apollo/client";
+import { Card, CardContent, Chip, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
 import {
   MUTATION_UPDATE_PROFILE,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
 
 export default function GenderForm({ onClose, profile }) {
   const [gender, setGender] = useState(profile?.gender);
@@ -20,23 +20,23 @@ export default function GenderForm({ onClose, profile }) {
       profileLoading,
     },
   ] = useMutation(MUTATION_UPDATE_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Card className={classes.formCard}>
         <CardContent>
           <Typography>Update Gender</Typography>
 
-          <div className='mt-2'>
-            {['male', 'female'].map(val => (
+          <div className="mt-2">
+            {["male", "female"].map((val) => (
               <Chip
-                variant={val == gender ? 'default' : 'outlined'}
-                color='primary'
+                variant={val == gender ? "default" : "outlined"}
+                color="primary"
                 key={val}
                 label={val}
-                className='me-2 mb-2 text-capitalize'
+                className="me-2 mb-2 text-capitalize"
                 onClick={() => {
                   setGender(val);
                 }}
@@ -44,12 +44,12 @@ export default function GenderForm({ onClose, profile }) {
             ))}
           </div>
 
-          <div className='d-flex justify-content-end mt-2'>
+          <div className="d-flex justify-content-end mt-2">
             <Button
               onClick={onClose}
-              color='inherit'
-              size='small'
-              variant='text'
+              color="inherit"
+              size="small"
+              variant="text"
             >
               Cancel
             </Button>
@@ -63,15 +63,15 @@ export default function GenderForm({ onClose, profile }) {
                   refetchQueries: [
                     {
                       query: QUERY_FETCH_PROFILE,
-                      context: { clientName: 'users' },
+                      context: { clientName: "users" },
                     },
                   ],
                 }).then(() => {
                   onClose();
                 });
               }}
-              size='small'
-              className='ms-2'
+              size="small"
+              className="ms-2"
               disabled={profileLoading}
             >
               Update

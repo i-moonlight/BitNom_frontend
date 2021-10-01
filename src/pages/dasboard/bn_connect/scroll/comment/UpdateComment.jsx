@@ -1,5 +1,5 @@
 //TODO: Upload video
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Avatar,
   Card,
@@ -19,26 +19,26 @@ import {
   Modal,
   Typography,
   useTheme,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
   Public,
-} from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Button from '../../../../../components/Button';
-import TextField from '../../../../../components/TextField';
-import { getUserInitials } from '../../../../../utilities/Helpers';
-import { generateRandomColor } from '../../../utilities/functions';
+} from "@material-ui/icons";
+import { DropzoneArea } from "material-ui-dropzone";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Button from "../../../../../components/Button";
+import TextField from "../../../../../components/TextField";
+import { getUserInitials } from "../../../../../utilities/Helpers";
+import { generateRandomColor } from "../../../utilities/functions";
 import {
   MUTATION_DELETE_COMMENT,
   MUTATION_UPDATE_COMMENT,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-} from '../../../utilities/queries';
+} from "../../../utilities/queries";
 
 export default function UpdateComment({
   updateCommentOpen,
@@ -50,11 +50,11 @@ export default function UpdateComment({
 }) {
   const [updateCommentErr, setUpdateCommentErr] = useState(null);
   const [fileType, setFileType] = useState(null);
-  const [comment_text, setCommentText] = useState('');
+  const [comment_text, setCommentText] = useState("");
   const [comment_image, setCommentImage] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const theme = useTheme();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const [
     updateComment,
@@ -73,7 +73,7 @@ export default function UpdateComment({
     },
   ] = useMutation(MUTATION_DELETE_COMMENT);
 
-  const onDeleteComment = async id => {
+  const onDeleteComment = async (id) => {
     await deleteComment({
       variables: {
         _id: id,
@@ -86,7 +86,7 @@ export default function UpdateComment({
         },
       ],
     });
-    setCommentText('');
+    setCommentText("");
     setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
@@ -94,7 +94,7 @@ export default function UpdateComment({
     setCommentToEdit(null);
   };
 
-  const onUpdateComment = async IUpdateComment => {
+  const onUpdateComment = async (IUpdateComment) => {
     await updateComment({
       variables: {
         data: IUpdateComment,
@@ -106,7 +106,7 @@ export default function UpdateComment({
         },
       ],
     });
-    setCommentText('');
+    setCommentText("");
     setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
@@ -121,17 +121,17 @@ export default function UpdateComment({
   }, [data, deleteData]);
 
   useEffect(() => {
-    if (commentToEdit?.image.trim() !== '') {
-      setFileType('image');
+    if (commentToEdit?.image.trim() !== "") {
+      setFileType("image");
     }
     if (commentToEdit) {
       setCommentText(commentToEdit?.content);
     }
   }, [commentToEdit]);
 
-  const handleUpdateComment = e => {
+  const handleUpdateComment = (e) => {
     e.preventDefault();
-    if (comment_text.trim() == '') return setUpdateCommentErr(true);
+    if (comment_text.trim() == "") return setUpdateCommentErr(true);
     onUpdateComment({
       comment_id: commentToEdit?._id,
       content: comment_text,
@@ -140,7 +140,7 @@ export default function UpdateComment({
     setUpdateCommentOpen(false);
   };
 
-  const handleDeleteComment = e => {
+  const handleDeleteComment = (e) => {
     e.preventDefault();
     onDeleteComment(commentToEdit?._id);
     setOpenDelete(false);
@@ -152,23 +152,23 @@ export default function UpdateComment({
   return (
     <Modal
       style={{
-        outline: 'none',
+        outline: "none",
 
-        '&:focus-visible': {
-          outline: 'none',
+        "&:focus-visible": {
+          outline: "none",
         },
       }}
-      className='center-horizontal center-vertical w-100'
+      className="center-horizontal center-vertical w-100"
       open={updateCommentOpen}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
-              <Typography variant='body2'></Typography>
-              <Typography variant='body1'>Update Comment</Typography>
-              <IconButton size='small' className='m-1 p-1'>
+            <div className="space-between mx-3 my-2">
+              <Typography variant="body2"></Typography>
+              <Typography variant="body1">Update Comment</Typography>
+              <IconButton size="small" className="m-1 p-1">
                 <CloseRounded
                   onClick={() => {
                     setUpdateCommentOpen(!updateCommentOpen);
@@ -183,8 +183,8 @@ export default function UpdateComment({
             </div>
 
             <Divider />
-            <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
-              <ListItem className='p-0'>
+            <CardContent style={{ maxHeight: "500px", overflowY: "auto" }}>
+              <ListItem className="p-0">
                 <ListItemAvatar>
                   <Avatar
                     style={{
@@ -202,14 +202,14 @@ export default function UpdateComment({
                       textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: '0px 10px',
-                        textTransform: 'none',
+                        padding: "0px 10px",
+                        textTransform: "none",
                       }}
                       startIcon={<Public />}
                       endIcon={
                         <ChevronRight
                           style={{
-                            transform: 'rotateZ(90deg)',
+                            transform: "rotateZ(90deg)",
                           }}
                         />
                       }
@@ -222,15 +222,15 @@ export default function UpdateComment({
               <TextField
                 fullWidth
                 multiline
-                variant='standard'
+                variant="standard"
                 error={updateCommentErr && true}
                 errorText={
-                  updateCommentErr && 'The post content cannot be empty'
+                  updateCommentErr && "The post content cannot be empty"
                 }
                 rows={5}
-                id='update-comment-field'
-                placeholder='Write Comment'
-                onChange={e =>
+                id="update-comment-field"
+                placeholder="Write Comment"
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -241,32 +241,32 @@ export default function UpdateComment({
               />
               <Card
                 style={{
-                  display: openImage ? 'block' : 'none',
+                  display: openImage ? "block" : "none",
                 }}
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     setCommentImage(files[0]);
                   }}
-                  dropzoneText={'Drag n drop an image here or click'}
-                  acceptedFiles={['image/*']}
+                  dropzoneText={"Drag n drop an image here or click"}
+                  acceptedFiles={["image/*"]}
                   maxFileSize={5000000}
                   filesLimit={1}
-                  showAlerts={['error']}
+                  showAlerts={["error"]}
                   showPreviews={false}
                   showPreviewsInDropzone
                   previewGridProps={{
-                    container: { spacing: 1, direction: 'row' },
+                    container: { spacing: 1, direction: "row" },
                   }}
                 />
               </Card>
-              {commentToEdit?.image?.trim() !== '' && fileType !== null && (
+              {commentToEdit?.image?.trim() !== "" && fileType !== null && (
                 <Card>
-                  <div className='space-between mx-3 my-2'>
-                    <Typography variant='body2'></Typography>
-                    <Typography variant='body1'></Typography>
-                    <IconButton size='small' className='m-1 p-1'>
+                  <div className="space-between mx-3 my-2">
+                    <Typography variant="body2"></Typography>
+                    <Typography variant="body1"></Typography>
+                    <IconButton size="small" className="m-1 p-1">
                       <CloseRounded
                         onClick={() => {
                           setFileType(null);
@@ -275,9 +275,9 @@ export default function UpdateComment({
                       />
                     </IconButton>
                   </div>
-                  <Grid container spacing={2} className='mb-2'>
+                  <Grid container spacing={2} className="mb-2">
                     <Grid
-                      className='mt-3'
+                      className="mt-3"
                       key={commentToEdit?.image}
                       item
                       xs={12}
@@ -286,16 +286,16 @@ export default function UpdateComment({
                         style={{
                           height: 200,
                           borderRadius: 8,
-                          width: '100%',
+                          width: "100%",
                           backgroundImage:
-                            'url(' +
+                            "url(" +
                             process.env.REACT_APP_BACKEND_URL +
                             commentToEdit?.image +
-                            ')',
-                          backgroundSize: 'cover',
-                          backgroundColor: 'rgba(0,0,0,0.2)',
-                          backgroundBlendMode: 'soft-light',
-                          cursor: 'pointer',
+                            ")",
+                          backgroundSize: "cover",
+                          backgroundColor: "rgba(0,0,0,0.2)",
+                          backgroundBlendMode: "soft-light",
+                          cursor: "pointer",
                         }}
                       />
                     </Grid>
@@ -306,36 +306,36 @@ export default function UpdateComment({
               <Dialog
                 open={openDelete}
                 onClose={() => setOpenDelete(false)}
-                aria-labelledby='alert-dialog-title'
-                aria-describedby='alert-dialog-description'
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id='alert-dialog-title'>
-                  {'Delete this comment?'}
+                <DialogTitle id="alert-dialog-title">
+                  {"Delete this comment?"}
                 </DialogTitle>
                 <DialogContent>
-                  <DialogContentText id='alert-dialog-description'>
+                  <DialogContentText id="alert-dialog-description">
                     This can’t be undone and it will be removed from your
                     profile and from the BNConnect platform.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={() => setOpenDelete(false)} color='primary'>
+                  <Button onClick={() => setOpenDelete(false)} color="primary">
                     Cancel
                   </Button>
                   <Button
                     onClick={handleDeleteComment}
-                    color='primary'
+                    color="primary"
                     autoFocus
                   >
                     Delete
                   </Button>
                 </DialogActions>
               </Dialog>
-              <div className='space-between mt-1'>
-                <div className='center-horizontal'>
+              <div className="space-between mt-1">
+                <div className="center-horizontal">
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenImage(true);
                       setFileType(null);
@@ -351,11 +351,11 @@ export default function UpdateComment({
                 <div>
                   <Button
                     style={{
-                      backgroundColor: '#ba000d',
-                      color: '#FFFFFF',
-                      marginRight: '12px',
+                      backgroundColor: "#ba000d",
+                      color: "#FFFFFF",
+                      marginRight: "12px",
                     }}
-                    variant='contained'
+                    variant="contained"
                     onClick={() => setOpenDelete(true)}
                   >
                     Delete
@@ -364,7 +364,7 @@ export default function UpdateComment({
                     <Button onClick={handleUpdateComment}>Update</Button>
                   )}
                   {loading && (
-                    <Button size='small' style={{ margin: '0' }}>
+                    <Button size="small" style={{ margin: "0" }}>
                       <CircularProgress size={24} thickness={4} />
                     </Button>
                   )}

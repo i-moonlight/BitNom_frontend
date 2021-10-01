@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -6,22 +6,22 @@ import {
   FormControlLabel,
   Grid,
   Typography,
-} from '@material-ui/core';
-import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import Form from '../../../../components/Form';
-import TextField from '../../../../components/TextField';
-import { workInitialValues } from '../utilities/profile.initialValues';
+} from "@material-ui/core";
+import { SearchRounded } from "@material-ui/icons";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
+import Form from "../../../../components/Form";
+import TextField from "../../../../components/TextField";
+import { workInitialValues } from "../utilities/profile.initialValues";
 import {
   MUTATION_ADD_WORK,
   MUTATION_REMOVE_WORK,
   MUTATION_UPDATE_WORK,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
-import { workValidation } from '../utilities/profile.validationSchemas';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
+import { workValidation } from "../utilities/profile.validationSchemas";
 
 export default function WorkForm({ onClose, updateData }) {
   const [current, setCurrent] = useState(updateData?.current);
@@ -36,7 +36,7 @@ export default function WorkForm({ onClose, updateData }) {
       addLoading,
     },
   ] = useMutation(MUTATION_ADD_WORK, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -47,7 +47,7 @@ export default function WorkForm({ onClose, updateData }) {
       updateLoading,
     },
   ] = useMutation(MUTATION_UPDATE_WORK, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -58,11 +58,11 @@ export default function WorkForm({ onClose, updateData }) {
       removeLoading,
     },
   ] = useMutation(MUTATION_REMOVE_WORK, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Form
         initialValues={updateData || workInitialValues}
         validationSchema={workValidation}
@@ -72,7 +72,7 @@ export default function WorkForm({ onClose, updateData }) {
         ) => {
           setLocalError(null);
 
-          if (!current && end_date == '') {
+          if (!current && end_date == "") {
             setLocalError("End Date required if you don't currently work here");
             return;
           }
@@ -95,7 +95,7 @@ export default function WorkForm({ onClose, updateData }) {
 
           console.log(Iwork);
 
-          updateData ? console.log('upd') : console.log('add');
+          updateData ? console.log("upd") : console.log("add");
 
           updateData
             ? updateWork({
@@ -106,7 +106,7 @@ export default function WorkForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -120,7 +120,7 @@ export default function WorkForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -134,81 +134,81 @@ export default function WorkForm({ onClose, updateData }) {
             <TextField
               required
               fullWidth
-              name='company'
-              labelTop='Company'
-              placeholder={updateData?.company || 'Type to search'}
-              adornmentType='start'
-              adornment={<SearchRounded className='p-' />}
+              name="company"
+              labelTop="Company"
+              placeholder={updateData?.company || "Type to search"}
+              adornmentType="start"
+              adornment={<SearchRounded className="p-" />}
             />
             <TextField
               required
               fullWidth
-              name='title'
-              labelTop='Title'
-              placeholder={updateData?.title || 'Title eg Graphic Designer'}
+              name="title"
+              labelTop="Title"
+              placeholder={updateData?.title || "Title eg Graphic Designer"}
             />
             <Grid container spacing={2}>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   required
-                  type='date'
-                  name='start_date'
-                  placeholder='2020-01-28'
-                  labelTop='Start Date'
+                  type="date"
+                  name="start_date"
+                  placeholder="2020-01-28"
+                  labelTop="Start Date"
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   disabled={current}
-                  type='date'
-                  name='end_date'
-                  labelTop='End Date'
+                  type="date"
+                  name="end_date"
+                  labelTop="End Date"
                 />
               </Grid>
             </Grid>
             <FormControlLabel
               control={
                 <Checkbox
-                  color='primary'
+                  color="primary"
                   checked={current}
                   onChange={() => {
                     setCurrent(!current);
                   }}
-                  name='checkedA'
+                  name="checkedA"
                 />
               }
               label={
-                <Typography variant='body2'>I Currently work here</Typography>
+                <Typography variant="body2">I Currently work here</Typography>
               }
             />
             <TextField
               required
               fullWidth
               multiline
-              name='description'
-              labelTop='Description'
+              name="description"
+              labelTop="Description"
               placeholder={
-                updateData?.description || 'Describe your work experience'
+                updateData?.description || "Describe your work experience"
               }
               rows={4}
             />
-            {localError && <Alert severity='error'>{localError}</Alert>}
-            <div className='d-flex justify-content-end mt-2'>
+            {localError && <Alert severity="error">{localError}</Alert>}
+            <div className="d-flex justify-content-end mt-2">
               <Button
                 onClick={onClose}
-                color='inherit'
-                size='small'
-                variant='text'
+                color="inherit"
+                size="small"
+                variant="text"
               >
                 Cancel
               </Button>
               {updateData && (
                 <Button
                   disabled={removeLoading}
-                  size='small'
-                  className='ms-2'
+                  size="small"
+                  className="ms-2"
                   onClick={() => {
                     removeWork({
                       variables: {
@@ -217,7 +217,7 @@ export default function WorkForm({ onClose, updateData }) {
                       refetchQueries: [
                         {
                           query: QUERY_FETCH_PROFILE,
-                          context: { clientName: 'users' },
+                          context: { clientName: "users" },
                         },
                       ],
                     }).then(() => {
@@ -231,11 +231,11 @@ export default function WorkForm({ onClose, updateData }) {
               )}
               <Button
                 disabled={addLoading || updateLoading}
-                size='small'
-                className='ms-2'
+                size="small"
+                className="ms-2"
                 submit
               >
-                {updateData ? 'Update' : 'Save'}
+                {updateData ? "Update" : "Save"}
               </Button>
             </div>
           </CardContent>

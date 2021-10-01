@@ -1,16 +1,16 @@
-import { Card, Hidden, Typography, IconButton } from '@material-ui/core';
+import { Card, Hidden, Typography, IconButton } from "@material-ui/core";
 
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import {
   RoomRounded,
   VideocamRounded,
   MoreHorizRounded,
-} from '@material-ui/icons';
-import React, { useState } from 'react';
-import moment from 'moment';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
+} from "@material-ui/icons";
+import React, { useState } from "react";
+import moment from "moment";
+import SavedItemsOptionPopover from "./SavedItemsOptionPopover";
 
-const savedItemOptionId = 'menu-savedItem-option';
+const savedItemOptionId = "menu-savedItem-option";
 
 function SavedEvent({ event }) {
   const history = useHistory();
@@ -31,20 +31,20 @@ function SavedEvent({ event }) {
     const useWordBoundary = b || true;
     const subString = str.substr(0, n - 1); // the original check
     return useWordBoundary
-      ? subString.substr(0, subString.lastIndexOf(' '))
+      ? subString.substr(0, subString.lastIndexOf(" "))
       : subString;
   };
   return (
-    <Card elevation={0} key={event?._id} className='space-between'>
+    <Card elevation={0} key={event?._id} className="space-between">
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
+          display: "flex",
+          flexDirection: "row",
           //alignItems: 'space-between',
           marginBottom: 20,
           marginTop: 20,
-          cursor: 'pointer',
-          padding: '5px',
+          cursor: "pointer",
+          padding: "5px",
           //backgroundColor: '#9e9e9e',
         }}
         onClick={(e) => {
@@ -55,13 +55,13 @@ function SavedEvent({ event }) {
         <div
           style={{
             backgroundImage:
-              event?.image !== null && event?.image?.trim() !== ''
-                ? 'url(' +
+              event?.image !== null && event?.image?.trim() !== ""
+                ? "url(" +
                   process.env.REACT_APP_BACKEND_URL +
                   event?.image +
-                  ')'
-                : `url('${'https://picsum.photos/200/300'}')`,
-            backgroundSize: 'cover',
+                  ")"
+                : `url('${"https://picsum.photos/200/300"}')`,
+            backgroundSize: "cover",
             width: 170,
             height: 110,
             borderRadius: 8,
@@ -71,35 +71,35 @@ function SavedEvent({ event }) {
 
         <div
           style={{
-            display: 'grid',
+            display: "grid",
 
-            alignItems: 'stretch',
+            alignItems: "stretch",
             height: 110,
           }}
         >
           <Hidden smDown>
-            <Typography color='textSecondary' variant='body2'>
-              {moment(event?.startDate).format('ddd, MMMM Do YYYY, h:mm a')}
+            <Typography color="textSecondary" variant="body2">
+              {moment(event?.startDate).format("ddd, MMMM Do YYYY, h:mm a")}
             </Typography>
           </Hidden>
-          <Typography style={{ textTransform: 'uppercase' }} variant='body2'>
-            {event?.location?.type === 'physical'
+          <Typography style={{ textTransform: "uppercase" }} variant="body2">
+            {event?.location?.type === "physical"
               ? event?.title
               : `${event?.title} (Virtual) `}
           </Typography>
-          {event?.location?.type === 'physical' ? (
-            <div className='center-horizontal'>
-              <RoomRounded color='primary' />
+          {event?.location?.type === "physical" ? (
+            <div className="center-horizontal">
+              <RoomRounded color="primary" />
               <Typography
-                color='primary'
-                style={{ textDecoration: 'underline' }}
+                color="primary"
+                style={{ textDecoration: "underline" }}
               >
                 <a
                   href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                  style={{ color: 'inherit', zIndex: '3' }}
+                  style={{ color: "inherit", zIndex: "3" }}
                   onClick={(e) => e.stopPropagation()}
-                  target='_blank'
-                  rel='noreferrer'
+                  target="_blank"
+                  rel="noreferrer"
                   on
                 >
                   {truncateText(event?.location?.address, 40)}
@@ -107,18 +107,18 @@ function SavedEvent({ event }) {
               </Typography>
             </div>
           ) : (
-            <div className='center-horizontal'>
-              <VideocamRounded color='primary' />
+            <div className="center-horizontal">
+              <VideocamRounded color="primary" />
               <Typography
-                color='primary'
-                style={{ textDecoration: 'underline' }}
+                color="primary"
+                style={{ textDecoration: "underline" }}
               >
                 <a
                   href={event?.link}
-                  style={{ color: 'inherit', zIndex: '3' }}
+                  style={{ color: "inherit", zIndex: "3" }}
                   onClick={(e) => e.stopPropagation()}
-                  target='_blank'
-                  rel='noreferrer'
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Online
                 </a>
@@ -126,20 +126,20 @@ function SavedEvent({ event }) {
             </div>
           )}
 
-          <Typography variant='body2'>
+          <Typography variant="body2">
             {`${event?.attendees?.length} ${
               new Date(event?.endDate).getTime() < new Date().getTime()
-                ? 'Attended'
-                : 'Going'
+                ? "Attended"
+                : "Going"
             }`}
           </Typography>
         </div>
       </div>
       <Typography>
         <IconButton
-          aria-label='show more'
+          aria-label="show more"
           aria-controls={savedItemOptionId}
-          aria-haspopup='true'
+          aria-haspopup="true"
           onClick={(e) => {
             e.stopPropagation();
             handleSavedItemOptionOpen(e);
@@ -150,7 +150,7 @@ function SavedEvent({ event }) {
       </Typography>
       <SavedItemsOptionPopover
         savedItem={event}
-        itemType='event'
+        itemType="event"
         savedItemOptionId={savedItemOptionId}
         savedItemOptionAnchorEl={savedItemOptionAnchorEl}
         isSavedItemOptionOpen={isSavedItemOptionOpen}

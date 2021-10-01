@@ -1,5 +1,5 @@
 // Profile Form GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const MUTATION_ADD_WORK = gql`
   mutation ($data: IWork!) {

@@ -1,16 +1,16 @@
-import { useMutation } from '@apollo/client';
-import { Card, CardContent } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import Form from '../../../../components/Form';
-import TextField from '../../../../components/TextField';
+import { useMutation } from "@apollo/client";
+import { Card, CardContent } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
+import Form from "../../../../components/Form";
+import TextField from "../../../../components/TextField";
 import {
   MUTATION_UPDATE_PROFILE,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
-import { bioValidation } from '../utilities/profile.validationSchemas';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
+import { bioValidation } from "../utilities/profile.validationSchemas";
 
 export default function AboutForm({ onClose, updateData }) {
   const [localError, setLocalError] = useState(false);
@@ -24,13 +24,13 @@ export default function AboutForm({ onClose, updateData }) {
       updateLoading,
     },
   ] = useMutation(MUTATION_UPDATE_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Form
-        initialValues={updateData || { bio: '' }}
+        initialValues={updateData || { bio: "" }}
         validationSchema={bioValidation}
         onSubmit={({ bio }, { resetForm }) => {
           setLocalError(null);
@@ -46,7 +46,7 @@ export default function AboutForm({ onClose, updateData }) {
             refetchQueries: [
               {
                 query: QUERY_FETCH_PROFILE,
-                context: { clientName: 'users' },
+                context: { clientName: "users" },
               },
             ],
           }).then(() => {
@@ -61,30 +61,30 @@ export default function AboutForm({ onClose, updateData }) {
               required
               fullWidth
               multiline
-              name='bio'
-              labelTop='Bio'
+              name="bio"
+              labelTop="Bio"
               placeholder={
-                updateData?.description || 'Brief Description of yourself'
+                updateData?.description || "Brief Description of yourself"
               }
               rows={4}
             />
-            {localError && <Alert severity='error'>{localError}</Alert>}
-            <div className='d-flex justify-content-end mt-2'>
+            {localError && <Alert severity="error">{localError}</Alert>}
+            <div className="d-flex justify-content-end mt-2">
               <Button
                 onClick={onClose}
-                color='inherit'
-                size='small'
-                variant='text'
+                color="inherit"
+                size="small"
+                variant="text"
               >
                 Cancel
               </Button>
               <Button
                 disabled={updateLoading}
-                size='small'
-                className='ms-2'
+                size="small"
+                className="ms-2"
                 submit
               >
-                {updateData ? 'Update' : 'Save'}
+                {updateData ? "Update" : "Save"}
               </Button>
             </div>
           </CardContent>

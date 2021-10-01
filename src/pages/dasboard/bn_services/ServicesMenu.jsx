@@ -5,7 +5,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   BookmarkBorderRounded,
   FileCopyOutlined,
@@ -14,30 +14,30 @@ import {
   PersonAddDisabledOutlined,
   PlaylistAddCheckRounded,
   TapAndPlayRounded,
-} from '@material-ui/icons';
-import React from 'react';
-import Button from '../../../components/Button';
+} from "@material-ui/icons";
+import React from "react";
+import Button from "../../../components/Button";
 
 export default function ServicesMenu() {
   return (
     <List
       style={{
         padding: 0,
-        position: 'sticky',
+        position: "sticky",
         top: 176,
         paddingBottom: 0,
       }}
       component={Card}
-      variant='outlined'
+      variant="outlined"
     >
-      <div className='m-2'>
+      <div className="m-2">
         <Button startIcon={<HomeRounded />} fullWidth textCase>
           Home
         </Button>
       </div>
-      <div className='m-2'>
+      <div className="m-2">
         <Button
-          variant='text'
+          variant="text"
           startIcon={<TapAndPlayRounded />}
           fullWidth
           textCase
@@ -45,9 +45,9 @@ export default function ServicesMenu() {
           My Service
         </Button>
       </div>
-      <div className='m-2'>
+      <div className="m-2">
         <Button
-          variant='text'
+          variant="text"
           startIcon={<PlaylistAddCheckRounded />}
           fullWidth
           textCase
@@ -56,7 +56,7 @@ export default function ServicesMenu() {
         </Button>
       </div>
       <Divider />
-      <div className='m-2'>
+      <div className="m-2">
         <Button endIcon={<HomeRounded />} fullWidth textCase>
           Category
         </Button>
@@ -65,25 +65,25 @@ export default function ServicesMenu() {
         <ListItemIcon>
           <BookmarkBorderRounded />
         </ListItemIcon>
-        <ListItemText primary='Internet Services' />
+        <ListItemText primary="Internet Services" />
       </ListItem>
       <ListItem button divider>
         <ListItemIcon>
           <FlagOutlined />
         </ListItemIcon>
-        <ListItemText primary='Crypto Services' />
+        <ListItemText primary="Crypto Services" />
       </ListItem>
       <ListItem button divider>
         <ListItemIcon>
           <FileCopyOutlined />
         </ListItemIcon>
-        <ListItemText primary='B2B services' />
+        <ListItemText primary="B2B services" />
       </ListItem>
       <ListItem button divider>
         <ListItemIcon>
           <PersonAddDisabledOutlined />
         </ListItemIcon>
-        <ListItemText primary='Gambling' />
+        <ListItemText primary="Gambling" />
       </ListItem>
     </List>
   );

@@ -1,26 +1,26 @@
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { AddCircleRounded } from '@material-ui/icons';
-import React from 'react';
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { AddCircleRounded } from "@material-ui/icons";
+import React from "react";
 
 export default function FaqSection() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   return (
-    <div className='my-5'>
-      <Typography className='my-3' color='textSecondary'>
+    <div className="my-5">
+      <Typography className="my-3" color="textSecondary">
         INVESTORS
       </Typography>
       <div className={classes.root}>
-        {['panel1', 'panel2', 'panel3'].map(panel => (
+        {["panel1", "panel2", "panel3"].map((panel) => (
           <Accordion
             key={panel}
             expanded={expanded === panel}
@@ -29,7 +29,7 @@ export default function FaqSection() {
             elevation={4}
           >
             <AccordionSummary
-              expandIcon={<AddCircleRounded color='primary' />}
+              expandIcon={<AddCircleRounded color="primary" />}
               aria-controls={`${panel}bh-content`}
               id={`${panel}bh-header`}
             >
@@ -50,9 +50,9 @@ export default function FaqSection() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),

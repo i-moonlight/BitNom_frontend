@@ -1,9 +1,9 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { AddRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import EducationForm from './forms/EducationForm';
-import EducationFragment from './fragments/EducationFragment';
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
+import EducationForm from "./forms/EducationForm";
+import EducationFragment from "./fragments/EducationFragment";
 
 export default function EducationCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
@@ -14,15 +14,15 @@ export default function EducationCard({ profile, profileView }) {
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
-        <div className='space-between center-horizontal'>
+        <div className="space-between center-horizontal">
           <Typography>Education</Typography>
           {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase
-              variant='text'
+              variant="text"
               startIcon={<AddRounded />}
             >
               Add Education
@@ -50,7 +50,7 @@ export default function EducationCard({ profile, profileView }) {
                 dateFrom={start_date}
                 dateTo={end_date}
                 description={description}
-                photoURL='https://picsum.photos/200'
+                photoURL="https://picsum.photos/200"
               />
             )
           )}

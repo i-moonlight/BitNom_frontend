@@ -1,32 +1,32 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   appBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     color: theme.palette.text.primary,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    background: 'none',
+    background: "none",
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
   },
   paperSearch: {
-    padding: '0px 4px',
-    display: 'flex',
+    padding: "0px 4px",
+    display: "flex",
     flexGrow: 1,
-    alignItems: 'center',
+    alignItems: "center",
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
@@ -44,54 +44,54 @@ export const useStyles = makeStyles(theme => ({
     margin: 4,
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
   },
   sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
   },
   statusBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     color: theme.palette.text.primary,
   },
   tabBar: {
-    textTransform: 'none',
+    textTransform: "none",
   },
   textTheme: {
     color: theme.palette.primary.main,
   },
   topTabs: {
     minWidth: 200,
-    textAlign: 'center',
-    cursor: 'pointer',
-    backgroundColor: 'inherit',
-    '&:hover': {
+    textAlign: "center",
+    cursor: "pointer",
+    backgroundColor: "inherit",
+    "&:hover": {
       backgroundColor: theme.palette.background.paper,
     },
   },
   topTabsActive: {
-    width: '100%',
+    width: "100%",
     minWidth: 200,
-    textAlign: 'center',
-    cursor: 'pointer',
-    backgroundColor: 'inherit',
+    textAlign: "center",
+    cursor: "pointer",
+    backgroundColor: "inherit",
     borderBottomWidth: 2,
     borderBottomColor: theme.palette.primary.main,
-    borderBottomStyle: 'solid',
-    '&:hover': {
+    borderBottomStyle: "solid",
+    "&:hover": {
       backgroundColor: theme.palette.background.paper,
     },
   },
   menuPopover: {
-    position: 'absolute',
+    position: "absolute",
     backgroundColor: theme.palette.background.paper,
   },
 }));

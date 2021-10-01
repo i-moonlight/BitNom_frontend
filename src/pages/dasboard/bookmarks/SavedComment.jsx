@@ -7,17 +7,17 @@ import {
   IconButton,
   Typography,
   Avatar,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { MoreHorizRounded } from '@material-ui/icons';
-import moment from 'moment';
-import React, { useState } from 'react';
-import { getUserInitials } from '../../../utilities/Helpers';
+import { MoreHorizRounded } from "@material-ui/icons";
+import moment from "moment";
+import React, { useState } from "react";
+import { getUserInitials } from "../../../utilities/Helpers";
 //import { useHistory } from 'react-router-dom';
-import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
+import { contentBodyFactory, getReactionsSum } from "../utilities/functions";
+import SavedItemsOptionPopover from "./SavedItemsOptionPopover";
 
-const savedItemOptionId = 'menu-savedItem-option';
+const savedItemOptionId = "menu-savedItem-option";
 export default function SavedComment({
   comment,
   setImagePreviewURL,
@@ -46,7 +46,7 @@ export default function SavedComment({
             avatar={
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: "#fed132",
                 }}
                 src={comment?.author?.profile_pic}
               >
@@ -55,11 +55,11 @@ export default function SavedComment({
             }
             action={
               <IconButton
-                size='small'
-                className='m-1 p-1'
-                aria-label='show more'
+                size="small"
+                className="m-1 p-1"
+                aria-label="show more"
                 aria-controls={savedItemOptionId}
-                aria-haspopup='true'
+                aria-haspopup="true"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSavedItemOptionOpen(e);
@@ -69,19 +69,19 @@ export default function SavedComment({
               </IconButton>
             }
             title={
-              <Typography display='inline'>
-                {comment?.author?.displayName}{' '}
-                <Typography display='inline' variant='body2'>
+              <Typography display="inline">
+                {comment?.author?.displayName}{" "}
+                <Typography display="inline" variant="body2">
                   . @{comment?.author?._id}
-                </Typography>{' '}
-                <Typography display='inline' variant='body2'>
+                </Typography>{" "}
+                <Typography display="inline" variant="body2">
                   . {moment(comment.creation_date).fromNow()}
                 </Typography>
               </Typography>
             }
           />
           <CardContent>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant="body2" color="textSecondary" component="p">
               <Typography
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(comment),
@@ -91,7 +91,7 @@ export default function SavedComment({
               {comment?.image.length > 0 && (
                 <Grid container spacing={2}>
                   <Grid
-                    className='mt-2'
+                    className="mt-2"
                     key={comment?.image}
                     item
                     xs={12}
@@ -107,16 +107,16 @@ export default function SavedComment({
                       style={{
                         height: 200,
                         borderRadius: 8,
-                        width: '100%',
+                        width: "100%",
                         backgroundImage:
-                          'url(' +
+                          "url(" +
                           process.env.REACT_APP_BACKEND_URL +
                           comment.image +
-                          ')',
-                        backgroundSize: 'cover',
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        backgroundBlendMode: 'soft-light',
-                        cursor: 'pointer',
+                          ")",
+                        backgroundSize: "cover",
+                        backgroundColor: "rgba(0,0,0,0.2)",
+                        backgroundBlendMode: "soft-light",
+                        cursor: "pointer",
                       }}
                     />
                   </Grid>
@@ -124,16 +124,16 @@ export default function SavedComment({
               )}
             </Typography>
             <br />
-            <Typography display='inline'>
-              <Typography display='inline'>
+            <Typography display="inline">
+              <Typography display="inline">
                 {`${getReactionsSum(comment)} ${
-                  getReactionsSum(comment) === 1 ? 'Reaction' : 'Reactions'
+                  getReactionsSum(comment) === 1 ? "Reaction" : "Reactions"
                 }`}
               </Typography>
-              {' . '}
-              <Typography display='inline'>
+              {" . "}
+              <Typography display="inline">
                 {`${comment?.replies} ${
-                  comment?.replies === 1 ? 'Reply' : 'Replies'
+                  comment?.replies === 1 ? "Reply" : "Replies"
                 }`}
               </Typography>
             </Typography>
@@ -143,7 +143,7 @@ export default function SavedComment({
 
       <SavedItemsOptionPopover
         savedItem={comment}
-        itemType='comment'
+        itemType="comment"
         savedItemOptionId={savedItemOptionId}
         savedItemOptionAnchorEl={savedItemOptionAnchorEl}
         isSavedItemOptionOpen={isSavedItemOptionOpen}

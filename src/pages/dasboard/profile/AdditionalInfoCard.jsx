@@ -4,18 +4,18 @@ import {
   Divider,
   MenuItem,
   Typography,
-} from '@material-ui/core';
-import { AddRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import AditionalInfoForm from './forms/AditionalInfoForm';
-import GenderForm from './forms/GenderForm';
-import LanguagesForm from './forms/LanguagesForm';
+} from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
+import AditionalInfoForm from "./forms/AditionalInfoForm";
+import GenderForm from "./forms/GenderForm";
+import LanguagesForm from "./forms/LanguagesForm";
 
 export default function AdditionalInfoCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
   const [showFormMenu, setShowFormMenu] = useState(false);
-  const [formType, setFormType] = useState('course');
+  const [formType, setFormType] = useState("course");
   const courses = profile?.courses;
   const projects = profile?.projects;
   const languages = profile?.languages;
@@ -26,9 +26,9 @@ export default function AdditionalInfoCard({ profile, profileView }) {
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
-        <div className='space-between center-horizontal mb-2'>
+        <div className="space-between center-horizontal mb-2">
           <Typography>Additional Information (Optional)</Typography>
           {!showForm && !profileView && (
             <Button
@@ -36,26 +36,26 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                 setShowFormMenu(!showFormMenu);
               }}
               startIcon={<AddRounded />}
-              variant='text'
-              color='primary'
-              size='small'
-              className='m-1 p-1'
+              variant="text"
+              color="primary"
+              size="small"
+              className="m-1 p-1"
               textCase
             >
               Edit
               <Card
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 33,
                   right: 0,
-                  visibility: showFormMenu ? 'visible' : 'hidden',
+                  visibility: showFormMenu ? "visible" : "hidden",
                 }}
-                variant='outlined'
+                variant="outlined"
               >
                 <MenuItem
                   button
                   onClick={() => {
-                    setFormType('course');
+                    setFormType("course");
                     setShowForm(true);
                   }}
                 >
@@ -64,7 +64,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                 <MenuItem
                   button
                   onClick={() => {
-                    setFormType('project');
+                    setFormType("project");
                     setShowForm(true);
                   }}
                 >
@@ -73,7 +73,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                 <MenuItem
                   button
                   onClick={() => {
-                    setFormType('language');
+                    setFormType("language");
                     setShowForm(true);
                   }}
                 >
@@ -82,7 +82,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                 <MenuItem
                   button
                   onClick={() => {
-                    setFormType('gender');
+                    setFormType("gender");
                     setShowForm(true);
                   }}
                 >
@@ -92,13 +92,13 @@ export default function AdditionalInfoCard({ profile, profileView }) {
             </Button>
           )}
         </div>
-        {showForm && formType == 'gender' && (
+        {showForm && formType == "gender" && (
           <GenderForm onClose={onClose} profile={profile} />
         )}
-        {showForm && formType == 'language' && (
+        {showForm && formType == "language" && (
           <LanguagesForm onClose={onClose} profile={profile} />
         )}
-        {showForm && formType !== ('gender' && 'language') && (
+        {showForm && formType !== ("gender" && "language") && (
           <AditionalInfoForm
             onClose={onClose}
             formType={formType}
@@ -106,11 +106,11 @@ export default function AdditionalInfoCard({ profile, profileView }) {
           />
         )}
         {!showForm && <Divider />}
-        <div className='mt-3'>
-          <SectionCard title='Courses' values={courses} />
-          <SectionCard title='Projects' values={projects} />
-          <SectionCard title='Languages' values={languages} />
-          <SectionCard noNum title='Gender' values={gender || 'Unset'} />
+        <div className="mt-3">
+          <SectionCard title="Courses" values={courses} />
+          <SectionCard title="Projects" values={projects} />
+          <SectionCard title="Languages" values={languages} />
+          <SectionCard noNum title="Gender" values={gender || "Unset"} />
         </div>
       </CardContent>
     </Card>
@@ -119,26 +119,26 @@ export default function AdditionalInfoCard({ profile, profileView }) {
 
 const SectionCard = ({ values, title, noNum }) => {
   return (
-    <div className='d-flex flex-row mb-3'>
+    <div className="d-flex flex-row mb-3">
       <Typography
         style={{
-          visibility: noNum && 'hidden',
+          visibility: noNum && "hidden",
         }}
-        variant='body2'
-        color='primary'
-        className='me-2'
+        variant="body2"
+        color="primary"
+        className="me-2"
       >
         {values?.length}
       </Typography>
       <div>
-        <Typography gutterBottom variant='body2' color='primary'>
+        <Typography gutterBottom variant="body2" color="primary">
           {title}
         </Typography>
-        <Typography variant='body2'>
+        <Typography variant="body2">
           {noNum
             ? values
             : values?.map(({ name }, index) =>
-                index == values.length - 1 ? name + '' : name + '  .  '
+                index == values.length - 1 ? name + "" : name + "  .  "
               )}
         </Typography>
       </div>

@@ -1,8 +1,8 @@
-import { AppBar, Container, useTheme } from '@material-ui/core';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import logo_full from '../../../assets/logo_full.svg';
-import logo_light_full from '../../../assets/logo_light_full.svg';
+import { AppBar, Container, useTheme } from "@material-ui/core";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import logo_full from "../../../assets/logo_full.svg";
+import logo_light_full from "../../../assets/logo_light_full.svg";
 
 export default function NavBarAuth() {
   const history = useHistory();
@@ -10,17 +10,17 @@ export default function NavBarAuth() {
 
   return (
     <AppBar
-      className='pt-2'
+      className="pt-2"
       style={{
         background: theme.palette.background.default,
       }}
       elevation={0}
     >
       <Container>
-        <div className='space-between my-3'>
+        <div className="space-between my-3">
           <div
-            className='center-horizontal c-pointer'
-            onClick={() => history.push('/')}
+            className="center-horizontal c-pointer"
+            onClick={() => history.push("/")}
           >
             <div>
               <img
@@ -28,9 +28,9 @@ export default function NavBarAuth() {
                   height: 40,
                 }}
                 src={
-                  theme.palette.type == 'light' ? logo_full : logo_light_full
+                  theme.palette.type == "light" ? logo_full : logo_light_full
                 }
-                alt=''
+                alt=""
               />
             </div>
           </div>

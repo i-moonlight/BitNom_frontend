@@ -6,17 +6,17 @@ import {
   ListItemText,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import React, { useState } from 'react';
+} from "@material-ui/core";
+import React, { useState } from "react";
 
 export default function MenuOptions({ show, items = [], mobile }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const useStyles = makeStyles(() => ({
     root: {
-      position: mobile ? 'static' : 'absolute',
+      position: mobile ? "static" : "absolute",
       top: 50,
-      display: showMenu || show ? 'block' : 'none',
+      display: showMenu || show ? "block" : "none",
       margin: mobile && 16,
     },
     image: {
@@ -32,11 +32,11 @@ export default function MenuOptions({ show, items = [], mobile }) {
       onMouseEnter={() => setShowMenu(true)}
       onMouseLeave={() => setShowMenu(false)}
     >
-      <List className='py-0' component='nav' aria-label='main mailbox folders'>
-        {items.map(item => (
+      <List className="py-0" component="nav" aria-label="main mailbox folders">
+        {items.map((item) => (
           <ListItem key={item?.text} button>
             <ListItemIcon>
-              <img src={item?.icon} alt='' className={classes.image} />
+              <img src={item?.icon} alt="" className={classes.image} />
             </ListItemIcon>
             <ListItemText
               primary={<Typography noWrap>{item?.text}</Typography>}

@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -7,19 +7,19 @@ import {
   Paper,
   Typography,
   useTheme,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+} from "@material-ui/core";
+import { Search } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
 import {
   MUTATION_ADD_LANGUAGE,
   MUTATION_REMOVE_LANGUAGE,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
 
 export default function LanguagesForm({ onClose, profile }) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   false;
   const classes = useStyles();
   const theme = useTheme();
@@ -33,7 +33,7 @@ export default function LanguagesForm({ onClose, profile }) {
       addLoading,
     },
   ] = useMutation(MUTATION_ADD_LANGUAGE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -44,28 +44,28 @@ export default function LanguagesForm({ onClose, profile }) {
       removeLoading,
     },
   ] = useMutation(MUTATION_REMOVE_LANGUAGE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Card className={classes.formCard}>
         <CardContent>
           <Typography>Add Languages</Typography>
 
           <Paper
-            variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
+            variant={theme.palette.type == "light" ? "outlined" : "elevation"}
             elevation={0}
-            component='form'
+            component="form"
             className={classes.paperSearchAlt}
           >
-            <Search color='inherit' />
+            <Search color="inherit" />
             <InputBase
               value={text}
-              onChange={e => setText(e.target.value)}
+              onChange={(e) => setText(e.target.value)}
               className={classes.input}
               placeholder='Search Language eg "English"'
-              inputProps={{ 'aria-label': 'search bitnorm' }}
+              inputProps={{ "aria-label": "search bitnorm" }}
               endAdornment={
                 <Button
                   onClick={() => {
@@ -76,16 +76,16 @@ export default function LanguagesForm({ onClose, profile }) {
                       refetchQueries: [
                         {
                           query: QUERY_FETCH_PROFILE,
-                          context: { clientName: 'users' },
+                          context: { clientName: "users" },
                         },
                       ],
                     }).then(() => {
-                      setText('');
+                      setText("");
                     });
                   }}
                   disabled={addLoading}
-                  size='small'
-                  className='my-1'
+                  size="small"
+                  className="my-1"
                 >
                   Add
                 </Button>
@@ -93,13 +93,13 @@ export default function LanguagesForm({ onClose, profile }) {
             />
           </Paper>
 
-          <div className='mt-2'>
+          <div className="mt-2">
             {languages?.map(({ _id, name }) => (
               <Chip
-                color='primary'
+                color="primary"
                 key={_id}
                 label={name}
-                className='me-2 mb-2'
+                className="me-2 mb-2"
                 disabled={removeLoading}
                 onDelete={() =>
                   removeLanguage({
@@ -109,7 +109,7 @@ export default function LanguagesForm({ onClose, profile }) {
                     refetchQueries: [
                       {
                         query: QUERY_FETCH_PROFILE,
-                        context: { clientName: 'users' },
+                        context: { clientName: "users" },
                       },
                     ],
                   })
@@ -118,12 +118,12 @@ export default function LanguagesForm({ onClose, profile }) {
             ))}
           </div>
 
-          <div className='d-flex justify-content-end mt-2'>
+          <div className="d-flex justify-content-end mt-2">
             <Button
               onClick={onClose}
-              color='inherit'
-              size='small'
-              variant='text'
+              color="inherit"
+              size="small"
+              variant="text"
             >
               Close
             </Button>

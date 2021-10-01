@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { green, red } from '@material-ui/core/colors';
+import { useMutation, useQuery } from "@apollo/client";
+import { green, red } from "@material-ui/core/colors";
 import {
   Avatar,
   Card,
@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
   makeStyles,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ImageRounded,
   MoreHorizRounded,
@@ -19,42 +19,42 @@ import {
   ThumbUpRounded,
   PanToolRounded,
   FavoriteRounded,
-} from '@material-ui/icons';
-import moment from 'moment';
-import React, { useState, useEffect, useCallback } from 'react';
-import Button from '../../../../../components/Button';
-import ReactionButton from '../../../../../components/ReactionButton';
-import TextField from '../../../../../components/TextField';
-import { getUserInitials } from '../../../../../utilities/Helpers';
+} from "@material-ui/icons";
+import moment from "moment";
+import React, { useState, useEffect, useCallback } from "react";
+import Button from "../../../../../components/Button";
+import ReactionButton from "../../../../../components/ReactionButton";
+import TextField from "../../../../../components/TextField";
+import { getUserInitials } from "../../../../../utilities/Helpers";
 import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
-} from '../../../utilities/functions';
-import { useSelector } from 'react-redux';
+} from "../../../utilities/functions";
+import { useSelector } from "react-redux";
 import {
   MUTATION_CREATE_REACTION,
   MUTATION_REMOVE_REACTION,
   QUERY_GET_COMMENTS,
-} from '../../../utilities/queries';
-import CommentOptionsPopover from './CommentOptionsPopover';
+} from "../../../utilities/queries";
+import CommentOptionsPopover from "./CommentOptionsPopover";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   clickableTypography: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
-    [theme.breakpoints.down('md')]: {
-      textDecoration: 'underline',
+    [theme.breakpoints.down("md")]: {
+      textDecoration: "underline",
     },
   },
   replies: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
   },
   red: {
@@ -64,11 +64,11 @@ const useStyles = makeStyles(theme => ({
     color: green[500],
   },
   primary: {
-    color: '#006097',
+    color: "#006097",
   },
 }));
 
-const commentOptionId = 'menu-comment-option';
+const commentOptionId = "menu-comment-option";
 export default function Comment({
   comment,
   style,
@@ -90,12 +90,12 @@ export default function Comment({
   const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
   const [userReaction, setUserReaction] = useState();
   const [likeHovered, setLikeHovered] = useState(false);
-  const [responseTo, setResponseTo] = useState('');
+  const [responseTo, setResponseTo] = useState("");
   const [replyErr, setReplyErr] = useState(false);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -108,7 +108,7 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
-  const handleCommentOptionOpen = event => {
+  const handleCommentOptionOpen = (event) => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
@@ -116,12 +116,12 @@ export default function Comment({
     setCommentOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
           _id: comment?._id,
-          type: 'comment',
+          type: "comment",
           reaction: reaction,
         },
       },
@@ -139,7 +139,7 @@ export default function Comment({
       variables: {
         data: {
           _id: comment?._id,
-          type: 'comment',
+          type: "comment",
         },
       },
       refetchQueries: [
@@ -152,25 +152,25 @@ export default function Comment({
     setUserReaction();
   };
 
-  const handleCreateReply = e => {
+  const handleCreateReply = (e) => {
     e.preventDefault();
-    if (reply.trim() == '') return setReplyErr(true);
+    if (reply.trim() == "") return setReplyErr(true);
     onCreateComment({
       content: reply,
       scroll: scroll._id,
       image: comment_image,
       response_to: responseTo,
     });
-    setReply('');
+    setReply("");
   };
 
   const getUserReaction = useCallback(
-    resource => {
+    (resource) => {
       let reaction;
-      resource?.reacted_to_by?.forEach(item => {
+      resource?.reacted_to_by?.forEach((item) => {
         if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
       });
-      console.log(resource, 'JSL');
+      console.log(resource, "JSL");
       return reaction;
     },
     [user?._id]
@@ -186,17 +186,17 @@ export default function Comment({
 
   return (
     <>
-      <div style={style} className='d-flex flex-row flex-start'>
+      <div style={style} className="d-flex flex-row flex-start">
         <Avatar
           style={{
             backgroundColor: generateRandomColor(),
           }}
           src={comment?.author?.profile_pic}
-          className='mx-2'
+          className="mx-2"
         >
           {commentUserInitials}
         </Avatar>
-        <div className='mb-3 flex-1'>
+        <div className="mb-3 flex-1">
           <Card
             style={{
               backgroundColor: theme.palette.background.comment,
@@ -204,28 +204,28 @@ export default function Comment({
             elevation={0}
           >
             <CardContent>
-              <div className='center-horizontal space-between w-100'>
-                <Typography display='inline'>
-                  {comment?.author?.displayName}{' '}
-                  <Typography display='inline' variant='body2'>
+              <div className="center-horizontal space-between w-100">
+                <Typography display="inline">
+                  {comment?.author?.displayName}{" "}
+                  <Typography display="inline" variant="body2">
                     . @{comment?.author?._id}
-                  </Typography>{' '}
-                  <Typography display='inline' variant='body2'>
+                  </Typography>{" "}
+                  <Typography display="inline" variant="body2">
                     . {moment(comment.creation_date).fromNow()}
                   </Typography>
                 </Typography>
                 <IconButton
-                  size='small'
-                  className='m-1 p-1'
-                  aria-label='show more'
+                  size="small"
+                  className="m-1 p-1"
+                  aria-label="show more"
                   aria-controls={commentOptionId}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   onClick={handleCommentOptionOpen}
                 >
                   <MoreHorizRounded />
                 </IconButton>
               </div>
-              <Typography variant='body2' color='textSecondary' component='p'>
+              <Typography variant="body2" color="textSecondary" component="p">
                 <Typography
                   dangerouslySetInnerHTML={{
                     __html: contentBodyFactory(comment),
@@ -235,7 +235,7 @@ export default function Comment({
                 {comment?.image.length > 0 && (
                   <Grid container spacing={2}>
                     <Grid
-                      className='mt-2'
+                      className="mt-2"
                       key={comment?.image}
                       item
                       xs={12}
@@ -251,16 +251,16 @@ export default function Comment({
                         style={{
                           height: 200,
                           borderRadius: 8,
-                          width: '100%',
+                          width: "100%",
                           backgroundImage:
-                            'url(' +
+                            "url(" +
                             process.env.REACT_APP_BACKEND_URL +
                             comment.image +
-                            ')',
-                          backgroundSize: 'cover',
-                          backgroundColor: 'rgba(0,0,0,0.2)',
-                          backgroundBlendMode: 'soft-light',
-                          cursor: 'pointer',
+                            ")",
+                          backgroundSize: "cover",
+                          backgroundColor: "rgba(0,0,0,0.2)",
+                          backgroundBlendMode: "soft-light",
+                          cursor: "pointer",
                         }}
                       />
                     </Grid>
@@ -271,137 +271,137 @@ export default function Comment({
           </Card>
           <Card
             style={{
-              position: 'absolute',
-              alignSelf: 'baseline',
+              position: "absolute",
+              alignSelf: "baseline",
               borderRadius: 10,
               backgroundColor: theme.palette.background.default,
-              display: likeHovered ? 'block' : 'none',
-              transform: 'translateY(-28px)',
+              display: likeHovered ? "block" : "none",
+              transform: "translateY(-28px)",
               zIndex: 10,
             }}
             onMouseEnter={() => setLikeHovered(true)}
             onMouseLeave={() => setLikeHovered(false)}
           >
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('like');
+                handleCreateReaction("like");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<ThumbUpRounded className={classes.primary} />}
             >
               Like
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('love');
+                handleCreateReaction("love");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<FavoriteRounded className={classes.red} />}
             >
               Love
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('dislike');
+                handleCreateReaction("dislike");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<ThumbDownRounded className={classes.primary} />}
             >
               Dislike
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('celebrate');
+                handleCreateReaction("celebrate");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<PanToolRounded className={classes.green} />}
             >
               Celebrate
             </Button>
           </Card>
-          <div className='center-horizontal'>
+          <div className="center-horizontal">
             <ReactionButton
               handleRemoveReaction={handleRemoveReaction}
               reaction={userReaction}
               setLikeHovered={setLikeHovered}
               onMouseEnter={() => setLikeHovered(true)}
               onMouseLeave={() => setLikeHovered(false)}
-              variant='text'
-              color='default'
+              variant="text"
+              color="default"
               textCase
             />
             <Typography
               className={classes.clickableTypography}
-              variant='body2'
-              color='textSecondary'
+              variant="body2"
+              color="textSecondary"
               onClick={() => {
                 setOpenReactions(true);
                 setResourceReactions(comment);
               }}
             >
               {`${getReactionsSum(comment)} ${
-                getReactionsSum(comment) === 1 ? 'Reaction' : 'Reactions'
+                getReactionsSum(comment) === 1 ? "Reaction" : "Reactions"
               }`}
             </Typography>
-            <Divider orientation='vertical' />
+            <Divider orientation="vertical" />
             {/* {comment?.response_to ? '' : '.'} */}
             {!comment?.response_to && (
               <Typography
-                colorAlt='inherit'
+                colorAlt="inherit"
                 component={Button}
                 onClick={() => {
                   setOpenReplies(true);
                   setResponseTo(comment?._id);
                 }}
                 textCase
-                variantAlt='text'
-                className='p-0 my-1'
+                variantAlt="text"
+                className="p-0 my-1"
               >
                 Reply
               </Typography>
             )}
             {!comment?.response_to && (
               <>
-                {' '}
+                {" "}
                 <Typography
-                  className='mx-2 my-2'
-                  variant='body2'
-                  color='textSecondary'
+                  className="mx-2 my-2"
+                  variant="body2"
+                  color="textSecondary"
                 >
                   .
                 </Typography>
                 <Typography
-                  className='p-0 my-2'
-                  variant='body2'
-                  color='textSecondary'
+                  className="p-0 my-2"
+                  variant="body2"
+                  color="textSecondary"
                 >
                   {`${comment?.replies} ${
-                    comment?.replies === 1 ? 'Reply' : 'Replies'
+                    comment?.replies === 1 ? "Reply" : "Replies"
                   }`}
                 </Typography>
               </>
             )}
           </div>
           {openReplies && (
-            <div className='center-horizontal'>
+            <div className="center-horizontal">
               <Avatar
                 style={{
                   backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.profile_pic}
-                className='mx-2'
+                className="mx-2"
               >
                 {currentUserInitials}
               </Avatar>
@@ -409,16 +409,16 @@ export default function Comment({
                 fullWidth
                 error={replyErr}
                 multiline
-                errorText={replyErr && 'The reply cannot be empty'}
+                errorText={replyErr && "The reply cannot be empty"}
                 rowsMax={10}
-                id='reply-field'
-                placeholder='Reply'
-                onKeyPress={e => {
-                  if (e.key === 'Enter') {
+                id="reply-field"
+                placeholder="Reply"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
                     handleCreateReply(e);
                   }
                 }}
-                onChange={e =>
+                onChange={(e) =>
                   setReply(
                     reply?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -427,7 +427,7 @@ export default function Comment({
                 }
                 adornment={
                   <IconButton
-                    size='small'
+                    size="small"
                     onClick={() => {
                       setOpenImage(true);
                     }}
@@ -435,12 +435,12 @@ export default function Comment({
                     <ImageRounded />
                   </IconButton>
                 }
-                adornmentType='end'
+                adornmentType="end"
                 value={reply}
               />
               <IconButton
-                size='small'
-                className='m-1 p-1'
+                size="small"
+                className="m-1 p-1"
                 // className='mx-3'
                 onClick={handleCreateReply}
                 // size='small'
@@ -467,9 +467,9 @@ export default function Comment({
       {commentsData &&
         commentsData?.Comments?.get
           .filter(
-            commentInner => commentInner?.response_to?._id === comment?._id
+            (commentInner) => commentInner?.response_to?._id === comment?._id
           )
-          .map(commentInner => (
+          .map((commentInner) => (
             <Comment
               style={{
                 marginLeft: 30,

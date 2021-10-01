@@ -5,9 +5,9 @@ import {
   OutlinedInput,
   Typography,
   useTheme,
-} from '@material-ui/core';
-import { useFormikContext } from 'formik';
-import React from 'react';
+} from "@material-ui/core";
+import { useFormikContext } from "formik";
+import React from "react";
 
 export default function TextField({
   name,
@@ -32,27 +32,27 @@ export default function TextField({
   return (
     <>
       {!label && labelTop && (
-        <Typography variant='body2' color='textSecondary' className='mt-2'>
-          {labelTop} {required && '*'}
+        <Typography variant="body2" color="textSecondary" className="mt-2">
+          {labelTop} {required && "*"}
         </Typography>
       )}
       <FormControl
-        id='formik-input'
+        id="formik-input"
         fullWidth={fullWidth && true}
-        variant='outlined'
-        color='primary'
+        variant="outlined"
+        color="primary"
         style={{
           marginTop: !label && labelTop ? 2 : 8,
           marginBottom: 8,
           padding: 0,
-          border: 'none !important',
+          border: "none !important",
         }}
-        size='small'
+        size="small"
       >
         {label && (
           <InputLabel
-            style={{ color: errorText && '#F44336' }}
-            htmlFor='formik-input'
+            style={{ color: errorText && "#F44336" }}
+            htmlFor="formik-input"
           >
             {label}
           </InputLabel>
@@ -72,29 +72,29 @@ export default function TextField({
           onBlur={() => name && setFieldTouched(name)}
           type={type}
           startAdornment={
-            adornment && adornmentType !== 'end' ? (
-              <InputAdornment position='start'>{adornment}</InputAdornment>
+            adornment && adornmentType !== "end" ? (
+              <InputAdornment position="start">{adornment}</InputAdornment>
             ) : null
           }
           endAdornment={
-            adornment && adornmentType === 'end' ? (
-              <InputAdornment position='end'>{adornment}</InputAdornment>
+            adornment && adornmentType === "end" ? (
+              <InputAdornment position="end">{adornment}</InputAdornment>
             ) : null
           }
           {...defaultProps}
         />
         {name && touched[name] && errors[name] ? (
           <small
-            className='ml-5 mt-1 text-sm text-start'
-            style={{ color: '#F44336' }}
+            className="ml-5 mt-1 text-sm text-start"
+            style={{ color: "#F44336" }}
           >
             {errors[name]}
           </small>
         ) : null}
         {errorText && (
           <small
-            className='ml-5 mt-1 text-sm text-start'
-            style={{ color: '#F44336' }}
+            className="ml-5 mt-1 text-sm text-start"
+            style={{ color: "#F44336" }}
           >
             {errorText}
           </small>

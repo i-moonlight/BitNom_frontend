@@ -1,21 +1,21 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 //import parse from 'autosuggest-highlight/parse';
-import throttle from 'lodash/throttle';
+import throttle from "lodash/throttle";
 
 function loadScript(src, position, id) {
   if (!position) {
     return;
   }
 
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
   script.src = src;
   position.appendChild(script);
 }
@@ -37,16 +37,16 @@ export default function LocationInput({
   setSelectedLocation,
 }) {
   const classes = useStyles();
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAPS_KEY}&libraries=places`,
-        document.querySelector('head'),
-        'google-maps'
+        document.querySelector("head"),
+        "google-maps"
       );
     }
 
@@ -72,7 +72,7 @@ export default function LocationInput({
       return undefined;
     }
 
-    if (inputValue === '') {
+    if (inputValue === "") {
       setOptions(selectedLocation ? [selectedLocation] : []);
       return undefined;
     }
@@ -100,10 +100,10 @@ export default function LocationInput({
 
   return (
     <Autocomplete
-      id='google-map-demo'
-      style={{ width: '100%' }}
+      id="google-map-demo"
+      style={{ width: "100%" }}
       getOptionLabel={(option) =>
-        typeof option === 'string' ? option : option.description
+        typeof option === "string" ? option : option.description
       }
       filterOptions={(x) => x}
       options={options}
@@ -122,13 +122,13 @@ export default function LocationInput({
       renderInput={(params) => (
         <TextField
           {...params}
-          label='Event venue'
-          variant='outlined'
+          label="Event venue"
+          variant="outlined"
           fullWidth
           error={locationErr}
-          className='mt-3 mb-2'
+          className="mt-3 mb-2"
           helperText={
-            <Typography variant='body2' className='space-between'>
+            <Typography variant="body2" className="space-between">
               <span>{locationErr && errorText}</span>
               <span></span>
             </Typography>
@@ -144,26 +144,26 @@ export default function LocationInput({
         ); */
 
         return (
-          <Grid container alignItems='center'>
+          <Grid container alignItems="center">
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>
             <Grid item xs>
               <span
                 key={
-                  option === 'string'
+                  option === "string"
                     ? option
                     : option.structured_formatting.main_text
                 }
                 //style={{ fontWeight: part.highlight ? 700 : 400 }}
               >
-                {option === 'string'
+                {option === "string"
                   ? option
                   : option.structured_formatting.main_text}
               </span>
 
-              <Typography variant='body2' color='textSecondary'>
-                {option === 'string'
+              <Typography variant="body2" color="textSecondary">
+                {option === "string"
                   ? option
                   : option.structured_formatting.secondary_text}
               </Typography>

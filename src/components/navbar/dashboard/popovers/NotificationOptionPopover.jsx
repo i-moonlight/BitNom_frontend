@@ -1,13 +1,13 @@
-import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
-import React from 'react';
-import { useMutation } from '@apollo/client';
+import { Card, List, ListItem, ListItemText, Popover } from "@material-ui/core";
+import React from "react";
+import { useMutation } from "@apollo/client";
 import {
   MARK_NOTIFICATION_AS_READ,
   GET_USER_NOTIFICATIONS,
   //MARK_NOTIFICAION_AS_SEEN,
   MUTATION_MUTE_NOTIFICATIONS,
   DELETE_NOTIFICATION,
-} from '../../../../pages/dasboard/utilities/queries';
+} from "../../../../pages/dasboard/utilities/queries";
 
 export default function NotificationOptionPopover({
   notificationOptionAnchorEl,
@@ -24,7 +24,7 @@ export default function NotificationOptionPopover({
       //   error
     },
   ] = useMutation(DELETE_NOTIFICATION, {
-    context: { clientName: 'notifications' },
+    context: { clientName: "notifications" },
   });
 
   const [
@@ -35,7 +35,7 @@ export default function NotificationOptionPopover({
       //   error
     },
   ] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
-    context: { clientName: 'notifications' },
+    context: { clientName: "notifications" },
   });
 
   const handleDeleteNotification = () => {
@@ -47,7 +47,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 99 },
-          context: { clientName: 'notifications' },
+          context: { clientName: "notifications" },
         },
       ],
     });
@@ -67,7 +67,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 99 },
-          context: { clientName: 'notifications' },
+          context: { clientName: "notifications" },
         },
       ],
     });
@@ -82,7 +82,7 @@ export default function NotificationOptionPopover({
       //   error
     },
   ] = useMutation(MARK_NOTIFICATION_AS_READ, {
-    context: { clientName: 'notifications' },
+    context: { clientName: "notifications" },
   });
 
   const handleMarkNotificationRead = () => {
@@ -94,7 +94,7 @@ export default function NotificationOptionPopover({
         {
           query: GET_USER_NOTIFICATIONS,
           variables: { limit: 99 },
-          context: { clientName: 'notifications' },
+          context: { clientName: "notifications" },
         },
       ],
     });
@@ -104,29 +104,29 @@ export default function NotificationOptionPopover({
   return (
     <Popover
       anchorEl={notificationOptionAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       id={notificationOptionId}
       keepMounted
       open={isNotificationOptionOpen}
       onClose={handleNotificationOptionClose}
-      style={{ marginLeft: 16, width: '100%' }}
+      style={{ marginLeft: 16, width: "100%" }}
     >
       <List
         style={{ padding: 0, paddingBottom: 0 }}
         component={Card}
-        variant='outlined'
+        variant="outlined"
       >
         <ListItem button divider onClick={handleMarkNotificationRead}>
-          <ListItemText secondary='Mark as read' />
+          <ListItemText secondary="Mark as read" />
         </ListItem>
         <ListItem button onClick={handleDeleteNotification} divider>
-          <ListItemText secondary='Remove this notification' />
+          <ListItemText secondary="Remove this notification" />
         </ListItem>
         <ListItem button divider onClick={handleMuteNotifications}>
           <ListItemText
-            secondary='Turn off notifications from 
-   this account'
+            secondary="Turn off notifications from 
+   this account"
           />
         </ListItem>
       </List>

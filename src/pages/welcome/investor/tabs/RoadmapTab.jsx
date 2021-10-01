@@ -1,4 +1,4 @@
-import { Card, CardContent, Container, Typography } from '@material-ui/core';
+import { Card, CardContent, Container, Typography } from "@material-ui/core";
 import {
   Timeline,
   TimelineConnector,
@@ -7,19 +7,19 @@ import {
   TimelineItem,
   TimelineOppositeContent,
   TimelineSeparator,
-} from '@material-ui/lab';
-import React from 'react';
-import DarkTheme from '../../../../utilities/DarkTheme';
-import { roadMap } from '../../utilities/welcome.data';
+} from "@material-ui/lab";
+import React from "react";
+import DarkTheme from "../../../../utilities/DarkTheme";
+import { roadMap } from "../../utilities/welcome.data";
 
 export default function RoadmapTab() {
   return (
-    <div className='bg-black py-5'>
-      <Container maxWidth='lg'>
+    <div className="bg-black py-5">
+      <Container maxWidth="lg">
         {roadMap.map(({ year, quaters }) => {
           return (
             <div key={year}>
-              <Timeline align='alternate'>
+              <Timeline align="alternate">
                 {quaters.map(({ name, text, list }, index) => (
                   <TimelineItem key={list[0]}>
                     <TimelineOppositeContent>
@@ -49,13 +49,13 @@ export default function RoadmapTab() {
 }
 
 const RoadMapCard = ({ text, list }) => (
-  <Card className='bg-theme br-2'>
+  <Card className="bg-theme br-2">
     <DarkTheme>
       <CardContent>
-        <Typography color='textPrimary'>{text}</Typography>
-        <Typography color='textPrimary'>
-          {list?.map(ls => (
-            <li className='mx-0' key={ls}>
+        <Typography color="textPrimary">{text}</Typography>
+        <Typography color="textPrimary">
+          {list?.map((ls) => (
+            <li className="mx-0" key={ls}>
               <Typography>- {ls}</Typography>
             </li>
           ))}
@@ -69,14 +69,14 @@ const YearQuaterText = ({ even, quater, year }) => (
   <Typography>
     <span
       className={
-        even ? 'text-primary fw-bold fs-2' : 'fs-6 text-secondary mx-2'
+        even ? "text-primary fw-bold fs-2" : "fs-6 text-secondary mx-2"
       }
     >
       {even ? quater : year}
     </span>
     <span
       className={
-        !even ? 'text-primary fw-bold fs-2' : 'fs-6 text-secondary mx-2'
+        !even ? "text-primary fw-bold fs-2" : "fs-6 text-secondary mx-2"
       }
     >
       {!even ? quater : year}

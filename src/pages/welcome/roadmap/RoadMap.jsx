@@ -4,36 +4,36 @@ import {
   Grid,
   Link,
   makeStyles,
-} from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import { useState } from 'react';
-import { roadMap } from '../utilities/welcome.data';
-import Wrapper from '../Wrapper';
-import QuaterCard from './QuaterCard';
+} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
+import { useState } from "react";
+import { roadMap } from "../utilities/welcome.data";
+import Wrapper from "../Wrapper";
+import QuaterCard from "./QuaterCard";
 
 export default function RoadMap() {
   // const theme = useTheme();
   const classes = useStyles();
-  const [year, setYear] = useState('2021');
+  const [year, setYear] = useState("2021");
 
   return (
     <Wrapper>
-      <Container maxWidth='lg'>
-        <div className='py-4 mb-4'>
-          <Typography variant='h4' color='textPrimary'>
+      <Container maxWidth="lg">
+        <div className="py-4 mb-4">
+          <Typography variant="h4" color="textPrimary">
             BitNorm Roadmap
           </Typography>
-          <Typography variant='h6' color='textPrimary'>
+          <Typography variant="h6" color="textPrimary">
             The highway to building a legacy that will foster innovation.
           </Typography>
         </div>
       </Container>
       <div className={classes.body}>
-        <Container maxWidth='lg'>
-          <div className='pt-4'>
-            <Breadcrumbs aria-label='breadcrumb'>
-              {roadMap.map(road => (
+        <Container maxWidth="lg">
+          <div className="pt-4">
+            <Breadcrumbs aria-label="breadcrumb">
+              {roadMap.map((road) => (
                 <Link
                   className={
                     road?.year != year
@@ -49,11 +49,11 @@ export default function RoadMap() {
             </Breadcrumbs>
           </div>
         </Container>
-        <Container maxWidth='lg'>
-          <Grid className='py-4' container spacing={2}>
+        <Container maxWidth="lg">
+          <Grid className="py-4" container spacing={2}>
             {roadMap
-              .filter(road => road?.year == year)[0]
-              .quaters?.map(quater => (
+              .filter((road) => road?.year == year)[0]
+              .quaters?.map((quater) => (
                 <QuaterCard
                   key={quater?.name}
                   title={quater?.name}
@@ -68,11 +68,11 @@ export default function RoadMap() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor:
-      theme.palette.type == 'light'
-        ? '#F5F5F5'
+      theme.palette.type == "light"
+        ? "#F5F5F5"
         : theme.palette.background.paper,
   },
   linkInactive: {

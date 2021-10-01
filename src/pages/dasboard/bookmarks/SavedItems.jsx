@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client";
 import {
   Card,
   CardHeader,
@@ -11,15 +11,15 @@ import {
   Tab,
   Tabs,
   Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ImagePreview from '../../../components/ImagePreview';
-import Screen from '../../../components/Screen';
-import CreatePost from '../bn_connect/scroll/CreatePost';
-import UserCard from '../bn_connect/UserCard';
+} from "@material-ui/core";
+import { ArrowBack } from "@material-ui/icons";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ImagePreview from "../../../components/ImagePreview";
+import Screen from "../../../components/Screen";
+import CreatePost from "../bn_connect/scroll/CreatePost";
+import UserCard from "../bn_connect/UserCard";
 import {
   GET_BOOKMARKED_COMMENTS,
   GET_BOOKMARKED_SCROLLS,
@@ -27,10 +27,10 @@ import {
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
   QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
-import SavedComment from './SavedComment';
-import SavedPost from './SavedPost';
-import SavedEvent from './SavedEvent';
+} from "../utilities/queries";
+import SavedComment from "./SavedComment";
+import SavedPost from "./SavedPost";
+import SavedEvent from "./SavedEvent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,7 +102,7 @@ export default function SavedItems() {
     //  loading,
     data: profileData,
   } = useQuery(QUERY_FETCH_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const handleChange = (event, val) => {
@@ -120,7 +120,7 @@ export default function SavedItems() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -134,27 +134,27 @@ export default function SavedItems() {
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={7}>
               <>
-                <Card variant='outlined' style={{ marginBottom: 12 }}>
+                <Card variant="outlined" style={{ marginBottom: 12 }}>
                   <CardHeader
                     avatar={
-                      <Link to='/dashboard'>
+                      <Link to="/dashboard">
                         <IconButton
-                          size='small'
-                          className='m-1 p-1'
-                          aria-label='back'
-                          color='inherit'
+                          size="small"
+                          className="m-1 p-1"
+                          aria-label="back"
+                          color="inherit"
                         >
                           <ArrowBack />
                         </IconButton>
                       </Link>
                     }
                     title={
-                      <div className='center-horizontal'>
-                        <Typography variant='body1'>Saved Items</Typography>
+                      <div className="center-horizontal">
+                        <Typography variant="body1">Saved Items</Typography>
                       </div>
                     }
                     subheader={
-                      <Typography variant='body2' color='textSecondary'>
+                      <Typography variant="body2" color="textSecondary">
                         Anything saved under BNSocial is private.
                       </Typography>
                     }
@@ -163,37 +163,37 @@ export default function SavedItems() {
                   <Tabs
                     value={value}
                     onChange={handleChange}
-                    indicatorColor='primary'
+                    indicatorColor="primary"
                   >
                     <Tab
-                      key={'Posts'}
-                      label={'Posts'}
+                      key={"Posts"}
+                      label={"Posts"}
                       disableRipple
-                      style={{ textTransform: 'none' }}
+                      style={{ textTransform: "none" }}
                     />
                     <Tab
-                      key={'Comments'}
-                      label={'Comments'}
+                      key={"Comments"}
+                      label={"Comments"}
                       disableRipple
-                      style={{ textTransform: 'none' }}
+                      style={{ textTransform: "none" }}
                     />
                     <Tab
-                      key={'Events'}
-                      label={'Events'}
+                      key={"Events"}
+                      label={"Events"}
                       disableRipple
-                      style={{ textTransform: 'none' }}
+                      style={{ textTransform: "none" }}
                     />
                     <Tab
-                      key={'Articles'}
-                      label={'Articles'}
+                      key={"Articles"}
+                      label={"Articles"}
                       disableRipple
-                      style={{ textTransform: 'none' }}
+                      style={{ textTransform: "none" }}
                     />
                   </Tabs>
                 </Card>
                 {value === 0 && scrollsLoading && (
-                  <Grid align='center'>
-                    <CircularProgress color='primary' size={24} thickness={4} />
+                  <Grid align="center">
+                    <CircularProgress color="primary" size={24} thickness={4} />
                   </Grid>
                 )}
                 {value === 0 &&
@@ -228,13 +228,13 @@ export default function SavedItems() {
                 !scrollsLoading &&
                 !commentsLoading &&
                 !bookmarksLoading ? (
-                  <Grid align='center'>
-                    <Typography variant='body1' color='primary'>
+                  <Grid align="center">
+                    <Typography variant="body1" color="primary">
                       No Saved items here yet..start bookmarking!!
                     </Typography>
                   </Grid>
                 ) : (
-                  ''
+                  ""
                 )}
               </>
             </Grid>

@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -10,10 +10,10 @@ import {
   ListItemText,
   Modal,
   Typography,
-} from '@material-ui/core';
-import { CloseRounded } from '@material-ui/icons';
-import React from 'react';
-import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
+} from "@material-ui/core";
+import { CloseRounded } from "@material-ui/icons";
+import React from "react";
+import { MUTATION_CREATE_FLAG } from "../../utilities/queries";
 
 export default function FlagResourceModal({
   openFlag,
@@ -30,7 +30,7 @@ export default function FlagResourceModal({
       },
     });
     if (!data?.Flags?.create) {
-      console.log('Already Flagged');
+      console.log("Already Flagged");
     }
     setFlaggedResource(null);
     setOpenFlag(false);
@@ -47,24 +47,24 @@ export default function FlagResourceModal({
   return (
     <Modal
       style={{
-        outline: 'none',
-        '&:focus-visible': {
-          outline: 'none',
+        outline: "none",
+        "&:focus-visible": {
+          outline: "none",
         },
       }}
-      className='center-horizontal center-vertical w-100'
+      className="center-horizontal center-vertical w-100"
       open={openFlag}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
-              <Typography variant='body2'></Typography>
-              <Typography variant='body1'>
+            <div className="space-between mx-3 my-2">
+              <Typography variant="body2"></Typography>
+              <Typography variant="body1">
                 Report this {flaggedResource?.resourceType}
               </Typography>
-              <IconButton size='small' className='m-1 p-1'>
+              <IconButton size="small" className="m-1 p-1">
                 <CloseRounded
                   onClick={() => {
                     setOpenFlag(false);
@@ -79,32 +79,32 @@ export default function FlagResourceModal({
               <List
                 style={{ padding: 0, paddingBottom: 0 }}
                 component={Card}
-                variant='outlined'
+                variant="outlined"
               >
                 <ListItem
                   button
                   divider
-                  onClick={() => handleCreateFlag('It is suspicious or spam')}
+                  onClick={() => handleCreateFlag("It is suspicious or spam")}
                 >
-                  <ListItemText primary='It is suspicious or spam' />
+                  <ListItemText primary="It is suspicious or spam" />
                 </ListItem>
                 <ListItem
                   button
                   divider
-                  onClick={() => handleCreateFlag('It is abusive or harmful')}
+                  onClick={() => handleCreateFlag("It is abusive or harmful")}
                 >
-                  <ListItemText primary='It is abusive or harmful' />
+                  <ListItemText primary="It is abusive or harmful" />
                 </ListItem>
                 <ListItem
                   button
                   divider
                   onClick={() =>
                     handleCreateFlag(
-                      'It expresses intention of self-harm or harm to other people'
+                      "It expresses intention of self-harm or harm to other people"
                     )
                   }
                 >
-                  <ListItemText primary='It expresses intention of self-harm or harm to other people' />
+                  <ListItemText primary="It expresses intention of self-harm or harm to other people" />
                 </ListItem>
                 <ListItem button divider>
                   <ListItemText

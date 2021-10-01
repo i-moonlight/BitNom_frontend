@@ -5,16 +5,21 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
-} from '@material-ui/core';
-import React from 'react';
-import { toast } from 'react-toastify';
+} from "@material-ui/core";
+import React from "react";
+import { toast } from "react-toastify";
 //import { useMutation } from '@apollo/client';
 
 /* import {
    MUTATION_CREATE_BOOKMARK,
 } from '../utilities/queries'; */
 //import { useSelector } from 'react-redux';
-import { Notifications, FlagOutlined, CheckBox, FileCopyOutlined } from '@material-ui/icons';
+import {
+  Notifications,
+  FlagOutlined,
+  CheckBox,
+  FileCopyOutlined,
+} from "@material-ui/icons";
 export default function EventOptionsPopover({
   eventOptionsAnchorEl,
   eventOptionsId,
@@ -31,39 +36,35 @@ export default function EventOptionsPopover({
   //const user = state.auth.user;
 
   const handleReportEvent = () => {
-    const resource = Object.assign({ resourceType: 'event' }, event);
+    const resource = Object.assign({ resourceType: "event" }, event);
     setFlaggedResource(resource);
     handleEventOptionsClose();
     setOpenFlag(true);
   };
 
-
-
-
-
   return (
     <Popover
       anchorEl={eventOptionsAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       id={eventOptionsId}
       keepMounted
       open={isEventOptionsOpen}
       onClose={handleEventOptionsClose}
-      style={{ marginLeft: 16, width: '100%' }}
+      style={{ marginLeft: 16, width: "100%" }}
     >
       <List
         style={{ padding: 0, paddingBottom: 0 }}
         component={Card}
-        variant='outlined'
+        variant="outlined"
       >
         <ListItem button divider>
           <ListItemIcon>
             <Notifications />
           </ListItemIcon>
           <ListItemText
-            primary='Turn on Notifications'
-            secondary='Get all notifications on this event'
+            primary="Turn on Notifications"
+            secondary="Get all notifications on this event"
           />
         </ListItem>
         <ListItem
@@ -76,7 +77,7 @@ export default function EventOptionsPopover({
             display:
               (event?.host?._id !== profile?._id ||
                 new Date(event?.endDate).getTime() < new Date().getTime()) &&
-              'none',
+              "none",
           }}
           divider
         >
@@ -84,20 +85,18 @@ export default function EventOptionsPopover({
             <CheckBox />
           </ListItemIcon>
           <ListItemText
-            primary='Invite Friends'
-            secondary='Invite friends to your event'
+            primary="Invite Friends"
+            secondary="Invite friends to your event"
           />
-           </ListItem>
-          <ListItem
+        </ListItem>
+        <ListItem
           onClick={() => {
             handleCreateBookmark();
             handleEventOptionsClose();
           }}
           button
           style={{
-            display:
-              event?.host?._id === profile?._id &&
-              'none',
+            display: event?.host?._id === profile?._id && "none",
           }}
           divider
         >
@@ -105,29 +104,34 @@ export default function EventOptionsPopover({
             <CheckBox />
           </ListItemIcon>
           <ListItemText
-            primary='Bookmark this event'
-            secondary='Add this to your saved items'
+            primary="Bookmark this event"
+            secondary="Add this to your saved items"
           />
-          
         </ListItem>
-        <ListItem button divider onClick={() => {
-            navigator.clipboard.writeText(`${location.origin}/dashboard/events/${event?._id}`);
-            toast.success('Event link copied to clipboard', {
-            position: 'bottom-left',
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-          handleEventOptionsClose();
-        }}>
+        <ListItem
+          button
+          divider
+          onClick={() => {
+            navigator.clipboard.writeText(
+              `${location.origin}/dashboard/events/${event?._id}`
+            );
+            toast.success("Event link copied to clipboard", {
+              position: "bottom-left",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+            handleEventOptionsClose();
+          }}
+        >
           <ListItemIcon>
             <FileCopyOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Copy this event'
-            secondary='Share this event on other platforms'
+            primary="Copy this event"
+            secondary="Share this event on other platforms"
           />
         </ListItem>
         <ListItem button divider onClick={handleReportEvent}>
@@ -135,8 +139,8 @@ export default function EventOptionsPopover({
             <FlagOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Report Event'
-            secondary='I am concerned about this event'
+            primary="Report Event"
+            secondary="I am concerned about this event"
           />
         </ListItem>
       </List>

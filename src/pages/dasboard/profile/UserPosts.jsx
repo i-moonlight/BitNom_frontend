@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client";
 import {
   Card,
   CardHeader,
@@ -8,20 +8,20 @@ import {
   IconButton,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ImagePreview from '../../../components/ImagePreview';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
+} from "@material-ui/core";
+import { ArrowBack } from "@material-ui/icons";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import ImagePreview from "../../../components/ImagePreview";
+import Screen from "../../../components/Screen";
+import UserCard from "../bn_connect/UserCard";
 import {
   QUERY_FETCH_PROFILE,
   QUERY_LOAD_SCROLLS,
   QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
-import SavedPost from '../bookmarks/SavedPost';
+} from "../utilities/queries";
+import SavedPost from "../bookmarks/SavedPost";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +45,7 @@ export default function UserPosts() {
     //  loading,
     data: profileData,
   } = useQuery(QUERY_FETCH_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
@@ -57,7 +57,7 @@ export default function UserPosts() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -71,23 +71,23 @@ export default function UserPosts() {
             </Hidden>
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <>
-                <Card variant='outlined' style={{ marginBottom: 12 }}>
+                <Card variant="outlined" style={{ marginBottom: 12 }}>
                   <CardHeader
                     avatar={
-                      <Link to='/dashboard'>
+                      <Link to="/dashboard">
                         <IconButton
-                          size='small'
-                          className='m-1 p-1'
-                          aria-label='back'
-                          color='inherit'
+                          size="small"
+                          className="m-1 p-1"
+                          aria-label="back"
+                          color="inherit"
                         >
                           <ArrowBack />
                         </IconButton>
                       </Link>
                     }
                     title={
-                      <div className='center-horizontal'>
-                        <Typography variant='body1'>Your Posts</Typography>
+                      <div className="center-horizontal">
+                        <Typography variant="body1">Your Posts</Typography>
                       </div>
                     }
                   />
@@ -102,8 +102,8 @@ export default function UserPosts() {
                     />
                   ))}
                 {userPosts?.Posts?.get?.length < 1 && (
-                  <Grid align='center'>
-                    <Typography variant='body1' color='primary'>
+                  <Grid align="center">
+                    <Typography variant="body1" color="primary">
                       Create your posts to see them here.
                     </Typography>
                   </Grid>

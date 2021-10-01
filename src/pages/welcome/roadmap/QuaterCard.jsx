@@ -4,8 +4,8 @@ import {
   Grid,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import React from 'react';
+} from "@material-ui/core";
+import React from "react";
 
 export default function QuaterCard({ title, text, list }) {
   const classes = useStyles();
@@ -15,10 +15,10 @@ export default function QuaterCard({ title, text, list }) {
       <Card className={classes.card} elevation={4}>
         <CardContent>
           <Typography gutterBottom>{title}</Typography>
-          <Typography variant='body2'>
+          <Typography variant="body2">
             {text}
-            {list?.map(ls => (
-              <li className='mx-0' key={list}>
+            {list?.map((ls) => (
+              <li className="mx-0" key={list}>
                 {ls}
               </li>
             ))}
@@ -29,7 +29,7 @@ export default function QuaterCard({ title, text, list }) {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     backgroundColor: theme.palette.background.default,
   },

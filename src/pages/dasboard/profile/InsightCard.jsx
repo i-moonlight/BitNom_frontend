@@ -7,8 +7,8 @@ import {
   Tabs,
   Typography,
   withStyles,
-} from '@material-ui/core';
-import React from 'react';
+} from "@material-ui/core";
+import React from "react";
 
 export default function InsightCard({ profile }) {
   const [tabValue, setTabValue] = React.useState(0);
@@ -20,31 +20,31 @@ export default function InsightCard({ profile }) {
   };
 
   return (
-    <Card className='mb-3' variant={'outlined'}>
+    <Card className="mb-3" variant={"outlined"}>
       <CardContent>
-        <Typography className='mb-2' variant='body1'>
+        <Typography className="mb-2" variant="body1">
           Insight Overview
         </Typography>
-        <Card variant='outlined'>
+        <Card variant="outlined">
           <CardContent>
-            <div className='space-between'>
-              <Insight text='Profile Reached' value={profile?.profileReached} />
+            <div className="space-between">
+              <Insight text="Profile Reached" value={profile?.profileReached} />
               <Divider
                 style={{
                   width: 1,
                   height: 60,
                 }}
-                orientation='vertical'
+                orientation="vertical"
               />
-              <Insight text='Connection Gained' value={profile?.connections} />
+              <Insight text="Connection Gained" value={profile?.connections} />
               <Divider
                 style={{
                   width: 1,
                   height: 60,
                 }}
-                orientation='vertical'
+                orientation="vertical"
               />
-              <Insight text='Search Appeared' value={profile?.searchAppeared} />
+              <Insight text="Search Appeared" value={profile?.searchAppeared} />
             </div>
           </CardContent>
         </Card>
@@ -53,11 +53,11 @@ export default function InsightCard({ profile }) {
             value={tabValue}
             onChange={handleTabChange}
             // aria-label='simple tabs example'
-            indicatorColor='primary'
+            indicatorColor="primary"
           >
-            <ProfileTab label='Activities' />
-            <ProfileTab label='Saved Items' />
-            <ProfileTab label='My Connections' />
+            <ProfileTab label="Activities" />
+            <ProfileTab label="Saved Items" />
+            <ProfileTab label="My Connections" />
           </Tabs>
 
           <TabPanel value={tabValue} index={0}>
@@ -76,20 +76,20 @@ export default function InsightCard({ profile }) {
 }
 
 const Insight = ({ value, text }) => (
-  <div className='text-center'>
-    <Typography color='primary' variant='body1'>
+  <div className="text-center">
+    <Typography color="primary" variant="body1">
       {value}
     </Typography>
-    <Typography variant='body1'>{text}</Typography>
+    <Typography variant="body1">{text}</Typography>
   </div>
 );
 
-const TabPanel = props => {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -104,17 +104,17 @@ const TabPanel = props => {
   );
 };
 
-const ProfileTab = withStyles(theme => ({
+const ProfileTab = withStyles((theme) => ({
   root: {
-    textTransform: 'none',
+    textTransform: "none",
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.pxToRem(14),
     margin: 0,
-    '&:focus': {
+    "&:focus": {
       opacity: 1,
     },
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.background.paper,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

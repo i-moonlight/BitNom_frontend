@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -6,22 +6,22 @@ import {
   FormControlLabel,
   Grid,
   Typography,
-} from '@material-ui/core';
-import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import Form from '../../../../components/Form';
-import TextField from '../../../../components/TextField';
-import { honorInitialValues } from '../utilities/profile.initialValues';
+} from "@material-ui/core";
+import { SearchRounded } from "@material-ui/icons";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
+import Form from "../../../../components/Form";
+import TextField from "../../../../components/TextField";
+import { honorInitialValues } from "../utilities/profile.initialValues";
 import {
   MUTATION_ADD_HONOR,
   MUTATION_REMOVE_HONOR,
   MUTATION_UPDATE_HONOR,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
-import { honorValidation } from '../utilities/profile.validationSchemas';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
+import { honorValidation } from "../utilities/profile.validationSchemas";
 
 export default function HonorForm({ onClose, updateData }) {
   const [expires, setExpires] = useState(updateData?.expires);
@@ -36,7 +36,7 @@ export default function HonorForm({ onClose, updateData }) {
       addLoading,
     },
   ] = useMutation(MUTATION_ADD_HONOR, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -47,7 +47,7 @@ export default function HonorForm({ onClose, updateData }) {
       updateLoading,
     },
   ] = useMutation(MUTATION_UPDATE_HONOR, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -58,11 +58,11 @@ export default function HonorForm({ onClose, updateData }) {
       removeLoading,
     },
   ] = useMutation(MUTATION_REMOVE_HONOR, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Form
         initialValues={updateData || honorInitialValues}
         validationSchema={honorValidation}
@@ -72,10 +72,10 @@ export default function HonorForm({ onClose, updateData }) {
         ) => {
           setLocalError(null);
 
-          console.log('Submitting 1');
+          console.log("Submitting 1");
 
-          if (!expires && end_date == '') {
-            setLocalError('End Date required if the credential expires');
+          if (!expires && end_date == "") {
+            setLocalError("End Date required if the credential expires");
             return;
           }
 
@@ -97,7 +97,7 @@ export default function HonorForm({ onClose, updateData }) {
 
           console.log(IHonors);
 
-          updateData ? console.log('upd') : console.log('add');
+          updateData ? console.log("upd") : console.log("add");
 
           updateData
             ? updateHonor({
@@ -108,7 +108,7 @@ export default function HonorForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -122,7 +122,7 @@ export default function HonorForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -136,36 +136,36 @@ export default function HonorForm({ onClose, updateData }) {
             <TextField
               required
               fullWidth
-              name='name'
-              labelTop='Name of honor'
-              placeholder={updateData?.name || 'Type to search'}
-              adornmentType='start'
-              adornment={<SearchRounded className='p-' />}
+              name="name"
+              labelTop="Name of honor"
+              placeholder={updateData?.name || "Type to search"}
+              adornmentType="start"
+              adornment={<SearchRounded className="p-" />}
             />
             <TextField
               required
               fullWidth
-              name='organization'
-              labelTop='Issuing Organization'
-              placeholder={updateData?.title || 'Organization Name'}
+              name="organization"
+              labelTop="Issuing Organization"
+              placeholder={updateData?.title || "Organization Name"}
             />
             <Grid container spacing={2}>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   required
-                  type='date'
-                  name='start_date'
-                  labelTop='Start Date'
+                  type="date"
+                  name="start_date"
+                  labelTop="Start Date"
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   disabled={expires}
-                  type='date'
-                  name='end_date'
-                  labelTop='End Date'
+                  type="date"
+                  name="end_date"
+                  labelTop="End Date"
                 />
               </Grid>
             </Grid>
@@ -176,11 +176,11 @@ export default function HonorForm({ onClose, updateData }) {
                   onChange={() => {
                     setExpires(!expires);
                   }}
-                  name='checkedA'
+                  name="checkedA"
                 />
               }
               label={
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   This credential does not expire
                 </Typography>
               }
@@ -189,25 +189,25 @@ export default function HonorForm({ onClose, updateData }) {
               required
               fullWidth
               multiline
-              name='url'
-              labelTop='Credential Url'
-              placeholder='Credential / Award URL'
+              name="url"
+              labelTop="Credential Url"
+              placeholder="Credential / Award URL"
             />
-            {localError && <Alert severity='error'>{localError}</Alert>}
-            <div className='d-flex justify-content-end'>
+            {localError && <Alert severity="error">{localError}</Alert>}
+            <div className="d-flex justify-content-end">
               <Button
                 onClick={onClose}
-                color='inherit'
-                size='small'
-                variant='text'
+                color="inherit"
+                size="small"
+                variant="text"
               >
                 Cancel
               </Button>
               {updateData && (
                 <Button
                   disabled={removeLoading}
-                  size='small'
-                  className='ms-2'
+                  size="small"
+                  className="ms-2"
                   onClick={() => {
                     removeHonor({
                       variables: {
@@ -216,7 +216,7 @@ export default function HonorForm({ onClose, updateData }) {
                       refetchQueries: [
                         {
                           query: QUERY_FETCH_PROFILE,
-                          context: { clientName: 'users' },
+                          context: { clientName: "users" },
                         },
                       ],
                     }).then(() => {
@@ -230,11 +230,11 @@ export default function HonorForm({ onClose, updateData }) {
               )}
               <Button
                 disabled={addLoading || updateLoading}
-                size='small'
-                className='ms-2'
+                size="small"
+                className="ms-2"
                 submit
               >
-                {updateData ? 'Update' : 'Save'}
+                {updateData ? "Update" : "Save"}
               </Button>
             </div>
           </CardContent>
