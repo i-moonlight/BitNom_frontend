@@ -90,7 +90,7 @@ export default function InvestorTab() {
           <Container maxWidth='lg'>
             <Paper style={{ backgroundColor: '#000' }}>
               <Grid container spacing={2}>
-                <Grid item sm={6}>
+                <Grid item xs={6} sm={9} md={6}>
                   <div className='mt-4 pt-2'>
                     <Typography variant='h5' className='mt-5 mb-2'>
                       BitNorm Investor Page
@@ -108,9 +108,15 @@ export default function InvestorTab() {
                     </Button>
                   </div>
                 </Grid>
-                <Hidden xsDown>
+                <Hidden smDown>
                   <Grid item sm={6}>
-                    <DonateCard />
+                    <div
+                      className={`px-${
+                        useMediaQuery('(min-width:1196px)') && '5'
+                      }`}
+                    >
+                      <DonateCard />
+                    </div>
                   </Grid>
                 </Hidden>
               </Grid>
@@ -602,7 +608,7 @@ export default function InvestorTab() {
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <Typography variant='h5'>BUSINESS MODEL</Typography>
+                        <Typography variant='h5'>OUR USER BASE</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography>
@@ -635,11 +641,12 @@ export default function InvestorTab() {
                             ></div>
                           </Typography>
                           <Typography className='my-4 fw-bold'>
-                            Community Engine
+                            Crypto Bloggers
                           </Typography>
                           <Typography>
-                            Featuring crypto forums, blogs and an integrated
-                            chat platform for social collaboration.
+                            BitNorm allow all the users to create and maintain
+                            personal blogs on cryptocurrencies and related
+                            technologies.
                           </Typography>
                         </div>
                         <div className='my-5'>
@@ -663,11 +670,13 @@ export default function InvestorTab() {
                             ></div>
                           </Typography>
                           <Typography className='my-4 fw-bold'>
-                            Community Engine
+                            Cryptocurrency Developers and Maintainers
                           </Typography>
                           <Typography>
-                            Featuring crypto forums, blogs and an integrated
-                            chat platform for social collaboration.
+                            It is important to maintain a keen eye on each of
+                            the existing cryptos in order to remain ahead and
+                            profitable. BitNorm realizes this and knowledges the
+                            need to support crypto developers and maintainers.
                           </Typography>
                         </div>
                       </Grid>
@@ -700,11 +709,14 @@ export default function InvestorTab() {
                             ></div>
                           </Typography>
                           <Typography className='my-4 fw-bold'>
-                            Community Engine
+                            Lone Crypto Researchers
                           </Typography>
                           <Typography>
-                            Featuring crypto forums, blogs and an integrated
-                            chat platform for social collaboration.
+                            As the users’ understanding of crypto mature, quick
+                            access to the information becomes necessary. This is
+                            because the crypto domain is huge and there is an
+                            overwhelming number of variants to keep track of in
+                            order to remain ahead.
                           </Typography>
                         </div>
                         <div className='my-5'>
@@ -728,11 +740,13 @@ export default function InvestorTab() {
                             ></div>
                           </Typography>
                           <Typography className='my-4 fw-bold'>
-                            Community Engine
+                            Cryptocurrency Traders
                           </Typography>
                           <Typography>
-                            Featuring crypto forums, blogs and an integrated
-                            chat platform for social collaboration.
+                            A huge fraction of the stakeholders in the
+                            cryptocurrency domain consists of cryptocurrency
+                            traders. This implies that a huge market exists that
+                            is driven by this type of users
                           </Typography>
                         </div>
                       </Grid>
@@ -1050,7 +1064,11 @@ function QuaterCard({ index, name, text, list, year, query, state }) {
 
 function DescriptionModal({ content, open, onClose }) {
   return (
-    <Modal open={open} className='center-horizontal center-vertical w-100 '>
+    <Modal
+      open={open}
+      className='center-horizontal center-vertical w-100 '
+      onClose={onClose}
+    >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
