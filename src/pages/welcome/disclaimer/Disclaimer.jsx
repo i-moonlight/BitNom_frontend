@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import BitnormPaper from '../BitnormPaper';
-import Wrapper from '../Wrapper';
+import React from "react";
+import BitnormPaper from "../BitnormPaper";
+import Wrapper from "../Wrapper";
 
 export default function Disclaimer() {
   return (
     <Wrapper>
-      <BitnormPaper title='BitNorm Disclaimer'>
+      <BitnormPaper title="BitNorm Disclaimer">
         <>
           <p>
             <strong>

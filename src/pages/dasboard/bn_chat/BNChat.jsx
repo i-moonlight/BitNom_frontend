@@ -4,11 +4,11 @@ import {
   Container,
   Grid,
   makeStyles,
-} from '@material-ui/core';
-import React, { useEffect } from 'react';
-import Screen from '../../../components/Screen';
+} from "@material-ui/core";
+import React, { useEffect } from "react";
+import Screen from "../../../components/Screen";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -24,7 +24,7 @@ export default function BnChat() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item lg={4}>
               <Card>

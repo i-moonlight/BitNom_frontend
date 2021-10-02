@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import BitnormPaper from '../BitnormPaper';
-import Wrapper from '../Wrapper';
+import React from "react";
+import BitnormPaper from "../BitnormPaper";
+import Wrapper from "../Wrapper";
 
 export default function Privacy() {
   return (
     <Wrapper>
-      <BitnormPaper title='BitNorm Privacy Policy'>
+      <BitnormPaper title="BitNorm Privacy Policy">
         <>
           <p>
             <strong>[First build up: Wednesday, 15 July 2020]</strong>

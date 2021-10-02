@@ -75,7 +75,7 @@ function NotificationPreview({ notifications }) {
       {notifications?.length > 0 &&
         notifications
           ?.slice(0, 4)
-          ?.map((item) => <ListItemComponent key={item._id} item={item} />)}
+          ?.map(item => <ListItemComponent key={item._id} item={item} />)}
       {notifications?.length > 0 && (
         <Link to='/dashboard/notifications'>
           <Typography variant='body2' className='my-2' color='primary'>
@@ -100,16 +100,16 @@ function ListItemComponent({ item }) {
     link = `#`;
   }
 
-  const getNotifyingUser = (notification) => {
+  const getNotifyingUser = notification => {
     let name;
-    notification?.content_entities?.forEach((entity) => {
+    notification?.content_entities?.forEach(entity => {
       if (entity?.type === 'resource_tag') {
         name = entity?.url?.displayName;
       }
     });
     return name;
   };
-  const contentClickHandler = (e) => {
+  const contentClickHandler = e => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -138,7 +138,7 @@ function ListItemComponent({ item }) {
         primary={
           <div>
             <Typography
-              onClick={(e) => contentClickHandler(e)}
+              onClick={e => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: notificationBodyFactory(item),
               }}

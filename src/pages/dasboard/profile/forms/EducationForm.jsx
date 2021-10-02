@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -6,22 +6,22 @@ import {
   FormControlLabel,
   Grid,
   Typography,
-} from '@material-ui/core';
-import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import Form from '../../../../components/Form';
-import TextField from '../../../../components/TextField';
-import { educationInitialValues } from '../utilities/profile.initialValues';
+} from "@material-ui/core";
+import { SearchRounded } from "@material-ui/icons";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
+import Form from "../../../../components/Form";
+import TextField from "../../../../components/TextField";
+import { educationInitialValues } from "../utilities/profile.initialValues";
 import {
   MUTATION_ADD_EDUCATION,
   MUTATION_REMOVE_EDUCATION,
   MUTATION_UPDATE_EDUCATION,
   QUERY_FETCH_PROFILE,
-} from '../utilities/profile.queries';
-import { useStyles } from '../utilities/profile.styles';
-import { educationValidation } from '../utilities/profile.validationSchemas';
+} from "../utilities/profile.queries";
+import { useStyles } from "../utilities/profile.styles";
+import { educationValidation } from "../utilities/profile.validationSchemas";
 
 export default function EducationForm({ onClose, updateData }) {
   const [current, setCurrent] = useState(updateData?.current);
@@ -36,7 +36,7 @@ export default function EducationForm({ onClose, updateData }) {
       addLoading,
     },
   ] = useMutation(MUTATION_ADD_EDUCATION, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -47,7 +47,7 @@ export default function EducationForm({ onClose, updateData }) {
       updateLoading,
     },
   ] = useMutation(MUTATION_UPDATE_EDUCATION, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -58,11 +58,11 @@ export default function EducationForm({ onClose, updateData }) {
       removeLoading,
     },
   ] = useMutation(MUTATION_REMOVE_EDUCATION, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <div className='mt-2'>
+    <div className="mt-2">
       <Form
         initialValues={updateData || educationInitialValues}
         validationSchema={educationValidation}
@@ -72,7 +72,7 @@ export default function EducationForm({ onClose, updateData }) {
         ) => {
           setLocalError(null);
 
-          if (!current && end_date == '') {
+          if (!current && end_date == "") {
             setLocalError(
               "End Date required if you aren't currently pursuing this"
             );
@@ -97,7 +97,7 @@ export default function EducationForm({ onClose, updateData }) {
 
           console.log(IEducation);
 
-          updateData ? console.log('upd') : console.log('add');
+          updateData ? console.log("upd") : console.log("add");
 
           updateData
             ? updateEducation({
@@ -108,7 +108,7 @@ export default function EducationForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -122,7 +122,7 @@ export default function EducationForm({ onClose, updateData }) {
                 refetchQueries: [
                   {
                     query: QUERY_FETCH_PROFILE,
-                    context: { clientName: 'users' },
+                    context: { clientName: "users" },
                   },
                 ],
               }).then(() => {
@@ -136,36 +136,36 @@ export default function EducationForm({ onClose, updateData }) {
             <TextField
               required
               fullWidth
-              name='institution'
-              labelTop='Institution'
-              placeholder={updateData?.institution || 'Type to search'}
-              adornmentType='start'
-              adornment={<SearchRounded className='p-' />}
+              name="institution"
+              labelTop="Institution"
+              placeholder={updateData?.institution || "Type to search"}
+              adornmentType="start"
+              adornment={<SearchRounded className="p-" />}
             />
             <TextField
               required
               fullWidth
-              name='major'
-              labelTop={updateData?.major || 'Degree &amp; Major'}
-              placeholder='Degree Type'
+              name="major"
+              labelTop={updateData?.major || "Degree &amp; Major"}
+              placeholder="Degree Type"
             />
             <Grid container spacing={2}>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   required
-                  type='date'
-                  name='start_date'
-                  labelTop='Start Date'
+                  type="date"
+                  name="start_date"
+                  labelTop="Start Date"
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
                   disabled={current}
-                  type='date'
-                  name='end_date'
-                  labelTop='End Date'
+                  type="date"
+                  name="end_date"
+                  labelTop="End Date"
                 />
               </Grid>
             </Grid>
@@ -176,11 +176,11 @@ export default function EducationForm({ onClose, updateData }) {
                   onChange={() => {
                     setCurrent(!current);
                   }}
-                  name='checkedA'
+                  name="checkedA"
                 />
               }
               label={
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   I&apos;m currently pursuing this
                 </Typography>
               }
@@ -189,26 +189,26 @@ export default function EducationForm({ onClose, updateData }) {
               required
               fullWidth
               multiline
-              name='description'
-              labelTop='Description'
-              placeholder={updateData?.description || 'Describe your education'}
+              name="description"
+              labelTop="Description"
+              placeholder={updateData?.description || "Describe your education"}
               rows={4}
             />
-            {localError && <Alert severity='error'>{localError}</Alert>}
-            <div className='d-flex justify-content-end'>
+            {localError && <Alert severity="error">{localError}</Alert>}
+            <div className="d-flex justify-content-end">
               <Button
                 onClick={onClose}
-                color='inherit'
-                size='small'
-                variant='text'
+                color="inherit"
+                size="small"
+                variant="text"
               >
                 Cancel
               </Button>
               {updateData && (
                 <Button
                   disabled={removeLoading}
-                  size='small'
-                  className='ms-2'
+                  size="small"
+                  className="ms-2"
                   onClick={() => {
                     removeEducation({
                       variables: {
@@ -217,7 +217,7 @@ export default function EducationForm({ onClose, updateData }) {
                       refetchQueries: [
                         {
                           query: QUERY_FETCH_PROFILE,
-                          context: { clientName: 'users' },
+                          context: { clientName: "users" },
                         },
                       ],
                     }).then(() => {
@@ -231,11 +231,11 @@ export default function EducationForm({ onClose, updateData }) {
               )}
               <Button
                 disabled={addLoading || updateLoading}
-                size='small'
-                className='ms-2'
+                size="small"
+                className="ms-2"
                 submit
               >
-                {updateData ? 'Update' : 'Save'}
+                {updateData ? "Update" : "Save"}
               </Button>
             </div>
           </CardContent>

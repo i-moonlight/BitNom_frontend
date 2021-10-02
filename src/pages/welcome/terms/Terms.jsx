@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import BitnormPaper from '../BitnormPaper';
-import Wrapper from '../Wrapper';
+import React from "react";
+import BitnormPaper from "../BitnormPaper";
+import Wrapper from "../Wrapper";
 
 export default function Terms() {
   return (
     <Wrapper>
-      <BitnormPaper title='BitNorm Terms of Service'>
+      <BitnormPaper title="BitNorm Terms of Service">
         <>
           <p>[First build up: Monday, 13 July 2020]</p>
           <p>
@@ -24,7 +24,7 @@ export default function Terms() {
               Please read these Terms carefully as they govern your use of our
               site located at&nbsp;
             </em>
-            <a href='https://bitnorm.com/'>
+            <a href="https://bitnorm.com/">
               <em>bitnorm</em>
             </a>
             <em>
@@ -35,7 +35,7 @@ export default function Terms() {
               bound by the terms and conditions of these Terms. If you do not
               agree&nbsp;
             </em>
-            <a href='https://bitnorm.com/'>
+            <a href="https://bitnorm.com/">
               <em>https://bitnorm.com/</em>
             </a>
             <em>
@@ -45,7 +45,7 @@ export default function Terms() {
               developed by Bitnorm. Please refer to our privacy policy available
               at&nbsp;
             </em>
-            <a href='https://bitnorm.com/privacy-policy'>
+            <a href="https://bitnorm.com/privacy-policy">
               <em>bitnorm.com/privacy-policy</em>
             </a>
             <em>
@@ -53,7 +53,7 @@ export default function Terms() {
               otherwise process information about you. In addition, you agree to
               comply with the&nbsp;
             </em>
-            <a href='https://bitnorm.com/'>
+            <a href="https://bitnorm.com/">
               <em>Bitnorm Community Code of Conduct</em>
             </a>
             <em>

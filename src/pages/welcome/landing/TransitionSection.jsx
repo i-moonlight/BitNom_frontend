@@ -1,17 +1,17 @@
-import { useTheme } from '@material-ui/core';
+import { useTheme } from "@material-ui/core";
 import {
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
-} from '@material-ui/core';
-import React from 'react';
-import card4Img from '../../../assets/landing/card (4).svg';
-import card5Img from '../../../assets/landing/card (5).svg';
-import card6Img from '../../../assets/landing/card (6).svg';
-import DarkTheme from '../../../utilities/DarkTheme';
-import { useStyles } from './Landing';
+} from "@material-ui/core";
+import React from "react";
+import card4Img from "../../../assets/landing/card (4).svg";
+import card5Img from "../../../assets/landing/card (5).svg";
+import card6Img from "../../../assets/landing/card (6).svg";
+import DarkTheme from "../../../utilities/DarkTheme";
+import { useStyles } from "./Landing";
 
 export default function TransitionSection() {
   const classes = useStyles();
@@ -19,18 +19,18 @@ export default function TransitionSection() {
 
   return (
     <Grid style={{ backgroundColor: theme.palette.background.landing }}>
-      <Container maxWidth='lg'>
-        <Grid spacing={5} container className='py-5'>
+      <Container maxWidth="lg">
+        <Grid spacing={5} container className="py-5">
           <Grid item md={6}>
             <Typography
-              variant='h1'
+              variant="h1"
               style={{
-                color: '#F98D00',
+                color: "#F98D00",
               }}
             >
               .
             </Typography>
-            <Typography variant='h5' color='textPrimary'>
+            <Typography variant="h5" color="textPrimary">
               Our World Is Changing. Together, We Can Change It For The Better.
             </Typography>
           </Grid>
@@ -40,7 +40,7 @@ export default function TransitionSection() {
                 <DarkTheme>
                   <Card className={classes.cardImg}>
                     <CardContent>
-                      <img style={{ width: '100%' }} src={card4Img} alt='' />
+                      <img style={{ width: "100%" }} src={card4Img} alt="" />
                     </CardContent>
                   </Card>
                 </DarkTheme>
@@ -49,7 +49,7 @@ export default function TransitionSection() {
                 <DarkTheme>
                   <Card className={classes.cardImg}>
                     <CardContent>
-                      <img style={{ width: '100%' }} src={card5Img} alt='' />
+                      <img style={{ width: "100%" }} src={card5Img} alt="" />
                     </CardContent>
                   </Card>
                 </DarkTheme>
@@ -58,7 +58,7 @@ export default function TransitionSection() {
                 <DarkTheme>
                   <Card className={classes.cardImg}>
                     <CardContent>
-                      <img style={{ width: '100%' }} src={card6Img} alt='' />
+                      <img style={{ width: "100%" }} src={card6Img} alt="" />
                     </CardContent>
                   </Card>
                 </DarkTheme>
@@ -70,14 +70,14 @@ export default function TransitionSection() {
                 <Typography
                   className={classes.sectionText}
                   gutterBottom
-                  color='textPrimary'
+                  color="textPrimary"
                 >
                   We aim to empower the beginner transition from novice to
                   master in the simplest of ways and the master to expand his
                   knowledge, specialty, and career. We empower both learners and
                   businesses. We believe in community and humanity.
                 </Typography>
-                <Typography className={classes.sectionText} color='textPrimary'>
+                <Typography className={classes.sectionText} color="textPrimary">
                   We believe that the action of making the lives of those around
                   us better has the consequence of making our lives better
                   whether directly or indirectly.

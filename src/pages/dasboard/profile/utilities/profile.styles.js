@@ -1,23 +1,23 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   profileFragment: {
     backgroundColor: theme.palette.background.profileCard,
     marginTop: theme.spacing(2),
   },
   paperSearch: {
-    padding: '0px 4px',
-    display: 'flex',
+    padding: "0px 4px",
+    display: "flex",
     flexGrow: 1,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: theme.spacing(2),
     backgroundColor: theme.palette.background.profileCard,
   },
   paperSearchAlt: {
-    padding: '0px 4px',
-    display: 'flex',
+    padding: "0px 4px",
+    display: "flex",
     flexGrow: 1,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },

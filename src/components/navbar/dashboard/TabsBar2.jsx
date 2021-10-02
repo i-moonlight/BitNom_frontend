@@ -1,8 +1,8 @@
-import { Box, Container, MenuItem, Typography } from '@material-ui/core';
-import { ChevronLeftRounded, ChevronRightRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import { tabs } from '../../utilities/data.components';
-import { useStyles } from '../../utilities/styles.components';
+import { Box, Container, MenuItem, Typography } from "@material-ui/core";
+import { ChevronLeftRounded, ChevronRightRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import { tabs } from "../../utilities/data.components";
+import { useStyles } from "../../utilities/styles.components";
 
 export default function TabsBar2() {
   const [activeTab, setActiveTab] = useState(0);
@@ -14,17 +14,17 @@ export default function TabsBar2() {
   return (
     <div className={classes.tabBar}>
       <Box className={classes.root}>
-        <Container maxWidth='lg'>
-          <div className='d-flex center-horizontal'>
-            <div className='mx-1'>
+        <Container maxWidth="lg">
+          <div className="d-flex center-horizontal">
+            <div className="mx-1">
               <ChevronLeftRounded />
             </div>
             <div
-              className='scroll-hidden'
+              className="scroll-hidden"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                overflowX: 'auto',
+                display: "flex",
+                alignItems: "center",
+                overflowX: "auto",
               }}
             >
               {tabs.map(({ label, menuItems }, index) => (
@@ -35,11 +35,11 @@ export default function TabsBar2() {
                       ? classes.topTabsActive
                       : classes.topTabs
                   }
-                  onClick={e => {
+                  onClick={(e) => {
                     setActiveTab(index);
                     console.log(e.target.offsetWidth);
                   }}
-                  onMouseEnter={e => {
+                  onMouseEnter={(e) => {
                     setActiveTabWidth(e.target.offsetWidth);
                     setHoveredTab(index);
                     // setActiveTabOffset(e.target.offsetLeft);
@@ -49,21 +49,21 @@ export default function TabsBar2() {
                   }}
                 >
                   <Typography
-                    className='fw-bold'
-                    color='textPrimary'
+                    className="fw-bold"
+                    color="textPrimary"
                     noWrap
                     style={{
                       paddingTop: 12,
                       paddingBottom: 12,
                     }}
                   >
-                    <span className='center-horizontal justify-content-center'>
+                    <span className="center-horizontal justify-content-center">
                       {label}
                       {/* {activeTabOffset} */}
                       {menuItems && (
                         <ChevronRightRounded
                           style={{
-                            transform: 'rotate(90deg)',
+                            transform: "rotate(90deg)",
                             marginLeft: 5,
                           }}
                         />
@@ -84,13 +84,13 @@ export default function TabsBar2() {
                       menuItems.map(({ label: option }) => (
                         <MenuItem
                           key={`${Math.random() * 1000}`}
-                          className='py-3 space-between'
+                          className="py-3 space-between"
                           style={{
                             width: activeTabWidth,
                           }}
                           onClick={() => setHoveredTab(-1)}
                         >
-                          <Typography className='fw-bold' color='textPrimary'>
+                          <Typography className="fw-bold" color="textPrimary">
                             {option}
                           </Typography>
                         </MenuItem>
@@ -99,7 +99,7 @@ export default function TabsBar2() {
                 </div>
               ))}
             </div>
-            <div className='mx-1'>
+            <div className="mx-1">
               <ChevronRightRounded />
             </div>
           </div>

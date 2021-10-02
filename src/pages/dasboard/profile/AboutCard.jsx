@@ -1,7 +1,7 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import AboutForm from './forms/AboutForm';
+import { Card, CardContent, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
+import AboutForm from "./forms/AboutForm";
 
 export default function AboutCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
@@ -11,14 +11,14 @@ export default function AboutCard({ profile, profileView }) {
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
-        <div className='space-between center-horizontal'>
+        <div className="space-between center-horizontal">
           <Typography>About</Typography>
           {!profileView && !showForm && (
             <Button
               textCase
-              variant='text'
+              variant="text"
               // startIcon={profile?.bio ? <EditRounded /> : <AddRounded />}
               onClick={() => setShowForm(true)}
             >
@@ -30,7 +30,7 @@ export default function AboutCard({ profile, profileView }) {
           <AboutForm onClose={onClose} updateData={{ bio: profile?.bio }} />
         )}
         {!showForm && (
-          <Typography variant='body2' className='mt-2'>
+          <Typography variant="body2" className="mt-2">
             {profile?.bio}
           </Typography>
         )}

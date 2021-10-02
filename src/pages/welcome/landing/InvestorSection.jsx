@@ -1,15 +1,15 @@
-import { useTheme } from '@material-ui/core';
+import { useTheme } from "@material-ui/core";
 import {
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
-} from '@material-ui/core';
-import React from 'react';
-import investorGraphicImg from '../../../assets/landing/articles.png';
-import investorImg from '../../../assets/landing/investor.svg';
-import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
+} from "@material-ui/core";
+import React from "react";
+import investorGraphicImg from "../../../assets/landing/articles.png";
+import investorImg from "../../../assets/landing/investor.svg";
+import { INVESTOR_CARD_DISPLACEMENT, useStyles } from "./Landing";
 
 export default function InvestorSection() {
   const classes = useStyles();
@@ -22,10 +22,10 @@ export default function InvestorSection() {
         marginBottom: -(INVESTOR_CARD_DISPLACEMENT + 150),
       }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth="lg">
         <Card
           style={{
-            position: 'relative',
+            position: "relative",
             bottom: INVESTOR_CARD_DISPLACEMENT,
             borderWidth: 2,
           }}
@@ -44,19 +44,19 @@ export default function InvestorSection() {
               <Grid item md={5}></Grid>
               <Grid item md={7}>
                 <img
-                  style={{ width: '70%', zIndex: 2 }}
+                  style={{ width: "70%", zIndex: 2 }}
                   src={investorImg}
-                  alt=''
+                  alt=""
                 />
               </Grid>
             </Grid>
 
-            <Grid className='mx-1 mt-2' spacing={5} container>
+            <Grid className="mx-1 mt-2" spacing={5} container>
               <Grid item lg={12}>
                 <Typography
                   className={classes.sectionText}
-                  variant='h6'
-                  color='textPrimary'
+                  variant="h6"
+                  color="textPrimary"
                 >
                   Our Investor Page
                 </Typography>
@@ -64,7 +64,7 @@ export default function InvestorSection() {
                   <Grid item md={8} sm={10} xs={11}>
                     <Typography
                       className={classes.sectionText}
-                      color='textPrimary'
+                      color="textPrimary"
                       noWrap={false}
                     >
                       The investors utilize diverse accounts on diverse project
@@ -76,8 +76,8 @@ export default function InvestorSection() {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Typography className={classes.sectionText} color='textPrimary'>
-                  <a href=''>Visit investor page &gt;</a>
+                <Typography className={classes.sectionText} color="textPrimary">
+                  <a href="">Visit investor page &gt;</a>
                 </Typography>
               </Grid>
             </Grid>

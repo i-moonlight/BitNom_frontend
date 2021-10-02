@@ -8,7 +8,7 @@ import {
   Divider,
   IconButton,
   Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   //AddRounded,
   BookmarkRounded,
@@ -17,13 +17,13 @@ import {
   Notifications,
   PersonRounded,
   Settings,
-} from '@material-ui/icons';
-import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
-import Button from '../../../components/Button';
-import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+} from "@material-ui/icons";
+import React, { useRef } from "react";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import Button from "../../../components/Button";
+import { getUserInitials } from "../../../utilities/Helpers";
+import { generateRandomColor } from "../utilities/functions";
 
 export default function UserCard({
   setOpen,
@@ -47,30 +47,30 @@ export default function UserCard({
     <div
       ref={card}
       style={{
-        position: 'sticky',
+        position: "sticky",
         top: sticky,
         //176
       }}
     >
-      <Card style={{ marginBottom: 16 }} variant={'outlined'}>
+      <Card style={{ marginBottom: 16 }} variant={"outlined"}>
         <CardMedia
           style={{ height: 100 }}
-          image={'https://picsum.photos/300/200'}
-          component='img'
+          image={"https://picsum.photos/300/200"}
+          component="img"
           // title='Contemplative Reptile'
         />
         <CardContent
           style={{
-            position: 'relative',
+            position: "relative",
             top: -80,
             marginBottom: -80,
           }}
         >
-          <div className='space-between'>
+          <div className="space-between">
             <div>
               <Avatar
                 src={user?.profile_pic}
-                variant='rounded'
+                variant="rounded"
                 style={{
                   backgroundColor: generateRandomColor(),
                   marginRight: 12,
@@ -80,24 +80,24 @@ export default function UserCard({
               >
                 {userInitials}
               </Avatar>
-              <Typography className='pt-1' variant='body2'>
+              <Typography className="pt-1" variant="body2">
                 {user?.displayName}
               </Typography>
-              <Typography gutterBottom color='textSecondary' variant='body2'>
+              <Typography gutterBottom color="textSecondary" variant="body2">
                 {`@${user?._id}`}
               </Typography>
             </div>
 
             <div
               style={{
-                position: 'relative',
+                position: "relative",
                 top: 60,
               }}
             >
-              <IconButton size='small' className='m-1 p-1'>
+              <IconButton size="small" className="m-1 p-1">
                 <Notifications />
               </IconButton>
-              <IconButton size='small' className='m-1 p-1'>
+              <IconButton size="small" className="m-1 p-1">
                 <Settings />
               </IconButton>
             </div>
@@ -108,84 +108,84 @@ export default function UserCard({
           </Typography> */}
           <Divider style={{ marginTop: 8, marginBottom: 8 }} />
 
-          <div className='center-horizontal space-between'>
+          <div className="center-horizontal space-between">
             <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/profile/posts')}
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push("/dashboard/profile/posts")}
             >
-              <Typography variant='body2'>Posts</Typography>
-              <div className='center-horizontal'>
+              <Typography variant="body2">Posts</Typography>
+              <div className="center-horizontal">
                 <CollectionsBookmarkRounded
-                  color='primary'
-                  className='mx-2'
-                  fontSize='small'
+                  color="primary"
+                  className="mx-2"
+                  fontSize="small"
                 />
-                <Typography variant='body2'>{scrolls}</Typography>
+                <Typography variant="body2">{scrolls}</Typography>
               </div>
             </div>
             <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/dashboard/profile/connections')}
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push("/dashboard/profile/connections")}
             >
-              <Typography variant='body2'>Followers</Typography>
-              <div className='center-horizontal'>
+              <Typography variant="body2">Followers</Typography>
+              <div className="center-horizontal">
                 <PersonRounded
-                  color='primary'
-                  className='mx-2'
-                  fontSize='small'
+                  color="primary"
+                  className="mx-2"
+                  fontSize="small"
                 />
-                <Typography variant='body2'>{followers}</Typography>
+                <Typography variant="body2">{followers}</Typography>
               </div>
             </div>
             <div
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                history.push('/dashboard/profile/connections');
+                history.push("/dashboard/profile/connections");
               }}
             >
-              <Typography variant='body2'>Following</Typography>
-              <div className='center-horizontal'>
+              <Typography variant="body2">Following</Typography>
+              <div className="center-horizontal">
                 <PersonRounded
-                  color='primary'
-                  className='mx-2'
-                  fontSize='small'
+                  color="primary"
+                  className="mx-2"
+                  fontSize="small"
                 />
-                <Typography variant='body2'>{following}</Typography>
+                <Typography variant="body2">{following}</Typography>
               </div>
             </div>
           </div>
         </CardContent>
         <Divider />
-        <CardActions className='py-0'>
+        <CardActions className="py-0">
           <Button
-            color='inherit'
+            color="inherit"
             textCase
             startIcon={<BookmarkRounded />}
-            variant='text'
-            className='py-1 my-1'
-            onClick={() => history.push('/dashboard/profile/bookmarks')}
+            variant="text"
+            className="py-1 my-1"
+            onClick={() => history.push("/dashboard/profile/bookmarks")}
           >
             Saved Items
           </Button>
         </CardActions>
         <Divider />
-        <CardActions className='py-0'>
+        <CardActions className="py-0">
           <Button
-            color='inherit'
+            color="inherit"
             textCase
             startIcon={<EventRounded />}
             endIcon={
               <Badge
-                className='ms-2 me-3'
+                className="ms-2 me-3"
                 badgeContent={events}
-                color='primary'
+                color="primary"
               ></Badge>
             }
-            variant='text'
-            className='py-1 my-1 me-3'
-            onClick={() => history.push('/dashboard/events')}
+            variant="text"
+            className="py-1 my-1 me-3"
+            onClick={() => history.push("/dashboard/events")}
           >
             Events
           </Button>
@@ -202,10 +202,10 @@ export default function UserCard({
       </Card>
       <Button
         style={{
-          display: location.pathname.includes('dashboard/') ? 'none' : 'block',
+          display: location.pathname.includes("dashboard/") ? "none" : "block",
         }}
         onClick={setOpen}
-        color='primary'
+        color="primary"
         fullWidth
       >
         Create Post

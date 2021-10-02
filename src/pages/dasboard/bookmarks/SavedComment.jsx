@@ -24,7 +24,7 @@ export default function SavedComment({
   setImagePreviewOpen,
 }) {
   const history = useHistory();
-  const contentClickHandler = (e) => {
+  const contentClickHandler = e => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -34,7 +34,7 @@ export default function SavedComment({
   const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] = useState(null);
   const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
 
-  const handleSavedItemOptionOpen = (event) => {
+  const handleSavedItemOptionOpen = event => {
     setSavedItemOptionAnchorEl(event.currentTarget);
   };
 
@@ -67,7 +67,7 @@ export default function SavedComment({
                 aria-label='show more'
                 aria-controls={savedItemOptionId}
                 aria-haspopup='true'
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleSavedItemOptionOpen(e);
                 }}
@@ -90,7 +90,7 @@ export default function SavedComment({
           <CardContent>
             <Typography variant='body2' color='textSecondary' component='p'>
               <Typography
-                onClick={(e) => contentClickHandler(e)}
+                onClick={e => contentClickHandler(e)}
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(comment),
                 }}

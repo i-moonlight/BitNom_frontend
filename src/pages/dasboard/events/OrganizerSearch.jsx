@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { TextField, Grid, Typography, Avatar } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { useState } from "react";
+import { TextField, Grid, Typography, Avatar } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 //import parse from 'autosuggest-highlight/parse';
-import { generateRandomColor } from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
+import { generateRandomColor } from "../utilities/functions";
+import { getUserInitials } from "../../../utilities/Helpers";
 
 function OrganizerSearch({
   searchResults,
@@ -19,7 +19,7 @@ function OrganizerSearch({
   organizersErr,
 }) {
   const [term, setTerm] = useState(initialTerm);
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState("");
 
   return (
     <Autocomplete
@@ -27,7 +27,7 @@ function OrganizerSearch({
       loading={loading}
       value={searchedValues}
       onChange={(event, newValue) => {
-        setErrorText('');
+        setErrorText("");
         setOrganizerErr(false);
         setSearchedValues(newValue);
         setEventOrganizers([...newValue]);
@@ -35,7 +35,7 @@ function OrganizerSearch({
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
         if (eventOrganizers?.length === 3) {
-          setErrorText('You can only add up to 3 friends');
+          setErrorText("You can only add up to 3 friends");
           return setOrganizerErr(true);
         } else {
           setInputValue(newInputValue);
@@ -48,7 +48,7 @@ function OrganizerSearch({
         <TextField
           {...params}
           value={term}
-          variant='outlined'
+          variant="outlined"
           error={organizersErr}
           onChange={(e) => {
             updateSearchTerm(e.target.value);
@@ -61,19 +61,19 @@ function OrganizerSearch({
         const parts = parse(option?.displayName, matches);
         ); */
         return (
-          <Grid container alignItems='center'>
+          <Grid container alignItems="center">
             <Avatar
               src={
                 option?.profile_pic
                   ? process.env.REACT_APP_BACKEND_URL + option?.profile_pic
-                  : ''
+                  : ""
               }
               style={{
                 backgroundColor: generateRandomColor(),
-                marginRight: '5px',
+                marginRight: "5px",
               }}
             >
-              {option?.profile_pic ? '' : getUserInitials(option?.displayName)}
+              {option?.profile_pic ? "" : getUserInitials(option?.displayName)}
             </Avatar>
             <Grid item xs>
               <span
@@ -83,7 +83,7 @@ function OrganizerSearch({
                 {option?.displayName}
               </span>
 
-              <Typography variant='body2' color='textSecondary'>
+              <Typography variant="body2" color="textSecondary">
                 {`@${option?._id}`}
               </Typography>
             </Grid>

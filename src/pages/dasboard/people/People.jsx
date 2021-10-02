@@ -15,9 +15,9 @@ import {
   makeStyles,
   Typography,
   List,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+} from "@material-ui/core";
+import { ArrowBack } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import {
   QUERY_GET_USERS,
   MUTATION_FOLLOW_USER,
@@ -26,18 +26,18 @@ import {
   QUERY_LOAD_SCROLLS,
   QUERY_LOAD_EVENTS,
   //NOTIFICATIONS_SUBSCRIPTION,
-} from '../utilities/queries';
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
+} from "../utilities/queries";
+import React from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useSelector } from "react-redux";
 
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
-import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import Button from "../../../components/Button";
+import Screen from "../../../components/Screen";
+import UserCard from "../bn_connect/UserCard";
+import { getUserInitials } from "../../../utilities/Helpers";
+import { generateRandomColor } from "../utilities/functions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -45,16 +45,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function People() {
   const classes = useStyles();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
 
   const { data: usersData } = useQuery(QUERY_GET_USERS, {
     params: { data: { limit: 20 } },
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
@@ -67,12 +67,12 @@ export default function People() {
   });
 
   const suggestedUsers = usersData?.Users?.get?.filter(
-    item => item?._id !== 'bn-ai' && item?._id !== user?._id
+    (item) => item?._id !== "bn-ai" && item?._id !== user?._id
   );
 
-  const getFollowStatus = usr => {
+  const getFollowStatus = (usr) => {
     let status;
-    profileData?.Users?.profile?.following?.forEach(item => {
+    profileData?.Users?.profile?.following?.forEach((item) => {
       if (item?.userId?._id == usr?._id) {
         status = item?.userId?._id;
       }
@@ -83,7 +83,7 @@ export default function People() {
   return (
     <Screen>
       <div className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden mdDown>
               <Grid item lg={3}>
@@ -99,27 +99,27 @@ export default function People() {
               <Card>
                 <CardHeader
                   avatar={
-                    <Link to='/dashboard'>
+                    <Link to="/dashboard">
                       <IconButton
-                        size='small'
-                        className='m-1 p-1'
-                        aria-label='back'
-                        color='inherit'
+                        size="small"
+                        className="m-1 p-1"
+                        aria-label="back"
+                        color="inherit"
                       >
                         <ArrowBack />
                       </IconButton>
                     </Link>
                   }
                   title={
-                    <div className='center-horizontal'>
-                      <Typography variant='h6'>People you may know</Typography>
+                    <div className="center-horizontal">
+                      <Typography variant="h6">People you may know</Typography>
                     </div>
                   }
                 />
                 <Divider />
                 <CardContent>
                   <List>
-                    {suggestedUsers?.map(usr => (
+                    {suggestedUsers?.map((usr) => (
                       <ListItemComponent
                         key={usr?._id}
                         getFollowStatus={getFollowStatus}
@@ -164,18 +164,18 @@ function ListItemComponent({ item, getFollowStatus }) {
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
 
-  const handleFollowUser = user_id => {
+  const handleFollowUser = (user_id) => {
     followUser({
       variables: {
         data: {
           user_id: user_id,
         },
       },
-      context: { clientName: 'users' },
+      context: { clientName: "users" },
       refetchQueries: [
         {
           query: QUERY_FETCH_PROFILE,
-          context: { clientName: 'users' },
+          context: { clientName: "users" },
         },
       ],
     });
@@ -185,18 +185,18 @@ function ListItemComponent({ item, getFollowStatus }) {
     //setFollowing(following + 1);
   };
 
-  const handleUnFollowUser = user_id => {
+  const handleUnFollowUser = (user_id) => {
     unFollowUser({
       variables: {
         data: {
           user_id: user_id,
         },
       },
-      context: { clientName: 'users' },
+      context: { clientName: "users" },
       refetchQueries: [
         {
           query: QUERY_FETCH_PROFILE,
-          context: { clientName: 'users' },
+          context: { clientName: "users" },
         },
       ],
     });
@@ -207,13 +207,13 @@ function ListItemComponent({ item, getFollowStatus }) {
   };
 
   return (
-    <ListItem className='space-between' key={item?._id}>
+    <ListItem className="space-between" key={item?._id}>
       <ListItemAvatar>
         <Avatar
           src={
             item?.profile_pic
               ? process.env.REACT_APP_BACKEND_URL + item?.profile_pic
-              : ''
+              : ""
           }
           style={{
             backgroundColor: generateRandomColor(),
@@ -224,28 +224,28 @@ function ListItemComponent({ item, getFollowStatus }) {
       </ListItemAvatar>
       <ListItemText
         primary={
-          <div className='center-horizontal'>
-            <Typography variant='body2' className='mx-1'>
-              {item?.displayName}{' '}
+          <div className="center-horizontal">
+            <Typography variant="body2" className="mx-1">
+              {item?.displayName}{" "}
             </Typography>
-            <Typography variant='body2' color='textSecondary'>
-              {'@' + item?._id}
+            <Typography variant="body2" color="textSecondary">
+              {"@" + item?._id}
             </Typography>
           </div>
         }
         secondary={item?.bio}
       />
       <ListItemIcon
-        aria-label='show more'
+        aria-label="show more"
         //   aria-controls={notificationOptionId}
-        aria-haspopup='true'
+        aria-haspopup="true"
         //   onClick={handleNotificationOptionOpen}
-        color='inherit'
+        color="inherit"
         style={{
           marginRight: 0,
           paddingRight: 0,
           minWidth: 20,
-          '&.MuiListItemIconRoot': {
+          "&.MuiListItemIconRoot": {
             minWidth: 20,
           },
         }}
@@ -254,12 +254,12 @@ function ListItemComponent({ item, getFollowStatus }) {
           onClick={() =>
             status ? handleUnFollowUser(item?._id) : handleFollowUser(item?._id)
           }
-          className='mx-2'
-          size='small'
-          variant='outlined'
-          color='primary'
+          className="mx-2"
+          size="small"
+          variant="outlined"
+          color="primary"
         >
-          {status ? 'Unfollow' : 'Follow'}
+          {status ? "Unfollow" : "Follow"}
         </Button>
       </ListItemIcon>
     </ListItem>

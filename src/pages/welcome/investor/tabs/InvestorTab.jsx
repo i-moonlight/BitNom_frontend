@@ -10,12 +10,14 @@ import {
   Hidden,
   IconButton,
   makeStyles,
+  Modal,
   Paper,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import {
   ChevronRightRounded,
+  CloseRounded,
   CloudDownload,
   ExpandMore,
   Help,
@@ -24,10 +26,9 @@ import {
   ShareRounded,
 } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-// import Carousel from 'react-material-ui-carousel';
+import Carousel from 'react-material-ui-carousel';
 import igImg from '../../../../assets/investor/ig.png';
 import supplyImg from '../../../../assets/investor/image_5.png';
-import landingImg from '../../../../assets/investor/landing.png';
 import learnImg from '../../../../assets/investor/learn.svg';
 import modelImg from '../../../../assets/investor/model.png';
 import scrollImg from '../../../../assets/investor/scroll.svg';
@@ -35,9 +36,14 @@ import token1Img from '../../../../assets/investor/token1.png';
 import token2Img from '../../../../assets/investor/token2.png';
 import logoImg from '../../../../assets/logo_full.svg';
 import Button from '../../../../components/Button';
-import { team } from '../../../../store/local/dummy';
 import DarkTheme from '../../../../utilities/DarkTheme';
-import { ecosystem, healthCheck, roadMap } from '../../utilities/welcome.data';
+import {
+  ecosystem,
+  healthCheck,
+  roadMap,
+  team,
+} from '../../utilities/welcome.data';
+import DonateCard from '../DonateCard';
 
 const ROADMAP_DISPLACEMENT = 100;
 
@@ -104,9 +110,7 @@ export default function InvestorTab() {
                 </Grid>
                 <Hidden xsDown>
                   <Grid item sm={6}>
-                    <div className=' h-100 w-100 pt-4'>
-                      <img className='w-100' src={landingImg} alt='' />
-                    </div>
+                    <DonateCard />
                   </Grid>
                 </Hidden>
               </Grid>
@@ -488,31 +492,9 @@ export default function InvestorTab() {
                   </Typography>
                 </Grid>
               </Grid>
-              {/* <Carousel
-                autoPlay
-                indicators
-                // navButtonsAlwaysVisible
-                // navButtonsAlwaysInvisible
-                cycleNavigation
-                animation='slide'
-              > */}
-              {splittedEcosystem?.map(item => (
-                <div className='mb-4' key={item[0]?.title}>
-                  <Grid container spacing={3}>
-                    {item?.map(({ title, text, id }) => (
-                      <EcosystemCard
-                        key={title}
-                        title={title}
-                        text={text}
-                        index={id}
-                      />
-                    ))}
-                  </Grid>
-                </div>
-              ))}
-              {/* </Carousel> */}
+
               <Grid container>
-                <Card variant='outlined' className='mt-4'>
+                <Card variant='outlined' className='mt-4 mb-5'>
                   <Accordion
                     expanded={expanded2}
                     onChange={() => setExpanded2(!expanded2)}
@@ -584,6 +566,30 @@ export default function InvestorTab() {
                   </Accordion>
                 </Card>
               </Grid>
+
+              <Carousel
+                autoPlay
+                indicators
+                // navButtonsAlwaysVisible
+                // navButtonsAlwaysInvisible
+                cycleNavigation
+                animation='slide'
+              >
+                {splittedEcosystem?.map(item => (
+                  <div className='mb-4' key={item[0]?.title}>
+                    <Grid container spacing={3}>
+                      {item?.map(({ title, text, id }) => (
+                        <EcosystemCard
+                          key={title}
+                          title={title}
+                          text={text}
+                          index={id}
+                        />
+                      ))}
+                    </Grid>
+                  </div>
+                ))}
+              </Carousel>
             </div>
           </Container>
         </section>
@@ -761,6 +767,9 @@ export default function InvestorTab() {
                       <Card>
                         {roadMap.map(road => (
                           <Button
+                            style={{
+                              backgroundColor: road?.year == year && road?.bg,
+                            }}
                             color={road?.year != year && 'inherit'}
                             className='me-2'
                             variant={road?.year != year && 'text'}
@@ -788,9 +797,10 @@ export default function InvestorTab() {
                   >
                     {roadMap
                       .filter(road => road?.year == year)[0]
-                      .quaters.map(({ name, text, list }, index) => (
+                      .quaters.map(({ name, text, list, state }, index) => (
                         <QuaterCard
                           key={name}
+                          state={state}
                           index={index}
                           name={name}
                           text={text}
@@ -850,10 +860,17 @@ export default function InvestorTab() {
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid xs={12} sm={4}>
-                        <img src={team[0].image} alt='' className='w-100' />
+                        <div
+                          className='bg-white h-100 br-2'
+                          style={{
+                            backgroundImage: `url('${team[0].image}')`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }}
+                        ></div>
                       </Grid>
                       <Grid xs={12} sm={8}>
-                        <div className='d-flex flex-column  mx-3'>
+                        <div className='d-flex flex-column mx-3 h-100'>
                           <Typography>{team[0].name}</Typography>
                           <Typography color='primary'>
                             {team[0].role}
@@ -879,7 +896,7 @@ export default function InvestorTab() {
                   {team
                     .filter(({ category }) => category === 'advisor')
                     .map(member => (
-                      <TeamCard key={member?.name} member={member} />
+                      <TeamCard key={member?.name} member={member} desc />
                     ))}
                 </Grid>
                 <Typography className='lead mb-3 mt-5'>
@@ -901,65 +918,75 @@ export default function InvestorTab() {
   );
 }
 
-function TeamCard({ member }) {
+function TeamCard({ member, desc }) {
+  const [descOpen, setDescOpen] = useState(false);
+
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Card elevation={0} style={{ backgroundColor: '#1E2126' }}>
-        <CardContent>
-          <div className='d-flex'>
-            {member?.image && (
-              <div
-                className='w-25'
-                style={{
-                  backgroundImage: `url('${member?.image}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            )}
-            <div className='d-flex flex-column  mx-3'>
-              <Typography>{member?.name}</Typography>
-              <Typography color='primary'>{member?.role}</Typography>
-              <div className='mt-4'>
-                <IconButton size='small'>
-                  <MailRounded />
-                </IconButton>
-                <IconButton size='small'>
-                  <LinkedIn />
-                </IconButton>
+    <>
+      <Grid item xs={12} sm={6} md={4}>
+        <Card elevation={0} style={{ backgroundColor: '#1E2126' }}>
+          <CardContent>
+            <div className='d-flex'>
+              {member?.image && (
+                <div
+                  className='w-25'
+                  style={{
+                    backgroundImage: `url('${member?.image}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                ></div>
+              )}
+              <div className='d-flex flex-column  mx-3 w-100'>
+                <Typography>{member?.name}</Typography>
+                <Typography color='primary'>{member?.role}</Typography>
+                <div className='mt-4 d-flex align-items-center justify-content-between w-100 '>
+                  <div>
+                    <IconButton size='small'>
+                      <MailRounded />
+                    </IconButton>
+                    <IconButton size='small'>
+                      <LinkedIn />
+                    </IconButton>
+                  </div>
+                  {desc && (
+                    <Typography
+                      color='primary'
+                      className='c-pointer'
+                      onClick={() => {
+                        setDescOpen(true);
+                      }}
+                    >
+                      Read more ...
+                    </Typography>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
+      <DescriptionModal
+        open={descOpen}
+        content={member.desc}
+        onClose={() => {
+          setDescOpen(false);
+        }}
+      />
+    </>
   );
 }
 
 export function EcosystemCard({ index, title, text }) {
+  const classes = useStyles();
+
   return (
     <Grid item xs={12} sm={6} md={4} style={{}}>
-      <Card
-        elevation={0}
-        className='h-100 br-3'
-        style={{
-          backgroundImage: 'linear-gradient(#F36E6C,#006097)',
-          '&:hover': {
-            backgroundImage: 'linear-gradient(#707070,#191c22)',
-          },
-        }}
-      >
-        <CardContent
-          style={{
-            backgroundC: '#fed132',
-          }}
-          className='h-100 br-3 p-2 m-0'
-        >
+      <Card elevation={0} className={classes.ecosystemCard}>
+        <CardContent className='h-100 br-3 p-2 m-0'>
           <div
-            className='h-100 br-3 p-3'
-            style={{
-              backgroundColor: '#0C0F19',
-            }}
+            // className='h-100 br-3 p-3'
+            className={classes.ecosystemCardContent}
           >
             <Typography variant='h6' className='py-4 fw-bold'>
               0{index + 1}.
@@ -973,7 +1000,17 @@ export function EcosystemCard({ index, title, text }) {
   );
 }
 
-function QuaterCard({ index, name, text, list, year, query }) {
+function QuaterCard({ index, name, text, list, year, query, state }) {
+  const classes = useStyles();
+
+  let completeStatusColor = '#02F1AF';
+  if (state == 'ongoing') {
+    completeStatusColor = '#FFC000';
+  }
+  if (state == 'upcoming') {
+    completeStatusColor = '#019FF9';
+  }
+
   return (
     <Grid
       item
@@ -985,36 +1022,54 @@ function QuaterCard({ index, name, text, list, year, query }) {
         top: ROADMAP_DISPLACEMENT,
       }}
     >
-      <Card
-        elevation={0}
-        className='h-100 br-3'
-        style={{
-          backgroundColor: '#1E2126',
-          ':&hover': {
-            borderWidth: 5,
-            borderStyle: 'solid',
-            borderImage: 'linear-gradient(to right bottom, #260B3C, #a053df)',
-            borderImageSlice: 1,
-          },
-        }}
-      >
-        <CardContent>
-          <Typography className='fw-bold' variant='h6'>
-            {name} {year}
-          </Typography>
-          <Typography className='lead my-2'>{text}</Typography>
-          <Typography className='lead'>
-            <ul>
-              {list.map(ls => (
-                <li key={ls} className=''>
-                  {ls}
-                </li>
-              ))}
-            </ul>
-          </Typography>
+      <Card elevation={0} className={classes.quaterCard}>
+        <CardContent className='h-100 br-3 p-2 m-0'>
+          <div className={classes.quaterCardContent}>
+            <Typography className='fw-bold' variant='h6'>
+              {name} {year}{' '}
+              <span className={`fw-normal `}>
+                <small style={{ color: completeStatusColor }}>{state}</small>
+              </span>
+            </Typography>
+            <Typography className='lead my-2'>{text}</Typography>
+            <Typography className='lead'>
+              <ul>
+                {list.map(ls => (
+                  <li key={ls} className=''>
+                    {ls}
+                  </li>
+                ))}
+              </ul>
+            </Typography>
+          </div>
         </CardContent>
       </Card>
     </Grid>
+  );
+}
+
+function DescriptionModal({ content, open, onClose }) {
+  return (
+    <Modal open={open} className='center-horizontal center-vertical w-100 '>
+      <Grid container>
+        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
+        <Grid item lg={6} md={8} sm={10} xs={10}>
+          <Card>
+            <CardContent>
+              <div className='mx-2'>
+                <div className='d-flex justify-content-end mb-2'>
+                  <IconButton onClick={onClose}>
+                    <CloseRounded />
+                  </IconButton>
+                </div>
+                <Typography>{content}</Typography>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
+      </Grid>
+    </Modal>
   );
 }
 
@@ -1029,4 +1084,48 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#fff',
     color: '#000',
   },
+  ecosystemCard: {
+    height: '100%',
+    borderRadius: '0.75em',
+    backgroundImage: 'linear-gradient(#707070,#191c22)',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundImage: 'linear-gradient(#F36E6C,#006097)',
+    },
+  },
+  ecosystemCardContent: {
+    height: '100%',
+    borderRadius: '0.75em',
+    padding: '1rem',
+    margin: 0,
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: '#0C0F19',
+    },
+  },
+  quaterCard: {
+    height: '100%',
+    borderRadius: '0.75em',
+    backgroundColor: '#1E2126',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundImage: 'linear-gradient(#F36E6C,#006097)',
+    },
+  },
+  quaterCardContent: {
+    height: '100%',
+    borderRadius: '0.75em',
+    padding: '1rem',
+    margin: 0,
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: '#0C0F19',
+    },
+  },
 }));
+
+// className='h-100 br-3 p-3'
+// style={{
+//   backgroundColor: '#0C0F19',
+// }}

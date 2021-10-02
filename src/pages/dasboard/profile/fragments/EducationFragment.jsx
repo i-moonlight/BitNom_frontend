@@ -1,8 +1,8 @@
-import { Avatar, Card, CardContent, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
-import Button from '../../../../components/Button';
-import EducationForm from '../forms/EducationForm';
-import { useStyles } from '../utilities/profile.styles';
+import { Avatar, Card, CardContent, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import Button from "../../../../components/Button";
+import EducationForm from "../forms/EducationForm";
+import { useStyles } from "../utilities/profile.styles";
 
 export default function EducationFragment({
   id,
@@ -31,7 +31,7 @@ export default function EducationFragment({
             institution,
             major,
             start_date: dateFrom,
-            end_date: dateTo || '',
+            end_date: dateTo || "",
             description,
             current,
           }}
@@ -39,13 +39,13 @@ export default function EducationFragment({
       )}
       <Card className={classes.profileFragment}>
         <CardContent>
-          <div className='d-flex flex-row'>
-            <Avatar src={photoURL} variant='rounded'>
+          <div className="d-flex flex-row">
+            <Avatar src={photoURL} variant="rounded">
               ED
             </Avatar>
-            <div className='mx-3 w-100'>
-              <div className='center-horizontal space-between '>
-                <Typography variant='body2' className='flex-1'>
+            <div className="mx-3 w-100">
+              <div className="center-horizontal space-between ">
+                <Typography variant="body2" className="flex-1">
                   {institution}
                 </Typography>
                 <Button
@@ -53,14 +53,14 @@ export default function EducationFragment({
                     setFormOpen(true);
                   }}
                   textCase
-                  variant='text'
-                  size='small'
+                  variant="text"
+                  size="small"
                 >
                   Edit
                 </Button>
               </div>
-              <Typography variant='body2'>{major}</Typography>
-              <Typography variant='body2'>
+              <Typography variant="body2">{major}</Typography>
+              <Typography variant="body2">
                 {dateFrom} to {dateTo}
               </Typography>
             </div>

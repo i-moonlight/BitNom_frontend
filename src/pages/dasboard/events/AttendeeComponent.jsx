@@ -5,19 +5,19 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 import {
   MUTATION_FOLLOW_USER,
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
-} from '../utilities/queries';
-import React, { useEffect } from 'react';
-import { useMutation } from '@apollo/client';
+} from "../utilities/queries";
+import React, { useEffect } from "react";
+import { useMutation } from "@apollo/client";
 
-import Button from '../../../components/Button';
-import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import Button from "../../../components/Button";
+import { getUserInitials } from "../../../utilities/Helpers";
+import { generateRandomColor } from "../utilities/functions";
 
 function AttendeeComponent({ item, getFollowStatus, profile }) {
   const [status, setStatus] = React.useState();
@@ -48,18 +48,18 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
     },
   ] = useMutation(MUTATION_UNFOLLOW_USER);
 
-  const handleFollowUser = user_id => {
+  const handleFollowUser = (user_id) => {
     followUser({
       variables: {
         data: {
           user_id: user_id,
         },
       },
-      context: { clientName: 'users' },
+      context: { clientName: "users" },
       refetchQueries: [
         {
           query: QUERY_FETCH_PROFILE,
-          context: { clientName: 'users' },
+          context: { clientName: "users" },
         },
       ],
     });
@@ -69,18 +69,18 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
     //setFollowing(following + 1);
   };
 
-  const handleUnFollowUser = user_id => {
+  const handleUnFollowUser = (user_id) => {
     unFollowUser({
       variables: {
         data: {
           user_id: user_id,
         },
       },
-      context: { clientName: 'users' },
+      context: { clientName: "users" },
       refetchQueries: [
         {
           query: QUERY_FETCH_PROFILE,
-          context: { clientName: 'users' },
+          context: { clientName: "users" },
         },
       ],
     });
@@ -89,49 +89,49 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
     setStatus(false);
     //setFollowing(following - 1);
   };
-  console.log(item, 'ITEMMMMM');
+  console.log(item, "ITEMMMMM");
   return (
-    <ListItem className='space-between' divider>
+    <ListItem className="space-between" divider>
       <ListItemAvatar>
         <Avatar
           src={
             item?.attendee?.profile_pic
               ? process.env.REACT_APP_BACKEND_URL + item?.attendee?.profile_pic
-              : ''
+              : ""
           }
           style={{
             backgroundColor: generateRandomColor(),
           }}
         >
           {item?.attendee?.profile_pic
-            ? ''
+            ? ""
             : getUserInitials(item?.attendee?.displayName)}
         </Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={
-          <div className='center-horizontal'>
-            <Typography variant='body2' className='mx-1'>
-              {item?.attendee?.displayName}{' '}
+          <div className="center-horizontal">
+            <Typography variant="body2" className="mx-1">
+              {item?.attendee?.displayName}{" "}
             </Typography>
-            <Typography variant='body2' color='textSecondary'>
-              {'@' + item?.attendee?._id}
+            <Typography variant="body2" color="textSecondary">
+              {"@" + item?.attendee?._id}
             </Typography>
           </div>
         }
         secondary={item?.attendee?.bio}
       />
       <ListItemIcon
-        aria-label='show more'
+        aria-label="show more"
         //   aria-controls={notificationOptionId}
-        aria-haspopup='true'
+        aria-haspopup="true"
         //   onClick={handleNotificationOptionOpen}
-        color='inherit'
+        color="inherit"
         style={{
           marginRight: 0,
           paddingRight: 0,
           minWidth: 30,
-          '&.MuiListItemIconRoot': {
+          "&.MuiListItemIconRoot": {
             minWidth: 30,
           },
         }}
@@ -143,13 +143,13 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                 ? handleUnFollowUser(item?.attendee?._id)
                 : handleFollowUser(item?.attendee?._id)
             }
-            className='mx-2'
-            size='small'
-            variant='outlined'
-            color='primary'
+            className="mx-2"
+            size="small"
+            variant="outlined"
+            color="primary"
           >
-            {status === true && 'Unfollow'}
-            {status === false && 'Follow'}
+            {status === true && "Unfollow"}
+            {status === false && "Follow"}
           </Button>
         )}
       </ListItemIcon>

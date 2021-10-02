@@ -32,7 +32,7 @@ export default function SavedPost({
   const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] = useState(null);
   const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
 
-  const handleSavedItemOptionOpen = (event) => {
+  const handleSavedItemOptionOpen = event => {
     setSavedItemOptionAnchorEl(event.currentTarget);
   };
 
@@ -41,7 +41,7 @@ export default function SavedPost({
   };
   const location = useLocation();
   const history = useHistory();
-  const contentClickHandler = (e) => {
+  const contentClickHandler = e => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -79,7 +79,7 @@ export default function SavedPost({
                 aria-label='show more'
                 aria-controls={savedItemOptionId}
                 aria-haspopup='true'
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleSavedItemOptionOpen(e);
                 }}
@@ -103,7 +103,7 @@ export default function SavedPost({
           <CardContent>
             <Typography variant='body2' color='textSecondary' component='p'>
               <Typography
-                onClick={(e) => contentClickHandler(e)}
+                onClick={e => contentClickHandler(e)}
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(scroll),
                 }}
@@ -138,7 +138,7 @@ export default function SavedPost({
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map((imageURL) => (
+                scroll?.images?.map(imageURL => (
                   <Grid
                     className='mt-3'
                     key={imageURL}

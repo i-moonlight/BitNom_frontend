@@ -1,9 +1,9 @@
-import { CardContent, Card, Avatar, Typography } from '@material-ui/core';
-import React from 'react';
-import { useState } from 'react';
-import Button from '../../../../components/Button';
-import WorkForm from '../forms/WorkForm';
-import { useStyles } from '../utilities/profile.styles';
+import { CardContent, Card, Avatar, Typography } from "@material-ui/core";
+import React from "react";
+import { useState } from "react";
+import Button from "../../../../components/Button";
+import WorkForm from "../forms/WorkForm";
+import { useStyles } from "../utilities/profile.styles";
 
 export default function WorkFragment({
   id,
@@ -32,7 +32,7 @@ export default function WorkFragment({
             company,
             title,
             start_date: dateFrom,
-            end_date: dateTo || '',
+            end_date: dateTo || "",
             description,
             current,
           }}
@@ -40,31 +40,31 @@ export default function WorkFragment({
       )}
       <Card className={classes.profileFragment}>
         <CardContent>
-          <div className='d-flex flex-row'>
-            <Avatar src={photoURL} variant='rounded'>
+          <div className="d-flex flex-row">
+            <Avatar src={photoURL} variant="rounded">
               WK
             </Avatar>
-            <div className='mx-3  w-100'>
-              <div className='center-horizontal space-between'>
-                <Typography variant='body2'>{title}</Typography>
+            <div className="mx-3  w-100">
+              <div className="center-horizontal space-between">
+                <Typography variant="body2">{title}</Typography>
                 <Button
                   onClick={() => {
                     setFormOpen(true);
                   }}
                   textCase
-                  variant='text'
-                  size='small'
+                  variant="text"
+                  size="small"
                 >
                   Edit
                 </Button>
               </div>
-              <Typography color='primary' variant='body2'>
+              <Typography color="primary" variant="body2">
                 {company}
               </Typography>
-              <Typography gutterBottom variant='body2'>
-                {dateFrom} to {current ? 'Now' : dateTo}
+              <Typography gutterBottom variant="body2">
+                {dateFrom} to {current ? "Now" : dateTo}
               </Typography>
-              <Typography variant='body2'>{description}</Typography>
+              <Typography variant="body2">{description}</Typography>
             </div>
           </div>
         </CardContent>

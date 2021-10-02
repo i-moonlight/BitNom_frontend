@@ -1,53 +1,53 @@
-import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import React, { useEffect, useState } from 'react';
-import GoogleLogin from 'react-google-login';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
-import Button from '../../components/Button';
-import DividerText from '../../components/DividerText';
-import Form from '../../components/Form';
-import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
-import TextField from '../../components/TextField';
-import { login } from '../../store/actions/authActions';
-import { loginUserInitialValues } from './utilities/initial_values';
+import { useMutation } from "@apollo/client";
+import { Card, CardContent, Grid, Typography } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import React, { useEffect, useState } from "react";
+import GoogleLogin from "react-google-login";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import Button from "../../components/Button";
+import DividerText from "../../components/DividerText";
+import Form from "../../components/Form";
+import NavBarAuth from "../../components/navbar/auth/NavBarAuth";
+import TextField from "../../components/TextField";
+import { login } from "../../store/actions/authActions";
+import { loginUserInitialValues } from "./utilities/initial_values";
 import {
   MUTATION_GOOGLE_LOGIN,
   MUTATION_LOGIN_USER_2,
-} from './utilities/queries';
-import { loginUserValidationSchema } from './utilities/validation_schemas';
+} from "./utilities/queries";
+import { loginUserValidationSchema } from "./utilities/validation_schemas";
 
 export default function Login() {
   const [loginErr, setLoginErr] = useState(null);
   const [googleErr, setGoogleErr] = useState(null);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const dispatch = useDispatch();
   const history = useHistory();
   const user = state.auth.user;
 
   const [loginUser, { loading: loginLoading }] = useMutation(
     MUTATION_LOGIN_USER_2,
-    { context: { clientName: 'users' } }
+    { context: { clientName: "users" } }
   );
 
   const [googleLogin, { loading: googleLoading }] = useMutation(
     MUTATION_GOOGLE_LOGIN,
-    { context: { clientName: 'users' } }
+    { context: { clientName: "users" } }
   );
 
   // useQuery(QUERY, { variables, context: { clientName: 'third-party' } })
 
   useEffect(() => {
-    JSON.stringify(user) !== '{}' && history.push('/');
+    JSON.stringify(user) !== "{}" && history.push("/");
   }, [user, history]);
 
-  const responseGoogle = response => {
+  const responseGoogle = (response) => {
     googleLogin({
       variables: {
         token: response.tokenId,
       },
-      errorPolicy: 'all',
+      errorPolicy: "all",
     }).then(({ data, errors }) => {
       const userData = data?.Users?.googleLogin || {};
       const userErrors = errors || null;
@@ -56,28 +56,28 @@ export default function Login() {
     });
   };
 
-  const failureGoogle = response => {
-    console.log('googleErr: ', response);
+  const failureGoogle = (response) => {
+    console.log("googleErr: ", response);
   };
 
   return (
     <>
       <NavBarAuth />
-      <div className='center-horizontal center-vertical py-5'>
+      <div className="center-horizontal center-vertical py-5">
         <Grid
           container
           spacing={0}
-          direction='column'
-          alignItems='center'
-          justifyContent='center'
-          style={{ minHeight: '100vh' }}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          style={{ minHeight: "100vh" }}
         >
           <Grid item xs={11} sm={7} md={6} lg={4}>
-            <div className='text-center my-3 px-sm-5'>
-              <Typography color='textPrimary' variant='h5'>
+            <div className="text-center my-3 px-sm-5">
+              <Typography color="textPrimary" variant="h5">
                 Hi! WELCOME BACK
               </Typography>
-              <Typography color='textPrimary' variant='body1'>
+              <Typography color="textPrimary" variant="body1">
                 Stay updated and get full access to a thousand opportunities
                 across the globe.
               </Typography>
@@ -93,44 +93,44 @@ export default function Login() {
                         username,
                         password,
                       },
-                      errorPolicy: 'all',
+                      errorPolicy: "all",
                     }).then(({ data, errors }) => {
                       const userData = data?.Users?.login
                         ? data?.Users?.login
                         : {};
 
                       errors &&
-                        errors.map(err => {
+                        errors.map((err) => {
                           err?.state &&
-                            err?.state[''] &&
-                            setLoginErr(err?.state['']);
+                            err?.state[""] &&
+                            setLoginErr(err?.state[""]);
                         });
 
                       dispatch(login(userData, null));
                     });
                   }}
                 >
-                  <div className='text-center my-3 mx-2'>
+                  <div className="text-center my-3 mx-2">
                     <TextField
                       error={loginErr && true}
                       errorText={loginErr && loginErr[0]}
-                      name='username'
-                      label='Email or Username'
-                      variant='outlined'
+                      name="username"
+                      label="Email or Username"
+                      variant="outlined"
                       fullWidth
                     />
                     <TextField
                       error={loginErr && true}
                       errorText={loginErr && loginErr[0]}
-                      name='password'
-                      label='Password'
-                      variant='outlined'
-                      type='password'
+                      name="password"
+                      label="Password"
+                      variant="outlined"
+                      type="password"
                       fullWidth
                     />
                     <div>
-                      <Typography className='end-horizontal mb-2'>
-                        <Link color='primary' to='/auth/request_reset_link'>
+                      <Typography className="end-horizontal mb-2">
+                        <Link color="primary" to="/auth/request_reset_link">
                           Forgot Password?
                         </Link>
                       </Typography>
@@ -141,24 +141,24 @@ export default function Login() {
                     <DividerText>or</DividerText>
 
                     {googleErr &&
-                      googleErr.map(err => (
+                      googleErr.map((err) => (
                         <Alert
-                          className='mb-2'
+                          className="mb-2"
                           key={Math.random() * 100}
-                          severity='error'
+                          severity="error"
                         >
                           {err?.state?.email && err?.state?.email[0]}
                           {err?.state?._id && err?.state?._id[0]}
-                          {err?.state[''] && err?.state['']}
+                          {err?.state[""] && err?.state[""]}
                         </Alert>
                       ))}
 
                     <GoogleLogin
-                      clientId='705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com'
-                      buttonText='Login Google'
+                      clientId="705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com"
+                      buttonText="Login Google"
                       onSuccess={responseGoogle}
                       onFailure={failureGoogle}
-                      render={renderProps => (
+                      render={(renderProps) => (
                         <Button
                           // color='inherit'
                           onClick={renderProps.onClick}
@@ -170,14 +170,14 @@ export default function Login() {
                           Continue With Google
                         </Button>
                       )}
-                      cookiePolicy={'single_host_origin'}
+                      cookiePolicy={"single_host_origin"}
                     />
 
-                    <div className='text-center my-3 px-sm-0'>
-                      <Typography variant='body1'>
+                    <div className="text-center my-3 px-sm-0">
+                      <Typography variant="body1">
                         <div style={{ marginTop: 10 }}></div>
-                        New to Bitnorm?{' '}
-                        <Link color='primary' to='/auth/signup'>
+                        New to Bitnorm?{" "}
+                        <Link color="primary" to="/auth/signup">
                           Join now
                         </Link>
                       </Typography>

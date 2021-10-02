@@ -9,35 +9,35 @@ const initialState = {
 
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOGIN_BUSY':
+    case "LOGIN_BUSY":
       return { ...state, busy: action.busy };
-    case 'REGISTER_BUSY':
+    case "REGISTER_BUSY":
       return { ...state, busy: action.busy };
-    case 'RESET_BUSY':
+    case "RESET_BUSY":
       return { ...state, busy: action.busy };
-    case 'PASSWORD_BUSY':
+    case "PASSWORD_BUSY":
       return { ...state, busy: action.busy, info: null };
-    case 'AVATAR_BUSY':
+    case "AVATAR_BUSY":
       return { ...state, busy: action.busy, info: null };
-    case 'USER_LOGIN':
+    case "USER_LOGIN":
       return {
         ...state,
         user: action.user,
         justRegistered: false,
         err: null,
       };
-    case 'USER_LOGIN_TOKEN':
+    case "USER_LOGIN_TOKEN":
       return {
         ...state,
         token: action.token,
       };
-    case 'USER_REGISTER':
+    case "USER_REGISTER":
       return {
         ...state,
         justRegistered: true,
         err: null,
       };
-    case 'USER_VERIFY_SUCCESS':
+    case "USER_VERIFY_SUCCESS":
       const unmutedState = state;
       const newUser = {
         ...unmutedState.user,
@@ -49,42 +49,42 @@ export default function authReducer(state = initialState, action) {
         user: newUser,
         err: null,
       };
-    case 'USER_RESET':
+    case "USER_RESET":
       return {
         ...state,
         err: null,
       };
-    case 'USER_PASSWORD':
+    case "USER_PASSWORD":
       return {
         ...state,
         err: null,
         info: action.info,
       };
-    case 'USER_AVATAR':
+    case "USER_AVATAR":
       return {
         ...state,
         err: null,
         avatarInfo: action.info,
         user: action.info.data,
       };
-    case 'USER_LOGOUT':
+    case "USER_LOGOUT":
       return {
         ...state,
         err: null,
         user: {},
         token: null,
       };
-    case 'USER_LOGIN_ERROR':
+    case "USER_LOGIN_ERROR":
       return { ...state, user: {}, err: action.err, token: null };
-    case 'USER_REGISTER_ERROR':
+    case "USER_REGISTER_ERROR":
       return { ...state, user: {}, err: action.err, token: null };
-    case 'USER_RESET_ERROR':
+    case "USER_RESET_ERROR":
       return { ...state, user: {}, err: action.err, token: null };
-    case 'USER_PASSWORD_ERROR':
+    case "USER_PASSWORD_ERROR":
       return { ...state, err: action.err };
-    case 'USER_AVATAR_ERROR':
+    case "USER_AVATAR_ERROR":
       return { ...state, err: action.err };
-    case 'USER_LOGOUT_ERROR':
+    case "USER_LOGOUT_ERROR":
       return { ...state, err: action.err };
     default:
       return { ...state };

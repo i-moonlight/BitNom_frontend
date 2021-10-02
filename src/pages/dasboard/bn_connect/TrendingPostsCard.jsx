@@ -17,7 +17,7 @@ import { contentBodyFactory, truncateText } from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
   const history = useHistory();
-  const contentClickHandler = (e) => {
+  const contentClickHandler = e => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -44,7 +44,7 @@ export default function TrendingPostsCard({ trending, loading }) {
           </Grid>
         )}
         {trending &&
-          trending?.slice(0, 3).map((post) => (
+          trending?.slice(0, 3).map(post => (
             <ListItem key={post?._id} divider>
               <ListItemAvatar>
                 <Avatar
@@ -66,7 +66,7 @@ export default function TrendingPostsCard({ trending, loading }) {
               <ListItemText
                 primary={
                   <Typography
-                    onClick={(e) => contentClickHandler(e)}
+                    onClick={e => contentClickHandler(e)}
                     style={{ zIndex: 2 }}
                     dangerouslySetInnerHTML={{
                       __html: truncateText(contentBodyFactory(post), 90),

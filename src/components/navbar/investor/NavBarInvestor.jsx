@@ -46,7 +46,9 @@ export default function NavBarInvestor({ onTabValue }) {
               />
 
               <div className='ms-auto'>
-                <Button textCase>Support</Button>
+                <Button textCase onClick={() => history.push('/support')}>
+                  Support
+                </Button>
               </div>
             </div>
           </Container>

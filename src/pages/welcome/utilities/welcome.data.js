@@ -1,13 +1,18 @@
-import media2Img from '../../../assets/landing/img7.png';
-import media1Img from '../../../assets/landing/img8.png';
-import media3Img from '../../../assets/landing/img9.png';
-
 import ecosystem1 from '../../../assets/investor/ecosystem1.svg';
 import ecosystem2 from '../../../assets/investor/ecosystem2.svg';
 import ecosystem3 from '../../../assets/investor/ecosystem3.svg';
 import ecosystem4 from '../../../assets/investor/ecosystem4.svg';
 import ecosystem5 from '../../../assets/investor/ecosystem5.svg';
 import ecosystem6 from '../../../assets/investor/ecosystem6.svg';
+import image1 from '../../../assets/investor/team/team (1).png';
+import image2 from '../../../assets/investor/team/team (2).png';
+import image3 from '../../../assets/investor/team/team (3).png';
+// import image4 from '../../../assets/investor/team/team (4).png';
+import image5 from '../../../assets/investor/team/team (5).png';
+import image6 from '../../../assets/investor/team/team (6).png';
+import media2Img from '../../../assets/landing/img7.png';
+import media1Img from '../../../assets/landing/img8.png';
+import media3Img from '../../../assets/landing/img9.png';
 
 export const platformLayers = [
   {
@@ -68,86 +73,131 @@ export const ecosystem = [
 
 export const roadMap = [
   {
-    year: '2019',
+    year: '2017',
+    bg: '#F36E6C',
     quaters: [
       {
         name: 'Q1',
+        state: 'completed',
         text: null,
-        list: [
-          'Version 1.0 whitepaper',
-          'Community engagement',
-          'Reward programs development',
-          'Fundraising (Private sale, IEO, ICO & IDO)',
-        ],
+        list: ['Proposed solution study', 'Market research'],
       },
       {
         name: 'Q2',
+        state: 'completed',
         text: null,
-        list: [
-          'Listing of BN on major exchanges',
-          'BNConnect platform  development',
-          'Launch of BNConnect platform',
-        ],
+        list: ['Private fundraising.'],
       },
       {
         name: 'Q3',
+        state: 'completed',
         text: null,
-        list: [
-          'BNConnect feature release marketing',
-          'Feature usage assessment',
-          'Feature refinement',
-        ],
+        list: ['Team formulation', 'POC development.'],
       },
       {
         name: 'Q4',
+        state: 'completed',
         text: null,
-        list: ['BNMarket platform development'],
+        list: ['POC development.'],
+      },
+    ],
+  },
+  {
+    year: '2018',
+    bg: '#FFBB00',
+    quaters: [
+      {
+        name: 'Q1',
+        state: 'completed',
+        text: null,
+        list: [
+          'Development halt due to shortage of funds',
+          'Development team dissolution',
+        ],
+      },
+    ],
+  },
+  {
+    year: '2019',
+    bg: '#C53E8E',
+    quaters: [
+      {
+        name: 'Q1',
+        state: 'completed',
+        text: null,
+        list: ['Feasibility study', 'Market research.'],
+      },
+      {
+        name: 'Q2',
+        state: 'completed',
+        text: null,
+        list: ['Team formulation', 'POC development.'],
+      },
+      {
+        name: 'Q3',
+        state: 'completed',
+        text: null,
+        list: ['POC completion.', 'Solution refinement'],
+      },
+      {
+        name: 'Q4',
+        state: 'completed',
+        text: null,
+        list: [
+          'MVP definition',
+          'Product documentation',
+          'MVP development commenced',
+        ],
       },
     ],
   },
   {
     year: '2020',
+    bg: '#00A2FF',
     quaters: [
       {
         name: 'Q1',
-        text: null,
-        list: [
-          'Version 1.0 whitepaper',
-          'Community engagement',
-          'Reward programs development',
-          'Fundraising (Private sale, IEO, ICO & IDO)',
-        ],
+        state: 'completed',
+        text: 'Indexation engine development',
+        list: ['Cryptocurrencies', 'Exchanges', 'Related news'],
       },
       {
         name: 'Q2',
+        state: 'completed',
         text: null,
-        list: [
-          'Listing of BN on major exchanges',
-          'BNConnect platform  development',
-          'Launch of BNConnect platform',
-        ],
+        list: ['Services engine development', 'BitNorm chat application'],
       },
       {
         name: 'Q3',
+        state: 'completed',
         text: null,
         list: [
-          'BNConnect feature release marketing',
-          'Feature usage assessment',
-          'Feature refinement',
+          'Team expansion',
+          'Data collection & entry commenced',
+          'Community engine development',
+          'Scrolls - Forums - Blogs',
         ],
       },
       {
         name: 'Q4',
+        state: 'completed',
         text: null,
-        list: ['BNMarket platform development'],
+        list: [
+          'MVP beta release',
+          'User feedback collection',
+          'Solution refinement',
+          'Release Version v1.0 definition',
+        ],
       },
     ],
   },
   {
     year: '2021',
+    bg: '#FED132',
     quaters: [
       {
         name: 'Q1',
+        state: 'completed',
         text: null,
         list: [
           'Version 1.0 whitepaper',
@@ -158,6 +208,7 @@ export const roadMap = [
       },
       {
         name: 'Q2',
+        state: 'ongoing',
         text: null,
         list: [
           'Listing of BN on major exchanges',
@@ -167,6 +218,7 @@ export const roadMap = [
       },
       {
         name: 'Q3',
+        state: 'upcoming',
         text: null,
         list: [
           'BNConnect feature release marketing',
@@ -176,8 +228,51 @@ export const roadMap = [
       },
       {
         name: 'Q4',
+        state: 'upcoming',
         text: null,
-        list: ['BNMarket platform development'],
+        list: [
+          'BN knowledge center development',
+          'Finalize design on platform-driven BN token circulation system',
+          'Implement platform-driven BN token circulation system.',
+        ],
+      },
+    ],
+  },
+  {
+    year: '2022',
+    bg: '#4A69D7',
+    quaters: [
+      {
+        name: 'Q1',
+        state: 'upcoming',
+        text: null,
+        list: [
+          'BN knowledge center feature release marketing',
+          'Feature usage assessment',
+          'Feature refinement',
+        ],
+      },
+      {
+        name: 'Q2',
+        state: 'upcoming',
+        text: null,
+        list: ['BNMarket platform  development'],
+      },
+      {
+        name: 'Q3',
+        state: 'upcoming',
+        text: null,
+        list: ['BNMarket platform  development'],
+      },
+      {
+        name: 'Q4',
+        state: 'upcoming',
+        text: null,
+        list: [
+          'BNMarket feature release marketing',
+          'Feature usage assessment',
+          'Feature refinement',
+        ],
       },
     ],
   },
@@ -206,19 +301,20 @@ export const footerLinks = [
   [
     { title: true, text: 'COMPANY' },
     { link: '/', text: 'Home' },
-    { link: '', text: 'About Us' },
-    { link: '', text: 'White Paper' },
-    { link: '', text: 'Brand Guidelines' },
+    { link: '/#', text: 'About Us' },
+    { link: '/#', text: 'White Paper' },
+    // { link: '', text: 'Brand Guidelines' },
     { link: '/roadmap', text: 'RoadMap' },
-    { link: '', text: 'Blogs' },
+    // { link: '', text: 'Blogs' },
   ],
   [
     { title: true, text: 'GET INVOLVED' },
-    { link: '/', text: 'Developers' },
-    { link: '/', text: 'Documentation' },
-    { link: '/', text: 'Partner' },
-    { link: '/', text: 'Career' },
-    { link: '/', text: 'Investor Page' },
+    { link: '/investors#', text: 'Donate to BN' },
+    // { link: '/', text: 'Developers' },
+    // { link: '/', text: 'Documentation' },
+    // { link: '/', text: 'Partner' },
+    { link: '/#', text: 'Career' },
+    { link: '/investors', text: 'Investor Page' },
   ],
   [
     { title: true, text: 'SOCIAL' },
@@ -243,12 +339,135 @@ export const footerLinks = [
       link: '/redirect?link=mailto:contact@bitnorm.com',
       text: 'contact@bitnorm.com',
     },
-    {
-      link: '/redirect?link=mailto:hello@bitnorm.com',
-      text: 'hello@bitnorm.com',
-    },
+    // {
+    //   link: '/redirect?link=mailto:hello@bitnorm.com',
+    //   text: 'hello@bitnorm.com',
+    // },
     { title: true, text: 'EXPLORE' },
-    { link: '/', text: 'BN Token' },
+    { link: '/#', text: 'BN Token' },
     { link: '/faqs', text: 'How to buy BN Token' },
   ],
+];
+
+export const team = [
+  {
+    name: 'Alexander van der Drift',
+    role: 'CEO and Founder',
+    category: 'ceo',
+    socials: { linkedIn: '', email: '' },
+    desc: 'A sample of the information availed by these engines includes; a regularly updated index of all cryptocurrencies, tokens and cryptocurrency- and blockchain-related projects, insight into the source codes of the various cryptocurrencies, tokens and cryptocurrency- and blockchain-related projects, the various blockchains’ network data, market data and news (sentiment) data. I am passionate about inclusivity and I have steered the development of this great product with a mind for newbies, developers, investors, traders and quantitative researchers alike. At the end of the day, we are all looking to turn a buck from the cryptocurrencies ecosystem. I welcome your support and company as we move forward into the future with BitNorm..',
+    image: image1,
+  },
+  // {
+  //   name: 'Yann van Ewijk',
+  //   role: 'Advisor',
+  //   category: 'advisor',
+  //   socials: { linkedIn: '', email: '' },
+  //   desc: '',
+  //   image: image4,
+  // },
+  {
+    name: 'Alwin de Romijn',
+    role: 'Business Advisor',
+    category: 'advisor',
+    socials: { linkedIn: '', email: '' },
+    desc: 'When I first learned about the existence of Bitcoin at the end of 2009 and read the “Satoshi” Bitcoin whitepaper, I immediately trusted this revolutionary system and the freedom that it brought with it.  As an early Bitcoin miner and staff member of various online forums I acquired a great deal of knowledge and want to use it to promote Bitcoin in The Netherlands and to make it big.  Bitcoin should be a household word.',
+    image: image2,
+  },
+  {
+    name: 'Frederick Smits',
+    role: 'Business Advisor',
+    category: 'advisor',
+    socials: { linkedIn: '', email: '' },
+    desc: 'I love growing companies and building high-performing teams. Strong trackrecord with several successful ventures as MD. Additionally, I have a keen affinity with Python / Data Science / Machine Learning',
+    image: image3,
+  },
+  {
+    name: 'Doctorthee',
+    role: 'Business Advisor',
+    category: 'advisor',
+    socials: { linkedIn: '', email: '' },
+    desc: 'I have worked on several projects including Reddcoin. His experience in UX/UI designs benefits our team',
+    image: image5,
+  },
+  {
+    name: 'Justin Blekemolen',
+    role: 'Business Advisor',
+    category: 'advisor',
+    socials: { linkedIn: '', email: '' },
+    desc: 'Investment specialist with a strong focus on charts',
+    image: image6,
+  },
+  {
+    name: 'Samuel Mwangi',
+    role: 'Team Lead',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Lawrence Maluki',
+    role: 'Product Designer',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Loise Njeri',
+    role: 'Product Manager',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Mark Aloo',
+    role: 'Frontend Lead',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Jack Mkimbo',
+    role: 'Backend Lead',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Nic Mtungu',
+    role: 'UI/UX Designer',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Mark Mburu',
+    role: 'Developer',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Victor Kiprotich',
+    role: 'Backend Developer',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
+  {
+    name: 'Evans Kiptoo',
+    role: 'Developer',
+    category: 'dev',
+    socials: { linkedIn: '', email: '' },
+    desc: '',
+    image: '',
+  },
 ];

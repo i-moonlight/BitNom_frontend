@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import BitnormPaper from '../BitnormPaper';
-import Wrapper from '../Wrapper';
+import React from "react";
+import BitnormPaper from "../BitnormPaper";
+import Wrapper from "../Wrapper";
 
 export default function Cookie() {
   return (
     <Wrapper>
-      <BitnormPaper title='BitNorm Cookie Policy'>
+      <BitnormPaper title="BitNorm Cookie Policy">
         <>
           <p>
             <strong>[First build up: Wednesday, 15 July 2020]</strong>

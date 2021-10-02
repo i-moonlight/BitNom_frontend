@@ -23,7 +23,7 @@ import {
 
 export default function ScrollPreview({ scroll }) {
   const history = useHistory();
-  const contentClickHandler = (e) => {
+  const contentClickHandler = e => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -61,7 +61,7 @@ export default function ScrollPreview({ scroll }) {
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
             <Typography
-              onClick={(e) => contentClickHandler(e)}
+              onClick={e => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: contentBodyFactory(scroll),
               }}
@@ -79,7 +79,7 @@ export default function ScrollPreview({ scroll }) {
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map((imageURL) => (
+                scroll?.images?.map(imageURL => (
                   <Grid
                     className='mt-3'
                     key={imageURL}

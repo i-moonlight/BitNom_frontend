@@ -59,7 +59,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   //const theme = useTheme();
-  const state = useSelector((st) => st);
+  const state = useSelector(st => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -73,7 +73,7 @@ export default function CreatePost({
   const userInitials = getUserInitials(user?.displayName);
   console.log(sharedResource, 'RESOURDE');
 
-  const onCreatePost = async (ICreatePost) => {
+  const onCreatePost = async ICreatePost => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -100,14 +100,14 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
-  const mentions = profileData?.followers?.map?.((item) => {
+  const mentions = profileData?.followers?.map?.(item => {
     return {
       id: item?.userId?._id,
       display: item?.userId?.displayName,
     };
   });
 
-  const handleCreatePost = (e) => {
+  const handleCreatePost = e => {
     e.preventDefault();
 
     if (scroll_text.trim() == '') return setCreatePostErr(true);
@@ -212,7 +212,7 @@ export default function CreatePost({
                 className='mentions-textarea'
                 id='content-field'
                 placeholder="What's happening"
-                onChange={(e) =>
+                onChange={e =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -239,11 +239,11 @@ export default function CreatePost({
               {/* <TextField
                 fullWidth
                 multiline
-                variant='standard'
+                variant="standard"
                 error={createPostErr && true}
                 errorText=
                 rows={5}
-                id='content-field'
+                id="content-field"
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -259,7 +259,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={(files) => {
+                  onChange={files => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);

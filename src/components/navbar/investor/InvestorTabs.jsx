@@ -1,15 +1,15 @@
-import { Tab, Tabs, withStyles } from '@material-ui/core';
-import React from 'react';
-import { investorTabs } from '../../utilities/data.components';
+import { Tab, Tabs, withStyles } from "@material-ui/core";
+import React from "react";
+import { investorTabs } from "../../utilities/data.components";
 
 export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
   return (
     <Tabs
       value={value}
       onChange={handleChange}
-      indicatorColor='transparent'
-      variant='scrollable'
-      scrollButtons='auto'
+      indicatorColor="transparent"
+      variant="scrollable"
+      scrollButtons="auto"
     >
       {investorTabs.map(({ label }) => {
         const tabOptionsId2 = tabOptionsId + Math.random() * 1000;
@@ -18,7 +18,7 @@ export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
             key={`${tabOptionsId2}-${Math.random() * 100}`}
             label={label}
             aria-controls={tabOptionsId2}
-            aria-haspopup='true'
+            aria-haspopup="true"
           />
         );
       })}
@@ -26,10 +26,10 @@ export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
   );
 }
 
-const BitTab = withStyles(theme => ({
+const BitTab = withStyles((theme) => ({
   root: {
-    textTransform: 'none',
-    color: theme.palette.type == 'dark' ? '#fff' : '#000',
+    textTransform: "none",
+    color: theme.palette.type == "dark" ? "#fff" : "#000",
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.pxToRem(15),
     marginRight: 0,
@@ -45,4 +45,4 @@ const BitTab = withStyles(theme => ({
     //       : theme.palette.background.search,
     // },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

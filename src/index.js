@@ -1,18 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import App from './App';
-import reportWebVitals from './pwa/reportWebVitals';
-import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
-import rootReducer from './store/reducers/rootReducer';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
+import App from "./App";
+import reportWebVitals from "./pwa/reportWebVitals";
+import * as serviceWorkerRegistration from "./pwa/serviceWorkerRegistration";
+import rootReducer from "./store/reducers/rootReducer";
 
 // Save to local storage // Use Local Storage Persistance
-const saveToLocalStorage = state => {
+const saveToLocalStorage = (state) => {
   try {
     const stringState = JSON.stringify(state);
-    localStorage.setItem('@knjhffkgjbmbmnccmnvfseab', stringState);
+    localStorage.setItem("@knjhffkgjbmbmnccmnvfseab", stringState);
   } catch (err) {
     console.log(err);
   }
@@ -21,7 +21,7 @@ const saveToLocalStorage = state => {
 // Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
   try {
-    const stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
+    const stringState = localStorage.getItem("@knjhffkgjbmbmnccmnvfseab");
     if (stringState === null) return undefined;
     return JSON.parse(stringState);
   } catch (err) {
@@ -49,7 +49,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

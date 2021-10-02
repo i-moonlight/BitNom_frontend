@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   Divider,
@@ -7,23 +7,23 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   BookmarkBorderRounded,
   FileCopyOutlined,
   FlagOutlined,
   PersonAddDisabledOutlined,
-} from '@material-ui/icons';
-import React from 'react';
-import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import Button from '../../../../../components/Button';
+} from "@material-ui/icons";
+import React from "react";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import Button from "../../../../../components/Button";
 import {
   MUTATION_CREATE_BOOKMARK,
   GET_BOOKMARKED_COMMENTS,
   MUTATION_UNFOLLOW_USER,
   QUERY_FETCH_PROFILE,
-} from '../../../utilities/queries';
+} from "../../../utilities/queries";
 
 export default function CommentOptionsPopover({
   comment,
@@ -62,25 +62,23 @@ export default function CommentOptionsPopover({
           user_id: user_id,
         },
       },
-      context: { clientName: 'users' },
+      context: { clientName: "users" },
       refetchQueries: [
         {
           query: QUERY_FETCH_PROFILE,
-          context: { clientName: 'users' },
+          context: { clientName: "users" },
         },
       ],
     });
-    if (!unFollowData?.Users?.unFollow)
-      console.log('Not followed');
+    if (!unFollowData?.Users?.unFollow) console.log("Not followed");
   };
-
 
   const handleCreateBookmark = () => {
     createBookmark({
       variables: {
         data: {
           _id: comment?._id,
-          type: 'comment',
+          type: "comment",
         },
       },
       refetchQueries: [
@@ -94,23 +92,23 @@ export default function CommentOptionsPopover({
         },
       ],
     });
-       toast.success('Added to saved items', {
-        position: 'bottom-left',
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      
-    if(!bookmarkData?.bookmarks?.create) console.log('Bookmarked');
+    toast.success("Added to saved items", {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    if (!bookmarkData?.bookmarks?.create) console.log("Bookmarked");
     handleCommentOptionClose();
   };
 
   const handleReportComment = () => {
     setOpenFlag(true);
     handleCommentOptionClose();
-    const resource = Object.assign({ resourceType: 'comment' }, comment);
+    const resource = Object.assign({ resourceType: "comment" }, comment);
     setFlaggedResource(resource);
   };
 
@@ -123,26 +121,26 @@ export default function CommentOptionsPopover({
   return (
     <Popover
       anchorEl={commentOptionAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       id={commentOptionId}
       keepMounted
       open={isCommentOptionOpen}
       onClose={handleCommentOptionClose}
-      style={{ marginLeft: 16, width: '100%' }}
+      style={{ marginLeft: 16, width: "100%" }}
     >
       <List
         style={{ padding: 0, paddingBottom: 0 }}
         component={Card}
-        variant='outlined'
+        variant="outlined"
       >
         <ListItem button divider onClick={handleCreateBookmark}>
           <ListItemIcon>
             <BookmarkBorderRounded />
           </ListItemIcon>
           <ListItemText
-            primary='Save this comment'
-            secondary='Add this to your bookmarks'
+            primary="Save this comment"
+            secondary="Add this to your bookmarks"
           />
         </ListItem>
         <ListItem button divider onClick={handleReportComment}>
@@ -150,8 +148,8 @@ export default function CommentOptionsPopover({
             <FlagOutlined />
           </ListItemIcon>
           <ListItemText
-            primary='Report this comment'
-            secondary='Im concerned about this comment'
+            primary="Report this comment"
+            secondary="Im concerned about this comment"
           />
         </ListItem>
         {user?._id === comment?.author?._id && (
@@ -159,7 +157,7 @@ export default function CommentOptionsPopover({
             <ListItemIcon>
               <FileCopyOutlined />
             </ListItemIcon>
-            <ListItemText primary='Edit this comment' />
+            <ListItemText primary="Edit this comment" />
           </ListItem>
         )}
         {user?._id !== comment?.author?._id && (
@@ -175,7 +173,7 @@ export default function CommentOptionsPopover({
           </ListItem>
         )}
         <Divider />
-        <div className='m-2'>
+        <div className="m-2">
           <Button fullWidth textCase>
             Support by tipping
           </Button>

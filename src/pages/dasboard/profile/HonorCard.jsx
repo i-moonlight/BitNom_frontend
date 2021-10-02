@@ -1,9 +1,9 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { AddRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import HonorForm from './forms/HonorForm';
-import HonorFragment from './fragments/HonorFragment';
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
+import HonorForm from "./forms/HonorForm";
+import HonorFragment from "./fragments/HonorFragment";
 
 // eslint-disable-next-line no-unused-vars
 export default function HonorCard({ profile, profileView }) {
@@ -17,15 +17,15 @@ export default function HonorCard({ profile, profileView }) {
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
-        <div className='space-between center-horizontal'>
+        <div className="space-between center-horizontal">
           <Typography>Honors and Awards</Typography>
           {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase
-              variant='text'
+              variant="text"
               startIcon={<AddRounded />}
             >
               Add Honors and Awards
@@ -53,7 +53,7 @@ export default function HonorCard({ profile, profileView }) {
                 dateTo={end_date}
                 expires={expires}
                 url={url}
-                photoURL='https://picsum.photos/200'
+                photoURL="https://picsum.photos/200"
               />
             )
           )}

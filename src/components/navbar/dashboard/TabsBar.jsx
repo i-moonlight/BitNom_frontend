@@ -1,8 +1,8 @@
-import { Box } from '@material-ui/core';
-import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
-import React from 'react';
-import { tabs } from '../../utilities/data.components';
-import { useStyles } from '../../utilities/styles.components';
+import { Box } from "@material-ui/core";
+import { Container, Tab, Tabs, withStyles } from "@material-ui/core";
+import React from "react";
+import { tabs } from "../../utilities/data.components";
+import { useStyles } from "../../utilities/styles.components";
 
 export default function TabsBar({
   value,
@@ -16,13 +16,13 @@ export default function TabsBar({
   return (
     <div className={classes.tabBar}>
       <Box className={classes.root}>
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Tabs
             value={value}
             onChange={handleChange}
-            indicatorColor='primary'
-            variant='scrollable'
-            scrollButtons='auto'
+            indicatorColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
           >
             {tabs.map(({ label, menuItems }) => {
               const tabOptionsId2 = tabOptionsId + Math.random() * 1000;
@@ -31,8 +31,8 @@ export default function TabsBar({
                   key={`${tabOptionsId2}-${Math.random}`}
                   label={label}
                   aria-controls={tabOptionsId2}
-                  aria-haspopup='true'
-                  onClick={event => {
+                  aria-haspopup="true"
+                  onClick={(event) => {
                     menuItems && setTabOptions(menuItems);
                     menuItems && handleTabOptionsOpen(event);
                   }}
@@ -40,10 +40,10 @@ export default function TabsBar({
               );
             })}
             <BitTab
-              style={{ position: 'relative' }}
-              label={'Nouvelle'}
-              aria-controls={'tabOptionsId2'}
-              aria-haspopup='true'
+              style={{ position: "relative" }}
+              label={"Nouvelle"}
+              aria-controls={"tabOptionsId2"}
+              aria-haspopup="true"
               // onClick={event => {
               //   menuItems && setTabOptions(menuItems);
               //   menuItems && handleTabOptionsOpen(event);
@@ -56,22 +56,22 @@ export default function TabsBar({
   );
 }
 
-const BitTab = withStyles(theme => ({
+const BitTab = withStyles((theme) => ({
   root: {
-    textTransform: 'none',
-    color: theme.palette.type == 'dark' ? '#fff' : '#000',
+    textTransform: "none",
+    color: theme.palette.type == "dark" ? "#fff" : "#000",
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.pxToRem(15),
     marginRight: 0,
-    '&:focus': {
+    "&:focus": {
       opacity: 1,
-      color: theme.palette.type == 'dark' ? '#fff' : '#000',
+      color: theme.palette.type == "dark" ? "#fff" : "#000",
     },
-    '&:hover': {
+    "&:hover": {
       backgroundColor:
-        theme.palette.type == 'dark'
+        theme.palette.type == "dark"
           ? theme.palette.background.paper
           : theme.palette.background.search,
     },
   },
-}))(props => <Tab disableRipple {...props} />);
+}))((props) => <Tab disableRipple {...props} />);

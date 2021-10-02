@@ -1,19 +1,19 @@
-import { Box, Paper } from '@material-ui/core';
-import React from 'react';
-import Wrapper from '../Wrapper';
-import InvestorTab from './tabs/InvestorTab';
+import { Box, Paper } from "@material-ui/core";
+import React from "react";
+import Wrapper from "../Wrapper";
+import InvestorTab from "./tabs/InvestorTab";
 
 export default function Investors() {
-  const onTabValue = val => {
+  const onTabValue = (val) => {
     switch (val) {
       case 1:
-        window.location.hash = '#ecosystem';
+        window.location.hash = "#ecosystem";
         break;
       case 2:
-        window.location.hash = '#roadmap';
+        window.location.hash = "#roadmap";
         break;
       default:
-        window.location.hash = '#';
+        window.location.hash = "#";
     }
   };
 
@@ -28,12 +28,12 @@ export default function Investors() {
   );
 }
 
-const TabPanel = props => {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}

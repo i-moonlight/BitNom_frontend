@@ -1,9 +1,9 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { AddRounded } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
-import WorkForm from './forms/WorkForm';
-import WorkFragment from './fragments/WorkFragment';
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
+import WorkForm from "./forms/WorkForm";
+import WorkFragment from "./fragments/WorkFragment";
 
 export default function WorkCard({ profile, profileView }) {
   const [showForm, setShowForm] = useState(false);
@@ -14,15 +14,15 @@ export default function WorkCard({ profile, profileView }) {
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
-        <div className='space-between center-horizontal'>
+        <div className="space-between center-horizontal">
           <Typography>Work Experience</Typography>
           {!showForm && !profileView && (
             <Button
               onClick={() => setShowForm(true)}
               textCase
-              variant='text'
+              variant="text"
               startIcon={<AddRounded />}
             >
               Add Work Experience
@@ -49,7 +49,7 @@ export default function WorkCard({ profile, profileView }) {
                 dateFrom={start_date}
                 dateTo={end_date}
                 description={description}
-                photoURL='https://picsum.photos/200'
+                photoURL="https://picsum.photos/200"
                 current={current}
               />
             )

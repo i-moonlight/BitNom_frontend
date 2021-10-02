@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Card,
   CardContent,
@@ -7,19 +7,19 @@ import {
   Paper,
   Typography,
   useTheme,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
+} from "@material-ui/core";
+import { Search } from "@material-ui/icons";
+import React, { useState } from "react";
+import Button from "../../../components/Button";
 import {
   MUTATION_ADD_SKILL,
   MUTATION_REMOVE_SKILL,
   QUERY_FETCH_PROFILE,
-} from './utilities/profile.queries';
-import { useStyles } from './utilities/profile.styles';
+} from "./utilities/profile.queries";
+import { useStyles } from "./utilities/profile.styles";
 
 export default function SkillsCard({ profile, profileView }) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const theme = useTheme();
   const classes = useStyles();
   const skills = profile?.skills;
@@ -32,7 +32,7 @@ export default function SkillsCard({ profile, profileView }) {
       addLoading,
     },
   ] = useMutation(MUTATION_ADD_SKILL, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   const [
@@ -43,31 +43,31 @@ export default function SkillsCard({ profile, profileView }) {
       removeLoading,
     },
   ] = useMutation(MUTATION_REMOVE_SKILL, {
-    context: { clientName: 'users' },
+    context: { clientName: "users" },
   });
 
   return (
-    <Card className='mb-3'>
+    <Card className="mb-3">
       <CardContent>
         <div>
-          <Typography>{!profileView && 'Your'} Skills</Typography>
+          <Typography>{!profileView && "Your"} Skills</Typography>
         </div>
 
         {!profileView && (
           <>
             <Paper
-              variant={theme.palette.type == 'light' ? 'outlined' : 'elevation'}
+              variant={theme.palette.type == "light" ? "outlined" : "elevation"}
               elevation={0}
-              component='form'
+              component="form"
               className={classes.paperSearch}
             >
-              <Search color='inherit' />
+              <Search color="inherit" />
               <InputBase
                 value={text}
-                onChange={e => setText(e.target.value)}
+                onChange={(e) => setText(e.target.value)}
                 className={classes.input}
                 placeholder='Search Skill eg "Data Analyst"'
-                inputProps={{ 'aria-label': 'search bitnorm' }}
+                inputProps={{ "aria-label": "search bitnorm" }}
                 endAdornment={
                   <Button
                     onClick={() => {
@@ -78,16 +78,16 @@ export default function SkillsCard({ profile, profileView }) {
                         refetchQueries: [
                           {
                             query: QUERY_FETCH_PROFILE,
-                            context: { clientName: 'users' },
+                            context: { clientName: "users" },
                           },
                         ],
                       }).then(() => {
-                        setText('');
+                        setText("");
                       });
                     }}
                     disabled={addLoading}
-                    size='small'
-                    className='my-1'
+                    size="small"
+                    className="my-1"
                   >
                     Add
                   </Button>
@@ -96,9 +96,9 @@ export default function SkillsCard({ profile, profileView }) {
             </Paper>
 
             <Typography
-              variant='body2'
-              className='mt-2 mb-2'
-              color='textSecondary'
+              variant="body2"
+              className="mt-2 mb-2"
+              color="textSecondary"
             >
               You can add up to 30 skills
             </Typography>
@@ -108,10 +108,10 @@ export default function SkillsCard({ profile, profileView }) {
         <div>
           {skills?.map(({ _id, name }) => (
             <Chip
-              color='primary'
+              color="primary"
               key={_id}
               label={name}
-              className='me-2 mb-2'
+              className="me-2 mb-2"
               disabled={removeLoading}
               onDelete={() =>
                 removeSkill({
@@ -121,7 +121,7 @@ export default function SkillsCard({ profile, profileView }) {
                   refetchQueries: [
                     {
                       query: QUERY_FETCH_PROFILE,
-                      context: { clientName: 'users' },
+                      context: { clientName: "users" },
                     },
                   ],
                 })

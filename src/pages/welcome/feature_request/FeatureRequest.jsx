@@ -1,22 +1,22 @@
-import { Container, Grid, Hidden, useTheme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import TextField from '../../../components/TextField';
-import Wrapper from '../Wrapper';
-import RequestDisplayCard from './RequestDisplayCard';
-import RequestFormCard from './RequestFormCard';
+import { Container, Grid, Hidden, useTheme } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
+import TextField from "../../../components/TextField";
+import Wrapper from "../Wrapper";
+import RequestDisplayCard from "./RequestDisplayCard";
+import RequestFormCard from "./RequestFormCard";
 
 export default function FeatureRequest() {
   const theme = useTheme();
   return (
     <Wrapper>
       <Grid>
-        <Container container component={Grid} maxWidth='lg'>
-          <div className='py-4 mb-4'>
-            <Typography variant='h4' color='textPrimary'>
+        <Container container component={Grid} maxWidth="lg">
+          <div className="py-4 mb-4">
+            <Typography variant="h4" color="textPrimary">
               Feature request
             </Typography>
-            <Typography variant='h6' color='textPrimary'>
+            <Typography variant="h6" color="textPrimary">
               BitNorm sounds great, but I have a suggestion!
             </Typography>
           </div>
@@ -26,13 +26,13 @@ export default function FeatureRequest() {
       <Grid
         style={{
           backgroundColor:
-            theme.palette.type == 'light'
-              ? '#F5F5F5'
+            theme.palette.type == "light"
+              ? "#F5F5F5"
               : theme.palette.background.paper,
           paddingBottom: 32,
         }}
       >
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Hidden smDown>
               <Grid item md={4} lg={3}>
@@ -53,11 +53,11 @@ export default function FeatureRequest() {
               <Hidden mdUp>
                 <RequestFormCard />
               </Hidden>
-              <div className='space-between center-horizontal'>
-                <Typography variant='h6' color='textSecondary'>
+              <div className="space-between center-horizontal">
+                <Typography variant="h6" color="textSecondary">
                   Showing Trending Feature requests
                 </Typography>
-                <TextField placeholder='Search' />
+                <TextField placeholder="Search" />
               </div>
               <RequestDisplayCard />
               <RequestDisplayCard />
