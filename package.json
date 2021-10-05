@@ -60,7 +60,7 @@
     "eject": "react-scripts eject",
     "pretty": "npx prettier --write \"./**/*.{js,jsx,json}\"",
     "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-    "push": "git add . && echo ===== Added All Files ===== && git commit -m \"developments\" && echo ===== Commited All Files ===== && git push origin investors && echo ===== Done pushing Files ====="
+    "push": "git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin investors && echo ===== Done pushing Files ====="
   },
   "eslintConfig": {
     "extends": [
