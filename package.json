@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "apollo-upload-client": "^16.0.0",
     "autosuggest-highlight": "^3.1.1",
+    "emoji-mart": "^3.0.1",
     "formik": "^2.2.9",
     "graphql": "^14.0.2",
     "graphql-amqp-subscriptions": "^1.2.0",

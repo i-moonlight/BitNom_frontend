@@ -11,9 +11,9 @@ import {
 import { useSelector } from 'react-redux';
 import { MoreVert, FiberManualRecord } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 import {
   notificationBodyFactory,
-  getCreationTime,
   generateRandomColor,
 } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -24,7 +24,7 @@ const notificationOptionId = 'menu-notification-option';
 export default function NotificationListItem({ notification }) {
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const history = useHistory();
 
@@ -32,7 +32,7 @@ export default function NotificationListItem({ notification }) {
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
-  const handleNotificationOptionOpen = event => {
+  const handleNotificationOptionOpen = (event) => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
   let link;
@@ -45,25 +45,26 @@ export default function NotificationListItem({ notification }) {
   } else if (notification?.link_to_resource?.type === 'user') {
     link = `#`;
   }
-  const getReadStatus = ntfn => {
+
+  const getReadStatus = (ntfn) => {
     let read;
-    ntfn.to_notify?.forEach(item => {
+    ntfn.to_notify?.forEach((item) => {
       if (item?.user_id == user._id) {
         read = item?.read;
       }
     });
     return read;
   };
-  const getNotifyingUser = ntfn => {
+  const getNotifyingUser = (ntfn) => {
     let name;
-    ntfn?.content_entities?.forEach(item => {
+    ntfn?.content_entities?.forEach((item) => {
       if (item?.type === 'resource_tag') {
         name = item?.url?.displayName;
       }
     });
     return name;
   };
-  const contentClickHandler = e => {
+  const contentClickHandler = (e) => {
     const targetLink = e.target.closest('a');
     if (!targetLink) return;
     e.preventDefault();
@@ -121,7 +122,8 @@ export default function NotificationListItem({ notification }) {
             title={
               <div className='center-horizontal'>
                 <Typography
-                  onClick={e => contentClickHandler(e)}
+                  variant='body2'
+                  onClick={(e) => contentClickHandler(e)}
                   dangerouslySetInnerHTML={{
                     __html: notificationBodyFactory(notification),
                   }}
@@ -138,7 +140,9 @@ export default function NotificationListItem({ notification }) {
           ) : (
             '' 
           ) */}
-          <Typography>{getCreationTime(notification?.date)}</Typography>
+          <Typography>
+            {moment(Number(notification?.date)).fromNow()}
+          </Typography>
         </Grid>
         <Divider />
       </Card>
