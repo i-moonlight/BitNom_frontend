@@ -1,5 +1,5 @@
 //TODO: Upload video
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Avatar,
   Card,
@@ -20,31 +20,31 @@ import {
   Modal,
   Typography,
   useTheme,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
   Public,
   VideocamRounded,
-} from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { MentionsInput, Mention } from 'react-mentions';
-import Button from '../../../../components/Button';
+} from "@material-ui/icons";
+import { DropzoneArea } from "material-ui-dropzone";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { MentionsInput, Mention } from "react-mentions";
+import Button from "../../../../components/Button";
 //import TextField from '../../../../components/TextField';
-import { getUserInitials } from '../../../../utilities/Helpers';
+import { getUserInitials } from "../../../../utilities/Helpers";
 import {
   generateRandomColor,
   mentionsUpdate,
   mentionsFinder,
-} from '../../utilities/functions';
+} from "../../utilities/functions";
 import {
   MUTATION_DELETE_POST,
   MUTATION_UPDATE_POST,
   QUERY_LOAD_SCROLLS,
-} from '../../utilities/queries';
+} from "../../utilities/queries";
 
 export default function UpdatePost({
   updateScrollOpen,
@@ -63,7 +63,7 @@ export default function UpdatePost({
 }) {
   const [updatePostErr, setUpdatePostErr] = useState(null);
   const [fileType, setFileType] = useState(null);
-  const [scroll_text, setScrollText] = useState('');
+  const [scroll_text, setScrollText] = useState("");
   const [scroll_images, setScrollImages] = useState(null);
   const [scroll_video, setScrollVideo] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
@@ -94,7 +94,7 @@ export default function UpdatePost({
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-    setScrollText('');
+    setScrollText("");
     setScrollImages(null);
     setScrollVideo(undefined);
     setUpdatePostErr(false);
@@ -112,7 +112,7 @@ export default function UpdatePost({
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
     });
-    setScrollText('');
+    setScrollText("");
     setScrollImages(null);
     setScrollVideo(undefined);
     setUpdatePostErr(false);
@@ -132,9 +132,9 @@ export default function UpdatePost({
 
   useEffect(() => {
     if (postToEdit?.images.length > 0) {
-      setFileType('image');
-    } else if (postToEdit?.video?.trim() !== '') {
-      setFileType('video');
+      setFileType("image");
+    } else if (postToEdit?.video?.trim() !== "") {
+      setFileType("video");
     }
     if (postToEdit) {
       setScrollText(mentionsUpdate(postToEdit?.content));
@@ -150,7 +150,7 @@ export default function UpdatePost({
 
   const handleUpdatePost = (e) => {
     e.preventDefault();
-    if (scroll_text.trim() == '') return setUpdatePostErr(true);
+    if (scroll_text.trim() == "") return setUpdatePostErr(true);
     const mentionsData = mentionsFinder(scroll_text);
     onUpdatePost({
       post_id: postToEdit?._id,
@@ -174,23 +174,23 @@ export default function UpdatePost({
   return (
     <Modal
       style={{
-        outline: 'none',
+        outline: "none",
 
-        '&:focus-visible': {
-          outline: 'none',
+        "&:focus-visible": {
+          outline: "none",
         },
       }}
-      className='center-horizontal center-vertical w-100'
+      className="center-horizontal center-vertical w-100"
       open={updateScrollOpen}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2'>
-              <Typography variant='body2'></Typography>
-              <Typography variant='body1'>Update Post</Typography>
-              <IconButton size='small' className='m-1 p-1'>
+            <div className="space-between mx-3 my-2">
+              <Typography variant="body2"></Typography>
+              <Typography variant="body1">Update Post</Typography>
+              <IconButton size="small" className="m-1 p-1">
                 <CloseRounded
                   onClick={() => {
                     setUpdateScrollOpen(!updateScrollOpen);
@@ -209,8 +209,8 @@ export default function UpdatePost({
             </div>
 
             <Divider />
-            <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
-              <ListItem className='p-0'>
+            <CardContent style={{ maxHeight: "500px", overflowY: "auto" }}>
+              <ListItem className="p-0">
                 <ListItemAvatar>
                   <Avatar
                     style={{
@@ -228,14 +228,14 @@ export default function UpdatePost({
                       textCase
                       style={{
                         backgroundColor: theme.palette.background.default,
-                        padding: '0px 10px',
-                        textTransform: 'none',
+                        padding: "0px 10px",
+                        textTransform: "none",
                       }}
                       startIcon={<Public />}
                       endIcon={
                         <ChevronRight
                           style={{
-                            transform: 'rotateZ(90deg)',
+                            transform: "rotateZ(90deg)",
                           }}
                         />
                       }
@@ -246,9 +246,9 @@ export default function UpdatePost({
                 />
               </ListItem>
               <MentionsInput
-                spellcheck='false'
-                className='mentions-textarea'
-                id='content-field'
+                spellcheck="false"
+                className="mentions-textarea"
+                id="content-field"
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -260,17 +260,17 @@ export default function UpdatePost({
                 value={scroll_text}
               >
                 <Mention
-                  markup='/*@__id__-__display__*/'
+                  markup="/*@__id__-__display__*/"
                   displayTransform={(id, display) => display}
-                  trigger='@'
+                  trigger="@"
                   data={mentions}
                   style={{
                     fontWeight: 900,
                   }}
                 />
               </MentionsInput>
-              <Typography color='error' variant='body2'>
-                {updatePostErr && 'The post content cannot be empty'}
+              <Typography color="error" variant="body2">
+                {updatePostErr && "The post content cannot be empty"}
               </Typography>
               {/*  <TextField
                 fullWidth
@@ -292,7 +292,7 @@ export default function UpdatePost({
               /> */}
               <Card
                 style={{
-                  display: openImage || openVideo ? 'block' : 'none',
+                  display: openImage || openVideo ? "block" : "none",
                 }}
               >
                 <DropzoneArea
@@ -304,28 +304,28 @@ export default function UpdatePost({
                   }}
                   dropzoneText={
                     openImage
-                      ? 'Drag n drop images here or click'
-                      : 'Drag n drop a video here or click'
+                      ? "Drag n drop images here or click"
+                      : "Drag n drop a video here or click"
                   }
-                  acceptedFiles={openImage ? ['image/*'] : ['video/*']}
+                  acceptedFiles={openImage ? ["image/*"] : ["video/*"]}
                   maxFileSize={5000000}
                   filesLimit={openImage ? 4 : 1}
-                  showAlerts={['error']}
+                  showAlerts={["error"]}
                   showPreviews={false}
                   showPreviewsInDropzone
                   previewGridProps={{
-                    container: { spacing: 1, direction: 'row' },
+                    container: { spacing: 1, direction: "row" },
                   }}
                 />
               </Card>
-              {(postToEdit?.video?.trim() !== '' ||
+              {(postToEdit?.video?.trim() !== "" ||
                 postToEdit?.images?.length > 0) &&
                 fileType !== null && (
                   <Card>
-                    <div className='space-between mx-3 my-2'>
-                      <Typography variant='body2'></Typography>
-                      <Typography variant='body1'></Typography>
-                      <IconButton size='small' className='m-1 p-1'>
+                    <div className="space-between mx-3 my-2">
+                      <Typography variant="body2"></Typography>
+                      <Typography variant="body1"></Typography>
+                      <IconButton size="small" className="m-1 p-1">
                         <CloseRounded
                           onClick={() => {
                             setFileType(null);
@@ -335,11 +335,11 @@ export default function UpdatePost({
                         />
                       </IconButton>
                     </div>
-                    <Grid container spacing={2} className='mb-2'>
+                    <Grid container spacing={2} className="mb-2">
                       {postToEdit?.video && (
                         <Grid item xs={12}>
                           <CardMedia
-                            component='video'
+                            component="video"
                             src={`${process.env.REACT_APP_BACKEND_URL}${postToEdit?.video}`}
                             controls
                           />
@@ -348,7 +348,7 @@ export default function UpdatePost({
                       {postToEdit?.images?.length > 0 &&
                         postToEdit?.images?.map((imageURL) => (
                           <Grid
-                            className='mt-3'
+                            className="mt-3"
                             key={imageURL}
                             item
                             xs={postToEdit?.images?.length > 1 ? 6 : 12}
@@ -357,16 +357,16 @@ export default function UpdatePost({
                               style={{
                                 height: 200,
                                 borderRadius: 8,
-                                width: '100%',
+                                width: "100%",
                                 backgroundImage:
-                                  'url(' +
+                                  "url(" +
                                   process.env.REACT_APP_BACKEND_URL +
                                   imageURL +
-                                  ')',
-                                backgroundSize: 'cover',
-                                backgroundColor: 'rgba(0,0,0,0.2)',
-                                backgroundBlendMode: 'soft-light',
-                                cursor: 'pointer',
+                                  ")",
+                                backgroundSize: "cover",
+                                backgroundColor: "rgba(0,0,0,0.2)",
+                                backgroundBlendMode: "soft-light",
+                                cursor: "pointer",
                               }}
                             />
                           </Grid>
@@ -378,33 +378,33 @@ export default function UpdatePost({
               <Dialog
                 open={openDelete}
                 onClose={() => setOpenDelete(false)}
-                aria-labelledby='alert-dialog-title'
-                aria-describedby='alert-dialog-description'
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id='alert-dialog-title'>
-                  {'Delete this post?'}
+                <DialogTitle id="alert-dialog-title">
+                  {"Delete this post?"}
                 </DialogTitle>
                 <DialogContent>
-                  <DialogContentText id='alert-dialog-description'>
+                  <DialogContentText id="alert-dialog-description">
                     This can’t be undone and it will be removed from your
                     profile, the timeline of any accounts that follow you, and
                     from the BNConnect platform.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={() => setOpenDelete(false)} color='primary'>
+                  <Button onClick={() => setOpenDelete(false)} color="primary">
                     Cancel
                   </Button>
-                  <Button onClick={handleDeletePost} color='primary' autoFocus>
+                  <Button onClick={handleDeletePost} color="primary" autoFocus>
                     Delete
                   </Button>
                 </DialogActions>
               </Dialog>
-              <div className='space-between mt-1'>
-                <div className='center-horizontal'>
+              <div className="space-between mt-1">
+                <div className="center-horizontal">
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenImage(true);
                       setFileType(null);
@@ -420,8 +420,8 @@ export default function UpdatePost({
                     <ImageRounded />
                   </IconButton>
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenVideo(true);
                       setFileType(null);
@@ -440,11 +440,11 @@ export default function UpdatePost({
                 <div>
                   <Button
                     style={{
-                      backgroundColor: '#ba000d',
-                      color: '#FFFFFF',
-                      marginRight: '12px',
+                      backgroundColor: "#ba000d",
+                      color: "#FFFFFF",
+                      marginRight: "12px",
                     }}
-                    variant='contained'
+                    variant="contained"
                     onClick={() => setOpenDelete(true)}
                   >
                     Delete
@@ -453,7 +453,7 @@ export default function UpdatePost({
                     <Button onClick={handleUpdatePost}>Update</Button>
                   )}
                   {loading && (
-                    <Button size='small' style={{ margin: '0' }}>
+                    <Button size="small" style={{ margin: "0" }}>
                       <CircularProgress size={24} thickness={4} />
                     </Button>
                   )}

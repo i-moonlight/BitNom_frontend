@@ -1,14 +1,14 @@
-import { useTheme } from "@material-ui/core";
 import {
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
 import investorGraphicImg from "../../../assets/landing/articles.png";
-import investorImg from "../../../assets/landing/investor.svg";
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from "./Landing";
 
 export default function InvestorSection() {
@@ -41,21 +41,24 @@ export default function InvestorSection() {
               spacing={5}
               container
             >
-              <Grid item md={5}></Grid>
-              <Grid item md={7}>
-                <img
-                  style={{ width: "70%", zIndex: 2 }}
-                  src={investorImg}
-                  alt=""
-                />
+              <Grid item xs={0} sm={2} md={5}></Grid>
+              <Grid item xs={12} sm={10} md={7}>
+                <iframe
+                  className="br-2 scroll-hidden"
+                  src={`${window.location.origin}/investors`}
+                  style={{
+                    width: "100%",
+                    height: 400,
+                  }}
+                ></iframe>
               </Grid>
             </Grid>
 
             <Grid className="mx-1 mt-2" spacing={5} container>
               <Grid item lg={12}>
                 <Typography
-                  className={classes.sectionText}
-                  variant="h6"
+                  className="fw-bold mb-2"
+                  variant="h5"
                   color="textPrimary"
                 >
                   Our Investor Page
@@ -77,7 +80,7 @@ export default function InvestorSection() {
                   </Grid>
                 </Grid>
                 <Typography className={classes.sectionText} color="textPrimary">
-                  <a href="">Visit investor page &gt;</a>
+                  <Link to="/investors">Visit investor page &gt;</Link>
                 </Typography>
               </Grid>
             </Grid>

@@ -1,5 +1,5 @@
 //TODO: Upload video
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Avatar,
   Card,
@@ -15,33 +15,33 @@ import {
   Typography,
   //TextField,
   //useTheme,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
   Public,
   VideocamRounded,
-} from '@material-ui/icons';
-import { MentionsInput, Mention } from 'react-mentions';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+} from "@material-ui/icons";
+import { MentionsInput, Mention } from "react-mentions";
+import { DropzoneArea } from "material-ui-dropzone";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Button from "../../../../components/Button";
 //import TextField from '../../../../components/TextField';
-import { createPostIcons } from '../../../../store/local/dummy';
-import { getUserInitials } from '../../../../utilities/Helpers';
-import EventPreview from '../../events/EventPreview';
+import { createPostIcons } from "../../../../store/local/dummy";
+import { getUserInitials } from "../../../../utilities/Helpers";
+import EventPreview from "../../events/EventPreview";
 import {
   generateRandomColor,
   getFeed,
   mentionsFinder,
-} from '../../utilities/functions';
+} from "../../utilities/functions";
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
-} from '../../utilities/queries';
-import ScrollPreview from './ScrollPreview';
+} from "../../utilities/queries";
+import ScrollPreview from "./ScrollPreview";
 
 export default function CreatePost({
   open,
@@ -60,7 +60,7 @@ export default function CreatePost({
 }) {
   const [createPostErr, setCreatePostErr] = useState(null);
 
-  const [scroll_text, setScrollText] = useState('');
+  const [scroll_text, setScrollText] = useState("");
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   //const theme = useTheme();
@@ -93,7 +93,7 @@ export default function CreatePost({
         },
       ],
     });
-    setScrollText('');
+    setScrollText("");
     setScrollImages([]);
     setScrollVideo(null);
     setSharedResource(null);
@@ -114,12 +114,12 @@ export default function CreatePost({
   const handleCreatePost = (e) => {
     e.preventDefault();
 
-    if (scroll_text.trim() == '') return setCreatePostErr(true);
+    if (scroll_text.trim() == "") return setCreatePostErr(true);
     let sharedResourceType;
-    if (sharedResource?.__typename === 'OPost') {
-      sharedResourceType = 'post';
-    } else if (sharedResource?.__typename === 'OEvent') {
-      sharedResourceType = 'event';
+    if (sharedResource?.__typename === "OPost") {
+      sharedResourceType = "post";
+    } else if (sharedResource?.__typename === "OEvent") {
+      sharedResourceType = "event";
     }
     const shared = sharedResource
       ? { _id: sharedResource?._id, type: sharedResourceType }
@@ -142,30 +142,30 @@ export default function CreatePost({
     <Modal
       data={data}
       style={{
-        outline: 'none',
+        outline: "none",
 
-        '&:focus-visible': {
-          outline: 'none',
+        "&:focus-visible": {
+          outline: "none",
         },
       }}
-      className='center-horizontal center-vertical w-100'
+      className="center-horizontal center-vertical w-100"
       open={open}
     >
       <Grid container>
         <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
         <Grid item lg={6} md={8} sm={10} xs={10}>
           <Card>
-            <div className='space-between mx-3 my-2 center-horizontal'>
-              <Typography variant='body2'></Typography>
-              <Typography variant='body1'>
-                {sharedResource ? `Share to your followers` : 'Create Post'}
+            <div className="space-between mx-3 my-2 center-horizontal">
+              <Typography variant="body2"></Typography>
+              <Typography variant="body1">
+                {sharedResource ? `Share to your followers` : "Create Post"}
               </Typography>
-              <IconButton size='small' className='m-1 p-1'>
+              <IconButton size="small" className="m-1 p-1">
                 <CloseRounded
                   onClick={() => {
                     setOpen(!open);
                     setOpenImage(false);
-                    setScrollText('');
+                    setScrollText("");
                     setOpenVideo(false);
                     setScrollImages([]);
                     setScrollVideo(null);
@@ -179,8 +179,8 @@ export default function CreatePost({
             </div>
 
             <Divider />
-            <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
-              <ListItem className='p-0'>
+            <CardContent style={{ maxHeight: "500px", overflowY: "auto" }}>
+              <ListItem className="p-0">
                 <ListItemAvatar>
                   <Avatar
                     style={{
@@ -196,16 +196,16 @@ export default function CreatePost({
                   secondary={
                     <Button
                       textCase
-                      variant='text'
+                      variant="text"
                       style={{
                         //backgroundColor: theme.palette.background.default,
-                        padding: '0px 10px',
+                        padding: "0px 10px",
                       }}
                       startIcon={<Public />}
                       endIcon={
                         <ChevronRight
                           style={{
-                            transform: 'rotateZ(90deg)',
+                            transform: "rotateZ(90deg)",
                           }}
                         />
                       }
@@ -216,9 +216,9 @@ export default function CreatePost({
                 />
               </ListItem>
               <MentionsInput
-                spellcheck='false'
-                className='mentions-textarea'
-                id='content-field'
+                spellcheck="false"
+                className="mentions-textarea"
+                id="content-field"
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -230,17 +230,17 @@ export default function CreatePost({
                 value={scroll_text}
               >
                 <Mention
-                  markup='/*@__id__-__display__*/'
+                  markup="/*@__id__-__display__*/"
                   displayTransform={(id, display) => display}
-                  trigger='@'
+                  trigger="@"
                   data={mentions}
                   style={{
                     fontWeight: 900,
                   }}
                 />
               </MentionsInput>
-              <Typography color='error' variant='body2'>
-                {createPostErr && 'The post content cannot be empty'}
+              <Typography color="error" variant="body2">
+                {createPostErr && "The post content cannot be empty"}
               </Typography>
               {/* <TextField
                 fullWidth
@@ -260,7 +260,7 @@ export default function CreatePost({
                 value={scroll_text}
               /> */}
               <Card
-                style={{ display: openImage || openVideo ? 'block' : 'none' }}
+                style={{ display: openImage || openVideo ? "block" : "none" }}
               >
                 <DropzoneArea
                   clearOnUnmount
@@ -271,32 +271,32 @@ export default function CreatePost({
                   }}
                   dropzoneText={
                     openImage
-                      ? 'Drag n drop images here or click'
-                      : 'Drag n drop a video here or click'
+                      ? "Drag n drop images here or click"
+                      : "Drag n drop a video here or click"
                   }
-                  acceptedFiles={openImage ? ['image/*'] : ['video/*']}
+                  acceptedFiles={openImage ? ["image/*"] : ["video/*"]}
                   maxFileSize={openImage ? 5000000 : 10000000}
                   filesLimit={openImage ? 4 : 1}
-                  showAlerts={['error']}
+                  showAlerts={["error"]}
                   showPreviews={false}
                   showPreviewsInDropzone
                   previewGridProps={{
-                    container: { spacing: 1, direction: 'row' },
+                    container: { spacing: 1, direction: "row" },
                   }}
                 />
               </Card>
-              {sharedResource && sharedResource?.__typename === 'OPost' && (
+              {sharedResource && sharedResource?.__typename === "OPost" && (
                 <ScrollPreview scroll={sharedResource} />
               )}
-              {sharedResource && sharedResource?.__typename === 'OEvent' && (
+              {sharedResource && sharedResource?.__typename === "OEvent" && (
                 <EventPreview event={sharedResource} />
               )}
               {/* <Divider /> */}
-              <div className='space-between mt-1'>
-                <div className='center-horizontal'>
+              <div className="space-between mt-1">
+                <div className="center-horizontal">
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenImage(true);
                       setVideoDisabled(true);
@@ -309,8 +309,8 @@ export default function CreatePost({
                     <ImageRounded />
                   </IconButton>
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenVideo(true);
                       setImageDisabled(true);
@@ -325,8 +325,8 @@ export default function CreatePost({
                   {createPostIcons.map(({ Icon }) => {
                     return (
                       <IconButton
-                        size='small'
-                        className='m-1 p-1'
+                        size="small"
+                        className="m-1 p-1"
                         key={`${Math.random() * 1000}`}
                         style={{
                           marginRight: 10,
@@ -339,7 +339,7 @@ export default function CreatePost({
                 </div>
                 {!loading && <Button onClick={handleCreatePost}>Post</Button>}
                 {loading && (
-                  <Button size='small' style={{ margin: '0' }}>
+                  <Button size="small" style={{ margin: "0" }}>
                     <CircularProgress size={24} thickness={4} />
                   </Button>
                 )}

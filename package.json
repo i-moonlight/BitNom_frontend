@@ -59,7 +59,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "npx prettier --write \"./**/*.{js,jsx,json}\""
+    "pretty": "npx prettier --write \"./**/*.{js,jsx,json}\"",
+    "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin investors && echo ===== Done pushing Files ====="
   },
   "eslintConfig": {
     "extends": [

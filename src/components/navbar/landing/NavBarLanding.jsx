@@ -14,15 +14,16 @@ import {
   MenuRounded,
 } from "@material-ui/icons";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
+import logo_full from "../../../assets/logo_full.svg";
 import logo_light from "../../../assets/logo_light.svg";
+import logo_light_full from "../../../assets/logo_light_full.svg";
 import Button from "../../Button";
 import { menuEcosystem, menuProduct } from "../../utilities/data.components";
 import StatusBar from "../StatusBar";
-import MobileMenu from "./MobileMenu";
 import NavBarMenu from "./MenuOptions";
+import MobileMenu from "./MobileMenu";
 
 export default function NavBarLanding() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +31,6 @@ export default function NavBarLanding() {
   const [showMenuProduct, setShowMenuProduct] = useState(false);
   const theme = useTheme();
   const history = useHistory();
-  const palette = useSelector((st) => st.theme.palette);
 
   return (
     <AppBar
@@ -46,22 +46,28 @@ export default function NavBarLanding() {
         <div className="space-between my-3">
           <div
             className="center-horizontal c-pointer"
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/dashboard")}
           >
-            <Avatar
-              src={palette == "light" ? logo : logo_light}
-              style={{ marginRight: 8 }}
-            >
-              B
-            </Avatar>
             <Hidden xsDown>
-              <Typography
-                color={palette == "light" ? "primary" : "textPrimary"}
-                variant="h6"
-                noWrap
+              <div>
+                <img
+                  style={{
+                    height: 40,
+                  }}
+                  src={
+                    theme.palette.type == "light" ? logo_full : logo_light_full
+                  }
+                  alt=""
+                />
+              </div>
+            </Hidden>
+            <Hidden smUp>
+              <Avatar
+                className="me-1"
+                src={theme.palette.type == "light" ? logo : logo_light}
               >
-                BITNORM
-              </Typography>
+                B
+              </Avatar>
             </Hidden>
           </div>
           <Hidden smDown>

@@ -1,3 +1,5 @@
+/* Miscallaneous */
+
 * {
   font-family: 'Nunito', sans-serif !important;
 }
@@ -14,6 +16,8 @@ body {
   margin: 0;
 }
 
+/* Links */
+
 a {
   text-decoration: none !important;
   color: #0ea0f3;
@@ -24,6 +28,8 @@ a.alt {
   color: #fff;
   font-weight: 500;
 }
+
+/* Text */
 
 .text-theme {
   color: #006097 !important;
@@ -41,6 +47,12 @@ a.alt {
   color: #0ea0f3 !important;
 }
 
+small {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+/* Backgrounds */
+
 .bg-theme {
   background-color: #006097 !important;
 }
@@ -53,9 +65,7 @@ a.alt {
   background-color: #000 !important;
 }
 
-small {
-  font-family: 'Nunito', sans-serif !important;
-}
+/* Cursor */
 
 .c-pointer {
   cursor: pointer;
@@ -73,6 +83,7 @@ small {
 }
 
 /* Display Flex */
+
 .center-vertical {
   display: flex;
   flex-direction: column;
@@ -110,6 +121,7 @@ small {
 }
 
 /* Border Radius */
+
 .br-1 {
   border-radius: 0.25em !important;
 }
@@ -130,7 +142,7 @@ small {
   border-radius: 1.25em !important;
 }
 
-/*  */
+/* Lists */
 
 ul {
   list-style: none;
@@ -145,16 +157,15 @@ ul li::before {
   margin-left: -1.5em; /* Also needed for space (tweak if needed) */
 }
 
-/*  */
+/*  Dropzones */
+
 .cover-upload-dropzone {
-  /* position: absolute !important; */
   opacity: 0.9;
   min-height: 120px !important;
   background-color: transparent !important;
 }
 
 .event-upload-dropzone {
-  /* position: absolute !important; */
   opacity: 0.9;
   height: '100%';
   background-color: transparent !important;
@@ -162,16 +173,15 @@ ul li::before {
 }
 
 .profile-upload-dropzone {
-  /* position: absolute !important; */
   opacity: 0.9;
   min-height: 80px !important;
   min-width: 80px !important;
   height: 80px !important;
   width: 80px !important;
   background-color: transparent !important;
-  /* visibility: hidden; */
 }
-/*  */
+
+/* Mentions */
 
 .mentions-textarea__control {
   margin-top: 10px;

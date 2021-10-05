@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { green, red } from '@material-ui/core/colors';
+import { useMutation, useQuery } from "@apollo/client";
+import { green, red } from "@material-ui/core/colors";
 import {
   Avatar,
   Card,
@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
   makeStyles,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ImageRounded,
   MoreHorizRounded,
@@ -20,55 +20,55 @@ import {
   PanToolRounded,
   FavoriteRounded,
   InsertEmoticon,
-} from '@material-ui/icons';
-import moment from 'moment';
-import React, { useState, useEffect, useCallback } from 'react';
-import Button from '../../../../../components/Button';
-import ReactionButton from '../../../../../components/ReactionButton';
-import { MentionsInput, Mention } from 'react-mentions';
-import { getUserInitials } from '../../../../../utilities/Helpers';
+} from "@material-ui/icons";
+import moment from "moment";
+import React, { useState, useEffect, useCallback } from "react";
+import Button from "../../../../../components/Button";
+import ReactionButton from "../../../../../components/ReactionButton";
+import { MentionsInput, Mention } from "react-mentions";
+import { getUserInitials } from "../../../../../utilities/Helpers";
 import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
   mentionsFinder,
-} from '../../../utilities/functions';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+} from "../../../utilities/functions";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   MUTATION_CREATE_REACTION,
   MUTATION_REMOVE_REACTION,
   QUERY_GET_COMMENTS,
-} from '../../../utilities/queries';
-import CommentOptionsPopover from './CommentOptionsPopover';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+} from "../../../utilities/queries";
+import CommentOptionsPopover from "./CommentOptionsPopover";
+import EmojiPickerPopover from "../../popovers/EmojiPickerPopover";
 
 const useStyles = makeStyles((theme) => ({
   clickableTypography: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
-    [theme.breakpoints.down('md')]: {
-      textDecoration: 'underline',
+    [theme.breakpoints.down("md")]: {
+      textDecoration: "underline",
     },
   },
   inputHelper: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
-    padding: '0px 10px 0px 5px',
-    [theme.breakpoints.up('md')]: {
-      padding: '0px 30px 0px 20px',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: "0px 10px 0px 5px",
+    [theme.breakpoints.up("md")]: {
+      padding: "0px 30px 0px 20px",
     },
   },
   replies: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
   },
   red: {
@@ -78,12 +78,12 @@ const useStyles = makeStyles((theme) => ({
     color: green[500],
   },
   primary: {
-    color: '#006097',
+    color: "#006097",
   },
 }));
 
-const commentOptionId = 'menu-comment-option';
-const emojiPickerId = 'emoji-picker-popover';
+const commentOptionId = "menu-comment-option";
+const emojiPickerId = "emoji-picker-popover";
 export default function Comment({
   comment,
   style,
@@ -108,10 +108,10 @@ export default function Comment({
   const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
   const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
   const [userReaction, setUserReaction] = useState();
   const [likeHovered, setLikeHovered] = useState(false);
-  const [responseTo, setResponseTo] = useState('');
+  const [responseTo, setResponseTo] = useState("");
   const [replyErr, setReplyErr] = useState(false);
   const state = useSelector((st) => st);
   const user = state.auth.user;
@@ -160,7 +160,7 @@ export default function Comment({
       variables: {
         data: {
           _id: comment?._id,
-          type: 'comment',
+          type: "comment",
           reaction: reaction,
         },
       },
@@ -178,7 +178,7 @@ export default function Comment({
       variables: {
         data: {
           _id: comment?._id,
-          type: 'comment',
+          type: "comment",
         },
       },
       refetchQueries: [
@@ -193,7 +193,7 @@ export default function Comment({
 
   const handleCreateReply = (e) => {
     e.preventDefault();
-    if (reply.trim() == '') return setReplyErr(true);
+    if (reply.trim() == "") return setReplyErr(true);
 
     const mentionsData = mentionsFinder(reply);
     onCreateComment({
@@ -203,7 +203,7 @@ export default function Comment({
       image: comment_image,
       response_to: responseTo,
     });
-    setReply('');
+    setReply("");
   };
 
   const getUserReaction = useCallback(
@@ -212,19 +212,19 @@ export default function Comment({
       resource?.reacted_to_by?.forEach((item) => {
         if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
       });
-      console.log(resource, 'JSL');
+      console.log(resource, "JSL");
       return reaction;
     },
     [user?._id]
   );
 
   const contentClickHandler = (e) => {
-    const targetLink = e.target.closest('a');
+    const targetLink = e.target.closest("a");
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
-    if (targetLink.target == '_blank') {
-      window.open(targetLink.href, '_blank');
+    if (targetLink.target == "_blank") {
+      window.open(targetLink.href, "_blank");
     } else {
       history.push(targetLink.href.substring(location.origin.length));
     }
@@ -240,17 +240,17 @@ export default function Comment({
 
   return (
     <>
-      <div style={style} className='d-flex flex-row flex-start'>
+      <div style={style} className="d-flex flex-row flex-start">
         <Avatar
           style={{
             backgroundColor: generateRandomColor(),
           }}
           src={comment?.author?.profile_pic}
-          className='mx-2'
+          className="mx-2"
         >
           {commentUserInitials}
         </Avatar>
-        <div className='mb-3 flex-1'>
+        <div className="mb-3 flex-1">
           <Card
             style={{
               backgroundColor: theme.palette.background.comment,
@@ -258,28 +258,28 @@ export default function Comment({
             elevation={0}
           >
             <CardContent>
-              <div className='center-horizontal space-between w-100'>
-                <Typography display='inline'>
-                  {comment?.author?.displayName}{' '}
-                  <Typography display='inline' variant='body2'>
+              <div className="center-horizontal space-between w-100">
+                <Typography display="inline">
+                  {comment?.author?.displayName}{" "}
+                  <Typography display="inline" variant="body2">
                     . @{comment?.author?._id}
-                  </Typography>{' '}
-                  <Typography display='inline' variant='body2'>
+                  </Typography>{" "}
+                  <Typography display="inline" variant="body2">
                     . {moment(comment.creation_date).fromNow()}
                   </Typography>
                 </Typography>
                 <IconButton
-                  size='small'
-                  className='m-1 p-1'
-                  aria-label='show more'
+                  size="small"
+                  className="m-1 p-1"
+                  aria-label="show more"
                   aria-controls={commentOptionId}
-                  aria-haspopup='true'
+                  aria-haspopup="true"
                   onClick={handleCommentOptionOpen}
                 >
                   <MoreHorizRounded />
                 </IconButton>
               </div>
-              <Typography variant='body2' color='textSecondary' component='p'>
+              <Typography variant="body2" color="textSecondary" component="p">
                 <Typography
                   onClick={(e) => contentClickHandler(e)}
                   dangerouslySetInnerHTML={{
@@ -291,7 +291,7 @@ export default function Comment({
                 {comment?.image.length > 0 && (
                   <Grid container spacing={2}>
                     <Grid
-                      className='mt-2'
+                      className="mt-2"
                       key={comment?.image}
                       item
                       xs={12}
@@ -307,16 +307,16 @@ export default function Comment({
                         style={{
                           height: 200,
                           borderRadius: 8,
-                          width: '100%',
+                          width: "100%",
                           backgroundImage:
-                            'url(' +
+                            "url(" +
                             process.env.REACT_APP_BACKEND_URL +
                             comment.image +
-                            ')',
-                          backgroundSize: 'cover',
-                          backgroundColor: 'rgba(0,0,0,0.2)',
-                          backgroundBlendMode: 'soft-light',
-                          cursor: 'pointer',
+                            ")",
+                          backgroundSize: "cover",
+                          backgroundColor: "rgba(0,0,0,0.2)",
+                          backgroundBlendMode: "soft-light",
+                          cursor: "pointer",
                         }}
                       />
                     </Grid>
@@ -327,124 +327,124 @@ export default function Comment({
           </Card>
           <Card
             style={{
-              position: 'absolute',
-              alignSelf: 'baseline',
+              position: "absolute",
+              alignSelf: "baseline",
               borderRadius: 10,
               backgroundColor: theme.palette.background.default,
-              display: likeHovered ? 'block' : 'none',
-              transform: 'translateY(-28px)',
+              display: likeHovered ? "block" : "none",
+              transform: "translateY(-28px)",
               zIndex: 10,
             }}
             onMouseEnter={() => setLikeHovered(true)}
             onMouseLeave={() => setLikeHovered(false)}
           >
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('like');
+                handleCreateReaction("like");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<ThumbUpRounded className={classes.primary} />}
             >
               Like
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('love');
+                handleCreateReaction("love");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<FavoriteRounded className={classes.red} />}
             >
               Love
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('dislike');
+                handleCreateReaction("dislike");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<ThumbDownRounded className={classes.primary} />}
             >
               Dislike
             </Button>
             <Button
-              color='default'
+              color="default"
               textCase
               onClick={() => {
-                handleCreateReaction('celebrate');
+                handleCreateReaction("celebrate");
                 setLikeHovered(false);
               }}
-              variant='text'
+              variant="text"
               startIcon={<PanToolRounded className={classes.green} />}
             >
               Celebrate
             </Button>
           </Card>
-          <div className='center-horizontal'>
+          <div className="center-horizontal">
             <ReactionButton
               handleRemoveReaction={handleRemoveReaction}
               reaction={userReaction}
               setLikeHovered={setLikeHovered}
               onMouseEnter={() => setLikeHovered(true)}
               onMouseLeave={() => setLikeHovered(false)}
-              variant='text'
-              color='default'
+              variant="text"
+              color="default"
               textCase
             />
             <Typography
               className={classes.clickableTypography}
-              variant='body2'
-              color='textSecondary'
+              variant="body2"
+              color="textSecondary"
               onClick={() => {
                 setOpenReactions(true);
                 setResourceReactions(comment);
               }}
             >
               {`${getReactionsSum(comment)} ${
-                getReactionsSum(comment) === 1 ? 'Reaction' : 'Reactions'
+                getReactionsSum(comment) === 1 ? "Reaction" : "Reactions"
               }`}
             </Typography>
-            <Divider orientation='vertical' />
+            <Divider orientation="vertical" />
             {/* {comment?.response_to ? '' : '.'} */}
             {!comment?.response_to && (
               <Typography
-                colorAlt='inherit'
+                colorAlt="inherit"
                 component={Button}
                 onClick={() => {
                   setOpenReplies(true);
                   setResponseTo(comment?._id);
                 }}
                 textCase
-                variantAlt='text'
-                className='p-0 my-1'
+                variantAlt="text"
+                className="p-0 my-1"
               >
                 Reply
               </Typography>
             )}
             {!comment?.response_to && (
               <>
-                {' '}
+                {" "}
                 <Typography
-                  className='mx-2 my-2'
-                  variant='body2'
-                  color='textSecondary'
+                  className="mx-2 my-2"
+                  variant="body2"
+                  color="textSecondary"
                 >
                   .
                 </Typography>
                 <Typography
-                  className='p-0 my-2'
-                  variant='body2'
-                  color='textSecondary'
+                  className="p-0 my-2"
+                  variant="body2"
+                  color="textSecondary"
                 >
                   {`${comment?.replies} ${
-                    comment?.replies === 1 ? 'Reply' : 'Replies'
+                    comment?.replies === 1 ? "Reply" : "Replies"
                   }`}
                 </Typography>
               </>
@@ -452,30 +452,30 @@ export default function Comment({
           </div>
           {openReplies && (
             <>
-              <div className='center-horizontal'>
+              <div className="center-horizontal">
                 <Avatar
                   style={{
                     backgroundColor: generateRandomColor(),
                   }}
                   src={scroll?.author?.image}
-                  className='mx-2'
+                  className="mx-2"
                 >
                   {currentUserInitials}
                 </Avatar>
-                <div style={{ width: '100%', marginTop: '5px' }}>
+                <div style={{ width: "100%", marginTop: "5px" }}>
                   <MentionsInput
-                    spellcheck='false'
-                    className='mentions-textarea'
-                    id='content-field'
+                    spellcheck="false"
+                    className="mentions-textarea"
+                    id="content-field"
                     onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         handleCreateReply(e);
                       }
                     }}
                     placeholder={
                       commentsData?.Comments?.get?.length > 0
-                        ? ''
-                        : 'Be the first to comment..'
+                        ? ""
+                        : "Be the first to comment.."
                     }
                     onChange={(e) =>
                       setReply(
@@ -490,9 +490,9 @@ export default function Comment({
                     value={reply}
                   >
                     <Mention
-                      markup='/*@__id__-__display__*/'
+                      markup="/*@__id__-__display__*/"
                       displayTransform={(id, display) => display}
-                      trigger='@'
+                      trigger="@"
                       data={mentions}
                       style={{
                         fontWeight: 900,
@@ -501,8 +501,8 @@ export default function Comment({
                   </MentionsInput>
                 </div>
                 <IconButton
-                  size='small'
-                  className='m-1 p-1'
+                  size="small"
+                  className="m-1 p-1"
                   // className='mx-3'
                   onClick={handleCreateReply}
                   // size='small'
@@ -511,15 +511,15 @@ export default function Comment({
                 </IconButton>
               </div>
               <Typography className={classes.inputHelper}>
-                <Typography color='error' variant='body2'>
-                  {replyErr && 'The comment content cannot be empty'}
+                <Typography color="error" variant="body2">
+                  {replyErr && "The comment content cannot be empty"}
                 </Typography>
                 <Typography>
                   <IconButton
-                    size='small'
-                    aria-label='pick emoji'
+                    size="small"
+                    aria-label="pick emoji"
                     aria-controls={emojiPickerId}
-                    aria-haspopup='true'
+                    aria-haspopup="true"
                     onClick={(e) => {
                       handleEmojiPickerOpen(e);
                     }}
@@ -527,7 +527,7 @@ export default function Comment({
                     <InsertEmoticon />
                   </IconButton>
                   <IconButton
-                    size='small'
+                    size="small"
                     //className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);

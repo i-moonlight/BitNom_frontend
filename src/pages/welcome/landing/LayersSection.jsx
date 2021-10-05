@@ -26,8 +26,8 @@ export default function LayersSection() {
         <Container maxWidth="lg">
           <Grid spacing={5} container className="pt-5">
             <Grid item lg={12}>
-              <Typography variant="h6" color="textPrimary">
-                BitNorm Platform Layers
+              <Typography variant="h5" color="textPrimary" className="fw-bold">
+                BITNORM PLATFORM LAYERS
               </Typography>
             </Grid>
           </Grid>

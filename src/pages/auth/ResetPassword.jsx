@@ -24,7 +24,7 @@ export default function ResetPassword() {
   });
 
   useEffect(() => {
-    JSON.stringify(user) !== "{}" && history.push("/");
+    JSON.stringify(user) !== "{}" && history.push("/dashboard");
   }, [history, user]);
 
   return (

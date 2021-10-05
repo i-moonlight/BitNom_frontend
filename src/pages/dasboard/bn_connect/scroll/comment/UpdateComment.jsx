@@ -1,5 +1,5 @@
 //TODO: Upload video
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import {
   Avatar,
   Card,
@@ -19,32 +19,32 @@ import {
   Modal,
   Typography,
   useTheme,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   ChevronRight,
   CloseRounded,
   ImageRounded,
   Public,
   InsertEmoticon,
-} from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useEffect, useState } from 'react';
-import { MentionsInput, Mention } from 'react-mentions';
-import { useSelector } from 'react-redux';
-import Button from '../../../../../components/Button';
-import { getUserInitials } from '../../../../../utilities/Helpers';
+} from "@material-ui/icons";
+import { DropzoneArea } from "material-ui-dropzone";
+import React, { useEffect, useState } from "react";
+import { MentionsInput, Mention } from "react-mentions";
+import { useSelector } from "react-redux";
+import Button from "../../../../../components/Button";
+import { getUserInitials } from "../../../../../utilities/Helpers";
 import {
   generateRandomColor,
   mentionsFinder,
   mentionsUpdate,
-} from '../../../utilities/functions';
+} from "../../../utilities/functions";
 import {
   MUTATION_DELETE_COMMENT,
   MUTATION_UPDATE_COMMENT,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-} from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+} from "../../../utilities/queries";
+import EmojiPickerPopover from "../../popovers/EmojiPickerPopover";
 
 export default function UpdateComment({
   updateCommentOpen,
@@ -57,12 +57,12 @@ export default function UpdateComment({
 }) {
   const [updateCommentErr, setUpdateCommentErr] = useState(null);
   const [fileType, setFileType] = useState(null);
-  const [comment_text, setCommentText] = useState('');
+  const [comment_text, setCommentText] = useState("");
   const [comment_image, setCommentImage] = useState(undefined);
   const [openDelete, setOpenDelete] = useState(false);
   const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
 
-  const emojiPickerId = 'emoji-picker-popover';
+  const emojiPickerId = "emoji-picker-popover";
   const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
   const theme = useTheme();
@@ -98,7 +98,7 @@ export default function UpdateComment({
         },
       ],
     });
-    setCommentText('');
+    setCommentText("");
     setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
@@ -118,7 +118,7 @@ export default function UpdateComment({
         },
       ],
     });
-    setCommentText('');
+    setCommentText("");
     setCommentImage(undefined);
     setUpdateCommentErr(false);
     setOpenImage(false);
@@ -146,8 +146,8 @@ export default function UpdateComment({
   }, [data, deleteData]);
 
   useEffect(() => {
-    if (commentToEdit?.image.trim() !== '') {
-      setFileType('image');
+    if (commentToEdit?.image.trim() !== "") {
+      setFileType("image");
     }
     if (commentToEdit) {
       setCommentText(mentionsUpdate(commentToEdit?.content));
@@ -163,7 +163,7 @@ export default function UpdateComment({
 
   const handleUpdateComment = (e) => {
     e.preventDefault();
-    if (comment_text.trim() == '') return setUpdateCommentErr(true);
+    if (comment_text.trim() == "") return setUpdateCommentErr(true);
 
     const mentionsData = mentionsFinder(comment_text);
     onUpdateComment({
@@ -188,23 +188,23 @@ export default function UpdateComment({
     <>
       <Modal
         style={{
-          outline: 'none',
+          outline: "none",
 
-          '&:focus-visible': {
-            outline: 'none',
+          "&:focus-visible": {
+            outline: "none",
           },
         }}
-        className='center-horizontal center-vertical w-100'
+        className="center-horizontal center-vertical w-100"
         open={updateCommentOpen}
       >
         <Grid container>
           <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
           <Grid item lg={6} md={8} sm={10} xs={10}>
             <Card>
-              <div className='space-between mx-3 my-2'>
-                <Typography variant='body2'></Typography>
-                <Typography variant='body1'>Update Comment</Typography>
-                <IconButton size='small' className='m-1 p-1'>
+              <div className="space-between mx-3 my-2">
+                <Typography variant="body2"></Typography>
+                <Typography variant="body1">Update Comment</Typography>
+                <IconButton size="small" className="m-1 p-1">
                   <CloseRounded
                     onClick={() => {
                       setUpdateCommentOpen(!updateCommentOpen);
@@ -219,8 +219,8 @@ export default function UpdateComment({
               </div>
 
               <Divider />
-              <CardContent style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                <ListItem className='p-0'>
+              <CardContent style={{ maxHeight: "500px", overflowY: "auto" }}>
+                <ListItem className="p-0">
                   <ListItemAvatar>
                     <Avatar
                       style={{
@@ -238,14 +238,14 @@ export default function UpdateComment({
                         textCase
                         style={{
                           backgroundColor: theme.palette.background.default,
-                          padding: '0px 10px',
-                          textTransform: 'none',
+                          padding: "0px 10px",
+                          textTransform: "none",
                         }}
                         startIcon={<Public />}
                         endIcon={
                           <ChevronRight
                             style={{
-                              transform: 'rotateZ(90deg)',
+                              transform: "rotateZ(90deg)",
                             }}
                           />
                         }
@@ -256,15 +256,15 @@ export default function UpdateComment({
                   />
                 </ListItem>
                 <MentionsInput
-                  spellcheck='false'
-                  className='mentions-textarea'
-                  id='content-field'
+                  spellcheck="false"
+                  className="mentions-textarea"
+                  id="content-field"
                   /* onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleCreateComment(e);
                   }
                 }} */
-                  placeholder='Write Comment'
+                  placeholder="Write Comment"
                   onChange={(e) =>
                     setCommentText(
                       comment_text?.length >= 250
@@ -275,21 +275,21 @@ export default function UpdateComment({
                   value={comment_text}
                 >
                   <Mention
-                    markup='/*@__id__-__display__*/'
+                    markup="/*@__id__-__display__*/"
                     displayTransform={(id, display) => display}
-                    trigger='@'
+                    trigger="@"
                     data={mentions}
                     style={{
                       fontWeight: 900,
                     }}
                   />
                 </MentionsInput>
-                <Typography color='error' variant='body2'>
-                  {updateCommentErr && 'The comment content cannot be empty'}
+                <Typography color="error" variant="body2">
+                  {updateCommentErr && "The comment content cannot be empty"}
                 </Typography>
                 <Card
                   style={{
-                    display: openImage ? 'block' : 'none',
+                    display: openImage ? "block" : "none",
                   }}
                 >
                   <DropzoneArea
@@ -297,24 +297,24 @@ export default function UpdateComment({
                     onChange={(files) => {
                       setCommentImage(files[0]);
                     }}
-                    dropzoneText={'Drag n drop an image here or click'}
-                    acceptedFiles={['image/*']}
+                    dropzoneText={"Drag n drop an image here or click"}
+                    acceptedFiles={["image/*"]}
                     maxFileSize={5000000}
                     filesLimit={1}
-                    showAlerts={['error']}
+                    showAlerts={["error"]}
                     showPreviews={false}
                     showPreviewsInDropzone
                     previewGridProps={{
-                      container: { spacing: 1, direction: 'row' },
+                      container: { spacing: 1, direction: "row" },
                     }}
                   />
                 </Card>
-                {commentToEdit?.image?.trim() !== '' && fileType !== null && (
+                {commentToEdit?.image?.trim() !== "" && fileType !== null && (
                   <Card>
-                    <div className='space-between mx-3 my-2'>
-                      <Typography variant='body2'></Typography>
-                      <Typography variant='body1'></Typography>
-                      <IconButton size='small' className='m-1 p-1'>
+                    <div className="space-between mx-3 my-2">
+                      <Typography variant="body2"></Typography>
+                      <Typography variant="body1"></Typography>
+                      <IconButton size="small" className="m-1 p-1">
                         <CloseRounded
                           onClick={() => {
                             setFileType(null);
@@ -323,9 +323,9 @@ export default function UpdateComment({
                         />
                       </IconButton>
                     </div>
-                    <Grid container spacing={2} className='mb-2'>
+                    <Grid container spacing={2} className="mb-2">
                       <Grid
-                        className='mt-3'
+                        className="mt-3"
                         key={commentToEdit?.image}
                         item
                         xs={12}
@@ -334,16 +334,16 @@ export default function UpdateComment({
                           style={{
                             height: 200,
                             borderRadius: 8,
-                            width: '100%',
+                            width: "100%",
                             backgroundImage:
-                              'url(' +
+                              "url(" +
                               process.env.REACT_APP_BACKEND_URL +
                               commentToEdit?.image +
-                              ')',
-                            backgroundSize: 'cover',
-                            backgroundColor: 'rgba(0,0,0,0.2)',
-                            backgroundBlendMode: 'soft-light',
-                            cursor: 'pointer',
+                              ")",
+                            backgroundSize: "cover",
+                            backgroundColor: "rgba(0,0,0,0.2)",
+                            backgroundBlendMode: "soft-light",
+                            cursor: "pointer",
                           }}
                         />
                       </Grid>
@@ -354,14 +354,14 @@ export default function UpdateComment({
                 <Dialog
                   open={openDelete}
                   onClose={() => setOpenDelete(false)}
-                  aria-labelledby='alert-dialog-title'
-                  aria-describedby='alert-dialog-description'
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
                 >
-                  <DialogTitle id='alert-dialog-title'>
-                    {'Delete this comment?'}
+                  <DialogTitle id="alert-dialog-title">
+                    {"Delete this comment?"}
                   </DialogTitle>
                   <DialogContent>
-                    <DialogContentText id='alert-dialog-description'>
+                    <DialogContentText id="alert-dialog-description">
                       This can’t be undone and it will be removed from your
                       profile and from the BNConnect platform.
                     </DialogContentText>
@@ -369,13 +369,13 @@ export default function UpdateComment({
                   <DialogActions>
                     <Button
                       onClick={() => setOpenDelete(false)}
-                      color='primary'
+                      color="primary"
                     >
                       Cancel
                     </Button>
                     <Button
                       onClick={handleDeleteComment}
-                      color='primary'
+                      color="primary"
                       autoFocus
                     >
                       Delete
@@ -389,13 +389,13 @@ export default function UpdateComment({
                   handleEmojiPickerClose={handleEmojiPickerClose}
                   handleSelectEmoji={handleSelectEmoji}
                 />
-                <div className='space-between mt-1'>
-                  <div className='center-horizontal'>
+                <div className="space-between mt-1">
+                  <div className="center-horizontal">
                     <IconButton
-                      size='small'
-                      aria-label='pick emoji'
+                      size="small"
+                      aria-label="pick emoji"
                       aria-controls={emojiPickerId}
-                      aria-haspopup='true'
+                      aria-haspopup="true"
                       onClick={(e) => {
                         handleEmojiPickerOpen(e);
                       }}
@@ -403,8 +403,8 @@ export default function UpdateComment({
                       <InsertEmoticon />
                     </IconButton>
                     <IconButton
-                      size='small'
-                      className='m-1 p-1'
+                      size="small"
+                      className="m-1 p-1"
                       onClick={() => {
                         setOpenImage(true);
                         setFileType(null);
@@ -420,11 +420,11 @@ export default function UpdateComment({
                   <div>
                     <Button
                       style={{
-                        backgroundColor: '#ba000d',
-                        color: '#FFFFFF',
-                        marginRight: '12px',
+                        backgroundColor: "#ba000d",
+                        color: "#FFFFFF",
+                        marginRight: "12px",
                       }}
-                      variant='contained'
+                      variant="contained"
                       onClick={() => setOpenDelete(true)}
                     >
                       Delete
@@ -433,7 +433,7 @@ export default function UpdateComment({
                       <Button onClick={handleUpdateComment}>Update</Button>
                     )}
                     {loading && (
-                      <Button size='small' style={{ margin: '0' }}>
+                      <Button size="small" style={{ margin: "0" }}>
                         <CircularProgress size={24} thickness={4} />
                       </Button>
                     )}

@@ -1,12 +1,13 @@
-import { useTheme } from "@material-ui/core";
 import {
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router";
 import card1Img from "../../../assets/landing/card (1).svg";
 import card2Img from "../../../assets/landing/card (2).svg";
 import card3Img from "../../../assets/landing/card (3).svg";
@@ -17,8 +18,9 @@ import DarkTheme from "../../../utilities/DarkTheme";
 import { useStyles } from "./Landing";
 
 export default function ProjectSection() {
-  const classes = useStyles();
+  const history = useHistory();
   const theme = useTheme();
+  const classes = useStyles();
 
   return (
     <Grid style={{ backgroundColor: theme.palette.background.landing }}>
@@ -26,7 +28,7 @@ export default function ProjectSection() {
         <Grid container spacing={5}>
           <Grid item md={6} className="my-5">
             <div className="m-3">
-              <Typography variant="h5" color="textPrimary">
+              <Typography variant="h5" color="textPrimary" className="fw-bold">
                 Our Project &amp; Ecosystem
               </Typography>
               <Typography
@@ -94,7 +96,12 @@ export default function ProjectSection() {
           </Grid>
           <Grid item md={6} sm={10} className="my-5">
             <div className="m-3 pt-3">
-              <Typography gutterBottom variant="h5" color="textPrimary">
+              <Typography
+                gutterBottom
+                variant="h5"
+                color="textPrimary"
+                className="fw-bold"
+              >
                 Share your vision instantly
               </Typography>
               <img
@@ -102,6 +109,9 @@ export default function ProjectSection() {
                 src={visionImg}
                 alt=""
                 className="my-2"
+                onClick={() => {
+                  history.push("/dashboard");
+                }}
               />
               <Typography
                 className={classes.sectionText + "mt-2"}
@@ -114,9 +124,9 @@ export default function ProjectSection() {
                 profiles with an emphasis on their activity and interests in
                 cryptocurrencies.
               </Typography>
-              <Typography className={classes.sectionText} color="textPrimary">
-                <a href="">Read more about this feature &gt;</a>
-              </Typography>
+              {/* <Typography className={classes.sectionText} color='textPrimary'>
+                <a href=''>Read more about this feature &gt;</a>
+              </Typography> */}
             </div>
           </Grid>
         </Grid>

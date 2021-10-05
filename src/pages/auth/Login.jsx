@@ -39,7 +39,7 @@ export default function Login() {
   // useQuery(QUERY, { variables, context: { clientName: 'third-party' } })
 
   useEffect(() => {
-    JSON.stringify(user) !== "{}" && history.push("/");
+    JSON.stringify(user) !== "{}" && history.push("/dashboard");
   }, [user, history]);
 
   const responseGoogle = (response) => {

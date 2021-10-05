@@ -19,8 +19,8 @@ export default function ServicesSection() {
         <Grid spacing={5} container className="py-5">
           <Grid item sm={10} md={6} className="py-5 mt-3">
             <Typography
-              className={classes.sectionText}
-              variant="h6"
+              className="fw-bold mb-2"
+              variant="h5"
               color="textPrimary"
             >
               The fastest and easiest wayto bring your product to life

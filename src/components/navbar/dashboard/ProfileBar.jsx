@@ -52,7 +52,7 @@ export default function ProfileBar({
         <Card elevation={0} className={classes.appBar}>
           <div
             className="center-horizontal c-pointer"
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/dashboard")}
           >
             <Hidden smDown>
               <div>
