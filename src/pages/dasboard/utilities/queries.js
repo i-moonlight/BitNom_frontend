@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // Users
 export const QUERY_FETCH_PROFILE = gql`
@@ -218,6 +218,20 @@ _id
           lat
           long
           address
+        }
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+          mentioned {
+            _id
+            displayName
+          }
         }
         link
         attendees {

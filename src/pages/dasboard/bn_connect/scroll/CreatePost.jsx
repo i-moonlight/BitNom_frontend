@@ -13,6 +13,7 @@ import {
   ListItemText,
   Modal,
   Typography,
+  //TextField,
   //useTheme,
 } from '@material-ui/core';
 import {
@@ -31,7 +32,11 @@ import Button from '../../../../components/Button';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import { generateRandomColor, getFeed } from '../../utilities/functions';
+import {
+  generateRandomColor,
+  getFeed,
+  mentionsFinder,
+} from '../../utilities/functions';
 import {
   MUTATION_CREATE_POST,
   QUERY_LOAD_SCROLLS,
@@ -59,7 +64,7 @@ export default function CreatePost({
   const [scroll_images, setScrollImages] = useState([]);
   const [scroll_video, setScrollVideo] = useState(null);
   //const theme = useTheme();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const [
     createPost,
@@ -71,9 +76,8 @@ export default function CreatePost({
   ] = useMutation(MUTATION_CREATE_POST);
 
   const userInitials = getUserInitials(user?.displayName);
-  console.log(sharedResource, 'RESOURDE');
 
-  const onCreatePost = async ICreatePost => {
+  const onCreatePost = async (ICreatePost) => {
     await createPost({
       variables: {
         data: ICreatePost,
@@ -100,14 +104,14 @@ export default function CreatePost({
     setOpenVideo(false);
   };
 
-  const mentions = profileData?.followers?.map?.(item => {
+  const mentions = profileData?.followers?.map?.((item) => {
     return {
       id: item?.userId?._id,
       display: item?.userId?.displayName,
     };
   });
 
-  const handleCreatePost = e => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
 
     if (scroll_text.trim() == '') return setCreatePostErr(true);
@@ -121,8 +125,11 @@ export default function CreatePost({
       ? { _id: sharedResource?._id, type: sharedResourceType }
       : null;
     const flag = sharedResource ? sharedResource?.is_flag : null;
+
+    const mentionsData = mentionsFinder(scroll_text);
     onCreatePost({
-      content: scroll_text.replace(/\/\*.+?\*\//g, ''),
+      content: mentionsData.content,
+      content_entities: mentionsData.contentEntities,
       images: scroll_images,
       video: scroll_video,
       shared_resource: shared,
@@ -158,6 +165,7 @@ export default function CreatePost({
                   onClick={() => {
                     setOpen(!open);
                     setOpenImage(false);
+                    setScrollText('');
                     setOpenVideo(false);
                     setScrollImages([]);
                     setScrollVideo(null);
@@ -212,7 +220,7 @@ export default function CreatePost({
                 className='mentions-textarea'
                 id='content-field'
                 placeholder="What's happening"
-                onChange={e =>
+                onChange={(e) =>
                   setScrollText(
                     scroll_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -222,14 +230,12 @@ export default function CreatePost({
                 value={scroll_text}
               >
                 <Mention
-                  markup='@__id__/*__display__*/'
+                  markup='/*@__id__-__display__*/'
                   displayTransform={(id, display) => display}
                   trigger='@'
                   data={mentions}
-                  appendSpaceOnAdd={true}
                   style={{
                     fontWeight: 900,
-                    //color: '#7eb1cf',
                   }}
                 />
               </MentionsInput>
@@ -239,11 +245,10 @@ export default function CreatePost({
               {/* <TextField
                 fullWidth
                 multiline
-                variant="standard"
+                variant='standard'
                 error={createPostErr && true}
-                errorText=
                 rows={5}
-                id="content-field"
+                id='content-field'
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -259,7 +264,7 @@ export default function CreatePost({
               >
                 <DropzoneArea
                   clearOnUnmount
-                  onChange={files => {
+                  onChange={(files) => {
                     openImage
                       ? setScrollImages(files)
                       : setScrollVideo(files[0]);
