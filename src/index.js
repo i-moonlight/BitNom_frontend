@@ -8,20 +8,22 @@ import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
+const storeName = '5637759616334';
+
 // Save to local storage // Use Local Storage Persistance
 const saveToLocalStorage = (state) => {
     try {
         const stringState = JSON.stringify(state);
-        localStorage.setItem('@knjhffkgjbmbmnccmnvfseab', stringState);
+        localStorage.setItem(storeName, stringState);
     } catch (err) {
-        console.log(err);
+        console.log('Error saving state to local storage: ', err);
     }
 };
 
 // Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
     try {
-        const stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
+        const stringState = localStorage.getItem(storeName);
         if (stringState === null) return undefined;
         return JSON.parse(stringState);
     } catch (err) {

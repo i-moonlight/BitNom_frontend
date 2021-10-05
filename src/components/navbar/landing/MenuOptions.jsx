@@ -8,6 +8,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MenuOptions({ show, items = [], mobile }) {
     const [showMenu, setShowMenu] = useState(false);
@@ -48,7 +49,13 @@ export default function MenuOptions({ show, items = [], mobile }) {
                         </ListItemIcon>
                         <ListItemText
                             primary={
-                                <Typography noWrap>{item?.text}</Typography>
+                                item?.link ? (
+                                    <Link className="alt" to={item?.link}>
+                                        {item?.text}
+                                    </Link>
+                                ) : (
+                                    <Typography noWrap>{item?.text}</Typography>
+                                )
                             }
                         />
                     </ListItem>

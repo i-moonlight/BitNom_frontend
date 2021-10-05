@@ -922,7 +922,7 @@ export default function InvestorTab() {
                                                     </Typography>
                                                 </div>
                                                 <div className="my-5">
-                                                    <Typography className="my-4 fw-bold">
+                                                    <span className="my-4 fw-bold">
                                                         <span
                                                             style={{
                                                                 zIndex: 3,
@@ -943,7 +943,7 @@ export default function InvestorTab() {
                                                                 borderRadius: 20,
                                                             }}
                                                         ></div>
-                                                    </Typography>
+                                                    </span>
                                                     <Typography className="my-4 fw-bold">
                                                         Cryptocurrency Traders
                                                     </Typography>
