@@ -5,7 +5,11 @@ export const contentBodyFactory = (resource) => {
     if (entity.type === "url") {
       const link = `${entity.url}`;
       const replacement =
-        "<a style={{zIndex: 2}} href=" + link + ">" + entity.url + "</a>";
+        '<a style={{zIndex: 2}} target="_blank" href=' +
+        link +
+        ">" +
+        entity.url +
+        "</a>";
       const toReplace = entity.url;
       newContent = newContent?.replace(toReplace, replacement);
     } else if (entity.type === "resource_tag" && entity.mentioned !== null) {
@@ -38,7 +42,6 @@ export const contentBodyFactory = (resource) => {
       newContent = newContent?.replace(toReplace, replacement);
     }
   });
-
   return newContent;
 };
 
@@ -61,6 +64,50 @@ export const notificationBodyFactory = (notification) => {
   });
 
   return newContent;
+};
+
+export const mentionsFinder = (content) => {
+  const mentionsRegex = /\/\*.+?-.+?\*\//g;
+  const mentions = content.match(mentionsRegex);
+  const contentEntities = [];
+  let newContent = content;
+
+  if (mentions) {
+    mentions.map((match) => {
+      const parts = match.substring(2, match.length - 2).split(/\s*-\s*/g);
+      const link = `/users/${parts[0].substring(1)}`;
+      const replacement =
+        "<a style={{zIndex: 2}} href=" + link + ">" + parts[1] + "</a>";
+      newContent = newContent?.replace(match, replacement);
+      const type = "resource_tag";
+      const url = parts[0].substring(1);
+      const offset = content.indexOf(parts[0]);
+      const length = parts[0].length;
+      contentEntities.push({
+        type,
+        offset,
+        length,
+        url,
+      });
+    });
+  }
+  return { contentEntities: contentEntities, content: newContent };
+};
+
+export const mentionsUpdate = (content) => {
+  const mentionsRegex = /<a style={{zIndex: 2}} href=\/users\/.+?>(.*?)<\/a>/g;
+  const mentions = content.match(mentionsRegex);
+  let displayContent = content;
+
+  if (mentions) {
+    mentions.map((match) => {
+      const mention = match
+        .replace(/<a style={{zIndex: 2}} href=\/users\//, "")
+        .replace(/>.+?<\/a>/, "");
+      displayContent = displayContent?.replace(match, "@" + mention);
+    });
+  }
+  return displayContent;
 };
 
 export const truncateText = (str, n) => {

@@ -31,10 +31,15 @@ import {
 import { DropzoneArea } from "material-ui-dropzone";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { MentionsInput, Mention } from "react-mentions";
 import Button from "../../../../components/Button";
-import TextField from "../../../../components/TextField";
+//import TextField from '../../../../components/TextField';
 import { getUserInitials } from "../../../../utilities/Helpers";
-import { generateRandomColor } from "../../utilities/functions";
+import {
+  generateRandomColor,
+  mentionsUpdate,
+  mentionsFinder,
+} from "../../utilities/functions";
 import {
   MUTATION_DELETE_POST,
   MUTATION_UPDATE_POST,
@@ -45,6 +50,7 @@ export default function UpdatePost({
   updateScrollOpen,
   setUpdateScrollOpen,
   postToEdit,
+  profileData,
   setPostToEdit,
   openImage,
   imageDisabled,
@@ -131,16 +137,25 @@ export default function UpdatePost({
       setFileType("video");
     }
     if (postToEdit) {
-      setScrollText(postToEdit?.content);
+      setScrollText(mentionsUpdate(postToEdit?.content));
     }
   }, [postToEdit]);
+
+  const mentions = profileData?.followers?.map?.((item) => {
+    return {
+      id: item?.userId?._id,
+      display: item?.userId?.displayName,
+    };
+  });
 
   const handleUpdatePost = (e) => {
     e.preventDefault();
     if (scroll_text.trim() == "") return setUpdatePostErr(true);
+    const mentionsData = mentionsFinder(scroll_text);
     onUpdatePost({
       post_id: postToEdit?._id,
-      content: scroll_text,
+      content: mentionsData.content,
+      content_entities: mentionsData.contentEntities,
       images: scroll_images,
       video: scroll_video,
     });
@@ -230,14 +245,41 @@ export default function UpdatePost({
                   }
                 />
               </ListItem>
-              <TextField
+              <MentionsInput
+                spellcheck="false"
+                className="mentions-textarea"
+                id="content-field"
+                placeholder="What's happening"
+                onChange={(e) =>
+                  setScrollText(
+                    scroll_text?.length >= 250
+                      ? e.target.value.substring(0, e.target.value.length - 1)
+                      : e.target.value.substring(0, 250)
+                  )
+                }
+                value={scroll_text}
+              >
+                <Mention
+                  markup="/*@__id__-__display__*/"
+                  displayTransform={(id, display) => display}
+                  trigger="@"
+                  data={mentions}
+                  style={{
+                    fontWeight: 900,
+                  }}
+                />
+              </MentionsInput>
+              <Typography color="error" variant="body2">
+                {updatePostErr && "The post content cannot be empty"}
+              </Typography>
+              {/*  <TextField
                 fullWidth
                 multiline
-                variant="standard"
+                variant='standard'
                 error={updatePostErr && true}
-                errorText={updatePostErr && "The post content cannot be empty"}
+                errorText={updatePostErr && 'The post content cannot be empty'}
                 rows={5}
-                id="update-scroll-field"
+                id='update-scroll-field'
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
@@ -247,7 +289,7 @@ export default function UpdatePost({
                   )
                 }
                 value={scroll_text}
-              />
+              /> */}
               <Card
                 style={{
                   display: openImage || openVideo ? "block" : "none",

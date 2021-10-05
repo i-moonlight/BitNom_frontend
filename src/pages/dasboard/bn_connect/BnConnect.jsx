@@ -223,6 +223,7 @@ export default function BnConnect() {
         setSharedResource={setSharedResource}
       />
       <UpdatePost
+        profileData={profileData?.Users?.profile}
         updateScrollOpen={updateScrollOpen}
         postToEdit={postToEdit}
         setPostToEdit={setPostToEdit}
@@ -239,6 +240,7 @@ export default function BnConnect() {
         setOpenVideo={setOpenVideo}
       />
       <UpdateComment
+        profileData={profileData?.Users?.profile}
         updateCommentOpen={updateCommentOpen}
         commentToEdit={commentToEdit}
         setCommentToEdit={setCommentToEdit}

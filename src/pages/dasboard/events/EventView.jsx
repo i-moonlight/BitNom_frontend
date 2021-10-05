@@ -34,6 +34,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import React, { useState, useEffect, useCallback } from "react";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 import Button from "../../../components/Button";
 import { Link } from "react-router-dom";
 import Screen from "../../../components/Screen";
@@ -107,6 +108,8 @@ export default function EventView({ match }) {
   const [createFlagOpen, setCreateFlagOpen] = useState(false);
 
   const classes = useStyles();
+  const history = useHistory();
+
   const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
   const { loading: eventLoading, data: eventData } = useQuery(
     QUERY_EVENT_BY_ID,
@@ -248,6 +251,18 @@ export default function EventView({ match }) {
     },
     [profile?._id]
   );
+
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest("a");
+    if (!targetLink) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (targetLink.target == "_blank") {
+      window.open(targetLink.href, "_blank");
+    } else {
+      history.push(targetLink.href.substring(location.origin.length));
+    }
+  };
 
   useEffect(() => {
     if (getAttendeeStatus(eventData?.Events?.getById) == true) {
@@ -693,6 +708,8 @@ export default function EventView({ match }) {
                           </Typography>
                           <Typography component="p" variant="body2">
                             <Typography
+                              onClick={(e) => contentClickHandler(e)}
+                              style={{ zIndex: 2 }}
                               dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(
                                   eventData?.Events?.getById
@@ -742,7 +759,7 @@ export default function EventView({ match }) {
                             <Typography variant="body1">
                               Attending Event
                             </Typography>
-                            <List>
+                            <List component="div">
                               {eventData?.Events?.getById?.attendees?.map(
                                 (user) => (
                                   <AttendeeComponent

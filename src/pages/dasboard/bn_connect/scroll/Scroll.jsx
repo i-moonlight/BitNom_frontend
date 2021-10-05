@@ -25,6 +25,7 @@ import {
   ShareRounded,
   ThumbDownRounded,
   ThumbUpRounded,
+  InsertEmoticon,
 } from "@material-ui/icons";
 import { DropzoneDialog } from "material-ui-dropzone";
 import moment from "moment";
@@ -32,7 +33,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import Button from "../../../../components/Button";
 import ReactionButton from "../../../../components/ReactionButton";
 //import ImagePreview from '../../../components/ImagePreview';
-import TextField from "../../../../components/TextField";
+//import TextField from '../../../../components/TextField';
+import { MentionsInput, Mention } from "react-mentions";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUserInitials } from "../../../../utilities/Helpers";
@@ -40,7 +42,9 @@ import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
+  mentionsFinder,
 } from "../../utilities/functions";
+
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
@@ -53,6 +57,7 @@ import Comment from "./comment/Comment";
 import ScrollOptionsPopover from "./ScrollOptionsPopover";
 import ScrollPreview from "./ScrollPreview";
 import EventPreview from "../../events/EventPreview";
+import EmojiPickerPopover from "../popovers/EmojiPickerPopover";
 
 const useStyles = makeStyles((theme) => ({
   clickableTypography: {
@@ -72,6 +77,16 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
     },
   },
+  inputHelper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: "0px 10px 0px 5px",
+    [theme.breakpoints.up("md")]: {
+      padding: "0px 30px 0px 20px",
+    },
+  },
   red: {
     color: red[500],
   },
@@ -84,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const scrollOptionId = "menu-scroll-option";
+const emojiPickerId = "emoji-picker-popover";
 
 export default function Scroll({
   scroll,
@@ -103,6 +119,7 @@ export default function Scroll({
 }) {
   const classes = useStyles();
   const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
+  const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
   const [userReaction, setUserReaction] = useState();
   const [reactionIcon, setReactionIcon] = useState();
   const [openComments, setOpenComments] = useState(false);
@@ -111,7 +128,9 @@ export default function Scroll({
   const [openImage, setOpenImage] = useState(false);
   const [likeHovered, setLikeHovered] = useState(false);
   const [createCommentErr, setCreateCommentErr] = useState(false);
+
   const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
+  const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
   const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
   const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
 
@@ -157,12 +176,22 @@ export default function Scroll({
     setCreateCommentErr(false);
   };
 
+  const mentions = profileData?.followers?.map?.((item) => {
+    return {
+      id: item?.userId?._id,
+      display: item?.userId?.displayName,
+    };
+  });
+
   const handleCreateComment = (e) => {
     e.preventDefault();
     if (comment_text.trim() == "" && !comment_image)
       return setCreateCommentErr(true);
+
+    const mentionsData = mentionsFinder(comment_text);
     onCreateComment({
-      content: comment_text,
+      content: mentionsData.content,
+      content_entities: mentionsData.contentEntities,
       scroll: scroll?._id,
       image: comment_image,
     });
@@ -174,6 +203,14 @@ export default function Scroll({
 
   const handleScrollOptionClose = () => {
     setScrollOptionAnchorEl(null);
+  };
+
+  const handleEmojiPickerOpen = (event) => {
+    setEmojiPickerAnchorEl(event.currentTarget);
+  };
+
+  const handleEmojiPickerClose = () => {
+    setEmojiPickerAnchorEl(null);
   };
 
   const handleCreateReaction = (reaction) => {
@@ -203,6 +240,11 @@ export default function Scroll({
     });
     setIcon();
     setUserReaction();
+  };
+
+  const handleSelectEmoji = (emoji) => {
+    handleEmojiPickerClose();
+    setCommentText(`${comment_text} ${emoji.native}`);
   };
 
   const getUserReaction = useCallback(
@@ -238,7 +280,11 @@ export default function Scroll({
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
-    history.push(targetLink.href.substring(location.origin.length));
+    if (targetLink.target == "_blank") {
+      window.open(targetLink.href, "_blank");
+    } else {
+      history.push(targetLink.href.substring(location.origin.length));
+    }
   };
 
   const authorInitials = getUserInitials(scroll?.author?.displayName);
@@ -504,15 +550,104 @@ export default function Scroll({
               >
                 {currentUserInitials}
               </Avatar>
+              <div style={{ width: "100%", marginTop: "5px" }}>
+                <MentionsInput
+                  spellcheck="false"
+                  className="mentions-textarea"
+                  id="content-field"
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleCreateComment(e);
+                    }
+                  }}
+                  placeholder={
+                    commentsData?.Comments?.get?.length > 0
+                      ? ""
+                      : "Be the first to comment.."
+                  }
+                  onChange={(e) =>
+                    setCommentText(
+                      comment_text?.length >= 250
+                        ? e.target.value.substring(0, e.target.value.length - 1)
+                        : e.target.value.substring(0, 250)
+                    )
+                  }
+                  value={comment_text}
+                >
+                  <Mention
+                    markup="/*@__id__-__display__*/"
+                    displayTransform={(id, display) => display}
+                    trigger="@"
+                    data={mentions}
+                    style={{
+                      fontWeight: 900,
+                    }}
+                  />
+                </MentionsInput>
+              </div>
+              <IconButton
+                size="small"
+                className="m-1 p-1"
+                // className='mx-3'
+                onClick={handleCreateComment}
+                // size='small'
+              >
+                <Send />
+              </IconButton>
+            </div>
+            <Typography className={classes.inputHelper}>
+              <Typography color="error" variant="body2">
+                {createCommentErr && "The comment content cannot be empty"}
+              </Typography>
+              <Typography>
+                <IconButton
+                  size="small"
+                  aria-label="pick emoji"
+                  aria-controls={emojiPickerId}
+                  aria-haspopup="true"
+                  onClick={(e) => {
+                    handleEmojiPickerOpen(e);
+                  }}
+                >
+                  <InsertEmoticon />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  //className='m-1 p-1'
+                  onClick={() => {
+                    setOpenImage(true);
+                  }}
+                >
+                  <ImageRounded />
+                </IconButton>
+              </Typography>
+            </Typography>
+
+            {/* <div className='center-horizontal'>
+              <Avatar
+                style={{
+                  backgroundColor: generateRandomColor(),
+                }}
+                src={scroll?.author?.image}
+                className='mx-2'
+              >
+                {currentUserInitials}
+              </Avatar>
               <TextField
                 fullWidth
                 error={createCommentErr && true}
                 errorText={createCommentErr && "The comment cannot be empty"}
                 multiline
                 rowsMax={10}
+<<<<<<< HEAD
                 id="comment-field"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
+=======
+                id='comment-field'
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+>>>>>>> f33b24dd7acf286d948158a200d4281db4e8b8ba
                     handleCreateComment(e);
                   }
                 }}
@@ -551,7 +686,7 @@ export default function Scroll({
               >
                 <Send />
               </IconButton>
-            </div>
+            </div> */}
 
             <DropzoneDialog
               previewGridProps={{ container: { spacing: 1, direction: "row" } }}
@@ -608,6 +743,13 @@ export default function Scroll({
         setPostToEdit={setPostToEdit}
         setOpenFlag={setOpenFlag}
         setUpdateOpen={setUpdateOpen}
+      />
+      <EmojiPickerPopover
+        emojiPickerId={emojiPickerId}
+        emojiPickerAnchorEl={emojiPickerAnchorEl}
+        isEmojiPickerOpen={isEmojiPickerOpen}
+        handleEmojiPickerClose={handleEmojiPickerClose}
+        handleSelectEmoji={handleSelectEmoji}
       />
     </>
   );

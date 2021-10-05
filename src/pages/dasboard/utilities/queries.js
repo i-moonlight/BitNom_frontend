@@ -219,6 +219,20 @@ _id
           long
           address
         }
+        content_entities {
+          type
+          offset
+          length
+          resource {
+            _id
+            type
+          }
+          url
+          mentioned {
+            _id
+            displayName
+          }
+        }
         link
         attendees {
           attendee {

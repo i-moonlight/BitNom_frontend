@@ -89,7 +89,6 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
     setStatus(false);
     //setFollowing(following - 1);
   };
-  console.log(item, "ITEMMMMM");
   return (
     <ListItem className="space-between" divider>
       <ListItemAvatar>

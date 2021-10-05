@@ -185,7 +185,7 @@ ul li::before {
 
 .mentions-textarea__control {
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .mentions-textarea__input {
   background-color: #fff;
@@ -195,7 +195,7 @@ ul li::before {
   font-size: 14px;
   line-height: 1.42857143;
   color: inherit;
-  border: 1px solid #dedede;
+  border: 1px solid rgba(0, 96, 151, 0.5); /* rgba(0, 96, 151, 0.5) */
   font-size: 14px;
 }
 .mentions-textarea__input:focus:active {
@@ -223,4 +223,12 @@ ul li::before {
 }
 .mentions-textarea__suggestions__item — focused {
   background-color: #daf4fa;
+}
+
+.emoji__picker {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  float: right;
+  margin-left: 200px;
 }

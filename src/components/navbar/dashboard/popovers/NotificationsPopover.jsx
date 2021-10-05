@@ -115,7 +115,6 @@ function ListItemComponent({ item }) {
     e.preventDefault();
     e.stopPropagation();
     history.push(targetLink.href.substring(location.origin.length));
-    //console.log(targetLink.href.substring(location.origin.length), 'LINK');
   };
   return (
     <ListItem
@@ -138,6 +137,7 @@ function ListItemComponent({ item }) {
         primary={
           <div>
             <Typography
+              variant="body2"
               onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: notificationBodyFactory(item),

@@ -11,9 +11,9 @@ import {
 import { useSelector } from "react-redux";
 import { MoreVert, FiberManualRecord } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 import {
   notificationBodyFactory,
-  getCreationTime,
   generateRandomColor,
 } from "../utilities/functions";
 import { getUserInitials } from "../../../utilities/Helpers";
@@ -138,7 +138,9 @@ export default function NotificationListItem({ notification }) {
           ) : (
             '' 
           ) */}
-          <Typography>{getCreationTime(notification?.date)}</Typography>
+          <Typography>
+            {moment(Number(notification?.date)).fromNow()}
+          </Typography>
         </Grid>
         <Divider />
       </Card>

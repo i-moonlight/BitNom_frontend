@@ -19,17 +19,19 @@ import {
   ThumbUpRounded,
   PanToolRounded,
   FavoriteRounded,
+  InsertEmoticon,
 } from "@material-ui/icons";
 import moment from "moment";
 import React, { useState, useEffect, useCallback } from "react";
 import Button from "../../../../../components/Button";
 import ReactionButton from "../../../../../components/ReactionButton";
-import TextField from "../../../../../components/TextField";
+import { MentionsInput, Mention } from "react-mentions";
 import { getUserInitials } from "../../../../../utilities/Helpers";
 import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
+  mentionsFinder,
 } from "../../../utilities/functions";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -39,6 +41,7 @@ import {
   QUERY_GET_COMMENTS,
 } from "../../../utilities/queries";
 import CommentOptionsPopover from "./CommentOptionsPopover";
+import EmojiPickerPopover from "../../popovers/EmojiPickerPopover";
 
 const useStyles = makeStyles((theme) => ({
   clickableTypography: {
@@ -49,6 +52,16 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("md")]: {
       textDecoration: "underline",
+    },
+  },
+  inputHelper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: "0px 10px 0px 5px",
+    [theme.breakpoints.up("md")]: {
+      padding: "0px 30px 0px 20px",
     },
   },
   replies: {
@@ -70,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const commentOptionId = "menu-comment-option";
+const emojiPickerId = "emoji-picker-popover";
 export default function Comment({
   comment,
   style,
@@ -85,11 +99,14 @@ export default function Comment({
   setResourceReactions,
   setImagePreviewURL,
   setImagePreviewOpen,
+  profileData,
 }) {
   const classes = useStyles();
   const theme = useTheme();
   const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
   const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
+  const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
+  const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
   const [openReplies, setOpenReplies] = useState(false);
   const [reply, setReply] = useState("");
   const [userReaction, setUserReaction] = useState();
@@ -110,12 +127,32 @@ export default function Comment({
     variables: { data: { scroll_id: comment?.scroll } },
   });
 
+  const mentions = profileData?.followers?.map?.((item) => {
+    return {
+      id: item?.userId?._id,
+      display: item?.userId?.displayName,
+    };
+  });
+
   const handleCommentOptionOpen = (event) => {
     setCommentOptionAnchorEl(event.currentTarget);
   };
 
   const handleCommentOptionClose = () => {
     setCommentOptionAnchorEl(null);
+  };
+
+  const handleEmojiPickerOpen = (event) => {
+    setEmojiPickerAnchorEl(event.currentTarget);
+  };
+
+  const handleEmojiPickerClose = () => {
+    setEmojiPickerAnchorEl(null);
+  };
+
+  const handleSelectEmoji = (emoji) => {
+    handleEmojiPickerClose();
+    setReply(`${reply} ${emoji.native}`);
   };
 
   const handleCreateReaction = (reaction) => {
@@ -157,8 +194,11 @@ export default function Comment({
   const handleCreateReply = (e) => {
     e.preventDefault();
     if (reply.trim() == "") return setReplyErr(true);
+
+    const mentionsData = mentionsFinder(reply);
     onCreateComment({
-      content: reply,
+      content: mentionsData.content,
+      content_entities: mentionsData.contentEntities,
       scroll: scroll._id,
       image: comment_image,
       response_to: responseTo,
@@ -183,7 +223,11 @@ export default function Comment({
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
-    history.push(targetLink.href.substring(location.origin.length));
+    if (targetLink.target == "_blank") {
+      window.open(targetLink.href, "_blank");
+    } else {
+      history.push(targetLink.href.substring(location.origin.length));
+    }
   };
 
   useEffect(() => {
@@ -407,59 +451,93 @@ export default function Comment({
             )}
           </div>
           {openReplies && (
-            <div className="center-horizontal">
-              <Avatar
-                style={{
-                  backgroundColor: generateRandomColor(),
-                }}
-                src={scroll?.author?.profile_pic}
-                className="mx-2"
-              >
-                {currentUserInitials}
-              </Avatar>
-              <TextField
-                fullWidth
-                error={replyErr}
-                multiline
-                errorText={replyErr && "The reply cannot be empty"}
-                rowsMax={10}
-                id="reply-field"
-                placeholder="Reply"
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    handleCreateReply(e);
-                  }
-                }}
-                onChange={(e) =>
-                  setReply(
-                    reply?.length >= 250
-                      ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value.substring(0, 250)
-                  )
-                }
-                adornment={
+            <>
+              <div className="center-horizontal">
+                <Avatar
+                  style={{
+                    backgroundColor: generateRandomColor(),
+                  }}
+                  src={scroll?.author?.image}
+                  className="mx-2"
+                >
+                  {currentUserInitials}
+                </Avatar>
+                <div style={{ width: "100%", marginTop: "5px" }}>
+                  <MentionsInput
+                    spellcheck="false"
+                    className="mentions-textarea"
+                    id="content-field"
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleCreateReply(e);
+                      }
+                    }}
+                    placeholder={
+                      commentsData?.Comments?.get?.length > 0
+                        ? ""
+                        : "Be the first to comment.."
+                    }
+                    onChange={(e) =>
+                      setReply(
+                        reply?.length >= 250
+                          ? e.target.value.substring(
+                              0,
+                              e.target.value.length - 1
+                            )
+                          : e.target.value.substring(0, 250)
+                      )
+                    }
+                    value={reply}
+                  >
+                    <Mention
+                      markup="/*@__id__-__display__*/"
+                      displayTransform={(id, display) => display}
+                      trigger="@"
+                      data={mentions}
+                      style={{
+                        fontWeight: 900,
+                      }}
+                    />
+                  </MentionsInput>
+                </div>
+                <IconButton
+                  size="small"
+                  className="m-1 p-1"
+                  // className='mx-3'
+                  onClick={handleCreateReply}
+                  // size='small'
+                >
+                  <Send />
+                </IconButton>
+              </div>
+              <Typography className={classes.inputHelper}>
+                <Typography color="error" variant="body2">
+                  {replyErr && "The comment content cannot be empty"}
+                </Typography>
+                <Typography>
                   <IconButton
                     size="small"
+                    aria-label="pick emoji"
+                    aria-controls={emojiPickerId}
+                    aria-haspopup="true"
+                    onClick={(e) => {
+                      handleEmojiPickerOpen(e);
+                    }}
+                  >
+                    <InsertEmoticon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    //className='m-1 p-1'
                     onClick={() => {
                       setOpenImage(true);
                     }}
                   >
                     <ImageRounded />
                   </IconButton>
-                }
-                adornmentType="end"
-                value={reply}
-              />
-              <IconButton
-                size="small"
-                className="m-1 p-1"
-                // className='mx-3'
-                onClick={handleCreateReply}
-                // size='small'
-              >
-                <Send />
-              </IconButton>
-            </div>
+                </Typography>
+              </Typography>
+            </>
           )}
         </div>
       </div>
@@ -498,6 +576,13 @@ export default function Comment({
               setResourceReactions={setResourceReactions}
             />
           ))}
+      <EmojiPickerPopover
+        emojiPickerId={emojiPickerId}
+        emojiPickerAnchorEl={emojiPickerAnchorEl}
+        isEmojiPickerOpen={isEmojiPickerOpen}
+        handleEmojiPickerClose={handleEmojiPickerClose}
+        handleSelectEmoji={handleSelectEmoji}
+      />
     </>
   );
 }

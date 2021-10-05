@@ -75,12 +75,13 @@ export default function SavedItemsOptionPopover({
         },
       ],
     });
+    if (!removeBookmarkData) console.log("");
     handleSavedItemOptionClose();
   };
 
   return (
     <Popover
-      removeBookmarkData={removeBookmarkData}
+      //removeBookmarkData={removeBookmarkData}
       anchorEl={savedItemOptionAnchorEl}
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
