@@ -30,7 +30,7 @@ export default function TransitionSection() {
             >
               .
             </Typography>
-            <Typography variant="h5" color="textPrimary">
+            <Typography variant="h5" color="textPrimary" className="fw-bold">
               Our World Is Changing. Together, We Can Change It For The Better.
             </Typography>
           </Grid>

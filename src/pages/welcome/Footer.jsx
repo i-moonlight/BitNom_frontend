@@ -1,14 +1,15 @@
 import { Container, Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
-// import googlePlayImg from "../../assets/google_play.svg";
-import logoImg from "../../assets/logo_light.svg";
+import { Link, useHistory } from "react-router-dom";
+import logo_light_full from "../../assets/logo_light_full.svg";
 import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import DarkTheme from "../../utilities/DarkTheme";
 import { footerLinks } from "./utilities/welcome.data";
 
 export default function Footer() {
+  const history = useHistory();
+
   return (
     <DarkTheme>
       <Grid style={{ backgroundColor: "#18191a", color: "#fff" }}>
@@ -62,8 +63,13 @@ export default function Footer() {
                         {link?.text}
                       </Typography>
                     ) : (
-                      <Typography gutterBottom color="textPrimary">
-                        <Link to={link?.link}>{link?.text}</Link>
+                      <Typography
+                        gutterBottom
+                        // color='textPrimary'
+                      >
+                        <Link to={link?.link} className="alt">
+                          {link?.text}
+                        </Link>
                       </Typography>
                     )}
                   </div>
@@ -80,11 +86,19 @@ export default function Footer() {
 
           <Grid container>
             <Grid item xs={6} className="my-2">
-              <div className="center-horizontal">
-                <img style={{ width: 40 }} src={logoImg} alt="" />
-                <Typography className="mx-2" variant="h6" color="textPrimary">
-                  BITNORM
-                </Typography>
+              <div
+                className="center-horizontal c-pointer"
+                onClick={() => history.push("/dashboard")}
+              >
+                <div>
+                  <img
+                    style={{
+                      height: 40,
+                    }}
+                    src={logo_light_full}
+                    alt=""
+                  />
+                </div>
               </div>
             </Grid>
             <Grid item xs={6} className="my-2">

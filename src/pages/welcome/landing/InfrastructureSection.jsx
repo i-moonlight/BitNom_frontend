@@ -72,7 +72,7 @@ export default function InfrastructureSection() {
             <Grid item md={5} className="my-5">
               <div className="m-3">
                 <Divider style={{ width: "30%" }} className="my-4 b-2" />
-                <Typography variant="h6" color="textSecondary">
+                <Typography variant="h5" color="textSecondary">
                   Integrate battle-hardened and time-tested solutions.
                 </Typography>
               </div>
@@ -86,7 +86,7 @@ export default function InfrastructureSection() {
               <Divider style={{ width: "30%" }} className="my-4 b-2" />
               <Typography
                 className={classes.sectionText}
-                variant="h6"
+                variant="h5"
                 color="textSecondary"
               >
                 Integrate battle-hardened and time-tested solutions.

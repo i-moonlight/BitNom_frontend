@@ -58,9 +58,11 @@ export default function HeaderSection() {
               >
                 Explore BN
               </Button>
-              <IconButton size="small" className="m-1 p-1">
-                <PlayArrowRounded />
-              </IconButton>
+              <div className="border border-white br-2">
+                <IconButton size="small" className="m-1 p-1">
+                  <PlayArrowRounded />
+                </IconButton>
+              </div>
             </div>
             <Typography
               variant="body2"
@@ -69,7 +71,7 @@ export default function HeaderSection() {
             >
               BN crypto token is NOW available.{" "}
               <a href="" className="alt">
-                Click here to buy
+                <b>Click here to buy</b>
               </a>
             </Typography>
           </DarkTheme>

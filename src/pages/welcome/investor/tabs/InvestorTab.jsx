@@ -90,7 +90,7 @@ export default function InvestorTab() {
           <Container maxWidth="lg">
             <Paper style={{ backgroundColor: "#000" }}>
               <Grid container spacing={2}>
-                <Grid item xs={6} sm={9} md={6}>
+                <Grid item xs={12} sm={10} md={6}>
                   <div className="mt-4 pt-2">
                     <Typography variant="h5" className="mt-5 mb-2">
                       BitNorm Investor Page
