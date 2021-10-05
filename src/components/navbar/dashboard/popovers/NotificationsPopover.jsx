@@ -11,17 +11,17 @@ import {
   ListItemText,
   Popover,
   Typography,
-} from '@material-ui/core';
-import { SettingsRounded } from '@material-ui/icons';
-import React from 'react';
-import { Link } from 'react-router-dom';
+} from "@material-ui/core";
+import { SettingsRounded } from "@material-ui/icons";
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   generateRandomColor,
   getCreationTime,
   notificationBodyFactory,
-} from '../../../../pages/dasboard/utilities/functions';
-import { getUserInitials } from '../../../../utilities/Helpers';
-import { useHistory } from 'react-router-dom';
+} from "../../../../pages/dasboard/utilities/functions";
+import { getUserInitials } from "../../../../utilities/Helpers";
+import { useHistory } from "react-router-dom";
 
 export default function NotificationsPopover({
   notificationAnchorEl,
@@ -35,22 +35,22 @@ export default function NotificationsPopover({
   return (
     <Popover
       anchorEl={notificationAnchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       id={notificationId}
       open={isNotificationOpen}
       onClose={handleNotificationsClose}
     >
       <List
-        style={{ padding: 8, paddingBottom: 0, width: '300px' }}
+        style={{ padding: 8, paddingBottom: 0, width: "300px" }}
         component={Card}
-        variant='outlined'
+        variant="outlined"
       >
-        <div className='space-between center-horizontal'>
-          <Typography style={{ marginLeft: 8 }} variant='body2'>
+        <div className="space-between center-horizontal">
+          <Typography style={{ marginLeft: 8 }} variant="body2">
             Notifications
           </Typography>
-          <IconButton size='small' className='m-1 p-1'>
+          <IconButton size="small" className="m-1 p-1">
             <SettingsRounded />
           </IconButton>
         </div>
@@ -66,8 +66,8 @@ function NotificationPreview({ notifications }) {
   return (
     <>
       {notifications?.length < 1 && (
-        <Grid align='center'>
-          <Typography color='Primary' variant='body2'>
+        <Grid align="center">
+          <Typography color="Primary" variant="body2">
             Nothing here yet.
           </Typography>
         </Grid>
@@ -75,10 +75,10 @@ function NotificationPreview({ notifications }) {
       {notifications?.length > 0 &&
         notifications
           ?.slice(0, 4)
-          ?.map(item => <ListItemComponent key={item._id} item={item} />)}
+          ?.map((item) => <ListItemComponent key={item._id} item={item} />)}
       {notifications?.length > 0 && (
-        <Link to='/dashboard/notifications'>
-          <Typography variant='body2' className='my-2' color='primary'>
+        <Link to="/dashboard/notifications">
+          <Typography variant="body2" className="my-2" color="primary">
             Show more
           </Typography>
         </Link>
@@ -90,27 +90,27 @@ function NotificationPreview({ notifications }) {
 function ListItemComponent({ item }) {
   const history = useHistory();
   let link;
-  if (item?.link_to_resource?.type === 'post') {
+  if (item?.link_to_resource?.type === "post") {
     link = `#`;
-  } else if (item?.link_to_resource?.type === 'event') {
+  } else if (item?.link_to_resource?.type === "event") {
     link = `/dashboard/events/${item?.link_to_resource?._id}`;
-  } else if (item?.link_to_resource?.type === 'comment') {
+  } else if (item?.link_to_resource?.type === "comment") {
     link = `#`;
-  } else if (item?.link_to_resource?.type === 'user') {
+  } else if (item?.link_to_resource?.type === "user") {
     link = `#`;
   }
 
-  const getNotifyingUser = notification => {
+  const getNotifyingUser = (notification) => {
     let name;
-    notification?.content_entities?.forEach(entity => {
-      if (entity?.type === 'resource_tag') {
+    notification?.content_entities?.forEach((entity) => {
+      if (entity?.type === "resource_tag") {
         name = entity?.url?.displayName;
       }
     });
     return name;
   };
-  const contentClickHandler = e => {
-    const targetLink = e.target.closest('a');
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest("a");
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
@@ -121,7 +121,7 @@ function ListItemComponent({ item }) {
     <ListItem
       button
       onClick={() => history.push(link)}
-      className='space-between'
+      className="space-between"
       key={item}
       divider
     >
@@ -138,11 +138,11 @@ function ListItemComponent({ item }) {
         primary={
           <div>
             <Typography
-              onClick={e => contentClickHandler(e)}
+              onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: notificationBodyFactory(item),
               }}
-              className='mx-1'
+              className="mx-1"
               style={{ zIndex: 2 }}
             ></Typography>
           </div>

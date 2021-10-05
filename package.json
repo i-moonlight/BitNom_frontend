@@ -58,7 +58,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "npx prettier --write \"./**/*.{js,jsx,json}\""
+    "pretty": "npx prettier --write \"./**/*.{js,jsx,json}\"",
+    "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "push": "git add . && git commit -m \"developments\" && git push origin investors"
   },
   "eslintConfig": {
     "extends": [

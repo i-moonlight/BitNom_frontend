@@ -6,7 +6,7 @@ import NavBarInvestor from "../../components/navbar/investor/NavBarInvestor";
 import NavBarLanding from "../../components/navbar/landing/NavBarLanding";
 import Footer from "./Footer";
 
-export default function Wrapper({ children, investor, onTabValue }) {
+export default function Wrapper({ children, investor, onTabValue, authPage }) {
   const history = useHistory();
   const state = useSelector((st) => st);
   const user = state.auth.user;
@@ -17,14 +17,16 @@ export default function Wrapper({ children, investor, onTabValue }) {
       if (!user?.email?.verified) {
         history.push("/auth/require_verify");
       } else {
-        user?.email?.verified && !user?.displayName
-          ? history.push("/auth/update_info_register")
-          : history.push("/dashboard");
+        if (user?.email?.verified && !user?.displayName) {
+          history.push("/auth/update_info_register");
+        } else {
+          authPage && history.push("/dashboard");
+        }
       }
     }
 
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [history, user]);
+  }, [history, authPage, user]);
 
   return (
     <div

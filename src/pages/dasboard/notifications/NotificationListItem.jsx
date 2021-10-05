@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Card,
@@ -7,24 +7,24 @@ import {
   IconButton,
   Divider,
   Typography,
-} from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import { MoreVert, FiberManualRecord } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
+} from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { MoreVert, FiberManualRecord } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
 import {
   notificationBodyFactory,
   getCreationTime,
   generateRandomColor,
-} from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
-import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
+} from "../utilities/functions";
+import { getUserInitials } from "../../../utilities/Helpers";
+import NotificationOptionPopover from "../../../components/navbar/dashboard/popovers/NotificationOptionPopover";
 
-const notificationOptionId = 'menu-notification-option';
+const notificationOptionId = "menu-notification-option";
 
 export default function NotificationListItem({ notification }) {
   const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
     useState(null);
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const history = useHistory();
 
@@ -32,39 +32,39 @@ export default function NotificationListItem({ notification }) {
   const handleNotificationOptionClose = () => {
     setNotificationOptionAnchorEl(null);
   };
-  const handleNotificationOptionOpen = event => {
+  const handleNotificationOptionOpen = (event) => {
     setNotificationOptionAnchorEl(event.currentTarget);
   };
   let link;
-  if (notification?.link_to_resource?.type === 'post') {
+  if (notification?.link_to_resource?.type === "post") {
     link = `#`;
-  } else if (notification?.link_to_resource?.type === 'event') {
+  } else if (notification?.link_to_resource?.type === "event") {
     link = `/dashboard/events/${notification?.link_to_resource?._id}`;
-  } else if (notification?.link_to_resource?.type === 'comment') {
+  } else if (notification?.link_to_resource?.type === "comment") {
     link = `#`;
-  } else if (notification?.link_to_resource?.type === 'user') {
+  } else if (notification?.link_to_resource?.type === "user") {
     link = `#`;
   }
-  const getReadStatus = ntfn => {
+  const getReadStatus = (ntfn) => {
     let read;
-    ntfn.to_notify?.forEach(item => {
+    ntfn.to_notify?.forEach((item) => {
       if (item?.user_id == user._id) {
         read = item?.read;
       }
     });
     return read;
   };
-  const getNotifyingUser = ntfn => {
+  const getNotifyingUser = (ntfn) => {
     let name;
-    ntfn?.content_entities?.forEach(item => {
-      if (item?.type === 'resource_tag') {
+    ntfn?.content_entities?.forEach((item) => {
+      if (item?.type === "resource_tag") {
         name = item?.url?.displayName;
       }
     });
     return name;
   };
-  const contentClickHandler = e => {
-    const targetLink = e.target.closest('a');
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest("a");
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
@@ -77,21 +77,21 @@ export default function NotificationListItem({ notification }) {
       <Card elevation={0}>
         <div
           style={{
-            display: 'grid',
-            alignItems: 'center',
-            gridTemplateColumns: '1fr 22fr',
+            display: "grid",
+            alignItems: "center",
+            gridTemplateColumns: "1fr 22fr",
             zIndex: 1,
-            cursor: 'pointer',
+            cursor: "pointer",
           }}
           onClick={() => history.push(link)}
         >
           <div>
             <FiberManualRecord
               style={{
-                fontSize: '15px',
+                fontSize: "15px",
               }}
               color={
-                getReadStatus(notification) == 'true' ? 'disabled' : 'primary'
+                getReadStatus(notification) == "true" ? "disabled" : "primary"
               }
             />
           </div>
@@ -102,37 +102,37 @@ export default function NotificationListItem({ notification }) {
                 style={{
                   backgroundColor: generateRandomColor(),
                 }}
-                aria-label='recipe'
+                aria-label="recipe"
               >
                 {userInitials}
               </Avatar>
             }
             action={
               <IconButton
-                aria-label='show more'
+                aria-label="show more"
                 aria-controls={notificationOptionId}
-                aria-haspopup='true'
+                aria-haspopup="true"
                 onClick={handleNotificationOptionOpen}
-                color='inherit'
+                color="inherit"
               >
                 <MoreVert />
               </IconButton>
             }
             title={
-              <div className='center-horizontal'>
+              <div className="center-horizontal">
                 <Typography
-                  onClick={e => contentClickHandler(e)}
+                  onClick={(e) => contentClickHandler(e)}
                   dangerouslySetInnerHTML={{
                     __html: notificationBodyFactory(notification),
                   }}
-                  className='mx-1'
+                  className="mx-1"
                   style={{ zIndex: 2 }}
                 ></Typography>
               </div>
             }
           />
         </div>
-        <Grid align='right'>
+        <Grid align="right">
           {/* notification?.content.includes('followed you') ? (
             <Button variant='text'>Follow back</Button>
           ) : (

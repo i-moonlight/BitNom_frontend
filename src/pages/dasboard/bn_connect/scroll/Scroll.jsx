@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from "@apollo/client";
 import {
   Avatar,
   Card,
@@ -13,8 +13,8 @@ import {
   Typography,
   useTheme,
   makeStyles,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
 import {
   CommentRounded,
   FavoriteRounded,
@@ -25,51 +25,51 @@ import {
   ShareRounded,
   ThumbDownRounded,
   ThumbUpRounded,
-} from '@material-ui/icons';
-import { DropzoneDialog } from 'material-ui-dropzone';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
-import Button from '../../../../components/Button';
-import ReactionButton from '../../../../components/ReactionButton';
+} from "@material-ui/icons";
+import { DropzoneDialog } from "material-ui-dropzone";
+import moment from "moment";
+import React, { useCallback, useEffect, useState } from "react";
+import Button from "../../../../components/Button";
+import ReactionButton from "../../../../components/ReactionButton";
 //import ImagePreview from '../../../components/ImagePreview';
-import TextField from '../../../../components/TextField';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { getUserInitials } from '../../../../utilities/Helpers';
+import TextField from "../../../../components/TextField";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { getUserInitials } from "../../../../utilities/Helpers";
 import {
   contentBodyFactory,
   getReactionsSum,
   generateRandomColor,
-} from '../../utilities/functions';
+} from "../../utilities/functions";
 import {
   MUTATION_CREATE_COMMENT,
   MUTATION_CREATE_REACTION,
   MUTATION_REMOVE_REACTION,
   QUERY_GET_COMMENTS,
   QUERY_LOAD_SCROLLS,
-} from '../../utilities/queries';
-import Comment from './comment/Comment';
+} from "../../utilities/queries";
+import Comment from "./comment/Comment";
 // import LinkCard from './LinkCard';
-import ScrollOptionsPopover from './ScrollOptionsPopover';
-import ScrollPreview from './ScrollPreview';
-import EventPreview from '../../events/EventPreview';
+import ScrollOptionsPopover from "./ScrollOptionsPopover";
+import ScrollPreview from "./ScrollPreview";
+import EventPreview from "../../events/EventPreview";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   clickableTypography: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
-    [theme.breakpoints.down('md')]: {
-      textDecoration: 'underline',
+    [theme.breakpoints.down("md")]: {
+      textDecoration: "underline",
     },
   },
   replies: {
-    color: 'inherit',
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
+    color: "inherit",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
     },
   },
   red: {
@@ -79,11 +79,11 @@ const useStyles = makeStyles(theme => ({
     color: green[500],
   },
   primary: {
-    color: '#006097',
+    color: "#006097",
   },
 }));
 
-const scrollOptionId = 'menu-scroll-option';
+const scrollOptionId = "menu-scroll-option";
 
 export default function Scroll({
   scroll,
@@ -106,7 +106,7 @@ export default function Scroll({
   const [userReaction, setUserReaction] = useState();
   const [reactionIcon, setReactionIcon] = useState();
   const [openComments, setOpenComments] = useState(false);
-  const [comment_text, setCommentText] = useState('');
+  const [comment_text, setCommentText] = useState("");
   const [comment_image, setCommentImage] = useState(null);
   const [openImage, setOpenImage] = useState(false);
   const [likeHovered, setLikeHovered] = useState(false);
@@ -116,7 +116,7 @@ export default function Scroll({
   const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
 
   const theme = useTheme();
-  const state = useSelector(st => st);
+  const state = useSelector((st) => st);
   const user = state.auth.user;
   const history = useHistory();
 
@@ -137,7 +137,7 @@ export default function Scroll({
     variables: { data: { scroll_id: scroll?._id } },
   });
 
-  const onCreateComment = ICreateComment => {
+  const onCreateComment = (ICreateComment) => {
     createComment({
       variables: {
         data: ICreateComment,
@@ -152,14 +152,14 @@ export default function Scroll({
         },
       ],
     });
-    setCommentText('');
+    setCommentText("");
     setCommentImage(null);
     setCreateCommentErr(false);
   };
 
-  const handleCreateComment = e => {
+  const handleCreateComment = (e) => {
     e.preventDefault();
-    if (comment_text.trim() == '' && !comment_image)
+    if (comment_text.trim() == "" && !comment_image)
       return setCreateCommentErr(true);
     onCreateComment({
       content: comment_text,
@@ -168,7 +168,7 @@ export default function Scroll({
     });
   };
 
-  const handleScrollOptionOpen = event => {
+  const handleScrollOptionOpen = (event) => {
     setScrollOptionAnchorEl(event.currentTarget);
   };
 
@@ -176,12 +176,12 @@ export default function Scroll({
     setScrollOptionAnchorEl(null);
   };
 
-  const handleCreateReaction = reaction => {
+  const handleCreateReaction = (reaction) => {
     createReaction({
       variables: {
         data: {
           _id: scroll?._id,
-          type: 'post',
+          type: "post",
           reaction: reaction,
         },
       },
@@ -196,7 +196,7 @@ export default function Scroll({
       variables: {
         data: {
           _id: scroll?._id,
-          type: 'post',
+          type: "post",
         },
       },
       refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
@@ -206,9 +206,9 @@ export default function Scroll({
   };
 
   const getUserReaction = useCallback(
-    resource => {
+    (resource) => {
       let reaction;
-      resource?.reacted_to_by?.forEach(item => {
+      resource?.reacted_to_by?.forEach((item) => {
         if (item?.user_id?._id === user?._id) reaction = item?.reaction_type;
       });
       return reaction;
@@ -217,14 +217,14 @@ export default function Scroll({
   );
 
   const setIcon = useCallback(
-    reaction => {
-      if (reaction === 'like') {
+    (reaction) => {
+      if (reaction === "like") {
         setReactionIcon(<ThumbUpRounded className={classes.primary} />);
-      } else if (reaction === 'love') {
+      } else if (reaction === "love") {
         setReactionIcon(<FavoriteRounded className={classes.red} />);
-      } else if (reaction === 'dislike') {
+      } else if (reaction === "dislike") {
         setReactionIcon(<ThumbDownRounded className={classes.primary} />);
-      } else if (reaction === 'celebrate') {
+      } else if (reaction === "celebrate") {
         setReactionIcon(<PanToolRounded className={classes.green} />);
       } else {
         setReactionIcon();
@@ -233,8 +233,8 @@ export default function Scroll({
     [classes.green, classes.primary, classes.red]
   );
 
-  const contentClickHandler = e => {
-    const targetLink = e.target.closest('a');
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest("a");
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
@@ -246,7 +246,7 @@ export default function Scroll({
 
   useEffect(() => {
     if (createCommentData?.Comments?.create) {
-      console.log('comment created');
+      console.log("comment created");
     }
   }, [createCommentData]);
   useEffect(() => {
@@ -261,37 +261,37 @@ export default function Scroll({
         <CardHeader
           avatar={
             <Avatar
-              className='c-poiter'
+              className="c-poiter"
               style={{
                 backgroundColor: generateRandomColor(),
               }}
               src={
                 process.env.REACT_APP_BACKEND_URL + scroll?.author?.profile_pic
               }
-              aria-label='recipe'
+              aria-label="recipe"
             >
               {authorInitials}
             </Avatar>
           }
           action={
             <IconButton
-              size='small'
-              className='m-1 p-1'
-              aria-label='show more'
+              size="small"
+              className="m-1 p-1"
+              aria-label="show more"
               aria-controls={scrollOptionId}
-              aria-haspopup='true'
+              aria-haspopup="true"
               onClick={handleScrollOptionOpen}
-              color='inherit'
+              color="inherit"
             >
               <MoreVert />
             </IconButton>
           }
           title={
-            <div className='center-horizontal'>
+            <div className="center-horizontal">
               <Typography style={{ marginRight: 8 }}>
                 {scroll?.author?.displayName}
               </Typography>
-              <Typography variant='body2' color='textSecondary'>
+              <Typography variant="body2" color="textSecondary">
                 {`@${scroll?.author?._id}`}
               </Typography>
             </div>
@@ -299,29 +299,29 @@ export default function Scroll({
           subheader={moment(scroll?.createdAt).fromNow()}
         />
         <CardContent>
-          <Typography variant='body2' color='textSecondary' component='p'>
+          <Typography variant="body2" color="textSecondary" component="p">
             <Typography
-              onClick={e => contentClickHandler(e)}
+              onClick={(e) => contentClickHandler(e)}
               dangerouslySetInnerHTML={{
                 __html: contentBodyFactory(scroll),
               }}
               style={{ zIndex: 2 }}
             ></Typography>
           </Typography>
-          <Grid container spacing={2} className='mb-2'>
+          <Grid container spacing={2} className="mb-2">
             {scroll?.video && (
               <Grid item xs={12}>
                 <CardMedia
-                  component='video'
+                  component="video"
                   src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                   controls
                 />
               </Grid>
             )}
             {scroll?.images.length > 0 &&
-              scroll?.images?.map(imageURL => (
+              scroll?.images?.map((imageURL) => (
                 <Grid
-                  className='mt-3'
+                  className="mt-3"
                   key={imageURL}
                   item
                   xs={scroll?.images.length > 1 ? 6 : 12}
@@ -336,52 +336,52 @@ export default function Scroll({
                     style={{
                       height: 200,
                       borderRadius: 8,
-                      width: '100%',
+                      width: "100%",
                       backgroundImage:
-                        'url(' +
+                        "url(" +
                         process.env.REACT_APP_BACKEND_URL +
                         imageURL +
-                        ')',
-                      backgroundSize: 'cover',
-                      backgroundColor: 'rgba(0,0,0,0.2)',
-                      backgroundBlendMode: 'soft-light',
-                      cursor: 'pointer',
+                        ")",
+                      backgroundSize: "cover",
+                      backgroundColor: "rgba(0,0,0,0.2)",
+                      backgroundBlendMode: "soft-light",
+                      cursor: "pointer",
                     }}
                   />
                 </Grid>
               ))}
           </Grid>
           {scroll?.shared_resource?._id &&
-            scroll?.shared_resource?.type === 'post' && (
+            scroll?.shared_resource?.type === "post" && (
               <ScrollPreview scroll={scroll?.shared_resource?._id} />
             )}
           {scroll?.shared_resource?._id &&
-            scroll?.shared_resource?.type === 'event' && (
+            scroll?.shared_resource?.type === "event" && (
               <EventPreview event={scroll?.shared_resource?._id} />
             )}
           <br />
 
-          <Typography display='inline'>
+          <Typography display="inline">
             <Typography
               onClick={() => {
                 setOpenReactions(true);
                 setResourceReactions(scroll);
               }}
-              display='inline'
+              display="inline"
               className={classes.clickableTypography}
             >
               {`${getReactionsSum(scroll)} ${
-                getReactionsSum(scroll) === 1 ? 'Reaction' : 'Reactions'
+                getReactionsSum(scroll) === 1 ? "Reaction" : "Reactions"
               }`}
             </Typography>
-            {' . '}
+            {" . "}
             <Typography
               onClick={() => setOpenComments(true)}
               className={classes.replies}
-              display='inline'
+              display="inline"
             >
               {`${scroll?.comments} ${
-                scroll?.comments === 1 ? 'Comment' : 'Comments'
+                scroll?.comments === 1 ? "Comment" : "Comments"
               }`}
             </Typography>
           </Typography>
@@ -389,81 +389,81 @@ export default function Scroll({
         <Divider />
         <Card
           style={{
-            position: 'absolute',
-            alignSelf: 'baseline',
+            position: "absolute",
+            alignSelf: "baseline",
             borderRadius: 10,
             backgroundColor: theme.palette.background.default,
-            display: likeHovered ? 'block' : 'none',
-            transform: 'translateY(-28px)',
+            display: likeHovered ? "block" : "none",
+            transform: "translateY(-28px)",
           }}
           onMouseEnter={() => setLikeHovered(true)}
           onMouseLeave={() => setLikeHovered(false)}
         >
           <Button
-            color='default'
+            color="default"
             textCase
             onClick={() => {
-              handleCreateReaction('like');
+              handleCreateReaction("like");
               setLikeHovered(false);
             }}
-            variant='text'
+            variant="text"
             startIcon={<ThumbUpRounded className={classes.primary} />}
           >
             Like
           </Button>
           <Button
-            color='default'
+            color="default"
             textCase
             onClick={() => {
-              handleCreateReaction('love');
+              handleCreateReaction("love");
               setLikeHovered(false);
             }}
-            variant='text'
+            variant="text"
             startIcon={<FavoriteRounded className={classes.red} />}
           >
             Love
           </Button>
           <Button
-            color='default'
+            color="default"
             textCase
             onClick={() => {
-              handleCreateReaction('dislike');
+              handleCreateReaction("dislike");
               setLikeHovered(false);
             }}
-            variant='text'
+            variant="text"
             startIcon={<ThumbDownRounded className={classes.primary} />}
           >
             Dislike
           </Button>
           <Button
-            color='default'
+            color="default"
             textCase
             onClick={() => {
-              handleCreateReaction('celebrate');
+              handleCreateReaction("celebrate");
               setLikeHovered(false);
             }}
-            variant='text'
+            variant="text"
             startIcon={<PanToolRounded className={classes.green} />}
           >
             Celebrate
           </Button>
         </Card>
-        <CardActions className='space-around'>
+        <CardActions className="space-around">
           <ReactionButton
             handleRemoveReaction={handleRemoveReaction}
             reaction={userReaction}
             onMouseEnter={() => setLikeHovered(true)}
             setLikeHovered={setLikeHovered}
             onMouseLeave={() => setLikeHovered(false)}
-            variant='text'
-            color='default'
+            variant="text"
+            color="default"
             textCase
             startIcon={reactionIcon}
           />
           <Button
-            color='default'
+            color="default"
             textCase
-            variant='text'
+            variant="text"
             onClick={() => setOpenComments(true)}
             startIcon={<CommentRounded />}
           >
@@ -471,9 +471,9 @@ export default function Scroll({
           </Button>
           {!scroll?.shared_resource?._id && (
             <Button
-              color='default'
+              color="default"
               textCase
-              variant='text'
+              variant="text"
               onClick={() => {
                 setOpen(scroll);
                 setSharedResource(scroll);
@@ -487,41 +487,41 @@ export default function Scroll({
         <Divider />
         <CardActionArea onClick={() => setOpenComments(true)}>
           {!openComments && scroll?.comments < 1 && (
-            <Typography className='mx-3 my-2' color='textSecondary'>
+            <Typography className="mx-3 my-2" color="textSecondary">
               Be the first to comment
             </Typography>
           )}
         </CardActionArea>
         {openComments && (
           <CardContent>
-            <div className='center-horizontal'>
+            <div className="center-horizontal">
               <Avatar
                 style={{
                   backgroundColor: generateRandomColor(),
                 }}
                 src={scroll?.author?.image}
-                className='mx-2'
+                className="mx-2"
               >
                 {currentUserInitials}
               </Avatar>
               <TextField
                 fullWidth
                 error={createCommentErr && true}
-                errorText={createCommentErr && 'The comment cannot be empty'}
+                errorText={createCommentErr && "The comment cannot be empty"}
                 multiline
                 rowsMax={10}
-                id='comment-field'
-                onKeyPress={e => {
-                  if (e.key === 'Enter') {
+                id="comment-field"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
                     handleCreateComment(e);
                   }
                 }}
                 placeholder={
                   commentsData?.Comments?.get?.length > 0
-                    ? ''
-                    : 'Be the first to comment..'
+                    ? ""
+                    : "Be the first to comment.."
                 }
-                onChange={e =>
+                onChange={(e) =>
                   setCommentText(
                     comment_text?.length >= 250
                       ? e.target.value.substring(0, e.target.value.length - 1)
@@ -530,8 +530,8 @@ export default function Scroll({
                 }
                 adornment={
                   <IconButton
-                    size='small'
-                    className='m-1 p-1'
+                    size="small"
+                    className="m-1 p-1"
                     onClick={() => {
                       setOpenImage(true);
                     }}
@@ -539,12 +539,12 @@ export default function Scroll({
                     <ImageRounded />
                   </IconButton>
                 }
-                adornmentType='end'
+                adornmentType="end"
                 value={comment_text}
               />
               <IconButton
-                size='small'
-                className='m-1 p-1'
+                size="small"
+                className="m-1 p-1"
                 // className='mx-3'
                 onClick={handleCreateComment}
                 // size='small'
@@ -554,18 +554,18 @@ export default function Scroll({
             </div>
 
             <DropzoneDialog
-              previewGridProps={{ container: { spacing: 1, direction: 'row' } }}
-              showAlerts={['error']}
+              previewGridProps={{ container: { spacing: 1, direction: "row" } }}
+              showAlerts={["error"]}
               // useChipsForPreview
-              previewText=''
-              acceptedFiles={['image/*']}
-              cancelButtonText={'cancel'}
-              submitButtonText={'submit'}
+              previewText=""
+              acceptedFiles={["image/*"]}
+              cancelButtonText={"cancel"}
+              submitButtonText={"submit"}
               maxFileSize={5000000}
               open={openImage}
               filesLimit={1}
               onClose={() => setOpenImage(false)}
-              onSave={files => {
+              onSave={(files) => {
                 setCommentImage(files[0]);
                 setOpenImage(false);
               }}
@@ -575,8 +575,8 @@ export default function Scroll({
             />
             {commentsData &&
               commentsData?.Comments?.get
-                .filter(comment => !comment.response_to)
-                .map(comment => (
+                .filter((comment) => !comment.response_to)
+                .map((comment) => (
                   <Comment
                     profileData={profileData}
                     scroll={scroll}

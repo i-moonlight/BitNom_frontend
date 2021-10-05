@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
 import investorGraphicImg from "../../../assets/landing/articles.png";
 import investorImg from "../../../assets/landing/investor.svg";
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from "./Landing";
@@ -77,7 +78,7 @@ export default function InvestorSection() {
                   </Grid>
                 </Grid>
                 <Typography className={classes.sectionText} color="textPrimary">
-                  <a href="">Visit investor page &gt;</a>
+                  <Link to="/investors">Visit investor page &gt;</Link>
                 </Typography>
               </Grid>
             </Grid>

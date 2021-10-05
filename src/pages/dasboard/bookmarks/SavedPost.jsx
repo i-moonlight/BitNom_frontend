@@ -9,20 +9,20 @@ import {
   Grid,
   IconButton,
   Typography,
-} from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+} from "@material-ui/core";
+import { MoreVert } from "@material-ui/icons";
 
-import moment from 'moment';
-import { useLocation, useHistory } from 'react-router-dom';
-import React, { useState } from 'react';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
-import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
+import moment from "moment";
+import { useLocation, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import SavedItemsOptionPopover from "./SavedItemsOptionPopover";
+import { contentBodyFactory, getReactionsSum } from "../utilities/functions";
 
-import { getUserInitials } from '../../../utilities/Helpers';
-import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
-import EventPreview from '../events/EventPreview';
+import { getUserInitials } from "../../../utilities/Helpers";
+import ScrollPreview from "../bn_connect/scroll/ScrollPreview";
+import EventPreview from "../events/EventPreview";
 
-const savedItemOptionId = 'menu-savedItem-option';
+const savedItemOptionId = "menu-savedItem-option";
 
 export default function SavedPost({
   scroll,
@@ -32,7 +32,7 @@ export default function SavedPost({
   const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] = useState(null);
   const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
 
-  const handleSavedItemOptionOpen = event => {
+  const handleSavedItemOptionOpen = (event) => {
     setSavedItemOptionAnchorEl(event.currentTarget);
   };
 
@@ -41,8 +41,8 @@ export default function SavedPost({
   };
   const location = useLocation();
   const history = useHistory();
-  const contentClickHandler = e => {
-    const targetLink = e.target.closest('a');
+  const contentClickHandler = (e) => {
+    const targetLink = e.target.closest("a");
     if (!targetLink) return;
     e.preventDefault();
     e.stopPropagation();
@@ -61,39 +61,39 @@ export default function SavedPost({
             avatar={
               <Avatar
                 style={{
-                  backgroundColor: '#fed132',
+                  backgroundColor: "#fed132",
                 }}
                 src={scroll?.author?.profile_pic}
-                aria-label='recipe'
+                aria-label="recipe"
               >
                 {authorInitials}
               </Avatar>
             }
             action={
               <IconButton
-                size='small'
+                size="small"
                 style={{
-                  display: location.pathname.includes('posts') && 'none',
+                  display: location.pathname.includes("posts") && "none",
                 }}
-                className='m-1 p-1'
-                aria-label='show more'
+                className="m-1 p-1"
+                aria-label="show more"
                 aria-controls={savedItemOptionId}
-                aria-haspopup='true'
-                onClick={e => {
+                aria-haspopup="true"
+                onClick={(e) => {
                   e.stopPropagation();
                   handleSavedItemOptionOpen(e);
                 }}
-                color='inherit'
+                color="inherit"
               >
                 <MoreVert />
               </IconButton>
             }
             title={
-              <div className='center-horizontal'>
+              <div className="center-horizontal">
                 <Typography style={{ marginRight: 8 }}>
                   {scroll?.author?.displayName}
                 </Typography>
-                <Typography variant='body2' color='textSecondary'>
+                <Typography variant="body2" color="textSecondary">
                   {`@${scroll?.author?._id}`}
                 </Typography>
               </div>
@@ -101,9 +101,9 @@ export default function SavedPost({
             subheader={moment(scroll?.createdAt).fromNow()}
           />
           <CardContent>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant="body2" color="textSecondary" component="p">
               <Typography
-                onClick={e => contentClickHandler(e)}
+                onClick={(e) => contentClickHandler(e)}
                 dangerouslySetInnerHTML={{
                   __html: contentBodyFactory(scroll),
                 }}
@@ -127,20 +127,20 @@ export default function SavedPost({
               );
             })} */}
             </Typography>
-            <Grid container spacing={2} className='mb-2'>
+            <Grid container spacing={2} className="mb-2">
               {scroll?.video && (
                 <Grid item xs={12}>
                   <CardMedia
-                    component='video'
+                    component="video"
                     src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                     controls
                   />
                 </Grid>
               )}
               {scroll?.images.length > 0 &&
-                scroll?.images?.map(imageURL => (
+                scroll?.images?.map((imageURL) => (
                   <Grid
-                    className='mt-3'
+                    className="mt-3"
                     key={imageURL}
                     item
                     xs={scroll?.images.length > 1 ? 6 : 12}
@@ -155,41 +155,41 @@ export default function SavedPost({
                       style={{
                         height: 200,
                         borderRadius: 8,
-                        width: '100%',
+                        width: "100%",
                         backgroundImage:
-                          'url(' +
+                          "url(" +
                           process.env.REACT_APP_BACKEND_URL +
                           imageURL +
-                          ')',
-                        backgroundSize: 'cover',
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        backgroundBlendMode: 'soft-light',
-                        cursor: 'pointer',
+                          ")",
+                        backgroundSize: "cover",
+                        backgroundColor: "rgba(0,0,0,0.2)",
+                        backgroundBlendMode: "soft-light",
+                        cursor: "pointer",
                       }}
                     />
                   </Grid>
                 ))}
             </Grid>
             {scroll?.shared_resource?._id &&
-              scroll?.shared_resource?.type === 'post' && (
+              scroll?.shared_resource?.type === "post" && (
                 <ScrollPreview scroll={scroll?.shared_resource?._id} />
               )}
             {scroll?.shared_resource?._id &&
-              scroll?.shared_resource?.type === 'event' && (
+              scroll?.shared_resource?.type === "event" && (
                 <EventPreview event={scroll?.shared_resource?._id} />
               )}
 
             <br />
-            <Typography display='inline'>
-              <Typography display='inline'>
+            <Typography display="inline">
+              <Typography display="inline">
                 {`${getReactionsSum(scroll)} ${
-                  getReactionsSum(scroll) === 1 ? 'Reaction' : 'Reactions'
+                  getReactionsSum(scroll) === 1 ? "Reaction" : "Reactions"
                 }`}
               </Typography>
-              {' . '}
-              <Typography display='inline'>
+              {" . "}
+              <Typography display="inline">
                 {`${scroll?.comments} ${
-                  scroll?.comments === 1 ? 'Comment' : 'Comments'
+                  scroll?.comments === 1 ? "Comment" : "Comments"
                 }`}
               </Typography>
             </Typography>
@@ -199,7 +199,7 @@ export default function SavedPost({
 
           <SavedItemsOptionPopover
             savedItem={scroll}
-            itemType='post'
+            itemType="post"
             savedItemOptionId={savedItemOptionId}
             savedItemOptionAnchorEl={savedItemOptionAnchorEl}
             isSavedItemOptionOpen={isSavedItemOptionOpen}

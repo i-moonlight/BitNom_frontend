@@ -25,7 +25,7 @@ export default function CreatePassword({ match }) {
   });
 
   useEffect(() => {
-    JSON.stringify(user) !== "{}" && history.push("/");
+    JSON.stringify(user) !== "{}" && history.push("/dashboard");
   });
 
   return (

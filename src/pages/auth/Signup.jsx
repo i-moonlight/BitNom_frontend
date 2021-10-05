@@ -44,7 +44,7 @@ export default function Signup() {
   });
 
   useEffect(() => {
-    JSON.stringify(user) !== "{}" && history.push("/");
+    JSON.stringify(user) !== "{}" && history.push("/dashboard");
 
     if (justRegistered) {
       setTimeout(() => {
