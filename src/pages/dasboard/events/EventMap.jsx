@@ -1,44 +1,44 @@
-import React from "react";
+import React from 'react';
 
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 function MapContainer({ latitude, longitude }) {
-  return (
-    <div
-      className="map-area"
-      style={{
-        width: "250px",
-        height: "200px",
-      }}
-    >
-      <LoadScript
-        libraries={["places"]}
-        googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
-      >
-        <GoogleMap
-          mapContainerStyle={{
-            //position: 'relative',
-            width: "250px",
-            height: "200px",
-          }}
-          center={{
-            lat: Number(latitude),
-            lng: Number(longitude),
-          }}
-          zoom={14}
-        >
-          <Marker
-            position={{
-              lat: Number(latitude),
-              lng: Number(longitude),
+    return (
+        <div
+            className="map-area"
+            style={{
+                width: '250px',
+                height: '200px',
             }}
-          />
-          {/* Child components, such as markers, info windows, etc. */}
-          <></>
-        </GoogleMap>
-      </LoadScript>
-    </div>
-  );
+        >
+            <LoadScript
+                libraries={['places']}
+                googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
+            >
+                <GoogleMap
+                    mapContainerStyle={{
+                        //position: 'relative',
+                        width: '250px',
+                        height: '200px',
+                    }}
+                    center={{
+                        lat: Number(latitude),
+                        lng: Number(longitude),
+                    }}
+                    zoom={14}
+                >
+                    <Marker
+                        position={{
+                            lat: Number(latitude),
+                            lng: Number(longitude),
+                        }}
+                    />
+                    {/* Child components, such as markers, info windows, etc. */}
+                    <></>
+                </GoogleMap>
+            </LoadScript>
+        </div>
+    );
 }
 
 export default React.memo(MapContainer);
