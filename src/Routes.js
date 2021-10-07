@@ -31,6 +31,7 @@ import RoadMap from './pages/welcome/roadmap/RoadMap';
 import Terms from './pages/welcome/terms/Terms';
 import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
+import BnKnowledgeCenter from "./pages/dasboard/bn_knowledge_center/BnKnowledgeCenter";
 
 export default function Routes({ apolloClient }) {
     return (
@@ -105,6 +106,11 @@ export default function Routes({ apolloClient }) {
                             exact
                             component={BnServices}
                             path="/dashboard/services"
+                        />
+                        <Route
+                            exact
+                            component={BnKnowledgeCenter}
+                            path="/dashboard/knowledge_center"
                         />
                         <Route
                             exact
