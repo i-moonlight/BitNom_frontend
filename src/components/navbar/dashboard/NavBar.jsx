@@ -2,6 +2,7 @@ import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { AppBar, Divider, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
@@ -31,6 +32,7 @@ export default function NavBar() {
 
     const theme = useTheme();
     const dispatch = useDispatch();
+    const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -112,6 +114,8 @@ export default function NavBar() {
     const _count = state.count.count;
 
     useEffect(() => {
+        !user?.email?.verified && history.push('/auth/require_verify');
+
         const count =
             subscriptionData && subscriptionData.liveUpdates.count
                 ? subscriptionData.liveUpdates.count
@@ -147,7 +151,16 @@ export default function NavBar() {
         } else {
             console.log('isAuth', isAuth);
         }
-    }, [_count, dispatch, isAuth, response, subscriptionData, user._id]);
+    }, [
+        _count,
+        dispatch,
+        history,
+        isAuth,
+        response,
+        subscriptionData,
+        user._id,
+        user?.email?.verified,
+    ]);
 
     return (
         <AppBar

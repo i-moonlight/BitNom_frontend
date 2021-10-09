@@ -24,7 +24,9 @@ export default function UpdateInfo() {
     });
 
     useEffect(() => {
-        user?.email?.verified && user?.displayName && history.push('/');
+        user?.email?.verified &&
+            user?.displayName &&
+            history.push('/dashboard');
         JSON.stringify(user) === '{}' && history.push('/auth/login');
     }, [history, user]);
 
@@ -57,11 +59,10 @@ export default function UpdateInfo() {
                                     validationSchema={
                                         updateInfoValidationSchema
                                     }
-                                    onSubmit={({ displayName, bio }) => {
+                                    onSubmit={({ displayName }) => {
                                         updateProfileInfo({
                                             variables: {
                                                 displayName,
-                                                bio,
                                             },
                                             errorPolicy: 'all',
                                         }).then(({ data, errors }) => {
@@ -69,9 +70,14 @@ export default function UpdateInfo() {
                                                 ? data?.Users?.update
                                                 : {};
 
-                                            errors && console.log(errors);
+                                            errors &&
+                                                console.log(
+                                                    'update errors: ',
+                                                    errors
+                                                );
 
-                                            dispatch(login(userData, null));
+                                            data?.Users?.update &&
+                                                dispatch(login(userData, null));
                                         });
                                     }}
                                 >
@@ -90,15 +96,11 @@ export default function UpdateInfo() {
                                             variant="outlined"
                                             fullWidth
                                         />
-                                        <TextField
-                                            name="bio"
-                                            label="Your Bio"
-                                            variant="outlined"
-                                            multiline
-                                            rows={3}
+                                        <Button
                                             fullWidth
-                                        />
-                                        <Button fullWidth submit>
+                                            submit
+                                            className="mt-2"
+                                        >
                                             Update Details
                                         </Button>
                                     </div>

@@ -1,17 +1,6 @@
 import { useQuery } from '@apollo/client';
-import {
-    Card,
-    CardHeader,
-    Container,
-    Grid,
-    Hidden,
-    IconButton,
-    makeStyles,
-    Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+import { Container, Grid, Hidden, makeStyles } from '@material-ui/core';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -56,34 +45,6 @@ export default function ProfileView() {
                             <Grid item lg={3}></Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
-                                    }
-                                    title={
-                                        <div className="center-horizontal">
-                                            <Typography variant="body1">
-                                                {profile?.displayName}&apos;s
-                                                Profile
-                                            </Typography>
-                                        </div>
-                                    }
-                                />
-                            </Card>
-
                             <ProfileCard profile={profile} profileView />
                             <InsightCard profile={profile} profileView />
                             <AboutCard profile={profile} profileView />

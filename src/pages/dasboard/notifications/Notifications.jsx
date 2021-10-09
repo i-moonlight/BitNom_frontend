@@ -8,7 +8,9 @@ import {
     ListItem,
     ListItemText,
     makeStyles,
+    ListItemSecondaryAction,
 } from '@material-ui/core';
+import { KeyboardArrowRight } from '@material-ui/icons';
 
 import React from 'react';
 import Screen from '../../../components/Screen';
@@ -19,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
     },
-    sidebar: {
-        width: '100%',
-        maxWidth: 360,
-        background: 'transparent',
-        //color: theme.typography.textPrimary,
-    },
+    // sidebar: {
+    //     width: '100%',
+    //     maxWidth: 360,
+    //     background: 'transparent',
+    //     //color: theme.typography.textPrimary,
+    // },
 }));
 
 export default function Notifications() {
@@ -70,79 +72,105 @@ function SideBarMenu({ selectedIndex, setSelectedIndex }) {
     };
 
     return (
-        <Card elevation={0} color="text.primary" className={classes.sidebar}>
-            <List component="nav" aria-label="secondary mailbox folders">
+        <Card
+            variant="outlined"
+            color="text.primary"
+            className={classes.sidebar}
+        >
+            <List
+                component="nav"
+                aria-label="secondary mailbox folders"
+                style={{
+                    padding: 0,
+                }}
+            >
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 0}
                     onClick={(event) => handleListItemClick(event, 0)}
                 >
                     <ListItemText primary="All Notifications" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 1}
                     onClick={(event) => handleListItemClick(event, 1)}
                 >
                     <ListItemText primary="Comments and Mentions" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 2}
                     onClick={(event) => handleListItemClick(event, 2)}
                 >
                     <ListItemText primary="Reactions" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 3}
                     onClick={(event) => handleListItemClick(event, 3)}
                 >
                     <ListItemText primary="Your Content" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 4}
                     onClick={(event) => handleListItemClick(event, 4)}
                 >
                     <ListItemText primary="Your Profile" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 5}
                     onClick={(event) => handleListItemClick(event, 5)}
                 >
                     <ListItemText primary="Job Board" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 6}
                     onClick={(event) => handleListItemClick(event, 6)}
                 >
                     <ListItemText primary="Forum" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem
                     button
-                    dense
                     disableRipple
                     selected={selectedIndex === 7}
                     onClick={(event) => handleListItemClick(event, 7)}
                 >
                     <ListItemText primary="Announcements" />
+                    <ListItemSecondaryAction>
+                        <KeyboardArrowRight />
+                    </ListItemSecondaryAction>
                 </ListItem>
             </List>
         </Card>

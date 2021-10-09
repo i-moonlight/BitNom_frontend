@@ -84,7 +84,7 @@ export default function ResetPassword() {
                                             error={emailErr && true}
                                             errorText={emailErr && emailErr[0]}
                                             name="email"
-                                            label="Email Adress"
+                                            label="Email Address"
                                             variant="outlined"
                                             size="small"
                                             fullWidth

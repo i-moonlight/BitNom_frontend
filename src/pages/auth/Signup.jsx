@@ -73,12 +73,14 @@ export default function Signup() {
             const userData = data?.Users?.googleSignup
                 ? data?.Users?.googleSignup
                 : {};
+
             const userErrors = err ? err : null;
             setGoogleErr(userErrors);
 
-            dispatch(register(userData, null));
+            data?.Users?.googleSignup && dispatch(register(userData, null));
 
             !userErrors &&
+                data?.Users?.googleSignup &&
                 googleLogin({
                     variables: {
                         token: response.tokenId,
@@ -90,7 +92,8 @@ export default function Signup() {
                         : {};
                     const googleUserErrors = errors ? errors : null;
                     setGoogleErr(googleUserErrors);
-                    dispatch(login(googleUserData, null));
+                    googleData?.Users?.googleLogin &&
+                        dispatch(login(googleUserData, null));
                 });
         });
     };
@@ -153,11 +156,16 @@ export default function Signup() {
                                             const userData = data?.Users?.create
                                                 ? data?.Users?.create
                                                 : {};
+
                                             const userErrors = err ? err : null;
                                             setErrors(userErrors);
 
-                                            dispatch(register(userData, null));
-                                            !userErrors?.state &&
+                                            data?.Users?.create &&
+                                                dispatch(
+                                                    register(userData, null)
+                                                );
+
+                                            data?.Users?.create &&
                                                 setJustRegistered(
                                                     justRegisteredState
                                                 );
@@ -179,7 +187,7 @@ export default function Signup() {
                                             error={emailErr && true}
                                             errorText={emailErr && emailErr[0]}
                                             name="email"
-                                            label="Email Adress"
+                                            label="Email Address"
                                             variant="outlined"
                                             fullWidth
                                         />
