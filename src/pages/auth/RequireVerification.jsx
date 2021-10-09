@@ -29,7 +29,7 @@ export default function RequireVerification() {
 
     useEffect(() => {
         JSON.stringify(user) === '{}' && history.push('/auth/login');
-        user?.email?.verified && history.push('/');
+        user?.email?.verified && history.push('/dashboard');
     }, [history, user]);
 
     return (

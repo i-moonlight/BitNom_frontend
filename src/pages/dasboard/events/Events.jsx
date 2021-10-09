@@ -138,7 +138,7 @@ function EventListCard({
                 }
                 title={
                     <div className="center-horizontal">
-                        <Typography variant="h6">Events</Typography>
+                        <Typography>Events</Typography>
                     </div>
                 }
             />

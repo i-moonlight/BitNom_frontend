@@ -25,7 +25,7 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                 top: 176,
             }}
         >
-            <Card style={{ marginBottom: 16 }} variant={'outlined'}>
+            <Card variant={'outlined'}>
                 <CardContent
                     style={{
                         display: 'flex',
@@ -44,8 +44,8 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                         <Typography variant="body2" className="mb-3">
                             Host an event on BitNorm and invite your network
                         </Typography>
-                        <Button onClick={() => setOpen(true)}>
-                            create Event
+                        <Button textCase onClick={() => setOpen(true)}>
+                            Create Event
                         </Button>
                     </div>
                 </CardContent>
@@ -53,6 +53,7 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     style={{
                         display:
                             location.pathname.includes('events/') && 'none',
+                        paddingBottom: 0,
                     }}
                     component="nav"
                     aria-label="secondary mailbox folder"

@@ -52,7 +52,8 @@ export default function Login() {
             const userData = data?.Users?.googleLogin || {};
             const userErrors = errors || null;
             setGoogleErr(userErrors);
-            dispatch(login(userData, null));
+
+            data?.Users?.googleLogin && dispatch(login(userData, null));
         });
     };
 
@@ -108,7 +109,8 @@ export default function Login() {
                                                         );
                                                 });
 
-                                            dispatch(login(userData, null));
+                                            data?.Users?.login &&
+                                                dispatch(login(userData, null));
                                         });
                                     }}
                                 >
