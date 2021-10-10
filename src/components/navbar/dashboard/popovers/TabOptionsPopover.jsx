@@ -2,11 +2,12 @@ import { MenuItem, Popover } from '@material-ui/core';
 import React from 'react';
 
 export default function TabOptionsPopover({
-    tabOptionAnchorEl,
+    value,
+    tabOptions,
     tabOptionsId,
     isTabOptionOpen,
+    tabOptionAnchorEl,
     handleTabOptionsClose,
-    tabOptions,
 }) {
     console.log('toae: ', tabOptionAnchorEl);
     return (
@@ -14,7 +15,7 @@ export default function TabOptionsPopover({
             anchorEl={tabOptionAnchorEl || document.body}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-            id={tabOptionsId}
+            id={`${tabOptionsId}-${value}`}
             keepMounted
             open={isTabOptionOpen}
             onClose={handleTabOptionsClose}

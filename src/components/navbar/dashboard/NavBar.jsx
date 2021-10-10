@@ -23,6 +23,7 @@ import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
+
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
@@ -214,11 +215,13 @@ export default function NavBar() {
                 tabOptionsId={tabOptionsId}
                 setTabOptions={setTabOptions}
                 handleTabOptionsOpen={handleTabOptionsOpen}
+                handleTabOptionsClose={handleTabOptionsClose}
             />
             {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
             <TabOptionsPopover
+                value={tabValue}
                 tabOptionsId={tabOptionsId}
                 tabOptionAnchorEl={tabOptionAnchorEl}
                 isTabOptionOpen={isTabOptionOpen}

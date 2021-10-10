@@ -2,7 +2,7 @@ import { Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
 import { investorTabs } from '../../utilities/data.components';
 
-export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
+export default function InvestorTabs({ value, handleChange }) {
     return (
         <Tabs
             value={value}
@@ -12,12 +12,10 @@ export default function InvestorTabs({ value, handleChange, tabOptionsId }) {
             scrollButtons="auto"
         >
             {investorTabs.map(({ label }) => {
-                const tabOptionsId2 = tabOptionsId + Math.random() * 1000;
                 return (
                     <BitTab
-                        key={`${tabOptionsId2}-${Math.random() * 100}`}
+                        key={`${Math.random() * 100}`}
                         label={label}
-                        aria-controls={tabOptionsId2}
                         aria-haspopup="true"
                     />
                 );

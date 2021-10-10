@@ -1,9 +1,8 @@
-import { Box } from '@material-ui/core';
-import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
+import { Box, Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { tabs } from '../../utilities/data.components';
 import { useStyles } from '../../utilities/styles.components';
-import { useHistory } from 'react-router-dom';
 
 export default function TabsBar({
     value,
@@ -27,11 +26,9 @@ export default function TabsBar({
                         scrollButtons="auto"
                     >
                         {tabs.map(({ label, menuItems, link }) => {
-                            // const tabOptionsId2 =
-                            tabOptionsId + Math.random() * 1000;
                             return (
                                 <BitTab
-                                    key={`${tabOptionsId}-${Math.random}`}
+                                    key={`${label}`}
                                     label={label}
                                     aria-controls={tabOptionsId}
                                     aria-haspopup="true"
@@ -41,6 +38,12 @@ export default function TabsBar({
                                         menuItems &&
                                             handleTabOptionsOpen(event);
                                     }}
+                                    // onMouseEnter={(event) => {
+                                    //     menuItems && setTabOptions(menuItems);
+                                    //     menuItems &&
+                                    //         handleTabOptionsOpen(event);
+                                    // }}
+                                    // onMouseLeave={handleTabOptionsClose}
                                 />
                             );
                         })}
@@ -53,6 +56,7 @@ export default function TabsBar({
 
 const BitTab = withStyles((theme) => ({
     root: {
+        cursor: 'pointer',
         textTransform: 'none',
         color: theme.palette.type == 'dark' ? '#fff' : '#000',
         fontWeight: theme.typography.fontWeightBold,
