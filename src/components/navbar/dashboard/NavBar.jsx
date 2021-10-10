@@ -138,10 +138,11 @@ export default function NavBar() {
         dispatch(setCount(notSeenArray.length));
 
         const logo = document.getElementById('favicon');
+
         if (_count > 0) {
-            logo.href = 'logo_badge.svg';
+            logo.href = `${window.location.origin}/logo_badge.svg`;
         } else {
-            logo.href = 'logo.svg';
+            logo.href = `${window.location.origin}/logo.svg`;
         }
 
         if (!isAuth) {
