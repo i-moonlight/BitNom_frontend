@@ -41,16 +41,6 @@ export default function TabsBar({
                                 />
                             );
                         })}
-                        <BitTab
-                            style={{ position: 'relative' }}
-                            label={'Nouvelle'}
-                            aria-controls={'tabOptionsId2'}
-                            aria-haspopup="true"
-                            // onClick={event => {
-                            //   menuItems && setTabOptions(menuItems);
-                            //   menuItems && handleTabOptionsOpen(event);
-                            // }}
-                        />
                     </Tabs>
                 </Container>
             </Box>

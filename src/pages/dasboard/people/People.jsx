@@ -1,41 +1,39 @@
+import { useMutation, useQuery } from '@apollo/client';
 import {
     Avatar,
     Card,
-    CardHeader,
-    IconButton,
     CardContent,
+    CardHeader,
     Container,
     Divider,
     Grid,
     Hidden,
+    IconButton,
+    List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
     makeStyles,
     Typography,
-    List,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import { getUserInitials } from '../../../utilities/Helpers';
+import UserCard from '../bn_connect/UserCard';
+import {} from '../utilities/functions';
 import {
-    QUERY_GET_USERS,
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
+    QUERY_GET_USERS,
     QUERY_LOAD_EVENTS,
-    //NOTIFICATIONS_SUBSCRIPTION,
+    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
-
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
-import { getUserInitials } from '../../../utilities/Helpers';
-import {} from '../utilities/functions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -118,7 +116,7 @@ export default function People() {
                                     }
                                     title={
                                         <div className="center-horizontal">
-                                            <Typography variant="h6">
+                                            <Typography>
                                                 People you may know
                                             </Typography>
                                         </div>
@@ -140,9 +138,7 @@ export default function People() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item md={4} lg={3}>
-                            {/* <Hidden smDown></Hidden> */}
-                        </Grid>
+                        <Grid item md={4} lg={3}></Grid>
                     </Grid>
                 </Container>
             </div>
@@ -248,9 +244,7 @@ function ListItemComponent({ item, getFollowStatus }) {
             />
             <ListItemIcon
                 aria-label="show more"
-                //   aria-controls={notificationOptionId}
                 aria-haspopup="true"
-                //   onClick={handleNotificationOptionOpen}
                 color="inherit"
                 style={{
                     marginRight: 0,
@@ -271,6 +265,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                     size="small"
                     variant="outlined"
                     color="primary"
+                    textCase
                 >
                     {status ? 'Unfollow' : 'Follow'}
                 </Button>

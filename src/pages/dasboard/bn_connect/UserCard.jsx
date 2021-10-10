@@ -223,6 +223,7 @@ export default function UserCard({
                 onClick={setOpen}
                 color="primary"
                 fullWidth
+                textCase
             >
                 Create Post
             </Button>

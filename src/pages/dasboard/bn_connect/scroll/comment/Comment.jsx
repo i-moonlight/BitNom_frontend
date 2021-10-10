@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { green, red } from '@material-ui/core/colors';
 import {
     Avatar,
     Card,
@@ -7,40 +6,41 @@ import {
     Divider,
     Grid,
     IconButton,
+    makeStyles,
     Typography,
     useTheme,
-    makeStyles,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import {
+    FavoriteRounded,
     ImageRounded,
+    InsertEmoticon,
     MoreHorizRounded,
+    PanToolRounded,
     Send,
     ThumbDownRounded,
     ThumbUpRounded,
-    PanToolRounded,
-    FavoriteRounded,
-    InsertEmoticon,
 } from '@material-ui/icons';
 import moment from 'moment';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
-import { MentionsInput, Mention } from 'react-mentions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
 } from '../../../utilities/functions';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
-import CommentOptionsPopover from './CommentOptionsPopover';
 import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+import CommentOptionsPopover from './CommentOptionsPopover';
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
@@ -250,7 +250,7 @@ export default function Comment({
                 >
                     {commentUserInitials}
                 </Avatar>
-                <div className="mb-3 flex-1">
+                <div className="mb-3 flex-1 w-100">
                     <Card
                         style={{
                             backgroundColor: theme.palette.background.comment,
@@ -443,7 +443,7 @@ export default function Comment({
                         {/* {comment?.response_to ? '' : '.'} */}
                         {!comment?.response_to && (
                             <Typography
-                                colorAlt="inherit"
+                                color="inherit"
                                 component={Button}
                                 onClick={() => {
                                     setOpenReplies(true);
@@ -492,9 +492,7 @@ export default function Comment({
                                 >
                                     {currentUserInitials}
                                 </Avatar>
-                                <div
-                                    style={{ width: '100%', marginTop: '5px' }}
-                                >
+                                <div className="w-100">
                                     <MentionsInput
                                         spellcheck="false"
                                         className="mentions-textarea"
@@ -541,46 +539,70 @@ export default function Comment({
                                 </div>
                                 <IconButton
                                     size="small"
+                                    aria-label="pick emoji"
+                                    aria-controls={emojiPickerId}
+                                    aria-haspopup="true"
+                                    onClick={(e) => {
+                                        handleEmojiPickerOpen(e);
+                                    }}
+                                >
+                                    <InsertEmoticon />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    onClick={() => {
+                                        setOpenImage(true);
+                                    }}
+                                >
+                                    <ImageRounded />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
                                     className="m-1 p-1"
-                                    // className='mx-3'
                                     onClick={handleCreateReply}
-                                    // size='small'
                                 >
                                     <Send />
                                 </IconButton>
                             </div>
-                            <Typography className={classes.inputHelper}>
+                            <div className={classes.inputHelper}>
                                 <Typography color="error" variant="body2">
                                     {replyErr &&
                                         'The comment content cannot be empty'}
                                 </Typography>
-                                <Typography>
-                                    <IconButton
-                                        size="small"
-                                        aria-label="pick emoji"
-                                        aria-controls={emojiPickerId}
-                                        aria-haspopup="true"
-                                        onClick={(e) => {
-                                            handleEmojiPickerOpen(e);
-                                        }}
-                                    >
-                                        <InsertEmoticon />
-                                    </IconButton>
-                                    <IconButton
-                                        size="small"
-                                        //className='m-1 p-1'
-                                        onClick={() => {
-                                            setOpenImage(true);
-                                        }}
-                                    >
-                                        <ImageRounded />
-                                    </IconButton>
-                                </Typography>
-                            </Typography>
+                            </div>
                         </>
                     )}
+                    {commentsData &&
+                        commentsData?.Comments?.get
+                            .filter(
+                                (commentInner) =>
+                                    commentInner?.response_to?._id ===
+                                    comment?._id
+                            )
+                            .map((commentInner) => (
+                                <Comment
+                                    key={commentInner._id}
+                                    comment={commentInner}
+                                    setUpdateCommentOpen={setUpdateCommentOpen}
+                                    setCommentToEdit={setCommentToEdit}
+                                    setImagePreviewURL={setImagePreviewURL}
+                                    setImagePreviewOpen={setImagePreviewOpen}
+                                    setFlaggedResource={setFlaggedResource}
+                                    setOpenFlag={setOpenFlag}
+                                    setOpenReactions={setOpenReactions}
+                                    setResourceReactions={setResourceReactions}
+                                />
+                            ))}
                 </div>
             </div>
+
+            <EmojiPickerPopover
+                emojiPickerId={emojiPickerId}
+                emojiPickerAnchorEl={emojiPickerAnchorEl}
+                isEmojiPickerOpen={isEmojiPickerOpen}
+                handleEmojiPickerClose={handleEmojiPickerClose}
+                handleSelectEmoji={handleSelectEmoji}
+            />
             <CommentOptionsPopover
                 setFlaggedResource={setFlaggedResource}
                 setOpenFlag={setOpenFlag}
@@ -593,36 +615,6 @@ export default function Comment({
                 commentOptionAnchorEl={commentOptionAnchorEl}
                 isCommentOptionOpen={isCommentOptionOpen}
                 handleCommentOptionClose={handleCommentOptionClose}
-            />
-            {commentsData &&
-                commentsData?.Comments?.get
-                    .filter(
-                        (commentInner) =>
-                            commentInner?.response_to?._id === comment?._id
-                    )
-                    .map((commentInner) => (
-                        <Comment
-                            style={{
-                                marginLeft: 30,
-                            }}
-                            key={commentInner._id}
-                            comment={commentInner}
-                            setUpdateCommentOpen={setUpdateCommentOpen}
-                            setCommentToEdit={setCommentToEdit}
-                            setImagePreviewURL={setImagePreviewURL}
-                            setImagePreviewOpen={setImagePreviewOpen}
-                            setFlaggedResource={setFlaggedResource}
-                            setOpenFlag={setOpenFlag}
-                            setOpenReactions={setOpenReactions}
-                            setResourceReactions={setResourceReactions}
-                        />
-                    ))}
-            <EmojiPickerPopover
-                emojiPickerId={emojiPickerId}
-                emojiPickerAnchorEl={emojiPickerAnchorEl}
-                isEmojiPickerOpen={isEmojiPickerOpen}
-                handleEmojiPickerClose={handleEmojiPickerClose}
-                handleSelectEmoji={handleSelectEmoji}
             />
         </>
     );

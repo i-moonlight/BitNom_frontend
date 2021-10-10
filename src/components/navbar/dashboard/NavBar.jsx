@@ -17,15 +17,20 @@ import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
+import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import TabsBar2 from './TabsBar2';
+import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
+const tabOptionsId = 'menu-tab-options';
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
+    const [value, setValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
+    const [tabOptions, setTabOptions] = useState(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
     const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
         useState(null);
@@ -37,6 +42,7 @@ export default function NavBar() {
     const user = state.auth.user;
 
     const isMenuOpen = Boolean(menuAnchorEl);
+    const isTabOptionOpen = Boolean(tabOptionAnchorEl);
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
@@ -78,6 +84,14 @@ export default function NavBar() {
         setMenuAnchorEl(null);
     };
 
+    const handleTabOptionsOpen = (event) => {
+        setTabOptionAnchorEl(event.currentTarget);
+    };
+
+    const handleTabOptionsClose = () => {
+        setTabOptionAnchorEl(null);
+    };
+
     const handleNotificationsOpen = (event) => {
         setNotificationAnchorEl(event.currentTarget);
         handleMarkAsSeen();
@@ -93,6 +107,10 @@ export default function NavBar() {
 
     const handleNotificationOptionClose = () => {
         setNotificationOptionAnchorEl(null);
+    };
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
     };
 
     const handleMarkAsSeen = () => {
@@ -181,10 +199,24 @@ export default function NavBar() {
                 handleNotificationsOpen={handleNotificationsOpen}
             />
 
-            <TabsBar2 />
+            <TabsBar
+                value={value}
+                handleChange={handleChange}
+                tabOptionsId={tabOptionsId}
+                setTabOptions={setTabOptions}
+                handleTabOptionsOpen={handleTabOptionsOpen}
+            />
+            {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
 
+            <TabOptionsPopover
+                tabOptionAnchorEl={tabOptionAnchorEl}
+                tabOptionsId={tabOptionsId}
+                isTabOptionOpen={isTabOptionOpen}
+                handleTabOptionsClose={handleTabOptionsClose}
+                tabOptions={tabOptions}
+            />
             <MenuPopover
                 menuId={menuId}
                 menuAnchorEl={menuAnchorEl}

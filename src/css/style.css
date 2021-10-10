@@ -186,11 +186,6 @@ ul li::before {
 }
 
 /* Mentions */
-
-.mentions-textarea__control {
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
 .mentions-textarea__input {
     background-color: #fff;
     border-radius: 3px;

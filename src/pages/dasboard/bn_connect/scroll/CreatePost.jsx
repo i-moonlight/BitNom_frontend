@@ -1,4 +1,3 @@
-//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
     Avatar,
@@ -13,8 +12,6 @@ import {
     ListItemText,
     Modal,
     Typography,
-    //TextField,
-    //useTheme,
 } from '@material-ui/core';
 import {
     ChevronRight,
@@ -23,9 +20,9 @@ import {
     Public,
     VideocamRounded,
 } from '@material-ui/icons';
-import { MentionsInput, Mention } from 'react-mentions';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';

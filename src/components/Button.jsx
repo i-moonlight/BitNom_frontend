@@ -6,7 +6,6 @@ import logo_google from '../assets/components/google.svg';
 export default function Button({
     textCase,
     color,
-    colorAlt,
     submit,
     onClick,
     variant,
@@ -16,18 +15,26 @@ export default function Button({
     ...props
 }) {
     const formikContext = useFormikContext();
-
     const buttonVariant = variantAlt ? variantAlt : variant;
-    const buttonColor = colorAlt ? colorAlt : color;
+
+    let btnColor = color;
+
+    if (variant == 'text' && color != 'inherit') {
+        btnColor = '#0ea0f3';
+    }
+
+    if (google) {
+        btnColor = '#818181';
+    }
 
     return (
         <MuiButton
-            color={buttonColor ? buttonColor : 'primary'}
+            color={color}
             variant={buttonVariant ? buttonVariant : 'contained'}
             disableElevation={!google}
             style={{
                 backgroundColor: google && '#f2f2f2',
-                color: !buttonColor && google && '#818181',
+                color: btnColor,
                 textTransform: textCase && 'none',
             }}
             onClick={submit ? formikContext.handleSubmit : onClick}
