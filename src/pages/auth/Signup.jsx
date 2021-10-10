@@ -29,7 +29,6 @@ export default function Signup() {
     const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const justRegisteredState = state.auth.justRegistered;
 
     const [createUser] = useMutation(MUTATION_CREATE_USER, {
         context: { clientName: 'users' },
@@ -166,9 +165,7 @@ export default function Signup() {
                                                 );
 
                                             data?.Users?.create &&
-                                                setJustRegistered(
-                                                    justRegisteredState
-                                                );
+                                                setJustRegistered(true);
                                         });
                                     }}
                                 >

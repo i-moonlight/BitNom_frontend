@@ -36,12 +36,11 @@ import ReactionButton from '../../../../components/ReactionButton';
 //import TextField from '../../../../components/TextField';
 import { MentionsInput, Mention } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
     getReactionsSum,
-    generateRandomColor,
     mentionsFinder,
 } from '../../utilities/functions';
 
@@ -136,8 +135,8 @@ export default function Scroll({
 
     const theme = useTheme();
     const state = useSelector((st) => st);
-    const user = state.auth.user;
     const history = useHistory();
+    const user = state.auth.user;
 
     const [
         createComment,
@@ -310,15 +309,13 @@ export default function Scroll({
                 <CardHeader
                     avatar={
                         <Avatar
-                            className="c-poiter"
                             style={{
-                                backgroundColor: generateRandomColor(),
+                                backgroundColor: '#fed132',
                             }}
                             src={
                                 process.env.REACT_APP_BACKEND_URL +
                                 scroll?.author?.profile_pic
                             }
-                            aria-label="recipe"
                         >
                             {authorInitials}
                         </Avatar>
@@ -337,9 +334,11 @@ export default function Scroll({
                         </IconButton>
                     }
                     title={
-                        <div className="center-horizontal">
+                        <div className=" d-flex align-items-center">
                             <Typography style={{ marginRight: 8 }}>
-                                {scroll?.author?.displayName}
+                                <Link to={`/users/${scroll?.author?._id}`}>
+                                    {scroll?.author?.displayName}
+                                </Link>
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                                 {`@${scroll?.author?._id}`}
@@ -366,6 +365,7 @@ export default function Scroll({
                         {scroll?.video && (
                             <Grid item xs={12}>
                                 <CardMedia
+                                    className="br-2"
                                     component="video"
                                     src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
                                     controls
@@ -560,17 +560,17 @@ export default function Scroll({
                 </CardActionArea>
                 {openComments && (
                     <CardContent>
-                        <div className="center-horizontal">
+                        <div className="d-flex align-items-center">
                             <Avatar
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                 }}
                                 src={scroll?.author?.image}
                                 className="mx-2"
                             >
                                 {currentUserInitials}
                             </Avatar>
-                            <div style={{ width: '100%', marginTop: '5px' }}>
+                            <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
                                     className="mentions-textarea"
@@ -615,47 +615,43 @@ export default function Scroll({
                             </div>
                             <IconButton
                                 size="small"
+                                aria-label="pick emoji"
+                                aria-controls={emojiPickerId}
+                                aria-haspopup="true"
+                                onClick={(e) => {
+                                    handleEmojiPickerOpen(e);
+                                }}
+                            >
+                                <InsertEmoticon />
+                            </IconButton>
+                            <IconButton
+                                size="small"
+                                //className='m-1 p-1'
+                                onClick={() => {
+                                    setOpenImage(true);
+                                }}
+                            >
+                                <ImageRounded />
+                            </IconButton>
+                            <IconButton
+                                size="small"
                                 className="m-1 p-1"
-                                // className='mx-3'
                                 onClick={handleCreateComment}
-                                // size='small'
                             >
                                 <Send />
                             </IconButton>
                         </div>
-                        <Typography className={classes.inputHelper}>
+                        <div className={classes.inputHelper}>
                             <Typography color="error" variant="body2">
                                 {createCommentErr &&
                                     'The comment content cannot be empty'}
                             </Typography>
-                            <Typography>
-                                <IconButton
-                                    size="small"
-                                    aria-label="pick emoji"
-                                    aria-controls={emojiPickerId}
-                                    aria-haspopup="true"
-                                    onClick={(e) => {
-                                        handleEmojiPickerOpen(e);
-                                    }}
-                                >
-                                    <InsertEmoticon />
-                                </IconButton>
-                                <IconButton
-                                    size="small"
-                                    //className='m-1 p-1'
-                                    onClick={() => {
-                                        setOpenImage(true);
-                                    }}
-                                >
-                                    <ImageRounded />
-                                </IconButton>
-                            </Typography>
-                        </Typography>
+                        </div>
 
-                        {/* <div className='center-horizontal'>
+                        {/* <div className=' d-flex align-items-center'>
               <Avatar
                 style={{
-                  backgroundColor: generateRandomColor(),
+                  backgroundColor: '#fed132',
                 }}
                 src={scroll?.author?.image}
                 className='mx-2'
@@ -668,15 +664,9 @@ export default function Scroll({
                 errorText={createCommentErr && "The comment cannot be empty"}
                 multiline
                 rowsMax={10}
-<<<<<<< HEAD
-                id="comment-field"
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-=======
                 id='comment-field'
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
->>>>>>> f33b24dd7acf286d948158a200d4281db4e8b8ba
                     handleCreateComment(e);
                   }
                 }}

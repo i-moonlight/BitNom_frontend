@@ -33,11 +33,7 @@ import { MentionsInput, Mention } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import Button from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import {
-    generateRandomColor,
-    mentionsFinder,
-    mentionsUpdate,
-} from '../../../utilities/functions';
+import { mentionsFinder, mentionsUpdate } from '../../../utilities/functions';
 import {
     MUTATION_DELETE_COMMENT,
     MUTATION_UPDATE_COMMENT,
@@ -233,8 +229,7 @@ export default function UpdateComment({
                                     <ListItemAvatar>
                                         <Avatar
                                             style={{
-                                                backgroundColor:
-                                                    generateRandomColor(),
+                                                backgroundColor: '#fed132',
                                             }}
                                             src={user?.profile_pic}
                                         >

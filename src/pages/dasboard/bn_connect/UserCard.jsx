@@ -10,7 +10,6 @@ import {
     Typography,
 } from '@material-ui/core';
 import {
-    //AddRounded,
     BookmarkRounded,
     CollectionsBookmarkRounded,
     EventRounded,
@@ -23,7 +22,6 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
 
 export default function UserCard({
     setOpen,
@@ -72,7 +70,7 @@ export default function UserCard({
                                 src={user?.profile_pic}
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 80,
                                     height: 80,
@@ -225,6 +223,7 @@ export default function UserCard({
                 onClick={setOpen}
                 color="primary"
                 fullWidth
+                textCase
             >
                 Create Post
             </Button>

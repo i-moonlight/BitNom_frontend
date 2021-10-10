@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import DarkTheme from '../../../utilities/DarkTheme';
 import Wrapper from '../Wrapper';
-import DonateCard from './DonateCard';
+import DonateCard from './cards/DonateCard';
 
 export default function Support() {
     const history = useHistory();

@@ -34,9 +34,11 @@ export const status = [
 export const tabs = [
     {
         label: 'BN Connect',
+        link: '/dashboard',
     },
     {
         label: 'BN Knowledge Center',
+        link: '/dashboard/knowledge_center',
         menuItems: [
             { label: 'Crypto-tinder' },
             { label: 'Forum' },
@@ -49,8 +51,9 @@ export const tabs = [
     { label: 'Job Board' },
     {
         label: 'Product',
+        // link:'/dashboard/product',
         menuItems: [
-            { label: 'Investor page' },
+            { label: 'Investor page', link: '/investors' },
             { label: 'Crypto API' },
             { label: 'Widgets and bots' },
             { label: 'Mobile App' },
@@ -59,7 +62,7 @@ export const tabs = [
     {
         label: 'More',
         menuItems: [
-            { label: 'Help Center' },
+            { label: 'Help Center', link: '/faqs' },
             { label: 'BN Community' },
             { label: 'About' },
             { label: 'BN for business' },

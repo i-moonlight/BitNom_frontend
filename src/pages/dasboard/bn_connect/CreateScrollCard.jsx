@@ -1,18 +1,18 @@
 import {
+    alpha,
     Card,
     CardActionArea,
     CardContent,
-    alpha,
     Hidden,
     Typography,
     useTheme,
 } from '@material-ui/core';
 import React from 'react';
 import image from '../../../assets/scrolls/image.svg';
-import Button from '../../../components/Button';
 import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
+import Button from '../../../components/Button';
 
 export default function CreateScrollCard({
     setOpen,
@@ -56,7 +56,7 @@ export default function CreateScrollCard({
                             setVideoDisabled(true);
                         }}
                         variant="text"
-                        color="primary"
+                        color="inherit"
                     >
                         <div className="center-horizontal">
                             <img
@@ -77,7 +77,7 @@ export default function CreateScrollCard({
                             setImageDisabled(true);
                         }}
                         variant="text"
-                        color="primary"
+                        color="inherit"
                     >
                         <div className="center-horizontal">
                             <img
@@ -90,7 +90,7 @@ export default function CreateScrollCard({
                             </Hidden>
                         </div>
                     </Button>
-                    <Button textCase variant="text" color="primary">
+                    <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
                             <img
                                 style={{ marginRight: 10, width: 20 }}
@@ -104,7 +104,7 @@ export default function CreateScrollCard({
                             </Hidden>
                         </div>
                     </Button>
-                    <Button textCase variant="text" color="primary">
+                    <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
                             <img
                                 style={{ marginRight: 10, width: 20 }}

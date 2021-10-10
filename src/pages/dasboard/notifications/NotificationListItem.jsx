@@ -12,10 +12,7 @@ import { useSelector } from 'react-redux';
 import { MoreVert, FiberManualRecord } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
-import {
-    notificationBodyFactory,
-    generateRandomColor,
-} from '../utilities/functions';
+import { notificationBodyFactory } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
 
@@ -102,7 +99,7 @@ export default function NotificationListItem({ notification }) {
                         avatar={
                             <Avatar
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                 }}
                                 aria-label="recipe"
                             >

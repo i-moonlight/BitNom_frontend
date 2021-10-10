@@ -5,6 +5,7 @@ import {
     ListItemIcon,
     ListItemText,
     makeStyles,
+    Typography,
     useTheme,
 } from '@material-ui/core';
 import { ChevronRight, CloseRounded } from '@material-ui/icons';
@@ -23,11 +24,10 @@ export default function MobileMenu({ open, onClose }) {
             width: '100%',
             backgroundColor: theme.palette.background.default,
             flexDirection: 'column',
-            //   alignItems: 'start',
             overflow: 'hidden',
         },
         close: {
-            alignSelf: 'baseline',
+            alignSelf: 'flex-end',
         },
     }));
 
@@ -39,21 +39,33 @@ export default function MobileMenu({ open, onClose }) {
 
     return (
         <List className={classes.root}>
-            <IconButton
-                size="small"
-                className={'m-1 p-1' + classes.close}
-                onClick={onClose}
-            >
-                <CloseRounded />
-            </IconButton>
+            <ListItem>
+                <ListItemText primary="" />
+                <ListItemIcon>
+                    <IconButton
+                        size="small"
+                        className={classes.close}
+                        onClick={onClose}
+                    >
+                        <CloseRounded />
+                    </IconButton>
+                </ListItemIcon>
+            </ListItem>
+
             <ListItem button>
-                <ListItemText primary="Home" />
+                <ListItemText
+                    primary={<Typography color="textPrimary">Home</Typography>}
+                />
             </ListItem>
             <ListItem
                 button
                 onClick={() => setShowMenuEcosystem(!showMenuEcosystem)}
             >
-                <ListItemText primary="Ecosystem" />
+                <ListItemText
+                    primary={
+                        <Typography color="textPrimary">Ecosystem</Typography>
+                    }
+                />
                 <ListItemIcon>
                     <ChevronRight
                         style={{
@@ -73,7 +85,11 @@ export default function MobileMenu({ open, onClose }) {
                 button
                 onClick={() => setShowMenuProduct(!showMenuProduct)}
             >
-                <ListItemText primary="Product" />
+                <ListItemText
+                    primary={
+                        <Typography color="textPrimary">Product</Typography>
+                    }
+                />
                 <ListItemIcon>
                     <ChevronRight
                         style={{
@@ -86,10 +102,18 @@ export default function MobileMenu({ open, onClose }) {
             </ListItem>
             <MenuOptions show={showMenuProduct} items={menuProduct} mobile />
             <ListItem button>
-                <ListItemText primary="BN for Business" />
+                <ListItemText
+                    primary={
+                        <Typography color="textPrimary">
+                            BN for Business
+                        </Typography>
+                    }
+                />
             </ListItem>
             <ListItem button>
-                <ListItemText primary="Learn" />
+                <ListItemText
+                    primary={<Typography color="textPrimary">Learn</Typography>}
+                />
             </ListItem>
         </List>
     );

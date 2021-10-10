@@ -17,15 +17,21 @@ import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
+import TabOptionsPopover from './popovers/TabOptionsPopover';
 import ProfileBar from './ProfileBar';
-import TabsBar2 from './TabsBar2';
+import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
+const tabOptionsId = 'menu-tab-options';
+
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
+    const [tabValue, setTabValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(false);
+    const [tabOptions, setTabOptions] = useState(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
     const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
         useState(null);
@@ -37,6 +43,7 @@ export default function NavBar() {
     const user = state.auth.user;
 
     const isMenuOpen = Boolean(menuAnchorEl);
+    const isTabOptionOpen = Boolean(tabOptionAnchorEl);
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
@@ -78,6 +85,16 @@ export default function NavBar() {
         setMenuAnchorEl(null);
     };
 
+    const handleTabOptionsOpen = (event) => {
+        console.log('crt: ', event.currentTarget);
+        setTabOptionAnchorEl(event.currentTarget);
+    };
+
+    const handleTabOptionsClose = (link) => {
+        link && history.push(link);
+        setTabOptionAnchorEl(false);
+    };
+
     const handleNotificationsOpen = (event) => {
         setNotificationAnchorEl(event.currentTarget);
         handleMarkAsSeen();
@@ -93,6 +110,10 @@ export default function NavBar() {
 
     const handleNotificationOptionClose = () => {
         setNotificationOptionAnchorEl(null);
+    };
+
+    const handleChange = (event, newValue) => {
+        setTabValue(newValue);
     };
 
     const handleMarkAsSeen = () => {
@@ -116,6 +137,14 @@ export default function NavBar() {
     useEffect(() => {
         !user?.email?.verified && history.push('/auth/require_verify');
 
+        if (window.location.pathname == '/dasboard') {
+            setTabValue(0);
+        }
+
+        if (window.location.pathname == '/dashboard/knowledge_center') {
+            setTabValue(1);
+        }
+
         const count =
             subscriptionData && subscriptionData.liveUpdates.count
                 ? subscriptionData.liveUpdates.count
@@ -138,10 +167,11 @@ export default function NavBar() {
         dispatch(setCount(notSeenArray.length));
 
         const logo = document.getElementById('favicon');
+
         if (_count > 0) {
-            logo.href = 'logo_badge.svg';
+            logo.href = `${window.location.origin}/logo_badge.svg`;
         } else {
-            logo.href = 'logo.svg';
+            logo.href = `${window.location.origin}/logo.svg`;
         }
 
         if (!isAuth) {
@@ -179,11 +209,25 @@ export default function NavBar() {
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
             />
-
-            <TabsBar2 />
+            <TabsBar
+                value={tabValue}
+                handleChange={handleChange}
+                tabOptionsId={tabOptionsId}
+                setTabOptions={setTabOptions}
+                handleTabOptionsOpen={handleTabOptionsOpen}
+                handleTabOptionsClose={handleTabOptionsClose}
+            />
+            {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
-
+            <TabOptionsPopover
+                value={tabValue}
+                tabOptionsId={tabOptionsId}
+                tabOptionAnchorEl={tabOptionAnchorEl}
+                isTabOptionOpen={isTabOptionOpen}
+                handleTabOptionsClose={handleTabOptionsClose}
+                tabOptions={tabOptions}
+            />
             <MenuPopover
                 menuId={menuId}
                 menuAnchorEl={menuAnchorEl}

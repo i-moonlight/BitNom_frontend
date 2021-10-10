@@ -16,7 +16,6 @@ import { SettingsRounded } from '@material-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    generateRandomColor,
     getCreationTime,
     notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
@@ -133,7 +132,7 @@ function ListItemComponent({ item }) {
             <ListItemAvatar>
                 <Avatar
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {getUserInitials(getNotifyingUser(item))}

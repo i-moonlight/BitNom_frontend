@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Grid, Typography, Avatar } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 //import parse from 'autosuggest-highlight/parse';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 
 function OrganizerSearch({
@@ -70,7 +70,7 @@ function OrganizerSearch({
                                     : ''
                             }
                             style={{
-                                backgroundColor: generateRandomColor(),
+                                backgroundColor: '#fed132',
                                 marginRight: '5px',
                             }}
                         >

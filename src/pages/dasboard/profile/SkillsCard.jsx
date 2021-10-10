@@ -91,9 +91,11 @@ export default function SkillsCard({ profile, profileView }) {
                                                 setText('');
                                             });
                                         }}
-                                        disabled={addLoading}
+                                        color="primary"
                                         size="small"
                                         className="my-1"
+                                        textCase
+                                        disabled={addLoading}
                                     >
                                         Add
                                     </Button>

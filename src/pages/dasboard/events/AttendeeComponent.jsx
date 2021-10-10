@@ -17,7 +17,7 @@ import { useMutation } from '@apollo/client';
 
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 
 function AttendeeComponent({ item, getFollowStatus, profile }) {
     const [status, setStatus] = React.useState();
@@ -100,7 +100,7 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {item?.attendee?.profile_pic

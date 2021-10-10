@@ -1,5 +1,6 @@
 import {
     Avatar,
+    Badge,
     Box,
     Card,
     Container,
@@ -10,7 +11,6 @@ import {
     Paper,
     Typography,
     useTheme,
-    Badge,
 } from '@material-ui/core';
 import {
     ChevronRight,
@@ -26,7 +26,6 @@ import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
-import { generateRandomColor } from '../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
@@ -168,7 +167,7 @@ export default function ProfileBar({
                             <Avatar
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 30,
                                     height: 30,
