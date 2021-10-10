@@ -1,8 +1,8 @@
 import { Card, CardContent, Divider, Typography } from '@material-ui/core';
 import { FileCopy } from '@material-ui/icons';
 import React from 'react';
-import qrImg from '../../../assets/investor/qr.png';
-import Button from '../../../components/Button';
+import qrImg from '../../../../assets/investor/qr.png';
+import Button from '../../../../components/Button';
 
 export default function DonateCard() {
     return (

@@ -27,7 +27,7 @@ const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
-    const [value, setValue] = useState(0);
+    const [tabValue, setTabValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
     const [tabOptions, setTabOptions] = useState(null);
@@ -88,7 +88,8 @@ export default function NavBar() {
         setTabOptionAnchorEl(event.currentTarget);
     };
 
-    const handleTabOptionsClose = () => {
+    const handleTabOptionsClose = (link) => {
+        link && history.push(link);
         setTabOptionAnchorEl(null);
     };
 
@@ -110,7 +111,7 @@ export default function NavBar() {
     };
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setTabValue(newValue);
     };
 
     const handleMarkAsSeen = () => {
@@ -133,6 +134,14 @@ export default function NavBar() {
 
     useEffect(() => {
         !user?.email?.verified && history.push('/auth/require_verify');
+
+        if (window.location.pathname == '/dasboard') {
+            setTabValue(0);
+        }
+
+        if (window.location.pathname == '/dashboard/knowledge_center') {
+            setTabValue(1);
+        }
 
         const count =
             subscriptionData && subscriptionData.liveUpdates.count
@@ -200,7 +209,7 @@ export default function NavBar() {
             />
 
             <TabsBar
-                value={value}
+                value={tabValue}
                 handleChange={handleChange}
                 tabOptionsId={tabOptionsId}
                 setTabOptions={setTabOptions}

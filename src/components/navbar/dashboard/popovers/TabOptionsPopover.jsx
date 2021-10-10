@@ -19,7 +19,7 @@ export default function TabOptionsPopover({
             onClose={handleTabOptionsClose}
         >
             {tabOptions &&
-                tabOptions.map(({ label }) => (
+                tabOptions.map(({ label, link }) => (
                     <MenuItem
                         key={`${Math.random() * 1000}`}
                         className="py-3 space-between"
@@ -28,7 +28,7 @@ export default function TabOptionsPopover({
                                 tabOptionAnchorEl &&
                                 tabOptionAnchorEl.offsetWidth,
                         }}
-                        onClick={handleTabOptionsClose}
+                        onClick={() => handleTabOptionsClose(link)}
                     >
                         {label}
                     </MenuItem>

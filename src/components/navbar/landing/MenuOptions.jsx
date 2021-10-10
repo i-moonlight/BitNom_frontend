@@ -50,8 +50,10 @@ export default function MenuOptions({ show, items = [], mobile }) {
                         <ListItemText
                             primary={
                                 item?.link ? (
-                                    <Link className="alt" to={item?.link}>
-                                        {item?.text}
+                                    <Link to={item?.link}>
+                                        <Typography noWrap color="textPrimary">
+                                            {item?.text}
+                                        </Typography>
                                     </Link>
                                 ) : (
                                     <Typography noWrap>{item?.text}</Typography>

@@ -3,6 +3,7 @@ import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
 import React from 'react';
 import { tabs } from '../../utilities/data.components';
 import { useStyles } from '../../utilities/styles.components';
+import { useHistory } from 'react-router-dom';
 
 export default function TabsBar({
     value,
@@ -11,6 +12,7 @@ export default function TabsBar({
     setTabOptions,
     handleTabOptionsOpen,
 }) {
+    const history = useHistory();
     const classes = useStyles();
 
     return (
@@ -24,7 +26,7 @@ export default function TabsBar({
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {tabs.map(({ label, menuItems }) => {
+                        {tabs.map(({ label, menuItems, link }) => {
                             const tabOptionsId2 =
                                 tabOptionsId + Math.random() * 1000;
                             return (
@@ -34,6 +36,7 @@ export default function TabsBar({
                                     aria-controls={tabOptionsId2}
                                     aria-haspopup="true"
                                     onClick={(event) => {
+                                        link && history.push(link);
                                         menuItems && setTabOptions(menuItems);
                                         menuItems &&
                                             handleTabOptionsOpen(event);
