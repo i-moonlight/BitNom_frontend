@@ -35,11 +35,7 @@ import { MentionsInput, Mention } from 'react-mentions';
 import Button from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import {
-    generateRandomColor,
-    mentionsUpdate,
-    mentionsFinder,
-} from '../../utilities/functions';
+import { mentionsUpdate, mentionsFinder } from '../../utilities/functions';
 import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
@@ -216,8 +212,7 @@ export default function UpdatePost({
                                 <ListItemAvatar>
                                     <Avatar
                                         style={{
-                                            backgroundColor:
-                                                generateRandomColor(),
+                                            backgroundColor: '#fed132',
                                         }}
                                         src={user?.profile_pic}
                                     >

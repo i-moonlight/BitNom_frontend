@@ -32,11 +32,7 @@ import Button from '../../../../components/Button';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import {
-    generateRandomColor,
-    getFeed,
-    mentionsFinder,
-} from '../../utilities/functions';
+import { getFeed, mentionsFinder } from '../../utilities/functions';
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
@@ -190,8 +186,7 @@ export default function CreatePost({
                                 <ListItemAvatar>
                                     <Avatar
                                         style={{
-                                            backgroundColor:
-                                                generateRandomColor(),
+                                            backgroundColor: '#fed132',
                                         }}
                                         src={user?.profile_pic}
                                     >

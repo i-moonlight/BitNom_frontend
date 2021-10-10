@@ -30,7 +30,6 @@ import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
     contentBodyFactory,
     getReactionsSum,
-    generateRandomColor,
     mentionsFinder,
 } from '../../../utilities/functions';
 import { useSelector } from 'react-redux';
@@ -244,7 +243,7 @@ export default function Comment({
             <div style={style} className="d-flex flex-row flex-start">
                 <Avatar
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                     src={comment?.author?.profile_pic}
                     className="mx-2"
@@ -486,7 +485,7 @@ export default function Comment({
                             <div className="center-horizontal">
                                 <Avatar
                                     style={{
-                                        backgroundColor: generateRandomColor(),
+                                        backgroundColor: '#fed132',
                                     }}
                                     src={scroll?.author?.image}
                                     className="mx-2"

@@ -24,7 +24,7 @@ import {
 } from '../utilities/queries';
 //import { getFeed } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     const [notFollowed, setNotFollowed] = useState();
@@ -188,7 +188,7 @@ function ListItemComponent({ user, getFollowStatus }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {user?.profile_pic

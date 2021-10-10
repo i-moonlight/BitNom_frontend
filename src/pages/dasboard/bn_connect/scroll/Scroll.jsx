@@ -41,7 +41,6 @@ import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
     getReactionsSum,
-    generateRandomColor,
     mentionsFinder,
 } from '../../utilities/functions';
 
@@ -312,7 +311,7 @@ export default function Scroll({
                         <Avatar
                             className="c-poiter"
                             style={{
-                                backgroundColor: generateRandomColor(),
+                                backgroundColor: '#fed132',
                             }}
                             src={
                                 process.env.REACT_APP_BACKEND_URL +
@@ -563,7 +562,7 @@ export default function Scroll({
                         <div className="center-horizontal">
                             <Avatar
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                 }}
                                 src={scroll?.author?.image}
                                 className="mx-2"
@@ -655,7 +654,7 @@ export default function Scroll({
                         {/* <div className='center-horizontal'>
               <Avatar
                 style={{
-                  backgroundColor: generateRandomColor(),
+                  backgroundColor: '#fed132',
                 }}
                 src={scroll?.author?.image}
                 className='mx-2'

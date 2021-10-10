@@ -38,11 +38,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { Link } from 'react-router-dom';
 import Screen from '../../../components/Screen';
-import {
-    contentBodyFactory,
-    generateRandomColor,
-    getDateOrdinal,
-} from '../utilities/functions';
+import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
 import {
     QUERY_FETCH_PROFILE,
     QUERY_EVENT_BY_ID,
@@ -79,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
     },
     avatar: {
-        backgroundColor: generateRandomColor(),
+        backgroundColor: '#fed132',
         marginRight: '8px',
         [theme.breakpoints.up('md')]: {
             width: 80,
@@ -380,7 +376,7 @@ export default function EventView({ match }) {
                                                         variant="rounded"
                                                         style={{
                                                             backgroundColor:
-                                                                generateRandomColor(),
+                                                                '#fed132',
                                                             marginRight: 12,
                                                             marginBottom: 12,
                                                             width: 80,

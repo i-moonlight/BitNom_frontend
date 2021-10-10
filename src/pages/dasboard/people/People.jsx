@@ -35,7 +35,7 @@ import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -227,7 +227,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {getUserInitials(item?.displayName)}
