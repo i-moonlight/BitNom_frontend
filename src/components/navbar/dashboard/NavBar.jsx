@@ -29,7 +29,7 @@ const notificationOptionId = 'menu-notifications-option';
 export default function NavBar() {
     const [tabValue, setTabValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-    const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(null);
+    const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(false);
     const [tabOptions, setTabOptions] = useState(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
     const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
@@ -85,12 +85,13 @@ export default function NavBar() {
     };
 
     const handleTabOptionsOpen = (event) => {
+        console.log('crt: ', event.currentTarget);
         setTabOptionAnchorEl(event.currentTarget);
     };
 
     const handleTabOptionsClose = (link) => {
         link && history.push(link);
-        setTabOptionAnchorEl(null);
+        setTabOptionAnchorEl(false);
     };
 
     const handleNotificationsOpen = (event) => {
@@ -207,7 +208,6 @@ export default function NavBar() {
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
             />
-
             <TabsBar
                 value={tabValue}
                 handleChange={handleChange}
@@ -218,10 +218,9 @@ export default function NavBar() {
             {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
-
             <TabOptionsPopover
-                tabOptionAnchorEl={tabOptionAnchorEl}
                 tabOptionsId={tabOptionsId}
+                tabOptionAnchorEl={tabOptionAnchorEl}
                 isTabOptionOpen={isTabOptionOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
                 tabOptions={tabOptions}

@@ -8,9 +8,10 @@ export default function TabOptionsPopover({
     handleTabOptionsClose,
     tabOptions,
 }) {
+    console.log('toae: ', tabOptionAnchorEl);
     return (
         <Popover
-            anchorEl={tabOptionAnchorEl}
+            anchorEl={tabOptionAnchorEl || document.body}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
             id={tabOptionsId}
