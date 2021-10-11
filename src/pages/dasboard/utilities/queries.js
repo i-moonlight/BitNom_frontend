@@ -1,5 +1,5 @@
 // BN Dashboard GraphQL Queries
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const QUERY_FETCH_PROFILE = gql`
   query {

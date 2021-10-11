@@ -7,23 +7,43 @@ import {
   InputBase,
   useTheme,
 } from "@material-ui/core";
-import { MoreVert, Search } from "@material-ui/icons";
+import { Create, MoreVert, Search } from "@material-ui/icons";
 import React from "react";
-import { useStyles } from "../../styles.component";
+import { useStyles } from "../../utils/styles";
 
-export default function SideBarHeader() {
+export default function SideBarHeader({ setChatInviteOpen }) {
   const theme = useTheme();
   const classes = useStyles();
   return (
     <>
       <Grid item container>
-        <Grid item xs={10}>
+        <Grid item xs={8}>
           {" "}
-          <Typography variant="h5">Messaging</Typography>
+          <Typography variant="h5" className={classes.menuHeader}>
+            Messaging
+          </Typography>
         </Grid>
-        <Grid item xs={2} alignItems="flex-end" justifyContent="flex-end">
+        <Grid
+          container
+          item
+          xs={2}
+          alignItems="flex-end"
+          justifyContent="flex-end"
+        >
           <IconButton>
             <MoreVert />
+          </IconButton>
+        </Grid>
+        <Grid
+          container
+          item
+          xs={2}
+          alignItems="flex-end"
+          justifyContent="flex-end"
+        >
+          {" "}
+          <IconButton onClick={setChatInviteOpen}>
+            <Create />
           </IconButton>
         </Grid>
       </Grid>{" "}

@@ -8,14 +8,7 @@ export default function Chat() {
       {" "}
       <Paper>
         {" "}
-        <Grid container>
-          <Grid item xs={3}>
-            {" "}
-            <ChatMenu />
-          </Grid>
-
-          <Grid item>Messages here</Grid>
-        </Grid>
+        <Grid container></Grid>
       </Paper>
     </>
   );

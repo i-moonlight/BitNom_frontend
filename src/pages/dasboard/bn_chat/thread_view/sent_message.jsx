@@ -4,8 +4,9 @@ import moment from "moment";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Message({ message, onReply = () => null }) {
+export default function SentMessage({ message, onReply = () => null }) {
   const [show_reply, setShowReply] = useState(false);
+
   const user = message.author || {};
   return (
     <Grid
@@ -16,6 +17,11 @@ export default function Message({ message, onReply = () => null }) {
       alignItems="flex-start"
       onMouseEnter={() => setShowReply(true)}
       onMouseLeave={() => setShowReply(false)}
+      style={{
+        marginTop: "20px",
+        width: "70%",
+        backgroundColor: "#f0f8ff",
+      }}
     >
       <Grid item xs={2} container justifyContent="center">
         <Link style={{ textDecoration: "none" }}>
@@ -40,7 +46,7 @@ export default function Message({ message, onReply = () => null }) {
         <Grid item style={{ marginBottom: "10px" }}>
           <Typography variant="body1" component="p">
             <Link style={{ textDecoration: "none" }}>
-              <strong>{user._id}</strong>
+              <strong>{user}</strong>
             </Link>
           </Typography>
           <Typography variant="caption" component="span">
@@ -48,7 +54,7 @@ export default function Message({ message, onReply = () => null }) {
           </Typography>
           {message.responseTo && (
             <Typography variant="body2" component="article">
-              {message.responsTo.text}
+              {message.responsTo?.text}
             </Typography>
           )}
           <Typography variant="body2" component="article">

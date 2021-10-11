@@ -128,7 +128,7 @@ export default function ProfileBar({
               aria-haspopup="true"
               onClick={handleNotificationsOpen}
             >
-              <Badge color="primary" Content={notifications}>
+              <Badge color="primary" badgeContent={notifications}>
                 <Notifications />
               </Badge>
             </IconButton>

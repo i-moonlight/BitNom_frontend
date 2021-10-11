@@ -48,7 +48,7 @@ export default function NavBar() {
     NOTIFICATIONS_SUBSCRIPTION,
     {
       variables: { _id: user?._id },
-      context: { clientName: "notifications" },
+      // context: { clientName: "notifications" },
     }
   );
 
@@ -124,7 +124,6 @@ export default function NavBar() {
       logo.href = "logo.svg";
     }
   }, [_count]);
-
   return (
     <AppBar
       position="fixed"

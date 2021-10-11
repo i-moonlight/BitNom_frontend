@@ -26,7 +26,7 @@ function OrganizerSearch({
       options={searchResults || []}
       loading={loading}
       value={searchedValues}
-      onChange={(event, newValue) => {
+      onChange={(event, newValue) => {                                             
         setErrorText('');
         setOrganizerErr(false);
         setSearchedValues(newValue);
