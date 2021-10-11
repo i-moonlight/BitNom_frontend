@@ -249,10 +249,10 @@ export default function CreatePost({
                             {/* <TextField
                 fullWidth
                 multiline
-                variant='standard'
+                variant="standard"
                 error={createPostErr && true}
                 rows={5}
-                id='content-field'
+                id="content-field"
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(
