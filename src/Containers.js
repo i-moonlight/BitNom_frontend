@@ -97,11 +97,11 @@ const notificationsLink = from([
 ]);
 
 const chatUpload = createUploadLink({
-  uri: backendUri + "/chat/graphql",
-  credentials: "include",
-  headers: {
-    "keep-alive": "true",
-  },
+    uri: backendUri + '/chat/graphql',
+    credentials: 'include',
+    headers: {
+        'keep-alive': 'true',
+    },
 });
 const uploadLink = createUploadLink({
     uri: backendUri + '/bn-social/graphql',
@@ -118,15 +118,15 @@ const profileUploadLink = ApolloLink.split(
 );
 
 const chatProfileUploadLink = ApolloLink.split(
-  (operation) => operation.getContext().clientName === "chat",
-  chatUpload,
-  profileUploadLink
+    (operation) => operation.getContext().clientName === 'chat',
+    chatUpload,
+    profileUploadLink
 );
 
 const btnMainLink = ApolloLink.split(
     (operation) => operation.getContext().clientName === 'notifications',
     notificationsLink,
-    profileUploadLink
+    chatProfileUploadLink
 );
 
 const splitLink = split(

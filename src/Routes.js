@@ -32,6 +32,7 @@ import Terms from './pages/welcome/terms/Terms';
 import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
 import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
+import BnChat from './pages/dasboard/bn_chat/BNChat';
 
 export default function Routes({ apolloClient }) {
     return (
@@ -102,6 +103,11 @@ export default function Routes({ apolloClient }) {
 
                         {/* Dashboard */}
                         <Route exact component={BnConnect} path="/dashboard" />
+                        <Route
+                            exact
+                            component={BnChat}
+                            path="/dashboard/chat"
+                        />
                         <Route
                             exact
                             component={BnServices}

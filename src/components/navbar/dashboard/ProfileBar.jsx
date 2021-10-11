@@ -151,6 +151,10 @@ export default function ProfileBar({
                             size="small"
                             className={classes.iconButton}
                             color="inherit"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                history.push('/dashboard/chat');
+                            }}
                         >
                             <ForumRounded />
                         </IconButton>
