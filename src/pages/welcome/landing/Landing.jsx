@@ -14,29 +14,29 @@ import TransitionSection from './TransitionSection';
 export const INVESTOR_CARD_DISPLACEMENT = 200;
 
 export default function Landing() {
-  return (
-    <Wrapper>
-      <HeaderSection />
-      <SponsorsSection />
-      <ProjectSection />
-      <InfrastructureSection />
-      <TransitionSection />
-      <LayersSection />
-      <InvestorSection />
-      <ServicesSection />
-      <AcceptCookies />
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <HeaderSection />
+            <SponsorsSection />
+            <ProjectSection />
+            <InfrastructureSection />
+            <TransitionSection />
+            <LayersSection />
+            <InvestorSection />
+            <ServicesSection />
+            <AcceptCookies />
+        </Wrapper>
+    );
 }
 
 export const useStyles = makeStyles(() => ({
-  sectionText: {
-    lineHeight: '1.8em',
-    marginBottom: 16,
-  },
-  cardImg: {
-    width: 100,
-    height: 100,
-    padding: 10,
-  },
+    sectionText: {
+        lineHeight: '1.8em',
+        marginBottom: 16,
+    },
+    cardImg: {
+        width: 100,
+        height: 100,
+        padding: 10,
+    },
 }));

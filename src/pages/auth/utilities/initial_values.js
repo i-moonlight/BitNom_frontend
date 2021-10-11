@@ -1,26 +1,25 @@
 // Auth Pages Initial Values
 export const createUserInitialValues = {
-  username: '',
-  email: '',
-  password: '',
-  cpassword: '',
+    username: '',
+    email: '',
+    password: '',
+    cpassword: '',
 };
 
 export const loginUserInitialValues = {
-  email: '',
-  password: '',
+    email: '',
+    password: '',
 };
 
 export const requestResetInitialValues = {
-  email: '',
+    email: '',
 };
 
 export const resetPasswordInitialValues = {
-  password: '',
-  cpassword: '',
+    password: '',
+    cpassword: '',
 };
 
 export const updateInfoInitialValues = {
-  displayName: '',
-  bio: '',
+    displayName: '',
 };

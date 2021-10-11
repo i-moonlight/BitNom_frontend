@@ -1,7 +1,50 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
+function MapContainer({ latitude, longitude }) {
+    return (
+        <div
+            className="map-area"
+            style={{
+                width: '250px',
+                height: '200px',
+            }}
+        >
+            <LoadScript
+                libraries={['places']}
+                googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
+            >
+                <GoogleMap
+                    mapContainerStyle={{
+                        //position: 'relative',
+                        width: '250px',
+                        height: '200px',
+                    }}
+                    center={{
+                        lat: Number(latitude),
+                        lng: Number(longitude),
+                    }}
+                    zoom={14}
+                >
+                    <Marker
+                        position={{
+                            lat: Number(latitude),
+                            lng: Number(longitude),
+                        }}
+                    />
+                    {/* Child components, such as markers, info windows, etc. */}
+                    <></>
+                </GoogleMap>
+            </LoadScript>
+        </div>
+    );
+}
+
+export default React.memo(MapContainer);
+
+//import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+/* 
 export class MapContainer extends Component {
   render() {
     return (
@@ -49,3 +92,4 @@ export class MapContainer extends Component {
 export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_MAPS_KEY,
 })(MapContainer);
+ */

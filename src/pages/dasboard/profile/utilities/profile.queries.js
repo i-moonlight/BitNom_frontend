@@ -2,165 +2,165 @@
 import { gql } from '@apollo/client';
 
 export const MUTATION_ADD_WORK = gql`
-  mutation ($data: IWork!) {
-    Users {
-      addWork(data: $data)
+    mutation ($data: IWork!) {
+        Users {
+            addWork(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_WORK = gql`
-  mutation ($id: String!, $data: IWork!) {
-    Users {
-      updateWork(_id: $id, data: $data)
+    mutation ($id: String!, $data: IWork!) {
+        Users {
+            updateWork(_id: $id, data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_WORK = gql`
-  mutation ($id: String!) {
-    Users {
-      removeWork(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeWork(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_EDUCATION = gql`
-  mutation ($data: IEducation!) {
-    Users {
-      addEducation(data: $data)
+    mutation ($data: IEducation!) {
+        Users {
+            addEducation(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_EDUCATION = gql`
-  mutation ($id: String!, $data: IEducation!) {
-    Users {
-      updateEducation(_id: $id, data: $data)
+    mutation ($id: String!, $data: IEducation!) {
+        Users {
+            updateEducation(_id: $id, data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_EDUCATION = gql`
-  mutation ($id: String!) {
-    Users {
-      removeEducation(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeEducation(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_HONOR = gql`
-  mutation ($data: IHonors!) {
-    Users {
-      addHonor(data: $data)
+    mutation ($data: IHonors!) {
+        Users {
+            addHonor(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_HONOR = gql`
-  mutation ($id: String!, $data: IHonors!) {
-    Users {
-      updateHonor(_id: $id, data: $data)
+    mutation ($id: String!, $data: IHonors!) {
+        Users {
+            updateHonor(_id: $id, data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_HONOR = gql`
-  mutation ($id: String!) {
-    Users {
-      removeHonor(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeHonor(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_SKILL = gql`
-  mutation ($data: ISkills!) {
-    Users {
-      addSkill(data: $data)
+    mutation ($data: ISkills!) {
+        Users {
+            addSkill(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_SKILL = gql`
-  mutation ($id: String!) {
-    Users {
-      removeSkill(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeSkill(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_COURSE = gql`
-  mutation ($data: ICourses!) {
-    Users {
-      addCourse(data: $data)
+    mutation ($data: ICourses!) {
+        Users {
+            addCourse(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_COURSE = gql`
-  mutation ($id: String!, $data: ICourses!) {
-    Users {
-      updateCourse(_id: $id, data: $data)
+    mutation ($id: String!, $data: ICourses!) {
+        Users {
+            updateCourse(_id: $id, data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_COURSE = gql`
-  mutation ($id: String!) {
-    Users {
-      removeCourse(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeCourse(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_PROJECT = gql`
-  mutation ($data: IProjects!) {
-    Users {
-      addProject(data: $data)
+    mutation ($data: IProjects!) {
+        Users {
+            addProject(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_PROJECT = gql`
-  mutation ($id: String!, $data: IProjects!) {
-    Users {
-      updateProject(_id: $id, data: $data)
+    mutation ($id: String!, $data: IProjects!) {
+        Users {
+            updateProject(_id: $id, data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_PROJECT = gql`
-  mutation ($id: String!) {
-    Users {
-      removeProject(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeProject(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_ADD_LANGUAGE = gql`
-  mutation ($data: ILanguages!) {
-    Users {
-      addLanguage(data: $data)
+    mutation ($data: ILanguages!) {
+        Users {
+            addLanguage(data: $data)
+        }
     }
-  }
 `;
 
 export const MUTATION_REMOVE_LANGUAGE = gql`
-  mutation ($id: String!) {
-    Users {
-      removeLanguage(_id: $id)
+    mutation ($id: String!) {
+        Users {
+            removeLanguage(_id: $id)
+        }
     }
-  }
 `;
 
 export const MUTATION_UPDATE_PROFILE = gql`
-  mutation ($data: IUpdateUser!) {
-    Users {
-      update(data: $data) {
-        _id
-      }
+    mutation ($data: IUpdateUser!) {
+        Users {
+            update(data: $data) {
+                _id
+            }
+        }
     }
-  }
 `;
 
 const userSubFields = `
