@@ -28,13 +28,14 @@ export default function ChatItem({ chat, onClick }) {
     const updateLastSeen = () => {
         updateLastSeenMutation();
     };
+
     useEffect(() => {
         updateLastSeen();
         setIsOnline(setInterval(() => updateLastSeen(), 20000));
         return () => {
             clearInterval(isOnline);
-        };
-    }, []);
+        }; // eslint-disable-next-line
+    }, [isOnline]);
 
     return (
         <>
