@@ -5,7 +5,7 @@ import {
     MenuItem,
     Typography,
 } from '@mui/material';
-import { AddRounded } from '@material-ui/icons';
+import { AddRounded } from '@mui/icons-material';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import AditionalInfoForm from './forms/AditionalInfoForm';

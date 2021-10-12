@@ -3,41 +3,41 @@ import {
     PanToolRounded,
     ThumbDownRounded,
     ThumbUpRounded,
-} from '@material-ui/icons';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
+} from '@mui/icons-material';
+import AvatarGroup from '@mui/lab/AvatarGroup';
 import { Avatar, Button as MuiButton } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
     },
     small: {
-        width: theme.spacing(1),
-        height: theme.spacing(1),
+        // width: theme.spacing(1),
+        // height: theme.spacing(1),
     },
     red: {
         color: '#fff',
         backgroundColor: red[500],
         border: '2px solid transparent',
-        width: theme.spacing(2),
-        height: theme.spacing(2),
+        // width: theme.spacing(2),
+        // height: theme.spacing(2),
     },
     green: {
         color: '#fff',
         backgroundColor: green[500],
         border: '2px solid transparent',
-        width: theme.spacing(2),
-        height: theme.spacing(2),
+        // width: theme.spacing(2),
+        // height: theme.spacing(2),
     },
     primary: {
         backgroundColor: '#006097',
         color: '#fff',
         border: '2px solid transparent',
-        width: theme.spacing(2),
-        height: theme.spacing(2),
+        // width: theme.spacing(2),
+        // height: theme.spacing(2),
     },
 }));
 
@@ -60,7 +60,6 @@ export default function ReactionButton({
 
     return (
         <MuiButton
-            color={buttonColor ? buttonColor : 'primary'}
             variant={buttonVariant ? buttonVariant : 'contained'}
             disableElevation={!google}
             style={{

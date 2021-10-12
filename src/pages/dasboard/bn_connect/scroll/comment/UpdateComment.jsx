@@ -26,7 +26,7 @@ import {
     ImageRounded,
     Public,
     InsertEmoticon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { MentionsInput, Mention } from 'react-mentions';

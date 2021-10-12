@@ -1,5 +1,5 @@
 import { Avatar, Grid, Typography, IconButton } from '@mui/material';
-import { Reply } from '@material-ui/icons';
+import { Reply } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';

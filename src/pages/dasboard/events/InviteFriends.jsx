@@ -13,13 +13,13 @@ import {
     Button,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/lab/Autocomplete';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
 import {
     CloseRounded,
     CheckBox,
     CheckBoxOutlineBlank,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { useState } from 'react';
 //import { getUserInitials } from '../../../utilities/Helpers';
 //import { getReactionsSum } from '../utilities/functions';

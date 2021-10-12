@@ -16,7 +16,6 @@ export default function Button({
     ...props
 }) {
     const formikContext = useFormikContext();
-
     const buttonVariant = variantAlt ? variantAlt : variant;
     const buttonColor = colorAlt || color;
 

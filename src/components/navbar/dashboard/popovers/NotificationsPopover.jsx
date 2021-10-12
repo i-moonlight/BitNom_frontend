@@ -12,7 +12,7 @@ import {
     Popover,
     Typography,
 } from '@mui/material';
-import { SettingsRounded } from '@material-ui/icons';
+import { SettingsRounded } from '@mui/icons-material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {

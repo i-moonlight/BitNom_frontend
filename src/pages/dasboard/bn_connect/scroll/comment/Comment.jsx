@@ -20,7 +20,7 @@ import {
     Send,
     ThumbDownRounded,
     ThumbUpRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';

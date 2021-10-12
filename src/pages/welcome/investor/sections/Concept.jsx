@@ -3,13 +3,15 @@ import {
     CardContent,
     Container,
     Grid,
-    Hidden,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import React from 'react';
 import igImg from '../../../../assets/investor/ig.png';
 
 export default function Concept() {
+    const smDown = useMediaQuery('(max-width:959px)');
+
     return (
         <section style={{ backgroundColor: '#000' }}>
             <Container>
@@ -72,7 +74,7 @@ export default function Concept() {
                                     >
                                         <CardContent>
                                             <div className="d-flex p-2 ">
-                                                <Hidden smDown>
+                                                {!smDown && (
                                                     <img
                                                         src={igImg}
                                                         alt=""
@@ -81,7 +83,7 @@ export default function Concept() {
                                                             height: 50,
                                                         }}
                                                     />
-                                                </Hidden>
+                                                )}
                                                 <div>
                                                     <Typography className="lead">
                                                         WHO WILL BITNORM

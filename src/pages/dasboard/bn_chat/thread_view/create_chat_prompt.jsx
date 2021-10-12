@@ -17,7 +17,7 @@ import {
     ListItemText,
     CircularProgress,
 } from '@mui/material';
-import { CloseRounded, Search } from '@material-ui/icons';
+import { CloseRounded, Search } from '@mui/icons-material';
 import React, { Fragment, useState } from 'react';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
@@ -99,7 +99,7 @@ export default function CreateChatPrompt({
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Paper
                                 variant={
-                                    theme.palette.type == 'light'
+                                    theme.palette.mode == 'light'
                                         ? 'outlined'
                                         : 'elevation'
                                 }
@@ -230,7 +230,7 @@ export default function CreateChatPrompt({
         renderInput={(params) => (
           <Paper
             {...params}
-            variant={theme.palette.type == "light" ? "outlined" : "elevation"}
+            variant={theme.palette.mode == "light" ? "outlined" : "elevation"}
             elevation={0}
             component="form"
             className={classes.paperSearch}

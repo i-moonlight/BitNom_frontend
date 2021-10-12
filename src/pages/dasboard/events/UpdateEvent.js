@@ -19,7 +19,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
+import { CloseRounded, CameraAltRounded } from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState, useEffect } from 'react';
 //import { useSelector } from 'react-redux';

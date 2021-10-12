@@ -9,7 +9,7 @@ import {
     Avatar,
 } from '@mui/material';
 
-import { MoreHorizRounded } from '@material-ui/icons';
+import { MoreHorizRounded } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -48,7 +48,7 @@ export default function SavedComment({
             <Card style={{ marginBottom: 16 }}>
                 <CardActionArea
                     disableRipple
-                    //onClick={() => history.push('/dashboard')}
+                    //onClick={() => history.push('/connect')}
                 >
                     <CardHeader
                         avatar={

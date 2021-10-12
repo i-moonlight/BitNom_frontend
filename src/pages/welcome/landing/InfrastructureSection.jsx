@@ -1,4 +1,3 @@
-import { Hidden, useTheme } from '@mui/material';
 import {
     Card,
     CardContent,
@@ -6,6 +5,8 @@ import {
     Divider,
     Grid,
     Typography,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,6 +21,8 @@ export default function InfrastructureSection() {
     const theme = useTheme();
     const imageContainer = useRef(null);
     const palette = useSelector((st) => st.theme.palette);
+    const xsDown = useMediaQuery('(max-width:599px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     return (
         <Grid
@@ -43,7 +46,7 @@ export default function InfrastructureSection() {
                             }}
                             elevation={4}
                         >
-                            <Hidden xsDown>
+                            {!xsDown && (
                                 <img
                                     style={{
                                         maxWidth: '40%',
@@ -53,7 +56,7 @@ export default function InfrastructureSection() {
                                     src={infrastructureImg}
                                     alt=""
                                 />
-                            </Hidden>
+                            )}
                             <div className="p-3">
                                 <Typography
                                     className="mb-2"
@@ -76,7 +79,7 @@ export default function InfrastructureSection() {
                             </div>
                         </Card>
                     </Grid>
-                    <Hidden smDown>
+                    {!smDown && (
                         <Grid item md={5} className="my-5">
                             <div className="m-3">
                                 <Divider
@@ -89,7 +92,7 @@ export default function InfrastructureSection() {
                                 </Typography>
                             </div>
                         </Grid>
-                    </Hidden>
+                    )}
                 </Grid>
 
                 <Grid container spacing={5}>

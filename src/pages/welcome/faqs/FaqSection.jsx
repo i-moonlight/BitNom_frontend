@@ -3,7 +3,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
-import { AddCircleRounded } from '@material-ui/icons';
+import { AddCircleRounded } from '@mui/icons-material';
 import React from 'react';
 
 export default function FaqSection() {

@@ -13,7 +13,7 @@ import {
     FileCopyOutlined,
     FlagOutlined,
     PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

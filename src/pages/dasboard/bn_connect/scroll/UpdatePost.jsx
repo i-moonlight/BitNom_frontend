@@ -27,7 +27,7 @@ import {
     ImageRounded,
     Public,
     VideocamRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

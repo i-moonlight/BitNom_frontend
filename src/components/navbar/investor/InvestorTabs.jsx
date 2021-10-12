@@ -29,18 +29,18 @@ export default function InvestorTabs({ value, handleChange }) {
 const BitTab = withStyles((theme) => ({
     root: {
         textTransform: 'none',
-        color: theme.palette.type == 'dark' ? '#fff' : '#000',
+        color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         fontWeight: theme.typography.fontWeightBold,
         fontSize: theme.typography.pxToRem(15),
         marginRight: 0,
 
         // '&:focus': {
         //   opacity: 1,
-        //   color: theme.palette.type == 'dark' ? '#fff' : '#000',
+        //   color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         // },
         // '&:hover': {
         //   backgroundColor:
-        //     theme.palette.type == 'dark'
+        //     theme.palette.mode == 'dark'
         //       ? theme.palette.background.paper
         //       : theme.palette.background.search,
         // },

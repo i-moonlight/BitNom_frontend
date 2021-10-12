@@ -20,7 +20,7 @@ export default function Wrapper({ children, investor, onTabValue, authPage }) {
                 if (user?.email?.verified && !user?.displayName) {
                     history.push('/auth/update_info_register');
                 } else {
-                    authPage && history.push('/dashboard');
+                    authPage && history.push('/connect');
                 }
             }
         }

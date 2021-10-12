@@ -7,7 +7,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { ChevronRight, CloseRounded } from '@material-ui/icons';
+import { ChevronRight, CloseRounded } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import MenuOptions from './MenuOptions';

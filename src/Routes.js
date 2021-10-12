@@ -102,61 +102,33 @@ export default function Routes({ apolloClient }) {
                         />
 
                         {/* Dashboard */}
-                        <Route exact component={BnConnect} path="/dashboard" />
-                        <Route
-                            exact
-                            component={BnChat}
-                            path="/dashboard/chat"
-                        />
-                        <Route
-                            exact
-                            component={BnServices}
-                            path="/dashboard/services"
-                        />
+                        <Route exact component={BnConnect} path="/connect" />
+                        <Route exact component={BnChat} path="/chat" />
+                        <Route exact component={BnServices} path="/services" />
                         <Route
                             exact
                             component={BnKnowledgeCenter}
-                            path="/dashboard/knowledge_center"
+                            path="/cryptocurrency"
                         />
-                        <Route
-                            exact
-                            component={Events}
-                            path="/dashboard/events"
-                        />
-                        <Route
-                            exact
-                            component={EventView}
-                            path="/dashboard/events/:id"
-                        />
-                        <Route
-                            exact
-                            component={People}
-                            path="/dashboard/people"
-                        />
+                        <Route exact component={Events} path="/events" />
+                        <Route exact component={EventView} path="/events/:id" />
+                        <Route exact component={People} path="/people" />
                         <Route
                             exact
                             component={Connections}
-                            path="/dashboard/profile/connections"
+                            path="/profile/connections"
                         />
-                        <Route
-                            exact
-                            component={Posts}
-                            path="/dashboard/profile/posts"
-                        />
-                        <Route
-                            exact
-                            component={Profile}
-                            path="/dashboard/profile"
-                        />
+                        <Route exact component={Posts} path="/profile/posts" />
+                        <Route exact component={Profile} path="/profile" />
                         <Route
                             exact
                             component={SavedItems}
-                            path="/dashboard/profile/bookmarks"
+                            path="/profile/bookmarks"
                         />
                         <Route
                             exact
                             component={Notifications}
-                            path="/dashboard/notifications"
+                            path="/notifications"
                         />
                         <Route
                             exact

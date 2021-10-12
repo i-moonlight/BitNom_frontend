@@ -8,7 +8,7 @@ import {
     ListItemSecondaryAction,
     List,
 } from '@mui/material';
-import { EventRounded, KeyboardArrowRight } from '@material-ui/icons';
+import { EventRounded, KeyboardArrowRight } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 

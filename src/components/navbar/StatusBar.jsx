@@ -1,22 +1,22 @@
 import {
-    Avatar,
-    Box,
-    Container,
-    Hidden,
-    IconButton,
-    Typography,
-    useTheme,
-} from '@mui/material';
-import {
     Brightness4Rounded,
     Brightness7Rounded,
     ChevronRight,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
+import {
+    Avatar,
+    Box,
+    Container,
+    IconButton,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/actions/themeActions';
-import { status } from '../utilities/data.components';
 import Button from '../Button';
+import { status } from '../utilities/data.components';
 import { useStyles } from '../utilities/styles.components';
 
 export default function StatusBar() {
@@ -24,6 +24,7 @@ export default function StatusBar() {
     const classes = useStyles();
     const theme = useTheme();
     const dispatch = useDispatch();
+    const smDown = useMediaQuery('(max-width:959px)');
 
     return (
         <Box className={classes.root}>
@@ -54,78 +55,82 @@ export default function StatusBar() {
                             </div>
                         ))}
                     </div>
-                    <Hidden smDown>
-                        <div className="center-horizontal">
-                            <Button
-                                className="py-0 mx-1 my-1 fw-bold"
-                                textCase
-                                variant="text"
-                                color="default"
-                                endIcon={
-                                    <ChevronRight
-                                        style={{
-                                            transform: 'rotateZ(90deg)',
-                                        }}
-                                    />
-                                }
-                            >
-                                English
-                            </Button>
-                            <Button
-                                className="py-0 mx-1 my-1 fw-bold"
-                                textCase
-                                variant="text"
-                                color="default"
-                                endIcon={
-                                    <ChevronRight
-                                        style={{
-                                            transform: 'rotateZ(90deg)',
-                                        }}
-                                    />
-                                }
-                            >
-                                <Avatar
-                                    style={{
-                                        height: 20,
-                                        width: 20,
-                                        background: '#0F986E',
-                                        marginRight: 8,
-                                        color: theme.palette.text.primary,
-                                    }}
-                                    variant="rounded"
+                    {!smDown && (
+                        <>
+                            <div className="center-horizontal">
+                                <Button
+                                    className="py-0 mx-1 my-1 fw-bold"
+                                    textCase
+                                    variant="text"
+                                    color="default"
+                                    endIcon={
+                                        <ChevronRight
+                                            style={{
+                                                transform: 'rotateZ(90deg)',
+                                            }}
+                                        />
+                                    }
                                 >
-                                    <Typography variant="body2">$</Typography>
-                                </Avatar>{' '}
-                                USD
-                            </Button>
+                                    English
+                                </Button>
+                                <Button
+                                    className="py-0 mx-1 my-1 fw-bold"
+                                    textCase
+                                    variant="text"
+                                    color="default"
+                                    endIcon={
+                                        <ChevronRight
+                                            style={{
+                                                transform: 'rotateZ(90deg)',
+                                            }}
+                                        />
+                                    }
+                                >
+                                    <Avatar
+                                        style={{
+                                            height: 20,
+                                            width: 20,
+                                            background: '#0F986E',
+                                            marginRight: 8,
+                                            color: theme.palette.text.primary,
+                                        }}
+                                        variant="rounded"
+                                    >
+                                        <Typography variant="body2">
+                                            $
+                                        </Typography>
+                                    </Avatar>{' '}
+                                    USD
+                                </Button>
 
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                onClick={() => {
-                                    palette == 'light'
-                                        ? dispatch(changeTheme('dark'))
-                                        : dispatch(changeTheme('light'));
-                                }}
-                            >
-                                {palette == 'light' ? (
-                                    <Brightness4Rounded
-                                        style={{
-                                            width: 20,
-                                            height: 20,
-                                        }}
-                                    />
-                                ) : (
-                                    <Brightness7Rounded
-                                        style={{
-                                            width: 20,
-                                            height: 20,
-                                        }}
-                                    />
-                                )}
-                            </IconButton>
-                        </div>
-                    </Hidden>
+                                <IconButton
+                                    size="small"
+                                    className="m-1 p-1"
+                                    onClick={() => {
+                                        palette == 'light'
+                                            ? dispatch(changeTheme('dark'))
+                                            : dispatch(changeTheme('light'));
+                                    }}
+                                >
+                                    {palette == 'light' ? (
+                                        <Brightness4Rounded
+                                            style={{
+                                                width: 20,
+                                                height: 20,
+                                            }}
+                                        />
+                                    ) : (
+                                        <Brightness7Rounded
+                                            style={{
+                                                width: 20,
+                                                height: 20,
+                                            }}
+                                        />
+                                    )}
+                                </IconButton>
+                            </div>
+                        </>
+                    )}
                 </div>
             </Container>
         </Box>

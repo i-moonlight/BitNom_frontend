@@ -7,7 +7,7 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { ExpandMore, Help } from '@material-ui/icons';
+import { ExpandMore, Help } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { healthCheck } from '../../utilities/welcome.data';
 

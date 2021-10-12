@@ -8,7 +8,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import { ExpandMore } from '@material-ui/icons';
+import { ExpandMore } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { ecosystem } from '../../utilities/welcome.data';
@@ -34,6 +34,12 @@ export default function Ecosystem() {
     const sm = useMediaQuery('(min-width:600px) and (max-width:959px)');
     const md = useMediaQuery('(min-width:960px)  and (max-width:1279px)');
     const lg = useMediaQuery('(min-width:1280px)');
+    // const xsDown = useMediaQuery('(max-width:599px)');
+    // const smDown = useMediaQuery('(max-width:959px)');
+    // const smUp = useMediaQuery('(min-width:600px)');
+    // const mdUp = useMediaQuery('(min-width:960px)');
+    // const mdDown = useMediaQuery('(max-width:1279px)');
+    // const lgUp = useMediaQuery('(min-width:1280px)');
 
     useEffect(() => {
         lg && setQuery(3);

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import { DoneRounded } from '@material-ui/icons';
+import { DoneRounded } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -24,9 +24,7 @@ export default function UpdateInfo() {
     });
 
     useEffect(() => {
-        user?.email?.verified &&
-            user?.displayName &&
-            history.push('/dashboard');
+        user?.email?.verified && user?.displayName && history.push('/connect');
         JSON.stringify(user) === '{}' && history.push('/auth/login');
     }, [history, user]);
 

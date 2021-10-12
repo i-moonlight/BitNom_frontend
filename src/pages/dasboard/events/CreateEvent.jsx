@@ -18,7 +18,7 @@ import { makeStyles } from '@mui/styles';
 
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
-import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
+import { CloseRounded, CameraAltRounded } from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';

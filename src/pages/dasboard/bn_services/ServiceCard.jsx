@@ -9,7 +9,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { ShareRounded } from '@material-ui/icons';
+import { ShareRounded } from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../components/Button';
 import {} from '../utilities/functions';

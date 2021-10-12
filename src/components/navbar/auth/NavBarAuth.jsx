@@ -28,7 +28,7 @@ export default function NavBarAuth() {
                                     height: 40,
                                 }}
                                 src={
-                                    theme.palette.type == 'light'
+                                    theme.palette.mode == 'light'
                                         ? logo_full
                                         : logo_light_full
                                 }

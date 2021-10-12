@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, Hidden } from '@mui/material';
+import { Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileView({ match }) {
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
 
@@ -44,9 +45,7 @@ export default function ProfileView({ match }) {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
-                            <Grid item lg={3}></Grid>
-                        </Hidden>
+                        {!mdDown && <Grid item lg={3}></Grid>}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <ProfileCard profile={profile} profileView />
                             <InsightCard profile={profile} profileView />

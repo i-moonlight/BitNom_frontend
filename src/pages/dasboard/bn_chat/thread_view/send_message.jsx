@@ -7,7 +7,7 @@ import {
     Gif,
     EmojiEmotions,
     SendOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { useMutation } from '@apollo/client';
 import { useStyles } from '../utils/styles';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
@@ -205,7 +205,7 @@ export default function SendMessage({ chat }) {
                 </IconButton>
                 <Paper
                     variant={
-                        theme.palette.type == 'light' ? 'outlined' : 'elevation'
+                        theme.palette.mode == 'light' ? 'outlined' : 'elevation'
                     }
                     elevation={0}
                     component="form"

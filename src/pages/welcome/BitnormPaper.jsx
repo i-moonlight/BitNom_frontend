@@ -54,7 +54,7 @@ export default function BitnormPaper({ title, children }) {
 const useStyles = makeStyles((theme) => ({
     body: {
         backgroundColor:
-            theme.palette.type == 'light'
+            theme.palette.mode == 'light'
                 ? '#F5F5F5'
                 : theme.palette.background.paper,
     },

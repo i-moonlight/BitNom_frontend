@@ -7,7 +7,7 @@ import {
     Divider,
     Avatar,
 } from '@mui/material';
-import { Search, Settings } from '@material-ui/icons';
+import { Search, Settings } from '@mui/icons-material';
 import { useStyles } from '../../utils/styles';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 const chatSettingsId = 'chat-settings-menu';

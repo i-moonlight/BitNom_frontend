@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@mui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +39,7 @@ export default function Login() {
     // useQuery(QUERY, { variables, context: { clientName: 'third-party' } })
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/dashboard');
+        JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [user, history]);
 
     const responseGoogle = (response) => {

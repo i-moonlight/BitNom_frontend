@@ -1,27 +1,27 @@
+import { useQuery } from '@apollo/client';
+import { ArrowBack, RoomRounded, VideocamRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
     CardHeader,
+    CircularProgress,
     Container,
     Divider,
     Grid,
-    Hidden,
     IconButton,
     Typography,
-    CircularProgress,
+    useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
-import { useQuery } from '@apollo/client';
-import { Link, useHistory } from 'react-router-dom';
-import { ArrowBack, RoomRounded, VideocamRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import {
+    GET_BOOKMARKED_EVENTS,
     QUERY_FETCH_PROFILE,
     QUERY_LOAD_EVENTS,
-    GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 import CreateEvent from './CreateEvent';
 import CreateEventCard from './CreateEventCard';
@@ -33,11 +33,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Events() {
-    const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = useState(0);
-
     const [createEventOpen, setCreateEventOpen] = useState(false);
+
+    const classes = useStyles();
     const state = useSelector((st) => st);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     const user = state.auth.user;
 
     const {
@@ -72,7 +74,7 @@ export default function Events() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <CreateEventCard
                                     setSelectedIndex={setSelectedIndex}
@@ -80,7 +82,7 @@ export default function Events() {
                                     setOpen={(open) => setCreateEventOpen(open)}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={7}>
                             <EventListCard
                                 selectedIndex={selectedIndex}
@@ -93,7 +95,7 @@ export default function Events() {
                             />
                         </Grid>
                         <Grid item md={4} lg={3}>
-                            {/* <Hidden smDown></Hidden> */}
+                            {/* {!smDown && } */}
                         </Grid>
                     </Grid>
                 </Container>
@@ -201,6 +203,8 @@ function EventListCard({
 
 function EventPreview({ event }) {
     const history = useHistory();
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const truncateText = (str, n, b) => {
         if (str.length <= n) {
             return str;
@@ -213,6 +217,7 @@ function EventPreview({ event }) {
                 : subString) + '...'
         );
     };
+
     return (
         <Card
             elevation={0}
@@ -251,13 +256,13 @@ function EventPreview({ event }) {
                     height: 110,
                 }}
             >
-                <Hidden smDown>
+                {!smDown && (
                     <Typography color="textSecondary" variant="body2">
                         {moment(event?.startDate).format(
                             'ddd, MMMM Do YYYY, h:mm a'
                         )}
                     </Typography>
-                </Hidden>
+                )}
                 <Typography
                     style={{ textTransform: 'uppercase' }}
                     variant="body2"

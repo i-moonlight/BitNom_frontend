@@ -1,7 +1,6 @@
 import {
     Container,
     Grid,
-    Hidden,
     Paper,
     Typography,
     useMediaQuery,
@@ -11,6 +10,8 @@ import Button from '../../../../components/Button';
 import DonateCard from '../cards/DonateCard';
 
 export default function Header() {
+    const smDown = useMediaQuery('(max-width:959px)');
+
     return (
         <section style={{ backgroundColor: '#000' }}>
             <Container maxWidth="lg">
@@ -34,10 +35,11 @@ export default function Header() {
                                 </Button>
                             </div>
                         </Grid>
-                        <Hidden smDown>
+                        {!smDown && (
                             <Grid item sm={6}>
                                 <div
                                     className={`px-${
+                                        // eslint-disable-next-line react-hooks/rules-of-hooks
                                         useMediaQuery('(min-width:1196px)') &&
                                         '5'
                                     }`}
@@ -45,7 +47,7 @@ export default function Header() {
                                     <DonateCard />
                                 </div>
                             </Grid>
-                        </Hidden>
+                        )}
                     </Grid>
                 </Paper>
             </Container>

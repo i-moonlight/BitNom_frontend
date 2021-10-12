@@ -19,7 +19,7 @@ import {
     ImageRounded,
     Public,
     VideocamRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Card, CardContent } from '@mui/material';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/lab';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';

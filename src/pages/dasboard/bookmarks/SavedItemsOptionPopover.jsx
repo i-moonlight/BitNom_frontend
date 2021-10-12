@@ -10,7 +10,7 @@ import {
 import {
     BookmarkBorderRounded,
     PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 

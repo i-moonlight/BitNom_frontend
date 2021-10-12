@@ -7,7 +7,7 @@ import {
     InputBase,
     useTheme,
 } from '@mui/material';
-import { Create, MoreVert, Search } from '@material-ui/icons';
+import { Create, MoreVert, Search } from '@mui/icons-material';
 import React from 'react';
 import { useStyles } from '../../utils/styles';
 
@@ -51,7 +51,7 @@ export default function SideBarHeader({ setChatInviteOpen }) {
             <Grid item>
                 <Paper
                     variant={
-                        theme.palette.type == 'light' ? 'outlined' : 'elevation'
+                        theme.palette.mode == 'light' ? 'outlined' : 'elevation'
                     }
                     elevation={0}
                     component="form"

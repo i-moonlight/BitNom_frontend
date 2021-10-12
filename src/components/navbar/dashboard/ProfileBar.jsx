@@ -1,24 +1,24 @@
 import {
+    ChevronRight,
+    ForumRounded,
+    MenuRounded,
+    Notifications,
+    Search,
+} from '@mui/icons-material';
+import {
     Avatar,
     Badge,
     Box,
     Card,
     Container,
     Divider,
-    Hidden,
     IconButton,
     InputBase,
     Paper,
     Typography,
+    useMediaQuery,
     useTheme,
 } from '@mui/material';
-import {
-    ChevronRight,
-    ForumRounded,
-    MenuRounded,
-    Notifications,
-    Search,
-} from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -42,6 +42,9 @@ export default function ProfileBar({
     const history = useHistory();
     const theme = useTheme();
     const userInitials = getUserInitials(user?.displayName);
+    const smDown = useMediaQuery('(max-width:959px)');
+    const mdUp = useMediaQuery('(min-width:960px)');
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     return (
         <Box className={classes.root}>
@@ -49,36 +52,39 @@ export default function ProfileBar({
                 <Card elevation={0} className={classes.appBar}>
                     <div
                         className="center-horizontal c-pointer"
-                        onClick={() => history.push('/dashboard')}
+                        onClick={() => history.push('/connect')}
                     >
-                        <Hidden smDown>
-                            <div>
-                                <img
-                                    style={{
-                                        height: 40,
-                                    }}
-                                    src={
-                                        theme.palette.type == 'light'
-                                            ? logo_full
-                                            : logo_light_full
-                                    }
-                                    alt=""
-                                />
-                            </div>
-                        </Hidden>
-                        <Hidden mdUp>
+                        {!smDown && (
+                            <>
+                                <div>
+                                    <img
+                                        style={{
+                                            height: 40,
+                                        }}
+                                        src={
+                                            theme.palette.mode == 'light'
+                                                ? logo_full
+                                                : logo_light_full
+                                        }
+                                        alt=""
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        {!mdUp && (
                             <Avatar
                                 className="me-1"
                                 src={
-                                    theme.palette.type == 'light'
+                                    theme.palette.mode == 'light'
                                         ? logo
                                         : logo_light
                                 }
                             >
                                 B
                             </Avatar>
-                        </Hidden>
-                        <Hidden smDown>
+                        )}
+                        {!smDown && (
                             <Typography
                                 style={{ marginLeft: 16, color: '#F59301' }}
                                 variant="body2"
@@ -86,11 +92,11 @@ export default function ProfileBar({
                             >
                                 NEW
                             </Typography>
-                        </Hidden>
+                        )}
                     </div>
                     <Paper
                         variant={
-                            theme.palette.type == 'light'
+                            theme.palette.mode == 'light'
                                 ? 'outlined'
                                 : 'elevation'
                         }
@@ -98,25 +104,27 @@ export default function ProfileBar({
                         component="form"
                         className={classes.paperSearch}
                     >
-                        <Hidden xsDown>
-                            <Button textCase variant="text">
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                >
-                                    General
-                                </Typography>
-                                <ChevronRight
-                                    style={{
-                                        transform: 'rotateZ(90deg)',
-                                    }}
+                        {!xsDown && (
+                            <>
+                                <Button textCase variant="text">
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        General
+                                    </Typography>
+                                    <ChevronRight
+                                        style={{
+                                            transform: 'rotateZ(90deg)',
+                                        }}
+                                    />
+                                </Button>
+                                <Divider
+                                    className={classes.divider}
+                                    orientation="vertical"
                                 />
-                            </Button>
-                            <Divider
-                                className={classes.divider}
-                                orientation="vertical"
-                            />
-                        </Hidden>
+                            </>
+                        )}
                         <InputBase
                             className={classes.input}
                             placeholder="Search Bitnorm"
@@ -151,7 +159,7 @@ export default function ProfileBar({
                             color="inherit"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                history.push('/dashboard/chat');
+                                history.push('/chat');
                             }}
                         >
                             <ForumRounded />

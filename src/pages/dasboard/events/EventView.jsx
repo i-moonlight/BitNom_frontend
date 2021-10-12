@@ -1,61 +1,58 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useQuery, useMutation } from '@apollo/client';
-import {
-    Card,
-    CardHeader,
-    Container,
-    CardMedia,
-    CardContent,
-    Grid,
-    Hidden,
-    IconButton,
-    Typography,
-    CircularProgress,
-    Avatar,
-    Tabs,
-    Tab,
-    CardActions,
-    Divider,
-    List,
-    Tooltip,
-} from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { useMutation, useQuery } from '@apollo/client';
 import {
     ArrowBack,
-    MoreHorizRounded,
+    BookmarkBorderRounded,
     Launch,
+    MoreHorizRounded,
     Public,
     RoomRounded,
-    BookmarkBorderRounded,
-} from '@material-ui/icons';
-//import IosShareIcon from '@material-ui/icons/IosShare'
-//import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
-
-import { ToastContainer, toast } from 'react-toastify';
-import React, { useState, useEffect, useCallback } from 'react';
+} from '@mui/icons-material';
+import {
+    Avatar,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    CircularProgress,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    List,
+    Tab,
+    Tabs,
+    Tooltip,
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import moment from 'moment';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+//import IosShareIcon from '@mui/icons-material/IosShare'
+//import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
+import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../components/Button';
-import { Link } from 'react-router-dom';
 import Screen from '../../../components/Screen';
+import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
+import CreatePost from '../bn_connect/scroll/CreatePost';
 import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
 import {
-    QUERY_FETCH_PROFILE,
-    QUERY_EVENT_BY_ID,
     MUTATION_ATTEND_EVENT,
-    MUTATION_REMOVE_EVENT_ATTENDANCE,
     MUTATION_CREATE_BOOKMARK,
+    MUTATION_REMOVE_EVENT_ATTENDANCE,
+    QUERY_EVENT_BY_ID,
+    QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
+import AttendeeComponent from './AttendeeComponent';
 import CreateEvent from './CreateEvent';
-import UpdateEvent from './UpdateEvent';
 import CreateEventCard from './CreateEventCard';
 import MapContainer from './EventMap';
-import AttendeeComponent from './AttendeeComponent';
-import CreatePost from '../bn_connect/scroll/CreatePost';
-import InviteFriends from './InviteFriends';
-import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
-
 import EventOptionsPopover from './EventOptionsPopover';
+import InviteFriends from './InviteFriends';
+import UpdateEvent from './UpdateEvent';
 
 const eventOptionsId = 'event-options-menu';
 
@@ -86,14 +83,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EventView({ match }) {
     const [eventOptionsAnchorEl, setEventOptionsAnchorEl] = useState(null);
-
     const [openInvite, setOpenInvite] = useState(false);
     const [createEventOpen, setCreateEventOpen] = useState(false);
     const [updateEventOpen, setUpdateEventOpen] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
     const [value, setValue] = useState(0);
     const [attendanceText, setAttendanceText] = useState();
-
     const [openImage, setOpenImage] = useState(false);
     const [openVideo, setOpenVideo] = useState(false);
     const [videoDisabled, setVideoDisabled] = useState(false);
@@ -105,6 +100,10 @@ export default function EventView({ match }) {
 
     const classes = useStyles();
     const history = useHistory();
+
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const lgUp = useMediaQuery('(min-width:1280px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
     const { loading: eventLoading, data: eventData } = useQuery(
@@ -261,7 +260,7 @@ export default function EventView({ match }) {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <Card
                                     variant="outlined"
@@ -285,7 +284,7 @@ export default function EventView({ match }) {
                                     setOpen={(open) => setCreateEventOpen(open)}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={7}>
                             <Grid item align="center">
                                 {eventLoading && (
@@ -298,7 +297,7 @@ export default function EventView({ match }) {
                             </Grid>
                             {eventData?.Events?.getById && (
                                 <div>
-                                    <Hidden lgUp>
+                                    {!lgUp && (
                                         <Grid item lg={3}>
                                             <Card
                                                 variant="outlined"
@@ -319,7 +318,7 @@ export default function EventView({ match }) {
                                                 />
                                             </Card>
                                         </Grid>
-                                    </Hidden>
+                                    )}
                                     <Card className="mb-3" variant={'outlined'}>
                                         <CardMedia
                                             style={{
@@ -546,43 +545,48 @@ export default function EventView({ match }) {
                                                 }}
                                                 align="right"
                                             >
-                                                <Hidden smDown>
-                                                    <Button
-                                                        size="small"
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        onClick={() => {
-                                                            setOpenInvite(true);
-                                                        }}
-                                                        style={{
-                                                            display:
-                                                                (eventData
-                                                                    ?.Events
-                                                                    ?.getById
-                                                                    ?.host
-                                                                    ?._id !==
-                                                                    profile?._id ||
-                                                                    new Date(
-                                                                        eventData?.Events?.getById?.endDate
-                                                                    ).getTime() <
-                                                                        new Date().getTime()) &&
-                                                                'none',
-                                                            marginRight: '3px',
-                                                        }}
-                                                    >
-                                                        Invite friends
-                                                    </Button>
-
-                                                    <Tooltip title="Save this event">
-                                                        <IconButton
+                                                {!smDown && (
+                                                    <>
+                                                        <Button
+                                                            size="small"
+                                                            variant="outlined"
+                                                            color="primary"
                                                             onClick={() => {
-                                                                handleCreateBookmark();
+                                                                setOpenInvite(
+                                                                    true
+                                                                );
+                                                            }}
+                                                            style={{
+                                                                display:
+                                                                    (eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                        ?.host
+                                                                        ?._id !==
+                                                                        profile?._id ||
+                                                                        new Date(
+                                                                            eventData?.Events?.getById?.endDate
+                                                                        ).getTime() <
+                                                                            new Date().getTime()) &&
+                                                                    'none',
+                                                                marginRight:
+                                                                    '3px',
                                                             }}
                                                         >
-                                                            <BookmarkBorderRounded color="primary" />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </Hidden>
+                                                            Invite friends
+                                                        </Button>
+
+                                                        <Tooltip title="Save this event">
+                                                            <IconButton
+                                                                onClick={() => {
+                                                                    handleCreateBookmark();
+                                                                }}
+                                                            >
+                                                                <BookmarkBorderRounded color="primary" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </>
+                                                )}
                                                 <Tooltip title="Share this event">
                                                     <IconButton
                                                         onClick={() => {

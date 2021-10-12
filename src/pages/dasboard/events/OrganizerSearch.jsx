@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Grid, Typography, Avatar } from '@mui/material';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/lab/Autocomplete';
 //import parse from 'autosuggest-highlight/parse';
 import {} from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';

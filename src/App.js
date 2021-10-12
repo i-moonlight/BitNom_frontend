@@ -1,10 +1,10 @@
-import { ThemeProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
 import './css/bootstrap.css';
 import './css/style.css';
+import { Paper } from '@mui/material';
 
 export default function App() {
     const palette = useSelector((st) => st.theme.palette);
@@ -49,14 +49,16 @@ export default function App() {
     //Create MUI Theme
     const providerTheme = createTheme({
         palette: {
-            type: palette,
+            mode: palette,
             ...themeOptionsRoot,
         },
     });
 
     return (
         <ThemeProvider theme={providerTheme}>
+            {/* <Paper> */}
             <AppContainers />
+            {/* </Paper> */}
         </ThemeProvider>
     );
 }

@@ -26,7 +26,7 @@ import {
     ThumbDownRounded,
     ThumbUpRounded,
     InsertEmoticon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';

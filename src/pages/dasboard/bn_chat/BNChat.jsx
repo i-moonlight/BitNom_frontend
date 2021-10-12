@@ -1,5 +1,5 @@
-import { Create } from '@material-ui/icons';
-import { Card, Container, Fab, Grid, Hidden } from '@mui/material';
+import { Create } from '@mui/icons-material';
+import { Card, Container, Fab, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import Screen from '../../../components/Screen';
@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 export default function BnChat() {
     const classes = useStyles();
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     return (
         <Screen>
             <Container maxWidth="lg">
@@ -64,15 +66,13 @@ export default function BnChat() {
                             </div>
                         </Card>
                     </Grid>
-                    <Hidden mdDown>
-                        {' '}
+                    {!mdDown && (
                         <Grid item xs={12} sm={9}>
                             <Card style={{ height: '84vh' }}>
-                                {' '}
                                 <Messages />
                             </Card>
                         </Grid>
-                    </Hidden>
+                    )}
                 </Grid>
                 <CreateChatPrompt
                     openChatInvite={createChatOpen}

@@ -1,25 +1,9 @@
+import { Avatar, ButtonBase, Divider, Paper } from '@mui/material';
 import React from 'react';
-import {
-    Divider,
-    Paper,
-    useTheme,
-    IconButton,
-    InputBase,
-    Avatar,
-    ButtonBase,
-} from '@mui/material';
-import {
-    AttachFile,
-    EmojiEmotions,
-    Gif,
-    Image,
-    SendOutlined,
-    VideoLibrary,
-} from '@material-ui/icons';
 import { useStyles } from './styles.component';
 export default function ThreadView() {
     const classes = useStyles();
-    const theme = useTheme();
+
     return (
         <div className={classes.threadView}>
             <Divider className={classes.divider} />

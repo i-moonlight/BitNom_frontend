@@ -14,7 +14,7 @@ import {
     PersonAddDisabledOutlined,
     PlaylistAddCheckRounded,
     TapAndPlayRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../components/Button';
 

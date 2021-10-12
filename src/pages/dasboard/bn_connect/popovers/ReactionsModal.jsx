@@ -22,7 +22,7 @@ import {
     ThumbUpRounded,
     FavoriteRounded,
     PanToolRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';

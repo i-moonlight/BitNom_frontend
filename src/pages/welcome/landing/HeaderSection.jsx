@@ -5,7 +5,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { ArrowForwardRounded, PlayArrowRounded } from '@material-ui/icons';
+import { ArrowForwardRounded, PlayArrowRounded } from '@mui/icons-material';
 import React from 'react';
 import headerBgImg from '../../../assets/landing/img12.png';
 import Button from '../../../components/Button';

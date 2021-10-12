@@ -2,7 +2,7 @@ import {
     AssessmentRounded,
     DescriptionRounded,
     WatchLaterRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 export const status = [
     { title: 'Crypto', value: '6,847' },

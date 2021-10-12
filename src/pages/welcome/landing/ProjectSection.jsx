@@ -136,7 +136,7 @@ export default function ProjectSection() {
                                 alt=""
                                 className="my-2"
                                 onClick={() => {
-                                    history.push('/dashboard');
+                                    history.push('/connect');
                                 }}
                             />
                             <Typography

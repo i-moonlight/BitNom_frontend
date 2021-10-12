@@ -7,8 +7,8 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
+import { SearchRounded } from '@mui/icons-material';
+import { Alert } from '@mui/lab';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';

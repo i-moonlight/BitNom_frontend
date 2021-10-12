@@ -9,7 +9,7 @@ import {
     StarRounded,
     StorageRounded,
     TimelineRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';

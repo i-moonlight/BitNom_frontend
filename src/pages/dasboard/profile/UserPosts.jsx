@@ -1,27 +1,27 @@
 import { useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Card,
     CardHeader,
     Container,
     Grid,
-    Hidden,
     IconButton,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { ArrowBack } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
+import SavedPost from '../bookmarks/SavedPost';
 import {
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
     QUERY_LOAD_EVENTS,
+    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import SavedPost from '../bookmarks/SavedPost';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,8 +34,10 @@ export default function UserPosts() {
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
 
     const state = useSelector((st) => st);
-    const user = state.auth.user;
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
+    const user = state.auth.user;
 
     const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: { data: { author: user?._id, limit: 220 } },
@@ -59,7 +61,7 @@ export default function UserPosts() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={userPosts?.Posts?.get?.length}
@@ -74,7 +76,7 @@ export default function UserPosts() {
                                     events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <>
                                 <Card

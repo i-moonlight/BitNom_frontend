@@ -98,7 +98,7 @@ export default function Footer() {
                         <Grid item xs={6} className="my-2">
                             <div
                                 className="center-horizontal c-pointer"
-                                onClick={() => history.push('/dashboard')}
+                                onClick={() => history.push('/connect')}
                             >
                                 <div>
                                     <img

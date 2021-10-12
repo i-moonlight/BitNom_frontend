@@ -11,7 +11,7 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { CloseRounded } from '@material-ui/icons';
+import { CloseRounded } from '@mui/icons-material';
 import React from 'react';
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 

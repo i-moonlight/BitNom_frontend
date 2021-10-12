@@ -1,36 +1,36 @@
 import { useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Card,
     CardHeader,
     CircularProgress,
     Container,
     Grid,
-    Hidden,
     IconButton,
     Tab,
     Tabs,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import UserCard from '../bn_connect/UserCard';
 import {
     GET_BOOKMARKED_COMMENTS,
-    GET_BOOKMARKED_SCROLLS,
     GET_BOOKMARKED_EVENTS,
+    GET_BOOKMARKED_SCROLLS,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
     QUERY_LOAD_EVENTS,
+    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
-import SavedPost from './SavedPost';
 import SavedEvent from './SavedEvent';
+import SavedPost from './SavedPost';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,6 +55,7 @@ export default function SavedItems() {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
         GET_BOOKMARKED_SCROLLS,
@@ -122,7 +123,7 @@ export default function SavedItems() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={userScrolls?.Posts?.get?.length}
@@ -137,7 +138,7 @@ export default function SavedItems() {
                                     events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={7}>
                             <>
                                 <Card

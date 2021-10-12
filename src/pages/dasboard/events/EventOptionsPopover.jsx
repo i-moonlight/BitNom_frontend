@@ -19,7 +19,7 @@ import {
     FlagOutlined,
     CheckBox,
     FileCopyOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,
     eventOptionsId,

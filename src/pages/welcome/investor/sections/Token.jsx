@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from '@mui/material';
-import { ChevronRightRounded } from '@material-ui/icons';
+import { ChevronRightRounded } from '@mui/icons-material';
 import React from 'react';
 import supplyImg from '../../../../assets/investor/image_5.png';
 import Button from '../../../../components/Button';
