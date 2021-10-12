@@ -71,7 +71,7 @@ export default function BnChat() {
                             </div>
                         </Card>
                     </Grid>
-                    <Hidden mdDown>
+                    <Hidden smDown>
                         {' '}
                         <Grid item xs={12} sm={9}>
                             <Card style={{ height: '84vh' }}>
