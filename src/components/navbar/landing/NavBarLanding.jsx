@@ -188,6 +188,7 @@ export default function NavBarLanding() {
                             <Typography className="fw-bold">Sign In</Typography>
                         </Button>
                         <Button
+                            variant="contained"
                             textCase
                             endIcon={!xsDown && <ArrowRightAltRounded />}
                             onClick={() => {

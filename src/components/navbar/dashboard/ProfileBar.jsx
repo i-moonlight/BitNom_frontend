@@ -168,7 +168,6 @@ export default function ProfileBar({
                             textCase
                             className="py-0 ms-3"
                             variant="text"
-                            color="default"
                             aria-label="account of current user"
                             aria-controls={menuId}
                             aria-haspopup="true"

@@ -450,7 +450,6 @@ export default function Scroll({
                     onMouseLeave={() => setLikeHovered(false)}
                 >
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('like');
@@ -464,7 +463,6 @@ export default function Scroll({
                         Like
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('love');
@@ -476,7 +474,6 @@ export default function Scroll({
                         Love
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('dislike');
@@ -490,7 +487,6 @@ export default function Scroll({
                         Dislike
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('celebrate');
@@ -510,12 +506,10 @@ export default function Scroll({
                         setLikeHovered={setLikeHovered}
                         onMouseLeave={() => setLikeHovered(false)}
                         variant="text"
-                        color="default"
                         textCase
                         startIcon={reactionIcon}
                     />
                     <Button
-                        color="default"
                         textCase
                         variant="text"
                         onClick={() => setOpenComments(true)}
@@ -525,7 +519,6 @@ export default function Scroll({
                     </Button>
                     {!scroll?.shared_resource?._id && (
                         <Button
-                            color="default"
                             textCase
                             variant="text"
                             onClick={() => {

@@ -356,7 +356,6 @@ export default function Comment({
                         onMouseLeave={() => setLikeHovered(false)}
                     >
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('like');
@@ -370,7 +369,6 @@ export default function Comment({
                             Like
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('love');
@@ -384,7 +382,6 @@ export default function Comment({
                             Love
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('dislike');
@@ -398,7 +395,6 @@ export default function Comment({
                             Dislike
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('celebrate');
@@ -420,7 +416,6 @@ export default function Comment({
                             onMouseEnter={() => setLikeHovered(true)}
                             onMouseLeave={() => setLikeHovered(false)}
                             variant="text"
-                            color="default"
                             textCase
                         />
                         <Typography

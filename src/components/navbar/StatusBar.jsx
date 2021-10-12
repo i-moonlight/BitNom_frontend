@@ -62,7 +62,6 @@ export default function StatusBar() {
                                     className="py-0 mx-1 my-1 fw-bold"
                                     textCase
                                     variant="text"
-                                    color="default"
                                     endIcon={
                                         <ChevronRight
                                             style={{
@@ -77,7 +76,6 @@ export default function StatusBar() {
                                     className="py-0 mx-1 my-1 fw-bold"
                                     textCase
                                     variant="text"
-                                    color="default"
                                     endIcon={
                                         <ChevronRight
                                             style={{

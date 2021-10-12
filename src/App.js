@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
 import './css/bootstrap.css';
 import './css/style.css';
-import { Paper } from '@mui/material';
 
 export default function App() {
     const palette = useSelector((st) => st.theme.palette);
@@ -56,9 +55,7 @@ export default function App() {
 
     return (
         <ThemeProvider theme={providerTheme}>
-            {/* <Paper> */}
             <AppContainers />
-            {/* </Paper> */}
         </ThemeProvider>
     );
 }
