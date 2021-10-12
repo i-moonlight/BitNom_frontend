@@ -79,6 +79,7 @@ class WebSocketLink extends ApolloLink {
 const wsLink = new WebSocketLink({
     url: process.env.REACT_APP_SOCKET_URL,
 });
+
 const profileLink = from([
     errorLink,
     new HttpLink({
@@ -95,6 +96,13 @@ const notificationsLink = from([
     }),
 ]);
 
+const chatUpload = createUploadLink({
+    uri: backendUri + '/chat/graphql',
+    credentials: 'include',
+    headers: {
+        'keep-alive': 'true',
+    },
+});
 const uploadLink = createUploadLink({
     uri: backendUri + '/bn-social/graphql',
     credentials: 'include',
@@ -109,10 +117,16 @@ const profileUploadLink = ApolloLink.split(
     uploadLink
 );
 
+const chatProfileUploadLink = ApolloLink.split(
+    (operation) => operation.getContext().clientName === 'chat',
+    chatUpload,
+    profileUploadLink
+);
+
 const btnMainLink = ApolloLink.split(
     (operation) => operation.getContext().clientName === 'notifications',
     notificationsLink,
-    profileUploadLink
+    chatProfileUploadLink
 );
 
 const splitLink = split(
