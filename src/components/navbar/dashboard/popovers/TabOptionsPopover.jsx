@@ -9,7 +9,6 @@ export default function TabOptionsPopover({
     tabOptionAnchorEl,
     handleTabOptionsClose,
 }) {
-    console.log('toae: ', tabOptionAnchorEl);
     return (
         <Popover
             anchorEl={tabOptionAnchorEl || document.body}

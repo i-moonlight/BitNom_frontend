@@ -244,9 +244,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
     const handleUnFollowUser = (user_id) => {
@@ -264,9 +262,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
-        setStatus(false);
+        if (unFollowData?.Users?.unFollow == true) setStatus(false);
         //setFollowing(following - 1);
     };
     return (

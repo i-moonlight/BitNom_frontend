@@ -95,10 +95,6 @@ export default function WorkForm({ onClose, updateData }) {
                               description,
                           };
 
-                    console.log(Iwork);
-
-                    updateData ? console.log('upd') : console.log('add');
-
                     updateData
                         ? updateWork({
                               variables: {

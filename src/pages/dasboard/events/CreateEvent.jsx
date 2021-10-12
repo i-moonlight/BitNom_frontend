@@ -152,7 +152,6 @@ export default function CreateEvent({ open, setOpen }) {
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
             .then((latLng) => {
-                console.log('Results', location);
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
@@ -160,7 +159,7 @@ export default function CreateEvent({ open, setOpen }) {
             })
             .catch((error) => console.error('Error', error));
     };
-    console.log(eventOrganizers, 'ORGS');
+
     const handleCreateEvent = (e) => {
         e.preventDefault();
         if (eventTitle.trim() == '') {

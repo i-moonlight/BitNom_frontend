@@ -121,14 +121,7 @@ function ListItemComponent({ user, getFollowStatus }) {
             //   error
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -149,9 +142,7 @@ function ListItemComponent({ user, getFollowStatus }) {
         }, */
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -174,8 +165,7 @@ function ListItemComponent({ user, getFollowStatus }) {
         }, */
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
+
         setStatus();
         //setFollowing(following - 1);
     };

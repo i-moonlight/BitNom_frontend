@@ -32,7 +32,6 @@ export default function Profile() {
     });
 
     const profile = data?.Users?.profile;
-    console.log('profileAuth: ', profile);
 
     return (
         <Screen>

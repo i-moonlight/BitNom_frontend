@@ -47,18 +47,14 @@ export default function NavBar() {
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
-    const {
-        profileError,
-        profileLoading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
+    const { loading: profileLoading, data: profileData } = useQuery(
+        QUERY_FETCH_PROFILE,
+        {
+            context: { clientName: 'users' },
+        }
+    );
 
     const isAuth = !profileLoading && profileData?.Users?.profile !== null;
-
-    console.log('prf: ', profileData?.Users?.profile);
-    console.log('prfe: ', profileError);
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
@@ -86,7 +82,6 @@ export default function NavBar() {
     };
 
     const handleTabOptionsOpen = (event) => {
-        console.log('crt: ', event.currentTarget);
         setTabOptionAnchorEl(event.currentTarget);
     };
 
@@ -174,13 +169,13 @@ export default function NavBar() {
             logo.href = `${window.location.origin}/logo.svg`;
         }
 
-        if (!isAuth) {
-            // dispatch(signout());
-            console.log('not isAuth', isAuth);
-            alert('not auth');
-        } else {
-            console.log('isAuth', isAuth);
-        }
+        // if (!isAuth) {
+        //     // dispatch(signout());
+        //     console.log('not isAuth', isAuth);
+        //     alert('not auth');
+        // } else {
+        //     console.log('isAuth', isAuth);
+        // }
     }, [
         _count,
         dispatch,

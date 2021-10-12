@@ -16,18 +16,10 @@ export default function NotificationSettingsPopover({
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
-    const [
-        markAllAsRead,
-        {
-            data: markAllAsReadData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MARK_NOTIFICATION_AS_READ, {
+    const [markAllAsRead] = useMutation(MARK_NOTIFICATION_AS_READ, {
         context: { clientName: 'notifications' },
     });
-    if (markAllAsReadData?.Notification?.markAsRead === false)
-        console.log(markAllAsReadData);
+
     const handleMarkAllNotificationsRead = () => {
         markAllAsRead({
             variables: {

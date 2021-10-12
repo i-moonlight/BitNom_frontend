@@ -30,16 +30,12 @@ export default function VerifyEmail() {
                 verificationCode: parse(location.search)['?evc'],
             },
             errorPolicy: 'all',
-        }).then(({ errors, data }) => {
+        }).then(({ errors }) => {
             setVerifying(false);
             const userErrors = errors ? errors : null;
             setVerifyErr(userErrors);
 
-            if (errors) {
-                console.log('verem errors: ', errors);
-            } else {
-                console.log('verem data: ', data);
-
+            if (!errors) {
                 setTimeout(() => {
                     user?.email
                         ? dispatch(verifySuccess())

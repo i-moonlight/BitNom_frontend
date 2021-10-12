@@ -40,7 +40,7 @@ export default function InviteFriends({
         inviteFriends,
         {
             loading,
-            data,
+            // data,
             //  error
         },
     ] = useMutation(MUTATION_INVITE_FRIENDS_TO_EVENT);
@@ -51,7 +51,6 @@ export default function InviteFriends({
                 data: { ids: friends, event_id: eventId },
             },
         });
-        if (!data) console.log('');
     };
 
     const handleInviteFriends = () => {

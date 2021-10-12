@@ -27,18 +27,9 @@ export default function ProfileCard({ profile, profileView }) {
         setShowForm(false);
     };
 
-    const [
-        updateUser,
-        {
-            // updateError,
-            //  data,
-            updateLoading,
-        },
-    ] = useMutation(MUTATION_UPDATE_PROFILE, {
+    const [updateUser] = useMutation(MUTATION_UPDATE_PROFILE, {
         context: { clientName: 'users' },
     });
-
-    console.log(updateLoading);
 
     return (
         <div>

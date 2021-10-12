@@ -32,8 +32,6 @@ export default function BnServices() {
     const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
 
     useEffect(() => {
-        console.log(error);
-        console.log(loading);
         if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
     }, [data, error, loading]);
 

@@ -212,7 +212,6 @@ export default function Comment({
                 if (item?.user_id?._id === user?._id)
                     reaction = item?.reaction_type;
             });
-            console.log(resource, 'JSL');
             return reaction;
         },
         [user?._id]

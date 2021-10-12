@@ -18,10 +18,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ProfileView() {
+export default function ProfileView({ match }) {
     const classes = useStyles();
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
+
+    console.log('prfprps: ', match.params.id);
 
     const {
         // error,
@@ -29,7 +31,7 @@ export default function ProfileView() {
         data,
     } = useQuery(QUERY_FETCH_PROFILE_BY_ID, {
         variables: {
-            id: 'Influence',
+            id: match.params.id,
         },
         context: { clientName: 'users' },
     });

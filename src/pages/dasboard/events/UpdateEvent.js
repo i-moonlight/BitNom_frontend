@@ -152,14 +152,7 @@ export default function UpdateEvent({
         },
     ] = useMutation(MUTATION_UPDATE_EVENT);
 
-    const [
-        deleteEvent,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_EVENT);
+    const [deleteEvent] = useMutation(MUTATION_DELETE_EVENT);
 
     const onUpdateEvent = async (IUpdateEvent) => {
         await updateEvent({
@@ -205,7 +198,7 @@ export default function UpdateEvent({
             },
             refetchQueries: [{ query: QUERY_LOAD_EVENTS }],
         });
-        console.log(deleteData);
+
         setEventLink('');
         setPreviewURL();
         setEventImage(null);
@@ -234,7 +227,6 @@ export default function UpdateEvent({
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
             .then((latLng) => {
-                console.log('Results', location);
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);

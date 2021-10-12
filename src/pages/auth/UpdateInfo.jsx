@@ -65,16 +65,10 @@ export default function UpdateInfo() {
                                                 displayName,
                                             },
                                             errorPolicy: 'all',
-                                        }).then(({ data, errors }) => {
+                                        }).then(({ data }) => {
                                             const userData = data?.Users?.update
                                                 ? data?.Users?.update
                                                 : {};
-
-                                            errors &&
-                                                console.log(
-                                                    'update errors: ',
-                                                    errors
-                                                );
 
                                             data?.Users?.update &&
                                                 dispatch(login(userData, null));

@@ -38,22 +38,8 @@ export default function ScrollOptionsPopover({
     isScrollOptionOpen,
     handleScrollOptionClose,
 }) {
-    const [
-        createBookmark,
-        {
-            data,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_CREATE_BOOKMARK);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -72,8 +58,6 @@ export default function ScrollOptionsPopover({
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
     };
 
     const handleCreateBookmark = () => {
@@ -104,7 +88,6 @@ export default function ScrollOptionsPopover({
             draggable: true,
         });
 
-        if (!data?.Bookmarks?.create) console.log('Bookmarked');
         handleScrollOptionClose();
     };
     const handleReportScroll = () => {

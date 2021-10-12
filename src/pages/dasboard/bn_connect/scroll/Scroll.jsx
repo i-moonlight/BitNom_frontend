@@ -138,14 +138,7 @@ export default function Scroll({
     const history = useHistory();
     const user = state.auth.user;
 
-    const [
-        createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
         data: commentsData,
@@ -292,11 +285,6 @@ export default function Scroll({
     const authorInitials = getUserInitials(scroll?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    useEffect(() => {
-        if (createCommentData?.Comments?.create) {
-            console.log('comment created');
-        }
-    }, [createCommentData]);
     useEffect(() => {
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);

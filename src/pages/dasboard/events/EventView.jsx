@@ -120,32 +120,11 @@ export default function EventView({ match }) {
 
     const profile = profileData?.Users?.profile;
 
-    const [
-        attendEvent,
-        {
-            data: attendData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_ATTEND_EVENT);
+    const [attendEvent] = useMutation(MUTATION_ATTEND_EVENT);
 
-    const [
-        removeAttendance,
-        {
-            data: removeAttendanceData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_REMOVE_EVENT_ATTENDANCE);
+    const [removeAttendance] = useMutation(MUTATION_REMOVE_EVENT_ATTENDANCE);
 
-    const [
-        createBookmark,
-        {
-            data,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_CREATE_BOOKMARK);
+    const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
 
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
@@ -196,7 +175,6 @@ export default function EventView({ match }) {
                 },
             ],
         });
-        if (!attendData) console.log(removeAttendanceData, attendData);
     };
 
     const handleCreateBookmark = () => {
@@ -217,7 +195,6 @@ export default function EventView({ match }) {
             draggable: true,
         });
 
-        if (!data?.Bookmarks?.create) console.log('Bookmarked');
         handleEventOptionsClose();
     };
 

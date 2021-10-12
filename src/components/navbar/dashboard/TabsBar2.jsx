@@ -35,9 +35,8 @@ export default function TabsBar2() {
                                             ? classes.topTabsActive
                                             : classes.topTabs
                                     }
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         setActiveTab(index);
-                                        console.log(e.target.offsetWidth);
                                     }}
                                     onMouseEnter={(e) => {
                                         setActiveTabWidth(e.target.offsetWidth);

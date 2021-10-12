@@ -66,7 +66,6 @@ export default function NotificationListItem({ notification }) {
         e.preventDefault();
         e.stopPropagation();
         history.push(targetLink.href.substring(location.origin.length));
-        //console.log(targetLink.href.substring(location.origin.length), 'LINK');
     };
     const userInitials = getUserInitials(getNotifyingUser(notification));
     return (

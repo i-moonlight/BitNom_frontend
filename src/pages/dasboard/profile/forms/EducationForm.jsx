@@ -95,10 +95,6 @@ export default function EducationForm({ onClose, updateData }) {
                               description,
                           };
 
-                    console.log(IEducation);
-
-                    updateData ? console.log('upd') : console.log('add');
-
                     updateData
                         ? updateEducation({
                               variables: {

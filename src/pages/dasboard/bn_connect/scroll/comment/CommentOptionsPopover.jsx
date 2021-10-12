@@ -36,22 +36,8 @@ export default function CommentOptionsPopover({
     isCommentOptionOpen,
     handleCommentOptionClose,
 }) {
-    const [
-        createBookmark,
-        {
-            data: bookmarkData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_CREATE_BOOKMARK);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -70,7 +56,6 @@ export default function CommentOptionsPopover({
                 },
             ],
         });
-        if (!unFollowData?.Users?.unFollow) console.log('Not followed');
     };
 
     const handleCreateBookmark = () => {
@@ -101,7 +86,6 @@ export default function CommentOptionsPopover({
             draggable: true,
         });
 
-        if (!bookmarkData?.bookmarks?.create) console.log('Bookmarked');
         handleCommentOptionClose();
     };
 

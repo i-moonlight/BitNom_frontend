@@ -28,7 +28,6 @@ export default function MuiCarousel() {
         md && setQuery(3);
         sm && setQuery(2);
         xs && setQuery(1);
-        console.log({ xs, sm, md, lg });
     }, [xs, sm, md, lg]);
 
     return (

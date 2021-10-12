@@ -16,25 +16,11 @@ export default function NotificationOptionPopover({
     isNotificationOptionOpen,
     handleNotificationOptionClose,
 }) {
-    const [
-        deleteNotification,
-        {
-            data: deleteData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(DELETE_NOTIFICATION, {
+    const [deleteNotification] = useMutation(DELETE_NOTIFICATION, {
         context: { clientName: 'notifications' },
     });
 
-    const [
-        mute,
-        {
-            data: muteData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
+    const [mute] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
     });
 
@@ -55,7 +41,6 @@ export default function NotificationOptionPopover({
     };
 
     const handleMuteNotifications = () => {
-        console.log(notification?.content_entities[0]?.resource);
         mute({
             variables: {
                 resource: {
@@ -74,14 +59,7 @@ export default function NotificationOptionPopover({
         handleNotificationOptionClose();
     };
 
-    const [
-        markAsRead,
-        {
-            data: markAsReadData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MARK_NOTIFICATION_AS_READ, {
+    const [markAsRead] = useMutation(MARK_NOTIFICATION_AS_READ, {
         context: { clientName: 'notifications' },
     });
 
@@ -100,7 +78,7 @@ export default function NotificationOptionPopover({
         });
         handleNotificationOptionClose();
     };
-    console.log(markAsReadData, muteData, deleteData);
+
     return (
         <Popover
             anchorEl={notificationOptionAnchorEl}

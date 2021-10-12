@@ -43,8 +43,6 @@ export default function ProfileBar({
     const theme = useTheme();
     const userInitials = getUserInitials(user?.displayName);
 
-    console.log('up', user?.profile_pic);
-
     return (
         <Box className={classes.root}>
             <Container>

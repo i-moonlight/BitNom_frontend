@@ -72,8 +72,6 @@ export default function HonorForm({ onClose, updateData }) {
                 ) => {
                     setLocalError(null);
 
-                    console.log('Submitting 1');
-
                     if (!expires && end_date == '') {
                         setLocalError(
                             'End Date required if the credential expires'
@@ -96,10 +94,6 @@ export default function HonorForm({ onClose, updateData }) {
                               end_date,
                               url,
                           };
-
-                    console.log(IHonors);
-
-                    updateData ? console.log('upd') : console.log('add');
 
                     updateData
                         ? updateHonor({
