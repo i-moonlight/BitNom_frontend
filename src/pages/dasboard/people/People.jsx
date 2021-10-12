@@ -14,9 +14,9 @@ import {
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { ArrowBack } from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';

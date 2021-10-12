@@ -6,7 +6,7 @@ import {
     IconButton,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     Brightness4Rounded,
     Brightness7Rounded,

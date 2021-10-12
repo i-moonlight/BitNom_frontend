@@ -6,7 +6,7 @@ import {
     CardMedia,
     Divider,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { LinkOutlined } from '@material-ui/icons';
 import React from 'react';
 

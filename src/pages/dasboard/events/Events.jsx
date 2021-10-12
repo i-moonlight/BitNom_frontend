@@ -7,10 +7,10 @@ import {
     Grid,
     Hidden,
     IconButton,
-    makeStyles,
     Typography,
     CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';

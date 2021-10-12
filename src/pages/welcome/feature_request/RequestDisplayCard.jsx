@@ -5,7 +5,7 @@ import {
     Grid,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ThumbDownRounded, ThumbUpRounded } from '@material-ui/icons';
 import React from 'react';
 

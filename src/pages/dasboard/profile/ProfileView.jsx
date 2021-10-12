@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, Hidden, makeStyles } from '@material-ui/core';
+import { Container, Grid, Hidden } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';

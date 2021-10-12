@@ -12,11 +12,11 @@ import {
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
     Tab,
     Tabs,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { ArrowBack } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import {

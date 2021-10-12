@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { EcosystemCard } from '../pages/welcome/investor/tabs/InvestorTab';

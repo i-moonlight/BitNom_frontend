@@ -1,4 +1,5 @@
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/styles';
 import React from 'react';
 
 export default function DarkTheme({ children }) {

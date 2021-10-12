@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, Typography } from '@material-ui/core';
+import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import EducationForm from '../forms/EducationForm';

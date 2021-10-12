@@ -1,5 +1,5 @@
 import { useMutation, useSubscription } from '@apollo/client';
-import { Button, Grid, Link, Paper, Typography } from '@material-ui/core';
+import { Button, Grid, Link, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {

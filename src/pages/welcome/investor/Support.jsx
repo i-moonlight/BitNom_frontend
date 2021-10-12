@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Grid, Paper } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
 import DarkTheme from '../../../utilities/DarkTheme';

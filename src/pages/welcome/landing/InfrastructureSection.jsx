@@ -1,4 +1,4 @@
-import { Hidden, useTheme } from '@material-ui/core';
+import { Hidden, useTheme } from '@mui/material';
 import {
     Card,
     CardContent,
@@ -6,7 +6,7 @@ import {
     Divider,
     Grid,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import botImg from '../../../assets/landing/bot.svg';

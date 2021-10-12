@@ -7,7 +7,7 @@ import {
     InputBase,
     Avatar,
     ButtonBase,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     AttachFile,
     EmojiEmotions,

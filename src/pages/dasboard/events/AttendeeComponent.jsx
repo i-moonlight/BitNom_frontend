@@ -5,7 +5,7 @@ import {
     ListItemIcon,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
     MUTATION_FOLLOW_USER,

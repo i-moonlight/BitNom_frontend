@@ -1,20 +1,13 @@
-import {
-    Card,
-    Container,
-    Fab,
-    Grid,
-    Hidden,
-    makeStyles,
-} from '@material-ui/core';
+import { Create } from '@material-ui/icons';
+import { Card, Container, Fab, Grid, Hidden } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import Screen from '../../../components/Screen';
 import SideBarHeader from './components/chat_header/side_bar_header';
-
 import Chats from './sidebar_menu';
-
-import { Create } from '@material-ui/icons';
-import Messages from './thread_view/messages';
 import CreateChatPrompt from './thread_view/create_chat_prompt';
+import Messages from './thread_view/messages';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),

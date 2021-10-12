@@ -1,4 +1,4 @@
-import { Button as MuiButton } from '@material-ui/core';
+import { Button as MuiButton } from '@mui/material';
 import { useFormikContext } from 'formik';
 import React from 'react';
 import logo_google from '../assets/components/google.svg';
@@ -22,7 +22,6 @@ export default function Button({
 
     return (
         <MuiButton
-            color={buttonColor ? buttonColor : 'primary'}
             variant={buttonVariant ? buttonVariant : 'contained'}
             disableElevation={!google}
             style={{

@@ -6,7 +6,7 @@ import {
     FormControlLabel,
     Grid,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { SearchRounded } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import React, { useState } from 'react';

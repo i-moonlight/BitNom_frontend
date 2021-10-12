@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 export const useThemeDetector = () => {
     const getCurrentTheme = () =>
         window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
+
     const mqListener = (e) => {
         setIsDarkTheme(e.matches);
     };
@@ -13,5 +15,6 @@ export const useThemeDetector = () => {
         darkThemeMq.addEventListener('change', mqListener);
         return () => darkThemeMq.removeEventListener('change', mqListener);
     }, []);
+
     return isDarkTheme;
 };

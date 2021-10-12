@@ -12,9 +12,9 @@ import {
     IconButton,
     Typography,
     useTheme,
-    makeStyles,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import {
     CommentRounded,
     FavoriteRounded,

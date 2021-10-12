@@ -4,14 +4,14 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ChevronRight, CloseRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import MenuOptions from './MenuOptions';
+import { makeStyles } from '@mui/styles';
 
 export default function MobileMenu({ open, onClose }) {
     const useStyles = makeStyles(() => ({

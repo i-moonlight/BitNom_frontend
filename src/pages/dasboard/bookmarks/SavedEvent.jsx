@@ -1,4 +1,4 @@
-import { Card, Hidden, Typography, IconButton } from '@material-ui/core';
+import { Card, Hidden, Typography, IconButton } from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
 import {

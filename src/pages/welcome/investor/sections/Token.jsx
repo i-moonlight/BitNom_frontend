@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Container, Grid, Typography } from '@mui/material';
 import { ChevronRightRounded } from '@material-ui/icons';
 import React from 'react';
 import supplyImg from '../../../../assets/investor/image_5.png';

@@ -10,7 +10,7 @@ import {
     ListItemText,
     Modal,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { CloseRounded } from '@material-ui/icons';
 import React from 'react';
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';

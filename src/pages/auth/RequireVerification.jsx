@@ -1,11 +1,5 @@
 import { useMutation } from '@apollo/client';
-import {
-    Card,
-    CardContent,
-    Grid,
-    Typography,
-    useTheme,
-} from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';

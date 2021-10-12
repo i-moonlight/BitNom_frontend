@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Divider,
-    IconButton,
-    useTheme,
-    Paper,
-    InputBase,
-} from '@material-ui/core';
+import { Divider, IconButton, useTheme, Paper, InputBase } from '@mui/material';
 import {
     AttachFile,
     Image,

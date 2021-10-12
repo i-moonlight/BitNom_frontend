@@ -6,7 +6,7 @@ import {
     IconButton,
     Divider,
     Avatar,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Search, Settings } from '@material-ui/icons';
 import { useStyles } from '../../utils/styles';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';

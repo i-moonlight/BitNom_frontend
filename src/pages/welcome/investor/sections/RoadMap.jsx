@@ -5,7 +5,7 @@ import {
     Paper,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Button from '../../../../components/Button';
 import { roadMap } from '../../utilities/welcome.data';

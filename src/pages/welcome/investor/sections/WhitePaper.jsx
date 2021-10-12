@@ -5,7 +5,7 @@ import {
     Divider,
     Grid,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRightRounded,
     CloudDownload,

@@ -5,7 +5,7 @@ import {
     IconButton,
     Modal,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { CloseRounded, LinkedIn, MailRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 

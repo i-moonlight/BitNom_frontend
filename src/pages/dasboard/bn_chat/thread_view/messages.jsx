@@ -1,5 +1,5 @@
 import { useQuery, useSubscription } from '@apollo/client';
-import { CircularProgress, Grid, Divider } from '@material-ui/core';
+import { CircularProgress, Grid, Divider } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import Message from './message';
 import {

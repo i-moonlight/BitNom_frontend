@@ -1,4 +1,5 @@
-import { Box, Container, Tab, Tabs, withStyles } from '@material-ui/core';
+import { Box, Container, Tab, Tabs } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { tabs } from '../../utilities/data.components';

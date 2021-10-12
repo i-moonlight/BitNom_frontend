@@ -1,10 +1,4 @@
-import {
-    Avatar,
-    Grid,
-    Typography,
-    IconButton,
-    CardMedia,
-} from '@material-ui/core';
+import { Avatar, Grid, Typography, IconButton, CardMedia } from '@mui/material';
 import { Reply } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';

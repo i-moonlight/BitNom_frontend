@@ -6,9 +6,9 @@ import {
     Grid,
     Hidden,
     IconButton,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';

@@ -20,7 +20,7 @@ import {
     Modal,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRight,
     CloseRounded,

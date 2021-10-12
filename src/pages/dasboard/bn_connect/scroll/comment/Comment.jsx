@@ -6,11 +6,11 @@ import {
     Divider,
     Grid,
     IconButton,
-    makeStyles,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import {
     FavoriteRounded,
     ImageRounded,

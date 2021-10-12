@@ -8,7 +8,6 @@ import {
     IconButton,
     Modal,
     Typography,
-    //useTheme,
     TextField,
     Paper,
     InputBase,
@@ -18,8 +17,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState, useEffect } from 'react';

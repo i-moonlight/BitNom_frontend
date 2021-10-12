@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Snackbar, Typography } from '@material-ui/core';
+import { Card, CardContent, Snackbar, Typography } from '@mui/material';
 import {
     AssignmentIndOutlined,
     CalendarTodayOutlined,

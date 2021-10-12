@@ -13,7 +13,7 @@ import {
     TablePagination,
     TableRow,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { StarBorderOutlined } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React from 'react';

@@ -1,4 +1,4 @@
-import { Box, Container, MenuItem, Typography } from '@material-ui/core';
+import { Box, Container, MenuItem, Typography } from '@mui/material';
 import { ChevronLeftRounded, ChevronRightRounded } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { tabs } from '../../utilities/data.components';

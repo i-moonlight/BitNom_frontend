@@ -9,7 +9,7 @@ import {
     ListItemText,
     Paper,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { MessageOutlined } from '@material-ui/icons';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

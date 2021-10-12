@@ -8,7 +8,7 @@ import {
     Typography,
     Divider,
     Badge,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useStyles } from './styles.component';
 export default function SideBar() {
     const classes = useStyles();

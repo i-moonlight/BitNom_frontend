@@ -1,5 +1,5 @@
-import { Container, Grid, Hidden, useTheme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Container, Grid, Hidden, useTheme } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import TextField from '../../../components/TextField';
 import Wrapper from '../Wrapper';

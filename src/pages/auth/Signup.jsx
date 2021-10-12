@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import Alert from '@material-ui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';

@@ -6,7 +6,7 @@ import {
     Paper,
     InputBase,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Create, MoreVert, Search } from '@material-ui/icons';
 import React from 'react';
 import { useStyles } from '../../utils/styles';

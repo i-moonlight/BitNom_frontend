@@ -1,4 +1,6 @@
-import { Tab, Tabs, withStyles } from '@material-ui/core';
+import { Tab, Tabs } from '@mui/material';
+import { withStyles } from '@mui/styles';
+
 import React from 'react';
 import { investorTabs } from '../../utilities/data.components';
 

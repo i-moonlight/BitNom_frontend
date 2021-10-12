@@ -6,7 +6,7 @@ import {
     Hidden,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import image from '../../../assets/scrolls/image.svg';
 import schedule from '../../../assets/scrolls/schedule.svg';

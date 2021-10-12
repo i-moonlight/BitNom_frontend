@@ -1,5 +1,4 @@
-import { Card, Hidden, Typography } from '@material-ui/core';
-
+import { Card, Hidden, Typography } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { RoomRounded, VideocamRounded } from '@material-ui/icons';
 import React from 'react';

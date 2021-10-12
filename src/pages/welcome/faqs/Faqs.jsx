@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import { Container, Grid } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@mui/styles';
+import { Container, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import Wrapper from '../Wrapper';
 import FaqSection from './FaqSection';

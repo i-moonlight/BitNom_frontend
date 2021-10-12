@@ -4,9 +4,9 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 

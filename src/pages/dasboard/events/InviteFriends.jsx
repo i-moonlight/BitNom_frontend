@@ -11,7 +11,7 @@ import {
     CardActions,
     CircularProgress,
     Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useMutation } from '@apollo/client';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';

@@ -1,4 +1,4 @@
-import { AppBar, Container, useTheme } from '@material-ui/core';
+import { AppBar, Container, useTheme } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import logo_full from '../../../assets/logo_full.svg';

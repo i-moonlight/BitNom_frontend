@@ -7,7 +7,7 @@ import {
     Paper,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Search } from '@material-ui/icons';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';

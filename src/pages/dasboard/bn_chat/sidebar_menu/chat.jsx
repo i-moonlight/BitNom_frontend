@@ -6,7 +6,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';

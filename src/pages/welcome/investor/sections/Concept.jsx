@@ -5,7 +5,7 @@ import {
     Grid,
     Hidden,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import igImg from '../../../../assets/investor/ig.png';
 

@@ -5,7 +5,7 @@ import {
     OutlinedInput,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useFormikContext } from 'formik';
 import React from 'react';
 

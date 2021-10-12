@@ -7,7 +7,7 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     BookmarkBorderRounded,
     FileCopyOutlined,

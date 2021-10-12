@@ -7,7 +7,7 @@ import {
     Typography,
     CardHeader,
     IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ArrowBack, MoreVert } from '@material-ui/icons';
 
 import NotificationListItem from './NotificationListItem';

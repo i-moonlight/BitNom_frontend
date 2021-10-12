@@ -1,4 +1,4 @@
-import { Card, CardContent, Divider, Typography } from '@material-ui/core';
+import { Card, CardContent, Divider, Typography } from '@mui/material';
 import { FileCopy } from '@material-ui/icons';
 import React from 'react';
 import qrImg from '../../../../assets/investor/qr.png';

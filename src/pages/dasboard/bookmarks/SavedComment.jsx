@@ -7,7 +7,7 @@ import {
     IconButton,
     Typography,
     Avatar,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { MoreHorizRounded } from '@material-ui/icons';
 import moment from 'moment';

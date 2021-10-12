@@ -9,7 +9,6 @@ import {
     Grid,
     Hidden,
     IconButton,
-    makeStyles,
     Typography,
     CircularProgress,
     Avatar,
@@ -19,7 +18,8 @@ import {
     Divider,
     List,
     Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import {
     ArrowBack,
     MoreHorizRounded,

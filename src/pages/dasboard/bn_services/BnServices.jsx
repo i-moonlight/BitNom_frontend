@@ -1,11 +1,6 @@
 import { useQuery } from '@apollo/client';
-import {
-    CircularProgress,
-    Container,
-    Grid,
-    Hidden,
-    makeStyles,
-} from '@material-ui/core';
+import { CircularProgress, Container, Grid, Hidden } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';

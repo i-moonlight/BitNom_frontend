@@ -8,7 +8,7 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     BookmarkRounded,
     CollectionsBookmarkRounded,

@@ -8,7 +8,7 @@ import {
 import { ApolloLink, Observable } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import { createUploadLink } from 'apollo-upload-client';
 import { print } from 'graphql';
 import { createClient } from 'graphql-ws';

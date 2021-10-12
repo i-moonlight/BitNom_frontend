@@ -7,9 +7,9 @@ import {
     List,
     ListItem,
     ListItemText,
-    makeStyles,
     ListItemSecondaryAction,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { KeyboardArrowRight } from '@material-ui/icons';
 
 import React from 'react';

@@ -1,4 +1,5 @@
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';

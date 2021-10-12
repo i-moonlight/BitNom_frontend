@@ -16,7 +16,7 @@ import {
     Avatar,
     ListItemText,
     CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import { CloseRounded, Search } from '@material-ui/icons';
 import React, { Fragment, useState } from 'react';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';

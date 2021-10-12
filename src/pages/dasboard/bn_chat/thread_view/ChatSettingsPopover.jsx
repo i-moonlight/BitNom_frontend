@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { List, ListItem, ListItemText, Popover, Card } from '@material-ui/core';
+import { List, ListItem, ListItemText, Popover, Card } from '@mui/material';
 import React from 'react';
 import {
     ARCHIVE_CHAT,

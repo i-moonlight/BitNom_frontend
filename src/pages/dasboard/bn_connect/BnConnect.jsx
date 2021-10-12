@@ -4,9 +4,9 @@ import {
     Container,
     Grid,
     Hidden,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 

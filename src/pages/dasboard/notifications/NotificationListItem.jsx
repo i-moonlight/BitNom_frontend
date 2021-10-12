@@ -7,7 +7,7 @@ import {
     IconButton,
     Divider,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { MoreVert, FiberManualRecord } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';

@@ -7,7 +7,7 @@ import {
     IconButton,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ArrowRightAltRounded,
     ChevronRight,

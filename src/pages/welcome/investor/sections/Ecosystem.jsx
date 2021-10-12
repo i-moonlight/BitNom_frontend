@@ -7,7 +7,7 @@ import {
     Grid,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ExpandMore } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';

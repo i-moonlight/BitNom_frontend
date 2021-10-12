@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Paper } from '@material-ui/core';
+import { Box, Container, Divider, Paper } from '@mui/material';
 import React from 'react';
 import scrollImg from '../../../assets/investor/scroll.svg';
 import DarkTheme from '../../../utilities/DarkTheme';

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import {
     Card,
     CardContent,
@@ -6,7 +6,7 @@ import {
     Container,
     Grid,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import DarkTheme from '../../../utilities/DarkTheme';
 import { platformLayers } from '../utilities/welcome.data';

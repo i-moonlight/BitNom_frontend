@@ -7,7 +7,7 @@ import {
     ListItemText,
     ListItemSecondaryAction,
     List,
-} from '@material-ui/core';
+} from '@mui/material';
 import { EventRounded, KeyboardArrowRight } from '@material-ui/icons';
 import { useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';

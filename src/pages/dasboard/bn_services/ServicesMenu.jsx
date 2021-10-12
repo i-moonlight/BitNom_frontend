@@ -5,7 +5,7 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     BookmarkBorderRounded,
     FileCopyOutlined,

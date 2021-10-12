@@ -1,4 +1,4 @@
-import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
+import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import {

@@ -7,11 +7,11 @@ import {
     Grid,
     Hidden,
     IconButton,
-    makeStyles,
     Tab,
     Tabs,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
