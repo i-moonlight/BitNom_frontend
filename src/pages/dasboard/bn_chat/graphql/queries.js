@@ -12,28 +12,38 @@ export const SEARCH_USERS = gql`
             ) {
                 _id
                 displayName
-                image
-                reputation
+                profile_pic
+                bio
             }
         }
     }
 `;
 
 export const CREATE_DIALOGUE = gql`
-    mutation ($_id: ID!) {
+    mutation ($data: IUserSmall!) {
         Dialogue {
-            create(_id: $_id) {
+            create(data: $data) {
                 _id
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                 }
                 status
@@ -65,19 +75,37 @@ export const GET_DIALOGUES = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -87,7 +115,13 @@ export const GET_DIALOGUES = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -106,17 +140,35 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -126,7 +178,13 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -145,17 +203,35 @@ export const REJECT_DIALOGUE_INVITE = gql`
             initiator {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             recipient {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             otherUser {
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 unreadCount
                 blocked
                 lastSeen
@@ -165,7 +241,13 @@ export const REJECT_DIALOGUE_INVITE = gql`
             currentUser {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
                 archived
             }
@@ -182,17 +264,35 @@ export const BLOCK_DIALOGUE = gql`
             initiator {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             recipient {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             otherUser {
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 unreadCount
                 blocked
                 lastSeen
@@ -202,7 +302,13 @@ export const BLOCK_DIALOGUE = gql`
             currentUser {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
                 archived
             }
@@ -220,13 +326,25 @@ export const UNBLOCK_DIALOGUE = gql`
             initiator {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             recipient {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+
+                    bio
+                }
                 lastSeen
             }
             status
@@ -427,19 +545,37 @@ export const ARCHIVE_CHAT = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -449,7 +585,13 @@ export const ARCHIVE_CHAT = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -467,19 +609,37 @@ export const MARK_CHAT_AS_READ = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -489,7 +649,13 @@ export const MARK_CHAT_AS_READ = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -507,19 +673,34 @@ export const MUTE_CONVERSATION = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -529,7 +710,12 @@ export const MUTE_CONVERSATION = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -547,19 +733,34 @@ export const BLOCK_CHAT = gql`
                 initiator {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 recipient {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
                 otherUser {
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     unreadCount
                     blocked
                     lastSeen
@@ -568,7 +769,12 @@ export const BLOCK_CHAT = gql`
                 currentUser {
                     unreadCount
                     blocked
-                    info
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                     lastSeen
                     archived
                 }
@@ -630,17 +836,32 @@ export const NEW_CHAT_ADDED = gql`
             initiator {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             recipient {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             otherUser {
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 unreadCount
                 blocked
                 lastSeen
@@ -649,7 +870,12 @@ export const NEW_CHAT_ADDED = gql`
             currentUser {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             lastMessageDate
@@ -675,17 +901,32 @@ export const CHAT_ACCEPTED = gql`
             initiator {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             recipient {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             otherUser {
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 unreadCount
                 blocked
                 lastSeen
@@ -694,7 +935,12 @@ export const CHAT_ACCEPTED = gql`
             currentUser {
                 unreadCount
                 blocked
-                info
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 lastSeen
             }
             lastMessageDate

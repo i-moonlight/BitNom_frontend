@@ -49,13 +49,15 @@ export default function Messages() {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
             endRef.current.scrollIntoView();
         }
-    }, [subscriptionData?.newMessage, endRef, dispatch]);
+        // eslint-disable-next-line
+    }, [subscriptionData?.newMessage, endRef]);
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
         if (data?.Dialogue?.getMessages.length > 0) {
             endRef.current.scrollIntoView();
         }
-    }, [data?.Dialogue?.getMessages, endRef, dispatch]);
+        // eslint-disable-next-line
+    }, [data?.Dialogue?.getMessages, endRef]);
 
     const unOrderedMessages = state.chats.dialogue_messages;
     const messages = [...unOrderedMessages].reverse();
@@ -91,11 +93,11 @@ export default function Messages() {
                 </div>
             )}
             {dialogue.status === 'new' &&
-                dialogue.recipient?.info === user._id && (
+                dialogue.recipient?.info._id === user._id && (
                     <InviteView dialogue={dialogue} />
                 )}
             {dialogue.status === 'new' &&
-                dialogue.initiator.info === user._id &&
+                dialogue.initiator.info._id === user._id &&
                 !loading &&
                 !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
             <Grid
@@ -125,7 +127,7 @@ export default function Messages() {
                     messages.author !== user._id &&
                     messages?.length > 0 &&
                     messages.map((message, mI) => (
-                        <Message key={mI} message={message} />
+                        <Message key={mI} message={message} chat={dialogue} />
                     ))}
                 {loading && (
                     <Grid
@@ -142,16 +144,16 @@ export default function Messages() {
                 )}
                 <div ref={endRef} />
             </Grid>{' '}
-            <div>
+            <Grid item container wrap="nowrap" direction="column">
                 {dialogue.status === 'accepted' &&
                     messages &&
                     messages.length > 0 && <SendMessage chat={dialogue._id} />}
-            </div>
-            <div>
+            </Grid>
+            <Grid item container wrap="nowrap" direction="column">
                 {dialogue.status === 'accepted' &&
                     !loading &&
                     !messages.length > 0 && <SendMessage chat={dialogue._id} />}
-            </div>{' '}
+            </Grid>{' '}
         </Grid>
     );
 }

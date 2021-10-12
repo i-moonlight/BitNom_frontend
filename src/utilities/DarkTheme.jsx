@@ -18,6 +18,8 @@ export default function DarkTheme({ children }) {
                 default: '#171818',
                 landing: '#18191a',
                 investor: '#000000',
+                incomingMessage: '#bde0ff',
+                outgoingMessage: '#f0f8ff',
             },
         },
     });
