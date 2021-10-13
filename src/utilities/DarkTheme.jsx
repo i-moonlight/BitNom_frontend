@@ -2,7 +2,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 
 export default function DarkTheme({ children }) {
-    //Create MUI Theme
     const providerTheme = createTheme({
         palette: {
             mode: 'dark',
@@ -22,5 +21,9 @@ export default function DarkTheme({ children }) {
         },
     });
 
-    return <ThemeProvider theme={providerTheme}>{children}</ThemeProvider>;
+    return (
+        <ThemeProvider theme={providerTheme}>
+            <div>{children}</div>
+        </ThemeProvider>
+    );
 }

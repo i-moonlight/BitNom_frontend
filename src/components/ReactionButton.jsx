@@ -10,34 +10,34 @@ import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
     small: {
-        // width: theme.spacing(1),
-        // height: theme.spacing(1),
+        width: theme.spacing(1),
+        height: theme.spacing(1),
     },
     red: {
         color: '#fff',
         backgroundColor: red[500],
         border: '2px solid transparent',
-        // width: theme.spacing(2),
-        // height: theme.spacing(2),
+        width: theme.spacing(2),
+        height: theme.spacing(2),
     },
     green: {
         color: '#fff',
         backgroundColor: green[500],
         border: '2px solid transparent',
-        // width: theme.spacing(2),
-        // height: theme.spacing(2),
+        width: theme.spacing(2),
+        height: theme.spacing(2),
     },
     primary: {
         backgroundColor: '#006097',
         color: '#fff',
         border: '2px solid transparent',
-        // width: theme.spacing(2),
-        // height: theme.spacing(2),
+        width: theme.spacing(2),
+        height: theme.spacing(2),
     },
 }));
 

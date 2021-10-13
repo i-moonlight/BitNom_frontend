@@ -78,7 +78,7 @@ function NotificationPreview({ notifications }) {
                         <ListItemComponent key={item._id} item={item} />
                     ))}
             {notifications?.length > 0 && (
-                <Link to="/dashboard/notifications">
+                <Link to="/notifications">
                     <Typography
                         variant="body2"
                         className="my-2"

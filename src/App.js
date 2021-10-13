@@ -1,4 +1,8 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+    createTheme,
+    ThemeProvider,
+    StyledEngineProvider,
+} from '@mui/material/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
@@ -11,6 +15,8 @@ export default function App() {
     const themeOptionsDark = {
         primary: {
             main: '#006097',
+            light: '#006097',
+            dark: '#006097',
         },
         secondary: {
             main: '#FB5E5E',
@@ -29,6 +35,8 @@ export default function App() {
     const themeOptionsLight = {
         primary: {
             main: '#006097',
+            light: '#006097',
+            dark: '#006097',
         },
         secondary: {
             main: '#FB5E5E',
@@ -55,7 +63,11 @@ export default function App() {
 
     return (
         <ThemeProvider theme={providerTheme}>
-            <AppContainers />
+            <div>
+                <StyledEngineProvider injectFirst>
+                    <AppContainers />
+                </StyledEngineProvider>
+            </div>
         </ThemeProvider>
     );
 }

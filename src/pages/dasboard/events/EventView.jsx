@@ -268,7 +268,7 @@ export default function EventView({ match }) {
                                 >
                                     <CardHeader
                                         avatar={
-                                            <Link to="/dashboard/events">
+                                            <Link to="/events">
                                                 <IconButton
                                                     size="small"
                                                     aria-label="back"
@@ -305,7 +305,7 @@ export default function EventView({ match }) {
                                             >
                                                 <CardHeader
                                                     avatar={
-                                                        <Link to="/dashboard/events">
+                                                        <Link to="/events">
                                                             <IconButton
                                                                 size="small"
                                                                 aria-label="back"

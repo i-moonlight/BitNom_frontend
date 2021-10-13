@@ -33,40 +33,42 @@ export default function Investors() {
         <Wrapper investor onTabValue={onTabValue}>
             <Paper>
                 <TabPanel value={0} index={0}>
-                    <DarkTheme>
-                        <div>
-                            <Header />
-                            <section
-                                className=" h-100 w-100 py-4"
-                                style={{ backgroundColor: '#000' }}
-                            >
-                                <Container>
-                                    <img
-                                        className="w-100"
-                                        src={scrollImg}
-                                        alt=""
-                                    />
-                                </Container>
-                            </section>
-                            <WhitePaper />
-                            <Concept />
-                            <Solution />
-                            <section style={{ backgroundColor: '#000' }}>
-                                <Container>
-                                    <div className="py-1">
-                                        <Divider className="color-whit bg-whit" />
-                                    </div>
-                                </Container>
-                            </section>
-                            <Symbol />
-                            <Token />
-                            <Ecosystem />
-                            <UserBase />
-                            <Roadmap />
-                            <HealthCheck />
-                            <Team />
-                        </div>
-                    </DarkTheme>
+                    <div>
+                        <DarkTheme>
+                            <div>
+                                <Header />
+                                <section
+                                    className="h-100 w-100 py-4"
+                                    style={{ backgroundColor: '#000' }}
+                                >
+                                    <Container>
+                                        <img
+                                            className="w-100"
+                                            src={scrollImg}
+                                            alt=""
+                                        />
+                                    </Container>
+                                </section>
+                                <WhitePaper />
+                                <Concept />
+                                <Solution />
+                                <section style={{ backgroundColor: '#000' }}>
+                                    <Container>
+                                        <div className="py-1">
+                                            <Divider className="color-whit bg-whit" />
+                                        </div>
+                                    </Container>
+                                </section>
+                                <Symbol />
+                                <Token />
+                                <Ecosystem />
+                                <UserBase />
+                                <Roadmap />
+                                <HealthCheck />
+                                <Team />
+                            </div>
+                        </DarkTheme>
+                    </div>
                 </TabPanel>
             </Paper>
         </Wrapper>

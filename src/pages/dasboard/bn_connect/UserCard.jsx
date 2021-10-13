@@ -154,7 +154,6 @@ export default function UserCard({
                             <Typography variant="body2">Following</Typography>
                             <div className="center-horizontal">
                                 <PersonRounded
-                                    color="primary"
                                     className="mx-2"
                                     fontSize="small"
                                 />

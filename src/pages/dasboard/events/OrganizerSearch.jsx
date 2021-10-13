@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Grid, Typography, Avatar } from '@mui/material';
-import Autocomplete from '@mui/lab/Autocomplete';
+import {
+    TextField,
+    Grid,
+    Typography,
+    Avatar,
+    Autocomplete,
+} from '@mui/material';
+
 //import parse from 'autosuggest-highlight/parse';
 import {} from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -23,6 +29,7 @@ function OrganizerSearch({
 
     return (
         <Autocomplete
+            disablePortal
             options={searchResults || []}
             loading={loading}
             value={searchedValues}
@@ -47,6 +54,7 @@ function OrganizerSearch({
             renderInput={(params) => (
                 <TextField
                     {...params}
+                    label="Organizers"
                     value={term}
                     variant="outlined"
                     error={organizersErr}

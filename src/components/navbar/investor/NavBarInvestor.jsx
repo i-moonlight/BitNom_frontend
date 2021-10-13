@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Container, Paper } from '@mui/material';
+import { AppBar, Avatar, Container } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -27,39 +27,37 @@ export default function NavBarInvestor({ onTabValue }) {
                 }}
                 elevation={0}
             >
-                <Paper style={{ backgroundColor: '#000' }}>
-                    <Container maxWidth="lg">
-                        <div className="d-flex align-items-center my-3 ">
-                            <div
-                                className="center-horizontal c-pointer me-3"
-                                onClick={() => history.push('/')}
+                <Container maxWidth="lg">
+                    <div className="d-flex align-items-center my-3 ">
+                        <div
+                            className="center-horizontal c-pointer me-3"
+                            onClick={() => history.push('/')}
+                        >
+                            <Avatar
+                                src={palette == 'light' ? logo : logo_light}
                             >
-                                <Avatar
-                                    src={palette == 'light' ? logo : logo_light}
-                                >
-                                    B
-                                </Avatar>
-                            </div>
-
-                            <InvestorTabs
-                                value={tabValue}
-                                handleChange={(e, val) => {
-                                    setTabValue(val);
-                                    onTabValue(val);
-                                }}
-                            />
-
-                            <div className="ms-auto">
-                                <Button
-                                    textCase
-                                    onClick={() => history.push('/support')}
-                                >
-                                    Support
-                                </Button>
-                            </div>
+                                B
+                            </Avatar>
                         </div>
-                    </Container>
-                </Paper>
+
+                        <InvestorTabs
+                            value={tabValue}
+                            handleChange={(e, val) => {
+                                setTabValue(val);
+                                onTabValue(val);
+                            }}
+                        />
+
+                        <div className="ms-auto">
+                            <Button
+                                textCase
+                                onClick={() => history.push('/support')}
+                            >
+                                Support
+                            </Button>
+                        </div>
+                    </div>
+                </Container>
             </AppBar>
         </DarkTheme>
     );

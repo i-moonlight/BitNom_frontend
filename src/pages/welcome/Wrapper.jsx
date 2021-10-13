@@ -26,7 +26,7 @@ export default function Wrapper({ children, investor, onTabValue, authPage }) {
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [history, authPage, user]);
+    }, [authPage, history, user]);
 
     return (
         <div

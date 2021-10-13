@@ -60,7 +60,6 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                 >
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 0}
                         onClick={(event) => handleListItemClick(event, 0)}
@@ -72,7 +71,6 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     </ListItem>
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 1}
                         onClick={(event) => handleListItemClick(event, 1)}
@@ -84,7 +82,6 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     </ListItem>
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 2}
                         onClick={(event) => handleListItemClick(event, 2)}
