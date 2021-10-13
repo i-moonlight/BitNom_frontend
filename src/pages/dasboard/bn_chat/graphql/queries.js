@@ -47,7 +47,7 @@ export const CREATE_DIALOGUE = gql`
                     lastSeen
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -126,7 +126,7 @@ export const GET_DIALOGUES = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -189,7 +189,7 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -252,7 +252,7 @@ export const REJECT_DIALOGUE_INVITE = gql`
                 archived
             }
             status
-            lastMessageDate
+            lastMessage
         }
     }
 `;
@@ -313,7 +313,7 @@ export const BLOCK_DIALOGUE = gql`
                 archived
             }
             status
-            lastMessageDate
+            lastMessage
         }
     }
 `;
@@ -348,7 +348,7 @@ export const UNBLOCK_DIALOGUE = gql`
                 lastSeen
             }
             status
-            lastMessageDate
+            lastMessage
         }
     }
 `;
@@ -423,7 +423,7 @@ export const CREATE_GROUP = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage
                 createdOn
             }
         }
@@ -444,7 +444,7 @@ export const GROUP_REMOVE_USER = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage
                 createdOn
             }
         }
@@ -465,7 +465,7 @@ export const GROUP_ADD_USER = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage
                 createdOn
             }
         }
@@ -509,7 +509,7 @@ export const GET_GROUPS = gql`
                     unreadCount
                     isAdmin
                 }
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -596,7 +596,7 @@ export const ARCHIVE_CHAT = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -660,7 +660,7 @@ export const MARK_CHAT_AS_READ = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -720,7 +720,7 @@ export const MUTE_CONVERSATION = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -779,7 +779,7 @@ export const BLOCK_CHAT = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage
             }
         }
     }
@@ -878,7 +878,7 @@ export const NEW_CHAT_ADDED = gql`
                 }
                 lastSeen
             }
-            lastMessageDate
+            lastMessage
         }
     }
 `;
@@ -943,7 +943,7 @@ export const CHAT_ACCEPTED = gql`
                 }
                 lastSeen
             }
-            lastMessageDate
+            lastMessage
         }
     }
 `;
