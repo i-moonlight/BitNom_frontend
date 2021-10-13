@@ -1,3 +1,4 @@
+import { ExpandMore } from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
@@ -8,9 +9,8 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import Carousel from 'react-material-ui-carousel';
+// import Carousel from 'react-material-ui-carousel';
 import { ecosystem } from '../../utilities/welcome.data';
 import EcosystemCard from '../cards/EcosystemCard';
 
@@ -34,6 +34,7 @@ export default function Ecosystem() {
     const sm = useMediaQuery('(min-width:600px) and (max-width:959px)');
     const md = useMediaQuery('(min-width:960px)  and (max-width:1279px)');
     const lg = useMediaQuery('(min-width:1280px)');
+
     // const xsDown = useMediaQuery('(max-width:599px)');
     // const smDown = useMediaQuery('(max-width:959px)');
     // const smUp = useMediaQuery('(min-width:600px)');
@@ -150,29 +151,29 @@ export default function Ecosystem() {
                         </Card>
                     </Grid>
 
-                    <Carousel
+                    {/* <Carousel
                         autoPlay
                         indicators
                         // navButtonsAlwaysVisible
                         // navButtonsAlwaysInvisible
                         cycleNavigation
                         animation="slide"
-                    >
-                        {splittedEcosystem?.map((item) => (
-                            <div className="mb-4" key={item[0]?.title}>
-                                <Grid container spacing={3}>
-                                    {item?.map(({ title, text, id }) => (
-                                        <EcosystemCard
-                                            key={title}
-                                            title={title}
-                                            text={text}
-                                            index={id}
-                                        />
-                                    ))}
-                                </Grid>
-                            </div>
-                        ))}
-                    </Carousel>
+                    > */}
+                    {splittedEcosystem?.map((item) => (
+                        <div className="mb-4" key={item[0]?.title}>
+                            <Grid container spacing={3}>
+                                {item?.map(({ title, text, id }) => (
+                                    <EcosystemCard
+                                        key={title}
+                                        title={title}
+                                        text={text}
+                                        index={id}
+                                    />
+                                ))}
+                            </Grid>
+                        </div>
+                    ))}
+                    {/* </Carousel> */}
                 </div>
             </Container>
         </section>

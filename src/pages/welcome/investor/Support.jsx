@@ -1,7 +1,7 @@
 import { Container, Grid } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import Wrapper from '../Wrapper';
 import DonateCard from './cards/DonateCard';
 
@@ -23,7 +23,7 @@ export default function Support() {
 
     return (
         <Wrapper onTabValue={onTabValue}>
-            <DarkTheme>
+            <DarkThemeOnly>
                 <div>
                     <section style={{ backgroundColor: '#000' }}>
                         <Container maxWidth="lg">
@@ -39,7 +39,7 @@ export default function Support() {
                         </Container>
                     </section>
                 </div>
-            </DarkTheme>
+            </DarkThemeOnly>
         </Wrapper>
     );
 }

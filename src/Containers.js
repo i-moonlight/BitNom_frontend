@@ -147,17 +147,17 @@ const client = new ApolloClient({
 });
 
 export default function AppContainers() {
-    const isDarkTheme = useThemeDetector();
+    const isDarkThemeOnly = useThemeDetector();
     const dispatch = useDispatch();
     const classes = useStyles();
 
     useEffect(() => {
         dispatch(checkSessionTimeOut());
 
-        isDarkTheme
+        isDarkThemeOnly
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
-    }, [dispatch, isDarkTheme]);
+    }, [dispatch, isDarkThemeOnly]);
 
     return (
         <div className={classes.root}>

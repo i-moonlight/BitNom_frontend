@@ -4,6 +4,7 @@ import React from 'react';
 import logo_google from '../assets/components/google.svg';
 
 export default function Button({
+    // eslint-disable-next-line no-unused-vars
     color,
     textCase,
     submit,
@@ -16,7 +17,6 @@ export default function Button({
 }) {
     const formikContext = useFormikContext();
     const buttonVariant = variantAlt || variant;
-    console.log('btncolor: ', color);
 
     return (
         <MuiButton

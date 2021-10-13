@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import botImg from '../../../assets/landing/bot.svg';
 import ghostImg from '../../../assets/landing/ghost.svg';
 import infrastructureImg from '../../../assets/landing/infrastructure.svg';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
 
 export default function InfrastructureSection() {
@@ -113,7 +113,7 @@ export default function InfrastructureSection() {
                         </div>
                     </Grid>
                     <Grid item md={4} sm={6}>
-                        <DarkTheme>
+                        <DarkThemeOnly>
                             <div className="my-5 p-3">
                                 <Card
                                     style={{
@@ -157,10 +157,10 @@ export default function InfrastructureSection() {
                                     </CardContent>
                                 </Card>
                             </div>
-                        </DarkTheme>
+                        </DarkThemeOnly>
                     </Grid>
                     <Grid item md={4} sm={6}>
-                        <DarkTheme>
+                        <DarkThemeOnly>
                             <div className="my-5 p-3">
                                 <Card
                                     style={{
@@ -205,7 +205,7 @@ export default function InfrastructureSection() {
                                     </CardContent>
                                 </Card>
                             </div>
-                        </DarkTheme>
+                        </DarkThemeOnly>
                     </Grid>
                 </Grid>
             </Container>

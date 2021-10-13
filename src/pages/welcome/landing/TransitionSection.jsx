@@ -4,7 +4,7 @@ import React from 'react';
 import card4Img from '../../../assets/landing/card (4).svg';
 import card5Img from '../../../assets/landing/card (5).svg';
 import card6Img from '../../../assets/landing/card (6).svg';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
 
 export default function TransitionSection() {
@@ -36,7 +36,7 @@ export default function TransitionSection() {
                     <Grid item md={6}>
                         <Grid container spacing={5}>
                             <Grid item lg={3}>
-                                <DarkTheme>
+                                <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
                                             <img
@@ -46,10 +46,10 @@ export default function TransitionSection() {
                                             />
                                         </CardContent>
                                     </Card>
-                                </DarkTheme>
+                                </DarkThemeOnly>
                             </Grid>
                             <Grid item lg={3}>
-                                <DarkTheme>
+                                <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
                                             <img
@@ -59,10 +59,10 @@ export default function TransitionSection() {
                                             />
                                         </CardContent>
                                     </Card>
-                                </DarkTheme>
+                                </DarkThemeOnly>
                             </Grid>
                             <Grid item lg={3}>
-                                <DarkTheme>
+                                <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
                                             <img
@@ -72,7 +72,7 @@ export default function TransitionSection() {
                                             />
                                         </CardContent>
                                     </Card>
-                                </DarkTheme>
+                                </DarkThemeOnly>
                             </Grid>
                             <Grid item lg={3}></Grid>
                         </Grid>

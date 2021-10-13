@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 
-export default function DarkTheme({ children }) {
+export default function DarkThemeOnly({ children }) {
     const providerTheme = createTheme({
         palette: {
             mode: 'dark',

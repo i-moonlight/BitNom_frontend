@@ -8,7 +8,7 @@ import {
     Typography,
 } from '@mui/material';
 import React from 'react';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { platformLayers } from '../utilities/welcome.data';
 import { INVESTOR_CARD_DISPLACEMENT } from './Landing';
 
@@ -16,7 +16,7 @@ export default function LayersSection() {
     const classes = useStyles();
 
     return (
-        <DarkTheme>
+        <DarkThemeOnly>
             <Grid
                 style={{
                     backgroundColor: '#242526',
@@ -87,7 +87,7 @@ export default function LayersSection() {
                     </div>
                 </Container>
             </Grid>
-        </DarkTheme>
+        </DarkThemeOnly>
     );
 }
 

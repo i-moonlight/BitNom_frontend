@@ -74,7 +74,7 @@ export const tabs = [
 ];
 
 export const investorTabs = [
-    { label: 'Investor page' },
-    { label: 'Ecosystem' },
-    { label: 'Roadmap' },
+    { label: 'Investor page', hash: '#' },
+    { label: 'Ecosystem', hash: '#ecosystem' },
+    { label: 'Roadmap', hash: '#roadmap' },
 ];

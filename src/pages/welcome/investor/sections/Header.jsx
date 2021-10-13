@@ -13,14 +13,26 @@ export default function Header() {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={10} md={6}>
                         <div className="mt-4 pt-2">
-                            <Typography variant="h5" className="mt-5 mb-2">
+                            <Typography
+                                color="textPrimary"
+                                variant="h5"
+                                className="mt-5 mb-2"
+                            >
                                 BitNorm Investor Page
                             </Typography>
-                            <Typography variant="h4" className="mb-3">
+                            <Typography
+                                color="textPrimary"
+                                variant="h4"
+                                className="mb-3"
+                            >
                                 A one-stop data aggregator for the
                                 cryptocurrency ecosystem
                             </Typography>
-                            <Typography variant="h6" className="mb-3">
+                            <Typography
+                                color="textPrimary"
+                                variant="h6"
+                                className="mb-3"
+                            >
                                 BitNorm creates an ecosystem that is fueled by
                                 information sharing
                             </Typography>

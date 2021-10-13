@@ -2,6 +2,7 @@ import { Container, Divider } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import scrollImg from '../../../assets/investor/scroll.svg';
 import NavBarInvestor from '../../../components/navbar/investor/NavBarInvestor';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import Concept from './sections/Concept';
 import Ecosystem from './sections/Ecosystem';
 import Header from './sections/Header';
@@ -30,35 +31,35 @@ export default function Investors() {
                 overflowY: 'hidden',
             }}
         >
-            <NavBarInvestor />
-            {/* <DarkTheme> */}
-            <Header />
-            <section
-                className="h-100 w-100 py-4"
-                style={{ backgroundColor: '#000' }}
-            >
-                <Container>
-                    <img className="w-100" src={scrollImg} alt="" />
-                </Container>
-            </section>
-            <WhitePaper />
-            <Concept />
-            <Solution />
-            <section style={{ backgroundColor: '#000' }}>
-                <Container>
-                    <div className="py-1">
-                        <Divider />
-                    </div>
-                </Container>
-            </section>
-            <Symbol />
-            <Token />
-            <Ecosystem />
-            <UserBase />
-            <Roadmap />
-            <HealthCheck />
-            <Team />
-            {/* </DarkTheme> */}
+            <DarkThemeOnly>
+                <NavBarInvestor />
+                <Header />
+                <section
+                    className="h-100 w-100 py-4"
+                    style={{ backgroundColor: '#000' }}
+                >
+                    <Container>
+                        <img className="w-100" src={scrollImg} alt="" />
+                    </Container>
+                </section>
+                <WhitePaper />
+                <Concept />
+                <Solution />
+                <section style={{ backgroundColor: '#000' }}>
+                    <Container>
+                        <div className="py-1">
+                            <Divider />
+                        </div>
+                    </Container>
+                </section>
+                <Symbol />
+                <Token />
+                <Ecosystem />
+                <UserBase />
+                <Roadmap />
+                <HealthCheck />
+                <Team />
+            </DarkThemeOnly>
         </div>
     );
 }
