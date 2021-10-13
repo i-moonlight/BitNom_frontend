@@ -59,7 +59,10 @@ export default function FeatureRequest() {
                                 <Typography variant="h6" color="textSecondary">
                                     Showing Trending Feature requests
                                 </Typography>
-                                <TextField placeholder="Search" />
+                                <TextField
+                                    variant="outlined"
+                                    placeholder="Search"
+                                />
                             </div>
                             <RequestDisplayCard />
                             <RequestDisplayCard />

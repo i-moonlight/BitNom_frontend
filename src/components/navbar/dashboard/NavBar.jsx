@@ -7,7 +7,10 @@ import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
 } from '../../../pages/dasboard/utilities/queries';
-import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import {
+    checkSessionTimeOut,
+    signout,
+} from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
@@ -57,7 +60,8 @@ export default function NavBar() {
         }
     );
 
-    const isAuth = !profileLoading && profileData?.Users?.profile;
+    const isAuth =
+        profileLoading || (!profileLoading && profileData?.Users?.profile);
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
@@ -185,11 +189,11 @@ export default function NavBar() {
         }
 
         if (!isAuth) {
-            // dispatch(signout());
-            console.log('not isAuth', isAuth);
-            // alert('not auth');
-        } else {
-            console.log('isAuth', isAuth, profileData);
+            dispatch(signout());
+            // console.log('not isAuth', isAuth);
+            // alert(
+            //     `not auth ${profileLoading} && ${profileData?.Users?.profile}`
+            // );
         }
     }, [
         _count,
@@ -197,6 +201,7 @@ export default function NavBar() {
         history,
         isAuth,
         profileData,
+        profileLoading,
         response,
         subscriptionData,
         user._id,

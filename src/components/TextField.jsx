@@ -11,7 +11,7 @@ import React from 'react';
 
 export default function TextField({
     name,
-    label,
+    label = '',
     labelTop,
     placeholder,
     errorText,
