@@ -1,8 +1,8 @@
-import React from 'react';
 import { Popover } from '@mui/material';
 import { NimblePicker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 import data from 'emoji-mart/data/google.json';
+import React from 'react';
 
 function EmojiPickerPopover({
     handleSelectEmoji,

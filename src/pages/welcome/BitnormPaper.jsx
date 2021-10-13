@@ -36,6 +36,8 @@ export default function BitnormPaper({ title, children }) {
                         md={8}
                         style={{
                             borderRadius: 30,
+                            paddingTop: 36,
+                            paddingBottom: 36,
                         }}
                     >
                         <Card className={classes.card} elevation={4}>
@@ -61,7 +63,5 @@ const useStyles = makeStyles((theme) => ({
     card: {
         borderRadius: 0,
         backgroundColor: theme.palette.background.default,
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(4),
     },
 }));

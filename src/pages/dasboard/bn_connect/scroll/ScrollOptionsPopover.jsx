@@ -1,5 +1,11 @@
 import { useMutation } from '@apollo/client';
 import {
+    BookmarkBorderRounded,
+    FileCopyOutlined,
+    FlagOutlined,
+    PersonAddDisabledOutlined,
+} from '@mui/icons-material';
+import {
     Card,
     Divider,
     List,
@@ -8,18 +14,11 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-import {
-    BookmarkBorderRounded,
-    FileCopyOutlined,
-    FlagOutlined,
-    PersonAddDisabledOutlined,
-} from '@mui/icons-material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
-
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
