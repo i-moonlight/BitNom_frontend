@@ -68,7 +68,7 @@
         "eject": "react-scripts eject",
         "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
         "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin fixes && echo ===== Done pushing Files ====="
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin beta && echo ===== Done pushing Files ====="
     },
     "eslintConfig": {
         "extends": [

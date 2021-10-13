@@ -22,7 +22,6 @@ export default function EmptyMessages() {
                 <Grid
                     alignContent="center"
                     alignItems="center"
-                    container
                     item
                     direction="column"
                     className={classes.root}

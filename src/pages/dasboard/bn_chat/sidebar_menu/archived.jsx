@@ -42,7 +42,6 @@ export default function Archived({ archived, loading }) {
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
-                    container
                     item
                     direction
                     column

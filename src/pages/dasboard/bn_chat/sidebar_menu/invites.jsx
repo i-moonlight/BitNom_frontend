@@ -42,7 +42,6 @@ export default function Invites({ invites, loading }) {
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
-                    container
                     item
                     direction
                     column

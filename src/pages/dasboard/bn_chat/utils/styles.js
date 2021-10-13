@@ -12,7 +12,6 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     menuHeader: {
-        marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -22,10 +21,10 @@ export const useStyles = makeStyles((theme) => ({
         height: '35px',
         flexGrow: 1,
         alignItems: 'center',
-        marginLeft: theme.spacing(3),
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(2),
         marginBottom: theme.spacing(1),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
         backgroundColor: theme.palette.background.landing,
     },
     input: {

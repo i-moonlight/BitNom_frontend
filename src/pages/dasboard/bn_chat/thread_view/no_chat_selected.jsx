@@ -7,7 +7,6 @@ export default function NoChatSelected() {
             item
             justifyContent="center"
             alignItems="center"
-            container
             direction="column"
             style={{ width: '100%', marginTop: '35%' }}
         >

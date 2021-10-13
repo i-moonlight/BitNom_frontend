@@ -33,10 +33,9 @@ export default function BnChat() {
     return (
         <Screen>
             <Container maxWidth="lg">
-                <Grid container>
-                    <Grid item xs={12} sm={3}>
-                        <Card style={{ height: '84vh' }}>
-                            {' '}
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={3} className="mb-5">
+                        <Card style={{ minHeight: '75vh' }}>
                             <SideBarHeader
                                 className={classes.root}
                                 setChatInviteOpen={(open) =>
@@ -68,7 +67,7 @@ export default function BnChat() {
                     </Grid>
                     {!mdDown && (
                         <Grid item xs={12} sm={9}>
-                            <Card style={{ height: '84vh' }}>
+                            <Card style={{ minHeight: '75vh' }}>
                                 <Messages />
                             </Card>
                         </Grid>
