@@ -20,14 +20,14 @@ import {
     Modal,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRight,
     CloseRounded,
     ImageRounded,
     Public,
     VideocamRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -70,18 +70,11 @@ export default function UpdatePost({
         updatePost,
         {
             loading,
-            data,
+            // data,
             //  error
         },
     ] = useMutation(MUTATION_UPDATE_POST);
-    const [
-        deletePost,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_POST);
+    const [deletePost] = useMutation(MUTATION_DELETE_POST);
 
     const onDeletePost = async (id) => {
         await deletePost({
@@ -119,12 +112,6 @@ export default function UpdatePost({
         setOpenVideo(false);
         setPostToEdit(null);
     };
-
-    useEffect(() => {
-        if (data?.Posts?.update) {
-            console.log(data, deleteData);
-        }
-    }, [data, deleteData]);
 
     useEffect(() => {
         if (postToEdit?.images.length > 0) {

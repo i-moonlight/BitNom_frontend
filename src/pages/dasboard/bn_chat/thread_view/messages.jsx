@@ -1,23 +1,23 @@
 import { useQuery, useSubscription } from '@apollo/client';
-import { CircularProgress, Grid, Divider } from '@material-ui/core';
+import { CircularProgress, Divider, Grid } from '@material-ui/core';
 import React, { useEffect, useRef } from 'react';
-import Message from './message';
-import {
-    GET_DIALOGUE_MESSAGES,
-    NEW_MESSAGE_SUBSCRIPTION,
-} from '../graphql/queries';
 import { useDispatch, useSelector } from 'react-redux';
-import EmptyMessages from './no_messages';
-import ChatHeader from '../components/chat_header/chat_header';
-import { useStyles } from '../utils/styles';
-import SendMessage from './send_message';
-import InviteView from './invite_view';
-import NoChatSelected from './no_chat_selected';
-import AwaitResponse from './await_response';
 import {
     addMessagesToCurrentChat,
     setDialogueMessages,
 } from '../../../../store/actions/chatActions';
+import ChatHeader from '../components/chat_header/chat_header';
+import {
+    GET_DIALOGUE_MESSAGES,
+    NEW_MESSAGE_SUBSCRIPTION,
+} from '../graphql/queries';
+import { useStyles } from '../utils/styles';
+import AwaitResponse from './await_response';
+import InviteView from './invite_view';
+import Message from './message';
+import NoChatSelected from './no_chat_selected';
+import EmptyMessages from './no_messages';
+import SendMessage from './send_message';
 // import SentMessage from "./sent_message";
 
 export default function Messages() {
@@ -49,15 +49,14 @@ export default function Messages() {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
             endRef.current.scrollIntoView();
         }
-        // eslint-disable-next-line
-    }, [subscriptionData?.newMessage, endRef]);
+    }, [dispatch, subscriptionData?.newMessage]);
+
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
         if (data?.Dialogue?.getMessages.length > 0) {
             endRef.current.scrollIntoView();
         }
-        // eslint-disable-next-line
-    }, [data?.Dialogue?.getMessages, endRef]);
+    }, [data?.Dialogue?.getMessages, dispatch]);
 
     const unOrderedMessages = state.chats.dialogue_messages;
     const messages = [...unOrderedMessages].reverse();
@@ -81,7 +80,7 @@ export default function Messages() {
                 >
                     <NoChatSelected />
                 </Grid>
-            )}{' '}
+            )}
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader chat={dialogue} /> <Divider />
@@ -107,7 +106,6 @@ export default function Messages() {
                 wrap="nowrap"
                 direction="column"
             >
-                {' '}
                 {dialogue.status === 'accepted' &&
                     !messages.length > 0 &&
                     !loading && (
@@ -138,12 +136,11 @@ export default function Messages() {
                         direction="column"
                         style={{ width: '100%', marginTop: '35%' }}
                     >
-                        {' '}
                         <CircularProgress />
                     </Grid>
                 )}
                 <div ref={endRef} />
-            </Grid>{' '}
+            </Grid>
             <Grid item container wrap="nowrap" direction="column">
                 {dialogue.status === 'accepted' &&
                     messages &&
@@ -153,7 +150,7 @@ export default function Messages() {
                 {dialogue.status === 'accepted' &&
                     !loading &&
                     !messages.length > 0 && <SendMessage chat={dialogue._id} />}
-            </Grid>{' '}
+            </Grid>
         </Grid>
     );
 }

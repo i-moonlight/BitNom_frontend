@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { EcosystemCard } from '../pages/welcome/investor/tabs/InvestorTab';
@@ -28,7 +28,6 @@ export default function MuiCarousel() {
         md && setQuery(3);
         sm && setQuery(2);
         xs && setQuery(1);
-        console.log({ xs, sm, md, lg });
     }, [xs, sm, md, lg]);
 
     return (

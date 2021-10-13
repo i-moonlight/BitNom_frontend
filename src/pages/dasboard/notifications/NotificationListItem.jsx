@@ -7,9 +7,9 @@ import {
     IconButton,
     Divider,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
-import { MoreVert, FiberManualRecord } from '@material-ui/icons';
+import { MoreVert, FiberManualRecord } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { notificationBodyFactory } from '../utilities/functions';
@@ -66,7 +66,6 @@ export default function NotificationListItem({ notification }) {
         e.preventDefault();
         e.stopPropagation();
         history.push(targetLink.href.substring(location.origin.length));
-        //console.log(targetLink.href.substring(location.origin.length), 'LINK');
     };
     const userInitials = getUserInitials(getNotifyingUser(notification));
     return (

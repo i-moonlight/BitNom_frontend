@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Chip, Typography } from '@material-ui/core';
+import { Card, CardContent, Chip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import {

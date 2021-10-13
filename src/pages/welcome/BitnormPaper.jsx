@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import { Card, CardContent, Container, Grid } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@mui/styles';
+import { Card, CardContent, Container, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 
 export default function BitnormPaper({ title, children }) {
@@ -36,6 +36,8 @@ export default function BitnormPaper({ title, children }) {
                         md={8}
                         style={{
                             borderRadius: 30,
+                            paddingTop: 36,
+                            paddingBottom: 36,
                         }}
                     >
                         <Card className={classes.card} elevation={4}>
@@ -54,14 +56,12 @@ export default function BitnormPaper({ title, children }) {
 const useStyles = makeStyles((theme) => ({
     body: {
         backgroundColor:
-            theme.palette.type == 'light'
+            theme.palette.mode == 'light'
                 ? '#F5F5F5'
                 : theme.palette.background.paper,
     },
     card: {
         borderRadius: 0,
         backgroundColor: theme.palette.background.default,
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(4),
     },
 }));

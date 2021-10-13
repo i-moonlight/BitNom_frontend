@@ -3,13 +3,15 @@ import {
     CardContent,
     Container,
     Grid,
-    Hidden,
     Typography,
-} from '@material-ui/core';
+    useMediaQuery,
+} from '@mui/material';
 import React from 'react';
 import modelImg from '../../../../assets/investor/model.png';
 
 export default function UserBase() {
+    const smDown = useMediaQuery('(max-width:959px)');
+
     return (
         <section style={{ backgroundColor: '#000' }}>
             <Container>
@@ -102,7 +104,7 @@ export default function UserBase() {
                                             </Typography>
                                         </div>
                                     </Grid>
-                                    <Hidden smDown>
+                                    {!smDown && (
                                         <Grid item xs={12} sm={6} md={4}>
                                             <div className="w-100">
                                                 <img
@@ -112,7 +114,7 @@ export default function UserBase() {
                                                 />
                                             </div>
                                         </Grid>
-                                    </Hidden>
+                                    )}
                                     <Grid item xs={12} sm={6} md={4}>
                                         <div className="my-5">
                                             <Typography className="my-4 fw-bold">

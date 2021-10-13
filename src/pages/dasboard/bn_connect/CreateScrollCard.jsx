@@ -3,10 +3,10 @@ import {
     Card,
     CardActionArea,
     CardContent,
-    Hidden,
     Typography,
+    useMediaQuery,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import image from '../../../assets/scrolls/image.svg';
 import schedule from '../../../assets/scrolls/schedule.svg';
@@ -22,6 +22,8 @@ export default function CreateScrollCard({
     setVideoDisabled,
 }) {
     const theme = useTheme();
+    const xsDown = useMediaQuery('(max-width:599px)');
+
     return (
         <Card variant="outlined" style={{ marginBottom: 12 }}>
             <CardContent>
@@ -37,7 +39,7 @@ export default function CreateScrollCard({
                             padding: 8,
                             borderRadius: 8,
                             backgroundColor:
-                                theme.palette.type == 'dark'
+                                theme.palette.mode == 'dark'
                                     ? alpha(theme.palette.common.white, 0.15)
                                     : theme.palette.background.search,
                         }}
@@ -64,9 +66,9 @@ export default function CreateScrollCard({
                                 src={image}
                                 alt="img"
                             />
-                            <Hidden xsDown>
+                            {!xsDown && (
                                 <Typography variant="body2">Image</Typography>
-                            </Hidden>
+                            )}
                         </div>
                     </Button>
                     <Button
@@ -85,9 +87,9 @@ export default function CreateScrollCard({
                                 src={video}
                                 alt="img"
                             />
-                            <Hidden xsDown>
+                            {!xsDown && (
                                 <Typography variant="body2">Video</Typography>
-                            </Hidden>
+                            )}
                         </div>
                     </Button>
                     <Button textCase variant="text" color="inherit">
@@ -97,11 +99,11 @@ export default function CreateScrollCard({
                                 src={schedule}
                                 alt="img"
                             />
-                            <Hidden xsDown>
+                            {!xsDown && (
                                 <Typography variant="body2">
                                     Schedule
                                 </Typography>
-                            </Hidden>
+                            )}
                         </div>
                     </Button>
                     <Button textCase variant="text" color="inherit">
@@ -111,9 +113,9 @@ export default function CreateScrollCard({
                                 src={write}
                                 alt="img"
                             />
-                            <Hidden xsDown>
+                            {!xsDown && (
                                 <Typography variant="body2">Article</Typography>
-                            </Hidden>
+                            )}
                         </div>
                     </Button>
                 </div>

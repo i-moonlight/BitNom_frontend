@@ -5,12 +5,12 @@ import {
     Divider,
     Grid,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRightRounded,
     CloudDownload,
     ShareRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 import learnImg from '../../../../assets/investor/learn.svg';
 import logoImg from '../../../../assets/logo_full.svg';

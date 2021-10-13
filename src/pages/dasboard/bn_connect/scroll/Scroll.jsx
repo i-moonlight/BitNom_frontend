@@ -12,9 +12,9 @@ import {
     IconButton,
     Typography,
     useTheme,
-    makeStyles,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import {
     CommentRounded,
     FavoriteRounded,
@@ -26,7 +26,7 @@ import {
     ThumbDownRounded,
     ThumbUpRounded,
     InsertEmoticon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -138,14 +138,7 @@ export default function Scroll({
     const history = useHistory();
     const user = state.auth.user;
 
-    const [
-        createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
         data: commentsData,
@@ -292,11 +285,6 @@ export default function Scroll({
     const authorInitials = getUserInitials(scroll?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    useEffect(() => {
-        if (createCommentData?.Comments?.create) {
-            console.log('comment created');
-        }
-    }, [createCommentData]);
     useEffect(() => {
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);
@@ -462,7 +450,6 @@ export default function Scroll({
                     onMouseLeave={() => setLikeHovered(false)}
                 >
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('like');
@@ -476,7 +463,6 @@ export default function Scroll({
                         Like
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('love');
@@ -488,7 +474,6 @@ export default function Scroll({
                         Love
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('dislike');
@@ -502,7 +487,6 @@ export default function Scroll({
                         Dislike
                     </Button>
                     <Button
-                        color="default"
                         textCase
                         onClick={() => {
                             handleCreateReaction('celebrate');
@@ -522,12 +506,10 @@ export default function Scroll({
                         setLikeHovered={setLikeHovered}
                         onMouseLeave={() => setLikeHovered(false)}
                         variant="text"
-                        color="default"
                         textCase
                         startIcon={reactionIcon}
                     />
                     <Button
-                        color="default"
                         textCase
                         variant="text"
                         onClick={() => setOpenComments(true)}
@@ -537,7 +519,6 @@ export default function Scroll({
                     </Button>
                     {!scroll?.shared_resource?._id && (
                         <Button
-                            color="default"
                             textCase
                             variant="text"
                             onClick={() => {

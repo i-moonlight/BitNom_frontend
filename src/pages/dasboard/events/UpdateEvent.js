@@ -8,7 +8,6 @@ import {
     IconButton,
     Modal,
     Typography,
-    //useTheme,
     TextField,
     Paper,
     InputBase,
@@ -18,9 +17,9 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    makeStyles,
-} from '@material-ui/core';
-import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { CloseRounded, CameraAltRounded } from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState, useEffect } from 'react';
 //import { useSelector } from 'react-redux';
@@ -152,14 +151,7 @@ export default function UpdateEvent({
         },
     ] = useMutation(MUTATION_UPDATE_EVENT);
 
-    const [
-        deleteEvent,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_EVENT);
+    const [deleteEvent] = useMutation(MUTATION_DELETE_EVENT);
 
     const onUpdateEvent = async (IUpdateEvent) => {
         await updateEvent({
@@ -205,7 +197,7 @@ export default function UpdateEvent({
             },
             refetchQueries: [{ query: QUERY_LOAD_EVENTS }],
         });
-        console.log(deleteData);
+
         setEventLink('');
         setPreviewURL();
         setEventImage(null);
@@ -234,7 +226,6 @@ export default function UpdateEvent({
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
             .then((latLng) => {
-                console.log('Results', location);
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);

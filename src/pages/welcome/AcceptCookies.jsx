@@ -1,4 +1,4 @@
-import { Button, Snackbar, SnackbarContent, useTheme } from '@material-ui/core';
+import { Button, Snackbar, SnackbarContent, useTheme } from '@mui/material';
 import React from 'react';
 
 export default function AcceptCookies() {

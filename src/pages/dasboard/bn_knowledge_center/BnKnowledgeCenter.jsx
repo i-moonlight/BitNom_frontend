@@ -13,9 +13,9 @@ import {
     TablePagination,
     TableRow,
     Typography,
-} from '@material-ui/core';
-import { StarBorderOutlined } from '@material-ui/icons';
-import { Rating } from '@material-ui/lab';
+} from '@mui/material';
+import { StarBorderOutlined } from '@mui/icons-material';
+import { Rating } from '@mui/lab';
 import React from 'react';
 import Screen from '../../../components/Screen';
 

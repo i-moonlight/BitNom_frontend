@@ -5,10 +5,9 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { getUserInitials } from '../../../../utilities/Helpers';
 
 export default function ChatItem({ chat, onClick }) {

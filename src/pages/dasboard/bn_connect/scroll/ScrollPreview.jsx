@@ -7,8 +7,8 @@ import {
     Grid,
     //IconButton,
     Typography,
-} from '@material-ui/core';
-//import { MoreVert } from '@material-ui/icons';
+} from '@mui/material';
+//import { MoreVert } from '@mui/icons-material';
 import moment from 'moment';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

@@ -1,5 +1,5 @@
 import { useQuery, useSubscription } from '@apollo/client';
-import { CircularProgress, Grid, List, ListSubheader } from '@material-ui/core';
+import { CircularProgress, Grid, List, ListSubheader } from '@mui/material';
 import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GET_DIALOGUES, NEW_CHAT_ADDED } from '../graphql/queries';

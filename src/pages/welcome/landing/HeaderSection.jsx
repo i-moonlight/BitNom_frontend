@@ -4,12 +4,12 @@ import {
     IconButton,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { ArrowForwardRounded, PlayArrowRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowForwardRounded, PlayArrowRounded } from '@mui/icons-material';
 import React from 'react';
 import headerBgImg from '../../../assets/landing/img12.png';
 import Button from '../../../components/Button';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 
 export default function HeaderSection() {
     const theme = useTheme();
@@ -32,7 +32,7 @@ export default function HeaderSection() {
                     lg={12}
                     className="mt-5 mb-5"
                 >
-                    <DarkTheme>
+                    <DarkThemeOnly>
                         <Typography
                             variant="h3"
                             color="textPrimary"
@@ -75,7 +75,7 @@ export default function HeaderSection() {
                                 <b>Click here to buy</b>
                             </a>
                         </Typography>
-                    </DarkTheme>
+                    </DarkThemeOnly>
                 </Grid>
             </Container>
         </Grid>

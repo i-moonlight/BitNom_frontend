@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, Hidden, makeStyles } from '@material-ui/core';
+import { Container, Grid, useMediaQuery } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
@@ -18,10 +19,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ProfileView() {
+export default function ProfileView({ match }) {
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
+
+    console.log('prfprps: ', match.params.id);
 
     const {
         // error,
@@ -29,7 +33,7 @@ export default function ProfileView() {
         data,
     } = useQuery(QUERY_FETCH_PROFILE_BY_ID, {
         variables: {
-            id: 'Influence',
+            id: match.params.id,
         },
         context: { clientName: 'users' },
     });
@@ -41,9 +45,7 @@ export default function ProfileView() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
-                            <Grid item lg={3}></Grid>
-                        </Hidden>
+                        {!mdDown && <Grid item lg={3}></Grid>}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <ProfileCard profile={profile} profileView />
                             <InsightCard profile={profile} profileView />

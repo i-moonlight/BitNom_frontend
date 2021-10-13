@@ -19,14 +19,14 @@ import {
     Modal,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRight,
     CloseRounded,
     ImageRounded,
     Public,
     InsertEmoticon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { MentionsInput, Mention } from 'react-mentions';
@@ -68,18 +68,11 @@ export default function UpdateComment({
         updateComment,
         {
             loading,
-            data,
+            // data,
             //  error
         },
     ] = useMutation(MUTATION_UPDATE_COMMENT);
-    const [
-        deleteComment,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_COMMENT);
+    const [deleteComment] = useMutation(MUTATION_DELETE_COMMENT);
 
     const onDeleteComment = async (id) => {
         await deleteComment({
@@ -134,12 +127,6 @@ export default function UpdateComment({
         handleEmojiPickerClose();
         setCommentText(`${comment_text} ${emoji.native}`);
     };
-
-    useEffect(() => {
-        if (data?.Comment?.update) {
-            console.log(data, deleteData);
-        }
-    }, [data, deleteData]);
 
     useEffect(() => {
         if (commentToEdit?.image.trim() !== '') {

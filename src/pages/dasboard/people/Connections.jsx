@@ -1,40 +1,39 @@
+import { useMutation, useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    CardHeader,
-    IconButton,
     CardContent,
+    CardHeader,
     Container,
     Divider,
     Grid,
-    Hidden,
+    IconButton,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
-    Typography,
     Tab,
     Tabs,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import { getUserInitials } from '../../../utilities/Helpers';
+import UserCard from '../bn_connect/UserCard';
+import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
     QUERY_LOAD_EVENTS,
+    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
-
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
-import { getUserInitials } from '../../../utilities/Helpers';
-import {} from '../utilities/functions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +45,8 @@ export default function Connections() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
     const state = useSelector((st) => st);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     const user = state.auth.user;
 
     const {
@@ -88,7 +89,7 @@ export default function Connections() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -103,7 +104,7 @@ export default function Connections() {
                                     events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <Card>
                                 <CardHeader
@@ -193,7 +194,7 @@ export default function Connections() {
                             </Card>
                         </Grid>
                         <Grid item md={4} lg={3}>
-                            {/* <Hidden smDown></Hidden> */}
+                            {/* {!smDown && } */}
                         </Grid>
                     </Grid>
                 </Container>
@@ -244,9 +245,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
     const handleUnFollowUser = (user_id) => {
@@ -264,9 +263,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
-        setStatus(false);
+        if (unFollowData?.Users?.unFollow == true) setStatus(false);
         //setFollowing(following - 1);
     };
     return (

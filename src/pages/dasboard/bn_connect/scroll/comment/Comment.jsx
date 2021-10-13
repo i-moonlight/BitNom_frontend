@@ -6,11 +6,11 @@ import {
     Divider,
     Grid,
     IconButton,
-    makeStyles,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import {
     FavoriteRounded,
     ImageRounded,
@@ -20,7 +20,7 @@ import {
     Send,
     ThumbDownRounded,
     ThumbUpRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -212,7 +212,6 @@ export default function Comment({
                 if (item?.user_id?._id === user?._id)
                     reaction = item?.reaction_type;
             });
-            console.log(resource, 'JSL');
             return reaction;
         },
         [user?._id]
@@ -357,7 +356,6 @@ export default function Comment({
                         onMouseLeave={() => setLikeHovered(false)}
                     >
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('like');
@@ -371,7 +369,6 @@ export default function Comment({
                             Like
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('love');
@@ -385,7 +382,6 @@ export default function Comment({
                             Love
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('dislike');
@@ -399,7 +395,6 @@ export default function Comment({
                             Dislike
                         </Button>
                         <Button
-                            color="default"
                             textCase
                             onClick={() => {
                                 handleCreateReaction('celebrate');
@@ -421,7 +416,6 @@ export default function Comment({
                             onMouseEnter={() => setLikeHovered(true)}
                             onMouseLeave={() => setLikeHovered(false)}
                             variant="text"
-                            color="default"
                             textCase
                         />
                         <Typography

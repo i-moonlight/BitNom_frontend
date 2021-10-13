@@ -9,8 +9,8 @@ import {
     Grid,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+} from '@mui/material';
+import { MoreVert } from '@mui/icons-material';
 
 import moment from 'moment';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -56,7 +56,7 @@ export default function SavedPost({
             <Card style={{ marginBottom: 16 }}>
                 <CardActionArea
                     disableRipple
-                    //onClick={() => history.push('/dashboard')}
+                    //onClick={() => history.push('/connect')}
                 >
                     <CardHeader
                         avatar={

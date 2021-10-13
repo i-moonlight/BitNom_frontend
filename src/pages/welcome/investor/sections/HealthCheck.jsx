@@ -4,10 +4,10 @@ import {
     AccordionSummary,
     Card,
     Container,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import { ExpandMore, Help } from '@material-ui/icons';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { ExpandMore, Help } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { healthCheck } from '../../utilities/welcome.data';
 

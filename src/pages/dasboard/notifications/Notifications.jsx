@@ -1,17 +1,16 @@
 import { useQuery } from '@apollo/client';
+import { KeyboardArrowRight } from '@mui/icons-material';
 import {
-    Container,
     Card,
+    Container,
     Grid,
-    Hidden,
     List,
     ListItem,
-    ListItemText,
-    makeStyles,
     ListItemSecondaryAction,
-} from '@material-ui/core';
-import { KeyboardArrowRight } from '@material-ui/icons';
-
+    ListItemText,
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
@@ -32,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Notifications() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     const { loading, data } = useQuery(GET_USER_NOTIFICATIONS, {
         variables: { limit: 20 },
         context: { clientName: 'notifications' },
@@ -42,14 +43,14 @@ export default function Notifications() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <SideBarMenu
                                     selectedIndex={selectedIndex}
                                     setSelectedIndex={setSelectedIndex}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <NotificationsListCard
                                 selectedIndex={selectedIndex}
