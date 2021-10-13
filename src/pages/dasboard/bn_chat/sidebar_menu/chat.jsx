@@ -6,19 +6,12 @@ import {
     ListItemText,
     Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useStyles } from '../utils/styles';
 
 import { getUserInitials } from '../../../../utilities/Helpers';
 
 export default function ChatItem({ chat, onClick }) {
-    const classes = useStyles();
-    // const [isOnline, setIsOnline] = useState(0);
-    const state = useSelector((st) => st);
-    // const user = state.auth.user._id;
-
     return (
         <>
             <ListItem
