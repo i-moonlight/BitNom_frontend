@@ -47,8 +47,6 @@ function Chats() {
             context: { clientName: 'chat' },
         }
     );
-    console.log('ARCHIVED', archivedData?.Dialogue?.get);
-    console.log('CHATS', data);
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
             _id: user._id,
