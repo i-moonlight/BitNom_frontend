@@ -47,8 +47,6 @@ function Chats() {
             context: { clientName: 'chat' },
         }
     );
-    console.log('ARCHIVED', archivedData?.Dialogue?.get);
-    console.log('CHATS', data);
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
             _id: user._id,
@@ -59,7 +57,8 @@ function Chats() {
         if (newChatData?.newChat) {
             dispatch(addToInvites(newChatData?.newChat));
         }
-    }, [newChatData?.newChat, dispatch]);
+        // eslint-disable-next-line
+    }, [newChatData?.newChat]);
 
     useEffect(() => {
         const chat_invites =
@@ -70,7 +69,8 @@ function Chats() {
             dispatch(setChatInvites(chat_invites));
         }
         return;
-    }, [chatInvites, dispatch]);
+        // eslint-disable-next-line
+    }, [chatInvites]);
 
     useEffect(() => {
         const AcceptedChats =
@@ -79,13 +79,15 @@ function Chats() {
             dispatch(addChatDialogues(AcceptedChats));
         }
         return;
-    }, [data, dispatch]);
+        // eslint-disable-next-line
+    }, [data]);
 
     useEffect(() => {
         if (archivedData?.Dialogue?.get) {
             dispatch(setArchivedChats(archivedData?.Dialogue?.get));
         }
-    }, [archivedData?.Dialogue?.get, dispatch]);
+        // eslint-disable-next-line
+    }, [archivedData?.Dialogue?.get]);
 
     const chats = state.chats.chats;
     const invites = state.chats.invites;

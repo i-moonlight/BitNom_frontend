@@ -10,6 +10,7 @@ import {
 import { Search, Settings } from '@mui/icons-material';
 import { useStyles } from '../../utils/styles';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
+import { getUserInitials } from '../../../../../utilities/Helpers';
 const chatSettingsId = 'chat-settings-menu';
 export default function ChatHeader({ chat }) {
     const classes = useStyles();
@@ -27,17 +28,29 @@ export default function ChatHeader({ chat }) {
                 <ButtonBase>
                     {' '}
                     <Avatar
-                        alt="Remy Sharp"
-                        src="https://wallpaperaccess.com/full/2213426.jpg"
+                        alt={chat.otherUser.info.displayName}
+                        src={
+                            chat?.otherUser?.info.profile_pic
+                                ? process.env.REACT_APP_BACKEND_URL +
+                                  chat?.otherUser?.info.profile_pic
+                                : ''
+                        }
                         className={classes.avatar}
-                    />
+                        style={{ backgroundColor: '#1C0C5B' }}
+                    >
+                        {chat?.otherUser?.info.profile_pic
+                            ? ''
+                            : getUserInitials(
+                                  chat?.otherUser?.info.displayName
+                              )}
+                    </Avatar>
                 </ButtonBase>
             </Grid>
             <Grid item xs container>
                 <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
                         <Typography variant={'h5'}>
-                            {chat.otherUser?.info}
+                            {chat.otherUser?.info.displayName}
                         </Typography>
                         <div className={classes.status}>
                             {' '}

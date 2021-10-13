@@ -47,11 +47,10 @@ export default function CreateChatPrompt({
     );
 
     const [sendChatInvite, { data }] = useMutation(CREATE_DIALOGUE);
-
-    const onSendInvite = async (_id) => {
+    const onSendInvite = async (IUserSmall) => {
         await sendChatInvite({
             variables: {
-                _id: _id,
+                data: IUserSmall,
             },
             context: { clientName: 'chat' },
         });
@@ -65,7 +64,12 @@ export default function CreateChatPrompt({
     };
 
     const handleSendInvite = (user) => {
-        onSendInvite(user._id);
+        onSendInvite({
+            _id: user?._id,
+            displayName: user?.displayName,
+            profile_pic: user?.profile_pic,
+            bio: user?.bio,
+        });
         setChatInviteOpen(false);
     };
 
