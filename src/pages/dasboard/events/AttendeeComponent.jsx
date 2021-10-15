@@ -5,7 +5,7 @@ import {
     ListItemIcon,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
     MUTATION_FOLLOW_USER,
@@ -17,7 +17,7 @@ import { useMutation } from '@apollo/client';
 
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 
 function AttendeeComponent({ item, getFollowStatus, profile }) {
     const [status, setStatus] = React.useState();
@@ -63,9 +63,7 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -84,9 +82,7 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
-        setStatus(false);
+        if (unFollowData?.Users?.unFollow == true) setStatus(false);
         //setFollowing(following - 1);
     };
     return (
@@ -100,7 +96,7 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {item?.attendee?.profile_pic

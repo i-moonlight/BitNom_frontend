@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import { DoneRounded } from '@material-ui/icons';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { DoneRounded } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -24,7 +24,7 @@ export default function UpdateInfo() {
     });
 
     useEffect(() => {
-        user?.email?.verified && user?.displayName && history.push('/');
+        user?.email?.verified && user?.displayName && history.push('/connect');
         JSON.stringify(user) === '{}' && history.push('/auth/login');
     }, [history, user]);
 
@@ -57,21 +57,19 @@ export default function UpdateInfo() {
                                     validationSchema={
                                         updateInfoValidationSchema
                                     }
-                                    onSubmit={({ displayName, bio }) => {
+                                    onSubmit={({ displayName }) => {
                                         updateProfileInfo({
                                             variables: {
                                                 displayName,
-                                                bio,
                                             },
                                             errorPolicy: 'all',
-                                        }).then(({ data, errors }) => {
+                                        }).then(({ data }) => {
                                             const userData = data?.Users?.update
                                                 ? data?.Users?.update
                                                 : {};
 
-                                            errors && console.log(errors);
-
-                                            dispatch(login(userData, null));
+                                            data?.Users?.update &&
+                                                dispatch(login(userData, null));
                                         });
                                     }}
                                 >
@@ -90,15 +88,11 @@ export default function UpdateInfo() {
                                             variant="outlined"
                                             fullWidth
                                         />
-                                        <TextField
-                                            name="bio"
-                                            label="Your Bio"
-                                            variant="outlined"
-                                            multiline
-                                            rows={3}
+                                        <Button
                                             fullWidth
-                                        />
-                                        <Button fullWidth submit>
+                                            submit
+                                            className="mt-2"
+                                        >
                                             Update Details
                                         </Button>
                                     </div>

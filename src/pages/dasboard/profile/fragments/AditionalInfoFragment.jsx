@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, IconButton, Typography } from '@material-ui/core';
-import { Delete, Edit } from '@material-ui/icons';
+import { Card, IconButton, Typography } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 import React from 'react';
 import {
     MUTATION_REMOVE_COURSE,

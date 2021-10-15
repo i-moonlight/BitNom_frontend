@@ -1,45 +1,65 @@
-import { Box, Paper } from '@material-ui/core';
-import React from 'react';
-import Wrapper from '../Wrapper';
-import InvestorTab from './tabs/InvestorTab';
+import { Container, Divider } from '@mui/material';
+import React, { useEffect, useRef } from 'react';
+import scrollImg from '../../../assets/investor/scroll.svg';
+import NavBarInvestor from '../../../components/navbar/investor/NavBarInvestor';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
+import Concept from './sections/Concept';
+import Ecosystem from './sections/Ecosystem';
+import Header from './sections/Header';
+import HealthCheck from './sections/HealthCheck';
+import Roadmap from './sections/RoadMap';
+import Solution from './sections/Solution';
+import Symbol from './sections/Symbol';
+import Team from './sections/Team';
+import Token from './sections/Token';
+import UserBase from './sections/UserBase';
+import WhitePaper from './sections/WhitePaper';
 
 export default function Investors() {
-    const onTabValue = (val) => {
-        switch (val) {
-            case 1:
-                window.location.hash = '#ecosystem';
-                break;
-            case 2:
-                window.location.hash = '#roadmap';
-                break;
-            default:
-                window.location.hash = '#';
-        }
-    };
+    const toTop = useRef(null);
 
-    return (
-        <Wrapper investor onTabValue={onTabValue}>
-            <Paper>
-                <TabPanel value={0} index={0}>
-                    <InvestorTab />
-                </TabPanel>
-            </Paper>
-        </Wrapper>
-    );
-}
-
-const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
 
     return (
         <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
+            ref={toTop}
+            style={{
+                width: '100%',
+                minHeight: '100vh',
+                overflowY: 'hidden',
+            }}
         >
-            {value === index && <Box>{children}</Box>}
+            <DarkThemeOnly>
+                <NavBarInvestor />
+                <Header />
+                <section
+                    className="h-100 w-100 py-4"
+                    style={{ backgroundColor: '#000' }}
+                >
+                    <Container>
+                        <img className="w-100" src={scrollImg} alt="" />
+                    </Container>
+                </section>
+                <WhitePaper />
+                <Concept />
+                <Solution />
+                <section style={{ backgroundColor: '#000' }}>
+                    <Container>
+                        <div className="py-1">
+                            <Divider />
+                        </div>
+                    </Container>
+                </section>
+                <Symbol />
+                <Token />
+                <Ecosystem />
+                <UserBase />
+                <Roadmap />
+                <HealthCheck />
+                <Team />
+            </DarkThemeOnly>
         </div>
     );
-};
+}

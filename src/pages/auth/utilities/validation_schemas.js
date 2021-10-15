@@ -30,5 +30,4 @@ export const resetPasswordValidationSchema = Yup.object().shape({
 
 export const updateInfoValidationSchema = Yup.object().shape({
     displayName: Yup.string().min(2).max(70).required().label('Full Name'),
-    bio: Yup.string().min(50).max(1250).required().label('Bio'),
 });

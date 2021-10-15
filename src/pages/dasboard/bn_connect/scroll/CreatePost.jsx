@@ -1,4 +1,3 @@
-//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
     Avatar,
@@ -13,30 +12,24 @@ import {
     ListItemText,
     Modal,
     Typography,
-    //TextField,
-    //useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     ChevronRight,
     CloseRounded,
     ImageRounded,
     Public,
     VideocamRounded,
-} from '@material-ui/icons';
-import { MentionsInput, Mention } from 'react-mentions';
+} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import {
-    generateRandomColor,
-    getFeed,
-    mentionsFinder,
-} from '../../utilities/functions';
+import { getFeed, mentionsFinder } from '../../utilities/functions';
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
@@ -190,8 +183,7 @@ export default function CreatePost({
                                 <ListItemAvatar>
                                     <Avatar
                                         style={{
-                                            backgroundColor:
-                                                generateRandomColor(),
+                                            backgroundColor: '#fed132',
                                         }}
                                         src={user?.profile_pic}
                                     >
@@ -257,10 +249,10 @@ export default function CreatePost({
                             {/* <TextField
                 fullWidth
                 multiline
-                variant='standard'
+                variant="standard"
                 error={createPostErr && true}
                 rows={5}
-                id='content-field'
+                id="content-field"
                 placeholder="What's happening"
                 onChange={(e) =>
                   setScrollText(

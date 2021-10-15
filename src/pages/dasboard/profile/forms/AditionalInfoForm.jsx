@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Typography } from '@material-ui/core';
-import { SearchRounded } from '@material-ui/icons';
+import { Card, CardContent, Typography } from '@mui/material';
+import { SearchRounded } from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';

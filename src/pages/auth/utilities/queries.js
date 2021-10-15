@@ -124,12 +124,11 @@ export const MUTATION_VERIFY_EMAIL = gql`
 `;
 
 export const MUTATION_UPDATE_PROFILE_INFO = gql`
-    mutation ($displayName: String, $bio: String) {
+    mutation ($displayName: String) {
         Users {
-            update(data: { displayName: $displayName, bio: $bio }) {
+            update(data: { displayName: $displayName }) {
                 _id
                 displayName
-                bio
                 profile_pic
                 email {
                     address

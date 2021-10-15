@@ -7,8 +7,8 @@ import {
     Paper,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+} from '@mui/material';
+import { Search } from '@mui/icons-material';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import {
@@ -55,7 +55,7 @@ export default function LanguagesForm({ onClose, profile }) {
 
                     <Paper
                         variant={
-                            theme.palette.type == 'light'
+                            theme.palette.mode == 'light'
                                 ? 'outlined'
                                 : 'elevation'
                         }

@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import Alert from '@mui/lab/Alert';
 import { parse } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
-import { verifySuccess } from '../../store/actions/authActions';
+import { signout, verifySuccess } from '../../store/actions/authActions';
 import { MUTATION_VERIFY_EMAIL } from './utilities/queries';
 
 export default function VerifyEmail() {
@@ -30,20 +30,16 @@ export default function VerifyEmail() {
                 verificationCode: parse(location.search)['?evc'],
             },
             errorPolicy: 'all',
-        }).then(({ errors, data }) => {
+        }).then(({ errors }) => {
             setVerifying(false);
             const userErrors = errors ? errors : null;
             setVerifyErr(userErrors);
 
-            if (errors) {
-                console.log('verem errors: ', errors);
-            } else {
-                console.log('verem data: ', data);
-
+            if (!errors) {
                 setTimeout(() => {
                     user?.email
                         ? dispatch(verifySuccess())
-                        : history.push('/auth/login');
+                        : dispatch(signout());
                 }, 2000);
             }
         });

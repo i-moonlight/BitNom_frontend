@@ -3,9 +3,9 @@ import {
     CircularProgress,
     Container,
     Grid,
-    Hidden,
-    makeStyles,
-} from '@material-ui/core';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
@@ -28,12 +28,11 @@ export default function BnServices() {
     // const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [latestScrolls, setlatestScrolls] = useState([]);
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { error, loading, data } = useQuery(QUERY_LOAD_SCROLLS);
 
     useEffect(() => {
-        console.log(error);
-        console.log(loading);
         if (data?.Posts?.get) setlatestScrolls(data.Posts.get);
     }, [data, error, loading]);
 
@@ -42,11 +41,11 @@ export default function BnServices() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <ServicesMenu />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={9} lg={9}>
                             {loading && (
                                 <CircularProgress

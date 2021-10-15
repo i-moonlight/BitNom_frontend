@@ -10,8 +10,8 @@ import {
     ListItemText,
     Modal,
     Typography,
-} from '@material-ui/core';
-import { CloseRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { CloseRounded } from '@mui/icons-material';
 import React from 'react';
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
@@ -21,7 +21,7 @@ export default function FlagResourceModal({
     flaggedResource,
     setFlaggedResource,
 }) {
-    const [createFlag, { data }] = useMutation(MUTATION_CREATE_FLAG);
+    const [createFlag] = useMutation(MUTATION_CREATE_FLAG);
 
     const onCreateFlag = async (ICreateFlag) => {
         await createFlag({
@@ -29,9 +29,7 @@ export default function FlagResourceModal({
                 data: ICreateFlag,
             },
         });
-        if (!data?.Flags?.create) {
-            console.log('Already Flagged');
-        }
+
         setFlaggedResource(null);
         setOpenFlag(false);
     };

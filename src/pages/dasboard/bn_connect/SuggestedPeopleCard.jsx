@@ -1,7 +1,10 @@
+import { useMutation } from '@apollo/client';
 import {
     Avatar,
     Card,
+    CircularProgress,
     Divider,
+    Grid,
     List,
     ListItem,
     ListItemAvatar,
@@ -9,25 +12,23 @@ import {
     ListItemText,
     Paper,
     Typography,
-    CircularProgress,
-    Grid,
-} from '@material-ui/core';
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+} from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
-import { useMutation } from '@apollo/client';
+//import { getFeed } from '../utilities/functions';
+import { getUserInitials } from '../../../utilities/Helpers';
+import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     //QUERY_LOAD_SCROLLS,
     QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
-//import { getFeed } from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
 
 export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
     const [notFollowed, setNotFollowed] = useState();
+    const history = useHistory();
 
     const getFollowStatus = useCallback(
         (user) => {
@@ -87,15 +88,17 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                     />
                 ))}
                 <Divider />
-                <Link to="/dashboard/people">
-                    <Typography
-                        variant="body2"
-                        className="my-2"
-                        color="primary"
-                    >
-                        Show more
-                    </Typography>
-                </Link>
+                <Button
+                    textCase
+                    size="small"
+                    variant="text"
+                    className="my-1"
+                    onClick={() => {
+                        history.push('/people');
+                    }}
+                >
+                    Show More
+                </Button>
             </List>
         </Paper>
     );
@@ -118,14 +121,7 @@ function ListItemComponent({ user, getFollowStatus }) {
             //   error
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -146,9 +142,7 @@ function ListItemComponent({ user, getFollowStatus }) {
         }, */
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -171,8 +165,7 @@ function ListItemComponent({ user, getFollowStatus }) {
         }, */
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
+
         setStatus();
         //setFollowing(following - 1);
     };
@@ -188,7 +181,7 @@ function ListItemComponent({ user, getFollowStatus }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {user?.profile_pic

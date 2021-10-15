@@ -6,11 +6,11 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     BookmarkBorderRounded,
     PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -29,14 +29,7 @@ export default function SavedItemsOptionPopover({
     isSavedItemOptionOpen,
     handleSavedItemOptionClose,
 }) {
-    const [
-        removeBookmark,
-        {
-            data: removeBookmarkData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_REMOVE_BOOKMARK);
+    const [removeBookmark] = useMutation(MUTATION_REMOVE_BOOKMARK);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -75,7 +68,6 @@ export default function SavedItemsOptionPopover({
                 },
             ],
         });
-        if (!removeBookmarkData) console.log('');
         handleSavedItemOptionClose();
     };
 

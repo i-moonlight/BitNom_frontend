@@ -1,6 +1,7 @@
-import { Box } from '@material-ui/core';
-import { Container, Tab, Tabs, withStyles } from '@material-ui/core';
+import { Box, Container, Tab, Tabs } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { tabs } from '../../utilities/data.components';
 import { useStyles } from '../../utilities/styles.components';
 
@@ -11,6 +12,7 @@ export default function TabsBar({
     setTabOptions,
     handleTabOptionsOpen,
 }) {
+    const history = useHistory();
     const classes = useStyles();
 
     return (
@@ -24,33 +26,28 @@ export default function TabsBar({
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {tabs.map(({ label, menuItems }) => {
-                            const tabOptionsId2 =
-                                tabOptionsId + Math.random() * 1000;
+                        {tabs.map(({ label, menuItems, link }) => {
                             return (
                                 <BitTab
-                                    key={`${tabOptionsId2}-${Math.random}`}
+                                    key={`${label}`}
                                     label={label}
-                                    aria-controls={tabOptionsId2}
+                                    aria-controls={tabOptionsId}
                                     aria-haspopup="true"
                                     onClick={(event) => {
+                                        link && history.push(link);
                                         menuItems && setTabOptions(menuItems);
                                         menuItems &&
                                             handleTabOptionsOpen(event);
                                     }}
+                                    // onMouseEnter={(event) => {
+                                    //     menuItems && setTabOptions(menuItems);
+                                    //     menuItems &&
+                                    //         handleTabOptionsOpen(event);
+                                    // }}
+                                    // onMouseLeave={handleTabOptionsClose}
                                 />
                             );
                         })}
-                        <BitTab
-                            style={{ position: 'relative' }}
-                            label={'Nouvelle'}
-                            aria-controls={'tabOptionsId2'}
-                            aria-haspopup="true"
-                            // onClick={event => {
-                            //   menuItems && setTabOptions(menuItems);
-                            //   menuItems && handleTabOptionsOpen(event);
-                            // }}
-                        />
                     </Tabs>
                 </Container>
             </Box>
@@ -60,18 +57,19 @@ export default function TabsBar({
 
 const BitTab = withStyles((theme) => ({
     root: {
+        cursor: 'pointer',
         textTransform: 'none',
-        color: theme.palette.type == 'dark' ? '#fff' : '#000',
+        color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         fontWeight: theme.typography.fontWeightBold,
         fontSize: theme.typography.pxToRem(15),
         marginRight: 0,
         '&:focus': {
             opacity: 1,
-            color: theme.palette.type == 'dark' ? '#fff' : '#000',
+            color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         },
         '&:hover': {
             backgroundColor:
-                theme.palette.type == 'dark'
+                theme.palette.mode == 'dark'
                     ? theme.palette.background.paper
                     : theme.palette.background.search,
         },

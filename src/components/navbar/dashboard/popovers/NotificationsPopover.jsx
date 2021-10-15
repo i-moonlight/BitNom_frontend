@@ -11,12 +11,11 @@ import {
     ListItemText,
     Popover,
     Typography,
-} from '@material-ui/core';
-import { SettingsRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { SettingsRounded } from '@mui/icons-material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    generateRandomColor,
     getCreationTime,
     notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
@@ -79,7 +78,7 @@ function NotificationPreview({ notifications }) {
                         <ListItemComponent key={item._id} item={item} />
                     ))}
             {notifications?.length > 0 && (
-                <Link to="/dashboard/notifications">
+                <Link to="/notifications">
                     <Typography
                         variant="body2"
                         className="my-2"
@@ -133,7 +132,7 @@ function ListItemComponent({ item }) {
             <ListItemAvatar>
                 <Avatar
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {getUserInitials(getNotifyingUser(item))}

@@ -22,5 +22,4 @@ export const resetPasswordInitialValues = {
 
 export const updateInfoInitialValues = {
     displayName: '',
-    bio: '',
 };

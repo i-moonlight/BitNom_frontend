@@ -1,12 +1,12 @@
-import { Button as MuiButton } from '@material-ui/core';
+import { Button as MuiButton } from '@mui/material';
 import { useFormikContext } from 'formik';
 import React from 'react';
 import logo_google from '../assets/components/google.svg';
 
 export default function Button({
-    textCase,
+    // eslint-disable-next-line no-unused-vars
     color,
-    colorAlt,
+    textCase,
     submit,
     onClick,
     variant,
@@ -16,18 +16,15 @@ export default function Button({
     ...props
 }) {
     const formikContext = useFormikContext();
-
-    const buttonVariant = variantAlt ? variantAlt : variant;
-    const buttonColor = colorAlt ? colorAlt : color;
+    const buttonVariant = variantAlt || variant;
 
     return (
         <MuiButton
-            color={buttonColor ? buttonColor : 'primary'}
             variant={buttonVariant ? buttonVariant : 'contained'}
             disableElevation={!google}
             style={{
                 backgroundColor: google && '#f2f2f2',
-                color: !buttonColor && google && '#818181',
+                color: google ? '#818181' : variant === 'text' && '#0ea0f3',
                 textTransform: textCase && 'none',
             }}
             onClick={submit ? formikContext.handleSubmit : onClick}

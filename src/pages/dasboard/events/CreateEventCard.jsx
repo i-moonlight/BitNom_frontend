@@ -7,8 +7,8 @@ import {
     ListItemText,
     ListItemSecondaryAction,
     List,
-} from '@material-ui/core';
-import { EventRounded, KeyboardArrowRight } from '@material-ui/icons';
+} from '@mui/material';
+import { EventRounded, KeyboardArrowRight } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 
@@ -25,7 +25,7 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                 top: 176,
             }}
         >
-            <Card style={{ marginBottom: 16 }} variant={'outlined'}>
+            <Card variant={'outlined'}>
                 <CardContent
                     style={{
                         display: 'flex',
@@ -44,8 +44,8 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                         <Typography variant="body2" className="mb-3">
                             Host an event on BitNorm and invite your network
                         </Typography>
-                        <Button onClick={() => setOpen(true)}>
-                            create Event
+                        <Button textCase onClick={() => setOpen(true)}>
+                            Create Event
                         </Button>
                     </div>
                 </CardContent>
@@ -53,13 +53,13 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     style={{
                         display:
                             location.pathname.includes('events/') && 'none',
+                        paddingBottom: 0,
                     }}
                     component="nav"
                     aria-label="secondary mailbox folder"
                 >
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 0}
                         onClick={(event) => handleListItemClick(event, 0)}
@@ -71,7 +71,6 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     </ListItem>
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 1}
                         onClick={(event) => handleListItemClick(event, 1)}
@@ -83,7 +82,6 @@ function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
                     </ListItem>
                     <ListItem
                         button
-                        disablePadding
                         disableRipple
                         selected={selectedIndex === 2}
                         onClick={(event) => handleListItemClick(event, 2)}

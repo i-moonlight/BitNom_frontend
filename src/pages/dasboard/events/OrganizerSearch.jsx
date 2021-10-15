@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Grid, Typography, Avatar } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+    TextField,
+    Grid,
+    Typography,
+    Avatar,
+    Autocomplete,
+} from '@mui/material';
+
 //import parse from 'autosuggest-highlight/parse';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 
 function OrganizerSearch({
@@ -23,6 +29,7 @@ function OrganizerSearch({
 
     return (
         <Autocomplete
+            disablePortal
             options={searchResults || []}
             loading={loading}
             value={searchedValues}
@@ -47,6 +54,7 @@ function OrganizerSearch({
             renderInput={(params) => (
                 <TextField
                     {...params}
+                    label="Organizers"
                     value={term}
                     variant="outlined"
                     error={organizersErr}
@@ -70,7 +78,7 @@ function OrganizerSearch({
                                     : ''
                             }
                             style={{
-                                backgroundColor: generateRandomColor(),
+                                backgroundColor: '#fed132',
                                 marginRight: '5px',
                             }}
                         >

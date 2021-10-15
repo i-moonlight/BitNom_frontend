@@ -1,5 +1,5 @@
-import { Container, Grid, Hidden, useTheme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Container, Grid, useMediaQuery, useTheme } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import TextField from '../../../components/TextField';
 import Wrapper from '../Wrapper';
@@ -8,6 +8,10 @@ import RequestFormCard from './RequestFormCard';
 
 export default function FeatureRequest() {
     const theme = useTheme();
+    const mdUp = useMediaQuery('(min-width:960px)');
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+
     return (
         <Wrapper>
             <Grid>
@@ -26,7 +30,7 @@ export default function FeatureRequest() {
             <Grid
                 style={{
                     backgroundColor:
-                        theme.palette.type == 'light'
+                        theme.palette.mode == 'light'
                             ? '#F5F5F5'
                             : theme.palette.background.paper,
                     paddingBottom: 32,
@@ -34,11 +38,11 @@ export default function FeatureRequest() {
             >
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden smDown>
+                        {!smDown && (
                             <Grid item md={4} lg={3}>
                                 <RequestFormCard />
                             </Grid>
-                        </Hidden>
+                        )}
 
                         <Grid
                             item
@@ -50,14 +54,15 @@ export default function FeatureRequest() {
                                 paddingTop: 16,
                             }}
                         >
-                            <Hidden mdUp>
-                                <RequestFormCard />
-                            </Hidden>
+                            {!mdUp && <RequestFormCard />}
                             <div className="space-between center-horizontal">
                                 <Typography variant="h6" color="textSecondary">
                                     Showing Trending Feature requests
                                 </Typography>
-                                <TextField placeholder="Search" />
+                                <TextField
+                                    variant="outlined"
+                                    placeholder="Search"
+                                />
                             </div>
                             <RequestDisplayCard />
                             <RequestDisplayCard />
@@ -65,9 +70,7 @@ export default function FeatureRequest() {
                             <RequestDisplayCard />
                             <RequestDisplayCard />
                         </Grid>
-                        <Hidden mdDown>
-                            <Grid item lg={3}></Grid>
-                        </Hidden>
+                        {!mdDown && <Grid item lg={3}></Grid>}
                     </Grid>
                 </Container>
             </Grid>

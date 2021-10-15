@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import Alert from '@mui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -24,7 +24,7 @@ export default function ResetPassword() {
     });
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/dashboard');
+        JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [history, user]);
 
     return (
@@ -84,7 +84,7 @@ export default function ResetPassword() {
                                             error={emailErr && true}
                                             errorText={emailErr && emailErr[0]}
                                             name="email"
-                                            label="Email Adress"
+                                            label="Email Address"
                                             variant="outlined"
                                             size="small"
                                             fullWidth

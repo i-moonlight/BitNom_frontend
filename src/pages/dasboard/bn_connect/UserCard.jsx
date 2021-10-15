@@ -8,22 +8,20 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
-    //AddRounded,
     BookmarkRounded,
     CollectionsBookmarkRounded,
     EventRounded,
     Notifications,
     PersonRounded,
     Settings,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
 
 export default function UserCard({
     setOpen,
@@ -72,7 +70,7 @@ export default function UserCard({
                                 src={user?.profile_pic}
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 80,
                                     height: 80,
@@ -115,9 +113,7 @@ export default function UserCard({
                     <div className="center-horizontal space-between">
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/posts')
-                            }
+                            onClick={() => history.push('/profile/posts')}
                         >
                             <Typography variant="body2">Posts</Typography>
                             <div className="center-horizontal">
@@ -133,9 +129,7 @@ export default function UserCard({
                         </div>
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/connections')
-                            }
+                            onClick={() => history.push('/profile/connections')}
                         >
                             <Typography variant="body2">Followers</Typography>
                             <div className="center-horizontal">
@@ -154,7 +148,7 @@ export default function UserCard({
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
-                                history.push('/dashboard/profile/connections');
+                                history.push('/profile/connections');
                             }}
                         >
                             <Typography variant="body2">Following</Typography>
@@ -179,9 +173,7 @@ export default function UserCard({
                         startIcon={<BookmarkRounded />}
                         variant="text"
                         className="py-1 my-1"
-                        onClick={() =>
-                            history.push('/dashboard/profile/bookmarks')
-                        }
+                        onClick={() => history.push('/profile/bookmarks')}
                     >
                         Saved Items
                     </Button>
@@ -201,7 +193,7 @@ export default function UserCard({
                         }
                         variant="text"
                         className="py-1 my-1 me-3"
-                        onClick={() => history.push('/dashboard/events')}
+                        onClick={() => history.push('/events')}
                     >
                         Events
                     </Button>
@@ -210,7 +202,7 @@ export default function UserCard({
             className=' p-1'
             color='primary'
             style={{ marginLeft: 'auto' }}
-            onClick={() => history.push('/dashboard/events')}
+            onClick={() => history.push('/events')}
           >
             <AddRounded />
           </IconButton> */}
@@ -225,6 +217,7 @@ export default function UserCard({
                 onClick={setOpen}
                 color="primary"
                 fullWidth
+                textCase
             >
                 Create Post
             </Button>

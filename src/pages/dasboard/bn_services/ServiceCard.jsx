@@ -8,11 +8,11 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { ShareRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { ShareRounded } from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../components/Button';
-import { generateRandomColor } from '../utilities/functions';
+import {} from '../utilities/functions';
 
 export default function ServiceCard() {
     return (
@@ -36,7 +36,7 @@ export default function ServiceCard() {
                             <Avatar
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: generateRandomColor(),
+                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 80,
                                     height: 80,

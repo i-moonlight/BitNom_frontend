@@ -1,41 +1,39 @@
+import { useMutation, useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    CardHeader,
-    IconButton,
     CardContent,
+    CardHeader,
     Container,
     Divider,
     Grid,
-    Hidden,
+    IconButton,
+    List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
-    List,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import { getUserInitials } from '../../../utilities/Helpers';
+import UserCard from '../bn_connect/UserCard';
+import {} from '../utilities/functions';
 import {
-    QUERY_GET_USERS,
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
+    QUERY_GET_USERS,
     QUERY_LOAD_EVENTS,
-    //NOTIFICATIONS_SUBSCRIPTION,
+    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
-
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
-import { getUserInitials } from '../../../utilities/Helpers';
-import { generateRandomColor } from '../utilities/functions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
 export default function People() {
     const classes = useStyles();
     const state = useSelector((st) => st);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     const user = state.auth.user;
 
     const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -85,7 +85,7 @@ export default function People() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -100,7 +100,7 @@ export default function People() {
                                     events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <Card>
                                 <CardHeader
@@ -118,7 +118,7 @@ export default function People() {
                                     }
                                     title={
                                         <div className="center-horizontal">
-                                            <Typography variant="h6">
+                                            <Typography>
                                                 People you may know
                                             </Typography>
                                         </div>
@@ -140,9 +140,7 @@ export default function People() {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item md={4} lg={3}>
-                            {/* <Hidden smDown></Hidden> */}
-                        </Grid>
+                        <Grid item md={4} lg={3}></Grid>
                     </Grid>
                 </Container>
             </div>
@@ -165,14 +163,7 @@ function ListItemComponent({ item, getFollowStatus }) {
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
 
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -189,9 +180,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -210,8 +199,6 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
         setStatus();
         //setFollowing(following - 1);
     };
@@ -227,7 +214,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                             : ''
                     }
                     style={{
-                        backgroundColor: generateRandomColor(),
+                        backgroundColor: '#fed132',
                     }}
                 >
                     {getUserInitials(item?.displayName)}
@@ -248,9 +235,7 @@ function ListItemComponent({ item, getFollowStatus }) {
             />
             <ListItemIcon
                 aria-label="show more"
-                //   aria-controls={notificationOptionId}
                 aria-haspopup="true"
-                //   onClick={handleNotificationOptionOpen}
                 color="inherit"
                 style={{
                     marginRight: 0,
@@ -271,6 +256,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                     size="small"
                     variant="outlined"
                     color="primary"
+                    textCase
                 >
                     {status ? 'Unfollow' : 'Follow'}
                 </Button>

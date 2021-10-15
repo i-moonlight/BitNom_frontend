@@ -1,11 +1,6 @@
-import {
-    Breadcrumbs,
-    Container,
-    Grid,
-    Link,
-    makeStyles,
-} from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Breadcrumbs, Container, Grid, Link } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useState } from 'react';
 import { roadMap } from '../utilities/welcome.data';
@@ -72,7 +67,7 @@ export default function RoadMap() {
 const useStyles = makeStyles((theme) => ({
     body: {
         backgroundColor:
-            theme.palette.type == 'light'
+            theme.palette.mode == 'light'
                 ? '#F5F5F5'
                 : theme.palette.background.paper,
     },

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import Alert from '@mui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,6 @@ export default function Signup() {
     const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const justRegisteredState = state.auth.justRegistered;
 
     const [createUser] = useMutation(MUTATION_CREATE_USER, {
         context: { clientName: 'users' },
@@ -44,7 +43,7 @@ export default function Signup() {
     });
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/dashboard');
+        JSON.stringify(user) !== '{}' && history.push('/connect');
 
         if (justRegistered) {
             setTimeout(() => {
@@ -73,12 +72,14 @@ export default function Signup() {
             const userData = data?.Users?.googleSignup
                 ? data?.Users?.googleSignup
                 : {};
+
             const userErrors = err ? err : null;
             setGoogleErr(userErrors);
 
-            dispatch(register(userData, null));
+            data?.Users?.googleSignup && dispatch(register(userData, null));
 
             !userErrors &&
+                data?.Users?.googleSignup &&
                 googleLogin({
                     variables: {
                         token: response.tokenId,
@@ -90,7 +91,8 @@ export default function Signup() {
                         : {};
                     const googleUserErrors = errors ? errors : null;
                     setGoogleErr(googleUserErrors);
-                    dispatch(login(googleUserData, null));
+                    googleData?.Users?.googleLogin &&
+                        dispatch(login(googleUserData, null));
                 });
         });
     };
@@ -153,14 +155,17 @@ export default function Signup() {
                                             const userData = data?.Users?.create
                                                 ? data?.Users?.create
                                                 : {};
+
                                             const userErrors = err ? err : null;
                                             setErrors(userErrors);
 
-                                            dispatch(register(userData, null));
-                                            !userErrors?.state &&
-                                                setJustRegistered(
-                                                    justRegisteredState
+                                            data?.Users?.create &&
+                                                dispatch(
+                                                    register(userData, null)
                                                 );
+
+                                            data?.Users?.create &&
+                                                setJustRegistered(true);
                                         });
                                     }}
                                 >
@@ -179,7 +184,7 @@ export default function Signup() {
                                             error={emailErr && true}
                                             errorText={emailErr && emailErr[0]}
                                             name="email"
-                                            label="Email Adress"
+                                            label="Email Address"
                                             variant="outlined"
                                             fullWidth
                                         />

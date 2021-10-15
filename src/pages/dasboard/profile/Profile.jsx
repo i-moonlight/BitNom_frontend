@@ -1,17 +1,7 @@
 import { useQuery } from '@apollo/client';
-import {
-    Card,
-    CardHeader,
-    Container,
-    Grid,
-    Hidden,
-    IconButton,
-    makeStyles,
-    Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+import { Container, Grid, useMediaQuery } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -31,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile() {
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
 
@@ -43,44 +34,14 @@ export default function Profile() {
     });
 
     const profile = data?.Users?.profile;
-    console.log('profileAuth: ', profile);
 
     return (
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
-                            <Grid item lg={3}></Grid>
-                        </Hidden>
+                        {!mdDown && <Grid item lg={3}></Grid>}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
-                                    }
-                                    title={
-                                        <div className="center-horizontal">
-                                            <Typography variant="body1">
-                                                Your Profile
-                                            </Typography>
-                                        </div>
-                                    }
-                                />
-                            </Card>
-
                             <ProfileCard profile={profile} />
                             <InsightCard profile={profile} />
                             <AboutCard profile={profile} />

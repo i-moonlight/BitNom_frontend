@@ -5,7 +5,7 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import { toast } from 'react-toastify';
 //import { useMutation } from '@apollo/client';
@@ -19,7 +19,7 @@ import {
     FlagOutlined,
     CheckBox,
     FileCopyOutlined,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,
     eventOptionsId,

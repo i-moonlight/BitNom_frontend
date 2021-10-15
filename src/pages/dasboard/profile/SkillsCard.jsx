@@ -7,8 +7,8 @@ import {
     Paper,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+} from '@mui/material';
+import { Search } from '@mui/icons-material';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import {
@@ -57,7 +57,7 @@ export default function SkillsCard({ profile, profileView }) {
                     <>
                         <Paper
                             variant={
-                                theme.palette.type == 'light'
+                                theme.palette.mode == 'light'
                                     ? 'outlined'
                                     : 'elevation'
                             }
@@ -91,9 +91,11 @@ export default function SkillsCard({ profile, profileView }) {
                                                 setText('');
                                             });
                                         }}
-                                        disabled={addLoading}
+                                        color="primary"
                                         size="small"
                                         className="my-1"
+                                        textCase
+                                        disabled={addLoading}
                                     >
                                         Add
                                     </Button>
