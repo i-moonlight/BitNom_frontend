@@ -1,6 +1,5 @@
 import {
     Avatar,
-    Divider,
     ListItem,
     ListItemAvatar,
     ListItemText,
@@ -18,13 +17,12 @@ export default function ChatItem({ chat, onClick }) {
                 component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
+                divider
                 // to={`/dashboard/chat/{chat._id}`}
             >
                 <ListItemAvatar>
                     <Avatar
                         style={{
-                            width: '40px',
-                            height: '40px',
                             backgroundColor: '#1C0C5B',
                         }}
                         src={
@@ -51,25 +49,21 @@ export default function ChatItem({ chat, onClick }) {
                 )} */}
 
                 <ListItemText
+                    primary={
+                        <Typography color="textPrimary">
+                            {chat?.otherUser?.info?.displayName}
+                        </Typography>
+                    }
                     secondary={
-                        <React.Fragment>
-                            <Typography
-                                sx={{ display: 'inline' }}
-                                component="header"
-                                variant="h6"
-                                color="text.primary"
-                            >
-                                {chat.otherUser.info.displayName}
-                            </Typography>
-
-                            {chat.status === 'accepted' && (
-                                <Typography>this is a new message</Typography>
-                            )}
-                        </React.Fragment>
+                        <Typography color="textSecondary" variant="body2">
+                            {chat.status === 'accepted'
+                                ? 'This is a new message'
+                                : 'Awaiting response'}
+                        </Typography>
                     }
                 />
             </ListItem>
-            <Divider variant="inset" component="li" />
+            {/* <Divider variant="inset" className="me-3" /> */}
         </>
     );
 }

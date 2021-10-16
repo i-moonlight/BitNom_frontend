@@ -20,6 +20,32 @@ body {
     overflow-x: hidden;
 }
 
+
+/* Scrollbar Firefox */
+
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #aaa #171818;
+}
+
+
+/* Scrollbar Chrome, Edge, and Safari */
+
+*::-webkit-scrollbar {
+    width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #171818 !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 8px;
+    border: 4px solid #171818;
+}
+
+
 /* Links */
 
 a {
@@ -32,6 +58,7 @@ a.alt {
     color: #fff;
     font-weight: 500;
 }
+
 
 /* Text */
 
@@ -55,6 +82,7 @@ small {
     font-family: 'Nunito', sans-serif !important;
 }
 
+
 /* Backgrounds */
 
 .bg-theme {
@@ -69,22 +97,30 @@ small {
     background-color: #000 !important;
 }
 
+
 /* Cursor */
 
 .c-pointer {
     cursor: pointer;
 }
 
+
 /* Hide scrollbar for Chrome, Safari and Opera */
+
 .scroll-hidden::-webkit-scrollbar {
     display: none;
 }
 
+
 /* Hide scrollbar for IE, Edge and Firefox */
+
 .scroll-hidden {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
+
 
 /* Display Flex */
 
@@ -124,6 +160,7 @@ small {
     justify-content: space-around !important;
 }
 
+
 /* Border Radius */
 
 .br-1 {
@@ -146,6 +183,7 @@ small {
     border-radius: 1.25em !important;
 }
 
+
 /* Lists */
 
 ul {
@@ -153,13 +191,20 @@ ul {
 }
 
 ul li::before {
-    content: '\2022'; /* Add content: \2022 is the CSS Code/unicode for a bullet */
-    color: #006097; /* Change the color */
-    font-weight: bold; /* If you want it to be bold */
-    display: inline-block; /* Needed to add space between the bullet and the text */
-    width: 1em; /* Also needed for space (tweak if needed) */
-    margin-left: -1.5em; /* Also needed for space (tweak if needed) */
+    content: '\2022';
+    /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: #006097;
+    /* Change the color */
+    font-weight: bold;
+    /* If you want it to be bold */
+    display: inline-block;
+    /* Needed to add space between the bullet and the text */
+    width: 1em;
+    /* Also needed for space (tweak if needed) */
+    margin-left: -1.5em;
+    /* Also needed for space (tweak if needed) */
 }
+
 
 /*  Dropzones */
 
@@ -186,7 +231,9 @@ ul li::before {
     background-color: transparent !important;
 }
 
+
 /* Mentions */
+
 .mentions-textarea__input {
     background-color: #fff;
     border-radius: 3px;
@@ -195,13 +242,16 @@ ul li::before {
     font-size: 14px;
     line-height: 1.42857143;
     color: inherit;
-    border: 1px solid rgba(0, 96, 151, 0.5); /* rgba(0, 96, 151, 0.5) */
+    border: 1px solid rgba(0, 96, 151, 0.5);
+    /* rgba(0, 96, 151, 0.5) */
     font-size: 14px;
 }
+
 .mentions-textarea__input:focus:active {
     outline: none;
     border: 1px solid #3fb9de;
 }
+
 .mentions-textarea__input::placeholder {
     color: #a4b0be;
     font-size: 14px;
@@ -210,6 +260,7 @@ ul li::before {
 .mentions-textarea__highlighter {
     padding: 10px;
 }
+
 .mentions-textarea__suggestions__list {
     background-color: #3fb9de;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -217,10 +268,12 @@ ul li::before {
     max-height: 200px;
     overflow: auto;
 }
+
 .mentions-textarea__suggestions__item {
     padding: 5px 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
+
 .mentions-textarea__suggestions__item — focused {
     background-color: #daf4fa;
 }
@@ -233,7 +286,9 @@ ul li::before {
     margin-left: 200px;
 }
 
+
 /* Mui Overrides */
+
 .MuiSvgIcon-colorPrimary {
     color: #006097 !important;
 }

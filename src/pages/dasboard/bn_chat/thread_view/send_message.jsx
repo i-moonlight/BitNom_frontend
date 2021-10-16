@@ -14,9 +14,6 @@ import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
 export default function SendMessage({ chat }) {
-    const [values, setValue] = useState({
-        text: '',
-    });
     const [open, setOpen] = useState(false);
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
@@ -26,11 +23,14 @@ export default function SendMessage({ chat }) {
     const [openFile, setFileOpen] = useState(false);
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
+    const [values, setValue] = useState({
+        text: '',
+    });
 
     const theme = useTheme();
     const classes = useStyles();
 
-    const [sendMessage, { error }] = useMutation(CREATE_DIALOGUE_MESSAGE);
+    const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE);
 
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
@@ -59,7 +59,6 @@ export default function SendMessage({ chat }) {
 
     const handleSendMessage = (e) => {
         e.preventDefault();
-
         onSendMessage({
             chat: chat,
             text: values.text,
@@ -70,11 +69,9 @@ export default function SendMessage({ chat }) {
         });
     };
 
-    console.log('GQLERR', error?.message);
-
     return (
         <div className={classes.inputRoot}>
-            <Divider className="my-2" />
+            <Divider className="mb-2" />
             {open ? (
                 <DropzoneArea
                     clearOnUnmount

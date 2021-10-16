@@ -1,21 +1,24 @@
+import { Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
+    CardMedia,
+    Grid,
     IconButton,
     Paper,
-    Grid,
-    CardMedia,
     Typography,
 } from '@mui/material';
-import { Reply } from '@mui/icons-material';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
+
 export default function IncomingMessage({ message, chat, onReply }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
     const author = message.author || {};
+
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
@@ -30,7 +33,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                         }
                         style={{ backgroundColor: '#1C0C5B' }}
                     >
-                        {chat?.otherUser.info.profile_pic
+                        {chat?.otherUser?.info?.profile_pic
                             ? ''
                             : getUserInitials(
                                   chat?.otherUser?.info?.displayName
@@ -42,6 +45,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                 className={classes.incoming}
                 onMouseEnter={() => setShowReply(true)}
                 onMouseLeave={() => setShowReply(false)}
+                elevation={0}
             >
                 <Typography
                     variant="body1"
@@ -133,7 +137,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                 )}
             </Paper>
             <div className={classes.time}>
-                <small>17.25</small>
+                <small>{moment(message?.date).fromNow()}</small>
             </div>
         </div>
     );

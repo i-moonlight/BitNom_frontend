@@ -15,7 +15,7 @@ export default function Screen({ auth, children }) {
     return (
         <div style={{ minHeight: '100vh' }}>
             <NavBar />
-            <div style={{ height: 160 }}></div>
+            <div style={{ height: 144 }}></div>
             {children}
         </div>
     );
