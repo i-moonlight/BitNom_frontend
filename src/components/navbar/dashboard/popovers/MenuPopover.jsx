@@ -17,6 +17,7 @@ export default function MenuPopover({
             keepMounted
             open={isMenuOpen}
             onClose={handleMenuClose}
+            disableScrollLock
         >
             <MenuItems handleMenuClose={handleMenuClose} />
         </Popover>

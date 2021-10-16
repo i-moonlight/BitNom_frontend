@@ -43,7 +43,6 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        marginBottom: theme.spacing(2),
     },
     sendMessage: {
         display: 'flex',
@@ -65,21 +64,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     inviteBar: {
         backgroundColor: theme.palette.background.default,
-        height: '100px',
-    },
-    inviteBoard: {},
-    reject: {
-        marginTop: theme.spacing(2),
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-    },
-    accept: {
-        marginTop: theme.spacing(2),
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-    },
-    inviteIntro: {
-        marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -100,10 +84,6 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius: '50%',
         margin: '6px',
         marginLeft: '30px',
-    },
-    avatar: {
-        width: 56,
-        height: 56,
     },
     status: {
         display: 'flex',
@@ -150,6 +130,7 @@ export const useStyles = makeStyles((theme) => ({
     messageLeft: {
         display: 'flex',
         justifyContent: 'start',
+        alignItems: 'flex-end',
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(2),
         marginTop: theme.spacing(2),
@@ -157,6 +138,7 @@ export const useStyles = makeStyles((theme) => ({
     messageRight: {
         display: 'flex',
         justifyContent: 'end',
+        alignItems: 'flex-end',
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(2),
         marginTop: theme.spacing(2),

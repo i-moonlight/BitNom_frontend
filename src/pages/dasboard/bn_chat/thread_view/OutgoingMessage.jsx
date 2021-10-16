@@ -1,13 +1,14 @@
+import { Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
-    Paper,
-    Grid,
     CardMedia,
-    Typography,
+    Grid,
     IconButton,
+    Paper,
+    Typography,
 } from '@mui/material';
-import { Reply } from '@mui/icons-material';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -17,16 +18,18 @@ export default function OutgoingMessage({ chat, message, onReply }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
     const author = message.author || {};
+
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
-                <small>17.25</small>
+                <small>{moment(message?.date).fromNow()}</small>
             </div>
 
             <Paper
                 className={classes.outgoing}
                 onMouseEnter={() => setShowReply(true)}
                 onMouseLeave={() => setShowReply(false)}
+                elevation={0}
             >
                 <Typography
                     variant="body1"
@@ -120,19 +123,18 @@ export default function OutgoingMessage({ chat, message, onReply }) {
             </Paper>
             <ButtonBase>
                 <Avatar
-                    alt={chat.otherUser.info.displayName}
+                    alt={chat.currentUser.info.displayName}
                     src={
-                        chat?.otherUser?.info.profile_pic
+                        chat?.currentUser?.info.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
-                              chat?.otherUser?.info.profile_pic
+                              chat?.currentUser?.info.profile_pic
                             : ''
                     }
-                    className={classes.avatar}
                     style={{ backgroundColor: '#1C0C5B' }}
                 >
-                    {chat?.otherUser?.info.profile_pic
+                    {chat?.currentUser?.info.profile_pic
                         ? ''
-                        : getUserInitials(chat?.otherUser?.info.displayName)}
+                        : getUserInitials(chat?.currentUser?.info.displayName)}
                 </Avatar>
             </ButtonBase>
         </div>

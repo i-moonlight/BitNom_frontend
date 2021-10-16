@@ -1,25 +1,24 @@
 import { useQuery, useSubscription } from '@apollo/client';
 import { CircularProgress, Grid, List, ListSubheader } from '@mui/material';
 import React, { Fragment, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { GET_DIALOGUES, NEW_CHAT_ADDED } from '../graphql/queries';
-import ChatItem from './chat';
-import { useStyles } from '../utils/styles';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
-    setCurrentChat,
-    setChatInvites,
     addToInvites,
     setArchivedChats,
+    setChatInvites,
+    setCurrentChat,
 } from '../../../../store/actions/chatActions';
-import Invites from './invites';
+import { GET_DIALOGUES, NEW_CHAT_ADDED } from '../graphql/queries';
 import Archived from './archived';
+import ChatItem from './chat';
+import Invites from './invites';
 
 function Chats() {
     const state = useSelector((st) => st);
-    const classes = useStyles();
     const dispatch = useDispatch();
     const user = state.auth.user;
+
     const { data, loading } = useQuery(GET_DIALOGUES, {
         variables: {
             status: 'accepted',
@@ -47,6 +46,7 @@ function Chats() {
             context: { clientName: 'chat' },
         }
     );
+
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
             _id: user._id,
@@ -57,8 +57,7 @@ function Chats() {
         if (newChatData?.newChat) {
             dispatch(addToInvites(newChatData?.newChat));
         }
-        // eslint-disable-next-line
-    }, [newChatData?.newChat]);
+    }, [dispatch, newChatData?.newChat]);
 
     useEffect(() => {
         const chat_invites =
@@ -68,9 +67,7 @@ function Chats() {
         if (chat_invites) {
             dispatch(setChatInvites(chat_invites));
         }
-        return;
-        // eslint-disable-next-line
-    }, [chatInvites]);
+    }, [chatInvites, dispatch]);
 
     useEffect(() => {
         const AcceptedChats =
@@ -78,16 +75,13 @@ function Chats() {
         if (AcceptedChats) {
             dispatch(addChatDialogues(AcceptedChats));
         }
-        return;
-        // eslint-disable-next-line
-    }, [data]);
+    }, [data, dispatch]);
 
     useEffect(() => {
         if (archivedData?.Dialogue?.get) {
             dispatch(setArchivedChats(archivedData?.Dialogue?.get));
         }
-        // eslint-disable-next-line
-    }, [archivedData?.Dialogue?.get]);
+    }, [archivedData?.Dialogue?.get, dispatch]);
 
     const chats = state.chats.chats;
     const invites = state.chats.invites;
@@ -95,11 +89,10 @@ function Chats() {
 
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
+
         if (current_chat._id !== chat._id) {
             dispatch(setCurrentChat(chat));
-            //reset count later
         }
-        return;
     };
 
     return (
@@ -111,7 +104,6 @@ function Chats() {
                 {chats && chats.length > 0 && (
                     <List
                         component="nav"
-                        className={classes.chatList}
                         subheader={
                             <ListSubheader component="div">Chats</ListSubheader>
                         }

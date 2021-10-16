@@ -90,7 +90,13 @@ export default function Messages() {
                 !loading &&
                 !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
 
-            <div style={{ overflowY: 'auto' }}>
+            <div
+                style={{
+                    overflowY: 'auto',
+                    minHeight: '50vh',
+                    height: window.innerHeight - 348,
+                }}
+            >
                 {dialogue.status === 'accepted' &&
                     !messages.length > 0 &&
                     !loading && <EmptyMessages />}
@@ -112,7 +118,7 @@ export default function Messages() {
                     </div>
                 )}
 
-                <div ref={endRef} />
+                <div ref={endRef} className="mt-4" />
             </div>
             <div>
                 {(dialogue.status === 'accepted' &&

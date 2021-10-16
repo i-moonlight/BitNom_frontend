@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     CircularProgress,
     Grid,
@@ -7,9 +5,11 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-import Chat from './chat';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
+import ChatItem from './chat';
+
 export default function Invites({ invites, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
@@ -29,7 +29,7 @@ export default function Invites({ invites, loading }) {
                     }
                 >
                     {invites.map((chat) => (
-                        <Chat
+                        <ChatItem
                             key={chat._id}
                             chat={chat}
                             onClick={() => openChatInvite(chat)}
