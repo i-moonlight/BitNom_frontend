@@ -17,7 +17,6 @@ import { getFeed } from '../utilities/functions';
 import {
     QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
-    QUERY_LOAD_EVENTS,
     QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
@@ -76,15 +75,6 @@ export default function BnConnect() {
         },
     });
 
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 220 } },
-    });
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
-    });
-
     const { data: usersData } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
         context: { clientName: 'users' },
@@ -100,7 +90,7 @@ export default function BnConnect() {
             variables: {
                 data: {
                     ids: getFeed(profile),
-                    sortByField: 'comments',
+                    sortByField: 'trending',
                     limit: 5,
                 },
             },
@@ -177,7 +167,6 @@ export default function BnConnect() {
                         {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
-                                    scrolls={userScrolls?.Posts?.get?.length}
                                     following={
                                         profileData?.Users?.profile?.following
                                             ?.length
@@ -189,7 +178,6 @@ export default function BnConnect() {
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
                         )}

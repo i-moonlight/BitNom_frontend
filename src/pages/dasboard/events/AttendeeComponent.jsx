@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
     Avatar,
     ListItem,
@@ -6,18 +7,15 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-
+import React, { useEffect } from 'react';
+import Button from '../../../components/Button';
+import { getUserInitials } from '../../../utilities/Helpers';
+import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
-import React, { useEffect } from 'react';
-import { useMutation } from '@apollo/client';
-
-import Button from '../../../components/Button';
-import { getUserInitials } from '../../../utilities/Helpers';
-import {} from '../utilities/functions';
 
 function AttendeeComponent({ item, getFollowStatus, profile }) {
     const [status, setStatus] = React.useState();

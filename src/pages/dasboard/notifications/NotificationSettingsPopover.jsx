@@ -1,12 +1,12 @@
+import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React from 'react';
-import { useMutation } from '@apollo/client';
-
-import {
-    MARK_NOTIFICATION_AS_READ,
-    GET_USER_NOTIFICATIONS,
-} from '../utilities/queries';
 import { useSelector } from 'react-redux';
+import {
+    GET_USER_NOTIFICATIONS,
+    MARK_NOTIFICATION_AS_READ,
+} from '../utilities/queries';
+
 export default function NotificationSettingsPopover({
     notificationSettingsAnchorEl,
     notificationSettingsId,

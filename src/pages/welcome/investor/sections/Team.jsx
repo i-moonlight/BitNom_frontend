@@ -1,3 +1,4 @@
+import { LinkedIn, MailRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
@@ -6,10 +7,9 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { LinkedIn, MailRounded } from '@mui/icons-material';
 import React from 'react';
-import TeamCard from '../cards/TeamCard';
 import { team } from '../../utilities/welcome.data';
+import TeamCard from '../cards/TeamCard';
 
 export default function Team() {
     return (

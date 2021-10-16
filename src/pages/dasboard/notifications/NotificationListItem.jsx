@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import { FiberManualRecord, MoreVert } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    Grid,
     CardHeader,
-    IconButton,
     Divider,
+    Grid,
+    IconButton,
     Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { MoreVert, FiberManualRecord } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
 import moment from 'moment';
-import { notificationBodyFactory } from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
+import { getUserInitials } from '../../../utilities/Helpers';
+import { notificationBodyFactory } from '../utilities/functions';
 
 const notificationOptionId = 'menu-notification-option';
 
@@ -34,13 +34,13 @@ export default function NotificationListItem({ notification }) {
     };
     let link;
     if (notification?.link_to_resource?.type === 'post') {
-        link = `#`;
+        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'event') {
         link = `/dashboard/events/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'comment') {
-        link = `#`;
+        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'user') {
-        link = `#`;
+        link = `/users/${notification?.link_to_resource?._id}`;
     }
     const getReadStatus = (ntfn) => {
         let read;

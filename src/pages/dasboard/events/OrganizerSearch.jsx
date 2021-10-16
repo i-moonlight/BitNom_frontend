@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
 import {
-    TextField,
-    Grid,
-    Typography,
-    Avatar,
     Autocomplete,
+    Avatar,
+    Grid,
+    TextField,
+    Typography,
 } from '@mui/material';
-
+import React, { useState } from 'react';
+import { getUserInitials } from '../../../utilities/Helpers';
 //import parse from 'autosuggest-highlight/parse';
 import {} from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
 
 function OrganizerSearch({
     searchResults,

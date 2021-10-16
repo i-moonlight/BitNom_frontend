@@ -1,3 +1,5 @@
+import { StarBorderOutlined } from '@mui/icons-material';
+import { Rating } from '@mui/lab';
 import {
     Button,
     Card,
@@ -14,8 +16,6 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { StarBorderOutlined } from '@mui/icons-material';
-import { Rating } from '@mui/lab';
 import React from 'react';
 import Screen from '../../../components/Screen';
 

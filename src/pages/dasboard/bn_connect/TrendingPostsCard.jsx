@@ -1,16 +1,16 @@
+import { MessageOutlined } from '@mui/icons-material';
 import {
     Avatar,
     Card,
+    CircularProgress,
+    Grid,
     List,
     ListItem,
     ListItemAvatar,
-    CircularProgress,
-    Grid,
     ListItemText,
     Paper,
     Typography,
 } from '@mui/material';
-import { MessageOutlined } from '@mui/icons-material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { contentBodyFactory, truncateText } from '../utilities/functions';

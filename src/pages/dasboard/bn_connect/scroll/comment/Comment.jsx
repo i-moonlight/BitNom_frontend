@@ -1,17 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
-    Avatar,
-    Card,
-    CardContent,
-    Divider,
-    Grid,
-    IconButton,
-    Typography,
-    useTheme,
-} from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { green, red } from '@mui/material/colors';
-import {
     FavoriteRounded,
     ImageRounded,
     InsertEmoticon,
@@ -21,6 +9,18 @@ import {
     ThumbDownRounded,
     ThumbUpRounded,
 } from '@mui/icons-material';
+import {
+    Avatar,
+    Card,
+    CardContent,
+    Divider,
+    Grid,
+    IconButton,
+    Typography,
+    useTheme,
+} from '@mui/material';
+import { green, red } from '@mui/material/colors';
+import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -243,6 +243,7 @@ export default function Comment({
                 <Avatar
                     style={{
                         backgroundColor: '#fed132',
+                        zIndex: 0,
                     }}
                     src={comment?.author?.profile_pic}
                     className="mx-2"

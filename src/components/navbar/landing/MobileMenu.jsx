@@ -1,3 +1,4 @@
+import { ChevronRight, CloseRounded } from '@mui/icons-material';
 import {
     IconButton,
     List,
@@ -7,11 +8,10 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { ChevronRight, CloseRounded } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import MenuOptions from './MenuOptions';
-import { makeStyles } from '@mui/styles';
 
 export default function MobileMenu({ open, onClose }) {
     const useStyles = makeStyles(() => ({

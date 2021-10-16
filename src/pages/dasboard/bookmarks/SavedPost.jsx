@@ -1,3 +1,4 @@
+import { MoreVert } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -10,17 +11,14 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
-
 import moment from 'moment';
-import { useLocation, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
-import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
 import EventPreview from '../events/EventPreview';
+import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
+import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
 const savedItemOptionId = 'menu-savedItem-option';
 
@@ -53,11 +51,11 @@ export default function SavedPost({
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
-                <CardActionArea
-                    disableRipple
-                    //onClick={() => history.push('/connect')}
-                >
+            <Card
+                style={{ marginBottom: 16, zIndex: 1 }}
+                onClick={() => history.push(`/dashboard/posts/${scroll?._id}`)}
+            >
+                <CardActionArea disableRipple>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -77,9 +75,10 @@ export default function SavedPost({
                                     display:
                                         location.pathname.includes('posts') &&
                                         'none',
+                                    zIndex: 3,
                                 }}
                                 className="m-1 p-1"
-                                aria-label="show more"
+                                aria-label="post options"
                                 aria-controls={savedItemOptionId}
                                 aria-haspopup="true"
                                 onClick={(e) => {

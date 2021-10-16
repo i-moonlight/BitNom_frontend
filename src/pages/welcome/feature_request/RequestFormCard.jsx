@@ -1,5 +1,4 @@
-import { Typography, useTheme } from '@mui/material';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import Button from '../../../components/Button';
 import Form from '../../../components/Form';

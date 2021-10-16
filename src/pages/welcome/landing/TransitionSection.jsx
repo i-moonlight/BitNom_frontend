@@ -1,5 +1,11 @@
-import { useTheme } from '@mui/material';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import {
+    Card,
+    CardContent,
+    Container,
+    Grid,
+    Typography,
+    useTheme,
+} from '@mui/material';
 import React from 'react';
 import card4Img from '../../../assets/landing/card (4).svg';
 import card5Img from '../../../assets/landing/card (5).svg';

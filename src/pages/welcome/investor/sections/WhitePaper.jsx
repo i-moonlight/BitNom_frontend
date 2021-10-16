@@ -1,4 +1,9 @@
 import {
+    ChevronRightRounded,
+    CloudDownload,
+    ShareRounded,
+} from '@mui/icons-material';
+import {
     Card,
     CardContent,
     Container,
@@ -6,11 +11,6 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import {
-    ChevronRightRounded,
-    CloudDownload,
-    ShareRounded,
-} from '@mui/icons-material';
 import React from 'react';
 import learnImg from '../../../../assets/investor/learn.svg';
 import logoImg from '../../../../assets/logo_full.svg';

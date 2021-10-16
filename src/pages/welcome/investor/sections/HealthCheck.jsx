@@ -1,3 +1,4 @@
+import { ExpandMore, Help } from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
@@ -7,7 +8,6 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { ExpandMore, Help } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { healthCheck } from '../../utilities/welcome.data';
 

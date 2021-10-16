@@ -10,6 +10,7 @@ import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
+import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
 import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
 import BnServices from './pages/dasboard/bn_services/BnServices';
 import SavedItems from './pages/dasboard/bookmarks/SavedItems';
@@ -116,7 +117,22 @@ export default function Routes({ apolloClient }) {
                         <Route
                             exact
                             component={Connections}
-                            path="/profile/connections"
+                            path="/dashboard/profile/connections"
+                        />
+                        <Route
+                            exact
+                            component={Posts}
+                            path="/dashboard/profile/posts"
+                        />
+                        <Route
+                            exact
+                            component={PostView}
+                            path="/dashboard/posts/:id"
+                        />
+                        <Route
+                            exact
+                            component={Profile}
+                            path="/dashboard/profile"
                         />
                         <Route exact component={Posts} path="/profile/posts" />
                         <Route exact component={Profile} path="/profile" />

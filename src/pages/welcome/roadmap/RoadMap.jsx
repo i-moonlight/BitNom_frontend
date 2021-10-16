@@ -1,8 +1,7 @@
 import { Breadcrumbs, Container, Grid, Link } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
-import React from 'react';
-import { useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import React, { useState } from 'react';
 import { roadMap } from '../utilities/welcome.data';
 import Wrapper from '../Wrapper';
 import QuaterCard from './QuaterCard';

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ArrowBack, MoreVert } from '@mui/icons-material';
 import {
     Card,
-    Grid,
-    Divider,
-    Typography,
     CardHeader,
+    Divider,
+    Grid,
     IconButton,
+    Typography,
 } from '@mui/material';
-import { ArrowBack, MoreVert } from '@mui/icons-material';
-
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import NotificationListItem from './NotificationListItem';
 import NotificationSettingsPopover from './NotificationSettingsPopover';
 

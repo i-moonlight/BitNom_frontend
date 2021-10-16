@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
@@ -11,7 +12,6 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { CloseRounded } from '@mui/icons-material';
 import React from 'react';
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
