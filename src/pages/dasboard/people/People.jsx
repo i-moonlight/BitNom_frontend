@@ -31,8 +31,6 @@ import {
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
-    QUERY_LOAD_EVENTS,
-    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,15 +51,6 @@ export default function People() {
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
-    });
-
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 500 } },
-    });
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
     });
 
     const suggestedUsers = usersData?.Users?.get?.filter(
@@ -94,8 +83,6 @@ export default function People() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    scrolls={userScrolls?.Posts?.get?.length}
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
                         </Hidden>

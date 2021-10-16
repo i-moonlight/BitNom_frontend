@@ -53,11 +53,11 @@ export default function SavedPost({
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
-                <CardActionArea
-                    disableRipple
-                    //onClick={() => history.push('/dashboard')}
-                >
+            <Card
+                style={{ marginBottom: 16, zIndex: 1 }}
+                onClick={() => history.push(`/dashboard/posts/${scroll?._id}`)}
+            >
+                <CardActionArea disableRipple>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -77,9 +77,10 @@ export default function SavedPost({
                                     display:
                                         location.pathname.includes('posts') &&
                                         'none',
+                                    zIndex: 3,
                                 }}
                                 className="m-1 p-1"
-                                aria-label="show more"
+                                aria-label="post options"
                                 aria-controls={savedItemOptionId}
                                 aria-haspopup="true"
                                 onClick={(e) => {

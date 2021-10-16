@@ -36,7 +36,7 @@ import ReactionButton from '../../../../components/ReactionButton';
 //import TextField from '../../../../components/TextField';
 import { MentionsInput, Mention } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -306,48 +306,68 @@ export default function Scroll({
     return (
         <>
             <Card style={{ marginBottom: 16 }}>
-                <CardHeader
-                    avatar={
-                        <Avatar
-                            style={{
-                                backgroundColor: '#fed132',
-                            }}
-                            src={
-                                process.env.REACT_APP_BACKEND_URL +
-                                scroll?.author?.profile_pic
-                            }
-                        >
-                            {authorInitials}
-                        </Avatar>
+                <CardContent
+                    style={{ zIndex: 1 }}
+                    onClick={() =>
+                        history.push(`/dashboard/posts/${scroll?._id}`)
                     }
-                    action={
-                        <IconButton
-                            size="small"
-                            className="m-1 p-1"
-                            aria-label="show more"
-                            aria-controls={scrollOptionId}
-                            aria-haspopup="true"
-                            onClick={handleScrollOptionOpen}
-                            color="inherit"
-                        >
-                            <MoreVert />
-                        </IconButton>
-                    }
-                    title={
-                        <div className=" d-flex align-items-center">
-                            <Typography style={{ marginRight: 8 }}>
-                                <Link to={`/users/${scroll?.author?._id}`}>
+                >
+                    <CardHeader
+                        avatar={
+                            <Avatar
+                                style={{
+                                    backgroundColor: '#fed132',
+                                }}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    scroll?.author?.profile_pic
+                                }
+                            >
+                                {authorInitials}
+                            </Avatar>
+                        }
+                        action={
+                            <IconButton
+                                size="small"
+                                className="m-1 p-1"
+                                aria-label="post options"
+                                aria-controls={scrollOptionId}
+                                style={{ zIndex: 2 }}
+                                aria-haspopup="true"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleScrollOptionOpen(e);
+                                }}
+                                color="inherit"
+                            >
+                                <MoreVert />
+                            </IconButton>
+                        }
+                        title={
+                            <div className=" d-flex align-items-center">
+                                <Typography
+                                    component="a"
+                                    style={{ marginRight: 8, zIndex: 2 }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        history.push(
+                                            `/users/${scroll?.author?._id}`
+                                        );
+                                    }}
+                                >
                                     {scroll?.author?.displayName}
-                                </Link>
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {`@${scroll?.author?._id}`}
-                            </Typography>
-                        </div>
-                    }
-                    subheader={moment(scroll?.createdAt).fromNow()}
-                />
-                <CardContent>
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                >
+                                    {`@${scroll?.author?._id}`}
+                                </Typography>
+                            </div>
+                        }
+                        subheader={moment(scroll?.createdAt).fromNow()}
+                    />
+
                     <Typography
                         variant="body2"
                         color="textSecondary"
@@ -363,7 +383,14 @@ export default function Scroll({
                     </Typography>
                     <Grid container spacing={2} className="mb-2">
                         {scroll?.video && (
-                            <Grid item xs={12}>
+                            <Grid
+                                item
+                                xs={12}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}
+                                style={{ zIndex: 2 }}
+                            >
                                 <CardMedia
                                     className="br-2"
                                     component="video"
@@ -378,8 +405,10 @@ export default function Scroll({
                                     className="mt-3"
                                     key={imageURL}
                                     item
+                                    style={{ zIndex: 2 }}
                                     xs={scroll?.images.length > 1 ? 6 : 12}
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.stopPropagation();
                                         setImagePreviewURL(
                                             process.env.REACT_APP_BACKEND_URL +
                                                 imageURL
@@ -421,9 +450,10 @@ export default function Scroll({
                         )}
                     <br />
 
-                    <Typography display="inline">
+                    <Typography display="inline" style={{ zIndex: 2 }}>
                         <Typography
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 setOpenReactions(true);
                                 setResourceReactions(scroll);
                             }}
@@ -438,7 +468,10 @@ export default function Scroll({
                         </Typography>
                         {' . '}
                         <Typography
-                            onClick={() => setOpenComments(true)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenComments(true);
+                            }}
                             className={classes.replies}
                             display="inline"
                         >
@@ -457,6 +490,10 @@ export default function Scroll({
                         backgroundColor: theme.palette.background.default,
                         display: likeHovered ? 'block' : 'none',
                         transform: 'translateY(-28px)',
+                        zIndex: 2,
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
                     }}
                     onMouseEnter={() => setLikeHovered(true)}
                     onMouseLeave={() => setLikeHovered(false)}
@@ -514,7 +551,15 @@ export default function Scroll({
                         Celebrate
                     </Button>
                 </Card>
-                <CardActions className="space-around">
+                <CardActions
+                    className="space-around"
+                    style={{
+                        zIndex: 2,
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                >
                     <ReactionButton
                         handleRemoveReaction={handleRemoveReaction}
                         reaction={userReaction}

@@ -244,6 +244,7 @@ export default function Comment({
                 <Avatar
                     style={{
                         backgroundColor: '#fed132',
+                        zIndex: 0,
                     }}
                     src={comment?.author?.profile_pic}
                     className="mx-2"

@@ -89,14 +89,21 @@ export default function SavedItemsOptionPopover({
             keepMounted
             open={isSavedItemOptionOpen}
             onClose={handleSavedItemOptionClose}
-            style={{ marginLeft: 16, width: '100%' }}
+            style={{ marginLeft: 16, width: '100%', zIndex: 3 }}
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}
                 component={Card}
                 variant="outlined"
             >
-                <ListItem button divider onClick={handleRemoveBookmark}>
+                <ListItem
+                    button
+                    divider
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveBookmark();
+                    }}
+                >
                     <ListItemIcon>
                         <BookmarkBorderRounded />
                     </ListItemIcon>
