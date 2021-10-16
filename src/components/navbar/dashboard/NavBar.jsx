@@ -224,6 +224,7 @@ export default function NavBar() {
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
+                profile={profileData?.Users?.profile}
             />
             <TabsBar
                 value={tabValue}
