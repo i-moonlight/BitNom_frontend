@@ -1,5 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import colors from './colors';
+
 export const useStyles = makeStyles((theme) => ({
     limit_text: {
         overflow: 'hidden',
@@ -31,6 +32,10 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         flex: 1,
     },
+    inputRoot: {
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+    },
     chatContent: {
         height: '69vh',
     },
@@ -38,12 +43,9 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-    },
-    inputTab: {
-        display: 'flex',
+        marginBottom: theme.spacing(2),
     },
     sendMessage: {
-        height: '30px',
         display: 'flex',
         padding: '0px 4px',
         flexGrow: '1',
@@ -60,9 +62,6 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius: '5px',
         marginLeft: theme.spacing(1),
         flex: 1,
-    },
-    divider: {
-        margin: 4,
     },
     inviteBar: {
         backgroundColor: theme.palette.background.default,
@@ -102,7 +101,6 @@ export const useStyles = makeStyles((theme) => ({
         margin: '6px',
         marginLeft: '30px',
     },
-
     avatar: {
         width: 56,
         height: 56,

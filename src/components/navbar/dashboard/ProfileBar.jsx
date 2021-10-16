@@ -29,19 +29,23 @@ import logo_light_full from '../../../assets/logo_light_full.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import Button from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
+
 export default function ProfileBar({
     notifications,
     menuId,
     handleMenuOpen,
     notificationId,
     handleNotificationsOpen,
+    profile,
 }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
-    const userInitials = getUserInitials(user?.displayName);
+    const userInitials = getUserInitials(
+        profile?.displayName || user?.displayName
+    );
     const smDown = useMediaQuery('(max-width:959px)');
     const mdUp = useMediaQuery('(min-width:960px)');
     const xsDown = useMediaQuery('(max-width:599px)');
@@ -178,6 +182,7 @@ export default function ProfileBar({
                                     height: 30,
                                 }}
                                 src={
+                                    profile?.profile_pic ||
                                     user?.profile_pic ||
                                     `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
@@ -188,7 +193,7 @@ export default function ProfileBar({
                                 variant="body2"
                                 style={{ marginRight: 4 }}
                             >
-                                {user?.displayName}
+                                {profile?.displayName || user?.displayName}
                             </Typography>
                             <ChevronRight
                                 style={{

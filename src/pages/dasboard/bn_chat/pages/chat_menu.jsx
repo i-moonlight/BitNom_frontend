@@ -6,7 +6,6 @@ import { Grid } from '@mui/material';
 export default function ChatMenu() {
     return (
         <Grid container direction="column" style={{ height: '100%' }}>
-            {' '}
             <SideBarHeader />
             <Chats />
         </Grid>

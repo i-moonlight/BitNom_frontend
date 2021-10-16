@@ -265,7 +265,7 @@ export default function Comment({
                                         variant="body2"
                                     >
                                         . @{comment?.author?._id}
-                                    </Typography>{' '}
+                                    </Typography>
                                     <Typography
                                         display="inline"
                                         variant="body2"
@@ -452,7 +452,6 @@ export default function Comment({
                         )}
                         {!comment?.response_to && (
                             <>
-                                {' '}
                                 <Typography
                                     className="mx-2 my-2"
                                     variant="body2"

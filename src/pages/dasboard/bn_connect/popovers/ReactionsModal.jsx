@@ -128,7 +128,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <ThumbUpRounded
                                             className={classes.primary}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.likes}
                                     </Typography>
                                 }
@@ -139,7 +139,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <FavoriteRounded
                                             className={classes.red}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.loves}
                                     </Typography>
                                 }
@@ -150,7 +150,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <ThumbDownRounded
                                             className={classes.primary}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.dislikes}
                                     </Typography>
                                 }
@@ -161,7 +161,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <PanToolRounded
                                             className={classes.green}
-                                        />{' '}
+                                        />
                                         {
                                             resourceReactions?.reactions
                                                 ?.celebrations

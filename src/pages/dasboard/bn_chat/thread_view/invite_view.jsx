@@ -20,21 +20,21 @@ export default function InviteView({ dialogue }) {
     const classes = useStyles();
     const [RejectChat] = useMutation(REJECT_DIALOGUE_INVITE, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
         context: { clientName: 'chat' },
     });
 
     const [AcceptChat] = useMutation(ACCEPT_DIALOGUE_INVITE, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
         context: { clientName: 'chat' },
     });
 
     const { data: chatAccepted } = useSubscription(CHAT_ACCEPTED, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
     });
 
@@ -62,8 +62,10 @@ export default function InviteView({ dialogue }) {
                     <Grid xs={8}>
                         <Typography className={classes.inviteIntro}>
                             Accept to chat with{' '}
-                            <Link>{dialogue.otherUser.info.displayName}</Link> .
-                            if you ignore the chat wil be removed,and we wont
+                            <Link>
+                                {dialogue?.otherUser?.info?.displayName}
+                            </Link>{' '}
+                            . if you ignore the chat wil be removed,and we wont
                             let the sender know
                         </Typography>
                     </Grid>

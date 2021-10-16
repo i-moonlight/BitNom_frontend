@@ -28,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
 export default function BnChat() {
     const classes = useStyles();
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
-    const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     return (
         <Screen>
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={3} className="mb-5">
-                        <Card style={{ minHeight: '75vh' }}>
+                        <Card style={{ minHeight: window.innerHeight - 176 }}>
                             <SideBarHeader
                                 className={classes.root}
                                 setChatInviteOpen={(open) =>
@@ -43,7 +43,10 @@ export default function BnChat() {
                                 }
                             />
                             <div
-                                style={{ maxHeight: '65vh', overflow: 'auto' }}
+                                style={{
+                                    maxHeight: '65vh',
+                                    overflow: 'auto',
+                                }}
                             >
                                 <Chats />
                             </div>
@@ -51,7 +54,7 @@ export default function BnChat() {
                                 style={{
                                     margin: '20px',
                                     position: 'absolute',
-                                    bottom: '0px',
+                                    bottom: '20px',
                                 }}
                             >
                                 <Fab
@@ -65,9 +68,13 @@ export default function BnChat() {
                             </div>
                         </Card>
                     </Grid>
-                    {!mdDown && (
+                    {!smDown && (
                         <Grid item xs={12} sm={9}>
-                            <Card style={{ minHeight: '75vh' }}>
+                            <Card
+                                style={{
+                                    minHeight: window.innerHeight - 176,
+                                }}
+                            >
                                 <Messages />
                             </Card>
                         </Grid>
