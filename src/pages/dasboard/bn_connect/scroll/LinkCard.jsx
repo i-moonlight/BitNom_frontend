@@ -6,8 +6,8 @@ import {
     CardMedia,
     Divider,
     Typography,
-} from '@material-ui/core';
-import { LinkOutlined } from '@material-ui/icons';
+} from '@mui/material';
+import { LinkOutlined } from '@mui/icons-material';
 import React from 'react';
 
 export default function LinkCard({ link }) {

@@ -7,8 +7,8 @@ import {
     Typography,
     CardHeader,
     IconButton,
-} from '@material-ui/core';
-import { ArrowBack, MoreVert } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowBack, MoreVert } from '@mui/icons-material';
 
 import NotificationListItem from './NotificationListItem';
 import NotificationSettingsPopover from './NotificationSettingsPopover';

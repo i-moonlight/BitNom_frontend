@@ -5,8 +5,8 @@ import {
     Grid,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { ThumbDownRounded, ThumbUpRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { ThumbDownRounded, ThumbUpRounded } from '@mui/icons-material';
 import React from 'react';
 
 export default function RequestDisplayCard() {

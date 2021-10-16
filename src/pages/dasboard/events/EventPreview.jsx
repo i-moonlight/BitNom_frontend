@@ -1,12 +1,13 @@
-import { Card, Hidden, Typography } from '@material-ui/core';
-
-import { useHistory } from 'react-router-dom';
-import { RoomRounded, VideocamRounded } from '@material-ui/icons';
-import React from 'react';
+import { RoomRounded, VideocamRounded } from '@mui/icons-material';
+import { Card, Typography, useMediaQuery } from '@mui/material';
 import moment from 'moment';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 function EventPreview({ event }) {
     const history = useHistory();
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const truncateText = (str, n, b) => {
         if (str.length <= n) {
             return str;
@@ -17,6 +18,7 @@ function EventPreview({ event }) {
             ? subString.substr(0, subString.lastIndexOf(' '))
             : subString;
     };
+
     return (
         <Card
             elevation={0}
@@ -61,13 +63,13 @@ function EventPreview({ event }) {
                     height: 110,
                 }}
             >
-                <Hidden smDown>
+                {!smDown && (
                     <Typography color="textSecondary" variant="body2">
                         {moment(event?.startDate).format(
                             'ddd, MMMM Do YYYY, h:mm a'
                         )}
                     </Typography>
-                </Hidden>
+                )}
                 <Typography
                     style={{ textTransform: 'uppercase' }}
                     variant="body2"

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import colors from './colors';
 export const useStyles = makeStyles((theme) => ({
     limit_text: {
@@ -12,7 +12,6 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     menuHeader: {
-        marginTop: theme.spacing(2),
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -22,10 +21,10 @@ export const useStyles = makeStyles((theme) => ({
         height: '35px',
         flexGrow: 1,
         alignItems: 'center',
-        marginLeft: theme.spacing(3),
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(2),
         marginBottom: theme.spacing(1),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
         backgroundColor: theme.palette.background.landing,
     },
     input: {
@@ -135,5 +134,53 @@ export const useStyles = makeStyles((theme) => ({
         height: '12px',
         borderRadius: '50%',
         margin: '6px',
+    },
+    incoming: {
+        maxWidth: '480px',
+        minWidth: '120px',
+        borderRadius: '20px 20px 20px 0px',
+        backgroundColor: '#bde0ff',
+        marginLeft: theme.spacing(1),
+    },
+    outgoing: {
+        maxWidth: '480px',
+        minWidth: '120px',
+        borderRadius: '20px 20px 0px 20px',
+        backgroundColor: '#f0f8ff',
+        marginRight: theme.spacing(1),
+    },
+    messageLeft: {
+        display: 'flex',
+        justifyContent: 'start',
+        marginLeft: theme.spacing(3),
+        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(2),
+    },
+    messageRight: {
+        display: 'flex',
+        justifyContent: 'end',
+        marginLeft: theme.spacing(3),
+        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(2),
+    },
+    message: {
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        fontSize: '13px',
+    },
+    time: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'end',
+        margin: theme.spacing(2),
+    },
+    reply: {
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'end',
+        marginTop: '-20px',
+    },
+    author: {
+        fontSize: '12px',
     },
 }));

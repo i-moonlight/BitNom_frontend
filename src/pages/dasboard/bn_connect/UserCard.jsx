@@ -8,7 +8,7 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
     BookmarkRounded,
     CollectionsBookmarkRounded,
@@ -16,7 +16,7 @@ import {
     Notifications,
     PersonRounded,
     Settings,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -107,9 +107,7 @@ export default function UserCard({ setOpen, followers, following }) {
                     <div className="center-horizontal space-between">
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/posts')
-                            }
+                            onClick={() => history.push('/profile/posts')}
                         >
                             <Typography variant="body2">Posts</Typography>
                             <div className="center-horizontal">
@@ -125,9 +123,7 @@ export default function UserCard({ setOpen, followers, following }) {
                         </div>
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/connections')
-                            }
+                            onClick={() => history.push('/profile/connections')}
                         >
                             <Typography variant="body2">Followers</Typography>
                             <div className="center-horizontal">
@@ -146,7 +142,7 @@ export default function UserCard({ setOpen, followers, following }) {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
-                                history.push('/dashboard/profile/connections');
+                                history.push('/profile/connections');
                             }}
                         >
                             <Typography variant="body2">Following</Typography>
@@ -171,9 +167,7 @@ export default function UserCard({ setOpen, followers, following }) {
                         startIcon={<BookmarkRounded />}
                         variant="text"
                         className="py-1 my-1"
-                        onClick={() =>
-                            history.push('/dashboard/profile/bookmarks')
-                        }
+                        onClick={() => history.push('/profile/bookmarks')}
                     >
                         Saved Items
                     </Button>
@@ -193,7 +187,7 @@ export default function UserCard({ setOpen, followers, following }) {
                         }
                         variant="text"
                         className="py-1 my-1 me-3"
-                        onClick={() => history.push('/dashboard/events')}
+                        onClick={() => history.push('/events')}
                     >
                         Events
                     </Button>
@@ -202,7 +196,7 @@ export default function UserCard({ setOpen, followers, following }) {
             className=' p-1'
             color='primary'
             style={{ marginLeft: 'auto' }}
-            onClick={() => history.push('/dashboard/events')}
+            onClick={() => history.push('/events')}
           >
             <AddRounded />
           </IconButton> */}

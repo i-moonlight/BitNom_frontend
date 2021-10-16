@@ -13,16 +13,16 @@ import {
     Typography,
     Tabs,
     Tab,
-    makeStyles,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import {
     CloseRounded,
     ThumbDownRounded,
     ThumbUpRounded,
     FavoriteRounded,
     PanToolRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';

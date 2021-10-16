@@ -5,8 +5,8 @@ import {
     IconButton,
     Modal,
     Typography,
-} from '@material-ui/core';
-import { CloseRounded, LinkedIn, MailRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { CloseRounded, LinkedIn, MailRounded } from '@mui/icons-material';
 import React, { useState } from 'react';
 
 export default function TeamCard({ member, desc }) {

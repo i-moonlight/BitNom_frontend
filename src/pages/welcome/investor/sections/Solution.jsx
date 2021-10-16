@@ -1,10 +1,4 @@
-import {
-    Card,
-    CardContent,
-    Container,
-    Grid,
-    Typography,
-} from '@material-ui/core';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 
 export default function Solution() {

@@ -1,4 +1,5 @@
-import { Button, Grid, Typography, makeStyles } from '@material-ui/core';
+import { Button, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +22,6 @@ export default function EmptyMessages() {
                 <Grid
                     alignContent="center"
                     alignItems="center"
-                    container
                     item
                     direction="column"
                     className={classes.root}

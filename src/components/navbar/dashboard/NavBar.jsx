@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import { AppBar, Divider, useTheme } from '@material-ui/core';
+import { AppBar, Divider, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -9,7 +9,10 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_LOAD_EVENTS,
 } from '../../../pages/dasboard/utilities/queries';
-import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import {
+    checkSessionTimeOut,
+    signout,
+} from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setPostCount } from '../../../store/actions/postCountActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
@@ -19,6 +22,7 @@ import {
 } from '../../utilities/queries.components';
 import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
+import MobileMenuModal from './popovers/MobileMenuModal';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
 import TabOptionsPopover from './popovers/TabOptionsPopover';
@@ -27,13 +31,13 @@ import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
-
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
     const [tabValue, setTabValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(false);
     const [tabOptions, setTabOptions] = useState(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
@@ -46,23 +50,22 @@ export default function NavBar() {
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
+    const smUp = useMediaQuery('(min-width:600px)');
+
     const isMenuOpen = Boolean(menuAnchorEl);
     const isTabOptionOpen = Boolean(tabOptionAnchorEl);
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
-    const {
-        profileError,
-        profileLoading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
+    const { loading: profileLoading, data: profileData } = useQuery(
+        QUERY_FETCH_PROFILE,
+        {
+            context: { clientName: 'users' },
+        }
+    );
 
-    const isAuth = !profileLoading && profileData?.Users?.profile !== null;
-
-    console.log('prf: ', profileData?.Users?.profile);
-    console.log('prfe: ', profileError);
+    const isAuth =
+        profileLoading || (!profileLoading && profileData?.Users?.profile);
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
@@ -92,15 +95,14 @@ export default function NavBar() {
     );
 
     const handleMenuOpen = (event) => {
-        setMenuAnchorEl(event.currentTarget);
+        smUp ? setMenuAnchorEl(event.currentTarget) : setMobileMenuOpen(true);
     };
 
     const handleMenuClose = () => {
-        setMenuAnchorEl(null);
+        smUp ? setMenuAnchorEl(null) : setMobileMenuOpen(false);
     };
 
     const handleTabOptionsOpen = (event) => {
-        console.log('crt: ', event.currentTarget);
         setTabOptionAnchorEl(event.currentTarget);
     };
 
@@ -151,12 +153,24 @@ export default function NavBar() {
     useEffect(() => {
         !user?.email?.verified && history.push('/auth/require_verify');
 
-        if (window.location.pathname == '/dasboard') {
+        if (window.location.pathname == '/connect') {
             setTabValue(0);
         }
 
-        if (window.location.pathname == '/dashboard/knowledge_center') {
+        if (window.location.pathname == '/cryptocurrency') {
             setTabValue(1);
+        }
+
+        if (window.location.pathname == '/events') {
+            setTabValue(2);
+        }
+
+        if (window.location.pathname == '/chat') {
+            setTabValue(3);
+        }
+
+        if (window.location.pathname == '/investors') {
+            setTabValue(3);
         }
 
         const count =
@@ -199,17 +213,19 @@ export default function NavBar() {
         }
 
         if (!isAuth) {
-            // dispatch(signout());
-            console.log('not isAuth', isAuth);
-            alert('not auth');
-        } else {
-            console.log('isAuth', isAuth);
+            dispatch(signout());
+            // console.log('not isAuth', isAuth);
+            // alert(
+            //     `not auth ${profileLoading} && ${profileData?.Users?.profile}`
+            // );
         }
     }, [
         _count,
         dispatch,
         history,
         isAuth,
+        profileData,
+        profileLoading,
         response,
         subscriptionData,
         userPosts,
@@ -258,6 +274,10 @@ export default function NavBar() {
                 menuId={menuId}
                 menuAnchorEl={menuAnchorEl}
                 isMenuOpen={isMenuOpen}
+                handleMenuClose={handleMenuClose}
+            />
+            <MobileMenuModal
+                isMenuOpen={mobileMenuOpen}
                 handleMenuClose={handleMenuClose}
             />
             <NotificationsPopover

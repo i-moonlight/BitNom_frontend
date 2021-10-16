@@ -6,7 +6,7 @@ import {
     List,
     ListSubheader,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import Chat from './chat';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
@@ -42,7 +42,6 @@ export default function Archived({ archived, loading }) {
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
-                    container
                     item
                     direction
                     column

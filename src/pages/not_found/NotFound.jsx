@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-// import { useStyles } from '../welcome/landing/Landing';
 import Wrapper from '../welcome/Wrapper';
 
 export default function NotFound() {

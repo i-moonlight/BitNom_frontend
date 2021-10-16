@@ -5,8 +5,8 @@ import {
     Grid,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { LinkedIn, MailRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { LinkedIn, MailRounded } from '@mui/icons-material';
 import React from 'react';
 import TeamCard from '../cards/TeamCard';
 import { team } from '../../utilities/welcome.data';

@@ -1,17 +1,17 @@
-import { Container, Divider, Grid, Typography } from '@material-ui/core';
+import { Container, Divider, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logo_light_full from '../../assets/logo_light_full.svg';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
-import DarkTheme from '../../utilities/DarkTheme';
+import DarkThemeOnly from '../../utilities/DarkThemeOnly';
 import { footerLinks } from './utilities/welcome.data';
 
 export default function Footer() {
     const history = useHistory();
 
     return (
-        <DarkTheme>
+        <DarkThemeOnly>
             <Grid style={{ backgroundColor: '#18191a', color: '#fff' }}>
                 <Container maxWidth="lg">
                     <Grid container>
@@ -98,7 +98,7 @@ export default function Footer() {
                         <Grid item xs={6} className="my-2">
                             <div
                                 className="center-horizontal c-pointer"
-                                onClick={() => history.push('/dashboard')}
+                                onClick={() => history.push('/connect')}
                             >
                                 <div>
                                     <img
@@ -145,6 +145,6 @@ export default function Footer() {
                     </Grid>
                 </Container>
             </Grid>
-        </DarkTheme>
+        </DarkThemeOnly>
     );
 }

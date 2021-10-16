@@ -1,11 +1,10 @@
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 
-export default function DarkTheme({ children }) {
-    //Create MUI Theme
+export default function DarkThemeOnly({ children }) {
     const providerTheme = createTheme({
         palette: {
-            type: 'dark',
+            mode: 'dark',
             primary: {
                 main: '#006097',
             },
@@ -18,9 +17,15 @@ export default function DarkTheme({ children }) {
                 default: '#171818',
                 landing: '#18191a',
                 investor: '#000000',
+                incomingMessage: '#bde0ff',
+                outgoingMessage: '#f0f8ff',
             },
         },
     });
 
-    return <ThemeProvider theme={providerTheme}>{children}</ThemeProvider>;
+    return (
+        <ThemeProvider theme={providerTheme}>
+            <div>{children}</div>
+        </ThemeProvider>
+    );
 }

@@ -8,8 +8,8 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { ShareRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { ShareRounded } from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../components/Button';
 import {} from '../utilities/functions';

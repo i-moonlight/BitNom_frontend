@@ -1,9 +1,17 @@
-import { Card, Container, Grid, Hidden, Typography } from '@material-ui/core';
+import {
+    Card,
+    Container,
+    Grid,
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
 import React from 'react';
 import token1Img from '../../../../assets/investor/token1.png';
 import token2Img from '../../../../assets/investor/token2.png';
 
 export default function Symbol() {
+    const smDown = useMediaQuery('(max-width:959px)');
+
     return (
         <section style={{ backgroundColor: '#000' }}>
             <Container>
@@ -40,7 +48,7 @@ export default function Symbol() {
                                     </Typography>
                                 </div>
                             </Grid>
-                            <Hidden smDown>
+                            {!smDown && (
                                 <Grid item xs={12} sm={3}>
                                     <div className="w-100 text-end">
                                         <img
@@ -50,7 +58,7 @@ export default function Symbol() {
                                         />
                                     </div>
                                 </Grid>
-                            </Hidden>
+                            )}
                         </Grid>
                     </Card>
                 </div>

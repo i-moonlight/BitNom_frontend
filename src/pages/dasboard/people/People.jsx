@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -7,17 +8,16 @@ import {
     Container,
     Divider,
     Grid,
-    Hidden,
     IconButton,
     List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -42,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 export default function People() {
     const classes = useStyles();
     const state = useSelector((st) => st);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
     const user = state.auth.user;
 
     const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -72,7 +74,7 @@ export default function People() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -85,7 +87,7 @@ export default function People() {
                                     }
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <Card>
                                 <CardHeader
@@ -148,14 +150,7 @@ function ListItemComponent({ item, getFollowStatus }) {
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
 
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -172,9 +167,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -193,8 +186,6 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
         setStatus();
         //setFollowing(following - 1);
     };

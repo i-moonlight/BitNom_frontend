@@ -222,10 +222,6 @@ const userSubFields = `
     }
     profile
   }
-  email {
-    address
-    verified
-  }
   work {
     _id
     company
@@ -244,15 +240,15 @@ const userSubFields = `
     current
     description
   }
-  #honors {
-  # _id
-  # organization
-  # name
-  # start_date
-  # end_date
-  # expires
-  #  url
-  #}
+  honors {
+   _id
+   organization
+   name
+   start_date
+   end_date
+   expires
+   url
+  }
   courses {
     _id
     name
@@ -273,11 +269,17 @@ const userSubFields = `
   }
 `;
 
+const emailField = `
+email {
+    address
+    verified
+}`;
+
 export const QUERY_FETCH_PROFILE = gql`
   query {
     Users {
       profile {
-        ${userSubFields}
+        ${userSubFields + emailField}
       }
     }
   }

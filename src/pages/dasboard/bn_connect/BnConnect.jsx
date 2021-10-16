@@ -3,33 +3,32 @@ import {
     CircularProgress,
     Container,
     Grid,
-    Hidden,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import { getFeed } from '../utilities/functions';
 import {
+    QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
-    QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
-import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
-import { useSelector } from 'react-redux';
+import UpdateComment from './scroll/comment/UpdateComment';
+import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
+import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
-import UpdateComment from './scroll/comment/UpdateComment';
-import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
-import { getFeed } from '../utilities/functions';
-import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,9 +53,13 @@ export default function BnConnect() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
+
     const state = useSelector((st) => st);
-    const user = state.auth.user;
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+
+    const user = state.auth.user;
 
     const {
         //  loading,
@@ -137,7 +140,7 @@ export default function BnConnect() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -153,7 +156,7 @@ export default function BnConnect() {
                                     }
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <CreateScrollCard
                                 setOpenImage={setOpenImage}
@@ -213,16 +216,20 @@ export default function BnConnect() {
                             )}
                         </Grid>
                         <Grid item md={4} lg={3}>
-                            <Hidden smDown>
-                                <TrendingPostsCard
-                                    trending={trendingData?.Posts?.get}
-                                    loading={trendingLoading}
-                                />
-                                <SuggestedPeopleCard
-                                    profileData={profileData?.Users?.profile}
-                                    suggestedUsers={suggestedUsers}
-                                />
-                            </Hidden>
+                            {!smDown && (
+                                <>
+                                    <TrendingPostsCard
+                                        trending={trendingData?.Posts?.get}
+                                        loading={trendingLoading}
+                                    />
+                                    <SuggestedPeopleCard
+                                        profileData={
+                                            profileData?.Users?.profile
+                                        }
+                                        suggestedUsers={suggestedUsers}
+                                    />
+                                </>
+                            )}
                         </Grid>
                     </Grid>
                 </Container>
