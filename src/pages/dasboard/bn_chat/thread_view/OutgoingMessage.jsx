@@ -6,8 +6,8 @@ import {
     CardMedia,
     Typography,
     IconButton,
-} from '@material-ui/core';
-import { Reply } from '@material-ui/icons';
+} from '@mui/material';
+import { Reply } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -35,7 +35,6 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 >
                     <Link style={{ textDecoration: 'none' }}>
                         <small className={classes.author}>
-                            {' '}
                             <strong>{author}</strong>
                         </small>
                     </Link>
@@ -62,7 +61,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             styles={{ borderRadius: 8 }}
                         />
                     </Grid>
-                )}{' '}
+                )}
                 {message?.images.length > 0 &&
                     message?.images?.map((imageURL) => (
                         <Grid
@@ -103,7 +102,6 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 <p className={classes.message}>{message.text}</p>
                 {show_reply && (
                     <div className={classes.reply}>
-                        {' '}
                         <IconButton
                             style={{
                                 fontSize: '1em',
@@ -121,7 +119,6 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 )}
             </Paper>
             <ButtonBase>
-                {' '}
                 <Avatar
                     alt={chat.otherUser.info.displayName}
                     src={

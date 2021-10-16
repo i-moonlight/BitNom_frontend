@@ -35,7 +35,7 @@ export default function BnChat() {
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={3} className="mb-5">
-                        <Card style={{ minHeight: '75vh' }}>
+                        <Card style={{ minHeight: '80vh' }}>
                             <SideBarHeader
                                 className={classes.root}
                                 setChatInviteOpen={(open) =>
@@ -43,7 +43,10 @@ export default function BnChat() {
                                 }
                             />
                             <div
-                                style={{ maxHeight: '65vh', overflow: 'auto' }}
+                                style={{
+                                    maxHeight: '65vh',
+                                    overflow: 'auto',
+                                }}
                             >
                                 <Chats />
                             </div>
@@ -51,7 +54,7 @@ export default function BnChat() {
                                 style={{
                                     margin: '20px',
                                     position: 'absolute',
-                                    bottom: '0px',
+                                    bottom: '20px',
                                 }}
                             >
                                 <Fab
@@ -67,7 +70,11 @@ export default function BnChat() {
                     </Grid>
                     {!mdDown && (
                         <Grid item xs={12} sm={9}>
-                            <Card style={{ minHeight: '75vh' }}>
+                            <Card
+                                style={{
+                                    minHeight: '80vh',
+                                }}
+                            >
                                 <Messages />
                             </Card>
                         </Grid>

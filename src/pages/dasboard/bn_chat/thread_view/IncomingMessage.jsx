@@ -6,8 +6,8 @@ import {
     Grid,
     CardMedia,
     Typography,
-} from '@material-ui/core';
-import { Reply } from '@material-ui/icons';
+} from '@mui/material';
+import { Reply } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -19,7 +19,6 @@ export default function IncomingMessage({ message, chat, onReply }) {
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
-                {' '}
                 <Link style={{ textDecoration: 'none' }}>
                     <Avatar
                         alt={chat.otherUser.info.displayName}
@@ -51,7 +50,6 @@ export default function IncomingMessage({ message, chat, onReply }) {
                 >
                     <Link style={{ textDecoration: 'none' }}>
                         <small className={classes.author}>
-                            {' '}
                             <strong>{author}</strong>
                         </small>
                     </Link>
@@ -116,10 +114,9 @@ export default function IncomingMessage({ message, chat, onReply }) {
                             />
                         </Grid>
                     ))}
-                <p className={classes.message}>{message.text}</p>{' '}
+                <p className={classes.message}>{message.text}</p>
                 {show_reply && (
                     <div className={classes.reply}>
-                        {' '}
                         <IconButton
                             style={{
                                 fontSize: '1em',
@@ -134,7 +131,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                         </IconButton>
                     </div>
                 )}
-            </Paper>{' '}
+            </Paper>
             <div className={classes.time}>
                 <small>17.25</small>
             </div>

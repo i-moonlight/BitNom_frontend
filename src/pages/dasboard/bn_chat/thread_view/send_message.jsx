@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { Divider, IconButton, useTheme, Paper, InputBase } from '@mui/material';
+import { useMutation } from '@apollo/client';
 import {
     AttachFile,
-    Image,
-    VideoLibrary,
-    Gif,
     EmojiEmotions,
+    Gif,
+    Image,
     SendOutlined,
+    VideoLibrary,
 } from '@mui/icons-material';
-import { useMutation } from '@apollo/client';
-import { useStyles } from '../utils/styles';
-import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
+import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
 import { DropzoneArea } from 'material-ui-dropzone';
+import React, { useState } from 'react';
+import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
+import { useStyles } from '../utils/styles';
+
 export default function SendMessage({ chat }) {
     const [values, setValue] = useState({
         text: '',
@@ -25,10 +26,12 @@ export default function SendMessage({ chat }) {
     const [openFile, setFileOpen] = useState(false);
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
+
     const theme = useTheme();
     const classes = useStyles();
 
     const [sendMessage, { error }] = useMutation(CREATE_DIALOGUE_MESSAGE);
+
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
             variables: {
@@ -53,6 +56,7 @@ export default function SendMessage({ chat }) {
             [event.target.name]: event.target.value,
         });
     };
+
     const handleSendMessage = (e) => {
         e.preventDefault();
 
@@ -65,11 +69,12 @@ export default function SendMessage({ chat }) {
             documents: message_docs,
         });
     };
+
     console.log('GQLERR', error?.message);
 
     return (
         <div className={classes.inputRoot}>
-            <Divider className={classes.divider} />{' '}
+            <Divider className="my-2" />
             {open ? (
                 <DropzoneArea
                     clearOnUnmount
@@ -145,8 +150,7 @@ export default function SendMessage({ chat }) {
                     }}
                 />
             ) : null}
-            <div className={classes.inputTab}>
-                {' '}
+            <div className="my-2 d-flex align-items-center">
                 <IconButton
                     size="small"
                     className={'m-1 p-1' + classes.iconButton}
@@ -211,7 +215,6 @@ export default function SendMessage({ chat }) {
                     component="form"
                     className={classes.sendMessage}
                 >
-                    {' '}
                     <IconButton
                         size="small"
                         className={'m-1 p-1' + classes.iconButton}
