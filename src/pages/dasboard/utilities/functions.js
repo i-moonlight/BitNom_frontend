@@ -150,6 +150,16 @@ export const getReactionsSum = (resource) => {
     );
 };
 
+export const getTopComments = (resource) => {
+    return (
+        resource?.reactions?.likes +
+        resource?.reactions?.dislikes +
+        resource?.reactions?.loves +
+        resource?.reactions?.celebrations +
+        resource?.replies
+    );
+};
+
 export const getFeed = (profileData) => {
     const ids = [];
     profileData?.following?.forEach((element) => {

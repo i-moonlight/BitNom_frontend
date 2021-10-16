@@ -16,12 +16,8 @@ import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
+import { QUERY_FETCH_PROFILE, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import SavedPost from '../bookmarks/SavedPost';
-import {
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
-    QUERY_LOAD_SCROLLS,
-} from '../utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,12 +46,6 @@ export default function UserPosts() {
         context: { clientName: 'users' },
     });
 
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
-    });
-
     return (
         <Screen>
             <div className={classes.root}>
@@ -64,7 +54,6 @@ export default function UserPosts() {
                         {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
-                                    scrolls={userPosts?.Posts?.get?.length}
                                     following={
                                         profileData?.Users?.profile?.following
                                             ?.length
@@ -73,7 +62,6 @@ export default function UserPosts() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
                         )}

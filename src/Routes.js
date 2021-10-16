@@ -15,6 +15,7 @@ import BnServices from './pages/dasboard/bn_services/BnServices';
 import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import Events from './pages/dasboard/events/Events';
 import EventView from './pages/dasboard/events/EventView';
+import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import Connections from './pages/dasboard/people/Connections';
 import People from './pages/dasboard/people/People';
@@ -116,7 +117,22 @@ export default function Routes({ apolloClient }) {
                         <Route
                             exact
                             component={Connections}
-                            path="/profile/connections"
+                            path="/dashboard/profile/connections"
+                        />
+                        <Route
+                            exact
+                            component={Posts}
+                            path="/dashboard/profile/posts"
+                        />
+                        <Route
+                            exact
+                            component={PostView}
+                            path="/dashboard/posts/:id"
+                        />
+                        <Route
+                            exact
+                            component={Profile}
+                            path="/dashboard/profile"
                         />
                         <Route exact component={Posts} path="/profile/posts" />
                         <Route exact component={Profile} path="/profile" />

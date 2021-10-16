@@ -34,13 +34,13 @@ export default function NotificationListItem({ notification }) {
     };
     let link;
     if (notification?.link_to_resource?.type === 'post') {
-        link = `#`;
+        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'event') {
         link = `/dashboard/events/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'comment') {
-        link = `#`;
+        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'user') {
-        link = `#`;
+        link = `/users/${notification?.link_to_resource?._id}`;
     }
     const getReadStatus = (ntfn) => {
         let read;

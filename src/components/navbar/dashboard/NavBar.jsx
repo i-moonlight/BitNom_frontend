@@ -6,12 +6,16 @@ import { useHistory } from 'react-router';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
+    QUERY_LOAD_SCROLLS,
+    QUERY_LOAD_EVENTS,
 } from '../../../pages/dasboard/utilities/queries';
 import {
     checkSessionTimeOut,
     signout,
 } from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
+import { setPostCount } from '../../../store/actions/postCountActions';
+import { setEventCount } from '../../../store/actions/eventCountActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
     QUERY_GET_USER_NOTIFICATIONS,
@@ -65,6 +69,16 @@ export default function NavBar() {
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
+    });
+
+    const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
+        variables: { data: { author: user?._id, limit: 220 } },
+    });
+
+    const { data: eventsData } = useQuery(QUERY_LOAD_EVENTS, {
+        variables: {
+            data: { host: user?._id, limit: 20 },
+        },
     });
 
     const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
@@ -168,6 +182,16 @@ export default function NavBar() {
             dispatch(setCount(count));
         }
 
+        const postCount =
+            userPosts && userPosts.Posts.get ? userPosts.Posts.get.length : 0;
+        dispatch(setPostCount(postCount));
+
+        const userEvents = eventsData?.Events?.get?.filter(
+            (event) => new Date(event?.endDate).getTime() > new Date().getTime()
+        );
+        const upcomingEvents = userEvents?.length > 0 ? userEvents?.length : 0;
+        dispatch(setEventCount(upcomingEvents));
+
         dispatch(checkSessionTimeOut());
         const notSeenArray = [];
         response?.forEach((notification) => {
@@ -204,7 +228,9 @@ export default function NavBar() {
         profileLoading,
         response,
         subscriptionData,
+        userPosts,
         user._id,
+        eventsData,
         user?.email?.verified,
     ]);
 

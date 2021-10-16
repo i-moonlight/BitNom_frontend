@@ -23,13 +23,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function UserCard({
-    setOpen,
-    followers,
-    following,
-    scrolls,
-    events,
-}) {
+export default function UserCard({ setOpen, followers, following }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const card = useRef();
@@ -123,7 +117,7 @@ export default function UserCard({
                                     fontSize="small"
                                 />
                                 <Typography variant="body2">
-                                    {scrolls}
+                                    {state?.postCount?.postCount}
                                 </Typography>
                             </div>
                         </div>
@@ -187,7 +181,7 @@ export default function UserCard({
                         endIcon={
                             <Badge
                                 className="ms-2 me-3"
-                                badgeContent={events}
+                                badgeContent={state?.eventCount?.eventCount}
                                 color="primary"
                             ></Badge>
                         }

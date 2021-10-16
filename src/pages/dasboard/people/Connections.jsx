@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
@@ -31,10 +30,7 @@ import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
-    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
@@ -44,10 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Connections() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
-    const state = useSelector((st) => st);
     const mdDown = useMediaQuery('(max-width:1279px)');
-
-    const user = state.auth.user;
 
     const {
         //error: profileError,
@@ -55,16 +48,6 @@ export default function Connections() {
         data: profileData,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
-    });
-
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 500 } },
-    });
-
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
     });
 
     const getFollowStatus = (usr) => {
@@ -100,8 +83,6 @@ export default function Connections() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    scrolls={userScrolls?.Posts?.get?.length}
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
                         )}
