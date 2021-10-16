@@ -115,6 +115,7 @@ export default function Scroll({
     setOpen,
     setImagePreviewOpen,
     setImagePreviewURL,
+    style,
 }) {
     const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
@@ -293,7 +294,7 @@ export default function Scroll({
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
+            <Card style={{ ...style, marginBottom: 16 }}>
                 <CardHeader
                     avatar={
                         <Avatar
