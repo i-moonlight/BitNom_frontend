@@ -12,12 +12,12 @@ import {
     IconButton,
     Typography,
     useTheme,
-    makeStyles,
     Hidden,
     Container,
     CircularProgress,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import { Helmet } from 'react-helmet';
 import {
     CommentRounded,
@@ -31,7 +31,7 @@ import {
     ThumbUpRounded,
     InsertEmoticon,
     ArrowBack,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import { ToastContainer } from 'react-toastify';
 import moment from 'moment';

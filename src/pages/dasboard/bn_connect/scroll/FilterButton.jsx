@@ -1,14 +1,17 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import {
+    Grid,
+    Button,
+    ButtonGroup,
+    Paper,
+    Popper,
+    Grow,
+    ClickAwayListener,
+    MenuItem,
+    MenuList,
+    Typography,
+} from '@mui/material';
+import { ArrowDropDown } from '@mui/icons-material';
 
 const options = ['Top Comments', 'Latest Comments'];
 
@@ -51,7 +54,6 @@ export default function FilterButton({ setCommentFilter }) {
             <Grid item xs={12}>
                 <ButtonGroup
                     variant="text"
-                    color="default"
                     ref={anchorRef}
                     aria-label="split button"
                     size="small"
@@ -66,7 +68,6 @@ export default function FilterButton({ setCommentFilter }) {
                         {options[selectedIndex]}
                     </Button>
                     <Button
-                        color="default"
                         size="small"
                         fullWidth
                         style={{
@@ -78,7 +79,7 @@ export default function FilterButton({ setCommentFilter }) {
                         aria-haspopup="menu"
                         onClick={handleToggle}
                     >
-                        <ArrowDropDownIcon />
+                        <ArrowDropDown />
                     </Button>
                 </ButtonGroup>
                 <Popper
