@@ -71,7 +71,7 @@ export default function BnConnect() {
 
     const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
-            data: { ids: getFeed(profile), limit: 220 },
+            data: { ids: getFeed(profile) },
         },
     });
 
@@ -221,17 +221,17 @@ export default function BnConnect() {
                                     setFlaggedResource={setFlaggedResource}
                                     setOpenReactions={setOpenReactions}
                                     setResourceReactions={setResourceReactions}
-                                    setImagePreviewURL={(url) =>
-                                        setImagePreviewURL(url)
-                                    }
-                                    setImagePreviewOpen={(open) =>
-                                        setImagePreviewOpen(open)
-                                    }
                                     setSharedResource={setSharedResource}
                                     setCommentToEdit={setCommentToEdit}
                                     setPostToEdit={setPostToEdit}
                                     key={scroll?._id}
                                     scroll={scroll}
+                                    setImagePreviewURL={(url) => {
+                                        setImagePreviewURL(url);
+                                    }}
+                                    setImagePreviewOpen={(open) => {
+                                        setImagePreviewOpen(open);
+                                    }}
                                 />
                             ))}
                             {data?.Posts?.get?.length < 1 && (
