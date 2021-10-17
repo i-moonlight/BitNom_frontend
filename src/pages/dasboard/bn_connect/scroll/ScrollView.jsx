@@ -916,65 +916,6 @@ function PostView({ match }) {
                                                 </Typography>
                                             </div>
 
-                                            {/* <div className=' d-flex align-items-center'>
-                            <Avatar
-                                style={{
-                                backgroundColor: '#fed132',
-                                }}
-                                src={postData?.Posts?.getById?.author?.image}
-                                className='mx-2'
-                            >
-                                {currentUserInitials}
-                            </Avatar>
-                            <TextField
-                                fullWidth
-                                error={createCommentErr && true}
-                                errorText={createCommentErr && "The comment cannot be empty"}
-                                multiline
-                                rowsMax={10}
-                                id='comment-field'
-                                onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleCreateComment(e);
-                                }
-                                }}
-                                placeholder={
-                                commentsData?.Comments?.get?.length > 0
-                                    ? ""
-                                    : "Be the first to comment.."
-                                }
-                                onChange={(e) =>
-                                setCommentText(
-                                    comment_text?.length >= 250
-                                    ? e.target.value.substring(0, e.target.value.length - 1)
-                                    : e.target.value.substring(0, 250)
-                                )
-                                }
-                                adornment={
-                                <IconButton
-                                    size="small"
-                                    className="m-1 p-1"
-                                    onClick={() => {
-                                    setOpenImage(true);
-                                    }}
-                                >
-                                    <ImageRounded />
-                                </IconButton>
-                                }
-                                adornmentType="end"
-                                value={comment_text}
-                            />
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                // className='mx-3'
-                                onClick={handleCreateComment}
-                                // size='small'
-                            >
-                                <Send />
-                            </IconButton>
-                            </div> */}
-
                                             <DropzoneDialog
                                                 previewGridProps={{
                                                     container: {

@@ -202,17 +202,12 @@ export default function UserCard({ setOpen, followers, following }) {
           </IconButton> */}
                 </CardActions>
             </Card>
-            <Button
-                style={{
-                    display: location.pathname.includes('connect') && 'block',
-                }}
-                onClick={setOpen}
-                color="primary"
-                fullWidth
-                textCase
-            >
-                Create Post
-            </Button>
+            {(location.pathname.includes('connect') ||
+                location.pathname.includes('posts/')) && (
+                <Button onClick={setOpen} color="primary" fullWidth textCase>
+                    Create Post
+                </Button>
+            )}
         </div>
     );
 }
