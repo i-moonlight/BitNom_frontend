@@ -9,7 +9,6 @@ import {
     ClickAwayListener,
     MenuItem,
     MenuList,
-    Typography,
 } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 
@@ -100,7 +99,10 @@ export default function FilterButton({ setCommentFilter }) {
                         >
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
-                                    <MenuList id="split-button-menu">
+                                    <MenuList
+                                        id="split-button-menu"
+                                        component="div"
+                                    >
                                         {options.map((option, index) => (
                                             <MenuItem
                                                 key={option}
