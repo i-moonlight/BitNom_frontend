@@ -113,7 +113,7 @@ export default function EventOptionsPopover({
                     divider
                     onClick={() => {
                         navigator.clipboard.writeText(
-                            `${location.origin}/dashboard/events/${event?._id}`
+                            `${location.origin}/events/${event?._id}`
                         );
                         toast.success('Event link copied to clipboard', {
                             position: 'bottom-left',

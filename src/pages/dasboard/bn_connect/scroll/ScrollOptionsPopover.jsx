@@ -4,6 +4,7 @@ import {
     FileCopyOutlined,
     FlagOutlined,
     PersonAddDisabledOutlined,
+    EditOutlined,
 } from '@mui/icons-material';
 import {
     Card,
@@ -138,11 +139,37 @@ export default function ScrollOptionsPopover({
                 {user?._id === scroll?.author?._id && (
                     <ListItem button divider onClick={handleEditScroll}>
                         <ListItemIcon>
-                            <FileCopyOutlined />
+                            <EditOutlined />
                         </ListItemIcon>
                         <ListItemText primary="Edit this post" />
                     </ListItem>
                 )}
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        navigator.clipboard.writeText(
+                            `${location.origin}/posts/${scroll?._id}`
+                        );
+                        toast.success('Post link copied to clipboard', {
+                            position: 'bottom-left',
+                            autoClose: 3000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        });
+                        handleScrollOptionClose();
+                    }}
+                >
+                    <ListItemIcon>
+                        <FileCopyOutlined />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="Copy this post"
+                        secondary="Share this post on other platforms"
+                    />
+                </ListItem>
                 {user?._id !== scroll?.author?._id && (
                     <ListItem
                         button

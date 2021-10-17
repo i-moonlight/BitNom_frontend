@@ -137,7 +137,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                 </Typography>
                             </div>
                         </div>
-                        <div
+                        <Typography
                             style={{ cursor: 'pointer' }}
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -156,7 +156,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                     {following}
                                 </Typography>
                             </div>
-                        </div>
+                        </Typography>
                     </div>
                 </CardContent>
                 <Divider />
@@ -202,19 +202,12 @@ export default function UserCard({ setOpen, followers, following }) {
           </IconButton> */}
                 </CardActions>
             </Card>
-            <Button
-                style={{
-                    display: location.pathname.includes('dashboard/')
-                        ? 'none'
-                        : 'block',
-                }}
-                onClick={setOpen}
-                color="primary"
-                fullWidth
-                textCase
-            >
-                Create Post
-            </Button>
+            {(location.pathname.includes('connect') ||
+                location.pathname.includes('posts/')) && (
+                <Button onClick={setOpen} color="primary" fullWidth textCase>
+                    Create Post
+                </Button>
+            )}
         </div>
     );
 }

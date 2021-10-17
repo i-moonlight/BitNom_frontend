@@ -296,9 +296,7 @@ export default function Scroll({
             <Card style={{ ...style, marginBottom: 16 }}>
                 <CardContent
                     style={{ zIndex: 1 }}
-                    onClick={() =>
-                        history.push(`/dashboard/posts/${scroll?._id}`)
-                    }
+                    onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
                     <CardHeader
                         avatar={

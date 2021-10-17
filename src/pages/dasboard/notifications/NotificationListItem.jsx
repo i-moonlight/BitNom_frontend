@@ -34,11 +34,11 @@ export default function NotificationListItem({ notification }) {
     };
     let link;
     if (notification?.link_to_resource?.type === 'post') {
-        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
+        link = `/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'event') {
-        link = `/dashboard/events/${notification?.link_to_resource?._id}`;
+        link = `/events/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'comment') {
-        link = `/dashboard/posts/${notification?.link_to_resource?._id}`;
+        link = `/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'user') {
         link = `/users/${notification?.link_to_resource?._id}`;
     }

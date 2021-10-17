@@ -15,7 +15,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import CreatePost from '../bn_connect/scroll/CreatePost';
@@ -54,6 +54,7 @@ export default function SavedItems() {
 
     const state = useSelector((st) => st);
     const user = state.auth.user;
+    const history = useHistory();
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
 
@@ -147,16 +148,15 @@ export default function SavedItems() {
                                 >
                                     <CardHeader
                                         avatar={
-                                            <Link to="/dashboard">
-                                                <IconButton
-                                                    size="small"
-                                                    className="m-1 p-1"
-                                                    aria-label="back"
-                                                    color="inherit"
-                                                >
-                                                    <ArrowBack />
-                                                </IconButton>
-                                            </Link>
+                                            <IconButton
+                                                size="small"
+                                                className="m-1 p-1"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
                                         }
                                         title={
                                             <div className="center-horizontal">

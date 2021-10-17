@@ -117,23 +117,9 @@ export default function Routes({ apolloClient }) {
                         <Route
                             exact
                             component={Connections}
-                            path="/dashboard/profile/connections"
+                            path="/profile/connections"
                         />
-                        <Route
-                            exact
-                            component={Posts}
-                            path="/dashboard/profile/posts"
-                        />
-                        <Route
-                            exact
-                            component={PostView}
-                            path="/dashboard/posts/:id"
-                        />
-                        <Route
-                            exact
-                            component={Profile}
-                            path="/dashboard/profile"
-                        />
+                        <Route exact component={PostView} path="/posts/:id" />
                         <Route exact component={Posts} path="/profile/posts" />
                         <Route exact component={Profile} path="/profile" />
                         <Route

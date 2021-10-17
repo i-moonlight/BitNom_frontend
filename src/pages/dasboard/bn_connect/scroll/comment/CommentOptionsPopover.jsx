@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import {
     BookmarkBorderRounded,
-    FileCopyOutlined,
+    EditOutlined,
     FlagOutlined,
     PersonAddDisabledOutlined,
 } from '@mui/icons-material';
@@ -139,7 +139,7 @@ export default function CommentOptionsPopover({
                 {user?._id === comment?.author?._id && (
                     <ListItem button divider onClick={handleEditComment}>
                         <ListItemIcon>
-                            <FileCopyOutlined />
+                            <EditOutlined />
                         </ListItemIcon>
                         <ListItemText primary="Edit this comment" />
                     </ListItem>
