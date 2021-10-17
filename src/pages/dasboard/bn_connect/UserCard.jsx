@@ -137,7 +137,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                 </Typography>
                             </div>
                         </div>
-                        <div
+                        <Typography
                             style={{ cursor: 'pointer' }}
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -156,7 +156,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                     {following}
                                 </Typography>
                             </div>
-                        </div>
+                        </Typography>
                     </div>
                 </CardContent>
                 <Divider />
@@ -204,9 +204,7 @@ export default function UserCard({ setOpen, followers, following }) {
             </Card>
             <Button
                 style={{
-                    display: location.pathname.includes('dashboard/')
-                        ? 'none'
-                        : 'block',
+                    display: location.pathname.includes('connect') && 'block',
                 }}
                 onClick={setOpen}
                 color="primary"

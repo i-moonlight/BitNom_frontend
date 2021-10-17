@@ -44,7 +44,7 @@ import Screen from '../../../../components/Screen';
 //import TextField from '../../../../components/TextField';
 import { MentionsInput, Mention } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -355,7 +355,7 @@ function PostView({ match }) {
                 <title>Post | Bitnorm</title>
                 <link
                     rel="canonical"
-                    href={`${window.location.origin}/dashboard/posts/${postData?.Posts?.getById?._id}`}
+                    href={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
                 />
             </Helmet>
             <ToastContainer
@@ -369,7 +369,7 @@ function PostView({ match }) {
                 draggable
                 pauseOnHover
             />
-            <div className={classes.root}>
+            <div>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         <Hidden mdDown>
@@ -392,22 +392,20 @@ function PostView({ match }) {
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
+                            <Card style={{ marginBottom: 12 }}>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() =>
+                                                history.push(`/connect`)
+                                            }
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                 />
                             </Card>
@@ -425,7 +423,7 @@ function PostView({ match }) {
                                     style={{ marginBottom: 16, zIndex: 1 }}
                                     onClick={() =>
                                         history.push(
-                                            `/dashboard/posts/${postData?.Posts?.getById?._id}`
+                                            `/posts/${postData?.Posts?.getById?._id}`
                                         )
                                     }
                                 >

@@ -29,8 +29,9 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 //import IosShareIcon from '@mui/icons-material/IosShare'
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
@@ -246,6 +247,14 @@ export default function EventView({ match }) {
 
     return (
         <Screen>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Event | Bitnorm</title>
+                <link
+                    rel="canonical"
+                    href={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
+                />
+            </Helmet>
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
@@ -268,15 +277,14 @@ export default function EventView({ match }) {
                                 >
                                     <CardHeader
                                         avatar={
-                                            <Link to="/events">
-                                                <IconButton
-                                                    size="small"
-                                                    aria-label="back"
-                                                    color="inherit"
-                                                >
-                                                    <ArrowBack />
-                                                </IconButton>
-                                            </Link>
+                                            <IconButton
+                                                size="small"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
                                         }
                                     />
                                 </Card>
@@ -305,15 +313,16 @@ export default function EventView({ match }) {
                                             >
                                                 <CardHeader
                                                     avatar={
-                                                        <Link to="/events">
-                                                            <IconButton
-                                                                size="small"
-                                                                aria-label="back"
-                                                                color="inherit"
-                                                            >
-                                                                <ArrowBack />
-                                                            </IconButton>
-                                                        </Link>
+                                                        <IconButton
+                                                            size="small"
+                                                            aria-label="back"
+                                                            color="inherit"
+                                                            onClick={() =>
+                                                                history.goBack()
+                                                            }
+                                                        >
+                                                            <ArrowBack />
+                                                        </IconButton>
                                                     }
                                                 />
                                             </Card>
@@ -642,7 +651,7 @@ export default function EventView({ match }) {
                                                                             '5px',
                                                                     }}
                                                                 />
-                                                                Link :
+                                                                :
                                                                 <Typography
                                                                     style={{
                                                                         marginLeft:

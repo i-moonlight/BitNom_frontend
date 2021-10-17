@@ -16,7 +16,7 @@ import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import {
     GET_BOOKMARKED_EVENTS,
@@ -123,20 +123,20 @@ function EventListCard({
     const pastEvents = events?.filter(
         (event) => new Date(event?.endDate).getTime() < new Date().getTime()
     );
+    const history = useHistory();
     return (
         <Card>
             <CardHeader
                 avatar={
-                    <Link to="/dashboard">
-                        <IconButton
-                            size="small"
-                            className="m-1 p-1"
-                            aria-label="back"
-                            color="inherit"
-                        >
-                            <ArrowBack />
-                        </IconButton>
-                    </Link>
+                    <IconButton
+                        size="small"
+                        className="m-1 p-1"
+                        aria-label="back"
+                        color="inherit"
+                        onClick={() => history.goBack()}
+                    >
+                        <ArrowBack />
+                    </IconButton>
                 }
                 title={
                     <div className="center-horizontal">
@@ -222,7 +222,7 @@ function EventPreview({ event }) {
         <Card
             elevation={0}
             key={event?._id}
-            onClick={() => history.push(`/dashboard/events/${event?._id}`)}
+            onClick={() => history.push(`/events/${event?._id}`)}
             className="mb-2"
         >
             <CardContent

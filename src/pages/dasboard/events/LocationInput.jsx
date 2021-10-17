@@ -139,12 +139,15 @@ export default function LocationInput({
                 />
             )}
             renderOption={(option) => {
-                /*  const matches =
-          option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length])
-        ); */
+                /* const matches =
+                    option.structured_formatting.main_text_matched_substrings;
+                const parts = parse(
+                    option.structured_formatting.main_text,
+                    matches.map((match) => [
+                        match.offset,
+                        match.offset + match.length,
+                    ])
+                ); */
 
                 return (
                     <Grid container alignItems="center">

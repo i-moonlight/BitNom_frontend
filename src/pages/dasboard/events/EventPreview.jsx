@@ -25,7 +25,7 @@ function EventPreview({ event }) {
             key={event?._id}
             onClick={(e) => {
                 e.stopPropagation();
-                history.push(`/dashboard/events/${event?._id}`);
+                history.push(`/events/${event?._id}`);
             }}
             style={{
                 display: 'flex',
@@ -36,6 +36,7 @@ function EventPreview({ event }) {
                 cursor: 'pointer',
                 padding: '5px',
                 backgroundColor: '#9e9e9e',
+                zIndex: 2,
             }}
         >
             <div

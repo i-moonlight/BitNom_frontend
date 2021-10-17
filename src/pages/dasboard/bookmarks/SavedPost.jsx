@@ -55,7 +55,7 @@ export default function SavedPost({
         <>
             <Card
                 style={{ marginBottom: 16, zIndex: 1 }}
-                onClick={() => history.push(`/dashboard/posts/${scroll?._id}`)}
+                onClick={() => history.push(`/posts/${scroll?._id}`)}
             >
                 <CardActionArea disableRipple>
                     <CardHeader
