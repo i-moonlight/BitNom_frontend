@@ -20,7 +20,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -43,6 +43,7 @@ export default function People() {
     const classes = useStyles();
     const state = useSelector((st) => st);
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const history = useHistory();
 
     const user = state.auth.user;
 
@@ -92,16 +93,15 @@ export default function People() {
                             <Card>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() => history.goBack()}
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                     title={
                                         <div className="center-horizontal">
@@ -113,7 +113,7 @@ export default function People() {
                                 />
                                 <Divider />
                                 <CardContent>
-                                    <List>
+                                    <List component="div">
                                         {suggestedUsers?.map((usr) => (
                                             <ListItemComponent
                                                 key={usr?._id}

@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -41,7 +41,7 @@ export default function Connections() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
-
+    const history = useHistory();
     const {
         //error: profileError,
         //  loading,
@@ -90,16 +90,15 @@ export default function Connections() {
                             <Card>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() => history.goBack()}
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                     title={
                                         <div className="center-horizontal">

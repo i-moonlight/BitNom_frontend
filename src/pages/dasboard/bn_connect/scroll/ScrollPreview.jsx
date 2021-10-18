@@ -31,7 +31,11 @@ export default function ScrollPreview({ scroll }) {
         <>
             <Card
                 variant="outlined"
-                style={{ marginBottom: 16, marginTop: 16 }}
+                style={{ marginBottom: 16, marginTop: 16, zIndex: 2 }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    history.push(`/posts/${scroll?._id}`);
+                }}
             >
                 <CardHeader
                     avatar={

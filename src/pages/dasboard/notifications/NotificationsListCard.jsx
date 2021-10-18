@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
     Card,
     Grid,
@@ -19,6 +19,7 @@ export default function NotificationsListCard({
     notifications,
     selectedIndex,
 }) {
+    const history = useHistory();
     const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
         useState(null);
 
@@ -78,16 +79,15 @@ export default function NotificationsListCard({
                         </IconButton>
                     }
                     avatar={
-                        <Link to="/dashboard">
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                aria-label="back"
-                                color="inherit"
-                            >
-                                <ArrowBack />
-                            </IconButton>
-                        </Link>
+                        <IconButton
+                            size="small"
+                            className="m-1 p-1"
+                            aria-label="back"
+                            color="inherit"
+                            onClick={() => history.goBack()}
+                        >
+                            <ArrowBack />
+                        </IconButton>
                     }
                     title={
                         <div className="center-horizontal">

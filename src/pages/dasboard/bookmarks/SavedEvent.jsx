@@ -54,7 +54,7 @@ function SavedEvent({ event }) {
                 }}
                 onClick={(e) => {
                     e.stopPropagation();
-                    history.push(`/dashboard/events/${event?._id}`);
+                    history.push(`/events/${event?._id}`);
                 }}
             >
                 <div

@@ -12,12 +12,12 @@ import {
     IconButton,
     Typography,
     useTheme,
-    makeStyles,
     Hidden,
     Container,
     CircularProgress,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import { Helmet } from 'react-helmet';
 import {
     CommentRounded,
@@ -31,7 +31,7 @@ import {
     ThumbUpRounded,
     InsertEmoticon,
     ArrowBack,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import { ToastContainer } from 'react-toastify';
 import moment from 'moment';
@@ -44,7 +44,7 @@ import Screen from '../../../../components/Screen';
 //import TextField from '../../../../components/TextField';
 import { MentionsInput, Mention } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -355,7 +355,7 @@ function PostView({ match }) {
                 <title>Post | Bitnorm</title>
                 <link
                     rel="canonical"
-                    href={`${window.location.origin}/dashboard/posts/${postData?.Posts?.getById?._id}`}
+                    href={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
                 />
             </Helmet>
             <ToastContainer
@@ -369,7 +369,7 @@ function PostView({ match }) {
                 draggable
                 pauseOnHover
             />
-            <div className={classes.root}>
+            <div>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         <Hidden mdDown>
@@ -392,22 +392,20 @@ function PostView({ match }) {
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
+                            <Card style={{ marginBottom: 12 }}>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() =>
+                                                history.push(`/connect`)
+                                            }
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                 />
                             </Card>
@@ -425,7 +423,7 @@ function PostView({ match }) {
                                     style={{ marginBottom: 16, zIndex: 1 }}
                                     onClick={() =>
                                         history.push(
-                                            `/dashboard/posts/${postData?.Posts?.getById?._id}`
+                                            `/posts/${postData?.Posts?.getById?._id}`
                                         )
                                     }
                                 >
@@ -917,65 +915,6 @@ function PostView({ match }) {
                                                         'The comment content cannot be empty'}
                                                 </Typography>
                                             </div>
-
-                                            {/* <div className=' d-flex align-items-center'>
-                            <Avatar
-                                style={{
-                                backgroundColor: '#fed132',
-                                }}
-                                src={postData?.Posts?.getById?.author?.image}
-                                className='mx-2'
-                            >
-                                {currentUserInitials}
-                            </Avatar>
-                            <TextField
-                                fullWidth
-                                error={createCommentErr && true}
-                                errorText={createCommentErr && "The comment cannot be empty"}
-                                multiline
-                                rowsMax={10}
-                                id='comment-field'
-                                onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleCreateComment(e);
-                                }
-                                }}
-                                placeholder={
-                                commentsData?.Comments?.get?.length > 0
-                                    ? ""
-                                    : "Be the first to comment.."
-                                }
-                                onChange={(e) =>
-                                setCommentText(
-                                    comment_text?.length >= 250
-                                    ? e.target.value.substring(0, e.target.value.length - 1)
-                                    : e.target.value.substring(0, 250)
-                                )
-                                }
-                                adornment={
-                                <IconButton
-                                    size="small"
-                                    className="m-1 p-1"
-                                    onClick={() => {
-                                    setOpenImage(true);
-                                    }}
-                                >
-                                    <ImageRounded />
-                                </IconButton>
-                                }
-                                adornmentType="end"
-                                value={comment_text}
-                            />
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                // className='mx-3'
-                                onClick={handleCreateComment}
-                                // size='small'
-                            >
-                                <Send />
-                            </IconButton>
-                            </div> */}
 
                                             <DropzoneDialog
                                                 previewGridProps={{
