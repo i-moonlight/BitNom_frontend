@@ -5,17 +5,17 @@ import {
     Button,
     Card,
     CardContent,
-    Container, Icon,
+    Container, makeStyles,
     Paper,
-    Switch,
+    Switch, Tab,
     Table, TableBody, TableCell,
     TableContainer,
     TableHead, TablePagination, TableRow,
-    Typography, withStyles
-} from "@material-ui/core";
-import {Star, StarBorderOutlined} from "@material-ui/icons";
-import MuiTableHead from "@material-ui/core/TableHead";
-import {Rating} from "@material-ui/lab";
+    Typography
+} from '@material-ui/core';
+import {Close, Favorite, Forum, Replay,StarBorderOutlined} from '@material-ui/icons';
+import {TabContext, TabList, TabPanel} from '@material-ui/lab';
+import GainersAndLosers from './GainersAndLosers';
 
 interface Column {
     id: 'ash' | 'star' | 'coin_image' | 'coin' | 'currency' | 'price' | 'h_1' | 'h_24' | 'd_7' | 'volume_24' | 'mkt_cap' | 'last_7_days';
@@ -74,60 +74,75 @@ function createData(
 
 const rows = [
     createData(
-        <StarBorderOutlined />, 1,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 1,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 2,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 2,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 3,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 3,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 4,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 4,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 5,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 5,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 6,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 6,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 7,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 7,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 8,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 8,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 9,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 9,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 10,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 10,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 11,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 11,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
     createData(
-        <StarBorderOutlined />, 12,'image', 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        <StarBorderOutlined />, 1,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        '$34,560,264.399', '$34,560,264.399', 'Images'
+    ),
+    createData(
+        <StarBorderOutlined />, 1,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
+        '$34,560,264.399', '$34,560,264.399', 'Images'
+    ),
+    createData(
+        <StarBorderOutlined />, 12,<img height="25px" src={'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'} alt="bitcoin"/>, 'Bitcoin','BTC', '$44,000.090', <p className="text-danger">-0.4%</p>, <p className="text-danger">-2.5%</p>,<p className="text-danger">-3.4%</p>,
         '$34,560,264.399', '$34,560,264.399', 'Images'
     ),
 ];
 
+const useStyles = makeStyles({
+    tabPanelRoot: {
+        padding: '25px 0px'
+    },
+});
 
 export default function BnKnowledgeCenter ()
 {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [checked, setChecked] = React.useState(true);
+    const [value, setValue] = React.useState('1');
 
     const handleChangePage = (newPage: number) => {
         setPage(newPage);
@@ -154,30 +169,60 @@ export default function BnKnowledgeCenter ()
             borderLeft: '5px solid purple'
         }
     };
-    const classes = {
-        head: {
-            backgroundColor: "#bccbd0",
-            position: "sticky",
-            top: 0
-        }
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
     };
 
+
+    const handleTabChanges = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const classes = useStyles();
+
+    const custom = {
+        tabStyle : {
+            textTransform: 'capitalize',
+            fontWeight : 'bold'
+        },
+        verticalLine : {
+            borderLeft : '2px solid green',
+            height: '35px',
+        },
+        darkTransparent : {
+            backgroundColor: 'rgb(68 63 63 / 50%)',
+            text: '#fff',
+            height: '10px',
+            borderRadius: '5px',
+            margin: '5px',
+            padding: '0.5px 0.5px'
+        }
+    };
     return <Screen>
             <Container>
                 {/*Crypto Header*/}
-                <section>
+                <section className="border-0" >
                     <Card variant="body1" className='m-2'>
                         <div className="d-flex flex-row m-2">
-                            <h2>Cryptocurrency Prices by Market Cap </h2><small><Switch defaultChecked /> Show Status</small>
+                            <h2>Cryptocurrency Prices by Market Cap </h2><small>
+
+                            <Switch
+                                checked={checked}
+                                onChange={handleChange}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />
+
+                            Show Status</small>
                         </div>
                         <p className='m-2'>
                             The global cryptocurrency market cap today is $2.08 Trillion, a
-                            <span className="text-danger"> -1.1% </span> change in the last 24 hours <a href={"#"}>Read More</a>
+                            <span className="text-danger"> -1.1% </span> change in the last 24 hours <a href={'#'}>Read More</a>
                         </p>
                     </Card>
                 </section>
-
-                {/*Cards*/}
+                {/*Cards Being Checked*/}
+                {checked &&
                 <section className="d-flex flex-row">
                     <div className="m-2">
                         <Card style={borders.market}>
@@ -255,72 +300,175 @@ export default function BnKnowledgeCenter ()
                         </Card>
                     </div>
                 </section>
+                }
                 <br/>
                 <section>
-                    {/*Above table head*/}
-                    <div>
-                        <Button variant="contained" className="m-2 p-1">
-                            <Rating className="m-1" name="customized-10" defaultValue={3} max={1} /> Portfolio
-                        </Button>
-                        <Button variant="contained" className="m-2">Watchlist</Button> |
-                        <a href={"#"} className="m-2"> Cryptogazing </a>
-                        <a href={"#"} className="m-2"> Category </a>
-                        <a href={"#"} className="m-2"> Gainers and Losers </a>
-                        <a href={"#"} className="m-2"> Recently Added </a>
-                        <a href={"#"} className="m-2"> Heatmap </a>
-                    </div>
+                    {/* Tabs */}
+                        <TabContext value={value}>
+                            <Card sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList onChange={handleTabChanges} aria-label="lab API tabs example">
+                                    <Tab label="Portfolio" value="1" style={custom.tabStyle}/>
+                                    <Tab label="Watchlist" value="2" style={custom.tabStyle}/>
 
-                    {/*Table*/}
-                    <div>
-                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <TableContainer sx={{ maxHeight: 440 }}>
-                                <Table stickyHeader aria-label="sticky table">
-                                    <TableHead>
-                                        <TableRow>
-                                            {columns.map((column) => (
-                                                <TableCell
-                                                    key={column.id}
-                                                    align={column.align}
-                                                    style={{ minWidth: column.minWidth, backgroundColor: '#3e4041', color:'#fff' }}
-                                                >
-                                                    {column.label}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {rows
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((row) => {
-                                                return (
-                                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                                        {columns.map((column) => {
-                                                            const value = row[column.id];
+                                    <hr style={custom.verticalLine}/>
+                                    <Tab label="Cryptogazing" value="3" style={custom.tabStyle}/>
+                                    <Tab label="Category" value="2" style={custom.tabStyle}/>
+                                    <Tab label="Gainers and Losers " value="5" style={custom.tabStyle}/>
+                                    <Tab label="Recently Added" value="1" style={custom.tabStyle}/>
+                                    <Tab label="Heatmap" value="7" style={custom.tabStyle}/>
+                                </TabList>
+                            </Card>
+                            <TabPanel value="1" classes={{ root: classes.tabPanelRoot}}>
+                                {/*Portfolio*/}
+                                <Paper sx={{ width: '100%', overflow: 'hidden'}}>
+                                        <TableContainer sx={{ maxHeight: 440 }}>
+                                            <Table stickyHeader aria-label="sticky table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        {columns.map((column) => (
+                                                            <TableCell
+                                                                key={column.id}
+                                                                align={column.align}
+                                                                style={{
+                                                                    minWidth: column.minWidth,
+                                                                    backgroundColor: '#3e4041',
+                                                                    color:'#fff'
+                                                                }}
+                                                            >
+                                                                {column.label}
+                                                            </TableCell>
+                                                        ))}
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {rows
+                                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                        .map((row) => {
                                                             return (
-                                                                <TableCell key={column.id} align={column.align}>
-                                                                    {column.format && typeof value === 'number'
-                                                                        ? column.format(value)
-                                                                        : value}
-                                                                </TableCell>
+                                                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                                    {columns.map((column) => {
+                                                                        const value = row[column.id];
+                                                                        return (
+                                                                            <TableCell key={column.id} align={column.align}>
+                                                                                {column.format && typeof value === 'number'
+                                                                                    ? column.format(value)
+                                                                                    : value}
+                                                                            </TableCell>
+                                                                        );
+                                                                    })}
+                                                                </TableRow>
                                                             );
                                                         })}
-                                                    </TableRow>
-                                                );
-                                            })}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <TablePagination
-                                rowsPerPageOptions={[10, 25, 100]}
-                                component="div"
-                                count={rows.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
-                        </Paper>
-                    </div>
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                        <TablePagination
+                                            rowsPerPageOptions={[10, 25, 100]}
+                                            component="div"
+                                            count={rows.length}
+                                            rowsPerPage={rowsPerPage}
+                                            page={page}
+                                            onPageChange={handleChangePage}
+                                            onRowsPerPageChange={handleChangeRowsPerPage}
+                                        />
+                                    </Paper>
+                            </TabPanel>
+                            <TabPanel value="2" classes={{ root: classes.tabPanelRoot}}>
+                                {/*Watchlist*/}
+                                <Card>
+                                    <TableContainer sx={{ maxHeight: 440 }}>
+                                        <Table stickyHeader aria-label="sticky table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    {columns.map((column) => (
+                                                        <TableCell
+                                                            key={column.id}
+                                                            align={column.align}
+                                                            style={{ minWidth: column.minWidth, backgroundColor: '#3e4041', color:'#fff' }}
+                                                        >
+                                                            {column.label}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            </TableHead>
+                                        </Table>
+                                    </TableContainer>
+                                    <div className="m-5 text-center">
+                                        <h4><strong>Your Watchlist is empty</strong></h4>
+                                        <p>Start building your watchlist by clicking button bellow</p>
+                                        <button className=" btn btn-primary m-2">Add Coins</button>
+                                        <br/>
+                                        <a className='text-primary'>Visit Cryptogazing</a>
+                                    </div>
+                                </Card>
+                            </TabPanel>
+                            <TabPanel value="3" classes={{ root: classes.tabPanelRoot}}>
+                               {/* Cryptogazing*/}
+                               <div className="container col-6 text-center justify-content-center">
+                                   <Card>
+                                       <CardContent>
+                                           <div className="d-flex flex-row justify-content-between mb-3">
+                                               <button className="btn btn-success">Rank #1</button>
+                                               <a className="text-primary text-decoration-underline">Visit Coin</a>
+                                           </div>
+                                           <div className="row">
+                                               <div className="col">
+                                                   <img height="100px"
+                                                        src={'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'}
+                                                        alt="Bitcoin Image"/>
+                                                   <p className="mt-1"><strong>Bitcoin (BTC)</strong></p>
+                                                   <a className="btn btn-success mb-2"><strong>$44,811,17</strong></a>
+                                               </div>
+                                               <div className="col">
+                                                   <p><strong>Price Change 24 hours</strong></p>
+                                                   <p className="text-danger"><strong>7.76%</strong></p>
+                                                   <br />
+                                                   <p>Available Supply</p>
+                                                   <p>18,834,400</p>
+                                               </div>
+                                               <div className="col">
+                                                   <p><strong>Market Cap</strong></p>
+                                                   <p className="text-success"><strong>$300,213,918,809</strong></p>
+                                                   <br />
+                                                   <p>Total Supply</p>
+                                                   <p>21,000,000</p>
+                                               </div>
+                                           </div>
+                                           <div className="m-2">
+                                               <img alt="Bitcoin graph" />
+                                           </div>
+                                       </CardContent>
+                                   </Card>
+                                   <Card className="mt-2 col-12">
+                                       <div className="d-flex flex-row justify-content-around m-3">
+                                           <div><Replay sx={{ color: 'red' }} /></div>
+                                           <div><Close /></div>
+                                           <div><Favorite /></div>
+                                           <div><Forum /></div>
+                                       </div>
+                                   </Card>
+                               </div>
+                            </TabPanel>
+                            <TabPanel value="4" classes={{ root: classes.tabPanelRoot}}>
+                                {/*Categories*/}
+                                <Card>Categories</Card>
+                            </TabPanel>
+                            <TabPanel value="5" classes={{ root: classes.tabPanelRoot}}>
+                                {/*Gainers and Losers*/}
+                                <Card>
+                                    <GainersAndLosers />
+                                </Card>
+                            </TabPanel>
+                            <TabPanel value="6" classes={{ root: classes.tabPanelRoot}}>
+                                <Card>Coming Soon</Card>
+                            </TabPanel>
+                            <TabPanel value="7" classes={{ root: classes.tabPanelRoot}}>
+                                <Card>
+                                    <div>HeatMap</div>
+                                </Card>
+                            </TabPanel>
+                        </TabContext>
+
                 </section>
             </Container>
 

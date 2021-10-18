@@ -32,6 +32,7 @@ import Terms from './pages/welcome/terms/Terms';
 import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
 import BnKnowledgeCenter from "./pages/dasboard/bn_knowledge_center/BnKnowledgeCenter";
+import CoinDetails from "./pages/dasboard/bn_knowledge_center/con_details/CoinDetails";
 
 export default function Routes({ apolloClient }) {
     return (
@@ -111,6 +112,11 @@ export default function Routes({ apolloClient }) {
                             exact
                             component={BnKnowledgeCenter}
                             path="/dashboard/knowledge_center"
+                        />
+                        <Route
+                            exact
+                            component={CoinDetails}
+                            path="/dashboard/knowledge_center/bitcoin" // Should be optional later
                         />
                         <Route
                             exact

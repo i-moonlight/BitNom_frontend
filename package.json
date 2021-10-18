@@ -36,6 +36,7 @@
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
+        "react-swipeable-views": "^0.14.0",
         "react-toastify": "^8.0.2",
         "redux": "^4.1.0",
         "redux-thunk": "^2.3.0",
@@ -83,6 +84,8 @@
         ]
     },
     "devDependencies": {
-        "prettier": "^2.4.1"
+        "@mui/material": "^5.0.3",
+        "prettier": "^2.4.1",
+        "prop-types": "^15.7.2"
     }
 }
