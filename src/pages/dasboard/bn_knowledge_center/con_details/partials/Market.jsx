@@ -9,7 +9,6 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
     Box,
     Card,
-    makeStyles,
     Tab,
     Table,
     TableBody,
@@ -17,6 +16,7 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 
 const useStyles = makeStyles({

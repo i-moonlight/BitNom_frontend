@@ -27,7 +27,6 @@ import {
     CardContent,
     Checkbox,
     FormControlLabel,
-    makeStyles,
     Tab,
     Table,
     TableBody,
@@ -37,6 +36,7 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 
 function createData(

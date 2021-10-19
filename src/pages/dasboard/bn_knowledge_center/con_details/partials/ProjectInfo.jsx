@@ -1,11 +1,5 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/17/21
- * Time: 11:42 AM
- */
-
-import { Box, Card, makeStyles, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Card, Tab, Tabs, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 

@@ -10,7 +10,6 @@ import {
     Card,
     CardContent,
     Container,
-    makeStyles,
     Paper,
     Switch,
     Tab,
@@ -23,6 +22,7 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';

@@ -16,7 +16,8 @@ import {
     Twitter,
 } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Card, Container, makeStyles, Tab } from '@mui/material';
+import { Card, Container, Tab } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Button from '../../../../components/Button';
 import Screen from '../../../../components/Screen';

@@ -7,7 +7,8 @@
 
 import { LinkSharp } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Card, makeStyles, Tab } from '@mui/material';
+import { Box, Card, Tab } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 
 const useStyles = makeStyles({
