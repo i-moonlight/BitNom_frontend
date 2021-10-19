@@ -1,13 +1,15 @@
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grid from '@material-ui/core/Grid';
-import Grow from '@material-ui/core/Grow';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { ArrowDropDown } from '@mui/icons-material';
+import {
+    Button,
+    ButtonGroup,
+    ClickAwayListener,
+    Grid,
+    Grow,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
+} from '@mui/material';
 import React from 'react';
 
 const options = ['Top Comments', 'Latest Comments'];
@@ -51,7 +53,6 @@ export default function FilterButton({ setCommentFilter }) {
             <Grid item xs={12}>
                 <ButtonGroup
                     variant="text"
-                    color="default"
                     ref={anchorRef}
                     aria-label="split button"
                     size="small"
@@ -66,7 +67,6 @@ export default function FilterButton({ setCommentFilter }) {
                         {options[selectedIndex]}
                     </Button>
                     <Button
-                        color="default"
                         size="small"
                         fullWidth
                         style={{
@@ -78,7 +78,7 @@ export default function FilterButton({ setCommentFilter }) {
                         aria-haspopup="menu"
                         onClick={handleToggle}
                     >
-                        <ArrowDropDownIcon />
+                        <ArrowDropDown />
                     </Button>
                 </ButtonGroup>
                 <Popper
@@ -99,7 +99,10 @@ export default function FilterButton({ setCommentFilter }) {
                         >
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
-                                    <MenuList id="split-button-menu">
+                                    <MenuList
+                                        id="split-button-menu"
+                                        component="div"
+                                    >
                                         {options.map((option, index) => (
                                             <MenuItem
                                                 key={option}

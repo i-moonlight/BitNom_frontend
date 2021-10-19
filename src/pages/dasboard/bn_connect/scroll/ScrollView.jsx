@@ -1,5 +1,18 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
+    ArrowBack,
+    CommentRounded,
+    FavoriteRounded,
+    ImageRounded,
+    InsertEmoticon,
+    MoreVert,
+    PanToolRounded,
+    Send,
+    ShareRounded,
+    ThumbDownRounded,
+    ThumbUpRounded,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardActionArea,
@@ -13,24 +26,11 @@ import {
     Grid,
     Hidden,
     IconButton,
-    makeStyles,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
-import {
-    ArrowBack,
-    CommentRounded,
-    FavoriteRounded,
-    ImageRounded,
-    InsertEmoticon,
-    MoreVert,
-    PanToolRounded,
-    Send,
-    ShareRounded,
-    ThumbDownRounded,
-    ThumbUpRounded,
-} from '@material-ui/icons';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { green, red } from '@mui/material/colors';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
