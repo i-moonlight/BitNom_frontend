@@ -157,7 +157,10 @@ export default function NavBar() {
             setTabValue(0);
         }
 
-        if (window.location.pathname == '/cryptocurrency') {
+        if (
+            window.location.pathname == '/knowledge_center/cryptocurrency' ||
+            window.location.pathname == '/knowledge_center/bitcoin'
+        ) {
             setTabValue(1);
         }
 

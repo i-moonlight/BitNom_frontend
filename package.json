@@ -7,7 +7,7 @@
         "@apollo/client": "^3.3.21",
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
-        "@material-ui/core": "^4.12.3",
+        "@mui/material": "^4.12.3",
         "@material-ui/icons": "^4.11.2",
         "@mui/icons-material": "^5.0.3",
         "@mui/lab": "^5.0.0-alpha.50",
@@ -42,6 +42,7 @@
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
+        "react-swipeable-views": "^0.14.0",
         "react-toastify": "^8.0.2",
         "react-virtualized-auto-sizer": "^1.0.6",
         "react-window": "^1.8.6",
@@ -91,6 +92,8 @@
         ]
     },
     "devDependencies": {
-        "prettier": "^2.4.1"
+        "@mui/material": "^5.0.3",
+        "prettier": "^2.4.1",
+        "prop-types": "^15.7.2"
     }
 }
