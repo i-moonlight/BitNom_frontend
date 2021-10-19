@@ -1,19 +1,18 @@
+import { MoreHorizRounded } from '@mui/icons-material';
 import {
+    Avatar,
     Card,
-    CardContent,
     CardActionArea,
+    CardContent,
     CardHeader,
     Grid,
     IconButton,
     Typography,
-    Avatar,
 } from '@mui/material';
-
-import { MoreHorizRounded } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { getUserInitials } from '../../../utilities/Helpers';
 import { useHistory } from 'react-router-dom';
+import { getUserInitials } from '../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 

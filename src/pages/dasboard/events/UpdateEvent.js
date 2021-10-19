@@ -1,41 +1,39 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
-    CircularProgress,
-    Divider,
-    Grid,
-    IconButton,
-    Modal,
-    Typography,
-    TextField,
-    Paper,
-    InputBase,
     Chip,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Divider,
+    Grid,
+    IconButton,
+    InputBase,
+    Modal,
+    Paper,
+    TextField,
+    Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { CloseRounded, CameraAltRounded } from '@mui/icons-material';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useState, useEffect } from 'react';
-//import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
-import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
+import debounce from 'lodash/debounce';
+import { DropzoneArea } from 'material-ui-dropzone';
+import React, { useEffect, useState } from 'react';
+import Flatpickr from 'react-flatpickr';
 //import { useSelector } from 'react-redux';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
-import debounce from 'lodash/debounce';
+//import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
-
 import {
+    MUTATION_DELETE_EVENT,
     MUTATION_UPDATE_EVENT,
     QUERY_EVENT_BY_ID,
-    MUTATION_DELETE_EVENT,
     QUERY_LOAD_EVENTS,
     QUERY_SEARCH_USERS,
 } from '../utilities/queries';

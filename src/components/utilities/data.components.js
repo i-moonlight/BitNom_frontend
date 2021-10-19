@@ -38,7 +38,7 @@ export const tabs = [
     },
     {
         label: 'Cryptocurrency',
-        link: '/cryptocurrency',
+        link: '/knowledge_center/cryptocurrency',
         // menuItems: [
         //     { label: 'Crypto-tinder' },
         //     { label: 'Forum' },

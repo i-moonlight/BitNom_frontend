@@ -1,16 +1,16 @@
-import React from 'react';
+import { ArrowDropDown } from '@mui/icons-material';
 import {
-    Grid,
     Button,
     ButtonGroup,
-    Paper,
-    Popper,
-    Grow,
     ClickAwayListener,
+    Grid,
+    Grow,
     MenuItem,
     MenuList,
+    Paper,
+    Popper,
 } from '@mui/material';
-import { ArrowDropDown } from '@mui/icons-material';
+import React from 'react';
 
 const options = ['Top Comments', 'Latest Comments'];
 

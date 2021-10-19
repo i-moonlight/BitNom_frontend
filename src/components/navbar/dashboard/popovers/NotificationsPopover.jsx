@@ -1,3 +1,4 @@
+import { SettingsRounded } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -12,15 +13,13 @@ import {
     Popover,
     Typography,
 } from '@mui/material';
-import { SettingsRounded } from '@mui/icons-material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
     getCreationTime,
     notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { useHistory } from 'react-router-dom';
 
 export default function NotificationsPopover({
     notificationAnchorEl,

@@ -35,6 +35,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 });
 
 const backendUri = process.env.REACT_APP_BACKEND_URL;
+
 class WebSocketLink extends ApolloLink {
     constructor(options) {
         super();

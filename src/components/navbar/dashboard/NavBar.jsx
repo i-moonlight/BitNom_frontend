@@ -6,16 +6,16 @@ import { useHistory } from 'react-router';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
     QUERY_LOAD_EVENTS,
+    QUERY_LOAD_SCROLLS,
 } from '../../../pages/dasboard/utilities/queries';
 import {
     checkSessionTimeOut,
     signout,
 } from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
-import { setPostCount } from '../../../store/actions/postCountActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
+import { setPostCount } from '../../../store/actions/postCountActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
     QUERY_GET_USER_NOTIFICATIONS,
@@ -157,7 +157,10 @@ export default function NavBar() {
             setTabValue(0);
         }
 
-        if (window.location.pathname == '/cryptocurrency') {
+        if (
+            window.location.pathname == '/knowledge_center/cryptocurrency' ||
+            window.location.pathname == '/knowledge_center/bitcoin'
+        ) {
             setTabValue(1);
         }
 

@@ -1,3 +1,4 @@
+import { ShareRounded } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -9,7 +10,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { ShareRounded } from '@mui/icons-material';
 import React from 'react';
 import Button from '../../../components/Button';
 import {} from '../utilities/functions';

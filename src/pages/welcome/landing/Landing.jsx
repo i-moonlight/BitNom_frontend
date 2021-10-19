@@ -1,12 +1,12 @@
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import AcceptCookies from '../AcceptCookies';
-import InfrastructureSection from './InfrastructureSection';
-import ProjectSection from './ProjectSection';
 import Wrapper from '../Wrapper';
 import HeaderSection from './HeaderSection';
+import InfrastructureSection from './InfrastructureSection';
 import InvestorSection from './InvestorSection';
 import LayersSection from './LayersSection';
+import ProjectSection from './ProjectSection';
 import ServicesSection from './ServicesSection';
 import SponsorsSection from './SponsorsSection';
 import TransitionSection from './TransitionSection';

@@ -1,5 +1,17 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
+    CommentRounded,
+    FavoriteRounded,
+    ImageRounded,
+    InsertEmoticon,
+    MoreVert,
+    PanToolRounded,
+    Send,
+    ShareRounded,
+    ThumbDownRounded,
+    ThumbUpRounded,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardActionArea,
@@ -13,37 +25,25 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { green, red } from '@mui/material/colors';
-import {
-    CommentRounded,
-    FavoriteRounded,
-    ImageRounded,
-    MoreVert,
-    PanToolRounded,
-    Send,
-    ShareRounded,
-    ThumbDownRounded,
-    ThumbUpRounded,
-    InsertEmoticon,
-} from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import Button from '../../../../components/Button';
-import ReactionButton from '../../../../components/ReactionButton';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
-import { MentionsInput, Mention } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Button from '../../../../components/Button';
+import ReactionButton from '../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import EventPreview from '../../events/EventPreview';
 import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
 } from '../../utilities/functions';
-
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
@@ -51,12 +51,11 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import Comment from './comment/Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
-import EventPreview from '../../events/EventPreview';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
@@ -115,6 +114,7 @@ export default function Scroll({
     setOpen,
     setImagePreviewOpen,
     setImagePreviewURL,
+    style,
 }) {
     const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
@@ -293,7 +293,7 @@ export default function Scroll({
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
+            <Card style={{ ...style, marginBottom: 16 }}>
                 <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}

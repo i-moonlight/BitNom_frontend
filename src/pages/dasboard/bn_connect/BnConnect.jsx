@@ -29,6 +29,8 @@ import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
 import UserCard from './UserCard';
+// import { VariableSizeList as WindowList } from 'react-window';
+// import WindowListAutoSizer from 'react-virtualized-auto-sizer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,17 +63,15 @@ export default function BnConnect() {
 
     const user = state.auth.user;
 
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
+    const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+
     const profile = profileData?.Users?.profile;
 
     const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
-            data: { ids: getFeed(profile), limit: 220 },
+            data: { ids: getFeed(profile) },
         },
     });
 
@@ -96,7 +96,6 @@ export default function BnConnect() {
             },
         }
     );
-    //onesignal
 
     useEffect(() => {
         const OneSignal = window.OneSignal || [];
@@ -115,6 +114,31 @@ export default function BnConnect() {
             });
         });
     }, [user._id]);
+
+    // const Row = ({ index, style }) => {
+    //     const scroll = data?.Posts?.get[index];
+
+    //     return (
+    //         <Scroll
+    //             style={style}
+    //             setOpen={() => setCreateScrollOpen(true)}
+    //             setUpdateOpen={setUpdateScrollOpen}
+    //             profileData={profileData?.Users?.profile}
+    //             setUpdateCommentOpen={setUpdateCommentOpen}
+    //             setOpenFlag={setCreateFlagOpen}
+    //             setFlaggedResource={setFlaggedResource}
+    //             setOpenReactions={setOpenReactions}
+    //             setResourceReactions={setResourceReactions}
+    //             setImagePreviewURL={(url) => setImagePreviewURL(url)}
+    //             setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
+    //             setSharedResource={setSharedResource}
+    //             setCommentToEdit={setCommentToEdit}
+    //             setPostToEdit={setPostToEdit}
+    //             key={scroll?._id}
+    //             scroll={scroll}
+    //         />
+    //     );
+    // };
 
     return (
         <Screen>
@@ -174,38 +198,42 @@ export default function BnConnect() {
                                     />
                                 )}
                             </Grid>
-                            {data?.Posts?.get &&
-                                data?.Posts?.get?.map((scroll) => (
-                                    <Scroll
-                                        setOpen={() =>
-                                            setCreateScrollOpen(true)
-                                        }
-                                        setUpdateOpen={setUpdateScrollOpen}
-                                        profileData={
-                                            profileData?.Users?.profile
-                                        }
-                                        setUpdateCommentOpen={
-                                            setUpdateCommentOpen
-                                        }
-                                        setOpenFlag={setCreateFlagOpen}
-                                        setFlaggedResource={setFlaggedResource}
-                                        setOpenReactions={setOpenReactions}
-                                        setResourceReactions={
-                                            setResourceReactions
-                                        }
-                                        setImagePreviewURL={(url) =>
-                                            setImagePreviewURL(url)
-                                        }
-                                        setImagePreviewOpen={(open) =>
-                                            setImagePreviewOpen(open)
-                                        }
-                                        setSharedResource={setSharedResource}
-                                        setCommentToEdit={setCommentToEdit}
-                                        setPostToEdit={setPostToEdit}
-                                        key={scroll?._id}
-                                        scroll={scroll}
-                                    />
-                                ))}
+                            {/* <WindowListAutoSizer>
+                                {({ width, height }) => (
+                                    <WindowList
+                                        className="List"
+                                        height={height}
+                                        itemCount={data?.Posts?.get?.length}
+                                        itemSize={() => 15}
+                                        width={width}
+                                    >
+                                        {Row}
+                                    </WindowList>
+                                )}
+                            </WindowListAutoSizer> */}
+                            {data?.Posts?.get?.map((scroll) => (
+                                <Scroll
+                                    setOpen={() => setCreateScrollOpen(true)}
+                                    setUpdateOpen={setUpdateScrollOpen}
+                                    profileData={profileData?.Users?.profile}
+                                    setUpdateCommentOpen={setUpdateCommentOpen}
+                                    setOpenFlag={setCreateFlagOpen}
+                                    setFlaggedResource={setFlaggedResource}
+                                    setOpenReactions={setOpenReactions}
+                                    setResourceReactions={setResourceReactions}
+                                    setSharedResource={setSharedResource}
+                                    setCommentToEdit={setCommentToEdit}
+                                    setPostToEdit={setPostToEdit}
+                                    key={scroll?._id}
+                                    scroll={scroll}
+                                    setImagePreviewURL={(url) => {
+                                        setImagePreviewURL(url);
+                                    }}
+                                    setImagePreviewOpen={(open) => {
+                                        setImagePreviewOpen(open);
+                                    }}
+                                />
+                            ))}
                             {data?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">

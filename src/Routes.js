@@ -10,12 +10,13 @@ import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
+import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
 import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
+import CoinDetails from './pages/dasboard/bn_knowledge_center/con_details/CoinDetails';
 import BnServices from './pages/dasboard/bn_services/BnServices';
 import SavedItems from './pages/dasboard/bookmarks/SavedItems';
 import Events from './pages/dasboard/events/Events';
 import EventView from './pages/dasboard/events/EventView';
-import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
 import Notifications from './pages/dasboard/notifications/Notifications';
 import Connections from './pages/dasboard/people/Connections';
 import People from './pages/dasboard/people/People';
@@ -109,7 +110,27 @@ export default function Routes({ apolloClient }) {
                         <Route
                             exact
                             component={BnKnowledgeCenter}
-                            path="/cryptocurrency"
+                            path="/knowledge_center/cryptocurrency"
+                        />
+                        <Route
+                            exact
+                            component={CoinDetails}
+                            path="/knowledge_center/bitcoin" // Should be optional later
+                        />
+                        <Route
+                            exact
+                            component={Events}
+                            path="/dashboard/events"
+                        />
+                        <Route
+                            exact
+                            component={EventView}
+                            path="/dashboard/events/:id"
+                        />
+                        <Route
+                            exact
+                            component={People}
+                            path="/dashboard/people"
                         />
                         <Route exact component={Events} path="/events" />
                         <Route exact component={EventView} path="/events/:id" />

@@ -42,7 +42,10 @@
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
+        "react-swipeable-views": "^0.14.0",
         "react-toastify": "^8.0.2",
+        "react-virtualized-auto-sizer": "^1.0.6",
+        "react-window": "^1.8.6",
         "redux": "^4.1.0",
         "redux-thunk": "^2.3.0",
         "subscriptions-transport-ws": "^0.9.19",
@@ -68,7 +71,7 @@
         "eject": "react-scripts eject",
         "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
         "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin beta && echo ===== Done pushing Files ====="
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"developments\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
     },
     "eslintConfig": {
         "extends": [
@@ -89,6 +92,8 @@
         ]
     },
     "devDependencies": {
-        "prettier": "^2.4.1"
+        "@mui/material": "^5.0.3",
+        "prettier": "^2.4.1",
+        "prop-types": "^15.7.2"
     }
 }
