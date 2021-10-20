@@ -639,44 +639,6 @@ export default function EventView({ match }) {
                                                     >
                                                         <div>
                                                             <Typography
-                                                                display="inline-flex"
-                                                                className="center-horizontal"
-                                                                variant="body2"
-                                                                gutterBottom
-                                                            >
-                                                                <Launch
-                                                                    fontSize="small"
-                                                                    style={{
-                                                                        marginRight:
-                                                                            '5px',
-                                                                    }}
-                                                                />
-                                                                :
-                                                                <Typography
-                                                                    style={{
-                                                                        marginLeft:
-                                                                            '2px',
-                                                                    }}
-                                                                    component="a"
-                                                                    href={
-                                                                        eventData
-                                                                            ?.Events
-                                                                            ?.getById
-                                                                            ?.link
-                                                                    }
-                                                                    target="_blank"
-                                                                    rel="noreferrer"
-                                                                >
-                                                                    {
-                                                                        eventData
-                                                                            ?.Events
-                                                                            ?.getById
-                                                                            ?.link
-                                                                    }
-                                                                </Typography>
-                                                            </Typography>
-
-                                                            <Typography
                                                                 display="inline"
                                                                 className="center-horizontal"
                                                                 variant="body2"
@@ -711,6 +673,21 @@ export default function EventView({ match }) {
                                                                     display="inline-flex"
                                                                     className="center-horizontal"
                                                                 >
+                                                                    {eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                        ?.organizers
+                                                                        ?.length <
+                                                                        1 && (
+                                                                        <Typography
+                                                                            variant="body2"
+                                                                            style={{
+                                                                                margin: '0px 4px',
+                                                                            }}
+                                                                        >
+                                                                            N/A
+                                                                        </Typography>
+                                                                    )}
                                                                     {eventData?.Events?.getById?.organizers?.map(
                                                                         (
                                                                             org
@@ -759,7 +736,13 @@ export default function EventView({ match }) {
                                                                                 key={
                                                                                     tag
                                                                                 }
-                                                                                href="#"
+                                                                                onClick={() =>
+                                                                                    history.push(
+                                                                                        `/hashtags/${tag.substring(
+                                                                                            1
+                                                                                        )}`
+                                                                                    )
+                                                                                }
                                                                             >
                                                                                 {
                                                                                     tag
@@ -767,6 +750,43 @@ export default function EventView({ match }) {
                                                                             </Typography>
                                                                         )
                                                                     )}
+                                                                </Typography>
+                                                            </Typography>
+                                                            <Typography
+                                                                display="inline-flex"
+                                                                className="center-horizontal"
+                                                                variant="body2"
+                                                                gutterBottom
+                                                            >
+                                                                <Launch
+                                                                    fontSize="small"
+                                                                    style={{
+                                                                        marginRight:
+                                                                            '5px',
+                                                                    }}
+                                                                />
+                                                                :
+                                                                <Typography
+                                                                    style={{
+                                                                        marginLeft:
+                                                                            '2px',
+                                                                    }}
+                                                                    component="a"
+                                                                    href={
+                                                                        eventData
+                                                                            ?.Events
+                                                                            ?.getById
+                                                                            ?.link
+                                                                    }
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
+                                                                    {
+                                                                        eventData
+                                                                            ?.Events
+                                                                            ?.getById
+                                                                            ?.link
+                                                                    }
                                                                 </Typography>
                                                             </Typography>
                                                             <Typography

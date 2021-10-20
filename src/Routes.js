@@ -21,6 +21,7 @@ import Connections from './pages/dasboard/people/Connections';
 import People from './pages/dasboard/people/People';
 import Profile from './pages/dasboard/profile/Profile';
 import ProfileView from './pages/dasboard/profile/ProfileView';
+import HashtagView from './pages/dasboard/bn_connect/HashtagView';
 import Posts from './pages/dasboard/profile/UserPosts';
 import Cookie from './pages/welcome/cookie/Cookie';
 import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
@@ -118,6 +119,11 @@ export default function Routes({ apolloClient }) {
                             exact
                             component={Connections}
                             path="/profile/connections"
+                        />
+                        <Route
+                            exact
+                            component={HashtagView}
+                            path="/hashtags/:hashtag"
                         />
                         <Route exact component={PostView} path="/posts/:id" />
                         <Route exact component={Posts} path="/profile/posts" />

@@ -5,7 +5,6 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    Divider,
     Grid,
     IconButton,
     Typography,
@@ -75,8 +74,9 @@ export default function SavedPost({
                                 size="small"
                                 style={{
                                     display:
-                                        location.pathname.includes('posts') &&
-                                        'none',
+                                        !location.pathname.includes(
+                                            'bookmarks'
+                                        ) && 'none',
                                     zIndex: 3,
                                 }}
                                 className="m-1 p-1"
@@ -120,23 +120,6 @@ export default function SavedPost({
                                 }}
                                 style={{ zIndex: 2 }}
                             ></Typography>
-                            {/* <br />
-            {scroll?.content_entities?.map((entity) => {
-              let colortext = scroll?.content?.slice(
-                entity?.offset,
-                entity?.offset + entity?.length
-              );
-
-              return (
-                <a
-                  href={entity?.url}
-                  className='mx-1 mt-1'
-                  key={entity?.offset}
-                >
-                  {colortext}
-                </a>
-              );
-            })} */}
                         </Typography>
                         <Grid container spacing={2} className="mb-2">
                             {scroll?.video && (
@@ -218,8 +201,6 @@ export default function SavedPost({
                             </Typography>
                         </Typography>
                     </CardContent>
-
-                    <Divider />
 
                     <SavedItemsOptionPopover
                         savedItem={scroll}
