@@ -1,3 +1,14 @@
+//import { useMutation } from '@apollo/client';
+/* import {
+   MUTATION_CREATE_BOOKMARK,
+} from '../utilities/queries'; */
+//import { useSelector } from 'react-redux';
+import {
+    CheckBox,
+    FileCopyOutlined,
+    FlagOutlined,
+    Notifications,
+} from '@mui/icons-material';
 import {
     Card,
     List,
@@ -8,18 +19,6 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { toast } from 'react-toastify';
-//import { useMutation } from '@apollo/client';
-
-/* import {
-   MUTATION_CREATE_BOOKMARK,
-} from '../utilities/queries'; */
-//import { useSelector } from 'react-redux';
-import {
-    Notifications,
-    FlagOutlined,
-    CheckBox,
-    FileCopyOutlined,
-} from '@mui/icons-material';
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,
     eventOptionsId,

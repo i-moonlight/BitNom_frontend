@@ -1,12 +1,12 @@
+import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React from 'react';
-import { useMutation } from '@apollo/client';
 import {
-    MARK_NOTIFICATION_AS_READ,
+    DELETE_NOTIFICATION,
     GET_USER_NOTIFICATIONS,
+    MARK_NOTIFICATION_AS_READ,
     //MARK_NOTIFICAION_AS_SEEN,
     MUTATION_MUTE_NOTIFICATIONS,
-    DELETE_NOTIFICATION,
 } from '../../../../pages/dasboard/utilities/queries';
 
 export default function NotificationOptionPopover({

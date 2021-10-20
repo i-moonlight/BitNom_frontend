@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import { FiberManualRecord, MoreVert } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    Grid,
     CardHeader,
-    IconButton,
     Divider,
+    Grid,
+    IconButton,
     Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { MoreVert, FiberManualRecord } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
 import moment from 'moment';
-import { notificationBodyFactory } from '../utilities/functions';
-import { getUserInitials } from '../../../utilities/Helpers';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
+import { getUserInitials } from '../../../utilities/Helpers';
+import { notificationBodyFactory } from '../utilities/functions';
 
 const notificationOptionId = 'menu-notification-option';
 

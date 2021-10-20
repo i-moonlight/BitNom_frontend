@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     CircularProgress,
     Grid,
@@ -7,9 +5,11 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-import Chat from './chat';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
+import Chat from './chat';
+
 export default function Archived({ archived, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);

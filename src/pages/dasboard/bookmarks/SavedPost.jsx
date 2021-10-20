@@ -1,3 +1,4 @@
+import { MoreVert } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -9,17 +10,14 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
-
 import moment from 'moment';
-import { useLocation, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
-import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
 import EventPreview from '../events/EventPreview';
+import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
+import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
 const savedItemOptionId = 'menu-savedItem-option';
 

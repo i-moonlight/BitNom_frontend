@@ -1,14 +1,14 @@
-import React from 'react';
+import { EventRounded, KeyboardArrowRight } from '@mui/icons-material';
 import {
     Card,
     CardContent,
-    Typography,
-    ListItem,
-    ListItemText,
-    ListItemSecondaryAction,
     List,
+    ListItem,
+    ListItemSecondaryAction,
+    ListItemText,
+    Typography,
 } from '@mui/material';
-import { EventRounded, KeyboardArrowRight } from '@mui/icons-material';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 

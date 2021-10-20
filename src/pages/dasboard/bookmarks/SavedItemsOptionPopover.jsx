@@ -1,5 +1,9 @@
 import { useMutation } from '@apollo/client';
 import {
+    BookmarkBorderRounded,
+    PersonAddDisabledOutlined,
+} from '@mui/icons-material';
+import {
     Card,
     List,
     ListItem,
@@ -7,18 +11,13 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-import {
-    BookmarkBorderRounded,
-    PersonAddDisabledOutlined,
-} from '@mui/icons-material';
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import {
-    MUTATION_REMOVE_BOOKMARK,
     GET_BOOKMARKED_COMMENTS,
-    GET_BOOKMARKED_SCROLLS,
     GET_BOOKMARKED_EVENTS,
+    GET_BOOKMARKED_SCROLLS,
+    MUTATION_REMOVE_BOOKMARK,
 } from '../utilities/queries';
 
 export default function SavedItemsOptionPopover({

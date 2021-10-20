@@ -1,4 +1,12 @@
 import {
+    CloseRounded,
+    FavoriteRounded,
+    PanToolRounded,
+    ThumbDownRounded,
+    ThumbUpRounded,
+} from '@mui/icons-material';
+import {
+    Avatar,
     Card,
     CardContent,
     Divider,
@@ -6,23 +14,15 @@ import {
     IconButton,
     List,
     ListItem,
-    ListItemText,
     ListItemAvatar,
-    Avatar,
+    ListItemText,
     Modal,
-    Typography,
-    Tabs,
     Tab,
+    Tabs,
+    Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { green, red } from '@mui/material/colors';
-import {
-    CloseRounded,
-    ThumbDownRounded,
-    ThumbUpRounded,
-    FavoriteRounded,
-    PanToolRounded,
-} from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';

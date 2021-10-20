@@ -1,9 +1,9 @@
+import { AddCircleRounded } from '@mui/icons-material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
-import { AddCircleRounded } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 
 export default function FaqSection() {

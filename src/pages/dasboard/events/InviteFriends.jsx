@@ -1,26 +1,26 @@
+import { useMutation } from '@apollo/client';
 import {
+    CheckBox,
+    CheckBoxOutlineBlank,
+    CloseRounded,
+} from '@mui/icons-material';
+import Autocomplete from '@mui/lab/Autocomplete';
+import {
+    Button,
     Card,
+    CardActions,
     CardContent,
+    Checkbox,
+    CircularProgress,
     Divider,
     Grid,
     IconButton,
     Modal,
-    Typography,
-    Checkbox,
     TextField,
-    CardActions,
-    CircularProgress,
-    Button,
+    Typography,
 } from '@mui/material';
-import { useMutation } from '@apollo/client';
-import Autocomplete from '@mui/lab/Autocomplete';
-import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
-import {
-    CloseRounded,
-    CheckBox,
-    CheckBoxOutlineBlank,
-} from '@mui/icons-material';
 import React, { useState } from 'react';
+import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
 //import { getUserInitials } from '../../../utilities/Helpers';
 //import { getReactionsSum } from '../utilities/functions';
 

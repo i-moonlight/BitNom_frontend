@@ -1,4 +1,12 @@
 import {
+    BookmarkRounded,
+    CollectionsBookmarkRounded,
+    EventRounded,
+    Notifications,
+    PersonRounded,
+    Settings,
+} from '@mui/icons-material';
+import {
     Avatar,
     Badge,
     Card,
@@ -9,14 +17,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import {
-    BookmarkRounded,
-    CollectionsBookmarkRounded,
-    EventRounded,
-    Notifications,
-    PersonRounded,
-    Settings,
-} from '@mui/icons-material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';

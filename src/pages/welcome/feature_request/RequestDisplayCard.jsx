@@ -1,3 +1,4 @@
+import { ThumbDownRounded, ThumbUpRounded } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -6,7 +7,6 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { ThumbDownRounded, ThumbUpRounded } from '@mui/icons-material';
 import React from 'react';
 
 export default function RequestDisplayCard() {

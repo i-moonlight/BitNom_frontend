@@ -1,4 +1,17 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import {
+    ArrowBack,
+    CommentRounded,
+    FavoriteRounded,
+    ImageRounded,
+    InsertEmoticon,
+    MoreVert,
+    PanToolRounded,
+    Send,
+    ShareRounded,
+    ThumbDownRounded,
+    ThumbUpRounded,
+} from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -7,74 +20,60 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
+    CircularProgress,
+    Container,
     Divider,
     Grid,
+    Hidden,
     IconButton,
     Typography,
     useTheme,
-    Hidden,
-    Container,
-    CircularProgress,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { green, red } from '@mui/material/colors';
-import { Helmet } from 'react-helmet';
-import {
-    CommentRounded,
-    FavoriteRounded,
-    ImageRounded,
-    MoreVert,
-    PanToolRounded,
-    Send,
-    ShareRounded,
-    ThumbDownRounded,
-    ThumbUpRounded,
-    InsertEmoticon,
-    ArrowBack,
-} from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import { DropzoneDialog } from 'material-ui-dropzone';
-import { ToastContainer } from 'react-toastify';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import Button from '../../../../components/Button';
-import ReactionButton from '../../../../components/ReactionButton';
-import ImagePreview from '../../../../components/ImagePreview';
-import Screen from '../../../../components/Screen';
+import { Helmet } from 'react-helmet';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
-import { MentionsInput, Mention } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import Button from '../../../../components/Button';
+import ImagePreview from '../../../../components/ImagePreview';
+import ReactionButton from '../../../../components/ReactionButton';
+import Screen from '../../../../components/Screen';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import EventPreview from '../../events/EventPreview';
 import {
     contentBodyFactory,
     getReactionsSum,
     getTopComments,
     mentionsFinder,
 } from '../../utilities/functions';
-
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
+    QUERY_FETCH_PROFILE,
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
-    QUERY_FETCH_PROFILE,
 } from '../../utilities/queries';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import FlagResourceModal from '../popovers/FlagResourceModal';
+import ReactionsModal from '../popovers/ReactionsModal';
+import UserCard from '../UserCard';
 import Comment from './comment/Comment';
 import UpdateComment from './comment/UpdateComment';
 import CreatePost from './CreatePost';
-import UpdatePost from './UpdatePost';
-import FlagResourceModal from '../popovers/FlagResourceModal';
-import ReactionsModal from '../popovers/ReactionsModal';
+import FilterButton from './FilterButton';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
-import EventPreview from '../../events/EventPreview';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import UserCard from '../UserCard';
-import FilterButton from './FilterButton';
+import UpdatePost from './UpdatePost';
 
 const useStyles = makeStyles((theme) => ({
     root: {

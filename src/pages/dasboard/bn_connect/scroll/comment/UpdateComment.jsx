@@ -1,6 +1,13 @@
 //TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
+    ChevronRight,
+    CloseRounded,
+    ImageRounded,
+    InsertEmoticon,
+    Public,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardContent,
@@ -20,16 +27,9 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import {
-    ChevronRight,
-    CloseRounded,
-    ImageRounded,
-    Public,
-    InsertEmoticon,
-} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useEffect, useState } from 'react';
-import { MentionsInput, Mention } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import Button from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';

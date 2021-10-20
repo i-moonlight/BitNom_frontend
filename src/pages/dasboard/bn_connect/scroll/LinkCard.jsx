@@ -1,3 +1,4 @@
+import { LinkOutlined } from '@mui/icons-material';
 import {
     Card,
     CardActionArea,
@@ -7,7 +8,6 @@ import {
     Divider,
     Typography,
 } from '@mui/material';
-import { LinkOutlined } from '@mui/icons-material';
 import React from 'react';
 
 export default function LinkCard({ link }) {

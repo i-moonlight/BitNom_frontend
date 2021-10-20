@@ -16,8 +16,8 @@ import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
-import { QUERY_FETCH_PROFILE, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import SavedPost from '../bookmarks/SavedPost';
+import { QUERY_FETCH_PROFILE, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
     root: {

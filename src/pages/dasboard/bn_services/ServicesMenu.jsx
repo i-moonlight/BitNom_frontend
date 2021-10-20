@@ -1,12 +1,4 @@
 import {
-    Card,
-    Divider,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
-import {
     BookmarkBorderRounded,
     FileCopyOutlined,
     FlagOutlined,
@@ -15,6 +7,14 @@ import {
     PlaylistAddCheckRounded,
     TapAndPlayRounded,
 } from '@mui/icons-material';
+import {
+    Card,
+    Divider,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material';
 import React from 'react';
 import Button from '../../../components/Button';
 

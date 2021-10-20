@@ -1,5 +1,12 @@
 import { useMutation } from '@apollo/client';
 import {
+    ChevronRight,
+    CloseRounded,
+    ImageRounded,
+    Public,
+    VideocamRounded,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardContent,
@@ -13,13 +20,6 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import {
-    ChevronRight,
-    CloseRounded,
-    ImageRounded,
-    Public,
-    VideocamRounded,
-} from '@mui/icons-material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
