@@ -26,7 +26,7 @@ export const contentBodyFactory = (resource) => {
             const toReplace = '@' + entity.url;
             newContent = newContent?.replace(toReplace, replacement);
         } else if (entity.type === 'hashtag') {
-            const link = `/hashtags/${entity.url}`;
+            const link = `/hashtags/${entity.url.substring(1)}`;
             const replacement =
                 '<a style={{zIndex: 2}} href=' +
                 link +
