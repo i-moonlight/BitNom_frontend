@@ -26,7 +26,7 @@ import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';
-import HeatMap from "./HeatMap";
+import HeatMap from './HeatMap';
 
 const columns = [
     { id: 'star', label: '#', minWidth: 10 },
@@ -868,7 +868,9 @@ export default function BnKnowledgeCenter() {
                             classes={{ root: classes.tabPanelRoot }}
                         >
                             <Card>
-                                <div><HeatMap /></div>
+                                <div>
+                                    <HeatMap />
+                                </div>
                             </Card>
                         </TabPanel>
                     </TabContext>

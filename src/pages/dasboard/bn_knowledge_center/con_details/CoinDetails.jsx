@@ -100,19 +100,18 @@ export default function CoinDetails() {
                                 </div>
                                 <div className={''}>
                                     <p>
-                                    <span className={'text-secondary'}>
-                                        Bitocoin (BTC){' '}
-                                    </span>
-                                        <a style={custom.greenBg}>#1</a> <Star />
+                                        <span className={'text-secondary'}>
+                                            Bitocoin (BTC){' '}
+                                        </span>
+                                        <a style={custom.greenBg}>#1</a>{' '}
+                                        <Star />
                                     </p>
                                     <h5>
-                                    <span>
-                                        $47,811.67
-                                    </span>{' '}
+                                        <span>$47,811.67</span>{' '}
                                         <span className={'text-danger'}>
-                                        {' '}
+                                            {' '}
                                             <ArrowDropDown /> 7.76%
-                                    </span>
+                                        </span>
                                     </h5>
                                     <p>
                                         <a
@@ -134,7 +133,11 @@ export default function CoinDetails() {
                             </div>
                             <div>
                                 <div className={'mt-5'}>
-                                    <section className={'d-flex justify-content-evenly'}>
+                                    <section
+                                        className={
+                                            'd-flex justify-content-evenly'
+                                        }
+                                    >
                                         <p className={'m-1'}>
                                             <strong>Price Change 24hrs</strong>
                                         </p>
@@ -142,17 +145,45 @@ export default function CoinDetails() {
                                             <strong>Market cap</strong>
                                         </p>
                                     </section>
-                                    <section className={'d-flex justify-content-between'}>
-                                        <p className={'text-success text-sm-end'}>$1,687,456</p>
-                                        <p className={'text-success  text-sm-end'}>$1,687,456</p>
+                                    <section
+                                        className={
+                                            'd-flex justify-content-between'
+                                        }
+                                    >
+                                        <p
+                                            className={
+                                                'text-success text-sm-end'
+                                            }
+                                        >
+                                            $1,687,456
+                                        </p>
+                                        <p
+                                            className={
+                                                'text-success  text-sm-end'
+                                            }
+                                        >
+                                            $1,687,456
+                                        </p>
                                     </section>
-                                    <section className={'d-flex justify-content-between'}>
+                                    <section
+                                        className={
+                                            'd-flex justify-content-between'
+                                        }
+                                    >
                                         <p>Availability Supply</p>
                                         <p>Total Supply</p>
                                     </section>
-                                    <section className={'d-flex justify-content-between'}>
-                                        <p className={'text-success'}>18,834,400</p>
-                                        <p className={'text-success'}>18,834,400</p>
+                                    <section
+                                        className={
+                                            'd-flex justify-content-between'
+                                        }
+                                    >
+                                        <p className={'text-success'}>
+                                            18,834,400
+                                        </p>
+                                        <p className={'text-success'}>
+                                            18,834,400
+                                        </p>
                                     </section>
                                 </div>
                             </div>
@@ -187,9 +218,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Explorer
                                             </strong>
                                         </div>
@@ -228,9 +257,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Community
                                             </strong>
                                         </div>
@@ -265,9 +292,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Source Code
                                             </strong>
                                         </div>
@@ -286,9 +311,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Tags
                                             </strong>
                                         </div>
@@ -335,10 +358,7 @@ export default function CoinDetails() {
                 </Card>
 
                 <div className={'mt-3'}>
-                    <TabContext
-                        value={value}
-                        variant="standard"
-                    >
+                    <TabContext value={value} variant="standard">
                         <Card>
                             <TabList
                                 onChange={handleChange}

@@ -38,7 +38,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
-import CoinChart from "./CoinChart";
+import CoinChart from './CoinChart';
 
 function createData(
     number,
@@ -256,10 +256,11 @@ export default function Overview() {
                             className={'btn btn-secondary m-2'}
                             style={custom.tabStyle}
                         />
-                        <Tab label="Widget"
-                             value="3"
-                             style={custom.tabStyle}
-                             className={'btn btn-secondary m-2'}
+                        <Tab
+                            label="Widget"
+                            value="3"
+                            style={custom.tabStyle}
+                            className={'btn btn-secondary m-2'}
                         />
                         <Tab
                             label="Analysis"
@@ -280,7 +281,11 @@ export default function Overview() {
                             <Card className={'col-7'}>
                                 {/*Bitcoin (BTC) Price Chart*/}
                                 <div className={'m-3'}>
-                                    <div className={'d-flex justify-content-between'}>
+                                    <div
+                                        className={
+                                            'd-flex justify-content-between'
+                                        }
+                                    >
                                         <h4>Bitcoin (BTC) Price Chart</h4>
                                         <div>
                                             <Fullscreen className={'m-1'} />
@@ -288,7 +293,11 @@ export default function Overview() {
                                         </div>
                                     </div>
                                     {/*Chart*/}
-                                    <div  className={'d-flex justify-content-between'}>
+                                    <div
+                                        className={
+                                            'd-flex justify-content-between'
+                                        }
+                                    >
                                         <div>
                                             <button
                                                 className={
@@ -1569,9 +1578,7 @@ export default function Overview() {
                                     </div>
                                 </div>
                             </div>
-                            <button
-                                className={'btn btn-primary mt-3'}
-                            >
+                            <button className={'btn btn-primary mt-3'}>
                                 Dive Deeper
                             </button>
                             <div className={'mt-5'}>
@@ -1637,8 +1644,7 @@ export default function Overview() {
                                     </div>
                                 </div>
                             </div>
-                            <button
-                                className={'btn btn-primary mt-3'}>
+                            <button className={'btn btn-primary mt-3'}>
                                 See More Signals
                             </button>
                         </div>

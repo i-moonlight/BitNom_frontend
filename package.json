@@ -71,7 +71,7 @@
         "eject": "react-scripts eject",
         "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
         "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"add missing links\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"fix knowledge center warnings\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
     },
     "eslintConfig": {
         "extends": [
