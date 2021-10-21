@@ -579,7 +579,7 @@ export default function BnKnowledgeCenter() {
                             >
                                 <Tab
                                     label="Portfolio"
-                                    value="1"
+                                    value=""
                                     style={custom.tabStyle}
                                 />
                                 <Tab
@@ -589,6 +589,11 @@ export default function BnKnowledgeCenter() {
                                 />
 
                                 <hr style={custom.verticalLine} />
+                                <Tab
+                                    label="Cryptocurrency"
+                                    value="1"
+                                    style={custom.tabStyle}
+                                />
                                 <Tab
                                     label="Cryptogazing"
                                     value="3"
@@ -602,11 +607,6 @@ export default function BnKnowledgeCenter() {
                                 <Tab
                                     label="Gainers and Losers "
                                     value="5"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Recently Added"
-                                    value="1"
                                     style={custom.tabStyle}
                                 />
                                 <Tab
