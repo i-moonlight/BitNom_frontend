@@ -1,5 +1,6 @@
 import { Container, Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import servicesImg from '../../../assets/landing/img3.png';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
@@ -42,7 +43,7 @@ export default function ServicesSection() {
                             className={classes.sectionText}
                             color="textPrimary"
                         >
-                            <a href="">Visit BN Services &gt;</a>
+                            <Link to="/services">Visit BN Services &gt;</Link>
                         </Typography>
                     </Grid>
                     <Grid item sm={10} md={6}>
