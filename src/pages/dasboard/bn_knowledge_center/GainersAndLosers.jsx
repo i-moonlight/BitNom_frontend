@@ -110,7 +110,7 @@ const rows = [
 
 export default function GainersAndLosers() {
     return (
-        <Card>
+        <div>
             <div className="d-flex justify-content-evenly">
                 <div className="mb-5">
                     <h4 className="fw-bold m-3">Top Gainers</h4>
@@ -198,12 +198,11 @@ export default function GainersAndLosers() {
                         </Table>
                     </TableContainer>
                 </div>
-                <div>
+                <div className={'mb-5'}>
                     <h4 className="fw-bold m-3">Top Losers</h4>
                     <p>24h Volume is above USD $50,000</p>
-                    <TableContainer component={Paper}>
+                    <TableContainer>
                         <Table
-                            sx={{ minWidth: 650 }}
                             aria-label="caption table"
                         >
                             <TableHead>
@@ -288,6 +287,6 @@ export default function GainersAndLosers() {
                     </TableContainer>
                 </div>
             </div>
-        </Card>
+        </div>
     );
 }
