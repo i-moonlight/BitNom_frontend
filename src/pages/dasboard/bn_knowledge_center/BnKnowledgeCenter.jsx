@@ -26,6 +26,7 @@ import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';
+import HeatMap from "./HeatMap";
 
 const columns = [
     { id: 'star', label: '#', minWidth: 10 },
@@ -578,7 +579,7 @@ export default function BnKnowledgeCenter() {
                             >
                                 <Tab
                                     label="Portfolio"
-                                    value="1"
+                                    value=""
                                     style={custom.tabStyle}
                                 />
                                 <Tab
@@ -588,6 +589,11 @@ export default function BnKnowledgeCenter() {
                                 />
 
                                 <hr style={custom.verticalLine} />
+                                <Tab
+                                    label="Cryptocurrency"
+                                    value="1"
+                                    style={custom.tabStyle}
+                                />
                                 <Tab
                                     label="Cryptogazing"
                                     value="3"
@@ -601,11 +607,6 @@ export default function BnKnowledgeCenter() {
                                 <Tab
                                     label="Gainers and Losers "
                                     value="5"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Recently Added"
-                                    value="1"
                                     style={custom.tabStyle}
                                 />
                                 <Tab
@@ -867,7 +868,7 @@ export default function BnKnowledgeCenter() {
                             classes={{ root: classes.tabPanelRoot }}
                         >
                             <Card>
-                                <div>HeatMap</div>
+                                <div><HeatMap /></div>
                             </Card>
                         </TabPanel>
                     </TabContext>

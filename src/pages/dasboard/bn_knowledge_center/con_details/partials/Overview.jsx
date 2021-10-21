@@ -38,6 +38,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
+import CoinChart from "./CoinChart";
 
 function createData(
     number,
@@ -213,10 +214,10 @@ export default function Overview() {
     const custom = {
         tabStyle: {
             textTransform: 'capitalize',
-            backgroundColor: 'rgb(68 63 63 / 50%)',
-            borderRadius: '25px',
-            marginRight: '10px',
-            fontWeight: 'bold',
+            // backgroundColor: 'rgb(68 63 63 / 50%)',
+            // borderRadius: '5px',
+            // marginRight: '5px',
+            // fontWeight: 'bold',
         },
         coinsBorder: {
             borderLeft: '5px solid blue',
@@ -235,33 +236,42 @@ export default function Overview() {
                     sx={{
                         borderBottom: 1,
                         borderColor: 'divider',
-                        borderRadius: '25px',
+                        borderRadius: '5px',
                     }}
                 >
                     <TabList
                         onChange={handleChange}
                         aria-label="lab API tabs example"
-                        className={'m-2'}
+                        className={'m-1'}
                     >
                         <Tab
                             label="General"
                             value="1"
                             style={custom.tabStyle}
+                            className={'btn btn-secondary m-2'}
                         />
                         <Tab
                             label="Developers"
                             value="2"
+                            className={'btn btn-secondary m-2'}
                             style={custom.tabStyle}
                         />
-                        <Tab label="Widget" value="3" style={custom.tabStyle} />
+                        <Tab label="Widget"
+                             value="3"
+                             style={custom.tabStyle}
+                             className={'btn btn-secondary m-2'}
+                        />
                         <Tab
                             label="Analysis"
                             value="4"
+                            className={'btn btn-secondary m-2'}
                             style={custom.tabStyle}
                         />
                     </TabList>
                 </Card>
+
                 {/*General*/}
+
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                     <div>
                         {/*First row*/}
@@ -270,11 +280,7 @@ export default function Overview() {
                             <Card className={'col-7'}>
                                 {/*Bitcoin (BTC) Price Chart*/}
                                 <div className={'m-3'}>
-                                    <div
-                                        className={
-                                            'd-flex justify-content-between'
-                                        }
-                                    >
+                                    <div className={'d-flex justify-content-between'}>
                                         <h4>Bitcoin (BTC) Price Chart</h4>
                                         <div>
                                             <Fullscreen className={'m-1'} />
@@ -282,11 +288,7 @@ export default function Overview() {
                                         </div>
                                     </div>
                                     {/*Chart*/}
-                                    <div
-                                        className={
-                                            'd-flex justify-content-between'
-                                        }
-                                    >
+                                    <div  className={'d-flex justify-content-between'}>
                                         <div>
                                             <button
                                                 className={
@@ -370,17 +372,9 @@ export default function Overview() {
                                         </div>
                                     </div>
                                     <div className={'mt-2'}>
-                                        <div
-                                            style={{
-                                                height: '370px',
-                                                width: '500px',
-                                            }}
-                                            className={'bg-gradient '}
-                                        >
-                                            <div>
-                                                <h4>Chart coming soon</h4>
-                                            </div>
-                                        </div>
+                                        <Card>
+                                            <CoinChart />
+                                        </Card>
                                         <div
                                             className={
                                                 'd-flex justify-content-start'
@@ -1577,7 +1571,6 @@ export default function Overview() {
                             </div>
                             <button
                                 className={'btn btn-primary mt-3'}
-                                style={custom.tabStyle}
                             >
                                 Dive Deeper
                             </button>
@@ -1645,9 +1638,7 @@ export default function Overview() {
                                 </div>
                             </div>
                             <button
-                                className={'btn btn-primary mt-3'}
-                                style={custom.tabStyle}
-                            >
+                                className={'btn btn-primary mt-3'}>
                                 See More Signals
                             </button>
                         </div>
