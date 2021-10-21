@@ -88,84 +88,91 @@ export default function CoinDetails() {
                 {/*Coin Details*/}
                 <Card className="container mt-3">
                     <div className="row">
-                        <div
-                            className="col-7 mt-3 d-flex justify-content-between"
-                            style={{ marginRight: '5px' }}
-                        >
-                            <div className={'m-1'}>
-                                <img
-                                    alt={'Bitcoin image'}
-                                    src={
-                                        'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-                                    }
-                                />
-                            </div>
-                            <div className={'m-1'}>
-                                <p>
+                        <div className="col-7 mt-3 d-flex justify-content-evenly">
+                            <div>
+                                <div className={''}>
+                                    <img
+                                        alt={'Bitcoin image'}
+                                        src={
+                                            'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
+                                        }
+                                    />
+                                </div>
+                                <div className={''}>
+                                    <p>
                                     <span className={'text-secondary'}>
                                         Bitocoin (BTC){' '}
                                     </span>
-                                    <a style={custom.greenBg}>#1</a> <Star />
-                                </p>
-                                <p>
-                                    <span className={'display-6'}>
+                                        <a style={custom.greenBg}>#1</a> <Star />
+                                    </p>
+                                    <h5>
+                                    <span>
                                         $47,811.67
                                     </span>{' '}
-                                    <span className={'text-danger'}>
+                                        <span className={'text-danger'}>
                                         {' '}
-                                        <ArrowDropDown /> 7.76%
+                                            <ArrowDropDown /> 7.76%
                                     </span>
-                                </p>
-                                <p>
-                                    <a
-                                        className={
-                                            'btn btn-secondary btn-sm m-1'
-                                        }
-                                    >
-                                        Coin
-                                    </a>
-                                    <a
-                                        className={
-                                            'btn btn-secondary btn-sm m-1'
-                                        }
-                                    >
-                                        On 2,267,548 watchlists
-                                    </a>
-                                </p>
+                                    </h5>
+                                    <p>
+                                        <a
+                                            className={
+                                                'btn btn-secondary btn-sm m-1'
+                                            }
+                                        >
+                                            Coin
+                                        </a>
+                                        <a
+                                            className={
+                                                'btn btn-secondary btn-sm m-1'
+                                            }
+                                        >
+                                            On 2,267,548 watchlists
+                                        </a>
+                                    </p>
+                                </div>
                             </div>
-                            <div className={'m-1'}>
-                                <p>
-                                    <strong>Price Change 24hrs</strong>
-                                </p>
-                                <p className={'text-success'}>$1,687,456,435</p>
-                                <p>Availability Supply</p>
-                                <p className={'text-success'}>18,834,400</p>
-                            </div>
-                            <div className={'m-1'}>
-                                <p>
-                                    <strong>Market cap</strong>
-                                </p>
-                                <p className={'text-success'}>$1,687,456,435</p>
-                                <p>Total Supply</p>
-                                <p className={'text-success'}>18,834,400</p>
+                            <div>
+                                <div className={'mt-5'}>
+                                    <section className={'d-flex justify-content-evenly'}>
+                                        <p className={'m-1'}>
+                                            <strong>Price Change 24hrs</strong>
+                                        </p>
+                                        <p className={'m-1'}>
+                                            <strong>Market cap</strong>
+                                        </p>
+                                    </section>
+                                    <section className={'d-flex justify-content-between'}>
+                                        <p className={'text-success text-sm-end'}>$1,687,456</p>
+                                        <p className={'text-success  text-sm-end'}>$1,687,456</p>
+                                    </section>
+                                    <section className={'d-flex justify-content-between'}>
+                                        <p>Availability Supply</p>
+                                        <p>Total Supply</p>
+                                    </section>
+                                    <section className={'d-flex justify-content-between'}>
+                                        <p className={'text-success'}>18,834,400</p>
+                                        <p className={'text-success'}>18,834,400</p>
+                                    </section>
+                                </div>
                             </div>
                             <hr style={custom.verticalLine} />
                         </div>
-                        <div className="col-4">
-                            <h4 className="mt-4 mb-4">Info:</h4>
+                        <div className="col-5">
+                            <h4 className="mt-4">Info:</h4>
                             {/*style={{ borderLeft: '0.1em solid green', padding: '0.5em' }}*/}
                             <div>
-                                <div className={'m-3'}>
+                                <div className={'m-1'}>
                                     <div className={'row'}>
-                                        <div className={'col-4'}>
+                                        <div className={'col-3'}>
                                             <strong
-                                                style={{ marginRight: '25px' }}
+                                                // style={{ marginRight: '5px' }}
                                                 className="text-secondary"
                                             >
                                                 Website
                                             </strong>
                                         </div>
-                                        <div className={'col-7'}>
+                                        <div className={'col-9'}>
                                             <a
                                                 className={
                                                     'btn btn-secondary btn-sm m-1'
@@ -177,17 +184,16 @@ export default function CoinDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={'m-3'}>
+                                <div className={'m-1'}>
                                     <div className={'row'}>
-                                        <div className={'col-4'}>
+                                        <div className={'col-3'}>
                                             <strong
-                                                style={{ marginRight: '25px' }}
                                                 className="text-secondary"
                                             >
                                                 Explorer
                                             </strong>
                                         </div>
-                                        <div className={'col-7'}>
+                                        <div className={'col-9'}>
                                             <a
                                                 className={
                                                     'btn btn-secondary btn-sm m-1'
@@ -219,17 +225,16 @@ export default function CoinDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={'m-3'}>
+                                <div className={'m-1'}>
                                     <div className={'row'}>
-                                        <div className={'col-4'}>
+                                        <div className={'col-3'}>
                                             <strong
-                                                style={{ marginRight: '25px' }}
                                                 className="text-secondary"
                                             >
                                                 Community
                                             </strong>
                                         </div>
-                                        <div className={'col-7'}>
+                                        <div className={'col-9'}>
                                             <a
                                                 className={
                                                     'btn btn-secondary btn-sm m-1'
@@ -257,17 +262,16 @@ export default function CoinDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={'m-3'}>
+                                <div className={'m-1'}>
                                     <div className={'row'}>
-                                        <div className={'col-4'}>
+                                        <div className={'col-3'}>
                                             <strong
-                                                style={{ marginRight: '25px' }}
                                                 className="text-secondary"
                                             >
                                                 Source Code
                                             </strong>
                                         </div>
-                                        <div className={'col-7'}>
+                                        <div className={'col-9'}>
                                             <a
                                                 className={
                                                     'btn btn-secondary btn-sm m-1'
@@ -279,17 +283,16 @@ export default function CoinDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={'m-3'}>
+                                <div className={'m-1'}>
                                     <div className={'row'}>
-                                        <div className={'col-4'}>
+                                        <div className={'col-3'}>
                                             <strong
-                                                style={{ marginRight: '25px' }}
                                                 className="text-secondary"
                                             >
                                                 Tags
                                             </strong>
                                         </div>
-                                        <div className={'col-7'}>
+                                        <div className={'col-9'}>
                                             <a
                                                 className={
                                                     'btn btn-secondary btn-sm m-1'
@@ -326,7 +329,6 @@ export default function CoinDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -336,10 +338,8 @@ export default function CoinDetails() {
                     <TabContext
                         value={value}
                         variant="standard"
-                        style={{ minWidth: '50%' }}
                     >
-                        {/*<hr/>*/}
-                        <Card sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Card>
                             <TabList
                                 onChange={handleChange}
                                 aria-label="lab API tabs example"
