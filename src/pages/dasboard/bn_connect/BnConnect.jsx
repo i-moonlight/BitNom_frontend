@@ -29,8 +29,6 @@ import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
 import UserCard from './UserCard';
-// import { VariableSizeList as WindowList } from 'react-window';
-// import WindowListAutoSizer from 'react-virtualized-auto-sizer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -115,31 +113,6 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    // const Row = ({ index, style }) => {
-    //     const scroll = data?.Posts?.get[index];
-
-    //     return (
-    //         <Scroll
-    //             style={style}
-    //             setOpen={() => setCreateScrollOpen(true)}
-    //             setUpdateOpen={setUpdateScrollOpen}
-    //             profileData={profileData?.Users?.profile}
-    //             setUpdateCommentOpen={setUpdateCommentOpen}
-    //             setOpenFlag={setCreateFlagOpen}
-    //             setFlaggedResource={setFlaggedResource}
-    //             setOpenReactions={setOpenReactions}
-    //             setResourceReactions={setResourceReactions}
-    //             setImagePreviewURL={(url) => setImagePreviewURL(url)}
-    //             setImagePreviewOpen={(open) => setImagePreviewOpen(open)}
-    //             setSharedResource={setSharedResource}
-    //             setCommentToEdit={setCommentToEdit}
-    //             setPostToEdit={setPostToEdit}
-    //             key={scroll?._id}
-    //             scroll={scroll}
-    //         />
-    //     );
-    // };
-
     return (
         <Screen>
             <Helmet>
@@ -198,19 +171,7 @@ export default function BnConnect() {
                                     />
                                 )}
                             </Grid>
-                            {/* <WindowListAutoSizer>
-                                {({ width, height }) => (
-                                    <WindowList
-                                        className="List"
-                                        height={height}
-                                        itemCount={data?.Posts?.get?.length}
-                                        itemSize={() => 15}
-                                        width={width}
-                                    >
-                                        {Row}
-                                    </WindowList>
-                                )}
-                            </WindowListAutoSizer> */}
+
                             {data?.Posts?.get?.map((scroll) => (
                                 <Scroll
                                     setOpen={() => setCreateScrollOpen(true)}

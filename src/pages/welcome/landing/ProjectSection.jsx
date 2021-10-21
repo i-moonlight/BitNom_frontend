@@ -115,7 +115,13 @@ export default function ProjectSection() {
                                 src={joinImg}
                                 alt=""
                             />
-                            <Button size="large" textCase>
+                            <Button
+                                onClick={() => {
+                                    history.push('/connect');
+                                }}
+                                size="large"
+                                textCase
+                            >
                                 Join BN Community
                             </Button>
                         </div>

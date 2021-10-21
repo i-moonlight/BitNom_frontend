@@ -15,8 +15,8 @@ import ChatItem from './chat';
 import Invites from './invites';
 
 function Chats() {
-    const state = useSelector((st) => st);
     const dispatch = useDispatch();
+    const state = useSelector((st) => st);
     const user = state.auth.user;
 
     const { data, loading } = useQuery(GET_DIALOGUES, {

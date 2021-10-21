@@ -44,8 +44,14 @@ export default function Token() {
                                     size="large"
                                     textCase
                                     variant="outlined"
-                                    className="mt-3"
+                                    className="mt-3 me-2"
                                     endIcon={<ChevronRightRounded />}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://latoken.com/exchange/BN_USDT',
+                                            '_blank'
+                                        );
+                                    }}
                                 >
                                     Buy BN
                                 </Button>
@@ -55,6 +61,12 @@ export default function Token() {
                                     variant="text"
                                     className="mt-3"
                                     endIcon={<ChevronRightRounded />}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://latoken.com/exchange/BN_USDT',
+                                            '_blank'
+                                        );
+                                    }}
                                 >
                                     Visit Price / Chart
                                 </Button>

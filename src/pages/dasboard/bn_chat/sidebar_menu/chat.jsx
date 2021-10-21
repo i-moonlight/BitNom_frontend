@@ -6,7 +6,6 @@ import {
     Typography,
 } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 
 export default function ChatItem({ chat, onClick }) {
@@ -14,7 +13,7 @@ export default function ChatItem({ chat, onClick }) {
         <>
             <ListItem
                 button
-                component={Link}
+                // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
                 divider

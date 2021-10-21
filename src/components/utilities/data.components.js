@@ -53,7 +53,7 @@ export const tabs = [
     { label: 'BN Chat', link: '/chat' },
     {
         label: 'Investors',
-        link: '/investors',
+        extLink: '/investors',
         // menuItems: [
         // { label: 'Investor page', link: '/investors' },
         // { label: 'Crypto API' },

@@ -6,6 +6,7 @@ const initialState = {
     dialogue_messages: [],
     archived: [],
 };
+
 export default function chatReducer(state = initialState, action) {
     switch (action.type) {
         case 'ADD_CHAT_DIALOGUES':

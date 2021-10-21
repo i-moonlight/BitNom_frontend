@@ -70,9 +70,11 @@ export default function InviteView({ dialogue }) {
             <CardContent>
                 <Typography>
                     Accept to chat with{' '}
-                    <Link>{dialogue?.otherUser?.info?.displayName}</Link>. If
-                    you ignore this, the chat wil be removed and we wont let the
-                    sender know.
+                    <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
+                        {dialogue?.otherUser?.info?.displayName}
+                    </Link>
+                    . If you ignore this, the chat wil be removed and we wont
+                    let the sender know.
                 </Typography>
             </CardContent>
             <CardActions>

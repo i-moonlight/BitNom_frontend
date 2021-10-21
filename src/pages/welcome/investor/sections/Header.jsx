@@ -1,9 +1,11 @@
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import DonateCard from '../cards/DonateCard';
 
 export default function Header() {
+    const history = useHistory();
     const smDown = useMediaQuery('(max-width:959px)');
     const mw1160 = useMediaQuery('(min-width:1196px)');
 
@@ -36,7 +38,13 @@ export default function Header() {
                                 BitNorm creates an ecosystem that is fueled by
                                 information sharing
                             </Typography>
-                            <Button textCase size="large">
+                            <Button
+                                onClick={() => {
+                                    history.push('/auth/signup');
+                                }}
+                                textCase
+                                size="large"
+                            >
                                 Get Started
                             </Button>
                         </div>

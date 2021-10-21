@@ -22,7 +22,10 @@ export default function IncomingMessage({ message, chat, onReply }) {
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
-                <Link style={{ textDecoration: 'none' }}>
+                <Link
+                    to={`/users/${chat?.otherUser?.info?._id}`}
+                    style={{ textDecoration: 'none' }}
+                >
                     <Avatar
                         alt={chat.otherUser.info.displayName}
                         src={
@@ -52,9 +55,12 @@ export default function IncomingMessage({ message, chat, onReply }) {
                     component="p"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link style={{ textDecoration: 'none' }}>
+                    <Link
+                        to={`/users/${author}`}
+                        style={{ textDecoration: 'none' }}
+                    >
                         <small className={classes.author}>
-                            <strong>{author}</strong>
+                            <strong>@{author}</strong>
                         </small>
                     </Link>
                 </Typography>
