@@ -284,7 +284,9 @@ export default function CreatePost({
                                             : 'Drag n drop a video here or click'
                                     }
                                     acceptedFiles={
-                                        openImage ? ['image/*'] : ['video/*']
+                                        openImage
+                                            ? ['.jpeg', '.png']
+                                            : ['video/*']
                                     }
                                     maxFileSize={openImage ? 5000000 : 10000000}
                                     filesLimit={openImage ? 4 : 1}

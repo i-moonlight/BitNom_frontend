@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -86,10 +87,10 @@ const emojiPickerId = 'emoji-picker-popover';
 export default function Comment({
     comment,
     style,
-    setOpenImage,
     onCreateComment,
     comment_image,
     scroll,
+    setCommentImage,
     setCommentToEdit,
     setUpdateCommentOpen,
     setFlaggedResource,
@@ -107,6 +108,7 @@ export default function Comment({
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [openReplies, setOpenReplies] = useState(false);
+    const [openImage, setOpenImage] = useState(false);
     const [reply, setReply] = useState('');
     const [userReaction, setUserReaction] = useState();
     const [likeHovered, setLikeHovered] = useState(false);
@@ -564,6 +566,28 @@ export default function Comment({
                                         'The comment content cannot be empty'}
                                 </Typography>
                             </div>
+                            <DropzoneDialog
+                                previewGridProps={{
+                                    container: { spacing: 1, direction: 'row' },
+                                }}
+                                showAlerts={['error']}
+                                // useChipsForPreview
+                                previewText=""
+                                acceptedFiles={['.jpeg', '.png']}
+                                cancelButtonText={'cancel'}
+                                submitButtonText={'submit'}
+                                maxFileSize={5000000}
+                                open={openImage}
+                                filesLimit={1}
+                                onClose={() => setOpenImage(false)}
+                                onSave={(files) => {
+                                    setCommentImage(files[0]);
+                                    setOpenImage(false);
+                                }}
+                                showPreviewsInDropzone
+                                showPreviews={false}
+                                showFileNames={false}
+                            />
                         </>
                     )}
                     {commentsData &&
@@ -577,6 +601,7 @@ export default function Comment({
                                 <Comment
                                     key={commentInner._id}
                                     comment={commentInner}
+                                    setCommentImage={setCommentImage}
                                     setUpdateCommentOpen={setUpdateCommentOpen}
                                     setCommentToEdit={setCommentToEdit}
                                     setImagePreviewURL={setImagePreviewURL}

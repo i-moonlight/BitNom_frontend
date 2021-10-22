@@ -303,7 +303,9 @@ export default function UpdatePost({
                                             : 'Drag n drop a video here or click'
                                     }
                                     acceptedFiles={
-                                        openImage ? ['image/*'] : ['video/*']
+                                        openImage
+                                            ? ['.jpeg', '.png']
+                                            : ['video/*']
                                     }
                                     maxFileSize={5000000}
                                     filesLimit={openImage ? 4 : 1}

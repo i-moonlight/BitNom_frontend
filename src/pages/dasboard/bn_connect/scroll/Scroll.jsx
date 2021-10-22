@@ -672,65 +672,6 @@ export default function Scroll({
                             </Typography>
                         </div>
 
-                        {/* <div className=' d-flex align-items-center'>
-              <Avatar
-                style={{
-                  backgroundColor: '#fed132',
-                }}
-                src={scroll?.author?.image}
-                className='mx-2'
-              >
-                {currentUserInitials}
-              </Avatar>
-              <TextField
-                fullWidth
-                error={createCommentErr && true}
-                errorText={createCommentErr && "The comment cannot be empty"}
-                multiline
-                rowsMax={10}
-                id='comment-field'
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCreateComment(e);
-                  }
-                }}
-                placeholder={
-                  commentsData?.Comments?.get?.length > 0
-                    ? ""
-                    : "Be the first to comment.."
-                }
-                onChange={(e) =>
-                  setCommentText(
-                    comment_text?.length >= 250
-                      ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value.substring(0, 250)
-                  )
-                }
-                adornment={
-                  <IconButton
-                    size="small"
-                    className="m-1 p-1"
-                    onClick={() => {
-                      setOpenImage(true);
-                    }}
-                  >
-                    <ImageRounded />
-                  </IconButton>
-                }
-                adornmentType="end"
-                value={comment_text}
-              />
-              <IconButton
-                size="small"
-                className="m-1 p-1"
-                // className='mx-3'
-                onClick={handleCreateComment}
-                // size='small'
-              >
-                <Send />
-              </IconButton>
-            </div> */}
-
                         <DropzoneDialog
                             previewGridProps={{
                                 container: { spacing: 1, direction: 'row' },
@@ -738,7 +679,37 @@ export default function Scroll({
                             showAlerts={['error']}
                             // useChipsForPreview
                             previewText=""
-                            acceptedFiles={['image/*']}
+                            onDrop={(files) => {
+                                const filteredImages = [];
+                                let counter = 0;
+
+                                files.map((file) => {
+                                    const image = new Image();
+                                    image.addEventListener('load', () => {
+                                        console.log(
+                                            `${image.width}x${image.height}`
+                                        );
+
+                                        // only select images within width/height limits
+                                        if (
+                                            (image.width < 800) &
+                                            (image.height < 800)
+                                        ) {
+                                            filteredImages.push(image);
+                                        }
+
+                                        // increment counter for each image we go through
+                                        counter += 1;
+
+                                        // if we have gone through all the files, handle the ones that
+                                        // made it through the filter using `handleImages` function
+                                        if (counter === files.length)
+                                            setCommentImage(filteredImages[0]);
+                                    });
+                                    image.src = URL.createObjectURL(file);
+                                });
+                            }}
+                            acceptedFiles={['.jpeg', '.png']}
                             cancelButtonText={'cancel'}
                             submitButtonText={'submit'}
                             maxFileSize={5000000}
@@ -764,6 +735,7 @@ export default function Scroll({
                                         setUpdateCommentOpen={
                                             setUpdateCommentOpen
                                         }
+                                        setCommentImage={setCommentImage}
                                         setCommentToEdit={setCommentToEdit}
                                         comment={comment}
                                         setFlaggedResource={setFlaggedResource}
@@ -772,7 +744,6 @@ export default function Scroll({
                                         setResourceReactions={
                                             setResourceReactions
                                         }
-                                        setOpenImage={setOpenImage}
                                         onCreateComment={onCreateComment}
                                         setImagePreviewURL={setImagePreviewURL}
                                         setImagePreviewOpen={

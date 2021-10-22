@@ -367,7 +367,7 @@ export default function CreateEvent({ open, setOpen }) {
                                         clearOnUnmount
                                         Icon={CameraAltRounded}
                                         dropzoneText={' '}
-                                        acceptedFiles={['image/*']}
+                                        acceptedFiles={['.jpeg', '.png']}
                                         maxFileSize={5000000}
                                         filesLimit={1}
                                         showAlerts={['error']}
