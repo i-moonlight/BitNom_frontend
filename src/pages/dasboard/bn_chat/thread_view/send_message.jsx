@@ -147,63 +147,7 @@ export default function SendMessage({ chat }) {
                     }}
                 />
             ) : null}
-            <div className="my-2 d-flex align-items-center">
-                <IconButton
-                    size="small"
-                    className={'m-1 p-1' + classes.iconButton}
-                    aria-label="search"
-                    onClick={() => {
-                        setOpen(true);
-                        setFileOpen(true);
-                        setVideoOpen(false);
-                        setImageOpen(false);
-                        setGifOpen(false);
-                    }}
-                >
-                    <AttachFile />
-                </IconButton>
-                <IconButton
-                    size="small"
-                    className={'m-1 p-1' + classes.iconButton}
-                    aria-label="search"
-                    onClick={() => {
-                        setOpen(true);
-                        setImageOpen(true);
-                        setVideoOpen(false);
-                        setFileOpen(false);
-                        setGifOpen(false);
-                    }}
-                >
-                    <Image />
-                </IconButton>
-                <IconButton
-                    size="small"
-                    className={'m-1 p-1' + classes.iconButton}
-                    aria-label="search"
-                    onClick={() => {
-                        setOpen(true);
-                        setVideoOpen(true);
-                        setImageOpen(false);
-                        setFileOpen(false);
-                        setGifOpen(false);
-                    }}
-                >
-                    <VideoLibrary />
-                </IconButton>
-                <IconButton
-                    size="small"
-                    className={'m-1 p-1' + classes.iconButton}
-                    aria-label="search"
-                    onClick={() => {
-                        setOpen(true);
-                        setGifOpen(true);
-                        setVideoOpen(false);
-                        setImageOpen(false);
-                        setFileOpen(false);
-                    }}
-                >
-                    <Gif />
-                </IconButton>
+            <div className="d-flex flex-column  align-items-start">
                 <Paper
                     variant={
                         theme.palette.mode == 'light' ? 'outlined' : 'elevation'
@@ -239,6 +183,64 @@ export default function SendMessage({ chat }) {
                         <SendOutlined />
                     </IconButton>
                 </Paper>
+                <div className="d-flex align-items-center">
+                    <IconButton
+                        size="small"
+                        className={'m-1 p-1' + classes.iconButton}
+                        aria-label="search"
+                        onClick={() => {
+                            setOpen(true);
+                            setFileOpen(true);
+                            setVideoOpen(false);
+                            setImageOpen(false);
+                            setGifOpen(false);
+                        }}
+                    >
+                        <AttachFile />
+                    </IconButton>
+                    <IconButton
+                        size="small"
+                        className={'m-1 p-1' + classes.iconButton}
+                        aria-label="search"
+                        onClick={() => {
+                            setOpen(true);
+                            setImageOpen(true);
+                            setVideoOpen(false);
+                            setFileOpen(false);
+                            setGifOpen(false);
+                        }}
+                    >
+                        <Image />
+                    </IconButton>
+                    <IconButton
+                        size="small"
+                        className={'m-1 p-1' + classes.iconButton}
+                        aria-label="search"
+                        onClick={() => {
+                            setOpen(true);
+                            setVideoOpen(true);
+                            setImageOpen(false);
+                            setFileOpen(false);
+                            setGifOpen(false);
+                        }}
+                    >
+                        <VideoLibrary />
+                    </IconButton>
+                    <IconButton
+                        size="small"
+                        className={'m-1 p-1' + classes.iconButton}
+                        aria-label="search"
+                        onClick={() => {
+                            setOpen(true);
+                            setGifOpen(true);
+                            setVideoOpen(false);
+                            setImageOpen(false);
+                            setFileOpen(false);
+                        }}
+                    >
+                        <Gif />
+                    </IconButton>
+                </div>
             </div>
         </div>
     );

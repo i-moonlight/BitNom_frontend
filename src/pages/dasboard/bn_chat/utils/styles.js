@@ -49,7 +49,6 @@ export const useStyles = makeStyles((theme) => ({
         padding: '0px 4px',
         flexGrow: '1',
         alignItems: 'center',
-        marginLeft: '24px',
         marginRight: '16px',
         borderRadius: '20px',
     },

@@ -1,10 +1,11 @@
-import { SettingsRounded } from '@mui/icons-material';
+import { ArrowBackRounded, SettingsRounded } from '@mui/icons-material';
 import {
     Avatar,
     Badge,
     CardHeader,
     IconButton,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
@@ -13,8 +14,10 @@ import { useStyles } from '../../utils/styles';
 
 const chatSettingsId = 'chat-settings-menu';
 
-export default function ChatHeader({ chat }) {
+export default function ChatHeader({ chat, onExitChatMobile }) {
     const classes = useStyles();
+    const xsDown = useMediaQuery('(max-width:599px)');
+
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
 
@@ -31,38 +34,49 @@ export default function ChatHeader({ chat }) {
             <CardHeader
                 className="m-0 p-0 mb-2"
                 avatar={
-                    <Badge
-                        overlap="circular"
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
-                        badgeContent={
-                            chat?.otherUser?.lastSeen === Date.now() ? (
-                                <span className={classes.online}></span>
-                            ) : (
-                                <span className={classes.offline}></span>
-                            )
-                        }
-                    >
-                        <Avatar
-                            style={{
-                                backgroundColor: '#fed132',
+                    <>
+                        {xsDown && (
+                            <IconButton
+                                onClick={() => {
+                                    onExitChatMobile();
+                                }}
+                            >
+                                <ArrowBackRounded />
+                            </IconButton>
+                        )}
+                        <Badge
+                            overlap="circular"
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
                             }}
-                            src={
-                                chat?.otherUser?.info?.profile_pic
-                                    ? process.env.REACT_APP_BACKEND_URL +
-                                      chat?.otherUser?.info?.profile_pic
-                                    : ''
+                            badgeContent={
+                                chat?.otherUser?.lastSeen === Date.now() ? (
+                                    <span className={classes.online}></span>
+                                ) : (
+                                    <span className={classes.offline}></span>
+                                )
                             }
                         >
-                            {chat?.otherUser?.info?.profile_pic
-                                ? ''
-                                : getUserInitials(
-                                      chat?.otherUser?.info?.displayName
-                                  )}
-                        </Avatar>
-                    </Badge>
+                            <Avatar
+                                style={{
+                                    backgroundColor: '#fed132',
+                                }}
+                                src={
+                                    chat?.otherUser?.info?.profile_pic
+                                        ? process.env.REACT_APP_BACKEND_URL +
+                                          chat?.otherUser?.info?.profile_pic
+                                        : ''
+                                }
+                            >
+                                {chat?.otherUser?.info?.profile_pic
+                                    ? ''
+                                    : getUserInitials(
+                                          chat?.otherUser?.info?.displayName
+                                      )}
+                            </Avatar>
+                        </Badge>
+                    </>
                 }
                 action={
                     <IconButton
