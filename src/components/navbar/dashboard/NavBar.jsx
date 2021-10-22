@@ -217,10 +217,6 @@ export default function NavBar() {
 
         if (!isAuth) {
             dispatch(signout());
-            // console.log('not isAuth', isAuth);
-            // alert(
-            //     `not auth ${profileLoading} && ${profileData?.Users?.profile}`
-            // );
         }
     }, [
         _count,
@@ -263,7 +259,6 @@ export default function NavBar() {
                 handleTabOptionsOpen={handleTabOptionsOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
             />
-            {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
             <TabOptionsPopover

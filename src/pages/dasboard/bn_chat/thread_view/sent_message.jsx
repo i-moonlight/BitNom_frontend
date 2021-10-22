@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 
 export default function SentMessage({ message, onReply = () => null }) {
     const [show_reply, setShowReply] = useState(false);
-
     const user = message.author || {};
+
     return (
         <Grid
             item
@@ -24,7 +24,7 @@ export default function SentMessage({ message, onReply = () => null }) {
             }}
         >
             <Grid item xs={2} container justifyContent="center">
-                <Link style={{ textDecoration: 'none' }}>
+                <Link to={`/users/${user}`} style={{ textDecoration: 'none' }}>
                     <Avatar
                         src={
                             user.image
@@ -42,10 +42,12 @@ export default function SentMessage({ message, onReply = () => null }) {
                 justifyContent="flex-start"
                 direction="column"
             >
-                {' '}
                 <Grid item style={{ marginBottom: '10px' }}>
                     <Typography variant="body1" component="p">
-                        <Link style={{ textDecoration: 'none' }}>
+                        <Link
+                            to={`/users/${user}`}
+                            style={{ textDecoration: 'none' }}
+                        >
                             <strong>{user}</strong>
                         </Link>
                     </Typography>

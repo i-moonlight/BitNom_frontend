@@ -36,9 +36,9 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                     component="p"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link style={{ textDecoration: 'none' }}>
+                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
                         <small className={classes.author}>
-                            <strong>{author}</strong>
+                            <strong>@{author}</strong>
                         </small>
                     </Link>
                 </Typography>

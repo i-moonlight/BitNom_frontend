@@ -26,7 +26,7 @@ export default function TabsBar({
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {tabs.map(({ label, menuItems, link }) => {
+                        {tabs.map(({ label, menuItems, link, extLink }) => {
                             return (
                                 <BitTab
                                     key={`${label}`}
@@ -34,6 +34,10 @@ export default function TabsBar({
                                     aria-controls={tabOptionsId}
                                     aria-haspopup="true"
                                     onClick={(event) => {
+                                        if (extLink) {
+                                            window.open(extLink, '_blank');
+                                            return;
+                                        }
                                         link && history.push(link);
                                         menuItems && setTabOptions(menuItems);
                                         menuItems &&

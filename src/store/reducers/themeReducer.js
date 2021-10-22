@@ -1,5 +1,7 @@
 const initialState = {
-    palette: 'light',
+    palette: window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light',
 };
 
 export default function themeReducer(state = initialState, action) {

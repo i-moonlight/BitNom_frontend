@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { ArrowBack, VideocamRounded, RoomRounded } from '@mui/icons-material';
+import { ArrowBack, RoomRounded, VideocamRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
@@ -16,19 +16,19 @@ import {
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
-import { Helmet } from 'react-helmet';
-import {
-    QUERY_POSTS_BY_HASHTAG,
-    QUERY_EVENTS_BY_HASHTAG,
-    QUERY_FETCH_PROFILE,
-} from '../utilities/queries';
 //import SavedComment from './SavedComment';
 //import SavedEvent from './SavedEvent';
 import SavedPost from '../bookmarks/SavedPost';
+import {
+    QUERY_EVENTS_BY_HASHTAG,
+    QUERY_FETCH_PROFILE,
+    QUERY_POSTS_BY_HASHTAG,
+} from '../utilities/queries';
 //import EventPreview from '../events/EventPreview';
 
 const useStyles = makeStyles((theme) => ({

@@ -40,8 +40,18 @@ export default function Symbol() {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <div className="px-3">
-                                    <Typography noWrap color="primary">
-                                        0x42edc1c5ff57Ff5240C90E2D8DfA269D77D68013
+                                    <Typography
+                                        className="c-pointer"
+                                        noWrap={false}
+                                        color="primary"
+                                        onClick={() => {
+                                            window.open(
+                                                'https://etherscan.io/address/0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013',
+                                                '_blank'
+                                            );
+                                        }}
+                                    >
+                                        0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013
                                     </Typography>
                                     <Typography>
                                         Smart Contract address
