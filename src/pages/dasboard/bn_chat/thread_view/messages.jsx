@@ -19,7 +19,7 @@ import NoChatSelected from './no_chat_selected';
 import EmptyMessages from './no_messages';
 import SendMessage from './send_message';
 
-export default function Messages() {
+export default function Messages({ onExitChatMobile }) {
     const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -68,14 +68,20 @@ export default function Messages() {
 
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
-                    <ChatHeader chat={dialogue} />
+                    <ChatHeader
+                        chat={dialogue}
+                        onExitChatMobile={onExitChatMobile}
+                    />
                     <Divider />
                 </div>
             )}
 
             {dialogue.status === 'accepted' && (
                 <div className={classes.chatHeader}>
-                    <ChatHeader chat={dialogue} />
+                    <ChatHeader
+                        chat={dialogue}
+                        onExitChatMobile={onExitChatMobile}
+                    />
                     <Divider />
                 </div>
             )}

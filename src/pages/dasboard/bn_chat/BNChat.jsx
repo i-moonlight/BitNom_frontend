@@ -26,61 +26,74 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BnChat() {
-    const classes = useStyles();
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
-    const smDown = useMediaQuery('(max-width:959px)');
+    const [chatMobileOpen, setChatMobileOpen] = useState(false);
+
+    const classes = useStyles();
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     return (
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={3}>
-                            <Card
-                                style={{
-                                    height: window.innerHeight - 200,
-                                }}
-                            >
-                                <SideBarHeader
-                                    className={classes.root}
-                                    setChatInviteOpen={(open) =>
-                                        setCreateChatInviteOpen(open)
-                                    }
-                                />
-                                <div
-                                    style={{
-                                        maxHeight: '65vh',
-                                        overflow: 'auto',
-                                    }}
-                                >
-                                    <Chats />
-                                </div>
-                                <div
-                                    style={{
-                                        margin: '20px',
-                                        position: 'absolute',
-                                        bottom: '40px',
-                                    }}
-                                >
-                                    <Fab
-                                        color="primary"
-                                        onClick={() =>
-                                            setCreateChatInviteOpen(true)
-                                        }
-                                    >
-                                        <Create />
-                                    </Fab>
-                                </div>
-                            </Card>
-                        </Grid>
-                        {!smDown && (
-                            <Grid item xs={12} sm={9}>
+                        {!chatMobileOpen && (
+                            <Grid item xs={12} sm={4} md={3}>
                                 <Card
                                     style={{
                                         height: window.innerHeight - 200,
                                     }}
                                 >
-                                    <Messages />
+                                    <SideBarHeader
+                                        className={classes.root}
+                                        setChatInviteOpen={(open) =>
+                                            setCreateChatInviteOpen(open)
+                                        }
+                                    />
+                                    <div
+                                        style={{
+                                            maxHeight: '65vh',
+                                            overflow: 'auto',
+                                        }}
+                                    >
+                                        <Chats
+                                            onSetChatMobile={() =>
+                                                setChatMobileOpen(true)
+                                            }
+                                        />
+                                    </div>
+                                    <div
+                                        style={{
+                                            margin: '20px',
+                                            position: 'absolute',
+                                            bottom: '40px',
+                                        }}
+                                    >
+                                        <Fab
+                                            color="primary"
+                                            onClick={() =>
+                                                setCreateChatInviteOpen(true)
+                                            }
+                                        >
+                                            <Create />
+                                        </Fab>
+                                    </div>
+                                </Card>
+                            </Grid>
+                        )}
+                        {((chatMobileOpen && xsDown) ||
+                            (!chatMobileOpen && !xsDown)) && (
+                            <Grid item xs={12} sm={8} md={9}>
+                                <Card
+                                    style={{
+                                        height: window.innerHeight - 200,
+                                    }}
+                                >
+                                    <Messages
+                                        onExitChatMobile={() => {
+                                            setChatMobileOpen(false);
+                                        }}
+                                    />
                                 </Card>
                             </Grid>
                         )}

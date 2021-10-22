@@ -36,6 +36,7 @@ export default function Ecosystem() {
     const lg = useMediaQuery('(min-width:1280px)');
 
     // const xsDown = useMediaQuery('(max-width:599px)');
+    // const xsUp = useMediaQuery('(min-width:10px)');
     // const smDown = useMediaQuery('(max-width:959px)');
     // const smUp = useMediaQuery('(min-width:600px)');
     // const mdUp = useMediaQuery('(min-width:960px)');

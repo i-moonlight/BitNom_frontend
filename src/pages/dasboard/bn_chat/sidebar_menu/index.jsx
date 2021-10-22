@@ -1,5 +1,11 @@
 import { useQuery, useSubscription } from '@apollo/client';
-import { CircularProgress, Grid, List, ListSubheader } from '@mui/material';
+import {
+    CircularProgress,
+    Grid,
+    List,
+    ListSubheader,
+    useMediaQuery,
+} from '@mui/material';
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,10 +20,12 @@ import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
 
-function Chats() {
+function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     const { data, loading } = useQuery(GET_DIALOGUES, {
         variables: {
@@ -92,6 +100,7 @@ function Chats() {
 
         if (current_chat._id !== chat._id) {
             dispatch(setCurrentChat(chat));
+            xsDown && onSetChatMobile();
         }
     };
 
