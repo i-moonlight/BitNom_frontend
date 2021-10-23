@@ -28,7 +28,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
@@ -303,7 +303,9 @@ export default function UpdatePost({
                                             : 'Drag n drop a video here or click'
                                     }
                                     acceptedFiles={
-                                        openImage ? ['image/*'] : ['video/*']
+                                        openImage
+                                            ? ['.jpeg', '.png']
+                                            : ['video/*']
                                     }
                                     maxFileSize={5000000}
                                     filesLimit={openImage ? 4 : 1}

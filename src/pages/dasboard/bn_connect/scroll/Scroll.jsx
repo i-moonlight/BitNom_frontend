@@ -10,6 +10,7 @@ import {
     ShareRounded,
     ThumbDownRounded,
     ThumbUpRounded,
+    CloseRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -27,7 +28,7 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { DropzoneDialog } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
@@ -124,9 +125,10 @@ export default function Scroll({
     const [openComments, setOpenComments] = useState(false);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
-    const [openImage, setOpenImage] = useState(false);
+    const [fileErrors, setFileErrors] = useState([]);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [previewURL, setPreviewURL] = useState();
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -166,8 +168,11 @@ export default function Scroll({
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
+        setFileErrors([]);
+        setPreviewURL();
     };
 
+    console.log(comment_image, 'HU');
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
@@ -652,7 +657,12 @@ export default function Scroll({
                                 size="small"
                                 //className='m-1 p-1'
                                 onClick={() => {
-                                    setOpenImage(true);
+                                    //setOpenImage(true);
+                                    document
+                                        .getElementsByClassName(
+                                            'comment-dropzone'
+                                        )[0]
+                                        .click();
                                 }}
                             >
                                 <ImageRounded />
@@ -671,88 +681,105 @@ export default function Scroll({
                                     'The comment content cannot be empty'}
                             </Typography>
                         </div>
-
-                        {/* <div className=' d-flex align-items-center'>
-              <Avatar
-                style={{
-                  backgroundColor: '#fed132',
-                }}
-                src={scroll?.author?.image}
-                className='mx-2'
-              >
-                {currentUserInitials}
-              </Avatar>
-              <TextField
-                fullWidth
-                error={createCommentErr && true}
-                errorText={createCommentErr && "The comment cannot be empty"}
-                multiline
-                rowsMax={10}
-                id='comment-field'
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCreateComment(e);
-                  }
-                }}
-                placeholder={
-                  commentsData?.Comments?.get?.length > 0
-                    ? ""
-                    : "Be the first to comment.."
-                }
-                onChange={(e) =>
-                  setCommentText(
-                    comment_text?.length >= 250
-                      ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value.substring(0, 250)
-                  )
-                }
-                adornment={
-                  <IconButton
-                    size="small"
-                    className="m-1 p-1"
-                    onClick={() => {
-                      setOpenImage(true);
-                    }}
-                  >
-                    <ImageRounded />
-                  </IconButton>
-                }
-                adornmentType="end"
-                value={comment_text}
-              />
-              <IconButton
-                size="small"
-                className="m-1 p-1"
-                // className='mx-3'
-                onClick={handleCreateComment}
-                // size='small'
-              >
-                <Send />
-              </IconButton>
-            </div> */}
-
-                        <DropzoneDialog
-                            previewGridProps={{
-                                container: { spacing: 1, direction: 'row' },
+                        <Card
+                            style={{
+                                display: previewURL ? 'block' : 'none',
+                                height: 300,
+                                borderRadius: 8,
+                                width: '100%',
+                                backgroundImage:
+                                    previewURL && 'url(' + previewURL + ')',
+                                backgroundSize: 'cover',
                             }}
-                            showAlerts={['error']}
-                            // useChipsForPreview
-                            previewText=""
-                            acceptedFiles={['image/*']}
-                            cancelButtonText={'cancel'}
-                            submitButtonText={'submit'}
-                            maxFileSize={5000000}
-                            open={openImage}
-                            filesLimit={1}
-                            onClose={() => setOpenImage(false)}
-                            onSave={(files) => {
-                                setCommentImage(files[0]);
-                                setOpenImage(false);
-                            }}
-                            showPreviewsInDropzone
-                            showPreviews={false}
-                            showFileNames={false}
-                        />
+                        >
+                            <div className="space-between">
+                                <div>
+                                    <div style={{ display: 'none' }}>
+                                        <DropzoneArea
+                                            clearOnUnmount
+                                            dropzoneClass="comment-dropzone"
+                                            //id="dropzone"
+                                            clickable={true}
+                                            onChange={(files) => {
+                                                const errors = [];
+                                                let counter = 0;
+                                                files.map((file) => {
+                                                    const image = new Image();
+                                                    image.addEventListener(
+                                                        'load',
+                                                        () => {
+                                                            // only select images within width/height/size limits
+                                                            if (
+                                                                (image.width <
+                                                                    1200) &
+                                                                (image.height <
+                                                                    1350) &
+                                                                (file.size <
+                                                                    5000000)
+                                                            ) {
+                                                                counter += 1;
+                                                                setFileErrors(
+                                                                    []
+                                                                );
+                                                            } else {
+                                                                errors.push(
+                                                                    'Image is too large. Trim to 1200px by 1200px or less.'
+                                                                );
+                                                                setFileErrors(
+                                                                    errors
+                                                                );
+                                                            }
+                                                            if (counter === 1) {
+                                                                setPreviewURL(
+                                                                    URL.createObjectURL(
+                                                                        file
+                                                                    )
+                                                                );
+                                                                setCommentImage(
+                                                                    file
+                                                                );
+                                                            }
+                                                        }
+                                                    );
+                                                    image.src =
+                                                        URL.createObjectURL(
+                                                            file
+                                                        );
+                                                });
+                                            }}
+                                            acceptedFiles={[
+                                                'image/jpeg',
+                                                'image/png',
+                                            ]}
+                                            maxFileSize={5000000}
+                                            filesLimit={1}
+                                            showPreviewsInDropzone
+                                            showPreviews={false}
+                                            showFileNames={false}
+                                        />
+                                    </div>
+                                </div>
+                                <IconButton
+                                    size="small"
+                                    color="primary"
+                                    className="m-1 p-1"
+                                >
+                                    <CloseRounded
+                                        onClick={() => {
+                                            setPreviewURL();
+                                            setFileErrors([]);
+                                            setCommentImage(null);
+                                        }}
+                                    />
+                                </IconButton>
+                            </div>
+                        </Card>
+
+                        <div className={classes.inputHelper}>
+                            <Typography color="error" variant="body2">
+                                {fileErrors.length > 0 && fileErrors[0]}
+                            </Typography>
+                        </div>
                         {commentsData &&
                             commentsData?.Comments?.get
                                 .filter((comment) => !comment.response_to)
@@ -764,6 +791,7 @@ export default function Scroll({
                                         setUpdateCommentOpen={
                                             setUpdateCommentOpen
                                         }
+                                        setCommentImage={setCommentImage}
                                         setCommentToEdit={setCommentToEdit}
                                         comment={comment}
                                         setFlaggedResource={setFlaggedResource}
@@ -772,7 +800,6 @@ export default function Scroll({
                                         setResourceReactions={
                                             setResourceReactions
                                         }
-                                        setOpenImage={setOpenImage}
                                         onCreateComment={onCreateComment}
                                         setImagePreviewURL={setImagePreviewURL}
                                         setImagePreviewOpen={
