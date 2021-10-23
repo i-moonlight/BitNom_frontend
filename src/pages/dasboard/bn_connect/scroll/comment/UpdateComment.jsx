@@ -27,7 +27,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
@@ -47,7 +47,6 @@ export default function UpdateComment({
     setUpdateCommentOpen,
     commentToEdit,
     setCommentToEdit,
-    openImage,
     setOpenImage,
     profileData,
 }) {
@@ -57,6 +56,8 @@ export default function UpdateComment({
     const [comment_image, setCommentImage] = useState(undefined);
     const [openDelete, setOpenDelete] = useState(false);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
+    const [previewURL, setPreviewURL] = useState();
+    const [fileErrors, setFileErrors] = useState([]);
 
     const emojiPickerId = 'emoji-picker-popover';
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -113,6 +114,8 @@ export default function UpdateComment({
         setOpenImage(false);
         setFileType(null);
         setCommentToEdit(null);
+        setPreviewURL();
+        setFileErrors([]);
     };
 
     const handleEmojiPickerOpen = (event) => {
@@ -200,6 +203,8 @@ export default function UpdateComment({
                                             setCommentImage(undefined);
                                             setUpdateCommentErr(false);
                                             setFileType(null);
+                                            setPreviewURL();
+                                            setFileErrors([]);
                                         }}
                                     />
                                 </IconButton>
@@ -255,10 +260,10 @@ export default function UpdateComment({
                                     className="mentions-textarea"
                                     id="content-field"
                                     /* onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCreateComment(e);
-                  }
-                }} */
+                                    if (e.key === 'Enter') {
+                                        handleCreateComment(e);
+                                    }
+                                    }} */
                                     placeholder="Write Comment"
                                     onChange={(e) =>
                                         setCommentText(
@@ -293,37 +298,130 @@ export default function UpdateComment({
                                 </Typography>
                                 <Card
                                     style={{
-                                        display: openImage ? 'block' : 'none',
+                                        display: previewURL ? 'block' : 'none',
+                                        height: 300,
+                                        borderRadius: 8,
+                                        width: '100%',
+                                        backgroundImage:
+                                            previewURL &&
+                                            'url(' + previewURL + ')',
+                                        backgroundSize: 'cover',
+                                        marginTop: '5px',
                                     }}
                                 >
-                                    <DropzoneArea
-                                        clearOnUnmount
-                                        onChange={(files) => {
-                                            setCommentImage(files[0]);
-                                        }}
-                                        dropzoneText={
-                                            'Drag n drop an image here or click'
-                                        }
-                                        acceptedFiles={['image/*']}
-                                        maxFileSize={5000000}
-                                        filesLimit={1}
-                                        showAlerts={['error']}
-                                        showPreviews={false}
-                                        showPreviewsInDropzone
-                                        previewGridProps={{
-                                            container: {
-                                                spacing: 1,
-                                                direction: 'row',
-                                            },
-                                        }}
-                                    />
+                                    <div className="space-between">
+                                        <div>
+                                            <div style={{ display: 'none' }}>
+                                                <DropzoneArea
+                                                    clearOnUnmount
+                                                    dropzoneClass="update-comment-dropzone"
+                                                    //id="dropzone"
+                                                    clickable={true}
+                                                    onChange={(files) => {
+                                                        const errors = [];
+                                                        let counter = 0;
+                                                        files.map((file) => {
+                                                            const image =
+                                                                new Image();
+                                                            image.addEventListener(
+                                                                'load',
+                                                                () => {
+                                                                    // only select images within width/height/size limits
+                                                                    if (
+                                                                        (image.width <
+                                                                            1200) &
+                                                                        (image.height <
+                                                                            1350) &
+                                                                        (file.size <
+                                                                            5000000)
+                                                                    ) {
+                                                                        counter += 1;
+                                                                        setFileErrors(
+                                                                            []
+                                                                        );
+                                                                    } else {
+                                                                        errors.push(
+                                                                            'Image is too large. Trim to 1200px by 1200px or less.'
+                                                                        );
+                                                                        setFileErrors(
+                                                                            errors
+                                                                        );
+                                                                    }
+                                                                    if (
+                                                                        counter ===
+                                                                        1
+                                                                    ) {
+                                                                        setPreviewURL(
+                                                                            URL.createObjectURL(
+                                                                                file
+                                                                            )
+                                                                        );
+                                                                        setCommentImage(
+                                                                            file
+                                                                        );
+                                                                    }
+                                                                }
+                                                            );
+                                                            image.src =
+                                                                URL.createObjectURL(
+                                                                    file
+                                                                );
+                                                        });
+                                                    }}
+                                                    acceptedFiles={[
+                                                        'image/jpeg',
+                                                        'image/png',
+                                                    ]}
+                                                    maxFileSize={5000000}
+                                                    filesLimit={1}
+                                                    showPreviewsInDropzone
+                                                    showPreviews={false}
+                                                    showFileNames={false}
+                                                />
+                                            </div>
+                                        </div>
+                                        <IconButton
+                                            size="small"
+                                            color="primary"
+                                            className="m-1 p-1"
+                                        >
+                                            <CloseRounded
+                                                color="secondary"
+                                                onClick={() => {
+                                                    setPreviewURL();
+                                                    setFileErrors([]);
+                                                    setCommentImage(null);
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </div>
                                 </Card>
+
+                                <div>
+                                    <Typography color="error" variant="body2">
+                                        {fileErrors.length > 0 && fileErrors[0]}
+                                    </Typography>
+                                </div>
                                 {commentToEdit?.image?.trim() !== '' &&
                                     fileType !== null && (
-                                        <Card>
+                                        <Card
+                                            style={{
+                                                height: 300,
+                                                borderRadius: 8,
+                                                width: '100%',
+                                                backgroundImage:
+                                                    'url(' +
+                                                    process.env
+                                                        .REACT_APP_BACKEND_URL +
+                                                    commentToEdit?.image +
+                                                    ')',
+                                                backgroundSize: 'cover',
+                                                cursor: 'pointer',
+                                                marginTop: '5px',
+                                            }}
+                                        >
                                             <div className="space-between mx-3 my-2">
                                                 <Typography variant="body2"></Typography>
-                                                <Typography variant="body1"></Typography>
                                                 <IconButton
                                                     size="small"
                                                     className="m-1 p-1"
@@ -338,39 +436,6 @@ export default function UpdateComment({
                                                     />
                                                 </IconButton>
                                             </div>
-                                            <Grid
-                                                container
-                                                spacing={2}
-                                                className="mb-2"
-                                            >
-                                                <Grid
-                                                    className="mt-3"
-                                                    key={commentToEdit?.image}
-                                                    item
-                                                    xs={12}
-                                                >
-                                                    <div
-                                                        style={{
-                                                            height: 200,
-                                                            borderRadius: 8,
-                                                            width: '100%',
-                                                            backgroundImage:
-                                                                'url(' +
-                                                                process.env
-                                                                    .REACT_APP_BACKEND_URL +
-                                                                commentToEdit?.image +
-                                                                ')',
-                                                            backgroundSize:
-                                                                'cover',
-                                                            backgroundColor:
-                                                                'rgba(0,0,0,0.2)',
-                                                            backgroundBlendMode:
-                                                                'soft-light',
-                                                            cursor: 'pointer',
-                                                        }}
-                                                    />
-                                                </Grid>
-                                            </Grid>
                                         </Card>
                                     )}
                                 {/* <Divider /> */}
@@ -432,9 +497,13 @@ export default function UpdateComment({
                                             size="small"
                                             className="m-1 p-1"
                                             onClick={() => {
-                                                setOpenImage(true);
                                                 setFileType(null);
                                                 setCommentImage(null);
+                                                document
+                                                    .getElementsByClassName(
+                                                        'update-comment-dropzone'
+                                                    )[0]
+                                                    .click();
                                             }}
                                             style={{
                                                 marginRight: 10,
