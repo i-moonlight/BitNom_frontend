@@ -87,8 +87,8 @@ export default function CoinDetails() {
 
                 {/*Coin Details*/}
                 <Card className="container mt-3">
-                    <div className="row">
-                        <div className="col-7 mt-3 d-flex justify-content-evenly">
+                    <div className="d-lg-flex d-md-flex d-sm-block row">
+                        <div className="d-lg-flex d-md-flex d-sm-block col-lg-7 col-md-7 col-sm-12 mt-3 justify-content-evenly">
                             <div>
                                 <div className={''}>
                                     <img
@@ -135,7 +135,7 @@ export default function CoinDetails() {
                                 <div className={'mt-5'}>
                                     <section
                                         className={
-                                            'd-flex justify-content-evenly'
+                                            'd-flex justify-content-between'
                                         }
                                     >
                                         <p className={'m-1'}>
@@ -189,15 +189,13 @@ export default function CoinDetails() {
                             </div>
                             <hr style={custom.verticalLine} />
                         </div>
-                        <div className="col-5">
+                        <div className="col-lg-5 col-md-5 col-sm-12">
                             <h4 className="mt-4">Info:</h4>
-                            {/*style={{ borderLeft: '0.1em solid green', padding: '0.5em' }}*/}
                             <div>
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
                                             <strong
-                                                // style={{ marginRight: '5px' }}
                                                 className="text-secondary"
                                             >
                                                 Website
@@ -364,6 +362,9 @@ export default function CoinDetails() {
                                 onChange={handleChange}
                                 aria-label="lab API tabs example"
                                 className={'m-2'}
+                                variant="scrollable"
+                                allowScrollButtonsMobile
+                                scrollButtons
                             >
                                 <Tab
                                     label="Overview"

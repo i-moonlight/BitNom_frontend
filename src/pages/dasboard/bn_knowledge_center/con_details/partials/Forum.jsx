@@ -129,8 +129,10 @@ export default function Forum() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList
                         onChange={handleChange}
-                        aria-label="lab API tabs example"
-                    >
+                        variant="scrollable"
+                        allowScrollButtonsMobile
+                        scrollButtons
+                        aria-label="lab API tabs example">
                         <h6 className={'m-3'}>
                             <strong>BitCoin Threads</strong>
                         </h6>
@@ -145,7 +147,7 @@ export default function Forum() {
                 </Box>
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                     <div className={'row mt-3'}>
-                        <Card className={'col-3'}>
+                        <Card className={'col-sm-12 col-md-3 col-lg-3'}>
                             <h4 style={{ marginLeft: '25px' }}>
                                 <strong>Category</strong>
                             </h4>
@@ -164,7 +166,7 @@ export default function Forum() {
                                 </p>
                             </div>
                         </Card>
-                        <div className={'col-9'}>
+                        <div className={'col-sm-12 col-md-9 col-lg-9'}>
                             <TableContainer component={Paper}>
                                 <Table
                                     sx={{ minWidth: 650 }}

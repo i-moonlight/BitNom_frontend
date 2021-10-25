@@ -213,11 +213,7 @@ export default function Overview() {
 
     const custom = {
         tabStyle: {
-            textTransform: 'capitalize',
-            // backgroundColor: 'rgb(68 63 63 / 50%)',
-            // borderRadius: '5px',
-            // marginRight: '5px',
-            // fontWeight: 'bold',
+            textTransform: 'capitalize'
         },
         coinsBorder: {
             borderLeft: '5px solid blue',
@@ -232,53 +228,26 @@ export default function Overview() {
                 sx={{ width: '100%', typography: 'body1' }}
                 value={value}
             >
-                <Card
-                    sx={{
-                        borderBottom: 1,
-                        borderColor: 'divider',
-                        borderRadius: '5px',
-                    }}
-                >
-                    <TabList
-                        onChange={handleChange}
-                        aria-label="lab API tabs example"
-                        className={'m-1'}
+                <Card sx={{borderBottom: 1, borderColor: 'divider', borderRadius: '5px',}}>
+                    <TabList onChange={handleChange} aria-label="lab API tabs example"
+                             className={'m-1'} variant="scrollable"
+                             allowScrollButtonsMobile crollButtons
                     >
-                        <Tab
-                            label="General"
-                            value="1"
-                            style={custom.tabStyle}
-                            className={'btn btn-secondary m-2'}
+                        <Tab label="General" value="1" style={custom.tabStyle} className={'btn btn-secondary m-2'}/>
+                        <Tab label="Developers" value="2" className={'btn btn-secondary m-2'} style={custom.tabStyle}/>
+                        <Tab label="Widget" value="3" style={custom.tabStyle} className={'btn btn-secondary m-2'}
                         />
-                        <Tab
-                            label="Developers"
-                            value="2"
-                            className={'btn btn-secondary m-2'}
-                            style={custom.tabStyle}
-                        />
-                        <Tab
-                            label="Widget"
-                            value="3"
-                            style={custom.tabStyle}
-                            className={'btn btn-secondary m-2'}
-                        />
-                        <Tab
-                            label="Analysis"
-                            value="4"
-                            className={'btn btn-secondary m-2'}
-                            style={custom.tabStyle}
-                        />
+                        <Tab label="Analysis" value="4" className={'btn btn-secondary m-2'} style={custom.tabStyle}/>
                     </TabList>
                 </Card>
 
                 {/*General*/}
-
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                     <div>
                         {/*First row*/}
                         <div className={'row mt-3'}>
                             {/*left side card*/}
-                            <Card className={'col-7'}>
+                            <Card className={'col-sm-12 col-md-7 col-lg-7'}>
                                 {/*Bitcoin (BTC) Price Chart*/}
                                 <div className={'m-3'}>
                                     <div
@@ -434,7 +403,7 @@ export default function Overview() {
                             </Card>
 
                             {/*Right side card*/}
-                            <div className={'col-5'}>
+                            <div className={'col-sm-12 col-md-5 col-lg-5'}>
                                 {/*BTC to USD Converter card*/}
                                 <Card>
                                     <div className={'m-2'}>
@@ -870,7 +839,7 @@ export default function Overview() {
                             <div>
                                 <a
                                     className={
-                                        'btn btn-secondary m-5 float-end'
+                                        'btn d-sm-block btn-secondary m-5 float-end'
                                     }
                                 >
                                     See All Market
@@ -880,9 +849,8 @@ export default function Overview() {
 
                         {/*Bitcoin News*/}
                         <Card className={'row mt-3'}>
-                            <section
-                                className={'d-flex justify-content-between'}
-                            >
+                            {/*Top Bitcoin news*/}
+                            <section className={'d-flex justify-content-between'}>
                                 <h4>Bitcoin News</h4>
                                 <div>
                                     <a className={'text-primary'}>
@@ -892,7 +860,7 @@ export default function Overview() {
                             </section>
                             <hr />
                             <section className={'row'}>
-                                <div className={'col-5'}>
+                                <div className={'col-sm-12 col-md-5 col-lg-5'}>
                                     <section className={'m-3'}>
                                         <img
                                             height={400}
@@ -912,9 +880,7 @@ export default function Overview() {
                                             </h4>
                                         </div>
                                         <div className={'m-1'}>
-                                            <strong
-                                                className={'text-secondary'}
-                                            >
+                                            <strong className={'text-secondary'}>
                                                 AXS, CVP and POLS lead altcoins
                                                 higher while Bitcoin bull search
                                                 for a way to reclaim the $50,000
@@ -933,62 +899,9 @@ export default function Overview() {
                                         </div>
                                     </section>
                                 </div>
-                                <div className={'col-7'}>
-                                    <div className={'row'}>
-                                        <div className={'col-4'}>
-                                            <section>
-                                                <img
-                                                    height={200}
-                                                    src={
-                                                        'https://theycb.files.wordpress.com/2020/11/3a15f-05ten9f4x0jgx9dsg.png'
-                                                    }
-                                                    alt={'news'}
-                                                    className="img-thumbnail"
-                                                />
-                                            </section>
-                                        </div>
-                                        <div className={'col-8'}>
-                                            <section className={'m-3'}>
-                                                <div className={'m-1'}>
-                                                    <h4>
-                                                        Axie Infinity hits a new
-                                                        ATH at $155 while
-                                                        Bitcoin bulls aim for
-                                                        $50K
-                                                    </h4>
-                                                </div>
-                                                <div className={'m-1'}>
-                                                    <strong
-                                                        className={
-                                                            'text-secondary'
-                                                        }
-                                                    >
-                                                        AXS, CVP and POLS lead
-                                                        altcoins higher while
-                                                        Bitcoin bull search for
-                                                        a way to reclaim the
-                                                        $50,000 level.
-                                                    </strong>
-                                                    <a
-                                                        className={
-                                                            'text-primary'
-                                                        }
-                                                    >
-                                                        (Read More...)
-                                                    </a>
-                                                </div>
-                                                <div className={'m-1'}>
-                                                    <strong>
-                                                        <small>
-                                                            Coingape . 5 hours
-                                                            ago
-                                                        </small>
-                                                    </strong>
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-                                    <div className={'row'}>
+                                <div className={'col-sm-12 col-md-7 col-lg-7'}>
+
+                                    <div className={'row mt-sm-3'}>
                                         <div className={'col-4'}>
                                             <section>
                                                 <img
@@ -1002,7 +915,7 @@ export default function Overview() {
                                             </section>
                                         </div>
                                         <div className={'col-8'}>
-                                            <section className={'m-3'}>
+                                            <section className={'m-md-3 m-lg-3 m-sm-0'}>
                                                 <div className={'m-1'}>
                                                     <h4>
                                                         Axie Infinity hits a new
@@ -1056,7 +969,61 @@ export default function Overview() {
                                             </section>
                                         </div>
                                         <div className={'col-8'}>
-                                            <section className={'m-3'}>
+                                            <section className={'m-md-3 m-lg-3 m-sm-0'}>
+                                                <div className={'m-1'}>
+                                                    <h4>
+                                                        Axie Infinity hits a new
+                                                        ATH at $155 while
+                                                        Bitcoin bulls aim for
+                                                        $50K
+                                                    </h4>
+                                                </div>
+                                                <div className={'m-1'}>
+                                                    <strong
+                                                        className={
+                                                            'text-secondary'
+                                                        }
+                                                    >
+                                                        AXS, CVP and POLS lead
+                                                        altcoins higher while
+                                                        Bitcoin bull search for
+                                                        a way to reclaim the
+                                                        $50,000 level.
+                                                    </strong>
+                                                    <a
+                                                        className={
+                                                            'text-primary'
+                                                        }
+                                                    >
+                                                        (Read More...)
+                                                    </a>
+                                                </div>
+                                                <div className={'m-1'}>
+                                                    <strong>
+                                                        <small>
+                                                            Coingape . 5 hours
+                                                            ago
+                                                        </small>
+                                                    </strong>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                    <div className={'row'}>
+                                        <div className={'col-4'}>
+                                            <section>
+                                                <img
+                                                    height={200}
+                                                    src={
+                                                        'https://theycb.files.wordpress.com/2020/11/3a15f-05ten9f4x0jgx9dsg.png'
+                                                    }
+                                                    alt={'news'}
+                                                    className="img-thumbnail"
+                                                />
+                                            </section>
+                                        </div>
+                                        <div className={'col-8'}>
+                                            <section className={'m-md-3 m-lg-3 m-sm-0'}>
                                                 <div className={'m-1'}>
                                                     <h4>
                                                         Axie Infinity hits a new
@@ -1099,37 +1066,26 @@ export default function Overview() {
                                 </div>
                             </section>
                             <section>
-                                <div
-                                    className={
-                                        'm-3 d-flex justify-content-center'
-                                    }
-                                >
-                                    <a
-                                        href={'#'}
-                                        className={'btn btn-secondary btn-lg'}
-                                    >
+                                <div className={'m-3 d-flex justify-content-center'}>
+                                    <a href={'#'} className={'btn btn-secondary btn-lg btn-sm btn-md'}>
                                         Read More
                                     </a>
                                 </div>
                             </section>
                         </Card>
 
+                        {/*Trending Coins*/}
                         <Card className={'row mt-3'}>
-                            <section
-                                className={
-                                    'd-flex justify-content-between mt-3'
-                                }
-                            >
+                            <section className={'d-flex justify-content-between mt-3'}>
                                 <h4>Trending Coins</h4>
                                 <div>
                                     <span className={'text-primary'}>
-                                        {' '}
                                         <ArrowBack /> <ArrowForward />
                                     </span>
                                 </div>
                             </section>
                             <hr />
-                            <section className="d-flex flex-row mb-4">
+                            <section className="d-sm-block d-md-flex d-lg-flex mb-4">
                                 <div className="m-2">
                                     <Card style={custom.coinsBorder}>
                                         <CardContent>
@@ -1455,7 +1411,7 @@ export default function Overview() {
                                     rapid understanding of the state Bitcoin
                                 </p>
                             </div>
-                            <div className={'d-flex'}>
+                            <div className={'d-lg-flex d-md-flex d-sm-block'}>
                                 <div className={'border rounded m-1'}>
                                     <div className={'m-3'}>
                                         <p>
@@ -1464,27 +1420,19 @@ export default function Overview() {
                                         </p>
                                         <div>
                                             <p>
-                                                <span
-                                                    className={'text-primary'}
-                                                >
+                                                <span className={'text-primary'}>
                                                     {' '}
                                                     83% <small>IN</small>
                                                 </span>
                                                 <span className={'text-danger'}>
                                                     8% <small>AT</small>
                                                 </span>
-                                                <span
-                                                    className={'text-success'}
-                                                >
+                                                <span className={'text-success'}>
                                                     9% <small>OUT </small>
                                                 </span>
                                             </p>
                                         </div>
-                                        <hr
-                                            style={{
-                                                borderTop: '5px solid red',
-                                            }}
-                                        />
+                                        <hr style={{borderTop: '5px solid red',}}/>
                                     </div>
                                 </div>
                                 <div className={'border rounded m-1'}>
@@ -1592,20 +1540,13 @@ export default function Overview() {
                                         sentiment of Bitcoin
                                     </p>
                                 </div>
-                                <div
-                                    className={'d-flex justify-content-between'}
-                                >
+                                <div className={'d-lg-flex d-md-flex d-sm-block justify-content-between'}>
                                     <div className={'border rounded m-1'}>
                                         <div className={'m-3'}>
                                             <h5 className={'text-secondary'}>
                                                 <strong>Summary</strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px'}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>
@@ -1617,12 +1558,7 @@ export default function Overview() {
                                                     Net Network Growth
                                                 </strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px',}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>
@@ -1632,12 +1568,7 @@ export default function Overview() {
                                             <h5 className={'text-success'}>
                                                 <strong>Concentration</strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px',}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>
