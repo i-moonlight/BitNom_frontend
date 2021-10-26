@@ -8,7 +8,6 @@ import {
     Paper,
     Typography,
 } from '@material-ui/core';
-import { Reply } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';

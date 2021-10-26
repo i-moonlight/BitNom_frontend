@@ -16,7 +16,6 @@ import { useQuery } from '@apollo/client';
 import { SEARCH_MESSAGES } from '../../graphql/queries';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
 const chatSettingsId = 'chat-settings-menu';
