@@ -18,6 +18,24 @@ export const SEARCH_USERS = gql`
         }
     }
 `;
+export const SEARCH_CHATS = gql`
+    query ($params: ISearchDialogue) {
+        Dialogue {
+            search(params: $params) {
+                _id
+            }
+        }
+    }
+`;
+export const SEARCH_MESSAGES = gql`
+    query ($data: ISearchChatMessages) {
+        Dialogue {
+            searchMessages(data: $data) {
+                _id
+            }
+        }
+    }
+`;
 
 export const CREATE_DIALOGUE = gql`
     mutation ($data: IUserSmall!) {
@@ -47,7 +65,13 @@ export const CREATE_DIALOGUE = gql`
                     lastSeen
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -126,7 +150,13 @@ export const GET_DIALOGUES = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -189,7 +219,13 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -252,7 +288,13 @@ export const REJECT_DIALOGUE_INVITE = gql`
                 archived
             }
             status
-            lastMessageDate
+            lastMessage {
+                text
+                video
+                images
+                documents
+                gif
+            }
         }
     }
 `;
@@ -313,7 +355,13 @@ export const BLOCK_DIALOGUE = gql`
                 archived
             }
             status
-            lastMessageDate
+            lastMessage {
+                text
+                video
+                images
+                documents
+                gif
+            }
         }
     }
 `;
@@ -348,7 +396,13 @@ export const UNBLOCK_DIALOGUE = gql`
                 lastSeen
             }
             status
-            lastMessageDate
+            lastMessage {
+                text
+                video
+                images
+                documents
+                gif
+            }
         }
     }
 `;
@@ -423,7 +477,13 @@ export const CREATE_GROUP = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
                 createdOn
             }
         }
@@ -444,7 +504,13 @@ export const GROUP_REMOVE_USER = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
                 createdOn
             }
         }
@@ -465,7 +531,13 @@ export const GROUP_ADD_USER = gql`
                     isAdmin
                     unreadCount
                 }
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
                 createdOn
             }
         }
@@ -509,7 +581,13 @@ export const GET_GROUPS = gql`
                     unreadCount
                     isAdmin
                 }
-                lastMessageDate
+                lastMessage {
+                    text
+                    images
+                    video
+                    gif
+                    documents
+                }
             }
         }
     }
@@ -596,7 +674,13 @@ export const ARCHIVE_CHAT = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    images
+                    video
+                    documents
+                    gif
+                    text
+                }
             }
         }
     }
@@ -660,7 +744,13 @@ export const MARK_CHAT_AS_READ = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    text
+                    gif
+                    images
+                    video
+                    documents
+                }
             }
         }
     }
@@ -720,7 +810,13 @@ export const MUTE_CONVERSATION = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    text
+                    video
+                    gif
+                    documents
+                    images
+                }
             }
         }
     }
@@ -779,7 +875,13 @@ export const BLOCK_CHAT = gql`
                     archived
                 }
                 status
-                lastMessageDate
+                lastMessage {
+                    images
+                    text
+                    video
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -878,13 +980,21 @@ export const NEW_CHAT_ADDED = gql`
                 }
                 lastSeen
             }
-            lastMessageDate
+            lastMessage {
+                text
+                images
+                video
+                documentsgif
+            }
         }
     }
 `;
 export const USER_IS_ONLINE = gql`
-    subscription ($_id: ID!) {
-        userIsOnline(_id: $_id)
+    subscription ($_id: String!) {
+        userIsOnline(_id: $_id) {
+            _id
+            online
+        }
     }
 `;
 export const USER_ONLINE_STATUS = gql`
@@ -943,7 +1053,132 @@ export const CHAT_ACCEPTED = gql`
                 }
                 lastSeen
             }
-            lastMessageDate
+            lastMessage {
+                gif
+                text
+                video
+                documents
+                images
+            }
+        }
+    }
+`;
+export const LATESTMESSAGE_SUBSCRIPTION = gql`
+    subscription lastMessageUpdate($_id: ID!) {
+        lastMessageUpdate(_id: $_id) {
+            text
+            _id
+            images
+            video
+            documents
+            gif
+        }
+    }
+`;
+export const PIN_CHAT = gql`
+    mutation pin($_id: ID!) {
+        Dialogue {
+            pin(_id: $_id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                }
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                }
+                otherUser {
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    unreadCount
+                    blocked
+                    lastSeen
+                }
+                status
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                }
+                lastMessage {
+                    images
+                    video
+                    documents
+                    gif
+                    text
+                }
+            }
+        }
+    }
+`;
+export const PIN_MESSAGE = gql`
+    mutation pinMessage($_id: ID!) {
+        Dialogue {
+            pinMessage(_id: $_id) {
+                _id
+                chat {
+                    _id
+                }
+                author
+                text
+                images
+                videos
+            }
+        }
+    }
+`;
+export const UNARCHIVE = gql`
+    mutation unarchive($_id: ID!) {
+        Dialogue {
+            unarchive(_id: $_id)
+        }
+    }
+`;
+export const UNPIN = gql`
+    mutation unpin($_id: ID!) {
+        Dialogue {
+            unpin(_id: $_id)
+        }
+    }
+`;
+export const UNPIN_MESSAGE = gql`
+    mutation unpinMessage($_id: ID!) {
+        Dialogue {
+            unpinMessage(_id: $_id)
+        }
+    }
+`;
+export const UPDATE_MESSAGE = gql`
+    mutation updateMessage($_id: ID!) {
+        Dialogue {
+            updateMessage(_id: $_id) {
+                _id
+            }
         }
     }
 `;

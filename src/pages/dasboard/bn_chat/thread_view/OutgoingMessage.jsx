@@ -8,6 +8,7 @@ import {
     IconButton,
 } from '@material-ui/core';
 import { Reply } from '@material-ui/icons';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -20,7 +21,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
-                <small>17.25</small>
+                <small>{moment(message.date).format('h:mm a')}</small>
             </div>
 
             <Paper

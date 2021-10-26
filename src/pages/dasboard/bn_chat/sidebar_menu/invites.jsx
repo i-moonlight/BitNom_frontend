@@ -13,6 +13,7 @@ import { setCurrentChat } from '../../../../store/actions/chatActions';
 export default function Invites({ invites, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
+    const activeChatId = state.chats.current_chat._id;
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
@@ -25,7 +26,7 @@ export default function Invites({ invites, loading }) {
                 <List
                     component="nav"
                     subheader={
-                        <ListSubheader component="div">invites</ListSubheader>
+                        <ListSubheader component="div">Invites</ListSubheader>
                     }
                 >
                     {invites.map((chat) => (
@@ -33,6 +34,7 @@ export default function Invites({ invites, loading }) {
                             key={chat._id}
                             chat={chat}
                             onClick={() => openChatInvite(chat)}
+                            activeChatId={activeChatId}
                         />
                     ))}
                 </List>

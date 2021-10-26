@@ -6,15 +6,23 @@ import {
     IconButton,
     Divider,
     Avatar,
+    Paper,
+    useTheme,
+    InputBase,
 } from '@material-ui/core';
 import { Search, Settings } from '@material-ui/icons';
 import { useStyles } from '../../utils/styles';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { useQuery } from '@apollo/client';
+import { SEARCH_MESSAGES } from '../../graphql/queries';
 const chatSettingsId = 'chat-settings-menu';
 export default function ChatHeader({ chat }) {
     const classes = useStyles();
+    const theme = useTheme();
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
+    const [searchTerm, setValues] = useState('');
+    const [searchOpen, setSearchOpen] = useState(false);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
     const handleChatSettingsClose = () => {
         setChatSettingsAnchorEl(null);
@@ -22,6 +30,20 @@ export default function ChatHeader({ chat }) {
     const handleChatSettingOpen = (e) => {
         setChatSettingsAnchorEl(e.currentTarget);
     };
+    const handleSearchMessage = (e) => {
+        setValues(
+            searchTerm?.length >= 250
+                ? e.target.value.substring(0, e.target.value.length - 1)
+                : e.target.value.substring(0, 250)
+        );
+    };
+    const { loading, data } = useQuery(SEARCH_MESSAGES, {
+        variables: {
+            data: { chat: chat._id, params: { searchString: searchTerm } },
+        },
+        context: { clientName: 'chat' },
+    });
+    console.log('SEARCH_MESSAGES', data);
     return (
         <Grid container spacing={1}>
             <Grid item>
@@ -71,9 +93,35 @@ export default function ChatHeader({ chat }) {
                                 type="submit"
                                 className={classes.iconButtonStatus}
                                 aria-label="search"
+                                onClick={() => setSearchOpen(true)}
                             >
                                 <Search />
                             </IconButton>
+                            {searchOpen ? (
+                                <Paper
+                                    variant={
+                                        theme.palette.type == 'light'
+                                            ? 'outlined'
+                                            : 'elevation'
+                                    }
+                                    elevation={0}
+                                    component="form"
+                                    className={classes.paperSearch}
+                                >
+                                    <InputBase
+                                        className={classes.input}
+                                        placeholder="Search Messages"
+                                        inputProps={{
+                                            'aria-label': 'search chats',
+                                        }}
+                                        name="searchString"
+                                        value={searchTerm}
+                                        onChange={handleSearchMessage}
+                                    />
+                                </Paper>
+                            ) : (
+                                ''
+                            )}
                         </div>
                     </Grid>
                     <Grid item></Grid>

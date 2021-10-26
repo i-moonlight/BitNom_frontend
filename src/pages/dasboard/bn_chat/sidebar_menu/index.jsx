@@ -92,7 +92,8 @@ function Chats() {
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
-
+    const unreadCount = state.chats.unreadCount;
+    const activeChatId = state.chats.current_chat._id;
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
@@ -102,6 +103,7 @@ function Chats() {
         return;
     };
 
+    console.log('UNREADCOUNT', unreadCount);
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>
@@ -121,6 +123,7 @@ function Chats() {
                                 key={chat._id}
                                 onClick={() => openChat(chat)}
                                 chat={chat}
+                                activeChatId={activeChatId}
                             />
                         ))}
                     </List>

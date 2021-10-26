@@ -174,6 +174,7 @@ export const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         alignContent: 'end',
         margin: theme.spacing(2),
+        fontSize: '11px',
     },
     reply: {
         display: 'flex',
@@ -183,5 +184,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     author: {
         fontSize: '12px',
+    },
+    activeChat: {
+        backgroundColor: '#F0F0F0',
     },
 }));
