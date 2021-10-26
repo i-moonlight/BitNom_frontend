@@ -24,6 +24,8 @@ export default function TrendingPostsCard({ trending, loading }) {
         e.stopPropagation();
         history.push(targetLink.href.substring(location.origin.length));
     };
+
+    console.log(trending, 'TREND');
     return (
         <Paper
             style={{
@@ -49,22 +51,34 @@ export default function TrendingPostsCard({ trending, loading }) {
                 )}
                 {trending &&
                     trending?.slice(0, 3).map((post) => (
-                        <ListItem key={post?._id} divider>
+                        <ListItem
+                            key={post?._id}
+                            divider
+                            style={{ zIndex: 1, cursor: 'pointer' }}
+                            onClick={() => history.push(`/posts/${post?._id}`)}
+                        >
                             <ListItemAvatar>
                                 <Avatar
                                     src={
-                                        post?.images?.length > 0
-                                            ? process.env
-                                                  .REACT_APP_BACKEND_URL +
-                                              post?.images[0]
+                                        post?.images?.length > 0 ||
+                                        post?.video?.thumbnail
+                                            ? post?.video?.thumbnail
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  post?.video?.thumbnail
+                                                : process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  post?.images[0]
                                             : ''
                                     }
+                                    style={{ backgroundColor: 'inherit' }}
                                     variant="square"
                                 >
                                     <MessageOutlined
                                         style={{
                                             display:
-                                                post?.images?.length > 0
+                                                post?.images?.length > 0 ||
+                                                post?.video?.path
                                                     ? 'none'
                                                     : 'block',
                                         }}
