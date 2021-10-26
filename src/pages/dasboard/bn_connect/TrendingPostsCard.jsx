@@ -13,7 +13,11 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { contentBodyFactory, truncateText } from '../utilities/functions';
+import {
+    contentBodyFactory,
+    truncateText,
+    getReactionsSum,
+} from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
     const history = useHistory();
@@ -99,10 +103,10 @@ export default function TrendingPostsCard({ trending, loading }) {
                                         }}
                                     ></Typography>
                                 }
-                                secondary={`${post?.reactions?.likes} ${
-                                    post?.reactions?.likes === 1
-                                        ? 'Like'
-                                        : 'Likes'
+                                secondary={`${getReactionsSum(post)} ${
+                                    getReactionsSum(post) === 1
+                                        ? 'Reaction'
+                                        : 'Reactions'
                                 } . ${post?.comments} ${
                                     post?.comments === 1
                                         ? 'Comment'
