@@ -187,6 +187,16 @@ ul li::before {
     border: 1px solid transparent;
 }
 
+.comment-dropzone {
+    display: 'none';
+}
+.reply-dropzone {
+    display: 'none';
+}
+.update-comment-dropzone {
+    display: 'none';
+}
+
 .profile-upload-dropzone {
     opacity: 0.9;
     min-height: 80px !important;

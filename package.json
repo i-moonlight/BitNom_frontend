@@ -40,6 +40,7 @@
         "react-helmet": "^6.1.0",
         "react-material-ui-carousel": "^2.3.5",
         "react-mentions": "^4.3.0",
+        "react-mui-dropzone": "^4.0.5",
         "react-places-autocomplete": "^7.3.0",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
