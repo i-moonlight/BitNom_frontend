@@ -150,6 +150,7 @@ export default function Scroll({
         variables: { data: { scroll_id: scroll?._id } },
     });
 
+    console.log(scroll, 'SCROLL');
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {
@@ -373,7 +374,7 @@ export default function Scroll({
                         ></Typography>
                     </Typography>
                     <Grid container spacing={2} className="mb-2">
-                        {scroll?.video && (
+                        {scroll?.video?.path && (
                             <Grid
                                 item
                                 xs={12}
@@ -385,7 +386,8 @@ export default function Scroll({
                                 <CardMedia
                                     className="br-2"
                                     component="video"
-                                    src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
+                                    poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                    src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                     controls
                                 />
                             </Grid>

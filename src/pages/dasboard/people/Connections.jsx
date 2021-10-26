@@ -19,8 +19,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -42,11 +42,15 @@ export default function Connections() {
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
     const history = useHistory();
-    const {
-        //error: profileError,
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
+    const { active_tab } = useParams();
+
+    useEffect(() => {
+        if (active_tab) {
+            setValue(1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
 
@@ -113,10 +117,6 @@ export default function Connections() {
                                     onChange={handleChange}
                                     indicatorColor="primary"
                                     variant="fullWidth"
-                                    /* classes={{
-              root: classes.tabsRoot,
-              indicator: classes.displayNone,
-            }} */
                                 >
                                     <Tab
                                         key={'Followers'}
@@ -194,22 +194,11 @@ function ListItemComponent({ item, getFollowStatus }) {
         }
     }, [getFollowStatus, item]);
 
-    const [
-        followUser,
-        {
-            data: followData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_FOLLOW_USER);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [followUser, { data: followData }] =
+        useMutation(MUTATION_FOLLOW_USER);
+    const [unFollowUser, { data: unFollowData }] = useMutation(
+        MUTATION_UNFOLLOW_USER
+    );
     const handleFollowUser = (user_id) => {
         followUser({
             variables: {
@@ -280,9 +269,7 @@ function ListItemComponent({ item, getFollowStatus }) {
             />
             <ListItemIcon
                 aria-label="show more"
-                //   aria-controls={notificationOptionId}
                 aria-haspopup="true"
-                //   onClick={handleNotificationOptionOpen}
                 color="inherit"
                 style={{
                     marginRight: 0,

@@ -120,11 +120,12 @@ export default function SavedPost({
                             ></Typography>
                         </Typography>
                         <Grid container spacing={2} className="mb-2">
-                            {scroll?.video && (
+                            {scroll?.video?.path && (
                                 <Grid item xs={12}>
                                     <CardMedia
                                         component="video"
-                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`}
+                                        poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                         controls
                                     />
                                 </Grid>

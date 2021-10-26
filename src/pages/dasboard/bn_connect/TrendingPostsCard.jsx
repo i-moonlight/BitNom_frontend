@@ -13,7 +13,11 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { contentBodyFactory, truncateText } from '../utilities/functions';
+import {
+    contentBodyFactory,
+    truncateText,
+    getReactionsSum,
+} from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
     const history = useHistory();
@@ -24,6 +28,8 @@ export default function TrendingPostsCard({ trending, loading }) {
         e.stopPropagation();
         history.push(targetLink.href.substring(location.origin.length));
     };
+
+    console.log(trending, 'TREND');
     return (
         <Paper
             style={{
@@ -49,22 +55,34 @@ export default function TrendingPostsCard({ trending, loading }) {
                 )}
                 {trending &&
                     trending?.slice(0, 3).map((post) => (
-                        <ListItem key={post?._id} divider>
+                        <ListItem
+                            key={post?._id}
+                            divider
+                            style={{ zIndex: 1, cursor: 'pointer' }}
+                            onClick={() => history.push(`/posts/${post?._id}`)}
+                        >
                             <ListItemAvatar>
                                 <Avatar
                                     src={
-                                        post?.images?.length > 0
-                                            ? process.env
-                                                  .REACT_APP_BACKEND_URL +
-                                              post?.images[0]
+                                        post?.images?.length > 0 ||
+                                        post?.video?.thumbnail
+                                            ? post?.video?.thumbnail
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  post?.video?.thumbnail
+                                                : process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  post?.images[0]
                                             : ''
                                     }
+                                    style={{ backgroundColor: 'inherit' }}
                                     variant="square"
                                 >
                                     <MessageOutlined
                                         style={{
                                             display:
-                                                post?.images?.length > 0
+                                                post?.images?.length > 0 ||
+                                                post?.video?.path
                                                     ? 'none'
                                                     : 'block',
                                         }}
@@ -85,10 +103,10 @@ export default function TrendingPostsCard({ trending, loading }) {
                                         }}
                                     ></Typography>
                                 }
-                                secondary={`${post?.reactions?.likes} ${
-                                    post?.reactions?.likes === 1
-                                        ? 'Like'
-                                        : 'Likes'
+                                secondary={`${getReactionsSum(post)} ${
+                                    getReactionsSum(post) === 1
+                                        ? 'Reaction'
+                                        : 'Reactions'
                                 } . ${post?.comments} ${
                                     post?.comments === 1
                                         ? 'Comment'

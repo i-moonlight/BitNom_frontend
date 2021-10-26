@@ -116,7 +116,7 @@ export default function UpdatePost({
     useEffect(() => {
         if (postToEdit?.images.length > 0) {
             setFileType('image');
-        } else if (postToEdit?.video?.trim() !== '') {
+        } else if (postToEdit?.video?.path) {
             setFileType('video');
         }
         if (postToEdit) {
@@ -320,7 +320,7 @@ export default function UpdatePost({
                                     }}
                                 />
                             </Card>
-                            {(postToEdit?.video?.trim() !== '' ||
+                            {(postToEdit?.video?.path ||
                                 postToEdit?.images?.length > 0) &&
                                 fileType !== null && (
                                     <Card>
@@ -345,11 +345,11 @@ export default function UpdatePost({
                                             spacing={2}
                                             className="mb-2"
                                         >
-                                            {postToEdit?.video && (
+                                            {postToEdit?.video?.path && (
                                                 <Grid item xs={12}>
                                                     <CardMedia
                                                         component="video"
-                                                        src={`${process.env.REACT_APP_BACKEND_URL}${postToEdit?.video}`}
+                                                        src={`${process.env.REACT_APP_BACKEND_URL}${postToEdit?.video?.path}`}
                                                         controls
                                                     />
                                                 </Grid>

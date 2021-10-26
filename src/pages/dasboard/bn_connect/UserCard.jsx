@@ -2,10 +2,9 @@ import {
     BookmarkRounded,
     CollectionsBookmarkRounded,
     EventRounded,
-    Notifications,
     PersonRounded,
-    Settings,
 } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
 import {
     Avatar,
     Badge,
@@ -14,7 +13,6 @@ import {
     CardContent,
     CardMedia,
     Divider,
-    IconButton,
     Typography,
 } from '@mui/material';
 import React, { useRef } from 'react';
@@ -22,8 +20,17 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
-
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        padding: '0px 8px',
+        cursor: 'pointer',
+        '&:hover': {
+            background: theme.palette.action.hover,
+        },
+    },
+}));
 export default function UserCard({ setOpen, followers, following }) {
+    const classes = useStyles();
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const card = useRef();
@@ -89,14 +96,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                 position: 'relative',
                                 top: 60,
                             }}
-                        >
-                            <IconButton size="small" className="m-1 p-1">
-                                <Notifications />
-                            </IconButton>
-                            <IconButton size="small" className="m-1 p-1">
-                                <Settings />
-                            </IconButton>
-                        </div>
+                        ></div>
                     </div>
                     {/* <Typography variant='body2'>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
@@ -106,8 +106,8 @@ export default function UserCard({ setOpen, followers, following }) {
 
                     <div className="center-horizontal space-between">
                         <div
-                            style={{ cursor: 'pointer' }}
                             onClick={() => history.push('/profile/posts')}
+                            className={classes.clickableTypography}
                         >
                             <Typography variant="body2">Posts</Typography>
                             <div className="center-horizontal">
@@ -122,7 +122,7 @@ export default function UserCard({ setOpen, followers, following }) {
                             </div>
                         </div>
                         <div
-                            style={{ cursor: 'pointer' }}
+                            className={classes.clickableTypography}
                             onClick={() => history.push('/profile/connections')}
                         >
                             <Typography variant="body2">Followers</Typography>
@@ -138,11 +138,11 @@ export default function UserCard({ setOpen, followers, following }) {
                             </div>
                         </div>
                         <Typography
-                            style={{ cursor: 'pointer' }}
+                            className={classes.clickableTypography}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
-                                history.push('/profile/connections');
+                                history.push('/profile/connections/following');
                             }}
                         >
                             <Typography variant="body2">Following</Typography>
