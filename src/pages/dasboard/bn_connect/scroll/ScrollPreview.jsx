@@ -7,8 +7,8 @@ import {
     Grid,
     //IconButton,
     Typography,
-} from '@material-ui/core';
-//import { MoreVert } from '@material-ui/icons';
+} from '@mui/material';
+//import { MoreVert } from '@mui/icons-material';
 import moment from 'moment';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -31,7 +31,11 @@ export default function ScrollPreview({ scroll }) {
         <>
             <Card
                 variant="outlined"
-                style={{ marginBottom: 16, marginTop: 16 }}
+                style={{ marginBottom: 16, marginTop: 16, zIndex: 2 }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    history.push(`/posts/${scroll?._id}`);
+                }}
             >
                 <CardHeader
                     avatar={

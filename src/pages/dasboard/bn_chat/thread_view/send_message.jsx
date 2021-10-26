@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
-import {
-    Divider,
-    IconButton,
-    useTheme,
-    Paper,
-    InputBase,
-} from '@material-ui/core';
+import { useMutation } from '@apollo/client';
 import {
     AttachFile,
-    Image,
-    VideoLibrary,
-    Gif,
     EmojiEmotions,
+    Gif,
+    Image,
     SendOutlined,
-} from '@material-ui/icons';
-import { useMutation } from '@apollo/client';
-import { useStyles } from '../utils/styles';
-import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
+    VideoLibrary,
+} from '@mui/icons-material';
+import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 
@@ -75,9 +66,9 @@ export default function SendMessage({ chat }) {
                 : e.target.value.substring(0, 250)
         );
     };
+
     const handleSendMessage = (e) => {
         e.preventDefault();
-
         onSendMessage({
             chat: chat,
             text: text,

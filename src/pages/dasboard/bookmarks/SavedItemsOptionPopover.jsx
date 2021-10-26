@@ -1,24 +1,23 @@
 import { useMutation } from '@apollo/client';
 import {
+    BookmarkBorderRounded,
+    PersonAddDisabledOutlined,
+} from '@mui/icons-material';
+import {
     Card,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
-import {
-    BookmarkBorderRounded,
-    PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import {
-    MUTATION_REMOVE_BOOKMARK,
     GET_BOOKMARKED_COMMENTS,
-    GET_BOOKMARKED_SCROLLS,
     GET_BOOKMARKED_EVENTS,
+    GET_BOOKMARKED_SCROLLS,
+    MUTATION_REMOVE_BOOKMARK,
 } from '../utilities/queries';
 
 export default function SavedItemsOptionPopover({
@@ -29,14 +28,7 @@ export default function SavedItemsOptionPopover({
     isSavedItemOptionOpen,
     handleSavedItemOptionClose,
 }) {
-    const [
-        removeBookmark,
-        {
-            data: removeBookmarkData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_REMOVE_BOOKMARK);
+    const [removeBookmark] = useMutation(MUTATION_REMOVE_BOOKMARK);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -75,7 +67,6 @@ export default function SavedItemsOptionPopover({
                 },
             ],
         });
-        if (!removeBookmarkData) console.log('');
         handleSavedItemOptionClose();
     };
 
@@ -89,14 +80,21 @@ export default function SavedItemsOptionPopover({
             keepMounted
             open={isSavedItemOptionOpen}
             onClose={handleSavedItemOptionClose}
-            style={{ marginLeft: 16, width: '100%' }}
+            style={{ marginLeft: 16, width: '100%', zIndex: 3 }}
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}
                 component={Card}
                 variant="outlined"
             >
-                <ListItem button divider onClick={handleRemoveBookmark}>
+                <ListItem
+                    button
+                    divider
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveBookmark();
+                    }}
+                >
                     <ListItemIcon>
                         <BookmarkBorderRounded />
                     </ListItemIcon>

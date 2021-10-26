@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Snackbar, Typography } from '@material-ui/core';
 import {
     AssignmentIndOutlined,
     CalendarTodayOutlined,
@@ -9,7 +8,8 @@ import {
     StarRounded,
     StorageRounded,
     TimelineRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
+import { Card, CardContent, Snackbar, Typography } from '@mui/material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -27,18 +27,9 @@ export default function ProfileCard({ profile, profileView }) {
         setShowForm(false);
     };
 
-    const [
-        updateUser,
-        {
-            // updateError,
-            //  data,
-            updateLoading,
-        },
-    ] = useMutation(MUTATION_UPDATE_PROFILE, {
+    const [updateUser] = useMutation(MUTATION_UPDATE_PROFILE, {
         context: { clientName: 'users' },
     });
-
-    console.log(updateLoading);
 
     return (
         <div>

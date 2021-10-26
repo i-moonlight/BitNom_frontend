@@ -1,26 +1,26 @@
+import { useMutation } from '@apollo/client';
 import {
+    CheckBox,
+    CheckBoxOutlineBlank,
+    CloseRounded,
+} from '@mui/icons-material';
+import Autocomplete from '@mui/lab/Autocomplete';
+import {
+    Button,
     Card,
+    CardActions,
     CardContent,
+    Checkbox,
+    CircularProgress,
     Divider,
     Grid,
     IconButton,
     Modal,
-    Typography,
-    Checkbox,
     TextField,
-    CardActions,
-    CircularProgress,
-    Button,
-} from '@material-ui/core';
-import { useMutation } from '@apollo/client';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
-import {
-    CloseRounded,
-    CheckBox,
-    CheckBoxOutlineBlank,
-} from '@material-ui/icons';
+    Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
+import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
 //import { getUserInitials } from '../../../utilities/Helpers';
 //import { getReactionsSum } from '../utilities/functions';
 
@@ -40,7 +40,7 @@ export default function InviteFriends({
         inviteFriends,
         {
             loading,
-            data,
+            // data,
             //  error
         },
     ] = useMutation(MUTATION_INVITE_FRIENDS_TO_EVENT);
@@ -51,7 +51,6 @@ export default function InviteFriends({
                 data: { ids: friends, event_id: eventId },
             },
         });
-        if (!data) console.log('');
     };
 
     const handleInviteFriends = () => {

@@ -1,16 +1,16 @@
 import {
+    ChevronRightRounded,
+    CloudDownload,
+    ShareRounded,
+} from '@mui/icons-material';
+import {
     Card,
     CardContent,
     Container,
     Divider,
     Grid,
     Typography,
-} from '@material-ui/core';
-import {
-    ChevronRightRounded,
-    CloudDownload,
-    ShareRounded,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
 import learnImg from '../../../../assets/investor/learn.svg';
 import logoImg from '../../../../assets/logo_full.svg';
@@ -108,21 +108,38 @@ export default function WhitePaper() {
                                                         color="inherit"
                                                         textCase
                                                         variant="text"
-                                                        className="mt-2"
+                                                        className="my-2"
                                                         endIcon={
                                                             <CloudDownload />
                                                         }
                                                     >
-                                                        Download Whitepaper
+                                                        <a
+                                                            href={`${window.location.origin}/assets/BitNorm Whitepaper.pdf`}
+                                                        >
+                                                            Download Whitepaper
+                                                        </a>
                                                     </Button>
                                                     <Button
                                                         color="inherit"
                                                         textCase
                                                         variant="text"
-                                                        className="mt-2"
+                                                        className="my-2"
                                                         startIcon={
                                                             <ShareRounded />
                                                         }
+                                                        onClick={() => {
+                                                            if (
+                                                                navigator.share
+                                                            ) {
+                                                                navigator.share(
+                                                                    {
+                                                                        title: 'BitNorm WhitePaper',
+                                                                        text: 'Check out BitNorm White Paper.',
+                                                                        url: `${window.location.origin}/assets/BitNorm Whitepaper.pdf`,
+                                                                    }
+                                                                );
+                                                            }
+                                                        }}
                                                     >
                                                         Share
                                                     </Button>

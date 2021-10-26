@@ -1,5 +1,12 @@
 import { useMutation } from '@apollo/client';
 import {
+    BookmarkBorderRounded,
+    EditOutlined,
+    FileCopyOutlined,
+    FlagOutlined,
+    PersonAddDisabledOutlined,
+} from '@mui/icons-material';
+import {
     Card,
     Divider,
     List,
@@ -7,19 +14,12 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
-import {
-    BookmarkBorderRounded,
-    FileCopyOutlined,
-    FlagOutlined,
-    PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
 import Button from '../../../../components/Button';
-
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
@@ -38,22 +38,8 @@ export default function ScrollOptionsPopover({
     isScrollOptionOpen,
     handleScrollOptionClose,
 }) {
-    const [
-        createBookmark,
-        {
-            data,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_CREATE_BOOKMARK);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -72,8 +58,6 @@ export default function ScrollOptionsPopover({
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
     };
 
     const handleCreateBookmark = () => {
@@ -104,7 +88,6 @@ export default function ScrollOptionsPopover({
             draggable: true,
         });
 
-        if (!data?.Bookmarks?.create) console.log('Bookmarked');
         handleScrollOptionClose();
     };
     const handleReportScroll = () => {
@@ -156,11 +139,37 @@ export default function ScrollOptionsPopover({
                 {user?._id === scroll?.author?._id && (
                     <ListItem button divider onClick={handleEditScroll}>
                         <ListItemIcon>
-                            <FileCopyOutlined />
+                            <EditOutlined />
                         </ListItemIcon>
                         <ListItemText primary="Edit this post" />
                     </ListItem>
                 )}
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        navigator.clipboard.writeText(
+                            `${location.origin}/posts/${scroll?._id}`
+                        );
+                        toast.success('Post link copied to clipboard', {
+                            position: 'bottom-left',
+                            autoClose: 3000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        });
+                        handleScrollOptionClose();
+                    }}
+                >
+                    <ListItemIcon>
+                        <FileCopyOutlined />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="Copy this post"
+                        secondary="Share this post on other platforms"
+                    />
+                </ListItem>
                 {user?._id !== scroll?.author?._id && (
                     <ListItem
                         button

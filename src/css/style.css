@@ -76,14 +76,18 @@ small {
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
+
 .scroll-hidden::-webkit-scrollbar {
     display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
+
 .scroll-hidden {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 /* Display Flex */
@@ -153,12 +157,18 @@ ul {
 }
 
 ul li::before {
-    content: '\2022'; /* Add content: \2022 is the CSS Code/unicode for a bullet */
-    color: #006097; /* Change the color */
-    font-weight: bold; /* If you want it to be bold */
-    display: inline-block; /* Needed to add space between the bullet and the text */
-    width: 1em; /* Also needed for space (tweak if needed) */
-    margin-left: -1.5em; /* Also needed for space (tweak if needed) */
+    content: '\2022';
+    /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: #006097;
+    /* Change the color */
+    font-weight: bold;
+    /* If you want it to be bold */
+    display: inline-block;
+    /* Needed to add space between the bullet and the text */
+    width: 1em;
+    /* Also needed for space (tweak if needed) */
+    margin-left: -1.5em;
+    /* Also needed for space (tweak if needed) */
 }
 
 /*  Dropzones */
@@ -171,9 +181,20 @@ ul li::before {
 
 .event-upload-dropzone {
     opacity: 0.9;
-    height: '100%';
+    min-height: 200px !important;
+    height: 200px !important;
     background-color: transparent !important;
     border: 1px solid transparent;
+}
+
+.comment-dropzone {
+    display: 'none';
+}
+.reply-dropzone {
+    display: 'none';
+}
+.update-comment-dropzone {
+    display: 'none';
 }
 
 .profile-upload-dropzone {
@@ -186,6 +207,7 @@ ul li::before {
 }
 
 /* Mentions */
+
 .mentions-textarea__input {
     background-color: #fff;
     border-radius: 3px;
@@ -194,13 +216,16 @@ ul li::before {
     font-size: 14px;
     line-height: 1.42857143;
     color: inherit;
-    border: 1px solid rgba(0, 96, 151, 0.5); /* rgba(0, 96, 151, 0.5) */
+    border: 1px solid rgba(0, 96, 151, 0.5);
+    /* rgba(0, 96, 151, 0.5) */
     font-size: 14px;
 }
+
 .mentions-textarea__input:focus:active {
     outline: none;
     border: 1px solid #3fb9de;
 }
+
 .mentions-textarea__input::placeholder {
     color: #a4b0be;
     font-size: 14px;
@@ -209,6 +234,7 @@ ul li::before {
 .mentions-textarea__highlighter {
     padding: 10px;
 }
+
 .mentions-textarea__suggestions__list {
     background-color: #3fb9de;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -216,10 +242,12 @@ ul li::before {
     max-height: 200px;
     overflow: auto;
 }
+
 .mentions-textarea__suggestions__item {
     padding: 5px 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
+
 .mentions-textarea__suggestions__item — focused {
     background-color: #daf4fa;
 }
@@ -230,4 +258,10 @@ ul li::before {
     right: 0;
     float: right;
     margin-left: 200px;
+}
+
+/* Mui Overrides */
+
+.MuiSvgIcon-colorPrimary {
+    color: #006097 !important;
 }

@@ -1,3 +1,14 @@
+//import { useMutation } from '@apollo/client';
+/* import {
+   MUTATION_CREATE_BOOKMARK,
+} from '../utilities/queries'; */
+//import { useSelector } from 'react-redux';
+import {
+    CheckBox,
+    FileCopyOutlined,
+    FlagOutlined,
+    Notifications,
+} from '@mui/icons-material';
 import {
     Card,
     List,
@@ -5,21 +16,9 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import { toast } from 'react-toastify';
-//import { useMutation } from '@apollo/client';
-
-/* import {
-   MUTATION_CREATE_BOOKMARK,
-} from '../utilities/queries'; */
-//import { useSelector } from 'react-redux';
-import {
-    Notifications,
-    FlagOutlined,
-    CheckBox,
-    FileCopyOutlined,
-} from '@material-ui/icons';
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,
     eventOptionsId,
@@ -114,7 +113,7 @@ export default function EventOptionsPopover({
                     divider
                     onClick={() => {
                         navigator.clipboard.writeText(
-                            `${location.origin}/dashboard/events/${event?._id}`
+                            `${location.origin}/events/${event?._id}`
                         );
                         toast.success('Event link copied to clipboard', {
                             position: 'bottom-left',

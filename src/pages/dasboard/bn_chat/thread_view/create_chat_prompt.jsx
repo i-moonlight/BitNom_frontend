@@ -1,29 +1,29 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CloseRounded, Search } from '@mui/icons-material';
 import {
+    Avatar,
     Card,
+    CardContent,
+    CircularProgress,
     Divider,
     Grid,
     IconButton,
-    Modal,
-    Typography,
-    useTheme,
-    Paper,
     InputBase,
-    CardContent,
     List,
     ListItem,
     ListItemAvatar,
-    Avatar,
     ListItemText,
-    CircularProgress,
-} from '@material-ui/core';
-import { CloseRounded, Search } from '@material-ui/icons';
+    Modal,
+    Paper,
+    Typography,
+    useTheme,
+} from '@mui/material';
 import React, { Fragment, useState } from 'react';
+import { getUserInitials } from '../../../../utilities/Helpers';
+import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import { generateRandomColor } from '../../utilities/functions';
-import { getUserInitials } from '../../../../utilities/Helpers';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -32,8 +32,10 @@ export default function CreateChatPrompt({
     const [values, setValues] = useState({
         searchString: '',
     });
+
     const theme = useTheme();
     const classes = useStyles();
+
     const { loading: userLoading, data: userData } = useQuery(
         QUERY_SEARCH_USERS,
         {
@@ -53,12 +55,14 @@ export default function CreateChatPrompt({
             context: { clientName: 'chat' },
         });
     };
+
     const handleSearch = (e) => {
         setValues({
             ...values,
             [e.target.name]: e.target.value,
         });
     };
+
     const handleSendInvite = (user) => {
         onSendInvite({
             _id: user?._id,
@@ -68,8 +72,10 @@ export default function CreateChatPrompt({
         });
         setChatInviteOpen(false);
     };
+
     const users =
         userData && userData?.Users?.search ? userData?.Users?.search : null;
+
     return (
         <Modal
             data={data}
@@ -104,7 +110,7 @@ export default function CreateChatPrompt({
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Paper
                                 variant={
-                                    theme.palette.type == 'light'
+                                    theme.palette.mode == 'light'
                                         ? 'outlined'
                                         : 'elevation'
                                 }
@@ -112,7 +118,6 @@ export default function CreateChatPrompt({
                                 component="form"
                                 className={classes.paperSearch}
                             >
-                                {' '}
                                 <IconButton
                                     size="small"
                                     type="submit"
@@ -173,7 +178,6 @@ export default function CreateChatPrompt({
                                                 <ListItemText
                                                     secondary={
                                                         <Fragment>
-                                                            {' '}
                                                             <Typography
                                                                 sx={{
                                                                     display:
@@ -203,7 +207,6 @@ export default function CreateChatPrompt({
                                     direction="column"
                                     style={{ width: '100%', marginTop: '40%' }}
                                 >
-                                    {' '}
                                     <CircularProgress />
                                 </Grid>
                             )}
@@ -216,7 +219,6 @@ export default function CreateChatPrompt({
                                     direction="column"
                                     style={{ width: '100%' }}
                                 >
-                                    {' '}
                                     <Typography>No users found</Typography>
                                 </Grid>
                             )}
@@ -235,7 +237,7 @@ export default function CreateChatPrompt({
         renderInput={(params) => (
           <Paper
             {...params}
-            variant={theme.palette.type == "light" ? "outlined" : "elevation"}
+            variant={theme.palette.mode == "light" ? "outlined" : "elevation"}
             elevation={0}
             component="form"
             className={classes.paperSearch}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
 import IncomingMessage from './IncomingMessage';
 import OutgoingMessage from './OutgoingMessage';
 

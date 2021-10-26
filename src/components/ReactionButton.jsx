@@ -1,14 +1,14 @@
-import { Button as MuiButton } from '@material-ui/core';
-import React from 'react';
-import { green, red } from '@material-ui/core/colors';
-import { makeStyles, Avatar } from '@material-ui/core';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import {
+    FavoriteRounded,
+    PanToolRounded,
     ThumbDownRounded,
     ThumbUpRounded,
-    PanToolRounded,
-    FavoriteRounded,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
+import AvatarGroup from '@mui/lab/AvatarGroup';
+import { Avatar, Button as MuiButton } from '@mui/material';
+import { green, red } from '@mui/material/colors';
+import { makeStyles } from '@mui/styles';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,7 +60,6 @@ export default function ReactionButton({
 
     return (
         <MuiButton
-            color={buttonColor ? buttonColor : 'primary'}
             variant={buttonVariant ? buttonVariant : 'contained'}
             disableElevation={!google}
             style={{

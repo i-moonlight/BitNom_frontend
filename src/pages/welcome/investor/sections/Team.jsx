@@ -1,3 +1,4 @@
+import { LinkedIn, MailRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
@@ -5,11 +6,10 @@ import {
     Grid,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { LinkedIn, MailRounded } from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
-import TeamCard from '../cards/TeamCard';
 import { team } from '../../utilities/welcome.data';
+import TeamCard from '../cards/TeamCard';
 
 export default function Team() {
     return (
@@ -22,39 +22,42 @@ export default function Team() {
                         </Typography>
                         <Card>
                             <CardContent>
-                                <Grid container spacing={2}>
-                                    <Grid xs={12} sm={4}>
-                                        <div
-                                            className="bg-white h-100 br-2"
-                                            style={{
-                                                backgroundImage: `url('${team[0].image}')`,
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                            }}
-                                        ></div>
-                                    </Grid>
-                                    <Grid xs={12} sm={8}>
-                                        <div className="d-flex flex-column mx-3 h-100">
-                                            <Typography>
-                                                {team[0].name}
-                                            </Typography>
-                                            <Typography color="primary">
-                                                {team[0].role}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {team[0].desc}
-                                            </Typography>
-                                            <div className="mt-4">
-                                                <IconButton size="small">
-                                                    <MailRounded />
-                                                </IconButton>
-                                                <IconButton size="small">
-                                                    <LinkedIn />
-                                                </IconButton>
+                                <div className="pt-3">
+                                    <Grid container spacing={2}>
+                                        <Grid xs={12} sm={4}>
+                                            <div
+                                                className="bg-white h-100 br-2"
+                                                style={{
+                                                    backgroundImage: `url('${team[0].image}')`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition:
+                                                        'center',
+                                                }}
+                                            ></div>
+                                        </Grid>
+                                        <Grid xs={12} sm={8}>
+                                            <div className="d-flex flex-column mx-3 h-100">
+                                                <Typography>
+                                                    {team[0].name}
+                                                </Typography>
+                                                <Typography color="primary">
+                                                    {team[0].role}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {team[0].desc}
+                                                </Typography>
+                                                <div className="mt-4">
+                                                    <IconButton size="small">
+                                                        <MailRounded />
+                                                    </IconButton>
+                                                    <IconButton size="small">
+                                                        <LinkedIn />
+                                                    </IconButton>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
+                                </div>
                             </CardContent>
                         </Card>
                         <Typography className="lead mb-3 mt-5">

@@ -1,34 +1,42 @@
 import { useMutation, useSubscription } from '@apollo/client';
-import { Button, Grid, Link, Paper, Typography } from '@material-ui/core';
+import {
+    Card,
+    CardActions,
+    CardContent,
+    Link,
+    Typography,
+} from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '../../../../components/Button';
+import {
+    addToChatDialogues,
+    clearCurrentChat,
+    removeFromInvites,
+    setCurrentChat,
+} from '../../../../store/actions/chatActions';
 import {
     ACCEPT_DIALOGUE_INVITE,
     CHAT_ACCEPTED,
     REJECT_DIALOGUE_INVITE,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import {
-    setCurrentChat,
-    clearCurrentChat,
-    removeFromInvites,
-    addToChatDialogues,
-} from '../../../../store/actions/chatActions';
 
 export default function InviteView({ dialogue }) {
     const state = useSelector((st) => st);
     const dispatch = useDispatch();
     const classes = useStyles();
+
     const [RejectChat] = useMutation(REJECT_DIALOGUE_INVITE, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
         context: { clientName: 'chat' },
     });
     const user = state.auth.user;
     const [AcceptChat] = useMutation(ACCEPT_DIALOGUE_INVITE, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
         context: { clientName: 'chat' },
     });
@@ -46,50 +54,47 @@ export default function InviteView({ dialogue }) {
             dispatch(setCurrentChat(chatAccepted?.chatAccepted));
             dispatch(removeFromInvites(chatAccepted?.chatAccepted));
         }
-        // eslint-disable-next-line
-    }, [chatAccepted?.chatAccepted]);
+    }, [chatAccepted?.chatAccepted, dispatch]);
+
     const handleReject = (e) => {
         e.preventDefault();
         RejectChat();
     };
+
     const handleAccept = (e) => {
         e.preventDefault();
         AcceptChat();
     };
+
     return (
-        <Grid item style={{ width: '100%', height: '70vh' }}>
-            <Paper className={classes.inviteBar}>
-                <Grid container className={classes.inviteBoard}>
-                    <Grid xs={8}>
-                        <Typography className={classes.inviteIntro}>
-                            Accept to chat with{' '}
-                            <Link>{dialogue.otherUser.info.displayName}</Link> .
-                            if you ignore the chat wil be removed,and we wont
-                            let the sender know
-                        </Typography>
-                    </Grid>
-                    <Grid xs={2}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.reject}
-                            onClick={handleReject}
-                        >
-                            Reject
-                        </Button>
-                    </Grid>
-                    <Grid xs={2}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.accept}
-                            onClick={handleAccept}
-                        >
-                            Accept
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Paper>
-        </Grid>
+        <Card className={classes.inviteBar}>
+            <CardContent>
+                <Typography>
+                    Accept to chat with{' '}
+                    <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
+                        {dialogue?.otherUser?.info?.displayName}
+                    </Link>
+                    . If you ignore this, the chat wil be removed and we wont
+                    let the sender know.
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAccept}
+                    className="me-1"
+                >
+                    Accept
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleReject}
+                >
+                    Reject
+                </Button>
+            </CardActions>
+        </Card>
     );
 }

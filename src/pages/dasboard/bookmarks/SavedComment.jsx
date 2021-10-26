@@ -1,19 +1,18 @@
+import { MoreHorizRounded } from '@mui/icons-material';
 import {
+    Avatar,
     Card,
-    CardContent,
     CardActionArea,
+    CardContent,
     CardHeader,
     Grid,
     IconButton,
     Typography,
-    Avatar,
-} from '@material-ui/core';
-
-import { MoreHorizRounded } from '@material-ui/icons';
+} from '@mui/material';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { getUserInitials } from '../../../utilities/Helpers';
 import { useHistory } from 'react-router-dom';
+import { getUserInitials } from '../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
@@ -48,7 +47,7 @@ export default function SavedComment({
             <Card style={{ marginBottom: 16 }}>
                 <CardActionArea
                     disableRipple
-                    //onClick={() => history.push('/dashboard')}
+                    onClick={() => history.push(`/posts/${comment?.scroll}`)}
                 >
                     <CardHeader
                         avatar={

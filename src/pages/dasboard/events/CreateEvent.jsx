@@ -1,29 +1,27 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
+    Chip,
     CircularProgress,
     Divider,
     Grid,
     IconButton,
-    Modal,
-    Typography,
-    //useTheme,
-    TextField,
-    Paper,
     InputBase,
-    Chip,
-    makeStyles,
-} from '@material-ui/core';
-
-import Flatpickr from 'react-flatpickr';
+    Modal,
+    Paper,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
-import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import debounce from 'lodash/debounce';
+import { DropzoneArea } from 'react-mui-dropzone';
+import React, { useState } from 'react';
+import Flatpickr from 'react-flatpickr';
+import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,
@@ -90,7 +88,6 @@ export default function CreateEvent({ open, setOpen }) {
     const [titleErr, setTitleErr] = useState(false);
     const [dateErr, setDateErr] = useState(false);
     const [errorText, setErrorText] = useState('');
-
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
     const [eventImage, setEventImage] = useState(null);
@@ -109,7 +106,6 @@ export default function CreateEvent({ open, setOpen }) {
     const [searchedValues, setSearchedValues] = useState();
     const [selectedLocation, setSelectedLocation] = useState(null);
 
-    //const theme = useTheme();
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -152,7 +148,6 @@ export default function CreateEvent({ open, setOpen }) {
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
             .then((latLng) => {
-                console.log('Results', location);
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
@@ -160,7 +155,7 @@ export default function CreateEvent({ open, setOpen }) {
             })
             .catch((error) => console.error('Error', error));
     };
-    console.log(eventOrganizers, 'ORGS');
+
     const handleCreateEvent = (e) => {
         e.preventDefault();
         if (eventTitle.trim() == '') {
@@ -326,18 +321,15 @@ export default function CreateEvent({ open, setOpen }) {
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{
+                                maxHeight: '500px',
+                                overflowY: 'auto',
+                            }}
                         >
-                            <Card elevation={0}>
+                            <div variant="elevation" elevation={0}>
                                 <div
                                     style={{
-                                        //backgroundImage: previewURL && `url('${previewURL}')`,
-                                        /*  backgroundImage: 'url(' + previewURL + ')',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundColor: '#aaa',
-                    marginBottom: '5px', */
-                                        height: 300,
+                                        height: 200,
                                         borderRadius: 8,
                                         width: '100%',
                                         backgroundImage:
@@ -348,7 +340,13 @@ export default function CreateEvent({ open, setOpen }) {
                                         marginBottom: '15px',
                                     }}
                                 >
-                                    <div className="space-between mx-3 my-2">
+                                    {/* <div
+                                        className="space-between mx-3 my-2"
+                                        style={{
+                                            position: 'relative',
+                                            top: -50,
+                                        }}
+                                    >
                                         <Typography variant="body2"></Typography>
                                         <Typography variant="body1"></Typography>
                                         <IconButton
@@ -363,13 +361,13 @@ export default function CreateEvent({ open, setOpen }) {
                                                 }}
                                             />
                                         </IconButton>
-                                    </div>
+                                    </div> */}
                                     <DropzoneArea
                                         dropzoneClass="event-upload-dropzone"
                                         clearOnUnmount
                                         Icon={CameraAltRounded}
                                         dropzoneText={' '}
-                                        acceptedFiles={['image/*']}
+                                        acceptedFiles={['.jpeg', '.png']}
                                         maxFileSize={5000000}
                                         filesLimit={1}
                                         showAlerts={['error']}
@@ -526,11 +524,13 @@ export default function CreateEvent({ open, setOpen }) {
                                             </div>
                                             <>
                                                 <Typography
+                                                    className="mb-2"
                                                     variant="body2"
                                                     color="error"
                                                 >
                                                     {organizersErr && errorText}
                                                 </Typography>
+
                                                 <OrganizerSearch
                                                     loading={usersLoading}
                                                     searchResults={
@@ -567,23 +567,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
                                             </>
-                                            <div>
-                                                {/* {eventOrganizers?.map((item) => (
-                          <Chip
-                            color='primary'
-                            key={item}
-                            label={item}
-                            className='me-2 mb-2'
-                            //disabled={removeLoading}
-                            onDelete={() => {
-                              const organizers = eventOrganizers?.filter(
-                                (organizer) => organizer !== item
-                              );
-                              setEventOrganizers(organizers);
-                            }}
-                          />
-                        ))} */}
-                                            </div>
+                                            <div></div>
                                         </div>
                                     </div>
 
@@ -611,7 +595,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                     {/* <Search color='inherit' /> */}
                                                     <InputBase
                                                         value={tagText}
-                                                        //onChange={(e) => setTagText(e.target.value)}
                                                         variant="outlinedInput"
                                                         onChange={(e) =>
                                                             setTagText(
@@ -758,7 +741,7 @@ export default function CreateEvent({ open, setOpen }) {
                                         </div>
                                     </div>
                                     <Divider />
-                                    <div className="mt-2 mb-3">
+                                    <div className="mt-3 mb-3">
                                         <div>
                                             <div>
                                                 <Typography variant="body1">
@@ -861,7 +844,7 @@ export default function CreateEvent({ open, setOpen }) {
                                     </div>
                                     <Divider />
 
-                                    <Grid container className="mt-2 mb-3">
+                                    <Grid container className="mt-3 mb-3">
                                         <div className="mb-2">
                                             <Typography variant="body1">
                                                 Date and Time
@@ -940,7 +923,7 @@ export default function CreateEvent({ open, setOpen }) {
                                         {dateErr && errorText}
                                     </Typography>
                                 </div>
-                            </Card>
+                            </div>
 
                             {/* <Divider /> */}
                             <div className="space-between mt-1">

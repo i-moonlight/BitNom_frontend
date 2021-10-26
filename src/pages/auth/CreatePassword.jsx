@@ -1,8 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import Alert from '@mui/lab/Alert';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
@@ -25,7 +24,7 @@ export default function CreatePassword({ match }) {
     });
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/dashboard');
+        JSON.stringify(user) !== '{}' && history.push('/connect');
     });
 
     return (

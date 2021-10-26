@@ -1,11 +1,10 @@
 import { useQuery } from '@apollo/client';
 import {
-    Grid,
-    IconButton,
-    Typography,
     Divider,
-    Paper,
+    IconButton,
     InputBase,
+    Paper,
+    Typography,
     useTheme,
 } from '@material-ui/core';
 import { Create, MoreVert, Search } from '@material-ui/icons';
@@ -33,66 +32,41 @@ export default function SideBarHeader({ setChatInviteOpen }) {
     console.log('DATA_CHATS', data);
     return (
         <>
-            <Grid item container>
-                <Grid item xs={8}>
-                    {' '}
-                    <Typography variant="h5" className={classes.menuHeader}>
-                        Messaging
-                    </Typography>
-                </Grid>
-                <Grid
-                    container
-                    item
-                    xs={2}
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                >
-                    <IconButton>
-                        <MoreVert />
-                    </IconButton>
-                </Grid>
-                <Grid
-                    container
-                    item
-                    xs={2}
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                >
-                    {' '}
-                    <IconButton onClick={setChatInviteOpen}>
-                        <Create />
-                    </IconButton>
-                </Grid>
-            </Grid>{' '}
+            <div className="d-flex align-items-center justify-content-between my-2">
+                <Typography variant="h6" className={classes.menuHeader}>
+                    Messaging
+                </Typography>
+                <IconButton>
+                    <MoreVert />
+                </IconButton>
+            </div>
             <Divider className={classes.divider} />
-            <Grid item>
-                <Paper
-                    variant={
-                        theme.palette.type == 'light' ? 'outlined' : 'elevation'
-                    }
-                    elevation={0}
-                    component="form"
-                    className={classes.paperSearch}
+            <Paper
+                variant={
+                    theme.palette.mode == 'light' ? 'outlined' : 'elevation'
+                }
+                elevation={0}
+                component="form"
+                className={classes.paperSearch}
+            >
+                {' '}
+                <IconButton
+                    size="small"
+                    type="submit"
+                    className={'m-1 p-1' + classes.iconButton}
+                    aria-label="search"
                 >
-                    {' '}
-                    <IconButton
-                        size="small"
-                        type="submit"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="search"
-                    >
-                        <Search />
-                    </IconButton>
-                    <InputBase
-                        className={classes.input}
-                        placeholder="Search Chats"
-                        inputProps={{ 'aria-label': 'search chats' }}
-                        name="searchString"
-                        value={values.searchString}
-                        onChange={handleChatSearch}
-                    />
-                </Paper>
-            </Grid>
+                    <Search />
+                </IconButton>
+                <InputBase
+                    className={classes.input}
+                    placeholder="Search Chats"
+                    inputProps={{ 'aria-label': 'search chats' }}
+                    name="searchString"
+                    value={values.searchString}
+                    onChange={handleChatSearch}
+                />
+            </Paper>
         </>
     );
 }

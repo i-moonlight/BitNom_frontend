@@ -1,12 +1,12 @@
-import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
-import React from 'react';
 import { useMutation } from '@apollo/client';
-
-import {
-    MARK_NOTIFICATION_AS_READ,
-    GET_USER_NOTIFICATIONS,
-} from '../utilities/queries';
+import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import {
+    GET_USER_NOTIFICATIONS,
+    MARK_NOTIFICATION_AS_READ,
+} from '../utilities/queries';
+
 export default function NotificationSettingsPopover({
     notificationSettingsAnchorEl,
     notificationSettingsId,
@@ -16,18 +16,10 @@ export default function NotificationSettingsPopover({
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
-    const [
-        markAllAsRead,
-        {
-            data: markAllAsReadData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MARK_NOTIFICATION_AS_READ, {
+    const [markAllAsRead] = useMutation(MARK_NOTIFICATION_AS_READ, {
         context: { clientName: 'notifications' },
     });
-    if (markAllAsReadData?.Notification?.markAsRead === false)
-        console.log(markAllAsReadData);
+
     const handleMarkAllNotificationsRead = () => {
         markAllAsRead({
             variables: {

@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,8 +14,10 @@ export default function AwaitResponse({ dialogue }) {
         >
             <Typography variant="body2">
                 Please wait as{' '}
-                <Link>{dialogue.otherUser.info.displayName}</Link> responds to
-                your chat invitation
+                <Link to={`/users/${dialogue.otherUser.info._id}`}>
+                    {dialogue.otherUser.info.displayName}
+                </Link>{' '}
+                responds to your chat invitation
             </Typography>
         </Grid>
     );

@@ -8,16 +8,18 @@ import {
 import { ApolloLink, Observable } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import { createUploadLink } from 'apollo-upload-client';
 import { print } from 'graphql';
 import { createClient } from 'graphql-ws';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useThemeDetector } from './hooks/useThemeDetector';
 import Routes from './Routes';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
+import DarkThemeStyles from './utilities/DarkThemeStyles';
+import LightThemeStyles from './utilities/LightThemeStyles';
 
 //GraphQL and Apollo Client Setup
 const errorLink = onError(({ graphqlErrors, networkError }) => {
@@ -35,6 +37,7 @@ const errorLink = onError(({ graphqlErrors, networkError }) => {
 });
 
 const backendUri = process.env.REACT_APP_BACKEND_URL;
+
 class WebSocketLink extends ApolloLink {
     constructor(options) {
         super();
@@ -147,21 +150,30 @@ const client = new ApolloClient({
 });
 
 export default function AppContainers() {
-    const isDarkTheme = useThemeDetector();
+    const isDarkThemeOnly = useThemeDetector();
     const dispatch = useDispatch();
     const classes = useStyles();
+    const palette = useSelector((st) => st.theme.palette);
 
     useEffect(() => {
         dispatch(checkSessionTimeOut());
 
-        isDarkTheme
+        palette == 'dark' && isDarkThemeOnly
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
-    }, [dispatch, isDarkTheme]);
+    }, [dispatch, isDarkThemeOnly, palette]);
 
     return (
         <div className={classes.root}>
-            <Routes apolloClient={client} />
+            {palette == 'dark' ? (
+                <DarkThemeStyles>
+                    <Routes apolloClient={client} />
+                </DarkThemeStyles>
+            ) : (
+                <LightThemeStyles>
+                    <Routes apolloClient={client} />
+                </LightThemeStyles>
+            )}
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import { MenuItem, Popover } from '@material-ui/core';
+import { MenuItem, Popover } from '@mui/material';
 import React from 'react';
 
 export default function TabOptionsPopover({
@@ -9,7 +9,6 @@ export default function TabOptionsPopover({
     tabOptionAnchorEl,
     handleTabOptionsClose,
 }) {
-    console.log('toae: ', tabOptionAnchorEl);
     return (
         <Popover
             anchorEl={tabOptionAnchorEl || document.body}

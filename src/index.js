@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import App from './App';
 import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
+
+const App = React.lazy(() => import('./App'));
 
 const storeName = '5637759616334';
 
@@ -47,9 +48,39 @@ store.subscribe(() => saveToLocalStorage(store.getState()));
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <App />
-        </Provider>
+        <div>
+            <Suspense
+                fallback={
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: window.innerWidth,
+                            height: window.innerHeight,
+                            backgroundColor: window.matchMedia(
+                                '(prefers-color-scheme: dark)'
+                            ).matches
+                                ? '#000'
+                                : '#fff',
+                        }}
+                    >
+                        <img
+                            style={{ width: 50, height: 50 }}
+                            src={`${window.location.origin}/logo.svg`}
+                            alt="Logo image"
+                        ></img>
+                    </div>
+                }
+            >
+                <Provider store={store}>
+                    <App />
+                </Provider>
+            </Suspense>
+        </div>
     </React.StrictMode>,
     document.getElementById('root')
 );

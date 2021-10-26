@@ -66,17 +66,16 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         <>
             <ListItem
                 button
-                component={Link}
+                // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
                 className={activeChatId === chat._id ? classes.activeChat : ''}
+                divider
                 // to={`/dashboard/chat/{chat._id}`}
             >
                 <ListItemAvatar>
                     <Avatar
                         style={{
-                            width: '40px',
-                            height: '40px',
                             backgroundColor: '#1C0C5B',
                         }}
                         src={
@@ -102,6 +101,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     <span className={classes.offline_status}></span>
                 )}
                 <ListItemText
+                    primary={
+                        <Typography color="textPrimary">
+                            {chat?.otherUser?.info?.displayName}
+                        </Typography>
+                    }
                     secondary={
                         <React.Fragment>
                             <Typography
@@ -155,7 +159,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     }
                 />
             </ListItem>
-            <Divider variant="inset" component="li" />
+            {/* <Divider variant="inset" className="me-3" /> */}
         </>
     );
 }

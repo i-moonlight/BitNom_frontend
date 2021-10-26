@@ -26,7 +26,7 @@ export const contentBodyFactory = (resource) => {
             const toReplace = '@' + entity.url;
             newContent = newContent?.replace(toReplace, replacement);
         } else if (entity.type === 'hashtag') {
-            const link = `/hashtags/${entity.url}`;
+            const link = `/hashtags/${entity.url.substring(1)}`;
             const replacement =
                 '<a style={{zIndex: 2}} href=' +
                 link +
@@ -147,6 +147,16 @@ export const getReactionsSum = (resource) => {
         resource?.reactions?.dislikes +
         resource?.reactions?.loves +
         resource?.reactions?.celebrations
+    );
+};
+
+export const getTopComments = (resource) => {
+    return (
+        resource?.reactions?.likes +
+        resource?.reactions?.dislikes +
+        resource?.reactions?.loves +
+        resource?.reactions?.celebrations +
+        resource?.replies
     );
 };
 

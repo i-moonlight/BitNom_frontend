@@ -1,36 +1,32 @@
 import { useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Card,
     CardHeader,
     CircularProgress,
     Container,
     Grid,
-    Hidden,
     IconButton,
-    makeStyles,
     Tab,
     Tabs,
     Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
-import CreatePost from '../bn_connect/scroll/CreatePost';
 import UserCard from '../bn_connect/UserCard';
 import {
     GET_BOOKMARKED_COMMENTS,
-    GET_BOOKMARKED_SCROLLS,
     GET_BOOKMARKED_EVENTS,
+    GET_BOOKMARKED_SCROLLS,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
-    QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import SavedComment from './SavedComment';
-import SavedPost from './SavedPost';
 import SavedEvent from './SavedEvent';
+import SavedPost from './SavedPost';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,22 +35,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SavedItems() {
-    const [createScrollOpen, setCreateScrollOpen] = useState(false);
-    const [openImage, setOpenImage] = useState(false);
-    const [openVideo, setOpenVideo] = useState(false);
-    const [videoDisabled, setVideoDisabled] = useState(false);
-    const [imageDisabled, setImageDisabled] = useState(false);
     const [value, setValue] = React.useState(0);
     const [savedScrolls, setSavedScrolls] = useState([]);
     const [savedComments, setSavedComments] = useState([]);
     //const [savedArticles, setSavedArticles] = useState([]);
     const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
-    const [sharedPost, setSharedPost] = useState(null);
 
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
+    const history = useHistory();
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { data: bookmarkedScrolls, loading: scrollsLoading } = useQuery(
         GET_BOOKMARKED_SCROLLS,
@@ -89,15 +79,6 @@ export default function SavedItems() {
         }
     );
 
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 220 } },
-    });
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
-    });
-
     const {
         //  loading,
         data: profileData,
@@ -122,10 +103,9 @@ export default function SavedItems() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
-                                    scrolls={userScrolls?.Posts?.get?.length}
                                     following={
                                         profileData?.Users?.profile?.following
                                             ?.length
@@ -134,10 +114,9 @@ export default function SavedItems() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={7}>
                             <>
                                 <Card
@@ -146,16 +125,15 @@ export default function SavedItems() {
                                 >
                                     <CardHeader
                                         avatar={
-                                            <Link to="/dashboard">
-                                                <IconButton
-                                                    size="small"
-                                                    className="m-1 p-1"
-                                                    aria-label="back"
-                                                    color="inherit"
-                                                >
-                                                    <ArrowBack />
-                                                </IconButton>
-                                            </Link>
+                                            <IconButton
+                                                size="small"
+                                                className="m-1 p-1"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
                                         }
                                         title={
                                             <div className="center-horizontal">
@@ -279,20 +257,6 @@ export default function SavedItems() {
                     </Grid>
                 </Container>
             </div>
-            <CreatePost
-                open={createScrollOpen}
-                setOpen={(open) => setCreateScrollOpen(open)}
-                openImage={openImage}
-                imageDisabled={imageDisabled}
-                videoDisabled={videoDisabled}
-                setImageDisabled={setImageDisabled}
-                setVideoDisabled={setVideoDisabled}
-                setOpenImage={setOpenImage}
-                openVideo={openVideo}
-                setOpenVideo={setOpenVideo}
-                sharedPost={sharedPost}
-                setSharedPost={setSharedPost}
-            />
             <ImagePreview
                 open={imagePreviewOpen}
                 imgURL={imagePreviewURL}

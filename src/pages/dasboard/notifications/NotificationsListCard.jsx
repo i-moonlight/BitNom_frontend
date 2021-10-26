@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ArrowBack, MoreVert } from '@mui/icons-material';
 import {
     Card,
-    Grid,
-    Divider,
-    Typography,
     CardHeader,
+    Divider,
+    Grid,
     IconButton,
-} from '@material-ui/core';
-import { ArrowBack, MoreVert } from '@material-ui/icons';
-
+    Typography,
+} from '@mui/material';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import NotificationListItem from './NotificationListItem';
 import NotificationSettingsPopover from './NotificationSettingsPopover';
 
@@ -19,6 +18,7 @@ export default function NotificationsListCard({
     notifications,
     selectedIndex,
 }) {
+    const history = useHistory();
     const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
         useState(null);
 
@@ -78,16 +78,15 @@ export default function NotificationsListCard({
                         </IconButton>
                     }
                     avatar={
-                        <Link to="/dashboard">
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                aria-label="back"
-                                color="inherit"
-                            >
-                                <ArrowBack />
-                            </IconButton>
-                        </Link>
+                        <IconButton
+                            size="small"
+                            className="m-1 p-1"
+                            aria-label="back"
+                            color="inherit"
+                            onClick={() => history.goBack()}
+                        >
+                            <ArrowBack />
+                        </IconButton>
                     }
                     title={
                         <div className="center-horizontal">

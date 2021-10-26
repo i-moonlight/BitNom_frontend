@@ -5,7 +5,7 @@ import {
     Grid,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
 import card1Img from '../../../assets/landing/card (1).svg';
@@ -14,7 +14,7 @@ import card3Img from '../../../assets/landing/card (3).svg';
 import joinImg from '../../../assets/landing/img2.png';
 import visionImg from '../../../assets/landing/vision.svg';
 import Button from '../../../components/Button';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
 
 export default function ProjectSection() {
@@ -63,7 +63,7 @@ export default function ProjectSection() {
                         <div className="m-3">
                             <Grid container spacing={5}>
                                 <Grid item lg={3}>
-                                    <DarkTheme>
+                                    <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
                                                 <img
@@ -73,10 +73,10 @@ export default function ProjectSection() {
                                                 />
                                             </CardContent>
                                         </Card>
-                                    </DarkTheme>
+                                    </DarkThemeOnly>
                                 </Grid>
                                 <Grid item lg={3}>
-                                    <DarkTheme>
+                                    <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
                                                 <img
@@ -86,10 +86,10 @@ export default function ProjectSection() {
                                                 />
                                             </CardContent>
                                         </Card>
-                                    </DarkTheme>
+                                    </DarkThemeOnly>
                                 </Grid>
                                 <Grid item lg={3}>
-                                    <DarkTheme>
+                                    <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
                                                 <img
@@ -99,7 +99,7 @@ export default function ProjectSection() {
                                                 />
                                             </CardContent>
                                         </Card>
-                                    </DarkTheme>
+                                    </DarkThemeOnly>
                                 </Grid>
                                 <Grid item lg={3}></Grid>
                             </Grid>
@@ -115,7 +115,13 @@ export default function ProjectSection() {
                                 src={joinImg}
                                 alt=""
                             />
-                            <Button size="large" textCase>
+                            <Button
+                                onClick={() => {
+                                    history.push('/connect');
+                                }}
+                                size="large"
+                                textCase
+                            >
                                 Join BN Community
                             </Button>
                         </div>
@@ -136,7 +142,7 @@ export default function ProjectSection() {
                                 alt=""
                                 className="my-2"
                                 onClick={() => {
-                                    history.push('/dashboard');
+                                    history.push('/connect');
                                 }}
                             />
                             <Typography

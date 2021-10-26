@@ -1,4 +1,12 @@
 import {
+    CloseRounded,
+    FavoriteRounded,
+    PanToolRounded,
+    ThumbDownRounded,
+    ThumbUpRounded,
+} from '@mui/icons-material';
+import {
+    Avatar,
     Card,
     CardContent,
     Divider,
@@ -6,23 +14,15 @@ import {
     IconButton,
     List,
     ListItem,
-    ListItemText,
     ListItemAvatar,
-    Avatar,
+    ListItemText,
     Modal,
-    Typography,
-    Tabs,
     Tab,
-    makeStyles,
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
-import {
-    CloseRounded,
-    ThumbDownRounded,
-    ThumbUpRounded,
-    FavoriteRounded,
-    PanToolRounded,
-} from '@material-ui/icons';
+    Tabs,
+    Typography,
+} from '@mui/material';
+import { green, red } from '@mui/material/colors';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';
@@ -128,7 +128,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <ThumbUpRounded
                                             className={classes.primary}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.likes}
                                     </Typography>
                                 }
@@ -139,7 +139,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <FavoriteRounded
                                             className={classes.red}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.loves}
                                     </Typography>
                                 }
@@ -150,7 +150,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <ThumbDownRounded
                                             className={classes.primary}
-                                        />{' '}
+                                        />
                                         {resourceReactions?.reactions?.dislikes}
                                     </Typography>
                                 }
@@ -161,7 +161,7 @@ export default function ReactionsModal({
                                     <Typography display="inline">
                                         <PanToolRounded
                                             className={classes.green}
-                                        />{' '}
+                                        />
                                         {
                                             resourceReactions?.reactions
                                                 ?.celebrations

@@ -1,20 +1,28 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import { AppBar, Divider, useTheme } from '@material-ui/core';
+import { AppBar, Divider, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
+    QUERY_LOAD_EVENTS,
+    QUERY_LOAD_SCROLLS,
 } from '../../../pages/dasboard/utilities/queries';
-import { checkSessionTimeOut } from '../../../store/actions/authActions';
+import {
+    checkSessionTimeOut,
+    signout,
+} from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
+import { setEventCount } from '../../../store/actions/eventCountActions';
+import { setPostCount } from '../../../store/actions/postCountActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
     QUERY_GET_USER_NOTIFICATIONS,
 } from '../../utilities/queries.components';
 import StatusBar from '../StatusBar';
 import MenuPopover from './popovers/MenuPopover';
+import MobileMenuModal from './popovers/MobileMenuModal';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
 import NotificationsPopover from './popovers/NotificationsPopover';
 import TabOptionsPopover from './popovers/TabOptionsPopover';
@@ -23,13 +31,13 @@ import TabsBar from './TabsBar';
 
 const menuId = 'menu-profile';
 const tabOptionsId = 'menu-tab-options';
-
 const notificationId = 'menu-notifications';
 const notificationOptionId = 'menu-notifications-option';
 
 export default function NavBar() {
     const [tabValue, setTabValue] = useState(0);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [tabOptionAnchorEl, setTabOptionAnchorEl] = useState(false);
     const [tabOptions, setTabOptions] = useState(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
@@ -42,26 +50,35 @@ export default function NavBar() {
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
+    const smUp = useMediaQuery('(min-width:600px)');
+
     const isMenuOpen = Boolean(menuAnchorEl);
     const isTabOptionOpen = Boolean(tabOptionAnchorEl);
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
 
-    const {
-        profileError,
-        profileLoading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
+    const { loading: profileLoading, data: profileData } = useQuery(
+        QUERY_FETCH_PROFILE,
+        {
+            context: { clientName: 'users' },
+        }
+    );
 
-    const isAuth = !profileLoading && profileData?.Users?.profile !== null;
-
-    console.log('prf: ', profileData?.Users?.profile);
-    console.log('prfe: ', profileError);
+    const isAuth =
+        profileLoading || (!profileLoading && profileData?.Users?.profile);
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
+    });
+
+    const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
+        variables: { data: { author: user?._id, limit: 220 } },
+    });
+
+    const { data: eventsData } = useQuery(QUERY_LOAD_EVENTS, {
+        variables: {
+            data: { host: user?._id, limit: 20 },
+        },
     });
 
     const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
@@ -78,15 +95,14 @@ export default function NavBar() {
     );
 
     const handleMenuOpen = (event) => {
-        setMenuAnchorEl(event.currentTarget);
+        smUp ? setMenuAnchorEl(event.currentTarget) : setMobileMenuOpen(true);
     };
 
     const handleMenuClose = () => {
-        setMenuAnchorEl(null);
+        smUp ? setMenuAnchorEl(null) : setMobileMenuOpen(false);
     };
 
     const handleTabOptionsOpen = (event) => {
-        console.log('crt: ', event.currentTarget);
         setTabOptionAnchorEl(event.currentTarget);
     };
 
@@ -137,12 +153,27 @@ export default function NavBar() {
     useEffect(() => {
         !user?.email?.verified && history.push('/auth/require_verify');
 
-        if (window.location.pathname == '/dasboard') {
+        if (window.location.pathname == '/connect') {
             setTabValue(0);
         }
 
-        if (window.location.pathname == '/dashboard/knowledge_center') {
+        if (
+            window.location.pathname == '/knowledge_center/cryptocurrency' ||
+            window.location.pathname == '/knowledge_center/bitcoin'
+        ) {
             setTabValue(1);
+        }
+
+        if (window.location.pathname == '/events') {
+            setTabValue(2);
+        }
+
+        if (window.location.pathname == '/chat') {
+            setTabValue(3);
+        }
+
+        if (window.location.pathname == '/investors') {
+            setTabValue(3);
         }
 
         const count =
@@ -153,6 +184,16 @@ export default function NavBar() {
         if (count !== null) {
             dispatch(setCount(count));
         }
+
+        const postCount =
+            userPosts && userPosts.Posts.get ? userPosts.Posts.get.length : 0;
+        dispatch(setPostCount(postCount));
+
+        const userEvents = eventsData?.Events?.get?.filter(
+            (event) => new Date(event?.endDate).getTime() > new Date().getTime()
+        );
+        const upcomingEvents = userEvents?.length > 0 ? userEvents?.length : 0;
+        dispatch(setEventCount(upcomingEvents));
 
         dispatch(checkSessionTimeOut());
         const notSeenArray = [];
@@ -175,20 +216,20 @@ export default function NavBar() {
         }
 
         if (!isAuth) {
-            // dispatch(signout());
-            console.log('not isAuth', isAuth);
-            alert('not auth');
-        } else {
-            console.log('isAuth', isAuth);
+            dispatch(signout());
         }
     }, [
         _count,
         dispatch,
         history,
         isAuth,
+        profileData,
+        profileLoading,
         response,
         subscriptionData,
+        userPosts,
         user._id,
+        eventsData,
         user?.email?.verified,
     ]);
 
@@ -208,6 +249,7 @@ export default function NavBar() {
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
+                profile={profileData?.Users?.profile}
             />
             <TabsBar
                 value={tabValue}
@@ -217,7 +259,6 @@ export default function NavBar() {
                 handleTabOptionsOpen={handleTabOptionsOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
             />
-            {/* <TabsBar2 /> */}
             <Divider />
             <Divider />
             <TabOptionsPopover
@@ -232,6 +273,10 @@ export default function NavBar() {
                 menuId={menuId}
                 menuAnchorEl={menuAnchorEl}
                 isMenuOpen={isMenuOpen}
+                handleMenuClose={handleMenuClose}
+            />
+            <MobileMenuModal
+                isMenuOpen={mobileMenuOpen}
                 handleMenuClose={handleMenuClose}
             />
             <NotificationsPopover

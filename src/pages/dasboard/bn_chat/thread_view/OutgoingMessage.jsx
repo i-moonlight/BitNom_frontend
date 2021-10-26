@@ -1,11 +1,12 @@
+import { Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
-    Paper,
-    Grid,
     CardMedia,
-    Typography,
+    Grid,
     IconButton,
+    Paper,
+    Typography,
 } from '@material-ui/core';
 import { Reply } from '@material-ui/icons';
 import moment from 'moment';
@@ -18,26 +19,27 @@ export default function OutgoingMessage({ chat, message, onReply }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
     const author = message.author || {};
+
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
-                <small>{moment(message.date).format('h:mm a')}</small>
+                <small>{moment(message?.date).fromNow()}</small>
             </div>
 
             <Paper
                 className={classes.outgoing}
                 onMouseEnter={() => setShowReply(true)}
                 onMouseLeave={() => setShowReply(false)}
+                elevation={0}
             >
                 <Typography
                     variant="body1"
                     component="p"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link style={{ textDecoration: 'none' }}>
+                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
                         <small className={classes.author}>
-                            {' '}
-                            <strong>{author}</strong>
+                            <strong>@{author}</strong>
                         </small>
                     </Link>
                 </Typography>
@@ -63,7 +65,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             styles={{ borderRadius: 8 }}
                         />
                     </Grid>
-                )}{' '}
+                )}
                 {message?.images.length > 0 &&
                     message?.images?.map((imageURL) => (
                         <Grid
@@ -104,7 +106,6 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 <p className={classes.message}>{message.text}</p>
                 {show_reply && (
                     <div className={classes.reply}>
-                        {' '}
                         <IconButton
                             style={{
                                 fontSize: '1em',
@@ -122,21 +123,19 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 )}
             </Paper>
             <ButtonBase>
-                {' '}
                 <Avatar
-                    alt={chat.otherUser.info.displayName}
+                    alt={chat.currentUser.info.displayName}
                     src={
-                        chat?.otherUser?.info.profile_pic
+                        chat?.currentUser?.info.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
-                              chat?.otherUser?.info.profile_pic
+                              chat?.currentUser?.info.profile_pic
                             : ''
                     }
-                    className={classes.avatar}
                     style={{ backgroundColor: '#1C0C5B' }}
                 >
-                    {chat?.otherUser?.info.profile_pic
+                    {chat?.currentUser?.info.profile_pic
                         ? ''
-                        : getUserInitials(chat?.otherUser?.info.displayName)}
+                        : getUserInitials(chat?.currentUser?.info.displayName)}
                 </Avatar>
             </ButtonBase>
         </div>

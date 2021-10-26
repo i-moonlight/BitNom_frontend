@@ -1,11 +1,5 @@
 import { useMutation } from '@apollo/client';
-import {
-    Card,
-    CardContent,
-    Grid,
-    Typography,
-    useTheme,
-} from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +23,7 @@ export default function RequireVerification() {
 
     useEffect(() => {
         JSON.stringify(user) === '{}' && history.push('/auth/login');
-        user?.email?.verified && history.push('/dashboard');
+        user?.email?.verified && history.push('/connect');
     }, [history, user]);
 
     return (

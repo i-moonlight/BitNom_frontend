@@ -1,23 +1,23 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Typography } from '@mui/material';
 import React from 'react';
 
 export default function NoChatSelected() {
     return (
-        <Grid
-            item
-            justifyContent="center"
-            alignItems="center"
-            container
-            direction="column"
-            style={{ width: '100%', marginTop: '35%' }}
+        <div
+            style={{ minHeight: '55vh' }}
+            className="d-flex justify-content-center align-items-center mx-auto w-100"
         >
-            <Typography variant="body1">You have no chat selected </Typography>
-            <Typography variant="body2">
-                choose one from your existing chats, or start a new chat
-            </Typography>
-            <Button variant="contained" color="primary">
-                Start a new chat
-            </Button>
-        </Grid>
+            <div className="text-center h-100">
+                <Typography variant="body1">
+                    You have no chat selected
+                </Typography>
+                <Typography variant="body2">
+                    Choose one from your existing chats, or start a new chat
+                </Typography>
+                <Button variant="contained" color="primary" className="my-3">
+                    Start a new chat
+                </Button>
+            </div>
+        </div>
     );
 }

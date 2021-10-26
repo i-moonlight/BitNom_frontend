@@ -1,4 +1,12 @@
 import {
+    BookmarkRounded,
+    CollectionsBookmarkRounded,
+    EventRounded,
+    Notifications,
+    PersonRounded,
+    Settings,
+} from '@mui/icons-material';
+import {
     Avatar,
     Badge,
     Card,
@@ -8,28 +16,14 @@ import {
     Divider,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import {
-    BookmarkRounded,
-    CollectionsBookmarkRounded,
-    EventRounded,
-    Notifications,
-    PersonRounded,
-    Settings,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 
-export default function UserCard({
-    setOpen,
-    followers,
-    following,
-    scrolls,
-    events,
-}) {
+export default function UserCard({ setOpen, followers, following }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const card = useRef();
@@ -113,9 +107,7 @@ export default function UserCard({
                     <div className="center-horizontal space-between">
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/posts')
-                            }
+                            onClick={() => history.push('/profile/posts')}
                         >
                             <Typography variant="body2">Posts</Typography>
                             <div className="center-horizontal">
@@ -125,15 +117,13 @@ export default function UserCard({
                                     fontSize="small"
                                 />
                                 <Typography variant="body2">
-                                    {scrolls}
+                                    {state?.postCount?.postCount}
                                 </Typography>
                             </div>
                         </div>
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                history.push('/dashboard/profile/connections')
-                            }
+                            onClick={() => history.push('/profile/connections')}
                         >
                             <Typography variant="body2">Followers</Typography>
                             <div className="center-horizontal">
@@ -147,12 +137,12 @@ export default function UserCard({
                                 </Typography>
                             </div>
                         </div>
-                        <div
+                        <Typography
                             style={{ cursor: 'pointer' }}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
-                                history.push('/dashboard/profile/connections');
+                                history.push('/profile/connections');
                             }}
                         >
                             <Typography variant="body2">Following</Typography>
@@ -166,7 +156,7 @@ export default function UserCard({
                                     {following}
                                 </Typography>
                             </div>
-                        </div>
+                        </Typography>
                     </div>
                 </CardContent>
                 <Divider />
@@ -177,9 +167,7 @@ export default function UserCard({
                         startIcon={<BookmarkRounded />}
                         variant="text"
                         className="py-1 my-1"
-                        onClick={() =>
-                            history.push('/dashboard/profile/bookmarks')
-                        }
+                        onClick={() => history.push('/profile/bookmarks')}
                     >
                         Saved Items
                     </Button>
@@ -193,13 +181,13 @@ export default function UserCard({
                         endIcon={
                             <Badge
                                 className="ms-2 me-3"
-                                badgeContent={events}
+                                badgeContent={state?.eventCount?.eventCount}
                                 color="primary"
                             ></Badge>
                         }
                         variant="text"
                         className="py-1 my-1 me-3"
-                        onClick={() => history.push('/dashboard/events')}
+                        onClick={() => history.push('/events')}
                     >
                         Events
                     </Button>
@@ -208,25 +196,18 @@ export default function UserCard({
             className=' p-1'
             color='primary'
             style={{ marginLeft: 'auto' }}
-            onClick={() => history.push('/dashboard/events')}
+            onClick={() => history.push('/events')}
           >
             <AddRounded />
           </IconButton> */}
                 </CardActions>
             </Card>
-            <Button
-                style={{
-                    display: location.pathname.includes('dashboard/')
-                        ? 'none'
-                        : 'block',
-                }}
-                onClick={setOpen}
-                color="primary"
-                fullWidth
-                textCase
-            >
-                Create Post
-            </Button>
+            {(location.pathname.includes('connect') ||
+                location.pathname.includes('posts/')) && (
+                <Button onClick={setOpen} color="primary" fullWidth textCase>
+                    Create Post
+                </Button>
+            )}
         </div>
     );
 }

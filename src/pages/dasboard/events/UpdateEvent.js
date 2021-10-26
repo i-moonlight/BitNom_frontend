@@ -1,42 +1,39 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
-    CircularProgress,
-    Divider,
-    Grid,
-    IconButton,
-    Modal,
-    Typography,
-    //useTheme,
-    TextField,
-    Paper,
-    InputBase,
     Chip,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    makeStyles,
-} from '@material-ui/core';
-import { CloseRounded, CameraAltRounded } from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
-import React, { useState, useEffect } from 'react';
-//import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
-import Flatpickr from 'react-flatpickr';
+    Divider,
+    Grid,
+    IconButton,
+    InputBase,
+    Modal,
+    Paper,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
+import debounce from 'lodash/debounce';
+import { DropzoneArea } from 'react-mui-dropzone';
+import React, { useEffect, useState } from 'react';
+import Flatpickr from 'react-flatpickr';
 //import { useSelector } from 'react-redux';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
-import debounce from 'lodash/debounce';
+//import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
-
 import {
+    MUTATION_DELETE_EVENT,
     MUTATION_UPDATE_EVENT,
     QUERY_EVENT_BY_ID,
-    MUTATION_DELETE_EVENT,
     QUERY_LOAD_EVENTS,
     QUERY_SEARCH_USERS,
 } from '../utilities/queries';
@@ -152,14 +149,7 @@ export default function UpdateEvent({
         },
     ] = useMutation(MUTATION_UPDATE_EVENT);
 
-    const [
-        deleteEvent,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_EVENT);
+    const [deleteEvent] = useMutation(MUTATION_DELETE_EVENT);
 
     const onUpdateEvent = async (IUpdateEvent) => {
         await updateEvent({
@@ -205,7 +195,7 @@ export default function UpdateEvent({
             },
             refetchQueries: [{ query: QUERY_LOAD_EVENTS }],
         });
-        console.log(deleteData);
+
         setEventLink('');
         setPreviewURL();
         setEventImage(null);
@@ -234,7 +224,6 @@ export default function UpdateEvent({
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
             .then((latLng) => {
-                console.log('Results', location);
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);

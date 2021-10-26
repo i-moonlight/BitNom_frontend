@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import { Container, Grid } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Container, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Wrapper from '../Wrapper';
 import FaqSection from './FaqSection';
@@ -56,7 +56,7 @@ export default function Faqs() {
 const useStyles = makeStyles((theme) => ({
     body: {
         backgroundColor:
-            theme.palette.type == 'light'
+            theme.palette.mode == 'light'
                 ? '#F5F5F5'
                 : theme.palette.background.paper,
     },

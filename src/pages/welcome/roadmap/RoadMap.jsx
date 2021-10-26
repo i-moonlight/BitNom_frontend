@@ -1,13 +1,7 @@
-import {
-    Breadcrumbs,
-    Container,
-    Grid,
-    Link,
-    makeStyles,
-} from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import { useState } from 'react';
+import { Breadcrumbs, Container, Grid, Link } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+import React, { useState } from 'react';
 import { roadMap } from '../utilities/welcome.data';
 import Wrapper from '../Wrapper';
 import QuaterCard from './QuaterCard';
@@ -72,7 +66,7 @@ export default function RoadMap() {
 const useStyles = makeStyles((theme) => ({
     body: {
         backgroundColor:
-            theme.palette.type == 'light'
+            theme.palette.mode == 'light'
                 ? '#F5F5F5'
                 : theme.palette.background.paper,
     },

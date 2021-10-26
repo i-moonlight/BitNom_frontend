@@ -1,4 +1,5 @@
-import { Box, Container, Tab, Tabs, withStyles } from '@material-ui/core';
+import { Box, Container, Tab, Tabs } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { tabs } from '../../utilities/data.components';
@@ -25,7 +26,7 @@ export default function TabsBar({
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {tabs.map(({ label, menuItems, link }) => {
+                        {tabs.map(({ label, menuItems, link, extLink }) => {
                             return (
                                 <BitTab
                                     key={`${label}`}
@@ -33,6 +34,10 @@ export default function TabsBar({
                                     aria-controls={tabOptionsId}
                                     aria-haspopup="true"
                                     onClick={(event) => {
+                                        if (extLink) {
+                                            window.open(extLink, '_blank');
+                                            return;
+                                        }
                                         link && history.push(link);
                                         menuItems && setTabOptions(menuItems);
                                         menuItems &&
@@ -58,17 +63,17 @@ const BitTab = withStyles((theme) => ({
     root: {
         cursor: 'pointer',
         textTransform: 'none',
-        color: theme.palette.type == 'dark' ? '#fff' : '#000',
+        color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         fontWeight: theme.typography.fontWeightBold,
         fontSize: theme.typography.pxToRem(15),
         marginRight: 0,
         '&:focus': {
             opacity: 1,
-            color: theme.palette.type == 'dark' ? '#fff' : '#000',
+            color: theme.palette.mode == 'dark' ? '#fff' : '#000',
         },
         '&:hover': {
             backgroundColor:
-                theme.palette.type == 'dark'
+                theme.palette.mode == 'dark'
                     ? theme.palette.background.paper
                     : theme.palette.background.search,
         },

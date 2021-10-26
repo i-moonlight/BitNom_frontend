@@ -1,12 +1,12 @@
-import { Card, List, ListItem, ListItemText, Popover } from '@material-ui/core';
-import React from 'react';
 import { useMutation } from '@apollo/client';
+import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
+import React from 'react';
 import {
-    MARK_NOTIFICATION_AS_READ,
+    DELETE_NOTIFICATION,
     GET_USER_NOTIFICATIONS,
+    MARK_NOTIFICATION_AS_READ,
     //MARK_NOTIFICAION_AS_SEEN,
     MUTATION_MUTE_NOTIFICATIONS,
-    DELETE_NOTIFICATION,
 } from '../../../../pages/dasboard/utilities/queries';
 
 export default function NotificationOptionPopover({
@@ -16,25 +16,11 @@ export default function NotificationOptionPopover({
     isNotificationOptionOpen,
     handleNotificationOptionClose,
 }) {
-    const [
-        deleteNotification,
-        {
-            data: deleteData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(DELETE_NOTIFICATION, {
+    const [deleteNotification] = useMutation(DELETE_NOTIFICATION, {
         context: { clientName: 'notifications' },
     });
 
-    const [
-        mute,
-        {
-            data: muteData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
+    const [mute] = useMutation(MUTATION_MUTE_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
     });
 
@@ -55,7 +41,6 @@ export default function NotificationOptionPopover({
     };
 
     const handleMuteNotifications = () => {
-        console.log(notification?.content_entities[0]?.resource);
         mute({
             variables: {
                 resource: {
@@ -74,14 +59,7 @@ export default function NotificationOptionPopover({
         handleNotificationOptionClose();
     };
 
-    const [
-        markAsRead,
-        {
-            data: markAsReadData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MARK_NOTIFICATION_AS_READ, {
+    const [markAsRead] = useMutation(MARK_NOTIFICATION_AS_READ, {
         context: { clientName: 'notifications' },
     });
 
@@ -100,7 +78,7 @@ export default function NotificationOptionPopover({
         });
         handleNotificationOptionClose();
     };
-    console.log(markAsReadData, muteData, deleteData);
+
     return (
         <Popover
             anchorEl={notificationOptionAnchorEl}

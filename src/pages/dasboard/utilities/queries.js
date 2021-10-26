@@ -274,6 +274,16 @@ export const QUERY_EVENT_BY_ID = gql`
   }
 `;
 
+export const QUERY_EVENTS_BY_HASHTAG = gql`
+  query ($hashtag: String!) {
+    Events {
+      getByHashtag(hashtag: $hashtag) {
+         ${eventSubFields}
+      }
+    }
+  }
+`;
+
 export const MUTATION_CREATE_EVENT = gql`
   mutation ($data: ICreateEvent!) {
     Events {
@@ -500,10 +510,20 @@ export const GET_BOOKMARKED_SCROLLS = gql`
   }
 `;
 
-export const QUERY_GET_SCROLL_BY_ID = gql`
-  query GetByID($_id: ID!) {
+export const QUERY_POST_BY_ID = gql`
+  query ($_id: ID!) {
     Posts {
       getById(_id: $_id) {
+         ${postSubFields}
+      }
+    }
+  }
+`;
+
+export const QUERY_POSTS_BY_HASHTAG = gql`
+  query ($hashtag: String!) {
+    Posts {
+      getByHashtag(hashtag: $hashtag) {
          ${postSubFields}
       }
     }
@@ -571,6 +591,15 @@ const commentSubFields = `
   }
   creation_date
   bookmarks
+  reacted_to_by {
+    _id
+    reaction_type
+    user_id {
+      _id
+      displayName
+      profile_pic
+    }
+  }
   reactions {
     likes
     dislikes

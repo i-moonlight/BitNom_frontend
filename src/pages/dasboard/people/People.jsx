@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -7,20 +8,19 @@ import {
     Container,
     Divider,
     Grid,
-    Hidden,
     IconButton,
     List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -31,8 +31,6 @@ import {
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
-    QUERY_LOAD_EVENTS,
-    QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
 export default function People() {
     const classes = useStyles();
     const state = useSelector((st) => st);
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const history = useHistory();
+
     const user = state.auth.user;
 
     const { data: usersData } = useQuery(QUERY_GET_USERS, {
@@ -53,15 +54,6 @@ export default function People() {
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
-    });
-
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 500 } },
-    });
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
     });
 
     const suggestedUsers = usersData?.Users?.get?.filter(
@@ -83,7 +75,7 @@ export default function People() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -94,25 +86,22 @@ export default function People() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    scrolls={userScrolls?.Posts?.get?.length}
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <Card>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() => history.goBack()}
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                     title={
                                         <div className="center-horizontal">
@@ -124,7 +113,7 @@ export default function People() {
                                 />
                                 <Divider />
                                 <CardContent>
-                                    <List>
+                                    <List component="div">
                                         {suggestedUsers?.map((usr) => (
                                             <ListItemComponent
                                                 key={usr?._id}
@@ -161,14 +150,7 @@ function ListItemComponent({ item, getFollowStatus }) {
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
 
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -185,9 +167,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
 
@@ -206,8 +186,6 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
         setStatus();
         //setFollowing(following - 1);
     };

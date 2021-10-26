@@ -1,10 +1,11 @@
+import { Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
+    CardMedia,
+    Grid,
     IconButton,
     Paper,
-    Grid,
-    CardMedia,
     Typography,
 } from '@material-ui/core';
 import { Reply } from '@material-ui/icons';
@@ -13,15 +14,19 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
+
 export default function IncomingMessage({ message, chat, onReply }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
     const author = message.author || {};
+
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
-                {' '}
-                <Link style={{ textDecoration: 'none' }}>
+                <Link
+                    to={`/users/${chat?.otherUser?.info?._id}`}
+                    style={{ textDecoration: 'none' }}
+                >
                     <Avatar
                         alt={chat.otherUser.info.displayName}
                         src={
@@ -32,7 +37,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                         }
                         style={{ backgroundColor: '#1C0C5B' }}
                     >
-                        {chat?.otherUser.info.profile_pic
+                        {chat?.otherUser?.info?.profile_pic
                             ? ''
                             : getUserInitials(
                                   chat?.otherUser?.info?.displayName
@@ -44,16 +49,19 @@ export default function IncomingMessage({ message, chat, onReply }) {
                 className={classes.incoming}
                 onMouseEnter={() => setShowReply(true)}
                 onMouseLeave={() => setShowReply(false)}
+                elevation={0}
             >
                 <Typography
                     variant="body1"
                     component="p"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link style={{ textDecoration: 'none' }}>
+                    <Link
+                        to={`/users/${author}`}
+                        style={{ textDecoration: 'none' }}
+                    >
                         <small className={classes.author}>
-                            {' '}
-                            <strong>{author}</strong>
+                            <strong>@{author}</strong>
                         </small>
                     </Link>
                 </Typography>
@@ -117,10 +125,9 @@ export default function IncomingMessage({ message, chat, onReply }) {
                             />
                         </Grid>
                     ))}
-                <p className={classes.message}>{message.text}</p>{' '}
+                <p className={classes.message}>{message.text}</p>
                 {show_reply && (
                     <div className={classes.reply}>
-                        {' '}
                         <IconButton
                             style={{
                                 fontSize: '1em',
@@ -135,11 +142,9 @@ export default function IncomingMessage({ message, chat, onReply }) {
                         </IconButton>
                     </div>
                 )}
-            </Paper>{' '}
+            </Paper>
             <div className={classes.time}>
-                <small className={classes.times}>
-                    {moment(message.date).format('h:mm a')}
-                </small>
+                <small>{moment(message?.date).fromNow()}</small>
             </div>
         </div>
     );

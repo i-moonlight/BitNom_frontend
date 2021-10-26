@@ -1,3 +1,4 @@
+import { MoreVert } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -5,22 +6,18 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    Divider,
     Grid,
     IconButton,
     Typography,
-} from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
-
+} from '@mui/material';
 import moment from 'moment';
-import { useLocation, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import SavedItemsOptionPopover from './SavedItemsOptionPopover';
-import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
 import EventPreview from '../events/EventPreview';
+import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
+import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
 const savedItemOptionId = 'menu-savedItem-option';
 
@@ -53,11 +50,11 @@ export default function SavedPost({
 
     return (
         <>
-            <Card style={{ marginBottom: 16 }}>
-                <CardActionArea
-                    disableRipple
-                    //onClick={() => history.push('/dashboard')}
-                >
+            <Card
+                style={{ marginBottom: 16, zIndex: 1 }}
+                onClick={() => history.push(`/posts/${scroll?._id}`)}
+            >
+                <CardActionArea disableRipple>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -75,11 +72,13 @@ export default function SavedPost({
                                 size="small"
                                 style={{
                                     display:
-                                        location.pathname.includes('posts') &&
-                                        'none',
+                                        !location.pathname.includes(
+                                            'bookmarks'
+                                        ) && 'none',
+                                    zIndex: 3,
                                 }}
                                 className="m-1 p-1"
-                                aria-label="show more"
+                                aria-label="post options"
                                 aria-controls={savedItemOptionId}
                                 aria-haspopup="true"
                                 onClick={(e) => {
@@ -119,23 +118,6 @@ export default function SavedPost({
                                 }}
                                 style={{ zIndex: 2 }}
                             ></Typography>
-                            {/* <br />
-            {scroll?.content_entities?.map((entity) => {
-              let colortext = scroll?.content?.slice(
-                entity?.offset,
-                entity?.offset + entity?.length
-              );
-
-              return (
-                <a
-                  href={entity?.url}
-                  className='mx-1 mt-1'
-                  key={entity?.offset}
-                >
-                  {colortext}
-                </a>
-              );
-            })} */}
                         </Typography>
                         <Grid container spacing={2} className="mb-2">
                             {scroll?.video && (
@@ -217,8 +199,6 @@ export default function SavedPost({
                             </Typography>
                         </Typography>
                     </CardContent>
-
-                    <Divider />
 
                     <SavedItemsOptionPopover
                         savedItem={scroll}

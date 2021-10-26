@@ -1,3 +1,4 @@
+import { SettingsRounded } from '@mui/icons-material';
 import {
     Avatar,
     Card,
@@ -11,16 +12,14 @@ import {
     ListItemText,
     Popover,
     Typography,
-} from '@material-ui/core';
-import { SettingsRounded } from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
     getCreationTime,
     notificationBodyFactory,
 } from '../../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { useHistory } from 'react-router-dom';
 
 export default function NotificationsPopover({
     notificationAnchorEl,
@@ -78,7 +77,7 @@ function NotificationPreview({ notifications }) {
                         <ListItemComponent key={item._id} item={item} />
                     ))}
             {notifications?.length > 0 && (
-                <Link to="/dashboard/notifications">
+                <Link to="/notifications">
                     <Typography
                         variant="body2"
                         className="my-2"
@@ -96,13 +95,13 @@ function ListItemComponent({ item }) {
     const history = useHistory();
     let link;
     if (item?.link_to_resource?.type === 'post') {
-        link = `#`;
+        link = `/posts/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'event') {
-        link = `/dashboard/events/${item?.link_to_resource?._id}`;
+        link = `/events/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'comment') {
-        link = `#`;
+        link = `/posts/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'user') {
-        link = `#`;
+        link = `/users/${item?.link_to_resource?._id}`;
     }
 
     const getNotifyingUser = (notification) => {

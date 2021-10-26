@@ -1,21 +1,23 @@
-import { Card, Hidden, Typography, IconButton } from '@material-ui/core';
-
-import { useHistory } from 'react-router-dom';
 import {
+    MoreHorizRounded,
     RoomRounded,
     VideocamRounded,
-    MoreHorizRounded,
-} from '@material-ui/icons';
-import React, { useState } from 'react';
+} from '@mui/icons-material';
+import { Card, IconButton, Typography, useMediaQuery } from '@mui/material';
 import moment from 'moment';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
 const savedItemOptionId = 'menu-savedItem-option';
 
 function SavedEvent({ event }) {
     const history = useHistory();
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] =
         useState(null);
+
     const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
 
     const handleSavedItemOptionOpen = (e) => {
@@ -25,6 +27,7 @@ function SavedEvent({ event }) {
     const handleSavedItemOptionClose = () => {
         setSavedItemOptionAnchorEl(null);
     };
+
     const truncateText = (str, n, b) => {
         if (str.length <= n) {
             return str;
@@ -35,6 +38,7 @@ function SavedEvent({ event }) {
             ? subString.substr(0, subString.lastIndexOf(' '))
             : subString;
     };
+
     return (
         <Card elevation={0} key={event?._id} className="space-between">
             <div
@@ -50,7 +54,7 @@ function SavedEvent({ event }) {
                 }}
                 onClick={(e) => {
                     e.stopPropagation();
-                    history.push(`/dashboard/events/${event?._id}`);
+                    history.push(`/events/${event?._id}`);
                 }}
             >
                 <div
@@ -78,13 +82,13 @@ function SavedEvent({ event }) {
                         height: 110,
                     }}
                 >
-                    <Hidden smDown>
+                    {!smDown && (
                         <Typography color="textSecondary" variant="body2">
                             {moment(event?.startDate).format(
                                 'ddd, MMMM Do YYYY, h:mm a'
                             )}
                         </Typography>
-                    </Hidden>
+                    )}
                     <Typography
                         style={{ textTransform: 'uppercase' }}
                         variant="body2"

@@ -1,7 +1,7 @@
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Grid } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
-import DarkTheme from '../../../utilities/DarkTheme';
+import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import Wrapper from '../Wrapper';
 import DonateCard from './cards/DonateCard';
 
@@ -23,25 +23,23 @@ export default function Support() {
 
     return (
         <Wrapper onTabValue={onTabValue}>
-            <Paper>
-                <DarkTheme>
-                    <div>
-                        <section style={{ backgroundColor: '#000' }}>
-                            <Container maxWidth="lg">
-                                <Paper style={{ backgroundColor: '#000' }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item md={3} sm={2} xs={0}></Grid>
-                                        <Grid item md={6} sm={8} xs={12}>
-                                            <DonateCard />
-                                        </Grid>
-                                        <Grid item md={3} sm={2} xs={0}></Grid>
+            <DarkThemeOnly>
+                <div>
+                    <section style={{ backgroundColor: '#000' }}>
+                        <Container maxWidth="lg">
+                            <div style={{ backgroundColor: '#000' }}>
+                                <Grid container spacing={2}>
+                                    <Grid item md={3} sm={2} xs={0}></Grid>
+                                    <Grid item md={6} sm={8} xs={12}>
+                                        <DonateCard />
                                     </Grid>
-                                </Paper>
-                            </Container>
-                        </section>
-                    </div>
-                </DarkTheme>
-            </Paper>
+                                    <Grid item md={3} sm={2} xs={0}></Grid>
+                                </Grid>
+                            </div>
+                        </Container>
+                    </section>
+                </div>
+            </DarkThemeOnly>
         </Wrapper>
     );
 }

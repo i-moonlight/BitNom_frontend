@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
-import { List, ListItem, ListItemText, Popover, Card } from '@material-ui/core';
+import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React from 'react';
 import {
     ARCHIVE_CHAT,
+    BLOCK_CHAT,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
-    BLOCK_CHAT,
     REPORT_USER,
 } from '../graphql/queries';
 export default function ChatSettingPopover({

@@ -1,15 +1,15 @@
-import React from 'react';
-
 import {
     CircularProgress,
     Grid,
     List,
     ListSubheader,
     Typography,
-} from '@material-ui/core';
-import Chat from './chat';
+} from '@mui/material';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
+import Chat from './chat';
+
 export default function Archived({ archived, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
@@ -42,7 +42,6 @@ export default function Archived({ archived, loading }) {
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
-                    container
                     item
                     direction
                     column

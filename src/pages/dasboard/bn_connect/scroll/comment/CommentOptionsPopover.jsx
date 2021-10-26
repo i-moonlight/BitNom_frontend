@@ -1,5 +1,11 @@
 import { useMutation } from '@apollo/client';
 import {
+    BookmarkBorderRounded,
+    EditOutlined,
+    FlagOutlined,
+    PersonAddDisabledOutlined,
+} from '@mui/icons-material';
+import {
     Card,
     Divider,
     List,
@@ -7,20 +13,14 @@ import {
     ListItemIcon,
     ListItemText,
     Popover,
-} from '@material-ui/core';
-import {
-    BookmarkBorderRounded,
-    FileCopyOutlined,
-    FlagOutlined,
-    PersonAddDisabledOutlined,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React from 'react';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import Button from '../../../../../components/Button';
 import {
-    MUTATION_CREATE_BOOKMARK,
     GET_BOOKMARKED_COMMENTS,
+    MUTATION_CREATE_BOOKMARK,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
 } from '../../../utilities/queries';
@@ -36,22 +36,8 @@ export default function CommentOptionsPopover({
     isCommentOptionOpen,
     handleCommentOptionClose,
 }) {
-    const [
-        createBookmark,
-        {
-            data: bookmarkData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_CREATE_BOOKMARK);
-    const [
-        unFollowUser,
-        {
-            data: unFollowData,
-            //  loading,
-            //   error
-        },
-    ] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
+    const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
@@ -70,7 +56,6 @@ export default function CommentOptionsPopover({
                 },
             ],
         });
-        if (!unFollowData?.Users?.unFollow) console.log('Not followed');
     };
 
     const handleCreateBookmark = () => {
@@ -101,7 +86,6 @@ export default function CommentOptionsPopover({
             draggable: true,
         });
 
-        if (!bookmarkData?.bookmarks?.create) console.log('Bookmarked');
         handleCommentOptionClose();
     };
 
@@ -155,7 +139,7 @@ export default function CommentOptionsPopover({
                 {user?._id === comment?.author?._id && (
                     <ListItem button divider onClick={handleEditComment}>
                         <ListItemIcon>
-                            <FileCopyOutlined />
+                            <EditOutlined />
                         </ListItemIcon>
                         <ListItemText primary="Edit this comment" />
                     </ListItem>

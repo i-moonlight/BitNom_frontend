@@ -1,4 +1,8 @@
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+    createTheme,
+    StyledEngineProvider,
+    ThemeProvider,
+} from '@mui/material/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
@@ -11,6 +15,8 @@ export default function App() {
     const themeOptionsDark = {
         primary: {
             main: '#006097',
+            light: '#006097',
+            dark: '#006097',
         },
         secondary: {
             main: '#FB5E5E',
@@ -23,12 +29,16 @@ export default function App() {
             default: '#171818',
             landing: '#18191a',
             search: '#242526',
+            chatFrom: '#163C53',
+            chatTo: '#333436',
         },
     };
 
     const themeOptionsLight = {
         primary: {
             main: '#006097',
+            light: '#006097',
+            dark: '#006097',
         },
         secondary: {
             main: '#FB5E5E',
@@ -39,6 +49,8 @@ export default function App() {
             profileCard: '#ececec',
             search: '#f1f1f1',
             default: '#F3F2EF',
+            chatFrom: '#BDE0FF',
+            chatTo: '#F0F8FF',
         },
     };
 
@@ -48,14 +60,18 @@ export default function App() {
     //Create MUI Theme
     const providerTheme = createTheme({
         palette: {
-            type: palette,
+            mode: palette,
             ...themeOptionsRoot,
         },
     });
 
     return (
         <ThemeProvider theme={providerTheme}>
-            <AppContainers />
+            <div>
+                <StyledEngineProvider injectFirst>
+                    <AppContainers />
+                </StyledEngineProvider>
+            </div>
         </ThemeProvider>
     );
 }

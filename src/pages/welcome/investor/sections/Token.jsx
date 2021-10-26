@@ -1,5 +1,5 @@
-import { Container, Grid, Typography } from '@material-ui/core';
-import { ChevronRightRounded } from '@material-ui/icons';
+import { ChevronRightRounded } from '@mui/icons-material';
+import { Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 import supplyImg from '../../../../assets/investor/image_5.png';
 import Button from '../../../../components/Button';
@@ -44,8 +44,14 @@ export default function Token() {
                                     size="large"
                                     textCase
                                     variant="outlined"
-                                    className="mt-3"
+                                    className="mt-3 me-2"
                                     endIcon={<ChevronRightRounded />}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://latoken.com/exchange/BN_USDT',
+                                            '_blank'
+                                        );
+                                    }}
                                 >
                                     Buy BN
                                 </Button>
@@ -55,6 +61,12 @@ export default function Token() {
                                     variant="text"
                                     className="mt-3"
                                     endIcon={<ChevronRightRounded />}
+                                    onClick={() => {
+                                        window.open(
+                                            'https://latoken.com/exchange/BN_USDT',
+                                            '_blank'
+                                        );
+                                    }}
                                 >
                                     Visit Price / Chart
                                 </Button>

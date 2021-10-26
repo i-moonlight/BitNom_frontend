@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import NavBarInvestor from '../../components/navbar/investor/NavBarInvestor';
 import NavBarLanding from '../../components/navbar/landing/NavBarLanding';
 import Footer from './Footer';
 
-export default function Wrapper({ children, investor, onTabValue, authPage }) {
+export default function Wrapper({ children, authPage }) {
     const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -20,29 +18,25 @@ export default function Wrapper({ children, investor, onTabValue, authPage }) {
                 if (user?.email?.verified && !user?.displayName) {
                     history.push('/auth/update_info_register');
                 } else {
-                    authPage && history.push('/dashboard');
+                    authPage && history.push('/connect');
                 }
             }
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [history, authPage, user]);
+    }, [authPage, history, user]);
 
     return (
         <div
             ref={toTop}
             style={{
                 width: '100%',
-                paddingTop: investor ? 0 : 116,
+                paddingTop: 116,
                 minHeight: '100vh',
                 overflowY: 'hidden',
             }}
         >
-            {investor ? (
-                <NavBarInvestor onTabValue={onTabValue} />
-            ) : (
-                <NavBarLanding />
-            )}
+            <NavBarLanding />
             {children}
             <Footer />
         </div>

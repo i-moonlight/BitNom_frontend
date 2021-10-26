@@ -1,27 +1,23 @@
 import { useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Card,
     CardHeader,
     Container,
     Grid,
-    Hidden,
     IconButton,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
-import {
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
-    QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
 import SavedPost from '../bookmarks/SavedPost';
+import { QUERY_FETCH_PROFILE, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,8 +30,10 @@ export default function UserPosts() {
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
 
     const state = useSelector((st) => st);
-    const user = state.auth.user;
     const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
+
+    const user = state.auth.user;
 
     const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: { data: { author: user?._id, limit: 220 } },
@@ -48,21 +46,14 @@ export default function UserPosts() {
         context: { clientName: 'users' },
     });
 
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
-    });
-
     return (
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
-                                    scrolls={userPosts?.Posts?.get?.length}
                                     following={
                                         profileData?.Users?.profile?.following
                                             ?.length
@@ -71,10 +62,9 @@ export default function UserPosts() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <>
                                 <Card

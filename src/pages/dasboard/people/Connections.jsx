@@ -1,41 +1,36 @@
+import { useMutation, useQuery } from '@apollo/client';
+import { ArrowBack } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    CardHeader,
-    IconButton,
     CardContent,
+    CardHeader,
     Container,
     Divider,
     Grid,
-    Hidden,
+    IconButton,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    makeStyles,
-    Typography,
     Tab,
     Tabs,
-} from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import Button from '../../../components/Button';
+import Screen from '../../../components/Screen';
+import { getUserInitials } from '../../../utilities/Helpers';
+import UserCard from '../bn_connect/UserCard';
+import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
-    QUERY_LOAD_SCROLLS,
-    QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useSelector } from 'react-redux';
-
-import Button from '../../../components/Button';
-import Screen from '../../../components/Screen';
-import UserCard from '../bn_connect/UserCard';
-import { getUserInitials } from '../../../utilities/Helpers';
-import {} from '../utilities/functions';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
@@ -45,25 +40,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Connections() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
-
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const history = useHistory();
     const {
         //error: profileError,
         //  loading,
         data: profileData,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
-    });
-
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 500 } },
-    });
-
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
-        },
     });
 
     const getFollowStatus = (usr) => {
@@ -88,7 +72,7 @@ export default function Connections() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
                                     following={
@@ -99,25 +83,22 @@ export default function Connections() {
                                         profileData?.Users?.profile?.followers
                                             ?.length
                                     }
-                                    scrolls={userScrolls?.Posts?.get?.length}
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <Card>
                                 <CardHeader
                                     avatar={
-                                        <Link to="/dashboard">
-                                            <IconButton
-                                                size="small"
-                                                className="m-1 p-1"
-                                                aria-label="back"
-                                                color="inherit"
-                                            >
-                                                <ArrowBack />
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            size="small"
+                                            className="m-1 p-1"
+                                            aria-label="back"
+                                            color="inherit"
+                                            onClick={() => history.goBack()}
+                                        >
+                                            <ArrowBack />
+                                        </IconButton>
                                     }
                                     title={
                                         <div className="center-horizontal">
@@ -193,7 +174,7 @@ export default function Connections() {
                             </Card>
                         </Grid>
                         <Grid item md={4} lg={3}>
-                            {/* <Hidden smDown></Hidden> */}
+                            {/* {!smDown && } */}
                         </Grid>
                     </Grid>
                 </Container>
@@ -244,9 +225,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (followData?.Users?.follow == true)
-            console.log(followData?.Users?.follow);
-        setStatus(true);
+        if (followData?.Users?.follow == true) setStatus(true);
         //setFollowing(following + 1);
     };
     const handleUnFollowUser = (user_id) => {
@@ -264,9 +243,7 @@ function ListItemComponent({ item, getFollowStatus }) {
                 },
             ],
         });
-        if (unFollowData?.Users?.unFollow == true)
-            console.log(unFollowData?.Users?.unFollow);
-        setStatus(false);
+        if (unFollowData?.Users?.unFollow == true) setStatus(false);
         //setFollowing(following - 1);
     };
     return (

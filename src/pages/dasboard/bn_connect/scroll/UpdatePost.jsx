@@ -1,6 +1,13 @@
 //TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
+    ChevronRight,
+    CloseRounded,
+    ImageRounded,
+    Public,
+    VideocamRounded,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardContent,
@@ -20,22 +27,15 @@ import {
     Modal,
     Typography,
     useTheme,
-} from '@material-ui/core';
-import {
-    ChevronRight,
-    CloseRounded,
-    ImageRounded,
-    Public,
-    VideocamRounded,
-} from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
+} from '@mui/material';
+import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { MentionsInput, Mention } from 'react-mentions';
 import Button from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { mentionsUpdate, mentionsFinder } from '../../utilities/functions';
+import { mentionsFinder, mentionsUpdate } from '../../utilities/functions';
 import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
@@ -70,18 +70,11 @@ export default function UpdatePost({
         updatePost,
         {
             loading,
-            data,
+            // data,
             //  error
         },
     ] = useMutation(MUTATION_UPDATE_POST);
-    const [
-        deletePost,
-        {
-            //loading: deleteLoading,
-            data: deleteData,
-            //  error
-        },
-    ] = useMutation(MUTATION_DELETE_POST);
+    const [deletePost] = useMutation(MUTATION_DELETE_POST);
 
     const onDeletePost = async (id) => {
         await deletePost({
@@ -119,12 +112,6 @@ export default function UpdatePost({
         setOpenVideo(false);
         setPostToEdit(null);
     };
-
-    useEffect(() => {
-        if (data?.Posts?.update) {
-            console.log(data, deleteData);
-        }
-    }, [data, deleteData]);
 
     useEffect(() => {
         if (postToEdit?.images.length > 0) {
@@ -316,7 +303,9 @@ export default function UpdatePost({
                                             : 'Drag n drop a video here or click'
                                     }
                                     acceptedFiles={
-                                        openImage ? ['image/*'] : ['video/*']
+                                        openImage
+                                            ? ['.jpeg', '.png']
+                                            : ['video/*']
                                     }
                                     maxFileSize={5000000}
                                     filesLimit={openImage ? 4 : 1}

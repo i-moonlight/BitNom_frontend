@@ -1,18 +1,18 @@
 import {
+    ArrowRightAltRounded,
+    ChevronRight,
+    MenuRounded,
+} from '@mui/icons-material';
+import {
     AppBar,
     Avatar,
     Container,
     Divider,
-    Hidden,
     IconButton,
     Typography,
+    useMediaQuery,
     useTheme,
-} from '@material-ui/core';
-import {
-    ArrowRightAltRounded,
-    ChevronRight,
-    MenuRounded,
-} from '@material-ui/icons';
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
@@ -31,6 +31,10 @@ export default function NavBarLanding() {
     const [showMenuProduct, setShowMenuProduct] = useState(false);
     const theme = useTheme();
     const history = useHistory();
+    const xsDown = useMediaQuery('(max-width:599px)');
+    const smUp = useMediaQuery('(min-width:600px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+    const mdUp = useMediaQuery('(min-width:960px)');
 
     return (
         <AppBar
@@ -46,121 +50,131 @@ export default function NavBarLanding() {
                 <div className="space-between my-3">
                     <div
                         className="center-horizontal c-pointer"
-                        onClick={() => history.push('/dashboard')}
+                        onClick={() => history.push('/connect')}
                     >
-                        <Hidden xsDown>
+                        {!xsDown && (
                             <div>
                                 <img
                                     style={{
                                         height: 40,
                                     }}
                                     src={
-                                        theme.palette.type == 'light'
+                                        theme.palette.mode == 'light'
                                             ? logo_full
                                             : logo_light_full
                                     }
                                     alt=""
                                 />
                             </div>
-                        </Hidden>
-                        <Hidden smUp>
+                        )}
+                        {!smUp && (
                             <Avatar
                                 className="me-1"
                                 src={
-                                    theme.palette.type == 'light'
+                                    theme.palette.mode == 'light'
                                         ? logo
                                         : logo_light
                                 }
                             >
                                 B
                             </Avatar>
-                        </Hidden>
+                        )}
                     </div>
-                    <Hidden smDown>
-                        <div className="center-horizontal">
-                            <Button
-                                className="mx-2"
-                                color={theme.palette.text.primary}
-                                variant="text"
-                                textCase
-                                size="large"
-                            >
-                                <Typography className="fw-bold">
-                                    Home
-                                </Typography>
-                            </Button>
-                            <Button
-                                className="mx-2"
-                                color={theme.palette.text.primary}
-                                variant="text"
-                                textCase
-                                endIcon={
-                                    <ChevronRight
-                                        style={{ transform: 'rotate(90deg)' }}
+                    {!smDown && (
+                        <>
+                            <div className="center-horizontal">
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                    size="large"
+                                >
+                                    <Typography className="fw-bold">
+                                        Home
+                                    </Typography>
+                                </Button>
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                    endIcon={
+                                        <ChevronRight
+                                            style={{
+                                                transform: 'rotate(90deg)',
+                                            }}
+                                        />
+                                    }
+                                    onMouseEnter={() =>
+                                        setShowMenuEcosystem(true)
+                                    }
+                                    onMouseLeave={() =>
+                                        setTimeout(() => {
+                                            setShowMenuEcosystem(false);
+                                        }, 500)
+                                    }
+                                >
+                                    <Typography className="fw-bold">
+                                        Ecosystem
+                                    </Typography>
+                                    <NavBarMenu
+                                        show={showMenuEcosystem}
+                                        items={menuEcosystem}
                                     />
-                                }
-                                onMouseEnter={() => setShowMenuEcosystem(true)}
-                                onMouseLeave={() =>
-                                    setTimeout(() => {
-                                        setShowMenuEcosystem(false);
-                                    }, 500)
-                                }
-                            >
-                                <Typography className="fw-bold">
-                                    Ecosystem
-                                </Typography>
-                                <NavBarMenu
-                                    show={showMenuEcosystem}
-                                    items={menuEcosystem}
-                                />
-                            </Button>
-                            <Button
-                                className="mx-2"
-                                color={theme.palette.text.primary}
-                                variant="text"
-                                textCase
-                                endIcon={
-                                    <ChevronRight
-                                        style={{ transform: 'rotate(90deg)' }}
+                                </Button>
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                    endIcon={
+                                        <ChevronRight
+                                            style={{
+                                                transform: 'rotate(90deg)',
+                                            }}
+                                        />
+                                    }
+                                    onMouseEnter={() =>
+                                        setShowMenuProduct(true)
+                                    }
+                                    onMouseLeave={() =>
+                                        setTimeout(() => {
+                                            setShowMenuProduct(false);
+                                        }, 300)
+                                    }
+                                >
+                                    <Typography className="fw-bold">
+                                        Product
+                                    </Typography>
+                                    <NavBarMenu
+                                        show={showMenuProduct}
+                                        items={menuProduct}
                                     />
-                                }
-                                onMouseEnter={() => setShowMenuProduct(true)}
-                                onMouseLeave={() =>
-                                    setTimeout(() => {
-                                        setShowMenuProduct(false);
-                                    }, 300)
-                                }
-                            >
-                                <Typography className="fw-bold">
-                                    Product
-                                </Typography>
-                                <NavBarMenu
-                                    show={showMenuProduct}
-                                    items={menuProduct}
-                                />
-                            </Button>
-                            <Button
-                                className="mx-2"
-                                color={theme.palette.text.primary}
-                                variant="text"
-                                textCase
-                            >
-                                <Typography className="fw-bold">
-                                    BN for Business
-                                </Typography>
-                            </Button>
-                            <Button
-                                className="mx-2"
-                                color={theme.palette.text.primary}
-                                variant="text"
-                                textCase
-                            >
-                                <Typography className="fw-bold">
-                                    Learn
-                                </Typography>
-                            </Button>
-                        </div>
-                    </Hidden>
+                                </Button>
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                >
+                                    <Typography className="fw-bold">
+                                        BN for Business
+                                    </Typography>
+                                </Button>
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                >
+                                    <Typography className="fw-bold">
+                                        Learn
+                                    </Typography>
+                                </Button>
+                            </div>
+                        </>
+                    )}
                     <div className="center-horizontal">
                         <Button
                             className="mx-2"
@@ -174,22 +188,20 @@ export default function NavBarLanding() {
                             <Typography className="fw-bold">Sign In</Typography>
                         </Button>
                         <Button
+                            variant="contained"
                             textCase
-                            endIcon={
-                                <Hidden xsDown>
-                                    <ArrowRightAltRounded />
-                                </Hidden>
-                            }
+                            endIcon={!xsDown && <ArrowRightAltRounded />}
                             onClick={() => {
                                 history.push('/auth/signup');
                             }}
                         >
                             <Typography className="fw-bold">
                                 Explore
-                                <Hidden smDown> BN</Hidden>
+                                {!smDown && 'BN'}
                             </Typography>
                         </Button>
-                        <Hidden mdUp>
+
+                        {!mdUp && (
                             <IconButton
                                 size="small"
                                 className="m-1 p-1"
@@ -197,7 +209,8 @@ export default function NavBarLanding() {
                             >
                                 <MenuRounded />
                             </IconButton>
-                        </Hidden>
+                        )}
+
                         <MobileMenu
                             open={menuOpen}
                             onClose={() => setMenuOpen(false)}

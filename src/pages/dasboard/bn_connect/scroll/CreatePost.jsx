@@ -1,5 +1,12 @@
 import { useMutation } from '@apollo/client';
 import {
+    ChevronRight,
+    CloseRounded,
+    ImageRounded,
+    Public,
+    VideocamRounded,
+} from '@mui/icons-material';
+import {
     Avatar,
     Card,
     CardContent,
@@ -12,15 +19,8 @@ import {
     ListItemText,
     Modal,
     Typography,
-} from '@material-ui/core';
-import {
-    ChevronRight,
-    CloseRounded,
-    ImageRounded,
-    Public,
-    VideocamRounded,
-} from '@material-ui/icons';
-import { DropzoneArea } from 'material-ui-dropzone';
+} from '@mui/material';
+import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
@@ -246,23 +246,6 @@ export default function CreatePost({
                                 {createPostErr &&
                                     'The post content cannot be empty'}
                             </Typography>
-                            {/* <TextField
-                fullWidth
-                multiline
-                variant="standard"
-                error={createPostErr && true}
-                rows={5}
-                id="content-field"
-                placeholder="What's happening"
-                onChange={(e) =>
-                  setScrollText(
-                    scroll_text?.length >= 250
-                      ? e.target.value.substring(0, e.target.value.length - 1)
-                      : e.target.value.substring(0, 250)
-                  )
-                }
-                value={scroll_text}
-              /> */}
                             <Card
                                 style={{
                                     display:
@@ -284,7 +267,9 @@ export default function CreatePost({
                                             : 'Drag n drop a video here or click'
                                     }
                                     acceptedFiles={
-                                        openImage ? ['image/*'] : ['video/*']
+                                        openImage
+                                            ? ['image/jpeg', 'image/png']
+                                            : ['video/*']
                                     }
                                     maxFileSize={openImage ? 5000000 : 10000000}
                                     filesLimit={openImage ? 4 : 1}

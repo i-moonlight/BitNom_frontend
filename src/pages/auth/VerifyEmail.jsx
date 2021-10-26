@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@mui/lab/Alert';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { parse } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,16 +30,12 @@ export default function VerifyEmail() {
                 verificationCode: parse(location.search)['?evc'],
             },
             errorPolicy: 'all',
-        }).then(({ errors, data }) => {
+        }).then(({ errors }) => {
             setVerifying(false);
             const userErrors = errors ? errors : null;
             setVerifyErr(userErrors);
 
-            if (errors) {
-                console.log('verem errors: ', errors);
-            } else {
-                console.log('verem data: ', data);
-
+            if (!errors) {
                 setTimeout(() => {
                     user?.email
                         ? dispatch(verifySuccess())

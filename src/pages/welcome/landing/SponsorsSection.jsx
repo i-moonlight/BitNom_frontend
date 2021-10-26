@@ -1,11 +1,6 @@
-import {
-    Avatar,
-    Container,
-    Grid,
-    makeStyles,
-    Typography,
-} from '@material-ui/core';
-import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
+import { Avatar, Container, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import '../../../css/marquee.css';
 

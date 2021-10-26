@@ -1,5 +1,5 @@
-import { Box, Container, MenuItem, Typography } from '@material-ui/core';
-import { ChevronLeftRounded, ChevronRightRounded } from '@material-ui/icons';
+import { ChevronLeftRounded, ChevronRightRounded } from '@mui/icons-material';
+import { Box, Container, MenuItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { tabs } from '../../utilities/data.components';
 import { useStyles } from '../../utilities/styles.components';
@@ -35,9 +35,8 @@ export default function TabsBar2() {
                                             ? classes.topTabsActive
                                             : classes.topTabs
                                     }
-                                    onClick={(e) => {
+                                    onClick={() => {
                                         setActiveTab(index);
-                                        console.log(e.target.offsetWidth);
                                     }}
                                     onMouseEnter={(e) => {
                                         setActiveTabWidth(e.target.offsetWidth);

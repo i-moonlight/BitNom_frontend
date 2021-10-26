@@ -3,34 +3,32 @@ import {
     CircularProgress,
     Container,
     Grid,
-    Hidden,
-    makeStyles,
     Typography,
-} from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+    useMediaQuery,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import { getFeed } from '../utilities/functions';
 import {
+    QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import CreateScrollCard from './CreateScrollCard';
-import CreatePost from './scroll/CreatePost';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
-import { useSelector } from 'react-redux';
+import UpdateComment from './scroll/comment/UpdateComment';
+import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
+import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
-import UpdateComment from './scroll/comment/UpdateComment';
-import UpdatePost from './scroll/UpdatePost';
 import UserCard from './UserCard';
-import { getFeed } from '../utilities/functions';
-import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,30 +53,23 @@ export default function BnConnect() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
-    const classes = useStyles();
 
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
+    const state = useSelector((st) => st);
+    const classes = useStyles();
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+
+    const user = state.auth.user;
+
+    const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+
     const profile = profileData?.Users?.profile;
 
     const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
-            data: { ids: getFeed(profile), limit: 220 },
-        },
-    });
-
-    const { data: userScrolls } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: { data: { author: user?._id, limit: 220 } },
-    });
-    const { data: userEvents } = useQuery(QUERY_LOAD_EVENTS, {
-        variables: {
-            data: { host: user?._id, limit: 20 },
+            data: { ids: getFeed(profile) },
         },
     });
 
@@ -97,13 +88,12 @@ export default function BnConnect() {
             variables: {
                 data: {
                     ids: getFeed(profile),
-                    sortByField: 'comments',
+                    sortByField: 'trending',
                     limit: 5,
                 },
             },
         }
     );
-    //onesignal
 
     useEffect(() => {
         const OneSignal = window.OneSignal || [];
@@ -147,10 +137,9 @@ export default function BnConnect() {
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
-                        <Hidden mdDown>
+                        {!mdDown && (
                             <Grid item lg={3}>
                                 <UserCard
-                                    scrolls={userScrolls?.Posts?.get?.length}
                                     following={
                                         profileData?.Users?.profile?.following
                                             ?.length
@@ -162,10 +151,9 @@ export default function BnConnect() {
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={userEvents?.Events?.get?.length}
                                 />
                             </Grid>
-                        </Hidden>
+                        )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <CreateScrollCard
                                 setOpenImage={setOpenImage}
@@ -183,38 +171,30 @@ export default function BnConnect() {
                                     />
                                 )}
                             </Grid>
-                            {data?.Posts?.get &&
-                                data?.Posts?.get?.map((scroll) => (
-                                    <Scroll
-                                        setOpen={() =>
-                                            setCreateScrollOpen(true)
-                                        }
-                                        setUpdateOpen={setUpdateScrollOpen}
-                                        profileData={
-                                            profileData?.Users?.profile
-                                        }
-                                        setUpdateCommentOpen={
-                                            setUpdateCommentOpen
-                                        }
-                                        setOpenFlag={setCreateFlagOpen}
-                                        setFlaggedResource={setFlaggedResource}
-                                        setOpenReactions={setOpenReactions}
-                                        setResourceReactions={
-                                            setResourceReactions
-                                        }
-                                        setImagePreviewURL={(url) =>
-                                            setImagePreviewURL(url)
-                                        }
-                                        setImagePreviewOpen={(open) =>
-                                            setImagePreviewOpen(open)
-                                        }
-                                        setSharedResource={setSharedResource}
-                                        setCommentToEdit={setCommentToEdit}
-                                        setPostToEdit={setPostToEdit}
-                                        key={scroll?._id}
-                                        scroll={scroll}
-                                    />
-                                ))}
+
+                            {data?.Posts?.get?.map((scroll) => (
+                                <Scroll
+                                    setOpen={() => setCreateScrollOpen(true)}
+                                    setUpdateOpen={setUpdateScrollOpen}
+                                    profileData={profileData?.Users?.profile}
+                                    setUpdateCommentOpen={setUpdateCommentOpen}
+                                    setOpenFlag={setCreateFlagOpen}
+                                    setFlaggedResource={setFlaggedResource}
+                                    setOpenReactions={setOpenReactions}
+                                    setResourceReactions={setResourceReactions}
+                                    setSharedResource={setSharedResource}
+                                    setCommentToEdit={setCommentToEdit}
+                                    setPostToEdit={setPostToEdit}
+                                    key={scroll?._id}
+                                    scroll={scroll}
+                                    setImagePreviewURL={(url) => {
+                                        setImagePreviewURL(url);
+                                    }}
+                                    setImagePreviewOpen={(open) => {
+                                        setImagePreviewOpen(open);
+                                    }}
+                                />
+                            ))}
                             {data?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">
@@ -225,16 +205,20 @@ export default function BnConnect() {
                             )}
                         </Grid>
                         <Grid item md={4} lg={3}>
-                            <Hidden smDown>
-                                <TrendingPostsCard
-                                    trending={trendingData?.Posts?.get}
-                                    loading={trendingLoading}
-                                />
-                                <SuggestedPeopleCard
-                                    profileData={profileData?.Users?.profile}
-                                    suggestedUsers={suggestedUsers}
-                                />
-                            </Hidden>
+                            {!smDown && (
+                                <>
+                                    <TrendingPostsCard
+                                        trending={trendingData?.Posts?.get}
+                                        loading={trendingLoading}
+                                    />
+                                    <SuggestedPeopleCard
+                                        profileData={
+                                            profileData?.Users?.profile
+                                        }
+                                        suggestedUsers={suggestedUsers}
+                                    />
+                                </>
+                            )}
                         </Grid>
                     </Grid>
                 </Container>

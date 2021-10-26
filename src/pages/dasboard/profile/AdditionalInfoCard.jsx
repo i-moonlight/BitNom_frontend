@@ -1,11 +1,11 @@
+import { AddRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
     Divider,
     MenuItem,
     Typography,
-} from '@material-ui/core';
-import { AddRounded } from '@material-ui/icons';
+} from '@mui/material';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
 import AditionalInfoForm from './forms/AditionalInfoForm';

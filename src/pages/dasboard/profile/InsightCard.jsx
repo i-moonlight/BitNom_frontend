@@ -6,8 +6,8 @@ import {
     Tab,
     Tabs,
     Typography,
-    withStyles,
-} from '@material-ui/core';
+} from '@mui/material';
+import { withStyles } from '@mui/styles';
 import React from 'react';
 
 export default function InsightCard({ profile }) {

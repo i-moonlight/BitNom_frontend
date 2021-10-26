@@ -1,4 +1,6 @@
 import { useMutation } from '@apollo/client';
+import { SearchRounded } from '@mui/icons-material';
+import { Alert } from '@mui/lab';
 import {
     Card,
     CardContent,
@@ -6,9 +8,7 @@ import {
     FormControlLabel,
     Grid,
     Typography,
-} from '@material-ui/core';
-import { SearchRounded } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
+} from '@mui/material';
 import React, { useState } from 'react';
 import Button from '../../../../components/Button';
 import Form from '../../../../components/Form';
@@ -94,10 +94,6 @@ export default function WorkForm({ onClose, updateData }) {
                               end_date,
                               description,
                           };
-
-                    console.log(Iwork);
-
-                    updateData ? console.log('upd') : console.log('add');
 
                     updateData
                         ? updateWork({

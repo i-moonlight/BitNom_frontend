@@ -34,45 +34,47 @@ export const status = [
 export const tabs = [
     {
         label: 'BN Connect',
-        link: '/dashboard',
+        link: '/connect',
     },
     {
-        label: 'BN Knowledge Center',
-        link: '/dashboard/knowledge_center',
-        menuItems: [
-            { label: 'Crypto-tinder' },
-            { label: 'Forum' },
-            { label: 'Cryptocurrency' },
-            { label: 'Bitcointalk' },
-        ],
+        label: 'Cryptocurrency',
+        link: '/knowledge_center/cryptocurrency',
+        // menuItems: [
+        //     { label: 'Crypto-tinder' },
+        //     { label: 'Forum' },
+        //     { label: 'Cryptocurrency' },
+        //     { label: 'Bitcointalk' },
+        // ],
     },
-    { label: 'Exchange' },
-    { label: 'Services' },
-    { label: 'Job Board' },
+    // { label: 'Exchange' },
+    // { label: 'Services' },
+    // { label: 'Job Board' },
+    { label: 'Events', link: '/events' },
+    { label: 'BN Chat', link: '/chat' },
     {
-        label: 'Product',
-        // link:'/dashboard/product',
-        menuItems: [
-            { label: 'Investor page', link: '/investors' },
-            { label: 'Crypto API' },
-            { label: 'Widgets and bots' },
-            { label: 'Mobile App' },
-        ],
+        label: 'Investors',
+        extLink: '/investors',
+        // menuItems: [
+        // { label: 'Investor page', link: '/investors' },
+        // { label: 'Crypto API' },
+        // { label: 'Widgets and bots' },
+        // { label: 'Mobile App' },
+        // ],
     },
-    {
-        label: 'More',
-        menuItems: [
-            { label: 'Help Center', link: '/faqs' },
-            { label: 'BN Community' },
-            { label: 'About' },
-            { label: 'BN for business' },
-            { label: 'BN Moderators' },
-        ],
-    },
+    // {
+    //     label: 'More',
+    //     menuItems: [
+    //         { label: 'Help Center', link: '/faqs' },
+    //         { label: 'BN Community' },
+    //         { label: 'About' },
+    //         { label: 'BN for business' },
+    //         { label: 'BN Moderators' },
+    //     ],
+    // },
 ];
 
 export const investorTabs = [
-    { label: 'Investor page' },
-    { label: 'Ecosystem' },
-    { label: 'Roadmap' },
+    { label: 'Investor page', hash: '#' },
+    { label: 'Ecosystem', hash: '#ecosystem' },
+    { label: 'Roadmap', hash: '#roadmap' },
 ];
