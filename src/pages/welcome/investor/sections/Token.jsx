@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { ChevronRightRounded } from '@mui/icons-material';
 import { Container, Grid, Typography } from '@mui/material';
 import React from 'react';
@@ -5,8 +6,12 @@ import supplyImg from '../../../../assets/investor/image_5.png';
 import Button from '../../../../components/Button';
 
 export default function Token() {
+    const theme = useTheme();
+
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-5">
                     <Grid container spacing={2}>
@@ -19,8 +24,9 @@ export default function Token() {
                                 BN Token
                             </Typography>
                             <Typography
+                                color="textPrimary"
                                 gutterBottom
-                                className="lead text-white"
+                                className="lead "
                             >
                                 BN token is a utility, Ethereum ERC20- token,
                                 specially designed for the BitNorm ecosystem.
@@ -32,8 +38,9 @@ export default function Token() {
                                 continues to have the largest market cap.
                             </Typography>
                             <Typography
+                                color="textPrimary"
                                 gutterBottom
-                                className="lead text-white"
+                                className="lead "
                             >
                                 ERC20 allows for seamless interaction with other
                                 smart contracts and decentralized applications

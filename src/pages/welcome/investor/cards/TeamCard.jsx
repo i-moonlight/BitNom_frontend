@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { CloseRounded, LinkedIn, MailRounded } from '@mui/icons-material';
 import {
     Card,
@@ -11,11 +12,17 @@ import React, { useState } from 'react';
 
 export default function TeamCard({ member, desc }) {
     const [descOpen, setDescOpen] = useState(false);
+    const theme = useTheme();
 
     return (
         <>
             <Grid item xs={12} sm={6} md={4}>
-                <Card elevation={0} style={{ backgroundColor: '#1E2126' }}>
+                <Card
+                    elevation={0}
+                    style={{
+                        backgroundColor: theme.palette.background.investorCards,
+                    }}
+                >
                     <CardContent>
                         <div className="d-flex">
                             {member?.image && (

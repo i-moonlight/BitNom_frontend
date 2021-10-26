@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { ExpandMore } from '@mui/icons-material';
 import {
     Accordion,
@@ -17,6 +18,7 @@ import EcosystemCard from '../cards/EcosystemCard';
 export default function Ecosystem() {
     const [expanded2, setExpanded2] = useState(false);
     const [query, setQuery] = useState(1);
+    const theme = useTheme();
 
     const splittedEcosystem = [];
 
@@ -51,7 +53,10 @@ export default function Ecosystem() {
     }, [xs, sm, md, lg]);
 
     return (
-        <section id="ecosystem" style={{ backgroundColor: '#0C0F19' }}>
+        <section
+            id="ecosystem"
+            style={{ backgroundColor: theme.palette.background.investorShade }}
+        >
             <Container>
                 <div className="py-5">
                     <Grid container spacing={3}>

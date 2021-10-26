@@ -62,11 +62,11 @@ export default function QuaterCard({
     );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     quaterCard: {
         height: '100%',
         borderRadius: '0.75em',
-        backgroundColor: '#1E2126',
+        backgroundColor: theme.palette.background.investorCardsAlt,
         cursor: 'pointer',
         '&:hover': {
             backgroundImage: 'linear-gradient(#F36E6C,#006097)',
@@ -80,7 +80,7 @@ const useStyles = makeStyles(() => ({
         cursor: 'pointer',
         backgroundColor: 'transparent',
         '&:hover': {
-            backgroundColor: '#0C0F19',
+            backgroundColor: theme.palette.background.investorShade,
         },
     },
 }));

@@ -27,11 +27,14 @@ export default function EcosystemCard({ index, title, text }) {
     );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     ecosystemCard: {
         height: '100%',
         borderRadius: '0.75em',
-        backgroundImage: 'linear-gradient(#707070,#191c22)',
+        backgroundImage:
+            // 'linear-gradient(#707070,#191c22)'
+            theme.palette.background.investorDark,
+
         cursor: 'pointer',
         '&:hover': {
             backgroundImage: 'linear-gradient(#F36E6C,#006097)',
@@ -44,7 +47,7 @@ const useStyles = makeStyles(() => ({
         margin: 0,
         backgroundColor: 'transparent',
         '&:hover': {
-            backgroundColor: '#0C0F19',
+            backgroundColor: theme.palette.background.investorShade,
         },
     },
 }));

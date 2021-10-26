@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { ExpandMore, Help } from '@mui/icons-material';
 import {
     Accordion,
@@ -15,17 +16,26 @@ export default function HealthCheck() {
     const [expanded, setExpanded] = useState(healthCheck[0].title);
 
     const classes = useStyles();
+    const theme = useTheme();
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
     return (
-        <section className="py-5" style={{ backgroundColor: '#0C0F19' }}>
+        <section
+            className="py-5"
+            style={{ backgroundColor: theme.palette.background.investorShade }}
+        >
             <Container>
-                <Typography className="my-2 mx-2 fw-bold text-white">
+                <Typography color="textPrimary" className="my-2 mx-2 fw-bold ">
                     Investor Health Check
                 </Typography>
-                <Card elevation={0} style={{ backgroundColor: '#0C0F19' }}>
+                <Card
+                    elevation={0}
+                    style={{
+                        backgroundColor: '#efefef',
+                    }}
+                >
                     {healthCheck.map(({ title, text }) => (
                         <Accordion
                             key={title}
@@ -66,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     accordion: {
-        backgroundColor: '#fff',
+        backgroundColor: '#efefef',
         color: '#000',
     },
 }));

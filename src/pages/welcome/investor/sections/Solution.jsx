@@ -1,14 +1,25 @@
+import { useTheme } from '@emotion/react';
 import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 
 export default function Solution() {
+    const theme = useTheme();
+
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-4">
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <Card style={{ backgroundColor: '#11141C' }}>
+                            <Card
+                                elevation={0}
+                                style={{
+                                    backgroundColor:
+                                        theme.palette.background.investorCards,
+                                }}
+                            >
                                 <CardContent>
                                     <Typography
                                         gutterBottom
@@ -38,7 +49,7 @@ export default function Solution() {
                             >
                                 Solution
                             </Typography>
-                            <Typography className="lead text-white">
+                            <Typography color="textPrimary" className="lead ">
                                 BITNORM solves this problem by combining all of
                                 this much-needed functionality and data with one
                                 simple use ecosystem platform. BITNORM creates

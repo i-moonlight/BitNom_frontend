@@ -1,36 +1,36 @@
-import { AppBar, Avatar, Container, Tab, Tabs } from '@mui/material';
+import { Brightness4Rounded, Brightness7Rounded } from '@material-ui/icons';
+import {
+    AppBar,
+    Avatar,
+    Container,
+    Tab,
+    Tabs,
+    IconButton,
+    useTheme,
+} from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
-// import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
+import { changeTheme } from '../../../store/actions/themeActions';
 import Button from '../../Button';
 import { investorTabs } from '../../utilities/data.components';
 
 export default function NavBarInvestor() {
-    const history = useHistory();
-    const palette = useSelector((st) => st.theme.palette);
-
     const [tabValue, setTabValue] = useState(0);
 
-    // switch (val) {
-    //     case 1:
-    //         window.location.hash = '#ecosystem';
-    //         break;
-    //     case 2:
-    //         window.location.hash = '#roadmap';
-    //         break;
-    //     default:
-    //         window.location.hash = '#';
-    // }
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const palette = useSelector((st) => st.theme.palette);
+    const theme = useTheme();
 
     return (
         <AppBar
             position="static"
             style={{
-                background: '#000',
+                background: theme.palette.mode == 'dark' ? '#000' : '#fff',
                 paddingTop: 16,
             }}
             elevation={0}
@@ -70,6 +70,31 @@ export default function NavBarInvestor() {
                     </Tabs>
 
                     <div className="ms-auto">
+                        <IconButton
+                            size="small"
+                            className="m-1 p-1 me-2"
+                            onClick={() => {
+                                palette == 'light'
+                                    ? dispatch(changeTheme('dark'))
+                                    : dispatch(changeTheme('light'));
+                            }}
+                        >
+                            {palette == 'light' ? (
+                                <Brightness4Rounded
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                    }}
+                                />
+                            ) : (
+                                <Brightness7Rounded
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                    }}
+                                />
+                            )}
+                        </IconButton>
                         <Button
                             textCase
                             onClick={() => history.push('/support')}

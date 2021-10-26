@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Card,
     Container,
@@ -11,9 +12,12 @@ import token2Img from '../../../../assets/investor/token2.png';
 
 export default function Symbol() {
     const smDown = useMediaQuery('(max-width:959px)');
+    const theme = useTheme();
 
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-3">
                     <Card
