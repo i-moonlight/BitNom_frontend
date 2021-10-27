@@ -383,7 +383,11 @@ export const MUTATION_CREATE_FLAG = gql`
 const postSubFields = `
  _id
         images
-        video
+        video {
+          _id
+          path
+          thumbnail
+        }
         author {
           _id
           profile_pic

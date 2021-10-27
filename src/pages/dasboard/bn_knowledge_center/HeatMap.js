@@ -12,8 +12,8 @@ export default function HeatMap() {
     return (
         <>
             <div>
-                <section className={'d-flex justify-content-between m-3'}>
-                    <div>
+                <section className={'d-lg-flex d-md-flex d-sm-block  justify-content-between m-3'}>
+                    <div className={'d-lg-flex d-md-flex d-sm-block '}>
                         <strong>
                             Performance:{' '}
                             <span className={'text-secondary'}>1 Day</span>{' '}

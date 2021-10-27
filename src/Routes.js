@@ -139,7 +139,7 @@ export default function Routes({ apolloClient }) {
                         <Route
                             exact
                             component={Connections}
-                            path="/profile/connections"
+                            path="/profile/connections/:active_tab?"
                         />
                         <Route
                             exact

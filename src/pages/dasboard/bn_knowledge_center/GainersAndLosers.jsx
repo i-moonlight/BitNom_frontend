@@ -109,7 +109,7 @@ const rows = [
 export default function GainersAndLosers() {
     return (
         <div>
-            <div className="d-flex justify-content-evenly">
+            <div className="d-lg-flex d-md-flex d-sm-block justify-content-evenly">
                 <div className="mb-5">
                     <h4 className="fw-bold m-3">Top Gainers</h4>
                     <p>24h Volume is above USD $50,000</p>
