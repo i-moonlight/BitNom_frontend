@@ -1,21 +1,18 @@
+import { useQuery } from '@apollo/client';
 import { ArrowBackRounded, SettingsRounded } from '@mui/icons-material';
 import {
     Avatar,
-    Paper,
-    useTheme,
-    InputBase,
     Badge,
     CardHeader,
     IconButton,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
-import { Search, Settings } from '@material-ui/icons';
-import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
-import { useQuery } from '@apollo/client';
-import { SEARCH_MESSAGES } from '../../graphql/queries';
+    useTheme,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { SEARCH_MESSAGES } from '../../graphql/queries';
+import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
 const chatSettingsId = 'chat-settings-menu';
@@ -63,7 +60,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 type="submit"
                                 className={classes.iconButtonStatus}
                                 aria-label="search"
-                                onClick={() => setSearchOpen(true)}
+                                // onClick={() => setSearchOpen(true)}
                                 onClick={() => {
                                     onExitChatMobile();
                                 }}
