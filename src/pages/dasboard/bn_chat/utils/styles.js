@@ -116,14 +116,16 @@ export const useStyles = makeStyles((theme) => ({
         maxWidth: '480px',
         minWidth: '120px',
         borderRadius: '20px 20px 20px 0px',
-        backgroundColor: theme.palette.background.chatFrom,
+        backgroundColor: '#bde0ff',
+        // backgroundColor: theme.palette.background.chatFrom,
         marginLeft: theme.spacing(1),
     },
     outgoing: {
         maxWidth: '480px',
         minWidth: '120px',
         borderRadius: '20px 20px 0px 20px',
-        backgroundColor: theme.palette.background.chatTo,
+        backgroundColor: '#f0f8ff',
+        // backgroundColor: theme.palette.background.chatTo,
         marginRight: theme.spacing(1),
     },
     messageLeft: {
@@ -152,6 +154,7 @@ export const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         alignContent: 'end',
         margin: theme.spacing(2),
+        fontSize: '11px',
     },
     reply: {
         display: 'flex',
@@ -161,5 +164,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     author: {
         fontSize: '12px',
+    },
+    activeChat: {
+        backgroundColor: '#F0F0F0',
     },
 }));

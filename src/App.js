@@ -31,6 +31,10 @@ export default function App() {
             search: '#242526',
             chatFrom: '#163C53',
             chatTo: '#333436',
+            investorDark: '#000',
+            investorShade: '#0C0F19',
+            investorCards: '#11141C',
+            investorCardsAlt: '#1E2126',
         },
     };
 
@@ -51,6 +55,10 @@ export default function App() {
             default: '#F3F2EF',
             chatFrom: '#BDE0FF',
             chatTo: '#F0F8FF',
+            investorDark: '#fff',
+            investorShade: '#F2F5FA',
+            investorCards: '#efefef',
+            investorCardsAlt: '#efefef',
         },
     };
 

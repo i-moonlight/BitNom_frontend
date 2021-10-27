@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Card,
     CardContent,
@@ -10,15 +11,24 @@ import React from 'react';
 import igImg from '../../../../assets/investor/ig.png';
 
 export default function Concept() {
+    const theme = useTheme();
     const smDown = useMediaQuery('(max-width:959px)');
 
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-4">
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Card style={{ backgroundColor: '#11141C' }}>
+                            <Card
+                                elevation={0}
+                                style={{
+                                    backgroundColor:
+                                        theme.palette.background.investorCards,
+                                }}
+                            >
                                 <CardContent>
                                     <Typography
                                         className="text-uppercase"
@@ -66,8 +76,11 @@ export default function Concept() {
                                         users.
                                     </Typography>
                                     <Card
+                                        elevation={0}
                                         style={{
-                                            backgroundColor: '#0C0F19',
+                                            backgroundColor:
+                                                theme.palette.background
+                                                    .investorShade,
                                             marginTop: 20,
                                             borderRadius: 20,
                                         }}

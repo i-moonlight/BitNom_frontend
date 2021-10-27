@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { DoneAll, FileCopy } from '@mui/icons-material';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 import React, { useState } from 'react';
@@ -6,10 +7,18 @@ import Button from '../../../../components/Button';
 
 export default function DonateCard() {
     const [justCopied, setJustCopied] = useState(false);
+    const theme = useTheme();
 
     return (
         <div className=" h-100 w-100 p-5 pt-5 text-center">
-            <Card>
+            <Card
+                elevation={0}
+                style={{
+                    background:
+                        theme.palette.mode == 'light' &&
+                        theme.palette.background.investorCards,
+                }}
+            >
                 <CardContent>
                     <Typography variant="h6" className="mb-2">
                         Donate Crypto

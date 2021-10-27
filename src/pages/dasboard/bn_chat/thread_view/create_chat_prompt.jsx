@@ -90,8 +90,9 @@ export default function CreateChatPrompt({
             open={openChatInvite}
         >
             <Grid container>
-                <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
-                <Grid item lg={6} md={8} sm={10} xs={10}>
+                {' '}
+                <Grid item lg={5} md={2} sm={1} xs={1}></Grid>
+                <Grid item lg={3} md={8} sm={10} xs={10}>
                     <Card>
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body1">
@@ -130,7 +131,7 @@ export default function CreateChatPrompt({
                                     className={classes.input}
                                     placeholder="Find Users"
                                     inputProps={{
-                                        'aria-label': 'search messages',
+                                        'aria-label': 'search users',
                                     }}
                                     name="searchString"
                                     type="text"

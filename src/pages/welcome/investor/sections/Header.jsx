@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -6,11 +7,14 @@ import DonateCard from '../cards/DonateCard';
 
 export default function Header() {
     const history = useHistory();
+    const theme = useTheme();
     const smDown = useMediaQuery('(max-width:959px)');
     const mw1160 = useMediaQuery('(min-width:1196px)');
 
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={10} md={6}>
