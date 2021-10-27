@@ -1,11 +1,11 @@
-import { Brightness4Rounded, Brightness7Rounded } from '@material-ui/icons';
+import { Brightness4Rounded, Brightness7Rounded } from '@mui/icons-material';
 import {
     AppBar,
     Avatar,
     Container,
+    IconButton,
     Tab,
     Tabs,
-    IconButton,
     useTheme,
 } from '@mui/material';
 import { withStyles } from '@mui/styles';

@@ -8,7 +8,7 @@ import {
     VideoLibrary,
 } from '@mui/icons-material';
 import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useState } from 'react';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';

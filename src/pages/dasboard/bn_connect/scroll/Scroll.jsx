@@ -172,7 +172,6 @@ export default function Scroll({
         setPreviewURL();
     };
 
-    console.log(comment_image, 'HU');
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
