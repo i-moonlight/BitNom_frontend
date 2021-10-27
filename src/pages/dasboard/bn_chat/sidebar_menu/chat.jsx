@@ -8,7 +8,7 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import { AttachFile, VideoLibrary, Image, Gif } from '@material-ui/icons';
+import { AttachFile, VideoLibrary, Image, Gif } from '@mui/icons-material';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
