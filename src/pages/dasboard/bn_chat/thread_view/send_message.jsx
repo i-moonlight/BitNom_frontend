@@ -9,10 +9,12 @@ import {
     VideoLibrary,
 } from '@mui/icons-material';
 import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import React, { useState } from 'react';
+import { DropzoneArea } from 'react-mui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
-import { useStyles } from '../utils/styles';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
+import { useStyles } from '../utils/styles';
+
 const emojiPickerId = 'emoji-picker-popover';
 
 export default function SendMessage({ chat }) {

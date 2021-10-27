@@ -6,7 +6,7 @@ import {
     Paper,
     Typography,
     useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Create, MoreVert, Search } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { SEARCH_CHATS } from '../../graphql/queries';

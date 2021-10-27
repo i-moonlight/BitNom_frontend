@@ -7,7 +7,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { AttachFile, VideoLibrary, Image, Gif } from '@material-ui/icons';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';

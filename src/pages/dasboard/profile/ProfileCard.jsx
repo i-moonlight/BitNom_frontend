@@ -10,7 +10,7 @@ import {
     TimelineRounded,
 } from '@mui/icons-material';
 import { Card, CardContent, Snackbar, Typography } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';

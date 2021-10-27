@@ -169,7 +169,6 @@ function PostView({ match }) {
             variables: { _id: match?.params?.id },
         }
     );
-
     const {
         //  loading,
         data: profileData,
@@ -516,13 +515,14 @@ function PostView({ match }) {
                                             spacing={2}
                                             className="mb-2"
                                         >
-                                            {postData?.Posts?.getById
-                                                ?.video && (
+                                            {postData?.Posts?.getById?.video
+                                                ?.path && (
                                                 <Grid item xs={12}>
                                                     <CardMedia
                                                         className="br-2"
                                                         component="video"
-                                                        src={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video}`}
+                                                        poster={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.thumbnail}`}
+                                                        src={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.path}`}
                                                         controls
                                                     />
                                                 </Grid>

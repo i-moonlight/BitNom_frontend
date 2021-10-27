@@ -271,7 +271,7 @@ export default function CreatePost({
                                             ? ['image/jpeg', 'image/png']
                                             : ['video/*']
                                     }
-                                    maxFileSize={openImage ? 5000000 : 10000000}
+                                    maxFileSize={openImage ? 2500000 : 4500000}
                                     filesLimit={openImage ? 4 : 1}
                                     showAlerts={['error']}
                                     showPreviews={false}

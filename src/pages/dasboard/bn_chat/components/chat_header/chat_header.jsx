@@ -5,9 +5,6 @@ import {
 } from '@mui/icons-material';
 import {
     Avatar,
-    Paper,
-    useTheme,
-    InputBase,
     Badge,
     CardHeader,
     IconButton,
@@ -21,6 +18,8 @@ import { useQuery } from '@apollo/client';
 import { SEARCH_MESSAGES } from '../../graphql/queries';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { SEARCH_MESSAGES } from '../../graphql/queries';
+import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
 const chatSettingsId = 'chat-settings-menu';
@@ -68,6 +67,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 type="submit"
                                 className={classes.iconButtonStatus}
                                 aria-label="search"
+                                // onClick={() => setSearchOpen(true)}
                                 onClick={() => {
                                     onExitChatMobile();
                                 }}

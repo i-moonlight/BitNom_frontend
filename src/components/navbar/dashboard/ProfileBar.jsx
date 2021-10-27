@@ -197,7 +197,10 @@ export default function ProfileBar({
                                 variant="body2"
                                 style={{ marginRight: 4 }}
                             >
-                                {profile?.displayName || user?.displayName}
+                                {profile?.displayName ||
+                                    user?.displayName ||
+                                    profile?._id ||
+                                    user?.id}
                             </Typography>
                             <ChevronRight
                                 style={{
