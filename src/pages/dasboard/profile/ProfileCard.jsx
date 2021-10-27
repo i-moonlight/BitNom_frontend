@@ -10,7 +10,7 @@ import {
     TimelineRounded,
 } from '@mui/icons-material';
 import { Card, CardContent, Snackbar, Typography } from '@mui/material';
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../../../components/Button';
@@ -20,8 +20,8 @@ import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
 
 export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
-    const [coverImage, setCoverImage] = useState();
-    const [profileImage, setProfileImage] = useState();
+    const [coverImage, setCoverImage] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
 
     const onClose = () => {
         setShowForm(false);
@@ -30,6 +30,27 @@ export default function ProfileCard({ profile, profileView }) {
     const [updateUser] = useMutation(MUTATION_UPDATE_PROFILE, {
         context: { clientName: 'users' },
     });
+
+    const handleUpdateProfilePic = async (pic) => {
+        console.log(pic, 'picImage');
+        if (!pic) return;
+        await updateUser({
+            variables: {
+                data: {
+                    profile_pic: pic,
+                    cover_pic: coverImage,
+                },
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: {
+                        clientName: 'users',
+                    },
+                },
+            ],
+        });
+    };
 
     return (
         <div>
@@ -59,8 +80,8 @@ export default function ProfileCard({ profile, profileView }) {
                         clearOnUnmount
                         Icon={CameraAltRounded}
                         dropzoneText={' '}
-                        acceptedFiles={['image/*']}
-                        maxFileSize={5000000}
+                        acceptedFiles={['image/jpeg', 'image/png']}
+                        maxFileSize={2500000}
                         filesLimit={1}
                         showAlerts={['error']}
                         showPreviews={false}
@@ -70,9 +91,9 @@ export default function ProfileCard({ profile, profileView }) {
                         }}
                         onChange={(files) => {
                             setCoverImage(files[0]);
-
+                            if (!files[0]) return;
                             const IUpdateUser = {
-                                cover_pic: files[0],
+                                cover_pic: coverImage,
                             };
 
                             updateUser({
@@ -124,6 +145,8 @@ export default function ProfileCard({ profile, profileView }) {
                                     clearOnUnmount
                                     onChange={(files) => {
                                         setProfileImage(files[0]);
+                                        console.log(files[0], 'profileImage');
+                                        handleUpdateProfilePic(files[0]);
                                     }}
                                     Icon={CameraAltRounded}
                                     dropzoneText={false}

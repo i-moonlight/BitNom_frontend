@@ -150,7 +150,6 @@ export default function Scroll({
         variables: { data: { scroll_id: scroll?._id } },
     });
 
-    console.log(scroll, 'SCROLL');
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {
@@ -173,7 +172,6 @@ export default function Scroll({
         setPreviewURL();
     };
 
-    console.log(comment_image, 'HU');
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,

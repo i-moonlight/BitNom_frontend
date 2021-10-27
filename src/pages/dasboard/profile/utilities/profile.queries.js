@@ -153,16 +153,6 @@ export const MUTATION_REMOVE_LANGUAGE = gql`
     }
 `;
 
-export const MUTATION_UPDATE_PROFILE = gql`
-    mutation ($data: IUpdateUser!) {
-        Users {
-            update(data: $data) {
-                _id
-            }
-        }
-    }
-`;
-
 const userSubFields = `
   _id
   # reputationPoints
@@ -274,6 +264,16 @@ email {
     address
     verified
 }`;
+
+export const MUTATION_UPDATE_PROFILE = gql`
+    mutation ($data: IUpdateUser!) {
+        Users {
+            update(data: $data) {
+                ${userSubFields}
+            }
+        }
+    }
+`;
 
 export const QUERY_FETCH_PROFILE = gql`
   query {
