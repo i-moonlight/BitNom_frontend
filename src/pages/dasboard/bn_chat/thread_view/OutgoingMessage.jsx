@@ -7,7 +7,7 @@ import {
     IconButton,
     Paper,
     Typography,
-} from '@mui/material';
+} from '@material-ui/core';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';

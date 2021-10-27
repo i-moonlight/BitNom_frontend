@@ -43,6 +43,7 @@ export default function ProfileBar({
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
+    const unreadCount = state.chats.unreadCount;
     const userInitials = getUserInitials(
         profile?.displayName || user?.displayName
     );
@@ -162,7 +163,10 @@ export default function ProfileBar({
                                 history.push('/chat');
                             }}
                         >
-                            <ForumRounded />
+                            {' '}
+                            <Badge color="primary" badgeContent={unreadCount}>
+                                <ForumRounded />
+                            </Badge>
                         </IconButton>
                         <Button
                             textCase
