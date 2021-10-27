@@ -9,7 +9,6 @@ import {
     VideoLibrary,
 } from '@mui/icons-material';
 import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
-import React, { useState } from 'react';
 import { DropzoneArea } from 'react-mui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';

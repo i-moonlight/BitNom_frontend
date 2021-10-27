@@ -6,6 +6,9 @@ import {
 import {
     Avatar,
     Badge,
+    Paper,
+    InputBase,
+    useTheme,
     CardHeader,
     IconButton,
     Typography,
@@ -15,11 +18,9 @@ import {
 import { Search, Settings } from '@material-ui/icons';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useQuery } from '@apollo/client';
-import { SEARCH_MESSAGES } from '../../graphql/queries';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import { SEARCH_MESSAGES } from '../../graphql/queries';
-import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
 const chatSettingsId = 'chat-settings-menu';
