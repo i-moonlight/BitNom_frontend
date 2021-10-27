@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
     AttachFile,
@@ -10,7 +11,8 @@ import {
 import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
 import { DropzoneArea } from 'material-ui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
-
+import { useStyles } from '../utils/styles';
+import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
 const emojiPickerId = 'emoji-picker-popover';
 
 export default function SendMessage({ chat }) {
@@ -81,184 +83,188 @@ export default function SendMessage({ chat }) {
     console.log('TEXT', text);
     return (
         <>
+            {open ? (
+                <DropzoneArea
+                    clearOnUnmount
+                    onChange={(files) => {
+                        openFile
+                            ? setMessageDoc(files)
+                            : openImage
+                            ? setMessageImages(files)
+                            : openVideo
+                            ? setMessageVideo(files[0])
+                            : openGif
+                            ? setMessageGif(files[0])
+                            : null;
+                    }}
+                    dropzoneText={
+                        openFile
+                            ? 'Drag n drop a document here or click'
+                            : openImage
+                            ? 'Drag n drop images here or click'
+                            : openVideo
+                            ? 'Drag n drop a video here or click'
+                            : openGif
+                            ? 'Drag n drop Gif here or click'
+                            : ''
+                    }
+                    acceptedFiles={
+                        openFile
+                            ? [
+                                  '.doc',
+                                  '.pdf',
+                                  '.docx',
+                                  '.txt',
+                                  '.ppt',
+                                  '.pptx',
+                                  '.xls',
+                                  '.xlsx',
+                              ]
+                            : openImage
+                            ? ['image/*']
+                            : openVideo
+                            ? ['video/*']
+                            : openGif
+                            ? ['.gif']
+                            : null
+                    }
+                    maxFileSize={
+                        openFile
+                            ? 5000000
+                            : openImage
+                            ? 5000000
+                            : openVideo
+                            ? 10000000
+                            : openGif
+                            ? 1000000
+                            : null
+                    }
+                    filesLimit={
+                        openFile
+                            ? 5
+                            : openImage
+                            ? 5
+                            : openVideo
+                            ? 1
+                            : openGif
+                            ? 1
+                            : null
+                    }
+                    showAlerts={['error']}
+                    showPreviews={false}
+                    showPreviewsInDropzone
+                    previewGridProps={{
+                        container: { spacing: 1, direction: 'row' },
+                    }}
+                />
+            ) : null}
             <div className={classes.inputRoot}>
                 <Divider className={classes.divider} />{' '}
-                {open ? (
-                    <DropzoneArea
-                        clearOnUnmount
-                        onChange={(files) => {
-                            openFile
-                                ? setMessageDoc(files)
-                                : openImage
-                                ? setMessageImages(files)
-                                : openVideo
-                                ? setMessageVideo(files[0])
-                                : openGif
-                                ? setMessageGif(files[0])
-                                : null;
-                        }}
-                        dropzoneText={
-                            openFile
-                                ? 'Drag n drop a document here or click'
-                                : openImage
-                                ? 'Drag n drop images here or click'
-                                : openVideo
-                                ? 'Drag n drop a video here or click'
-                                : openGif
-                                ? 'Drag n drop Gif here or click'
-                                : ''
-                        }
-                        acceptedFiles={
-                            openFile
-                                ? [
-                                      '.doc',
-                                      '.pdf',
-                                      '.docx',
-                                      '.txt',
-                                      '.ppt',
-                                      '.pptx',
-                                      '.xls',
-                                      '.xlsx',
-                                  ]
-                                : openImage
-                                ? ['image/*']
-                                : openVideo
-                                ? ['video/*']
-                                : openGif
-                                ? ['.gif']
-                                : null
-                        }
-                        maxFileSize={
-                            openFile
-                                ? 5000000
-                                : openImage
-                                ? 5000000
-                                : openVideo
-                                ? 10000000
-                                : openGif
-                                ? 1000000
-                                : null
-                        }
-                        filesLimit={
-                            openFile
-                                ? 5
-                                : openImage
-                                ? 5
-                                : openVideo
-                                ? 1
-                                : openGif
-                                ? 1
-                                : null
-                        }
-                        showAlerts={['error']}
-                        showPreviews={false}
-                        showPreviewsInDropzone
-                        previewGridProps={{
-                            container: { spacing: 1, direction: 'row' },
-                        }}
-                    />
-                ) : null}
-                <div className={classes.inputTab}>
-                    {' '}
-                    <IconButton
-                        size="small"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="search"
-                        onClick={() => {
-                            setOpen(true);
-                            setFileOpen(true);
-                            setVideoOpen(false);
-                            setImageOpen(false);
-                            setGifOpen(false);
-                        }}
-                    >
-                        <AttachFile />
-                    </IconButton>
-                    <IconButton
-                        size="small"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="search"
-                        onClick={() => {
-                            setOpen(true);
-                            setImageOpen(true);
-                            setVideoOpen(false);
-                            setFileOpen(false);
-                            setGifOpen(false);
-                        }}
-                    >
-                        <Image />
-                    </IconButton>
-                    <IconButton
-                        size="small"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="search"
-                        onClick={() => {
-                            setOpen(true);
-                            setVideoOpen(true);
-                            setImageOpen(false);
-                            setFileOpen(false);
-                            setGifOpen(false);
-                        }}
-                    >
-                        <VideoLibrary />
-                    </IconButton>
-                    <IconButton
-                        size="small"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="search"
-                        onClick={() => {
-                            setOpen(true);
-                            setGifOpen(true);
-                            setVideoOpen(false);
-                            setImageOpen(false);
-                            setFileOpen(false);
-                        }}
-                    >
-                        <Gif />
-                    </IconButton>
-                    <Paper
-                        variant={
-                            theme.palette.type == 'light'
-                                ? 'outlined'
-                                : 'elevation'
-                        }
-                        elevation={0}
-                        component="form"
-                        className={classes.sendMessage}
-                    >
+                <div className="d-flex">
+                    <div className={classes.inputTab} style={{ width: '27%' }}>
                         {' '}
                         <IconButton
                             size="small"
                             className={'m-1 p-1' + classes.iconButton}
-                            aria-label="pick emoji"
-                            aria-controls={emojiPickerId}
-                            aria-haspopup="true"
-                            onClick={(e) => {
-                                handleEmojiPickerOpen(e);
+                            aria-label="search"
+                            onClick={() => {
+                                setOpen(true);
+                                setFileOpen(true);
+                                setVideoOpen(false);
+                                setImageOpen(false);
+                                setGifOpen(false);
                             }}
                         >
-                            <EmojiEmotions />
+                            <AttachFile />
                         </IconButton>
-                        <InputBase
-                            name="text"
-                            type="text"
-                            value={text}
-                            className={classes.inputField}
-                            placeholder="Type a message"
-                            inputProps={{ 'aria-label': 'Send' }}
-                            onChange={handleChange}
-                            multiline
-                            maxRows={5}
-                        />
                         <IconButton
                             size="small"
                             className={'m-1 p-1' + classes.iconButton}
-                            aria-label="send"
-                            onClick={handleSendMessage}
+                            aria-label="search"
+                            onClick={() => {
+                                setOpen(true);
+                                setImageOpen(true);
+                                setVideoOpen(false);
+                                setFileOpen(false);
+                                setGifOpen(false);
+                            }}
                         >
-                            <SendOutlined />
+                            <Image />
                         </IconButton>
-                    </Paper>
+                        <IconButton
+                            size="small"
+                            className={'m-1 p-1' + classes.iconButton}
+                            aria-label="search"
+                            onClick={() => {
+                                setOpen(true);
+                                setVideoOpen(true);
+                                setImageOpen(false);
+                                setFileOpen(false);
+                                setGifOpen(false);
+                            }}
+                        >
+                            <VideoLibrary />
+                        </IconButton>
+                        <IconButton
+                            size="small"
+                            className={'m-1 p-1' + classes.iconButton}
+                            aria-label="search"
+                            onClick={() => {
+                                setOpen(true);
+                                setGifOpen(true);
+                                setVideoOpen(false);
+                                setImageOpen(false);
+                                setFileOpen(false);
+                            }}
+                        >
+                            <Gif />
+                        </IconButton>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                        <Paper
+                            variant={
+                                theme.palette.type == 'light'
+                                    ? 'outlined'
+                                    : 'elevation'
+                            }
+                            elevation={0}
+                            component="form"
+                            className={classes.sendMessage}
+                        >
+                            {' '}
+                            <IconButton
+                                size="small"
+                                className={'m-1 p-1' + classes.iconButton}
+                                aria-label="pick emoji"
+                                aria-controls={emojiPickerId}
+                                aria-haspopup="true"
+                                onClick={(e) => {
+                                    handleEmojiPickerOpen(e);
+                                }}
+                            >
+                                <EmojiEmotions />
+                            </IconButton>
+                            <InputBase
+                                name="text"
+                                type="text"
+                                value={text}
+                                className={classes.inputField}
+                                placeholder="Type a message"
+                                inputProps={{ 'aria-label': 'Send' }}
+                                onChange={handleChange}
+                                multiline
+                                maxRows={5}
+                            />
+                            <IconButton
+                                size="small"
+                                className={'m-1 p-1' + classes.iconButton}
+                                aria-label="send"
+                                onClick={handleSendMessage}
+                            >
+                                <SendOutlined />
+                            </IconButton>
+                        </Paper>
+                    </div>
                 </div>
             </div>
             <EmojiPickerPopover

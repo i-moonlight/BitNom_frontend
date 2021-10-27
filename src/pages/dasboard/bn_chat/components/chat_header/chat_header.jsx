@@ -1,4 +1,8 @@
-import { ArrowBackRounded, SettingsRounded } from '@mui/icons-material';
+import {
+    ArrowBackRounded,
+    SettingsRounded,
+    SearchRounded,
+} from '@mui/icons-material';
 import {
     Avatar,
     Paper,
@@ -9,6 +13,7 @@ import {
     IconButton,
     Typography,
     useMediaQuery,
+    Divider,
 } from '@material-ui/core';
 import { Search, Settings } from '@material-ui/icons';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
@@ -63,7 +68,6 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 type="submit"
                                 className={classes.iconButtonStatus}
                                 aria-label="search"
-                                onClick={() => setSearchOpen(true)}
                                 onClick={() => {
                                     onExitChatMobile();
                                 }}
@@ -124,11 +128,62 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                     </Typography>
                 }
                 subheader={
-                    <div className="d-flex align-items-center">
-                        <Typography variant="body2">Software Dev</Typography>
+                    <div>
+                        <div className="d-flex ">
+                            <div className="d-flex align-items-center">
+                                <Typography variant="body1">
+                                    Software Dev
+                                </Typography>
+                            </div>
+                            <Divider
+                                className={classes.dividerStatus}
+                                orientation="vertical"
+                                flexItem
+                            />
+                            <div className="d-flex align-items-center">
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="chat settings"
+                                    aria-haspopup="true"
+                                    aria-controls={chatSettingsId}
+                                    onClick={() => setSearchOpen(true)}
+                                >
+                                    <SearchRounded />
+                                </IconButton>
+                            </div>{' '}
+                        </div>
                     </div>
                 }
             />
+            <div>
+                {' '}
+                {searchOpen ? (
+                    <Paper
+                        variant={
+                            theme.palette.type == 'light'
+                                ? 'outlined'
+                                : 'elevation'
+                        }
+                        elevation={0}
+                        component="form"
+                        className={classes.paperSearch}
+                    >
+                        <InputBase
+                            className={classes.input}
+                            placeholder="Search Messages"
+                            inputProps={{
+                                'aria-label': 'search chats',
+                            }}
+                            name="searchString"
+                            value={searchTerm}
+                            onChange={handleSearchMessage}
+                        />
+                    </Paper>
+                ) : (
+                    ''
+                )}
+            </div>
             <ChatSettingPopover
                 chatSettingsAnchorEl={chatSettingsAnchorEl}
                 chatSettingsId={chatSettingsId}

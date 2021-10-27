@@ -103,27 +103,16 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 <ListItemText
                     primary={
                         <Typography color="textPrimary">
-                            {chat?.otherUser?.info?.displayName}
+                            {chat?.otherUser?.info?.displayName}{' '}
+                            <Badge
+                                badgeContent={chat?.currentUser?.unreadCount}
+                                color="primary"
+                                style={{ marginLeft: '120px' }}
+                            />
                         </Typography>
                     }
                     secondary={
                         <React.Fragment>
-                            <Typography
-                                sx={{ display: 'inline' }}
-                                component="header"
-                                variant="h6"
-                                color="text.primary"
-                            >
-                                {chat.otherUser.info.displayName}
-                                <Badge
-                                    badgeContent={
-                                        chat?.currentUser?.unreadCount
-                                    }
-                                    color="primary"
-                                    style={{ marginLeft: '120px' }}
-                                />
-                            </Typography>
-
                             {chat.status === 'accepted' && (
                                 <Typography>
                                     {data?.lastMessageUpdate?.text ? (
