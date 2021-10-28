@@ -195,9 +195,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Website
                                             </strong>
                                         </div>

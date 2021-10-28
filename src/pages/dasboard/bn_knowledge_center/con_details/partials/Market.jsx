@@ -8,11 +8,13 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
     Box,
-    Card, Paper,
+    Card,
+    Paper,
     Tab,
     Table,
     TableBody,
-    TableCell, TableContainer,
+    TableCell,
+    TableContainer,
     TableHead,
     TableRow,
 } from '@mui/material';
@@ -217,24 +219,42 @@ export default function Market() {
                             variant="scrollable"
                             allowScrollButtonsMobile
                             scrollButtons
-                            aria-label="Bitcoin markets tabs">
+                            aria-label="Bitcoin markets tabs"
+                        >
                             <h6 className={'m-3'}>
                                 <strong>BitCoin Markets</strong>
                             </h6>
-                            <Tab label="Spot" value="1" style={custom.tabStyle}/>
-                            <Tab label="Perpetual" value="2" style={custom.tabStyle}/>
-                            <Tab label="Futures" value="3" style={custom.tabStyle}/>
+                            <Tab
+                                label="Spot"
+                                value="1"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Perpetual"
+                                value="2"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Futures"
+                                value="3"
+                                style={custom.tabStyle}
+                            />
                         </TabList>
                     </Box>
-                    <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                        <Paper sx={{width: '100%', overflow: 'hidden'}}>
-                            <TableContainer sx={{maxHeight: 440}}>
+                    <TabPanel
+                        value="1"
+                        classes={{ root: classes.tabPanelRoot }}
+                    >
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer sx={{ maxHeight: 440 }}>
                                 <Table stickyHeader aria-label="caption table">
                                     <TableHead>
-                                        <TableRow style={{
+                                        <TableRow
+                                            style={{
                                                 backgroundColor: '#3e4041',
                                                 color: '#fff',
-                                            }}>
+                                            }}
+                                        >
                                             <TableCell className="text-white">
                                                 <strong>#</strong>
                                             </TableCell>
@@ -344,10 +364,16 @@ export default function Market() {
                             </TableContainer>
                         </Paper>
                     </TabPanel>
-                    <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
+                    <TabPanel
+                        value="2"
+                        classes={{ root: classes.tabPanelRoot }}
+                    >
                         .
                     </TabPanel>
-                    <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
+                    <TabPanel
+                        value="3"
+                        classes={{ root: classes.tabPanelRoot }}
+                    >
                         .
                     </TabPanel>
                 </TabContext>
