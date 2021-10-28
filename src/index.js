@@ -8,7 +8,6 @@ import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
 const App = React.lazy(() => import('./App'));
-
 const storeName = '5637759616334';
 
 // Save to local storage // Use Local Storage Persistance
