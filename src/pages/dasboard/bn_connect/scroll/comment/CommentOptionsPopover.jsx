@@ -112,6 +112,7 @@ export default function CommentOptionsPopover({
             open={isCommentOptionOpen}
             onClose={handleCommentOptionClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

@@ -112,6 +112,7 @@ export default function ScrollOptionsPopover({
             open={isScrollOptionOpen}
             onClose={handleScrollOptionClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

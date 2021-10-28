@@ -18,6 +18,7 @@ export default function TabOptionsPopover({
             keepMounted
             open={isTabOptionOpen}
             onClose={handleTabOptionsClose}
+            disableScrollLock
         >
             {tabOptions &&
                 tabOptions.map(({ label, link }) => (
