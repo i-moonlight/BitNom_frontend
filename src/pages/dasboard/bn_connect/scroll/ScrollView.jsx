@@ -63,7 +63,6 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import FlagResourceModal from '../popovers/FlagResourceModal';
 import ReactionsModal from '../popovers/ReactionsModal';
 import UserCard from '../UserCard';
@@ -75,6 +74,10 @@ import FilterButton from './FilterButton';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const useStyles = makeStyles((theme) => ({
     root: {

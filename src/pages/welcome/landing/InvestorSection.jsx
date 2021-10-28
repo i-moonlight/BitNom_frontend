@@ -41,7 +41,7 @@ export default function InvestorSection() {
                             spacing={5}
                             container
                         >
-                            <Grid item xs={0} sm={2} md={5}></Grid>
+                            <Grid item sm={2} md={5}></Grid>
                             <Grid item xs={12} sm={10} md={7}>
                                 <iframe
                                     className="br-2 scroll-hidden"

@@ -917,11 +917,10 @@ export default function EventView({ match }) {
                                                                 }
                                                             </Typography>
                                                         </div>
-                                                        <Typography>
-                                                            <Button variant="outlined">
-                                                                Subscribe
-                                                            </Button>
-                                                        </Typography>
+
+                                                        <Button variant="outlined">
+                                                            Subscribe
+                                                        </Button>
                                                     </div>
                                                     <Typography
                                                         style={{

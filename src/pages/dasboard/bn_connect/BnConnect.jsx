@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import ImagePreview from '../../../components/ImagePreview';
@@ -134,14 +135,14 @@ export default function BnConnect() {
 
     return (
         <Screen>
-            {/* <Helmet>
+            <Helmet>
                 <meta charSet="utf-8" />
                 <title>BN Connect</title>
                 <link
                     rel="canonical"
                     href={`${window.location.origin}/dashboard`}
                 />
-            </Helmet> */}
+            </Helmet>
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}

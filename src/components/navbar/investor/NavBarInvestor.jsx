@@ -51,7 +51,7 @@ export default function NavBarInvestor() {
                         onChange={(_ev, val) => {
                             setTabValue(val);
                         }}
-                        indicatorColor="transparent"
+                        indicatorColor="secondary"
                         variant="scrollable"
                         scrollButtons="auto"
                     >
