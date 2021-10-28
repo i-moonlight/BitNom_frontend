@@ -28,7 +28,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {

@@ -17,7 +17,7 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import {
     GET_BOOKMARKED_COMMENTS,
     MUTATION_CREATE_BOOKMARK,

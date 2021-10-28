@@ -15,7 +15,7 @@ import {
 import React from 'react';
 import learnImg from '../../../../assets/investor/learn.svg';
 import logoImg from '../../../../assets/logo_full.svg';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 
 export default function WhitePaper() {
     const theme = useTheme();

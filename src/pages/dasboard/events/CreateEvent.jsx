@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,
     QUERY_LOAD_EVENTS,

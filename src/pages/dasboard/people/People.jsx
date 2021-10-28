@@ -21,7 +21,7 @@ import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import { getUserInitials } from '../../../utilities/Helpers';
 import UserCard from '../bn_connect/UserCard';

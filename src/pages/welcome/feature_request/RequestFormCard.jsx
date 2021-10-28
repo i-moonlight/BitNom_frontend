@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography, useTheme } from '@mui/material';
 import React from 'react';
-import Button from '../../../components/Button';
+import { FormikButton } from '../../../components/Button';
 import Form from '../../../components/Form';
 import TextField from '../../../components/TextField';
 
@@ -26,9 +26,7 @@ export default function RequestFormCard() {
                         multiline
                         rows={5}
                     />
-                    <Button submit fullWidth>
-                        Submit
-                    </Button>
+                    <FormikButton fullWidth>Submit</FormikButton>
                 </Form>
             </CardContent>
         </Card>

@@ -42,7 +42,7 @@ import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import ImagePreview from '../../../../components/ImagePreview';
 import ReactionButton from '../../../../components/ReactionButton';
 import Screen from '../../../../components/Screen';

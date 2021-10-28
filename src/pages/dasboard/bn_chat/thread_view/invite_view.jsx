@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import {
     addToChatDialogues,
     clearCurrentChat,

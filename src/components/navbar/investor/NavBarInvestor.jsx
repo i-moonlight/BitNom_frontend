@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import { changeTheme } from '../../../store/actions/themeActions';
-import Button from '../../Button';
+import { Button } from '../../Button';
 import { investorTabs } from '../../utilities/data.components';
 
 export default function NavBarInvestor() {

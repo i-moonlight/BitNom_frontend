@@ -198,9 +198,9 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {
-                                // scrollData?.Posts?.get?.
-                                state.posts.list?.map((scroll) => (
+                            {scrollData?.Posts?.get
+                                // state.posts.list
+                                ?.map((scroll) => (
                                     <Scroll
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
@@ -230,8 +230,7 @@ export default function BnConnect() {
                                             setImagePreviewOpen(open);
                                         }}
                                     />
-                                ))
-                            }
+                                ))}
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">

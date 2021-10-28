@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { SearchRounded } from '@mui/icons-material';
 import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
-import Button from '../../../../components/Button';
+import { Button, FormikButton } from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
 import AditionalInfoFragment from '../fragments/AditionalInfoFragment';
@@ -124,14 +124,13 @@ export default function AditionalInfoForm({
                             >
                                 Close
                             </Button>
-                            <Button
+                            <FormikButton
                                 disabled={addProjectLoading || addCourseLoading}
                                 size="small"
                                 className="ms-2"
-                                submit
                             >
                                 {updateData ? 'Update' : 'Add'}
-                            </Button>
+                            </FormikButton>
                         </div>
 
                         <div className="mt-3">

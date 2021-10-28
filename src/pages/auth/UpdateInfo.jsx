@@ -4,7 +4,7 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../components/Button';
+import { FormikButton } from '../../components/Button';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
@@ -88,13 +88,12 @@ export default function UpdateInfo() {
                                             variant="outlined"
                                             fullWidth
                                         />
-                                        <Button
+                                        <FormikButton
                                             fullWidth
-                                            submit
                                             className="mt-2"
                                         >
                                             Update Details
-                                        </Button>
+                                        </FormikButton>
                                     </div>
                                 </Form>
                             </CardContent>

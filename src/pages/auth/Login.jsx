@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import Button from '../../components/Button';
+import { Button, FormikButton } from '../../components/Button';
 import DividerText from '../../components/DividerText';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
@@ -142,13 +142,12 @@ export default function Login() {
                                                 </Link>
                                             </Typography>
                                         </div>
-                                        <Button
+                                        <FormikButton
                                             fullWidth
-                                            submit
                                             disabled={loginLoading}
                                         >
                                             Sign In
-                                        </Button>
+                                        </FormikButton>
                                         <DividerText>or</DividerText>
 
                                         {googleErr &&

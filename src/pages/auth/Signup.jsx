@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import Button from '../../components/Button';
+import { Button, FormikButton } from '../../components/Button';
 import DividerText from '../../components/DividerText';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
@@ -245,13 +245,12 @@ export default function Signup() {
                                             </Typography>
                                         </div>
 
-                                        <Button
+                                        <FormikButton
                                             disabled={justRegistered}
-                                            submit
                                             fullWidth
                                         >
                                             Join BitNorm
-                                        </Button>
+                                        </FormikButton>
                                         <DividerText>or</DividerText>
                                         {googleErr &&
                                             googleErr.map((err) => (

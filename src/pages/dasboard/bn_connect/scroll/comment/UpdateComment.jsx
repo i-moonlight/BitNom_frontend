@@ -31,7 +31,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import { mentionsFinder, mentionsUpdate } from '../../../utilities/functions';
 import {

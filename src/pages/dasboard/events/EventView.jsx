@@ -35,7 +35,7 @@ import { useHistory } from 'react-router-dom';
 //import IosShareIcon from '@mui/icons-material/IosShare'
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';

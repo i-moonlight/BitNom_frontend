@@ -13,7 +13,7 @@ import { Card, CardContent, Snackbar, Typography } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useState } from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 import ProfileForm from './forms/ProfileForm';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
