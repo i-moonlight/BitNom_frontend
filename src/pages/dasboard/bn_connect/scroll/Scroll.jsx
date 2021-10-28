@@ -153,7 +153,7 @@ export default function Scroll({
         variables: { data: { scroll_id: scroll?._id } },
     });
 
-    console.log(scroll, 'SCROLL');
+    // console.log(scroll, 'SCROLL');
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {

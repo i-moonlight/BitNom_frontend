@@ -29,7 +29,7 @@ export default function TrendingPostsCard({ trending, loading }) {
         history.push(targetLink.href.substring(location.origin.length));
     };
 
-    console.log(trending, 'TREND');
+    // console.log(trending, 'TREND');
     return (
         <Paper
             style={{

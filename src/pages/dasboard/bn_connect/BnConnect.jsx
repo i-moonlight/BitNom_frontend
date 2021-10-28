@@ -131,7 +131,7 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    console.log('Posts RDC: ', trendingError);
+    // console.log('Posts RDC: ', trendingError);
 
     return (
         <Screen>
