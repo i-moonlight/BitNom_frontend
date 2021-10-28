@@ -19,7 +19,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
@@ -112,6 +112,7 @@ export default function ScrollOptionsPopover({
             open={isScrollOptionOpen}
             onClose={handleScrollOptionClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

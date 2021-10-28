@@ -1,7 +1,7 @@
 import { AddRounded } from '@mui/icons-material';
 import { Card, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import WorkForm from './forms/WorkForm';
 import WorkFragment from './fragments/WorkFragment';
 

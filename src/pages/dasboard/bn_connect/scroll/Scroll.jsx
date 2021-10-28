@@ -36,7 +36,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
@@ -52,11 +52,14 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import Comment from './comment/Comment';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
@@ -150,7 +153,7 @@ export default function Scroll({
         variables: { data: { scroll_id: scroll?._id } },
     });
 
-    console.log(scroll, 'SCROLL');
+    // console.log(scroll, 'SCROLL');
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {
@@ -173,7 +176,6 @@ export default function Scroll({
         setPreviewURL();
     };
 
-    console.log(comment_image, 'HU');
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,

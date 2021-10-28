@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     ChevronRightRounded,
     CloudDownload,
@@ -14,18 +15,24 @@ import {
 import React from 'react';
 import learnImg from '../../../../assets/investor/learn.svg';
 import logoImg from '../../../../assets/logo_full.svg';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 
 export default function WhitePaper() {
+    const theme = useTheme();
+
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-4">
                     <Grid container spacing={2}>
                         <Grid item sm={12} md={8}>
                             <Card
+                                elevation={0}
                                 style={{
-                                    backgroundColor: '#11141C',
+                                    backgroundColor:
+                                        theme.palette.background.investorCards,
                                     height: '100%',
                                 }}
                             >

@@ -51,6 +51,7 @@ export default function EventOptionsPopover({
             open={isEventOptionsOpen}
             onClose={handleEventOptionsClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

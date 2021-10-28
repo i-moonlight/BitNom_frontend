@@ -132,7 +132,8 @@ export default function Forum() {
                         variant="scrollable"
                         allowScrollButtonsMobile
                         scrollButtons
-                        aria-label="lab API tabs example">
+                        aria-label="lab API tabs example"
+                    >
                         <h6 className={'m-3'}>
                             <strong>BitCoin Threads</strong>
                         </h6>

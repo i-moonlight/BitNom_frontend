@@ -18,7 +18,7 @@ import {
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {

@@ -13,7 +13,7 @@ import card2Img from '../../../assets/landing/card (2).svg';
 import card3Img from '../../../assets/landing/card (3).svg';
 import joinImg from '../../../assets/landing/img2.png';
 import visionImg from '../../../assets/landing/vision.svg';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
 

@@ -4,7 +4,7 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import Button from '../../components/Button';
+import { FormikButton } from '../../components/Button';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
@@ -99,13 +99,12 @@ export default function ResetPassword() {
                                             </Alert>
                                         )}
 
-                                        <Button
+                                        <FormikButton
                                             disabled={requestSent}
                                             fullWidth
-                                            submit
                                         >
                                             Reset Password
-                                        </Button>
+                                        </FormikButton>
                                         <div>
                                             <Typography className="center-vertical mt-4">
                                                 <Link

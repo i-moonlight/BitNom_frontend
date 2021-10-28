@@ -27,7 +27,7 @@ import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
-import Button from '../../Button';
+import { Button } from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
@@ -43,6 +43,7 @@ export default function ProfileBar({
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
+    const unreadCount = state.chats.unreadCount;
     const userInitials = getUserInitials(
         profile?.displayName || user?.displayName
     );
@@ -162,7 +163,10 @@ export default function ProfileBar({
                                 history.push('/chat');
                             }}
                         >
-                            <ForumRounded />
+                            {' '}
+                            <Badge color="primary" badgeContent={unreadCount}>
+                                <ForumRounded />
+                            </Badge>
                         </IconButton>
                         <Button
                             textCase
@@ -193,7 +197,10 @@ export default function ProfileBar({
                                 variant="body2"
                                 style={{ marginRight: 4 }}
                             >
-                                {profile?.displayName || user?.displayName}
+                                {profile?.displayName ||
+                                    user?.displayName ||
+                                    profile?._id ||
+                                    user?.id}
                             </Typography>
                             <ChevronRight
                                 style={{

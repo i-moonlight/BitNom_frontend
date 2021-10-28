@@ -71,6 +71,7 @@ export default function ChatSettingPopover({
             open={isChatSettingsOpen}
             onClose={handleChatSettingsClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

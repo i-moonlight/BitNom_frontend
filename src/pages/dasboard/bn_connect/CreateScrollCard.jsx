@@ -12,7 +12,7 @@ import image from '../../../assets/scrolls/image.svg';
 import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';
 import write from '../../../assets/scrolls/write.svg';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 
 export default function CreateScrollCard({
     setOpen,

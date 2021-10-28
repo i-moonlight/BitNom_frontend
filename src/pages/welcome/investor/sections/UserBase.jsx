@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Card,
     CardContent,
@@ -11,12 +12,21 @@ import modelImg from '../../../../assets/investor/model.png';
 
 export default function UserBase() {
     const smDown = useMediaQuery('(max-width:959px)');
+    const theme = useTheme();
 
     return (
-        <section style={{ backgroundColor: '#000' }}>
+        <section
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
                 <div className="py-4">
-                    <Card style={{ backgroundColor: '#161922' }}>
+                    <Card
+                        elevation={0}
+                        style={{
+                            backgroundColor:
+                                theme.palette.background.investorShade,
+                        }}
+                    >
                         <div className="my-5 mx-3">
                             <CardContent>
                                 <Grid container spacing={2}>
@@ -110,7 +120,7 @@ export default function UserBase() {
                                                 <img
                                                     src={modelImg}
                                                     alt=""
-                                                    className="w-75"
+                                                    className="w-75 mt-4"
                                                 />
                                             </div>
                                         </Grid>

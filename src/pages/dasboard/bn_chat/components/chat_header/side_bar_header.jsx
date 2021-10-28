@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import { MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -7,12 +8,29 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
+import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
+    // {setChatInviteOpen}
+    const [values, setSearchString] = useState({ searchString: '' });
     const theme = useTheme();
     const classes = useStyles();
+    const handleChatSearch = (e) => {
+        setSearchString({
+            ...values,
+            [e.target.name]: e.target.values,
+        });
+    };
+    const { loading, data } = useQuery(SEARCH_CHATS, {
+        variables: {
+            params: { searchString: values.searchString },
+        },
+        context: { clientName: 'chat' },
+    });
+    console.log('LOADING', loading);
+    console.log('DATA_CHATS', data);
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">
@@ -32,6 +50,7 @@ export default function SideBarHeader() {
                 component="form"
                 className={classes.paperSearch}
             >
+                {' '}
                 <IconButton
                     size="small"
                     type="submit"
@@ -42,8 +61,11 @@ export default function SideBarHeader() {
                 </IconButton>
                 <InputBase
                     className={classes.input}
-                    placeholder="Search Messages"
-                    inputProps={{ 'aria-label': 'search messages' }}
+                    placeholder="Search Chats"
+                    inputProps={{ 'aria-label': 'search chats' }}
+                    name="searchString"
+                    value={values.searchString}
+                    onChange={handleChatSearch}
                 />
             </Paper>
         </>

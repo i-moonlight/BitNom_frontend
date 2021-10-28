@@ -7,8 +7,8 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import Button from '../../../../components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '../../../../components/Button';
 import {
     addToChatDialogues,
     clearCurrentChat,
@@ -23,6 +23,7 @@ import {
 import { useStyles } from '../utils/styles';
 
 export default function InviteView({ dialogue }) {
+    const state = useSelector((st) => st);
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -32,7 +33,7 @@ export default function InviteView({ dialogue }) {
         },
         context: { clientName: 'chat' },
     });
-
+    const user = state.auth.user;
     const [AcceptChat] = useMutation(ACCEPT_DIALOGUE_INVITE, {
         variables: {
             _id: dialogue?._id,
@@ -42,7 +43,7 @@ export default function InviteView({ dialogue }) {
 
     const { data: chatAccepted } = useSubscription(CHAT_ACCEPTED, {
         variables: {
-            _id: dialogue?._id,
+            _id: user._id,
         },
     });
 

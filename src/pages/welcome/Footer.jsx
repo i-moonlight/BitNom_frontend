@@ -2,7 +2,7 @@ import { Container, Divider, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logo_light_full from '../../assets/logo_light_full.svg';
-import Button from '../../components/Button';
+import { Button } from '../../components/Button';
 import TextField from '../../components/TextField';
 import DarkThemeOnly from '../../utilities/DarkThemeOnly';
 import { footerLinks } from './utilities/welcome.data';

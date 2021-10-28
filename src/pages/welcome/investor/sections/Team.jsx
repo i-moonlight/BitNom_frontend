@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { LinkedIn, MailRounded } from '@mui/icons-material';
 import {
     Card,
@@ -12,17 +13,33 @@ import { team } from '../../utilities/welcome.data';
 import TeamCard from '../cards/TeamCard';
 
 export default function Team() {
+    const theme = useTheme();
+
     return (
-        <section className="py-5" style={{ backgroundColor: '#000' }}>
+        <section
+            className="py-5"
+            style={{ backgroundColor: theme.palette.background.investorDark }}
+        >
             <Container>
-                <Card style={{ backgroundColor: '#11141C' }}>
+                <Card
+                    elevation={0}
+                    style={{
+                        background: theme.palette.background.investorShade,
+                    }}
+                >
                     <CardContent>
                         <Typography className="lead mb-3 mt-1">
                             A word from our CEO
                         </Typography>
-                        <Card>
+                        <Card
+                            elevation={0}
+                            style={{
+                                background:
+                                    theme.palette.background.investorCards,
+                            }}
+                        >
                             <CardContent>
-                                <div className="pt-3">
+                                <div className="p-3 pb-0">
                                     <Grid container spacing={2}>
                                         <Grid xs={12} sm={4}>
                                             <div

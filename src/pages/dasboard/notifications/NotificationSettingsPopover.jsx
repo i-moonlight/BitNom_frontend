@@ -46,6 +46,7 @@ export default function NotificationSettingsPopover({
             open={isNotificationSettingsOpen}
             onClose={handleNotificationSettingsClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

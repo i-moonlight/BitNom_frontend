@@ -19,7 +19,7 @@ import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
-import Button from '../../Button';
+import { Button } from '../../Button';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import StatusBar from '../StatusBar';
 import NavBarMenu from './MenuOptions';

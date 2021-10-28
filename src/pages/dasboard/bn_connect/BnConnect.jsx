@@ -1,18 +1,13 @@
 import { useQuery } from '@apollo/client';
-import {
-    CircularProgress,
-    Container,
-    Grid,
-    Typography,
-    useMediaQuery,
-} from '@mui/material';
+import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
 import { getFeed } from '../utilities/functions';
 import {
     QUERY_FETCH_PROFILE,
@@ -54,6 +49,7 @@ export default function BnConnect() {
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
 
+    const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
@@ -67,7 +63,11 @@ export default function BnConnect() {
 
     const profile = profileData?.Users?.profile;
 
-    const { loading, data } = useQuery(QUERY_LOAD_SCROLLS, {
+    const {
+        loading: scrollLoading,
+        data: scrollData,
+        error: scrollError,
+    } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: { ids: getFeed(profile) },
         },
@@ -82,18 +82,36 @@ export default function BnConnect() {
         (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
     );
 
-    const { loading: trendingLoading, data: trendingData } = useQuery(
-        QUERY_LOAD_SCROLLS,
-        {
-            variables: {
-                data: {
-                    ids: getFeed(profile),
-                    sortByField: 'trending',
-                    limit: 5,
-                },
+    const {
+        loading: trendingLoading,
+        data: trendingData,
+        error: trendingError,
+    } = useQuery(QUERY_LOAD_SCROLLS, {
+        variables: {
+            data: {
+                ids: getFeed(profile),
+                sortByField: 'trending',
+                limit: 5,
             },
-        }
-    );
+        },
+    });
+
+    useEffect(() => {
+        !scrollError &&
+            !scrollLoading &&
+            dispatch(loadScrolls(scrollData?.Posts?.get));
+        !trendingError &&
+            trendingLoading &&
+            dispatch(loadTrending(trendingData?.Posts?.get));
+    }, [
+        dispatch,
+        scrollData?.Posts?.get,
+        scrollError,
+        scrollLoading,
+        trendingData?.Posts?.get,
+        trendingError,
+        trendingLoading,
+    ]);
 
     useEffect(() => {
         const OneSignal = window.OneSignal || [];
@@ -112,6 +130,8 @@ export default function BnConnect() {
             });
         });
     }, [user._id]);
+
+    // console.log('Posts RDC: ', trendingError);
 
     return (
         <Screen>
@@ -163,39 +183,55 @@ export default function BnConnect() {
                                 setOpen={(open) => setCreateScrollOpen(open)}
                             />
                             <Grid item align="center">
-                                {loading && (
-                                    <CircularProgress
+                                {scrollLoading && (
+                                    // <CircularProgress
+                                    //     color="primary"
+                                    //     size={60}
+                                    //     thickness={6}
+                                    // />
+                                    <Typography
+                                        className="my-2"
                                         color="primary"
-                                        size={60}
-                                        thickness={6}
-                                    />
+                                    >
+                                        Updating ...
+                                    </Typography>
                                 )}
                             </Grid>
 
-                            {data?.Posts?.get?.map((scroll) => (
-                                <Scroll
-                                    setOpen={() => setCreateScrollOpen(true)}
-                                    setUpdateOpen={setUpdateScrollOpen}
-                                    profileData={profileData?.Users?.profile}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setOpenFlag={setCreateFlagOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                    setSharedResource={setSharedResource}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setPostToEdit={setPostToEdit}
-                                    key={scroll?._id}
-                                    scroll={scroll}
-                                    setImagePreviewURL={(url) => {
-                                        setImagePreviewURL(url);
-                                    }}
-                                    setImagePreviewOpen={(open) => {
-                                        setImagePreviewOpen(open);
-                                    }}
-                                />
-                            ))}
-                            {data?.Posts?.get?.length < 1 && (
+                            {scrollData?.Posts?.get
+                                // state.posts.list
+                                ?.map((scroll) => (
+                                    <Scroll
+                                        setOpen={() =>
+                                            setCreateScrollOpen(true)
+                                        }
+                                        setUpdateOpen={setUpdateScrollOpen}
+                                        profileData={
+                                            profileData?.Users?.profile
+                                        }
+                                        setUpdateCommentOpen={
+                                            setUpdateCommentOpen
+                                        }
+                                        setOpenFlag={setCreateFlagOpen}
+                                        setFlaggedResource={setFlaggedResource}
+                                        setOpenReactions={setOpenReactions}
+                                        setResourceReactions={
+                                            setResourceReactions
+                                        }
+                                        setSharedResource={setSharedResource}
+                                        setCommentToEdit={setCommentToEdit}
+                                        setPostToEdit={setPostToEdit}
+                                        key={scroll?._id}
+                                        scroll={scroll}
+                                        setImagePreviewURL={(url) => {
+                                            setImagePreviewURL(url);
+                                        }}
+                                        setImagePreviewOpen={(open) => {
+                                            setImagePreviewOpen(open);
+                                        }}
+                                    />
+                                ))}
+                            {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">
                                         Create a post or follow people you may
@@ -208,8 +244,14 @@ export default function BnConnect() {
                             {!smDown && (
                                 <>
                                     <TrendingPostsCard
-                                        trending={trendingData?.Posts?.get}
-                                        loading={trendingLoading}
+                                        trending={
+                                            trendingData?.Posts?.get
+                                            // state.posts.trending
+                                        }
+                                        loading={
+                                            trendingLoading
+                                            // false
+                                        }
                                     />
                                     <SuggestedPeopleCard
                                         profileData={

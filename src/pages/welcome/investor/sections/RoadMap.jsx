@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Card,
     Container,
@@ -7,7 +8,7 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import { roadMap } from '../../utilities/welcome.data';
 import QuaterCard from '../cards/QuaterCard';
 
@@ -16,6 +17,8 @@ const ROADMAP_DISPLACEMENT = 100;
 export default function RoadMap() {
     const [year, setYear] = useState('2021');
     const [query, setQuery] = useState(1);
+
+    const theme = useTheme();
 
     const xs = useMediaQuery('(min-width:10px) and (max-width:599px)');
     const sm = useMediaQuery('(min-width:600px) and (max-width:959px)');
@@ -33,13 +36,18 @@ export default function RoadMap() {
         <section
             id="roadmap"
             style={{
-                backgroundColor: '#000',
+                backgroundColor: theme.palette.background.investorDark,
                 paddingBottom: query > 1 && ROADMAP_DISPLACEMENT,
             }}
         >
             <Container>
                 <div className="py-4">
-                    <Paper style={{ backgroundColor: '#000' }}>
+                    <Paper
+                        elevation={0}
+                        style={{
+                            background: theme.palette.background.investorDark,
+                        }}
+                    >
                         <div className="my-5 mx-3">
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
@@ -55,6 +63,7 @@ export default function RoadMap() {
                                     <Card>
                                         {roadMap.map((road) => (
                                             <Button
+                                                className=" m-1 me-2"
                                                 style={{
                                                     backgroundColor:
                                                         road?.year == year &&
@@ -64,7 +73,6 @@ export default function RoadMap() {
                                                     `${road?.year}` !=
                                                         `${year}` && 'inherit'
                                                 }
-                                                className="me-2"
                                                 variant={
                                                     road?.year != year && 'text'
                                                 }

@@ -38,6 +38,7 @@ export default function NotificationsPopover({
             id={notificationId}
             open={isNotificationOpen}
             onClose={handleNotificationsClose}
+            disableScrollLock
         >
             <List
                 style={{ padding: 8, paddingBottom: 0, width: '300px' }}

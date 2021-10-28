@@ -5,12 +5,20 @@ const initialState = {
     groups: [],
     dialogue_messages: [],
     archived: [],
+    unreadCount: null,
 };
 
 export default function chatReducer(state = initialState, action) {
     switch (action.type) {
-        case 'ADD_CHAT_DIALOGUES':
-            return { ...state, chats: [...action.data] };
+        case 'ADD_CHAT_DIALOGUES': {
+            return {
+                ...state,
+                chats: [...action.data],
+                unreadCount: action.data.reduce((a, b) => {
+                    return a + b.currentUser.unreadCount;
+                }, 0),
+            };
+        }
         case 'SET_CURRENT_CHAT':
             return { ...state, current_chat: action.chat };
         case 'SET_CHAT_INVITES':

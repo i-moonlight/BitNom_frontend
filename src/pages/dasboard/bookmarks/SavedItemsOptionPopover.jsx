@@ -81,6 +81,7 @@ export default function SavedItemsOptionPopover({
             open={isSavedItemOptionOpen}
             onClose={handleSavedItemOptionClose}
             style={{ marginLeft: 16, width: '100%', zIndex: 3 }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

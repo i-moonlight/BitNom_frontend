@@ -1,8 +1,10 @@
+import { useTheme } from '@emotion/react';
 import { Container, Divider } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import scrollImg from '../../../assets/investor/scroll.svg';
+import scrollImgLight from '../../../assets/investor/scroll_light.svg';
 import NavBarInvestor from '../../../components/navbar/investor/NavBarInvestor';
-import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
+import Footer from '../Footer';
 import Concept from './sections/Concept';
 import Ecosystem from './sections/Ecosystem';
 import Header from './sections/Header';
@@ -17,6 +19,7 @@ import WhitePaper from './sections/WhitePaper';
 
 export default function Investors() {
     const toTop = useRef(null);
+    const theme = useTheme();
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -31,35 +34,48 @@ export default function Investors() {
                 overflowY: 'hidden',
             }}
         >
-            <DarkThemeOnly>
-                <NavBarInvestor />
-                <Header />
-                <section
-                    className="h-100 w-100 py-4"
-                    style={{ backgroundColor: '#000' }}
-                >
-                    <Container>
-                        <img className="w-100" src={scrollImg} alt="" />
-                    </Container>
-                </section>
-                <WhitePaper />
-                <Concept />
-                <Solution />
-                <section style={{ backgroundColor: '#000' }}>
-                    <Container>
-                        <div className="py-1">
-                            <Divider />
-                        </div>
-                    </Container>
-                </section>
-                <Symbol />
-                <Token />
-                <Ecosystem />
-                <UserBase />
-                <Roadmap />
-                <HealthCheck />
-                <Team />
-            </DarkThemeOnly>
+            <NavBarInvestor />
+            <Header />
+            <section
+                className="h-100 w-100 py-4"
+                style={{
+                    backgroundColor: theme.palette.background.investorDark,
+                }}
+            >
+                <Container>
+                    <img
+                        className="w-100"
+                        src={
+                            theme.palette.mode == 'dark'
+                                ? scrollImg
+                                : scrollImgLight
+                        }
+                        alt=""
+                    />
+                </Container>
+            </section>
+            <WhitePaper />
+            <Concept />
+            <Solution />
+            <section
+                style={{
+                    backgroundColor: theme.palette.background.investorDark,
+                }}
+            >
+                <Container>
+                    <div className="py-1">
+                        <Divider />
+                    </div>
+                </Container>
+            </section>
+            <Symbol />
+            <Token />
+            <Ecosystem />
+            <UserBase />
+            <Roadmap />
+            <HealthCheck />
+            <Team />
+            <Footer />
         </div>
     );
 }
