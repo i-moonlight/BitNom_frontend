@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import ImagePreview from '../../../components/ImagePreview';
@@ -130,18 +131,18 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    console.log('Posts RDC: ', trendingError);
+    // console.log('Posts RDC: ', trendingError);
 
     return (
         <Screen>
-            {/* <Helmet>
+            <Helmet>
                 <meta charSet="utf-8" />
                 <title>BN Connect</title>
                 <link
                     rel="canonical"
                     href={`${window.location.origin}/dashboard`}
                 />
-            </Helmet> */}
+            </Helmet>
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
@@ -197,9 +198,9 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {
-                                // scrollData?.Posts?.get?.
-                                state.posts.list?.map((scroll) => (
+                            {scrollData?.Posts?.get
+                                // state.posts.list
+                                ?.map((scroll) => (
                                     <Scroll
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
@@ -229,8 +230,7 @@ export default function BnConnect() {
                                             setImagePreviewOpen(open);
                                         }}
                                     />
-                                ))
-                            }
+                                ))}
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">

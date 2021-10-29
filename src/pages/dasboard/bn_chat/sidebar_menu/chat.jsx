@@ -1,23 +1,20 @@
 import { useMutation, useSubscription } from '@apollo/client';
+import { AttachFile, Gif, Image, VideoLibrary } from '@mui/icons-material';
 import {
     Avatar,
     Badge,
-    Divider,
     ListItem,
     ListItemAvatar,
     ListItemText,
     Typography,
 } from '@mui/material';
-import { AttachFile, VideoLibrary, Image, Gif } from '@mui/icons-material';
-import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
-    USER_ONLINE_STATUS,
     USER_IS_ONLINE,
+    USER_ONLINE_STATUS,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
@@ -56,8 +53,8 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         });
     };
     console.log('ONLINE_DATA', OnlineData);
-    const lastSeen = moment(OnlineData?.userIsOnline?.otherUser?.lastSeen);
-    const now = moment(new Date());
+    // const lastSeen = moment(OnlineData?.userIsOnline?.otherUser?.lastSeen);
+    // const now = moment(new Date());
     const truncateString = (input) =>
         input?.length > 50 ? `${input?.substring(0, 20)}...` : input;
     console.log('LAST_MESSAGE', data?.lastMessageUpdate);
@@ -114,7 +111,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     secondary={
                         <React.Fragment>
                             {chat.status === 'accepted' && (
-                                <Typography>
+                                <div>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
                                             data?.lastMessageUpdate?.text
@@ -142,7 +139,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : (
                                         truncateString(chat?.lastMessage?.text)
                                     )}
-                                </Typography>
+                                </div>
                             )}
                         </React.Fragment>
                     }

@@ -8,7 +8,7 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 import {} from '../utilities/functions';
 import {

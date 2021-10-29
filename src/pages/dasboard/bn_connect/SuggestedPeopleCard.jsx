@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 //import { getFeed } from '../utilities/functions';
 import { getUserInitials } from '../../../utilities/Helpers';
 import {} from '../utilities/functions';

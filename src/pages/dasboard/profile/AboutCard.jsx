@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import AboutForm from './forms/AboutForm';
 
 export default function AboutCard({ profile, profileView }) {

@@ -30,7 +30,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import { mentionsFinder, mentionsUpdate } from '../../../utilities/functions';
 import {
@@ -39,7 +39,10 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 export default function UpdateComment({
     updateCommentOpen,

@@ -11,7 +11,7 @@ import {
     Typography,
 } from '@mui/material';
 import React from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import {} from '../utilities/functions';
 
 export default function ServiceCard() {

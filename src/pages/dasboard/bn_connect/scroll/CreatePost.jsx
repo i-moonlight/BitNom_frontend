@@ -24,7 +24,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';

@@ -106,7 +106,7 @@ export default function ReactionsModal({
                         <Tabs
                             value={value}
                             onChange={handleChange}
-                            indicatorColor="prmary"
+                            indicatorColor="primary"
                             textColor="primary"
                             variant="scrollable"
                             scrollButtons="auto"

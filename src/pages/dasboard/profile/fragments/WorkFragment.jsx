@@ -1,6 +1,6 @@
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import WorkForm from '../forms/WorkForm';
 import { useStyles } from '../utilities/profile.styles';
 

@@ -7,7 +7,7 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import AditionalInfoForm from './forms/AditionalInfoForm';
 import GenderForm from './forms/GenderForm';
 import LanguagesForm from './forms/LanguagesForm';

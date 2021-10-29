@@ -14,8 +14,8 @@ import {
     Typography,
     useMediaQuery,
     Divider,
-} from '@material-ui/core';
-import { Search, Settings } from '@material-ui/icons';
+} from '@mui/material';
+//import { Search, Settings } from '@material-ui/icons';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
@@ -42,6 +42,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const handleChatSettingOpen = (e) => {
         setChatSettingsAnchorEl(e.currentTarget);
     };
+
     const handleSearchMessage = (e) => {
         setValues(
             searchTerm?.length >= 250
@@ -49,7 +50,10 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                 : e.target.value.substring(0, 250)
         );
     };
-    const { loading, data } = useQuery(SEARCH_MESSAGES, {
+    const {
+        //  loading,
+        data,
+    } = useQuery(SEARCH_MESSAGES, {
         variables: {
             data: { chat: chat._id, params: { searchString: searchTerm } },
         },
