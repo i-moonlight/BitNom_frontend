@@ -185,7 +185,10 @@ export default function CreatePost({
                                         style={{
                                             backgroundColor: '#fed132',
                                         }}
-                                        src={user?.profile_pic}
+                                        src={
+                                            process.env.REACT_APP_BACKEND_URL +
+                                            user?.profile_pic
+                                        }
                                     >
                                         {userInitials}
                                     </Avatar>

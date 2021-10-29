@@ -903,6 +903,15 @@ export default function EventView({ match }) {
                                                         <div className="center-horizontal">
                                                             <Avatar
                                                                 variant="rounded"
+                                                                src={
+                                                                    process.env
+                                                                        .REACT_APP_BACKEND_URL +
+                                                                    eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                        ?.host
+                                                                        ?.profile_pic
+                                                                }
                                                                 className={
                                                                     classes.avatar
                                                                 }

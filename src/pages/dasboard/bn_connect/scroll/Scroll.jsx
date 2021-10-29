@@ -594,7 +594,10 @@ export default function Scroll({
                                 style={{
                                     backgroundColor: '#fed132',
                                 }}
-                                src={scroll?.author?.image}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    user?.profile_pic
+                                }
                                 className="mx-2"
                             >
                                 {currentUserInitials}
