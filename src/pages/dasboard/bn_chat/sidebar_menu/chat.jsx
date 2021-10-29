@@ -2,17 +2,16 @@ import { useMutation, useSubscription } from '@apollo/client';
 import {
     Avatar,
     Badge,
-    Divider,
     ListItem,
     ListItemAvatar,
     ListItemText,
     Typography,
 } from '@mui/material';
 import { AttachFile, VideoLibrary, Image, Gif } from '@mui/icons-material';
-import moment from 'moment';
+
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
@@ -55,13 +54,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             context: { clientName: 'chat' },
         });
     };
-    console.log('ONLINE_DATA', OnlineData);
-    const lastSeen = moment(OnlineData?.userIsOnline?.otherUser?.lastSeen);
-    const now = moment(new Date());
-    const truncateString = (input) =>
-        input?.length > 50 ? `${input?.substring(0, 20)}...` : input;
-    console.log('LAST_MESSAGE', data?.lastMessageUpdate);
 
+    const truncateString = (input) =>
+        input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
     return (
         <>
             <ListItem

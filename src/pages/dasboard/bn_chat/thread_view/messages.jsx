@@ -29,6 +29,8 @@ export default function Messages({ onExitChatMobile }) {
     const user = state.auth.user;
     const unOrderedMessages = state.chats.dialogue_messages;
     const messages = [...unOrderedMessages].reverse();
+    const searchData = state.chats.searchData;
+    const filteredMessages = [...searchData].reverse();
 
     const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
         variables: {
@@ -106,14 +108,21 @@ export default function Messages({ onExitChatMobile }) {
                 {dialogue.status === 'accepted' &&
                     !messages.length > 0 &&
                     !loading && <EmptyMessages />}
-
                 {dialogue.status === 'accepted' &&
-                    messages &&
-                    messages.author !== user._id &&
-                    messages?.length > 0 &&
-                    messages.map((message, mI) => (
-                        <Message key={mI} message={message} chat={dialogue} />
-                    ))}
+                filteredMessages &&
+                filteredMessages.author !== user._id &&
+                filteredMessages?.length > 0
+                    ? filteredMessages.map((filtered, I) => (
+                          <Message key={I} message={filtered} chat={dialogue} />
+                      ))
+                    : dialogue.status === 'accepted' &&
+                      messages &&
+                      messages.author !== user._id &&
+                      messages?.length > 0
+                    ? messages.map((message, mI) => (
+                          <Message key={mI} message={message} chat={dialogue} />
+                      ))
+                    : ''}
 
                 {loading && (
                     <div

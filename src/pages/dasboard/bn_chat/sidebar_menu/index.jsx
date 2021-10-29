@@ -105,7 +105,6 @@ function Chats({ onSetChatMobile }) {
         }
     };
 
-    console.log('UNREADCOUNT', unreadCount);
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>
