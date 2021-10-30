@@ -119,6 +119,7 @@ export default function Scroll({
     setImagePreviewOpen,
     setImagePreviewURL,
     style,
+    setOpenShareModal,
 }) {
     const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
@@ -153,7 +154,6 @@ export default function Scroll({
         variables: { data: { scroll_id: scroll?._id } },
     });
 
-    // console.log(scroll, 'SCROLL');
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {
@@ -598,7 +598,10 @@ export default function Scroll({
                                 style={{
                                     backgroundColor: '#fed132',
                                 }}
-                                src={scroll?.author?.image}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    user?.profile_pic
+                                }
                                 className="mx-2"
                             >
                                 {currentUserInitials}
@@ -825,6 +828,8 @@ export default function Scroll({
                 setPostToEdit={setPostToEdit}
                 setOpenFlag={setOpenFlag}
                 setUpdateOpen={setUpdateOpen}
+                setOpenShareModal={setOpenShareModal}
+                setSharedResource={setSharedResource}
             />
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}

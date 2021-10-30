@@ -17,6 +17,7 @@ import {
 import CreateScrollCard from './CreateScrollCard';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
+import ExternalShareModal from './popovers/ExternalShareModal';
 import UpdateComment from './scroll/comment/UpdateComment';
 import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
@@ -48,6 +49,7 @@ export default function BnConnect() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
+    const [openShareModal, setOpenShareModal] = useState(false);
 
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
@@ -205,6 +207,7 @@ export default function BnConnect() {
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
                                         }
+                                        setOpenShareModal={setOpenShareModal}
                                         setUpdateOpen={setUpdateScrollOpen}
                                         profileData={
                                             profileData?.Users?.profile
@@ -327,6 +330,12 @@ export default function BnConnect() {
                 setOpenReactions={setOpenReactions}
                 resourceReactions={resourceReactions}
                 setResourceReactions={setResourceReactions}
+            />
+            <ExternalShareModal
+                openShareModal={openShareModal}
+                sharedResource={sharedResource}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
         </Screen>
     );

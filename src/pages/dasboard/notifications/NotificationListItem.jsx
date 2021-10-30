@@ -60,6 +60,15 @@ export default function NotificationListItem({ notification }) {
         });
         return name;
     };
+    const getNotifyingUserProfile = (ntfn) => {
+        let profile;
+        ntfn?.content_entities?.forEach((item) => {
+            if (item?.type === 'resource_tag') {
+                profile = item?.url?.profile_pic;
+            }
+        });
+        return profile;
+    };
     const contentClickHandler = (e) => {
         const targetLink = e.target.closest('a');
         if (!targetLink) return;
@@ -101,6 +110,10 @@ export default function NotificationListItem({ notification }) {
                                     backgroundColor: '#fed132',
                                 }}
                                 aria-label="recipe"
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    getNotifyingUserProfile(notification)
+                                }
                             >
                                 {userInitials}
                             </Avatar>

@@ -139,6 +139,16 @@ export const QUERY_SEARCH_USERS = gql`
     }
 `;
 
+export const MUTATION_UPDATE_PROFILE = gql`
+    mutation ($data: IUpdateUser!) {
+        Users {
+            update(data: $data) {
+                _id
+            }
+        }
+    }
+`;
+
 export const MUTATION_FOLLOW_USER = gql`
     mutation ($data: IFollow) {
         Users {

@@ -125,7 +125,7 @@ export default function CommentOptionsPopover({
                     </ListItemIcon>
                     <ListItemText
                         primary="Save this comment"
-                        secondary="Add this to your bookmarks"
+                        secondary="Add this to your saved items"
                     />
                 </ListItem>
                 <ListItem button divider onClick={handleReportComment}>
