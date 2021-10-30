@@ -119,6 +119,7 @@ export default function Scroll({
     setImagePreviewOpen,
     setImagePreviewURL,
     style,
+    setOpenShareModal,
 }) {
     const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
@@ -827,6 +828,8 @@ export default function Scroll({
                 setPostToEdit={setPostToEdit}
                 setOpenFlag={setOpenFlag}
                 setUpdateOpen={setUpdateOpen}
+                setOpenShareModal={setOpenShareModal}
+                setSharedResource={setSharedResource}
             />
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
