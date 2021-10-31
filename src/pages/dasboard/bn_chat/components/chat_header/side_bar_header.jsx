@@ -8,12 +8,12 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
+import { MoreVert, Search } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
-    // {setChatInviteOpen}
     const [values, setSearchString] = useState({ searchString: '' });
     const theme = useTheme();
     const classes = useStyles();

@@ -34,3 +34,12 @@ export const addArchivedChats = (data) => {
 export const setArchivedChats = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'SET_ARCHIVED_CHATS' });
 };
+export const setSearchOutput = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'SET_SEARCH_OUTPUT' });
+};
+export const clearSearchOutput = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_SEARCH_OUTPUT' });
+};
+export const chatIndexShift = (data) => {
+    return (dispatch) => dispatch({ data, type: 'LATEST_MESSAGE_CHAT_SHIFT' });
+};
