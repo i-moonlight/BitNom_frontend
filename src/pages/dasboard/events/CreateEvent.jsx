@@ -156,6 +156,20 @@ export default function CreateEvent({ open, setOpen }) {
             .catch((error) => console.error('Error', error));
     };
 
+    const handleSetTags = () => {
+        if (tagText.length < 3) return;
+        const exist = eventTags?.filter((tag) => tag === tagText);
+
+        if (exist.length) {
+            setErrorText(`${tagText} is already added!`);
+            return setTagsErr(true);
+        }
+        setErrorText('');
+        setTagsErr(false);
+        setEventTags([...eventTags, tagText]);
+        setTagText('');
+    };
+
     const handleCreateEvent = (e) => {
         e.preventDefault();
         if (eventTitle.trim() == '') {
@@ -340,35 +354,13 @@ export default function CreateEvent({ open, setOpen }) {
                                         marginBottom: '15px',
                                     }}
                                 >
-                                    {/* <div
-                                        className="space-between mx-3 my-2"
-                                        style={{
-                                            position: 'relative',
-                                            top: -50,
-                                        }}
-                                    >
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            color="primary"
-                                            size="small"
-                                            className="m-1 p-1"
-                                        >
-                                            <CloseRounded
-                                                onClick={() => {
-                                                    setEventImage(null);
-                                                    setPreviewURL();
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </div> */}
                                     <DropzoneArea
                                         dropzoneClass="event-upload-dropzone"
                                         clearOnUnmount
                                         Icon={CameraAltRounded}
                                         dropzoneText={' '}
                                         acceptedFiles={['.jpeg', '.png']}
-                                        maxFileSize={5000000}
+                                        maxFileSize={2500000}
                                         filesLimit={1}
                                         showAlerts={['error']}
                                         showPreviews={false}
@@ -639,6 +631,15 @@ export default function CreateEvent({ open, setOpen }) {
                                                         className={
                                                             classes.input
                                                         }
+                                                        onKeyPress={(e) => {
+                                                            if (
+                                                                e.key ===
+                                                                'Enter'
+                                                            ) {
+                                                                e.preventDefault();
+                                                                handleSetTags();
+                                                            }
+                                                        }}
                                                         placeholder='eg "CryptoEvent"'
                                                         inputProps={{
                                                             'aria-label':
@@ -647,45 +648,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                         endAdornment={
                                                             <Button
                                                                 onClick={() => {
-                                                                    if (
-                                                                        tagText.length <
-                                                                        3
-                                                                    )
-                                                                        return;
-                                                                    const exist =
-                                                                        eventTags?.filter(
-                                                                            (
-                                                                                tag
-                                                                            ) =>
-                                                                                tag ===
-                                                                                tagText
-                                                                        );
-
-                                                                    if (
-                                                                        exist.length
-                                                                    ) {
-                                                                        setErrorText(
-                                                                            `${tagText} is already added!`
-                                                                        );
-                                                                        return setTagsErr(
-                                                                            true
-                                                                        );
-                                                                    }
-                                                                    setErrorText(
-                                                                        ''
-                                                                    );
-                                                                    setTagsErr(
-                                                                        false
-                                                                    );
-                                                                    setEventTags(
-                                                                        [
-                                                                            ...eventTags,
-                                                                            tagText,
-                                                                        ]
-                                                                    );
-                                                                    setTagText(
-                                                                        ''
-                                                                    );
+                                                                    handleSetTags();
                                                                 }}
                                                                 //disabled={addLoading}
                                                                 size="small"
