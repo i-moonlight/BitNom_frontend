@@ -7,8 +7,19 @@ import {
     Image,
     SendOutlined,
     VideoLibrary,
+    Close,
 } from '@mui/icons-material';
-import { Divider, IconButton, InputBase, Paper, useTheme } from '@mui/material';
+import {
+    Divider,
+    IconButton,
+    Paper,
+    useTheme,
+    Typography,
+    TextField,
+    CardHeader,
+    Card,
+    CardContent,
+} from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
@@ -16,7 +27,12 @@ import { useStyles } from '../utils/styles';
 
 const emojiPickerId = 'emoji-picker-popover';
 
-export default function SendMessage({ chat }) {
+export default function SendMessage({
+    chat,
+    replyText,
+    onCancelReply,
+    setReplyText,
+}) {
     const [text, setText] = useState('');
     const [open, setOpen] = useState(false);
     const [message_images, setMessageImages] = useState([]);
@@ -29,6 +45,7 @@ export default function SendMessage({ chat }) {
     const [openGif, setGifOpen] = useState(false);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+    const [sendMessageErr, setSendMessageError] = useState({});
     const theme = useTheme();
     const classes = useStyles();
 
@@ -44,7 +61,11 @@ export default function SendMessage({ chat }) {
         setText(`${text} ${emoji.native}`);
     };
 
-    const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE);
+    const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
+        onError(error) {
+            setSendMessageError(error.graphQLErrors[0].state);
+        },
+    });
 
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
@@ -60,6 +81,7 @@ export default function SendMessage({ chat }) {
         setMessageDoc([]);
         setMessageGif(null);
         setOpen(false);
+        setReplyText();
     };
 
     const handleChange = (e) => {
@@ -75,15 +97,61 @@ export default function SendMessage({ chat }) {
         onSendMessage({
             chat: chat,
             text: text,
+            responseTo: replyText ? replyText._id : '',
             images: message_images,
             video: message_video,
             gif: message_gif,
             documents: message_docs,
         });
     };
-    console.log('TEXT', text);
     return (
         <>
+            {' '}
+            {replyText && (
+                <Card
+                    variant="outlined"
+                    style={{
+                        backgroundColor: '#93c7f5',
+                        marginLeft: '8px',
+                        marginRight: '8px',
+                        marginTop: '8px',
+                        borderWidth: '0px 0px 0px 7px ',
+                        borderRadius: '5px 2px 2px 5px',
+                        height: '60px',
+                    }}
+                >
+                    <CardHeader
+                        style={{ marginTop: '-15px' }}
+                        action={
+                            <IconButton onClick={onCancelReply} size="small">
+                                <Close />
+                            </IconButton>
+                        }
+                        subheader={
+                            <Typography
+                                variant="body2"
+                                component="span"
+                                style={{ margin: '1px 5px' }}
+                            >
+                                <strong>{replyText.author}</strong>
+                            </Typography>
+                        }
+                    />
+
+                    <CardContent style={{ marginTop: '-35px' }}>
+                        {' '}
+                        <Typography
+                            variant="body2"
+                            component="span"
+                            style={{ margin: '1px 5px' }}
+                        >
+                            {replyText.text.length > 80
+                                ? replyText.text.substring(0, 80) + '...'
+                                : replyText.text}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            )}
             {open ? (
                 <DropzoneArea
                     clearOnUnmount
@@ -162,7 +230,7 @@ export default function SendMessage({ chat }) {
             <div className={classes.inputRoot}>
                 <Divider className={classes.divider} />{' '}
                 <div className="d-flex">
-                    <div className={classes.inputTab} style={{ width: '27%' }}>
+                    <div className={classes.inputTab} style={{ width: '33%' }}>
                         {' '}
                         <IconButton
                             size="small"
@@ -245,16 +313,23 @@ export default function SendMessage({ chat }) {
                             >
                                 <EmojiEmotions />
                             </IconButton>
-                            <InputBase
+                            <TextField
+                                size="small"
                                 name="text"
-                                type="text"
                                 value={text}
                                 className={classes.inputField}
                                 placeholder="Type a message"
-                                inputProps={{ 'aria-label': 'Send' }}
+                                fullWidth
                                 onChange={handleChange}
                                 multiline
+                                margin="dense"
                                 maxRows={5}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' && e.shiftKey
+                                        ? handleSendMessage
+                                        : null
+                                }
+                                error={Object.keys(sendMessageErr).length > 0}
                             />
                             <IconButton
                                 size="small"
@@ -265,6 +340,21 @@ export default function SendMessage({ chat }) {
                                 <SendOutlined />
                             </IconButton>
                         </Paper>
+                        {Object.keys(sendMessageErr).length > 0 && (
+                            <div>
+                                {' '}
+                                {Object.values(sendMessageErr).map((value) => (
+                                    <Typography
+                                        color="error"
+                                        variant="body2"
+                                        key={value}
+                                    >
+                                        {' '}
+                                        {value}
+                                    </Typography>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -54,9 +54,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             context: { clientName: 'chat' },
         });
     };
-
+    const otherUser =
+        chat.otherUser.info._id === user._id
+            ? chat.currentUser
+            : chat.otherUser;
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
+
     return (
         <>
             <ListItem
@@ -74,22 +78,20 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                             backgroundColor: '#1C0C5B',
                         }}
                         src={
-                            chat?.otherUser?.profile_pic
+                            otherUser?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
                                   chat?.otherUser?.profile_pic
                                 : ''
                         }
                         alt={'avatar'}
                     >
-                        {chat?.otherUser?.profile_pic
+                        {otherUser?.profile_pic
                             ? ''
-                            : getUserInitials(
-                                  chat?.otherUser?.info.displayName
-                              )}
+                            : getUserInitials(otherUser?.info.displayName)}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
-                {chat.otherUser.info._id === OnlineData?.userIsOnline?._id &&
+                {otherUser.info._id === OnlineData?.userIsOnline?._id &&
                 OnlineData?.userIsOnline?.online == true ? (
                     <span className={classes.online_status}></span>
                 ) : (
@@ -98,7 +100,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 <ListItemText
                     primary={
                         <Typography color="textPrimary">
-                            {chat?.otherUser?.info?.displayName}{' '}
+                            {otherUser?.info?.displayName}{' '}
                             <Badge
                                 badgeContent={chat?.currentUser?.unreadCount}
                                 color="primary"

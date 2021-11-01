@@ -1,4 +1,4 @@
-import { MoreVert, Reply } from '@mui/icons-material';
+import { Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -7,17 +7,19 @@ import {
     IconButton,
     Paper,
     Typography,
+    Card,
 } from '@mui/material';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
+import ReactMarkdown from 'react-markdown';
+import { Code, LinkTag } from '../../../../components/markdown_renders';
 
-export default function IncomingMessage({ message, chat, onReply, onClick }) {
+export default function IncomingMessage({ message, chat, onReply }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
-    const author = message.author || {};
 
     return (
         <div className={classes.messageLeft}>
@@ -50,27 +52,43 @@ export default function IncomingMessage({ message, chat, onReply, onClick }) {
                 onMouseLeave={() => setShowReply(false)}
                 elevation={0}
             >
-                <Typography
-                    variant="body1"
-                    component="p"
-                    style={{ marginLeft: '16px' }}
-                >
-                    <Link
-                        to={`/users/${author}`}
-                        style={{ textDecoration: 'none' }}
+                {message?.responseTo?.text?.length > 0 ? (
+                    <Card
+                        variant="outlined"
+                        style={{
+                            backgroundColor: '#93c7f5',
+                            marginLeft: '8px',
+                            marginRight: '8px',
+                            marginTop: '8px',
+                            borderWidth: '0px 0px 0px 7px ',
+                            borderRadius: '5px 2px 2px 5px',
+                        }}
                     >
-                        <small className={classes.author}>
-                            <strong>@{author}</strong>
-                        </small>
-                    </Link>
-                    <IconButton onClick={onClick} size="small">
-                        <MoreVert style={{ width: '18px', heigth: '18px' }} />
-                    </IconButton>
-                </Typography>
-                {message.responseTo && (
-                    <Typography variant="body2" component="article">
-                        {message.responsTo?.text}
-                    </Typography>
+                        {' '}
+                        <Typography
+                            variant="body2"
+                            component="article"
+                            style={{
+                                marginLeft: '8px',
+                                marginTop: '8px',
+                                marginRight: '8px',
+                            }}
+                        >
+                            <ReactMarkdown
+                                renderers={{ code: Code, link: LinkTag }}
+                                escapeHtml={false}
+                            >
+                                {message?.responseTo?.text?.length > 200
+                                    ? message?.responseTo?.text.substring(
+                                          0,
+                                          200
+                                      ) + '...'
+                                    : message.responseTo.text}
+                            </ReactMarkdown>
+                        </Typography>
+                    </Card>
+                ) : (
+                    ''
                 )}
                 {message?.video && (
                     <Grid
@@ -127,7 +145,21 @@ export default function IncomingMessage({ message, chat, onReply, onClick }) {
                             />
                         </Grid>
                     ))}
-                <p className={classes.message}>{message.text}</p>
+                <Typography
+                    className={classes.message}
+                    variant="body2"
+                    component="article"
+                    style={{
+                        marginTop: '8px',
+                    }}
+                >
+                    <ReactMarkdown
+                        renderers={{ code: Code, link: LinkTag }}
+                        escapeHtml={false}
+                    >
+                        {message.text}
+                    </ReactMarkdown>
+                </Typography>
                 {show_reply && (
                     <div className={classes.reply}>
                         <IconButton

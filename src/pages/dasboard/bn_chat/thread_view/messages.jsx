@@ -1,6 +1,6 @@
 import { useQuery, useSubscription } from '@apollo/client';
 import { CircularProgress, Divider } from '@mui/material';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addMessagesToCurrentChat,
@@ -20,6 +20,7 @@ import EmptyMessages from './no_messages';
 import SendMessage from './send_message';
 
 export default function Messages({ onExitChatMobile }) {
+    const [replyText, setReplyText] = useState(undefined);
     const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -29,8 +30,8 @@ export default function Messages({ onExitChatMobile }) {
     const user = state.auth.user;
     const unOrderedMessages = state.chats.dialogue_messages;
     const messages = [...unOrderedMessages].reverse();
-    const searchData = state.chats.searchData;
-    const filteredMessages = [...searchData].reverse();
+    const searchOutput = state.chats.searchData;
+    const filteredMessages = [...searchOutput].reverse();
 
     const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
         variables: {
@@ -120,7 +121,18 @@ export default function Messages({ onExitChatMobile }) {
                       messages.author !== user._id &&
                       messages?.length > 0
                     ? messages.map((message, mI) => (
-                          <Message key={mI} message={message} chat={dialogue} />
+                          <Message
+                              key={mI}
+                              message={message}
+                              chat={dialogue}
+                              onReply={() =>
+                                  setReplyText({
+                                      text: message.text,
+                                      _id: message._id,
+                                      author: message.author,
+                                  })
+                              }
+                          />
                       ))
                     : ''}
 
@@ -138,12 +150,26 @@ export default function Messages({ onExitChatMobile }) {
             <div>
                 {(dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length) > 0 && <SendMessage chat={dialogue._id} />}
+                    messages.length) > 0 && (
+                    <SendMessage
+                        chat={dialogue._id}
+                        replyText={replyText}
+                        onCancelReply={() => setReplyText(undefined)}
+                        setReplyText={() => setReplyText(undefined)}
+                    />
+                )}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
                     !loading &&
-                    !messages.length > 0 && <SendMessage chat={dialogue._id} />}
+                    !messages.length > 0 && (
+                        <SendMessage
+                            chat={dialogue._id}
+                            replyText={replyText}
+                            onCancelReply={() => setReplyText(undefined)}
+                            setReplyText={() => setReplyText(undefined)}
+                        />
+                    )}
             </div>
         </div>
     );

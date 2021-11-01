@@ -6,7 +6,7 @@ import OutgoingMessage from './OutgoingMessage';
 
 const messageSettingsId = 'message-settings-menu';
 
-export default function Message({ message, chat, onReply = () => null }) {
+export default function Message({ message, chat, onReply }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const author = message.author || {};
@@ -33,7 +33,7 @@ export default function Message({ message, chat, onReply = () => null }) {
                 <IncomingMessage
                     message={message}
                     chat={chat}
-                    oonReply={onReply}
+                    onReply={onReply}
                     onClick={handleMessageSettingsOpen}
                 />
             )}

@@ -6,10 +6,8 @@ export default function MessagePopover({
     messageSettingsId,
     isMessageSettingsOpen,
     handleMessageClose,
-    message,
     incoming,
 }) {
-    console.log('MS', message);
     const handlePinMessage = () => {
         console.log('PIN');
     };

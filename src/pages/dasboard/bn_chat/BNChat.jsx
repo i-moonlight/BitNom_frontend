@@ -36,7 +36,7 @@ export default function BnChat() {
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
-                    <Grid container spacing={3}>
+                    <Grid container>
                         {!chatMobileOpen && (
                             <Grid item xs={12} sm={4} md={4}>
                                 <Card
