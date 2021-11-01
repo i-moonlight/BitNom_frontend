@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const App = React.lazy(() => import('./App'));
 const storeName = '5637759616334';
@@ -39,7 +40,7 @@ const persistedStorage = loadFromLocalStorage();
 const store = createStore(
     rootReducer,
     persistedStorage,
-    applyMiddleware(thunk)
+    composeWithDevTools(applyMiddleware(thunk))
 );
 
 //Sync to local storage everytime store changes

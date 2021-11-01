@@ -92,6 +92,7 @@
     "devDependencies": {
         "@mui/material": "^5.0.3",
         "prettier": "^2.4.1",
-        "prop-types": "^15.7.2"
+        "prop-types": "^15.7.2",
+        "redux-devtools-extension": "^2.13.9"
     }
 }

@@ -84,7 +84,7 @@ export default function SendMessage({ chat }) {
             documents: message_docs,
         });
     };
-    console.log('TEXT', text);
+
     return (
         <>
             <div className={classes.inputRoot}>

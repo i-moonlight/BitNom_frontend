@@ -46,15 +46,16 @@ export default function QuaterCard({
                             </span>
                         </Typography>
                         <Typography className="lead my-2">{text}</Typography>
-                        <Typography className="lead">
-                            <ul>
-                                {list.map((ls) => (
-                                    <li key={ls} className="">
+
+                        <ul>
+                            {list.map((ls) => (
+                                <li key={ls} className="">
+                                    <Typography className="lead">
                                         {ls}
-                                    </li>
-                                ))}
-                            </ul>
-                        </Typography>
+                                    </Typography>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </CardContent>
             </Card>

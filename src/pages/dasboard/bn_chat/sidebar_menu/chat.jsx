@@ -6,7 +6,6 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -52,12 +51,12 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             context: { clientName: 'chat' },
         });
     };
-    console.log('ONLINE_DATA', OnlineData);
+    // console.log('ONLINE_DATA', OnlineData);
     // const lastSeen = moment(OnlineData?.userIsOnline?.otherUser?.lastSeen);
     // const now = moment(new Date());
     const truncateString = (input) =>
         input?.length > 50 ? `${input?.substring(0, 20)}...` : input;
-    console.log('LAST_MESSAGE', data?.lastMessageUpdate);
+    // console.log('LAST_MESSAGE', data?.lastMessageUpdate);
 
     return (
         <>
@@ -98,31 +97,19 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     <span className={classes.offline_status}></span>
                 )}
                 <ListItemText
-                    primary={
-                        <Typography color="textPrimary">
-                            {chat?.otherUser?.info?.displayName}
-                        </Typography>
-                    }
+                    primary={chat?.otherUser?.info?.displayName}
                     secondary={
                         <React.Fragment>
-                            <Typography
-                                sx={{ display: 'inline' }}
-                                component="header"
-                                variant="h6"
-                                color="text.primary"
-                            >
+                            <span sx={{ display: 'inline' }}>
                                 {chat.otherUser.info.displayName}
-                                <Badge
-                                    badgeContent={
-                                        chat?.currentUser?.unreadCount
-                                    }
-                                    color="primary"
-                                    style={{ marginLeft: '120px' }}
-                                />
-                            </Typography>
-
+                            </span>
+                            <Badge
+                                badgeContent={chat?.currentUser?.unreadCount}
+                                color="primary"
+                                style={{ marginLeft: '120px' }}
+                            />
                             {chat.status === 'accepted' && (
-                                <div>
+                                <span>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
                                             data?.lastMessageUpdate?.text
@@ -150,7 +137,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : (
                                         truncateString(chat?.lastMessage?.text)
                                     )}
-                                </div>
+                                </span>
                             )}
                         </React.Fragment>
                     }

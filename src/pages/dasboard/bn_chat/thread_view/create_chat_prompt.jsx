@@ -98,12 +98,14 @@ export default function CreateChatPrompt({
                             <Typography variant="body1">
                                 Search users
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setChatInviteOpen(false);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setChatInviteOpen(false);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
                         <Divider></Divider>

@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -9,7 +8,6 @@ import {
     useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
@@ -23,14 +21,14 @@ export default function SideBarHeader() {
             [e.target.name]: e.target.values,
         });
     };
-    const { loading, data } = useQuery(SEARCH_CHATS, {
-        variables: {
-            params: { searchString: values.searchString },
-        },
-        context: { clientName: 'chat' },
-    });
-    console.log('LOADING', loading);
-    console.log('DATA_CHATS', data);
+    // const { loading, data } = useQuery(SEARCH_CHATS, {
+    //     variables: {
+    //         params: { searchString: values.searchString },
+    //     },
+    //     context: { clientName: 'chat' },
+    // });
+    // console.log('LOADING', loading);
+    // console.log('DATA_CHATS', data);
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">

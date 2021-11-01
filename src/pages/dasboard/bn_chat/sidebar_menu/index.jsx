@@ -94,7 +94,7 @@ function Chats({ onSetChatMobile }) {
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
-    const unreadCount = state.chats.unreadCount;
+    // const unreadCount = state.chats.unreadCount;
     const activeChatId = state.chats.current_chat._id;
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
@@ -105,7 +105,7 @@ function Chats({ onSetChatMobile }) {
         }
     };
 
-    console.log('UNREADCOUNT', unreadCount);
+    // console.log('UNREADCOUNT', unreadCount);
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>

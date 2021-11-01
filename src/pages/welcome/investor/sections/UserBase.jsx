@@ -48,7 +48,7 @@ export default function UserBase() {
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6} md={4}>
                                         <div className="my-5">
-                                            <Typography className="my-4 fw-bold ">
+                                            <span className="my-4 fw-bold ">
                                                 <span
                                                     style={{
                                                         zIndex: 3,
@@ -67,7 +67,7 @@ export default function UserBase() {
                                                         borderRadius: 20,
                                                     }}
                                                 ></div>
-                                            </Typography>
+                                            </span>
                                             <Typography className="my-4 fw-bold">
                                                 Crypto Bloggers
                                             </Typography>
@@ -79,7 +79,7 @@ export default function UserBase() {
                                             </Typography>
                                         </div>
                                         <div className="my-5">
-                                            <Typography className="my-4 fw-bold">
+                                            <span className="my-4 fw-bold">
                                                 <span
                                                     style={{
                                                         zIndex: 3,
@@ -98,7 +98,7 @@ export default function UserBase() {
                                                         borderRadius: 20,
                                                     }}
                                                 ></div>
-                                            </Typography>
+                                            </span>
                                             <Typography className="my-4 fw-bold">
                                                 Cryptocurrency Developers and
                                                 Maintainers
@@ -127,7 +127,7 @@ export default function UserBase() {
                                     )}
                                     <Grid item xs={12} sm={6} md={4}>
                                         <div className="my-5">
-                                            <Typography className="my-4 fw-bold">
+                                            <span className="my-4 fw-bold">
                                                 <span
                                                     style={{
                                                         zIndex: 3,
@@ -146,7 +146,7 @@ export default function UserBase() {
                                                         borderRadius: 20,
                                                     }}
                                                 ></div>
-                                            </Typography>
+                                            </span>
                                             <Typography className="my-4 fw-bold">
                                                 Lone Crypto Researchers
                                             </Typography>

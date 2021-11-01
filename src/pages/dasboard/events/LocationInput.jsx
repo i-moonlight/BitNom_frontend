@@ -1,7 +1,6 @@
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Autocomplete from '@mui/lab/Autocomplete';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
+import { TextField, Autocomplete } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 //import parse from 'autosuggest-highlight/parse';

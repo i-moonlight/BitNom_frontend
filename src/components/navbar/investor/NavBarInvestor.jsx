@@ -8,7 +8,7 @@ import {
     Tabs,
     useTheme,
 } from '@mui/material';
-import { withStyles } from '@mui/styles';
+import { withStyles, styled } from '@mui/styles';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,12 @@ import logo_light from '../../../assets/logo_light.svg';
 import { changeTheme } from '../../../store/actions/themeActions';
 import { Button } from '../../Button';
 import { investorTabs } from '../../utilities/data.components';
+
+const InvestorTabs = styled(Tabs)({
+    '& .MuiTabs-indicator': {
+        backgroundColor: 'transparent',
+    },
+});
 
 export default function NavBarInvestor() {
     const [tabValue, setTabValue] = useState(0);
@@ -46,12 +52,11 @@ export default function NavBarInvestor() {
                         </Avatar>
                     </div>
 
-                    <Tabs
+                    <InvestorTabs
                         value={tabValue}
                         onChange={(_ev, val) => {
                             setTabValue(val);
                         }}
-                        indicatorColor="secondary"
                         variant="scrollable"
                         scrollButtons="auto"
                     >
@@ -67,7 +72,7 @@ export default function NavBarInvestor() {
                                 />
                             );
                         })}
-                    </Tabs>
+                    </InvestorTabs>
 
                     <div className="ms-auto">
                         <IconButton

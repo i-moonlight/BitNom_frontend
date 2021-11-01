@@ -50,11 +50,12 @@ export default function HealthCheck() {
                                 aria-controls={`${title}bh-content`}
                                 id={`${title}bh-header`}
                             >
+                                <Help className="me-2" color="primary" />{' '}
                                 <Typography
                                     color="primary"
                                     className={classes.heading}
                                 >
-                                    <Help className="me-2" /> {title}
+                                    {title}
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails>

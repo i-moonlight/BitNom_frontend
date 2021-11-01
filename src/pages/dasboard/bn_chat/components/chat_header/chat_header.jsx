@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import { ArrowBackRounded, SettingsRounded } from '@mui/icons-material';
 import {
     Avatar,
@@ -10,7 +9,6 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { SEARCH_MESSAGES } from '../../graphql/queries';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
@@ -22,10 +20,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const xsDown = useMediaQuery('(max-width:599px)');
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
-    const [
-        searchTerm,
-        // setValues
-    ] = useState('');
+    // const [searchTerm, setValues] = useState('');
     // const [searchOpen, setSearchOpen] = useState(false);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
 
@@ -43,16 +38,16 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     //             : e.target.value.substring(0, 250)
     //     );
     // };
-    const {
-        //  loading,
-        data,
-    } = useQuery(SEARCH_MESSAGES, {
-        variables: {
-            data: { chat: chat._id, params: { searchString: searchTerm } },
-        },
-        context: { clientName: 'chat' },
-    });
-    console.log('SEARCH_MESSAGES', data);
+    // const {
+    //     //  loading,
+    //     data,
+    // } = useQuery(SEARCH_MESSAGES, {
+    //     variables: {
+    //         data: { chat: chat._id, params: { searchString: searchTerm } },
+    //     },
+    //     context: { clientName: 'chat' },
+    // });
+    // console.log('SEARCH_MESSAGES', data);
     return (
         <>
             <CardHeader

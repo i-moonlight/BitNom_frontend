@@ -4,7 +4,6 @@ import {
     CheckBoxOutlineBlank,
     CloseRounded,
 } from '@mui/icons-material';
-import Autocomplete from '@mui/lab/Autocomplete';
 import {
     Button,
     Card,
@@ -18,6 +17,7 @@ import {
     Modal,
     TextField,
     Typography,
+    Autocomplete,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
@@ -82,14 +82,16 @@ export default function InviteFriends({
                             <Typography variant="body1">
                                 Invite Friends
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpenInvite(false);
-                                        setSelectedFriends([]);
-                                        //setResourceReactions(null);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setOpenInvite(false);
+                                    setSelectedFriends([]);
+                                    //setResourceReactions(null);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
                         <Divider />

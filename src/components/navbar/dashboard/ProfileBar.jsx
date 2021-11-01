@@ -100,7 +100,7 @@ export default function ProfileBar({
                         )}
                     </div>
                     <Paper
-                        variant={theme.palette.mode == 'light' && 'outlined'}
+                        // variant={theme.palette.mode == 'light' && 'outlined'}
                         elevation={0}
                         component="form"
                         className={classes.paperSearch}

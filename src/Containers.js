@@ -146,7 +146,26 @@ const splitLink = split(
 
 const client = new ApolloClient({
     link: splitLink,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    Users: {
+                        merge: true,
+                    },
+                    Posts: {
+                        merge: true,
+                    },
+                    Comments: {
+                        merge: true,
+                    },
+                    Events: {
+                        merge: true,
+                    },
+                },
+            },
+        },
+    }),
 });
 
 export default function AppContainers() {

@@ -289,33 +289,35 @@ export default function CreateEvent({ open, setOpen }) {
                             <Typography variant="body1">
                                 Create Event
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpen(!open);
-                                        setEventLink('');
-                                        setEventImage(null);
-                                        setEventTitle('');
-                                        setEventDescription('');
-                                        setDescriptionErr(false);
-                                        setOrganizerErr(false);
-                                        setTagsErr(false);
-                                        setTitleErr(false);
-                                        setLinkErr(false);
-                                        setDateErr(false);
-                                        setLocationErr(false);
-                                        setEventStartDate('');
-                                        setEventEndDate('');
-                                        setLocationType('');
-                                        setLatitude('');
-                                        setAddress('');
-                                        setLongitude('');
-                                        setEventTags([]);
-                                        setTagText('');
-                                        setPreviewURL();
-                                        setEventOrganizers([]);
-                                    }}
-                                />
+                            <IconButton
+                                size="small"
+                                className="m-1 p-1"
+                                onClick={() => {
+                                    setOpen(!open);
+                                    setEventLink('');
+                                    setEventImage(null);
+                                    setEventTitle('');
+                                    setEventDescription('');
+                                    setDescriptionErr(false);
+                                    setOrganizerErr(false);
+                                    setTagsErr(false);
+                                    setTitleErr(false);
+                                    setLinkErr(false);
+                                    setDateErr(false);
+                                    setLocationErr(false);
+                                    setEventStartDate('');
+                                    setEventEndDate('');
+                                    setLocationType('');
+                                    setLatitude('');
+                                    setAddress('');
+                                    setLongitude('');
+                                    setEventTags([]);
+                                    setTagText('');
+                                    setPreviewURL();
+                                    setEventOrganizers([]);
+                                }}
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
 
