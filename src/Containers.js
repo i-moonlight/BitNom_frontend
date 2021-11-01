@@ -14,7 +14,6 @@ import { print } from 'graphql';
 import { createClient } from 'graphql-ws';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useThemeDetector } from './hooks/useThemeDetector';
 import Routes from './Routes';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
@@ -83,13 +82,21 @@ const wsLink = new WebSocketLink({
     url: process.env.REACT_APP_SOCKET_URL,
 });
 
-const profileLink = from([
+/* const profileLink = from([
     errorLink,
     new HttpLink({
         uri: backendUri + '/users/graphql',
         credentials: 'include',
     }),
-]);
+]); */
+
+const profileLink = createUploadLink({
+    uri: backendUri + '/users/graphql',
+    credentials: 'include',
+    headers: {
+        'keep-alive': 'true',
+    },
+});
 
 const notificationsLink = from([
     errorLink,
@@ -169,7 +176,6 @@ const client = new ApolloClient({
 });
 
 export default function AppContainers() {
-    const isDarkThemeOnly = useThemeDetector();
     const dispatch = useDispatch();
     const classes = useStyles();
     const palette = useSelector((st) => st.theme.palette);
@@ -177,10 +183,10 @@ export default function AppContainers() {
     useEffect(() => {
         dispatch(checkSessionTimeOut());
 
-        palette == 'dark' && isDarkThemeOnly
+        palette == 'dark'
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
-    }, [dispatch, isDarkThemeOnly, palette]);
+    }, [dispatch, palette]);
 
     return (
         <div className={classes.root}>

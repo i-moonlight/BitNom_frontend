@@ -255,7 +255,10 @@ export default function Comment({
                         backgroundColor: '#fed132',
                         zIndex: 0,
                     }}
-                    src={comment?.author?.profile_pic}
+                    src={
+                        process.env.REACT_APP_BACKEND_URL +
+                        comment?.author?.profile_pic
+                    }
                     className="mx-2"
                 >
                     {commentUserInitials}
@@ -491,7 +494,10 @@ export default function Comment({
                                     style={{
                                         backgroundColor: '#fed132',
                                     }}
-                                    src={scroll?.author?.image}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
                                     className="mx-2"
                                 >
                                     {currentUserInitials}

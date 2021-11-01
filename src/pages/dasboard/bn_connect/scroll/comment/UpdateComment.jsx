@@ -25,7 +25,6 @@ import {
     ListItemText,
     Modal,
     Typography,
-    useTheme,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
@@ -65,7 +64,6 @@ export default function UpdateComment({
     const emojiPickerId = 'emoji-picker-popover';
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
-    const theme = useTheme();
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const [
@@ -226,7 +224,11 @@ export default function UpdateComment({
                                             style={{
                                                 backgroundColor: '#fed132',
                                             }}
-                                            src={user?.profile_pic}
+                                            src={
+                                                process.env
+                                                    .REACT_APP_BACKEND_URL +
+                                                user?.profile_pic
+                                            }
                                         >
                                             {userInitials}
                                         </Avatar>
@@ -237,9 +239,6 @@ export default function UpdateComment({
                                             <Button
                                                 textCase
                                                 style={{
-                                                    backgroundColor:
-                                                        theme.palette.background
-                                                            .default,
                                                     padding: '0px 10px',
                                                     textTransform: 'none',
                                                 }}
@@ -395,6 +394,7 @@ export default function UpdateComment({
                                                     setFileErrors([]);
                                                     setCommentImage(null);
                                                 }}
+                                                P
                                             />
                                         </IconButton>
                                     </div>

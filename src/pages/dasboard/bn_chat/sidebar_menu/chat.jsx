@@ -6,6 +6,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
+    Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -97,17 +98,29 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     <span className={classes.offline_status}></span>
                 )}
                 <ListItemText
-                    primary={chat?.otherUser?.info?.displayName}
-                    secondary={
-                        <React.Fragment>
-                            <span sx={{ display: 'inline' }}>
-                                {chat.otherUser.info.displayName}
-                            </span>
+                    // primary={chat?.otherUser?.info?.displayName}
+                    // secondary={
+                    //     <React.Fragment>
+                    //         <span sx={{ display: 'inline' }}>
+                    //             {chat.otherUser.info.displayName}
+                    //         </span>
+                    //         <Badge
+                    //             badgeContent={chat?.currentUser?.unreadCount}
+                    //             color="primary"
+                    //             style={{ marginLeft: '120px' }}
+                    //         />
+                    primary={
+                        <Typography color="textPrimary">
+                            {chat?.otherUser?.info?.displayName}{' '}
                             <Badge
                                 badgeContent={chat?.currentUser?.unreadCount}
                                 color="primary"
                                 style={{ marginLeft: '120px' }}
                             />
+                        </Typography>
+                    }
+                    secondary={
+                        <React.Fragment>
                             {chat.status === 'accepted' && (
                                 <span>
                                     {data?.lastMessageUpdate?.text ? (

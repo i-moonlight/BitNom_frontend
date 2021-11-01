@@ -61,7 +61,10 @@ export default function SavedPost({
                                 style={{
                                     backgroundColor: '#fed132',
                                 }}
-                                src={scroll?.author?.profile_pic}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    scroll?.author?.profile_pic
+                                }
                                 aria-label="recipe"
                             >
                                 {authorInitials}

@@ -121,6 +121,15 @@ function ListItemComponent({ item }) {
         e.stopPropagation();
         history.push(targetLink.href.substring(location.origin.length));
     };
+    const getNotifyingUserProfile = (ntfn) => {
+        let profile;
+        ntfn?.content_entities?.forEach((entity) => {
+            if (entity?.type === 'resource_tag') {
+                profile = entity?.url?.profile_pic;
+            }
+        });
+        return profile;
+    };
     return (
         <ListItem
             button
@@ -134,6 +143,10 @@ function ListItemComponent({ item }) {
                     style={{
                         backgroundColor: '#fed132',
                     }}
+                    src={
+                        process.env.REACT_APP_BACKEND_URL +
+                        getNotifyingUserProfile(item)
+                    }
                 >
                     {getUserInitials(getNotifyingUser(item))}
                 </Avatar>
