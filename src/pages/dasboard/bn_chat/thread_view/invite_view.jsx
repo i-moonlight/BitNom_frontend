@@ -1,4 +1,4 @@
-import { useMutation, useSubscription } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
     Card,
     CardActions,
@@ -6,25 +6,16 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '../../../../components/Button';
-import {
-    addToChatDialogues,
-    clearCurrentChat,
-    removeFromInvites,
-    setCurrentChat,
-} from '../../../../store/actions/chatActions';
+import React from 'react';
+import Button from '../../../../components/Button';
+
 import {
     ACCEPT_DIALOGUE_INVITE,
-    CHAT_ACCEPTED,
     REJECT_DIALOGUE_INVITE,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
 export default function InviteView({ dialogue }) {
-    const state = useSelector((st) => st);
-    const dispatch = useDispatch();
     const classes = useStyles();
 
     const [RejectChat] = useMutation(REJECT_DIALOGUE_INVITE, {
@@ -33,28 +24,13 @@ export default function InviteView({ dialogue }) {
         },
         context: { clientName: 'chat' },
     });
-    const user = state.auth.user;
+
     const [AcceptChat] = useMutation(ACCEPT_DIALOGUE_INVITE, {
         variables: {
             _id: dialogue?._id,
         },
         context: { clientName: 'chat' },
     });
-
-    const { data: chatAccepted } = useSubscription(CHAT_ACCEPTED, {
-        variables: {
-            _id: user._id,
-        },
-    });
-
-    useEffect(() => {
-        if (chatAccepted?.chatAccepted) {
-            dispatch(clearCurrentChat());
-            dispatch(addToChatDialogues(chatAccepted?.chatAccepted));
-            dispatch(setCurrentChat(chatAccepted?.chatAccepted));
-            dispatch(removeFromInvites(chatAccepted?.chatAccepted));
-        }
-    }, [chatAccepted?.chatAccepted, dispatch]);
 
     const handleReject = (e) => {
         e.preventDefault();

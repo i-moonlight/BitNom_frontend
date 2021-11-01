@@ -190,7 +190,7 @@ export default function AppContainers() {
 
     return (
         <div className={classes.root}>
-            {palette == 'dark' ? (
+            {palette === 'dark' ? (
                 <DarkThemeStyles>
                     <Routes apolloClient={client} />
                 </DarkThemeStyles>

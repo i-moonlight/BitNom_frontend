@@ -115,7 +115,7 @@ export const useStyles = makeStyles((theme) => ({
     incoming: {
         maxWidth: '480px',
         minWidth: '120px',
-        borderRadius: '20px 20px 20px 0px',
+        borderRadius: '10px 10px 10px 0px',
         backgroundColor: '#bde0ff',
         // backgroundColor: theme.palette.background.chatFrom,
         marginLeft: theme.spacing(1),
@@ -123,7 +123,7 @@ export const useStyles = makeStyles((theme) => ({
     outgoing: {
         maxWidth: '480px',
         minWidth: '120px',
-        borderRadius: '20px 20px 0px 20px',
+        borderRadius: '10px 10px 0px 10px',
         backgroundColor: '#f0f8ff',
         // backgroundColor: theme.palette.background.chatTo,
         marginRight: theme.spacing(1),

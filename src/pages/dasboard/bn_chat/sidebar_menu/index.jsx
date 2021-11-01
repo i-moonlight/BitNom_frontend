@@ -13,9 +13,16 @@ import {
     addToInvites,
     setArchivedChats,
     setChatInvites,
+    addToChatDialogues,
+    clearCurrentChat,
+    removeFromInvites,
     setCurrentChat,
 } from '../../../../store/actions/chatActions';
-import { GET_DIALOGUES, NEW_CHAT_ADDED } from '../graphql/queries';
+import {
+    GET_DIALOGUES,
+    NEW_CHAT_ADDED,
+    CHAT_ACCEPTED,
+} from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
@@ -61,6 +68,21 @@ function Chats({ onSetChatMobile }) {
         },
     });
 
+    const { data: chatAccepted } = useSubscription(CHAT_ACCEPTED, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    useEffect(() => {
+        if (chatAccepted?.chatAccepted) {
+            dispatch(clearCurrentChat());
+            dispatch(addToChatDialogues(chatAccepted?.chatAccepted));
+            dispatch(setCurrentChat(chatAccepted?.chatAccepted));
+            dispatch(removeFromInvites(chatAccepted?.chatAccepted));
+        }
+    }, [chatAccepted?.chatAccepted, dispatch]);
+
     useEffect(() => {
         if (newChatData?.newChat) {
             dispatch(addToInvites(newChatData?.newChat));
@@ -94,7 +116,6 @@ function Chats({ onSetChatMobile }) {
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
-    // const unreadCount = state.chats.unreadCount;
     const activeChatId = state.chats.current_chat._id;
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
@@ -105,7 +126,6 @@ function Chats({ onSetChatMobile }) {
         }
     };
 
-    // console.log('UNREADCOUNT', unreadCount);
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>

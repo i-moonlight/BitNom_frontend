@@ -1,7 +1,10 @@
 import { useQuery } from '@apollo/client';
 import {
     ArrowBackRounded,
-    SearchRounded,
+    ArrowDropDown,
+    ArrowDropUp,
+    CloseRounded,
+    Search,
     SettingsRounded,
 } from '@mui/icons-material';
 import {
@@ -16,7 +19,12 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    clearSearchOutput,
+    setSearchOutput,
+} from '../../../../../store/actions/chatActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import { SEARCH_MESSAGES } from '../../graphql/queries';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
@@ -26,6 +34,8 @@ const chatSettingsId = 'chat-settings-menu';
 
 export default function ChatHeader({ chat, onExitChatMobile }) {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
     const theme = useTheme();
     const xsDown = useMediaQuery('(max-width:599px)');
 
@@ -34,7 +44,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const [searchTerm, setValues] = useState('');
     const [searchOpen, setSearchOpen] = useState(false);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
-
+    const user = state.auth.user;
     const handleChatSettingsClose = () => {
         setChatSettingsAnchorEl(null);
     };
@@ -50,16 +60,33 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                 : e.target.value.substring(0, 250)
         );
     };
-    const {
-        //  loading,
-        data,
-    } = useQuery(SEARCH_MESSAGES, {
+    const { data } = useQuery(SEARCH_MESSAGES, {
         variables: {
             data: { chat: chat._id, params: { searchString: searchTerm } },
         },
         context: { clientName: 'chat' },
     });
-    console.log('SEARCH_MESSAGES', data);
+
+    useEffect(() => {
+        if (data?.Dialogue?.searchMessages.length > 0) {
+            dispatch(setSearchOutput(data?.Dialogue?.searchMessages));
+        }
+    }, [dispatch, data?.Dialogue?.searchMessages]);
+    const handleDownIndex = () => {
+        console.log('Down SEARCH INDEX');
+    };
+    const handleUpIndex = () => {
+        console.log('Up search index');
+    };
+
+    const handleSearchClearNClose = () => {
+        setSearchOpen(false);
+        dispatch(clearSearchOutput());
+    };
+    const otherUser =
+        chat?.otherUser?.info?._id === user?._id
+            ? chat?.currentUser
+            : chat?.otherUser;
     return (
         <>
             <CardHeader
@@ -87,7 +114,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 horizontal: 'right',
                             }}
                             badgeContent={
-                                chat?.otherUser?.lastSeen === Date.now() ? (
+                                otherUser?.lastSeen === Date.now() ? (
                                     <span className={classes.online}></span>
                                 ) : (
                                     <span className={classes.offline}></span>
@@ -99,16 +126,16 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                     backgroundColor: '#fed132',
                                 }}
                                 src={
-                                    chat?.otherUser?.info?.profile_pic
+                                    otherUser?.info?.profile_pic
                                         ? process.env.REACT_APP_BACKEND_URL +
                                           chat?.otherUser?.info?.profile_pic
                                         : ''
                                 }
                             >
-                                {chat?.otherUser?.info?.profile_pic
+                                {otherUser?.info?.profile_pic
                                     ? ''
                                     : getUserInitials(
-                                          chat?.otherUser?.info?.displayName
+                                          otherUser?.info?.displayName
                                       )}
                             </Avatar>
                         </Badge>
@@ -129,7 +156,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                 }
                 title={
                     <Typography style={{ marginRight: 8 }}>
-                        {chat?.otherUser?.info?.displayName || 'User Name'}
+                        {otherUser?.info?.displayName || 'User Name'}
                     </Typography>
                 }
                 subheader={
@@ -154,41 +181,78 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                     aria-controls={chatSettingsId}
                                     onClick={() => setSearchOpen(true)}
                                 >
-                                    <SearchRounded />
+                                    <Search />
                                 </IconButton>
                             </div>{' '}
+                            {searchOpen ? (
+                                <Paper
+                                    variant={
+                                        theme.palette.mode == 'light'
+                                            ? 'outlined'
+                                            : 'elevation'
+                                    }
+                                    elevation={0}
+                                    component="form"
+                                    className={classes.paperSearch}
+                                >
+                                    {' '}
+                                    <IconButton
+                                        size="small"
+                                        className={
+                                            'm-1 p-1' + classes.iconButton
+                                        }
+                                        aria-label="search"
+                                    >
+                                        <Search />
+                                    </IconButton>{' '}
+                                    <InputBase
+                                        className={classes.input}
+                                        placeholder="Search Messages"
+                                        inputProps={{
+                                            'aria-label': 'search Messages',
+                                        }}
+                                        name="searchString"
+                                        value={searchTerm}
+                                        onChange={handleSearchMessage}
+                                    />
+                                    <Divider orientation="vertical" flexItem />
+                                    <Typography variant="body2">0/0</Typography>
+                                    <IconButton
+                                        size="small"
+                                        className={
+                                            'm-1 p-1' + classes.iconButton
+                                        }
+                                        onClick={handleDownIndex}
+                                    >
+                                        <ArrowDropDown />
+                                    </IconButton>
+                                    <IconButton
+                                        size="small"
+                                        className={
+                                            'm-1 p-1' + classes.iconButton
+                                        }
+                                        onClick={handleUpIndex}
+                                    >
+                                        <ArrowDropUp />
+                                    </IconButton>
+                                    <IconButton
+                                        size="small"
+                                        className={
+                                            'm-1 p-1' + classes.iconButton
+                                        }
+                                        onClick={handleSearchClearNClose}
+                                    >
+                                        <CloseRounded />
+                                    </IconButton>
+                                </Paper>
+                            ) : (
+                                ''
+                            )}
                         </div>
                     </div>
                 }
             />
-            <div>
-                {' '}
-                {searchOpen ? (
-                    <Paper
-                        variant={
-                            theme.palette.type == 'light'
-                                ? 'outlined'
-                                : 'elevation'
-                        }
-                        elevation={0}
-                        component="form"
-                        className={classes.paperSearch}
-                    >
-                        <InputBase
-                            className={classes.input}
-                            placeholder="Search Messages"
-                            inputProps={{
-                                'aria-label': 'search chats',
-                            }}
-                            name="searchString"
-                            value={searchTerm}
-                            onChange={handleSearchMessage}
-                        />
-                    </Paper>
-                ) : (
-                    ''
-                )}
-            </div>
+
             <ChatSettingPopover
                 chatSettingsAnchorEl={chatSettingsAnchorEl}
                 chatSettingsId={chatSettingsId}

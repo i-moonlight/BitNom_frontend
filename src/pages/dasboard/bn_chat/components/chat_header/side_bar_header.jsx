@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
-    // {setChatInviteOpen}
     const [values, setSearchString] = useState({ searchString: '' });
     const theme = useTheme();
     const classes = useStyles();

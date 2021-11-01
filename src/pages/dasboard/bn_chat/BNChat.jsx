@@ -36,9 +36,9 @@ export default function BnChat() {
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
-                    <Grid container spacing={3}>
+                    <Grid container>
                         {!chatMobileOpen && (
-                            <Grid item xs={12} sm={4} md={3}>
+                            <Grid item xs={12} sm={4} md={4}>
                                 <Card
                                     style={{
                                         height: window.innerHeight - 200,
@@ -83,7 +83,7 @@ export default function BnChat() {
                         )}
                         {((chatMobileOpen && xsDown) ||
                             (!chatMobileOpen && !xsDown)) && (
-                            <Grid item xs={12} sm={8} md={9}>
+                            <Grid item xs={12} sm={8} md={8}>
                                 <Card
                                     style={{
                                         height: window.innerHeight - 200,
