@@ -7,7 +7,7 @@ import {
     Typography,
 } from '@mui/material';
 import React from 'react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 
 import {
     ACCEPT_DIALOGUE_INVITE,

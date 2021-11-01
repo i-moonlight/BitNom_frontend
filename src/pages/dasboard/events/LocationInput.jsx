@@ -1,7 +1,5 @@
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Grid from '@mui/material/Grid';
-import { TextField, Autocomplete } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Autocomplete, Grid, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 //import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
@@ -137,16 +135,9 @@ export default function LocationInput({
                     }
                 />
             )}
-            renderOption={(option) => {
-                /*  const matches =
-          option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length])
-        ); */
-
+            renderOption={(props, option) => {
                 return (
-                    <Grid container alignItems="center">
+                    <Grid {...props} container alignItems="center">
                         <Grid item>
                             <LocationOnIcon className={classes.icon} />
                         </Grid>
@@ -155,20 +146,19 @@ export default function LocationInput({
                                 key={
                                     option === 'string'
                                         ? option
-                                        : option.structured_formatting.main_text
+                                        : option?.description
                                 }
                                 //style={{ fontWeight: part.highlight ? 700 : 400 }}
                             >
                                 {option === 'string'
                                     ? option
-                                    : option.structured_formatting.main_text}
+                                    : option?.structured_formatting?.main_text}
                             </span>
 
                             <Typography variant="body2" color="textSecondary">
                                 {option === 'string'
                                     ? option
-                                    : option.structured_formatting
-                                          .secondary_text}
+                                    : option?.description}
                             </Typography>
                         </Grid>
                     </Grid>
