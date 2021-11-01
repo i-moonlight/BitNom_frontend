@@ -12,7 +12,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import UserCard from '../bn_connect/UserCard';
@@ -34,7 +34,7 @@ export default function UserPosts() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const user = state.auth.user;
-
+    const history = useHistory();
     const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: { data: { author: user?._id, limit: 220 } },
     });
@@ -73,16 +73,15 @@ export default function UserPosts() {
                                 >
                                     <CardHeader
                                         avatar={
-                                            <Link to="/dashboard">
-                                                <IconButton
-                                                    size="small"
-                                                    className="m-1 p-1"
-                                                    aria-label="back"
-                                                    color="inherit"
-                                                >
-                                                    <ArrowBack />
-                                                </IconButton>
-                                            </Link>
+                                            <IconButton
+                                                size="small"
+                                                className="m-1 p-1"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
                                         }
                                         title={
                                             <div className="center-horizontal">
