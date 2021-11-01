@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import DonateCard from '../cards/DonateCard';
 
 export default function Header() {

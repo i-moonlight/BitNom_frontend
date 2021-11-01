@@ -15,7 +15,7 @@ import {
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/actions/themeActions';
-import Button from '../Button';
+import { Button } from '../Button';
 import { status } from '../utilities/data.components';
 import { useStyles } from '../utilities/styles.components';
 

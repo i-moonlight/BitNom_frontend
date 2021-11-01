@@ -21,6 +21,7 @@ function EmojiPickerPopover({
             open={isEmojiPickerOpen}
             onClose={handleEmojiPickerClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <NimblePicker
                 onSelect={handleSelectEmoji}

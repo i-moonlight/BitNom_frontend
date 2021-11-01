@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { Alert } from '@mui/lab';
 import { Card, CardContent } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+import { Button, FormikButton } from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
 import {
@@ -107,14 +107,13 @@ export default function ProfileForm({ onClose, updateData }) {
                             >
                                 Cancel
                             </Button>
-                            <Button
+                            <FormikButton
                                 disabled={updateLoading}
                                 size="small"
                                 className="ms-2"
-                                submit
                             >
                                 {updateData ? 'Update' : 'Save'}
-                            </Button>
+                            </FormikButton>
                         </div>
                     </CardContent>
                 </Card>

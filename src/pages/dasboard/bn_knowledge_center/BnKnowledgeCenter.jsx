@@ -1,11 +1,14 @@
 import {
     Close,
     Favorite,
-    Forum, GridView, List,
-    Replay, Star,
+    Forum,
+    GridView,
+    List,
+    Replay,
+    Star,
     StarBorderOutlined,
 } from '@mui/icons-material';
-import {TabContext, TabList, TabPanel} from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
     Card,
     CardContent,
@@ -22,25 +25,25 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';
 import HeatMap from './HeatMap';
 
 const columns = [
-    {id: 'star', label: '#', minWidth: 10},
-    {id: 'ash', label: '', minWidth: 10},
-    {id: 'coin_image', label: 'Coin', minWidth: 25},
-    {id: 'coin', label: '', minWidth: 25},
-    {id: 'currency', label: '', minWidth: 50},
-    {id: 'price', label: 'Price', minWidth: 100},
-    {id: 'h_1', label: '1h', minWidth: 100},
-    {id: 'h_24', label: '24h', minWidth: 100},
-    {id: 'd_7', label: '7d', minWidth: 100},
-    {id: 'volume_24', label: '24h Volume', minWidth: 100},
-    {id: 'mkt_cap', label: 'Mkt Cap', minWidth: 100},
-    {id: 'last_7_days', label: 'Last 7 days', minWidth: 100},
+    { id: 'star', label: '#', minWidth: 10 },
+    { id: 'ash', label: '', minWidth: 10 },
+    { id: 'coin_image', label: 'Coin', minWidth: 25 },
+    { id: 'coin', label: '', minWidth: 25 },
+    { id: 'currency', label: '', minWidth: 50 },
+    { id: 'price', label: 'Price', minWidth: 100 },
+    { id: 'h_1', label: '1h', minWidth: 100 },
+    { id: 'h_24', label: '24h', minWidth: 100 },
+    { id: 'd_7', label: '7d', minWidth: 100 },
+    { id: 'volume_24', label: '24h Volume', minWidth: 100 },
+    { id: 'mkt_cap', label: 'Mkt Cap', minWidth: 100 },
+    { id: 'last_7_days', label: 'Last 7 days', minWidth: 100 },
 ];
 
 function createData(
@@ -75,7 +78,7 @@ function createData(
 
 const rows = [
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         1,
         <img
             height="25px"
@@ -95,7 +98,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         2,
         <img
             height="25px"
@@ -115,7 +118,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         3,
         <img
             height="25px"
@@ -135,7 +138,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         4,
         <img
             height="25px"
@@ -155,7 +158,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         5,
         <img
             height="25px"
@@ -175,7 +178,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         6,
         <img
             height="25px"
@@ -195,7 +198,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         7,
         <img
             height="25px"
@@ -215,7 +218,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         8,
         <img
             height="25px"
@@ -235,7 +238,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         9,
         <img
             height="25px"
@@ -255,7 +258,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         10,
         <img
             height="25px"
@@ -275,7 +278,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         11,
         <img
             height="25px"
@@ -295,7 +298,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         1,
         <img
             height="25px"
@@ -315,7 +318,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         1,
         <img
             height="25px"
@@ -335,7 +338,7 @@ const rows = [
         'Images'
     ),
     createData(
-        <StarBorderOutlined/>,
+        <StarBorderOutlined />,
         12,
         <img
             height="25px"
@@ -380,23 +383,23 @@ export default function BnKnowledgeCenter() {
     const borders = {
         market: {
             borderLeft: '5px solid red',
-            minWidth: '200px'
+            minWidth: '200px',
         },
         volume: {
             borderLeft: '5px solid green',
-            minWidth: '200px'
+            minWidth: '200px',
         },
         carp: {
             borderLeft: '5px solid blue',
-            minWidth: '200px'
+            minWidth: '200px',
         },
         nft: {
             borderLeft: '5px solid yellow',
-            minWidth: '200px'
+            minWidth: '200px',
         },
         coins: {
             borderLeft: '5px solid purple',
-            minWidth: '200px'
+            minWidth: '200px',
         },
     };
 
@@ -441,7 +444,7 @@ export default function BnKnowledgeCenter() {
                                 <Switch
                                     checked={checked}
                                     onChange={handleChange}
-                                    inputProps={{'aria-label': 'controlled'}}
+                                    inputProps={{ 'aria-label': 'controlled' }}
                                 />
                                 Show Status
                             </small>
@@ -465,8 +468,8 @@ export default function BnKnowledgeCenter() {
                                             <span className="text-danger float-end">
                                                 -4.9 %
                                             </span>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <h6>
                                                 <strong>
                                                     $1,964,164,087,420
@@ -492,8 +495,8 @@ export default function BnKnowledgeCenter() {
                                                 {' '}
                                                 -4.9 %
                                             </span>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <h6>
                                                 <strong>
                                                     $1,964,164,087,420
@@ -518,8 +521,8 @@ export default function BnKnowledgeCenter() {
                                             <span className="text-info float-end">
                                                 Bitcoin
                                             </span>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <h6>
                                                 <strong>42.84%</strong>
                                             </h6>
@@ -539,8 +542,8 @@ export default function BnKnowledgeCenter() {
                                 <CardContent>
                                     <Typography variant="caption">
                                         <div>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <h6>
                                                 <strong>456</strong>
                                             </h6>
@@ -560,8 +563,8 @@ export default function BnKnowledgeCenter() {
                                 <CardContent>
                                     <Typography variant="caption">
                                         <div>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <h6>
                                                 <strong>9,076</strong>
                                             </h6>
@@ -573,11 +576,11 @@ export default function BnKnowledgeCenter() {
                         </div>
                     </section>
                 )}
-                <br/>
+                <br />
                 <section>
                     {/* Tabs */}
                     <TabContext value={value}>
-                        <Card sx={{borderBottom: 1, borderColor: 'divider'}}>
+                        <Card sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <TabList
                                 onChange={handleTabChanges}
                                 aria-label="lab API tabs example"
@@ -585,14 +588,20 @@ export default function BnKnowledgeCenter() {
                                 allowScrollButtonsMobile
                                 scrollButtons
                             >
-                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
-                                    <Star/> Portfolio
+                                <button
+                                    className={'btn btn-secondary m-2'}
+                                    style={custom.tabStyle}
+                                >
+                                    <Star /> Portfolio
                                 </button>
-                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
+                                <button
+                                    className={'btn btn-secondary m-2'}
+                                    style={custom.tabStyle}
+                                >
                                     Watchlist
                                 </button>
 
-                                <hr style={custom.verticalLine}/>
+                                <hr style={custom.verticalLine} />
                                 <Tab
                                     label="Cryptocurrency"
                                     value="1"
@@ -620,22 +629,25 @@ export default function BnKnowledgeCenter() {
                                 />
 
                                 {/*Show up only when table views is clicked*/}
-                                {value === 1 &&
-                                <button className={'btn btn-secondary m-3'}>
-                                    <List />
-                                    <GridView />
-                                </button>
-                                }
+                                {value === 1 && (
+                                    <button className={'btn btn-secondary m-3'}>
+                                        <List />
+                                        <GridView />
+                                    </button>
+                                )}
                             </TabList>
                         </Card>
                         <TabPanel
                             value="1"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             {/*Portfolio*/}
-                            <Paper sx={{width: '100%', overflow: 'hidden'}}>
-                                <TableContainer sx={{maxHeight: 440}}>
-                                    <Table stickyHeader aria-label="sticky table">
+                            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                                <TableContainer sx={{ maxHeight: 440 }}>
+                                    <Table
+                                        stickyHeader
+                                        aria-label="sticky table"
+                                    >
                                         <TableHead>
                                             <TableRow>
                                                 {columns.map((column) => (
@@ -644,7 +656,7 @@ export default function BnKnowledgeCenter() {
                                                         align={column.align}
                                                         style={{
                                                             minWidth:
-                                                            column.minWidth,
+                                                                column.minWidth,
                                                             backgroundColor:
                                                                 '#3e4041',
                                                             color: '#fff',
@@ -660,7 +672,7 @@ export default function BnKnowledgeCenter() {
                                                 .slice(
                                                     page * rowsPerPage,
                                                     page * rowsPerPage +
-                                                    rowsPerPage
+                                                        rowsPerPage
                                                 )
                                                 .map((row) => {
                                                     return (
@@ -676,7 +688,7 @@ export default function BnKnowledgeCenter() {
                                                                         row[
                                                                             column
                                                                                 .id
-                                                                            ];
+                                                                        ];
                                                                     return (
                                                                         <TableCell
                                                                             key={
@@ -689,10 +701,10 @@ export default function BnKnowledgeCenter() {
                                                                             <a href="#">
                                                                                 {column.format &&
                                                                                 typeof val ===
-                                                                                'number'
+                                                                                    'number'
                                                                                     ? column.format(
-                                                                                        val
-                                                                                    )
+                                                                                          val
+                                                                                      )
                                                                                     : val}
                                                                             </a>
                                                                         </TableCell>
@@ -720,11 +732,11 @@ export default function BnKnowledgeCenter() {
                         </TabPanel>
                         <TabPanel
                             value="2"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             {/*Watchlist*/}
                             <Card>
-                                <TableContainer sx={{maxHeight: 440}}>
+                                <TableContainer sx={{ maxHeight: 440 }}>
                                     <Table
                                         stickyHeader
                                         aria-label="sticky table"
@@ -737,7 +749,7 @@ export default function BnKnowledgeCenter() {
                                                         align={column.align}
                                                         style={{
                                                             minWidth:
-                                                            column.minWidth,
+                                                                column.minWidth,
                                                             backgroundColor:
                                                                 '#3e4041',
                                                             color: '#fff',
@@ -761,7 +773,7 @@ export default function BnKnowledgeCenter() {
                                     <button className=" btn btn-primary m-2">
                                         Add Coins
                                     </button>
-                                    <br/>
+                                    <br />
                                     <a className="text-primary">
                                         Visit Cryptogazing
                                     </a>
@@ -770,7 +782,7 @@ export default function BnKnowledgeCenter() {
                         </TabPanel>
                         <TabPanel
                             value="3"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             {/* Cryptogazing*/}
                             <div className="container col-6 text-center justify-content-center">
@@ -811,7 +823,7 @@ export default function BnKnowledgeCenter() {
                                                 <p className="text-danger">
                                                     <strong>7.76%</strong>
                                                 </p>
-                                                <br/>
+                                                <br />
                                                 <p>Available Supply</p>
                                                 <p>18,834,400</p>
                                             </div>
@@ -824,29 +836,29 @@ export default function BnKnowledgeCenter() {
                                                         $300,213,918,809
                                                     </strong>
                                                 </p>
-                                                <br/>
+                                                <br />
                                                 <p>Total Supply</p>
                                                 <p>21,000,000</p>
                                             </div>
                                         </div>
                                         <div className="m-2">
-                                            <img alt="Bitcoin graph"/>
+                                            <img alt="Bitcoin graph" />
                                         </div>
                                     </CardContent>
                                 </Card>
                                 <Card className="mt-2 col-12">
                                     <div className="d-flex flex-row justify-content-around m-3">
                                         <div>
-                                            <Replay sx={{color: 'red'}}/>
+                                            <Replay sx={{ color: 'red' }} />
                                         </div>
                                         <div>
-                                            <Close/>
+                                            <Close />
                                         </div>
                                         <div>
-                                            <Favorite/>
+                                            <Favorite />
                                         </div>
                                         <div>
-                                            <Forum/>
+                                            <Forum />
                                         </div>
                                     </div>
                                 </Card>
@@ -854,33 +866,33 @@ export default function BnKnowledgeCenter() {
                         </TabPanel>
                         <TabPanel
                             value="4"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             {/*Categories*/}
                             <Card>Categories</Card>
                         </TabPanel>
                         <TabPanel
                             value="5"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             {/*Gainers and Losers*/}
                             <Card>
-                                <GainersAndLosers/>
+                                <GainersAndLosers />
                             </Card>
                         </TabPanel>
                         <TabPanel
                             value="6"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             <Card>Coming Soon</Card>
                         </TabPanel>
                         <TabPanel
                             value="7"
-                            classes={{root: classes.tabPanelRoot}}
+                            classes={{ root: classes.tabPanelRoot }}
                         >
                             <Card>
                                 <div>
-                                    <HeatMap/>
+                                    <HeatMap />
                                 </div>
                             </Card>
                         </TabPanel>

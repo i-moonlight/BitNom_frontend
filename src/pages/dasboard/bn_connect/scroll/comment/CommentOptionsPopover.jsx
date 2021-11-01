@@ -17,7 +17,7 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import {
     GET_BOOKMARKED_COMMENTS,
     MUTATION_CREATE_BOOKMARK,
@@ -112,6 +112,7 @@ export default function CommentOptionsPopover({
             open={isCommentOptionOpen}
             onClose={handleCommentOptionClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}
@@ -124,7 +125,7 @@ export default function CommentOptionsPopover({
                     </ListItemIcon>
                     <ListItemText
                         primary="Save this comment"
-                        secondary="Add this to your bookmarks"
+                        secondary="Add this to your saved items"
                     />
                 </ListItem>
                 <ListItem button divider onClick={handleReportComment}>

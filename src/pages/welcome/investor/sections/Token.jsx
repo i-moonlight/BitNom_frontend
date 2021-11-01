@@ -3,7 +3,7 @@ import { ChevronRightRounded } from '@mui/icons-material';
 import { Container, Grid, Typography } from '@mui/material';
 import React from 'react';
 import supplyImg from '../../../../assets/investor/image_5.png';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 
 export default function Token() {
     const theme = useTheme();

@@ -28,7 +28,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../../../../components/Button';
+import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
@@ -41,8 +41,11 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
@@ -252,7 +255,10 @@ export default function Comment({
                         backgroundColor: '#fed132',
                         zIndex: 0,
                     }}
-                    src={comment?.author?.profile_pic}
+                    src={
+                        process.env.REACT_APP_BACKEND_URL +
+                        comment?.author?.profile_pic
+                    }
                     className="mx-2"
                 >
                     {commentUserInitials}
@@ -488,7 +494,10 @@ export default function Comment({
                                     style={{
                                         backgroundColor: '#fed132',
                                     }}
-                                    src={scroll?.author?.image}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
                                     className="mx-2"
                                 >
                                     {currentUserInitials}

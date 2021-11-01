@@ -10,7 +10,7 @@ import {
     useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import {
     MUTATION_ADD_LANGUAGE,
     MUTATION_REMOVE_LANGUAGE,

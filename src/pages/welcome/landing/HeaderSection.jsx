@@ -10,7 +10,7 @@ import {
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import headerBgImg from '../../../assets/landing/img12.png';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 
 export default function HeaderSection() {

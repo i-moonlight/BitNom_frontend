@@ -35,8 +35,9 @@ import { useHistory } from 'react-router-dom';
 //import IosShareIcon from '@mui/icons-material/IosShare'
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
+import ExternalShareModal from '../bn_connect/popovers/ExternalShareModal';
 import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
@@ -98,6 +99,7 @@ export default function EventView({ match }) {
     const [flaggedResource, setFlaggedResource] = useState(null);
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [createFlagOpen, setCreateFlagOpen] = useState(false);
+    const [openShareModal, setOpenShareModal] = useState(false);
 
     const classes = useStyles();
     const history = useHistory();
@@ -903,6 +905,15 @@ export default function EventView({ match }) {
                                                         <div className="center-horizontal">
                                                             <Avatar
                                                                 variant="rounded"
+                                                                src={
+                                                                    process.env
+                                                                        .REACT_APP_BACKEND_URL +
+                                                                    eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                        ?.host
+                                                                        ?.profile_pic
+                                                                }
                                                                 className={
                                                                     classes.avatar
                                                                 }
@@ -917,11 +928,10 @@ export default function EventView({ match }) {
                                                                 }
                                                             </Typography>
                                                         </div>
-                                                        <Typography>
-                                                            <Button variant="outlined">
-                                                                Subscribe
-                                                            </Button>
-                                                        </Typography>
+
+                                                        <Button variant="outlined">
+                                                            Subscribe
+                                                        </Button>
                                                     </div>
                                                     <Typography
                                                         style={{
@@ -1034,6 +1044,8 @@ export default function EventView({ match }) {
                 setOpenFlag={setCreateFlagOpen}
                 handleEventOptionsClose={handleEventOptionsClose}
                 handleCreateBookmark={handleCreateBookmark}
+                setOpenShareModal={setOpenShareModal}
+                setSharedResource={setSharedResource}
             />
             <FlagResourceModal
                 openFlag={createFlagOpen}
@@ -1047,6 +1059,12 @@ export default function EventView({ match }) {
                 setOpenUpdate={(open) => setUpdateEventOpen(open)}
                 eventToEdit={eventToEdit}
                 setEventToEdit={setEventToEdit}
+            />
+            <ExternalShareModal
+                openShareModal={openShareModal}
+                sharedResource={sharedResource}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
         </Screen>
     );

@@ -26,13 +26,12 @@ import {
     ListItemText,
     Modal,
     Typography,
-    useTheme,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { mentionsFinder, mentionsUpdate } from '../../utilities/functions';
@@ -63,7 +62,6 @@ export default function UpdatePost({
     const [scroll_images, setScrollImages] = useState(null);
     const [scroll_video, setScrollVideo] = useState(undefined);
     const [openDelete, setOpenDelete] = useState(false);
-    const theme = useTheme();
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const [
@@ -201,7 +199,10 @@ export default function UpdatePost({
                                         style={{
                                             backgroundColor: '#fed132',
                                         }}
-                                        src={user?.profile_pic}
+                                        src={
+                                            process.env.REACT_APP_BACKEND_URL +
+                                            user?.profile_pic
+                                        }
                                     >
                                         {userInitials}
                                     </Avatar>
@@ -212,9 +213,6 @@ export default function UpdatePost({
                                         <Button
                                             textCase
                                             style={{
-                                                backgroundColor:
-                                                    theme.palette.background
-                                                        .default,
                                                 padding: '0px 10px',
                                                 textTransform: 'none',
                                             }}

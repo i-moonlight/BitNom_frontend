@@ -27,7 +27,7 @@ import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
-import Button from '../../Button';
+import { Button } from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
@@ -186,8 +186,10 @@ export default function ProfileBar({
                                     height: 30,
                                 }}
                                 src={
-                                    profile?.profile_pic ||
-                                    user?.profile_pic ||
+                                    process.env.REACT_APP_BACKEND_URL +
+                                        profile?.profile_pic ||
+                                    process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic ||
                                     `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
                             >

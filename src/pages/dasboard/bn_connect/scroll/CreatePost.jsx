@@ -24,7 +24,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import React, { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -185,7 +185,10 @@ export default function CreatePost({
                                         style={{
                                             backgroundColor: '#fed132',
                                         }}
-                                        src={user?.profile_pic}
+                                        src={
+                                            process.env.REACT_APP_BACKEND_URL +
+                                            user?.profile_pic
+                                        }
                                     >
                                         {userInitials}
                                     </Avatar>

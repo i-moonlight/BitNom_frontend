@@ -12,7 +12,11 @@ export default function HeatMap() {
     return (
         <>
             <div>
-                <section className={'d-lg-flex d-md-flex d-sm-block  justify-content-between m-3'}>
+                <section
+                    className={
+                        'd-lg-flex d-md-flex d-sm-block  justify-content-between m-3'
+                    }
+                >
                     <div className={'d-lg-flex d-md-flex d-sm-block '}>
                         <strong>
                             Performance:{' '}

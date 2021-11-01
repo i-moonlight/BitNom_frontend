@@ -51,6 +51,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const handleChatSettingOpen = (e) => {
         setChatSettingsAnchorEl(e.currentTarget);
     };
+
     const handleSearchMessage = (e) => {
         setValues(
             searchTerm?.length >= 250

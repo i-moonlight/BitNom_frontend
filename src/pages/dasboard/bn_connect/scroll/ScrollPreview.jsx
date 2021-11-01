@@ -43,7 +43,10 @@ export default function ScrollPreview({ scroll }) {
                             style={{
                                 backgroundColor: '#fed132',
                             }}
-                            src={scroll?.author?.image}
+                            src={
+                                process.env.REACT_APP_BACKEND_URL +
+                                scroll?.author?.profile_pic
+                            }
                             aria-label="recipe"
                         >
                             {authorInitials}

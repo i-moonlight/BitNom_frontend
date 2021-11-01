@@ -55,7 +55,10 @@ export default function SavedComment({
                                 style={{
                                     backgroundColor: '#fed132',
                                 }}
-                                src={comment?.author?.profile_pic}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    comment?.author?.profile_pic
+                                }
                             >
                                 {commentUserInitials}
                             </Avatar>

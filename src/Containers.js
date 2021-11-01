@@ -83,13 +83,21 @@ const wsLink = new WebSocketLink({
     url: process.env.REACT_APP_SOCKET_URL,
 });
 
-const profileLink = from([
+/* const profileLink = from([
     errorLink,
     new HttpLink({
         uri: backendUri + '/users/graphql',
         credentials: 'include',
     }),
-]);
+]); */
+
+const profileLink = createUploadLink({
+    uri: backendUri + '/users/graphql',
+    credentials: 'include',
+    headers: {
+        'keep-alive': 'true',
+    },
+});
 
 const notificationsLink = from([
     errorLink,

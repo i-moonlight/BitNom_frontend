@@ -18,7 +18,7 @@ import {
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import { getUserInitials } from '../../../utilities/Helpers';
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
@@ -36,6 +36,7 @@ export default function UserCard({ setOpen, followers, following }) {
     const card = useRef();
     const history = useHistory();
     const location = useLocation();
+
     const sticky =
         window.innerHeight < card?.current?.clientHeight + 176
             ? window.innerHeight - (card?.current?.clientHeight + 24)
@@ -54,7 +55,10 @@ export default function UserCard({ setOpen, followers, following }) {
             <Card style={{ marginBottom: 16 }} variant={'outlined'}>
                 <CardMedia
                     style={{ height: 100 }}
-                    image={'https://picsum.photos/300/200'}
+                    image={
+                        process.env.REACT_APP_BACKEND_URL + user?.cover_pic ||
+                        'https://picsum.photos/300/200'
+                    }
                     component="img"
                     // title='Contemplative Reptile'
                 />
@@ -68,7 +72,10 @@ export default function UserCard({ setOpen, followers, following }) {
                     <div className="space-between">
                         <div>
                             <Avatar
-                                src={user?.profile_pic}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    user?.profile_pic
+                                }
                                 variant="rounded"
                                 style={{
                                     backgroundColor: '#fed132',

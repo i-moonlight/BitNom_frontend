@@ -3,7 +3,7 @@ import { DoneAll, FileCopy } from '@mui/icons-material';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import qrImg from '../../../../assets/investor/qr2.png';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 
 export default function DonateCard() {
     const [justCopied, setJustCopied] = useState(false);

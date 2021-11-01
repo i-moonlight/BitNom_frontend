@@ -19,7 +19,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
@@ -37,6 +37,8 @@ export default function ScrollOptionsPopover({
     scrollOptionAnchorEl,
     isScrollOptionOpen,
     handleScrollOptionClose,
+    setOpenShareModal,
+    setSharedResource,
 }) {
     const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
     const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
@@ -112,6 +114,7 @@ export default function ScrollOptionsPopover({
             open={isScrollOptionOpen}
             onClose={handleScrollOptionClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}
@@ -124,7 +127,7 @@ export default function ScrollOptionsPopover({
                     </ListItemIcon>
                     <ListItemText
                         primary="Save this post"
-                        secondary="Add this to your bookmarks"
+                        secondary="Add this to your saved items"
                     />
                 </ListItem>
                 <ListItem button divider onClick={handleReportScroll}>
@@ -148,25 +151,19 @@ export default function ScrollOptionsPopover({
                     button
                     divider
                     onClick={() => {
-                        navigator.clipboard.writeText(
-                            `${location.origin}/posts/${scroll?._id}`
-                        );
-                        toast.success('Post link copied to clipboard', {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        });
                         handleScrollOptionClose();
+                        setSharedResource(scroll);
+                        setOpenShareModal(true);
+                        /* navigator.clipboard.writeText(
+                            `${location.origin}/posts/${scroll?._id}`
+                        );*/
                     }}
                 >
                     <ListItemIcon>
                         <FileCopyOutlined />
                     </ListItemIcon>
                     <ListItemText
-                        primary="Copy this post"
+                        primary="Share link"
                         secondary="Share this post on other platforms"
                     />
                 </ListItem>

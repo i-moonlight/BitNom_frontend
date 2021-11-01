@@ -173,7 +173,7 @@ export default function NavBar() {
         }
 
         if (window.location.pathname == '/investors') {
-            setTabValue(3);
+            setTabValue(4);
         }
 
         const count =

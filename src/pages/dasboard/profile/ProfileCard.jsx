@@ -12,17 +12,19 @@ import {
 import { Card, CardContent, Snackbar, Typography } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
-import React, { useState } from 'react';
-import Button from '../../../components/Button';
+import React, { useState, useEffect } from 'react';
+import { Button } from '../../../components/Button';
+import { useDispatch } from 'react-redux';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 import ProfileForm from './forms/ProfileForm';
+import { setUpdateUser } from '../../../store/actions/userUpdateActions';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
 
 export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
-    const [coverImage, setCoverImage] = useState();
-    const [profileImage, setProfileImage] = useState();
-
+    const [profilePreviewURL, setProfilePreviewURL] = useState(null);
+    const [coverPreviewURL, setCoverPreviewURL] = useState(null);
+    const dispatch = useDispatch();
     const onClose = () => {
         setShowForm(false);
     };
@@ -30,6 +32,63 @@ export default function ProfileCard({ profile, profileView }) {
     const [updateUser] = useMutation(MUTATION_UPDATE_PROFILE, {
         context: { clientName: 'users' },
     });
+
+    useEffect(() => {
+        if (profile?.profile_pic) {
+            setProfilePreviewURL(
+                process.env.REACT_APP_BACKEND_URL + profile?.profile_pic
+            );
+        }
+        if (profile?.cover_pic) {
+            setCoverPreviewURL(
+                process.env.REACT_APP_BACKEND_URL + profile?.cover_pic
+            );
+        }
+    }, [profile?.profile_pic, profile?.cover_pic]);
+
+    const handleUpdateProfilePic = (pic) => {
+        if (!pic) return;
+        updateUser({
+            variables: {
+                data: {
+                    profile_pic: pic,
+                },
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: {
+                        clientName: 'users',
+                    },
+                },
+            ],
+        }).then(({ data }) => {
+            const userData = data?.Users?.update;
+            data?.Users?.update && dispatch(setUpdateUser(userData));
+        });
+    };
+
+    const handleUpdateCoverPic = (cover) => {
+        if (!cover) return;
+        updateUser({
+            variables: {
+                data: {
+                    cover_pic: cover,
+                },
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: {
+                        clientName: 'users',
+                    },
+                },
+            ],
+        }).then(({ data }) => {
+            const userData = data?.Users?.update;
+            data?.Users?.update && dispatch(setUpdateUser(userData));
+        });
+    };
 
     return (
         <div>
@@ -47,8 +106,7 @@ export default function ProfileCard({ profile, profileView }) {
                 <div
                     style={{
                         backgroundImage:
-                            coverImage &&
-                            `url('${URL.createObjectURL(coverImage)}')`,
+                            coverPreviewURL && `url('${coverPreviewURL}')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundColor: '#aaa',
@@ -59,8 +117,8 @@ export default function ProfileCard({ profile, profileView }) {
                         clearOnUnmount
                         Icon={CameraAltRounded}
                         dropzoneText={' '}
-                        acceptedFiles={['image/*']}
-                        maxFileSize={5000000}
+                        acceptedFiles={['image/jpeg', 'image/png']}
+                        maxFileSize={2500000}
                         filesLimit={1}
                         showAlerts={['error']}
                         showPreviews={false}
@@ -69,26 +127,9 @@ export default function ProfileCard({ profile, profileView }) {
                             container: { spacing: 1, direction: 'row' },
                         }}
                         onChange={(files) => {
-                            setCoverImage(files[0]);
-
-                            const IUpdateUser = {
-                                cover_pic: files[0],
-                            };
-
-                            updateUser({
-                                variables: {
-                                    data: IUpdateUser,
-                                },
-                                refetchQueries: [
-                                    {
-                                        query: QUERY_FETCH_PROFILE,
-                                        context: { clientName: 'users' },
-                                    },
-                                ],
-                            }).then(() => {
-                                // resetForm();
-                                onClose();
-                            });
+                            if (files.length < 1) return;
+                            setCoverPreviewURL(URL.createObjectURL(files[0]));
+                            handleUpdateCoverPic(files[0]);
                         }}
                     />
                 </div>
@@ -107,10 +148,8 @@ export default function ProfileCard({ profile, profileView }) {
                                 variant="rounded"
                                 style={{
                                     backgroundImage:
-                                        profileImage &&
-                                        `url('${URL.createObjectURL(
-                                            profileImage
-                                        )}')`,
+                                        profilePreviewURL &&
+                                        `url('${profilePreviewURL}')`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     backgroundColor: 'transparent',
@@ -123,7 +162,11 @@ export default function ProfileCard({ profile, profileView }) {
                                     dropzoneClass="profile-upload-dropzone"
                                     clearOnUnmount
                                     onChange={(files) => {
-                                        setProfileImage(files[0]);
+                                        if (files.length < 1) return;
+                                        setProfilePreviewURL(
+                                            URL.createObjectURL(files[0])
+                                        );
+                                        handleUpdateProfilePic(files[0]);
                                     }}
                                     Icon={CameraAltRounded}
                                     dropzoneText={false}

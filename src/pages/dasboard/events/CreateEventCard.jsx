@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Button from '../../../components/Button';
+import { Button } from '../../../components/Button';
 
 function CreateEventCard({ setOpen, setSelectedIndex, selectedIndex }) {
     const location = useLocation();

@@ -30,6 +30,8 @@ export default function EventOptionsPopover({
     profile,
     event,
     handleCreateBookmark,
+    setOpenShareModal,
+    setSharedResource,
 }) {
     //const state = useSelector((st) => st);
     //const user = state.auth.user;
@@ -51,6 +53,7 @@ export default function EventOptionsPopover({
             open={isEventOptionsOpen}
             onClose={handleEventOptionsClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disableScrollLock
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}
@@ -92,6 +95,14 @@ export default function EventOptionsPopover({
                 <ListItem
                     onClick={() => {
                         handleCreateBookmark();
+                        toast.success('Added to saved items', {
+                            position: 'bottom-left',
+                            autoClose: 3000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        });
                         handleEventOptionsClose();
                     }}
                     button
@@ -104,7 +115,7 @@ export default function EventOptionsPopover({
                         <CheckBox />
                     </ListItemIcon>
                     <ListItemText
-                        primary="Bookmark this event"
+                        primary="Save this event"
                         secondary="Add this to your saved items"
                     />
                 </ListItem>
@@ -112,25 +123,16 @@ export default function EventOptionsPopover({
                     button
                     divider
                     onClick={() => {
-                        navigator.clipboard.writeText(
-                            `${location.origin}/events/${event?._id}`
-                        );
-                        toast.success('Event link copied to clipboard', {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        });
                         handleEventOptionsClose();
+                        setSharedResource(event);
+                        setOpenShareModal(true);
                     }}
                 >
                     <ListItemIcon>
                         <FileCopyOutlined />
                     </ListItemIcon>
                     <ListItemText
-                        primary="Copy this event"
+                        primary="Share link"
                         secondary="Share this event on other platforms"
                     />
                 </ListItem>

@@ -19,7 +19,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Card, Container, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
-import Button from '../../../../components/Button';
+import { Button } from '../../../../components/Button';
 import Screen from '../../../../components/Screen';
 import Forum from './partials/Forum';
 import HistoricalData from './partials/HistoricalData';
@@ -195,9 +195,7 @@ export default function CoinDetails() {
                                 <div className={'m-1'}>
                                     <div className={'row'}>
                                         <div className={'col-3'}>
-                                            <strong
-                                                className="text-secondary"
-                                            >
+                                            <strong className="text-secondary">
                                                 Website
                                             </strong>
                                         </div>

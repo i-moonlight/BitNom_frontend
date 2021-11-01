@@ -103,7 +103,7 @@ export default function Messages({ onExitChatMobile }) {
                 style={{
                     overflowY: 'auto',
                     minHeight: '50vh',
-                    height: window.innerHeight - 348,
+                    height: window.innerHeight - 372,
                 }}
             >
                 {dialogue.status === 'accepted' &&

@@ -10,7 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
+import { Button, FormikButton } from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';
 import { educationInitialValues } from '../utilities/profile.initialValues';
@@ -234,14 +234,13 @@ export default function EducationForm({ onClose, updateData }) {
                                     Delete
                                 </Button>
                             )}
-                            <Button
+                            <FormikButton
                                 disabled={addLoading || updateLoading}
                                 size="small"
                                 className="ms-2"
-                                submit
                             >
                                 {updateData ? 'Update' : 'Save'}
-                            </Button>
+                            </FormikButton>
                         </div>
                     </CardContent>
                 </Card>

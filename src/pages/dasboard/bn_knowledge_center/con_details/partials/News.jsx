@@ -50,7 +50,8 @@ export default function News() {
                             variant="scrollable"
                             allowScrollButtonsMobile
                             scrollButtons
-                            aria-label="Bitcoin New tab">
+                            aria-label="Bitcoin New tab"
+                        >
                             <h6 className={'m-3'}>
                                 <strong>BitCoin Markets</strong>
                             </h6>
@@ -66,11 +67,17 @@ export default function News() {
                             />
                         </TabList>
                     </Box>
-                    <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
+                    <TabPanel
+                        value="1"
+                        classes={{ root: classes.tabPanelRoot }}
+                    >
                         <div className={'row m-3'}>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
                                         alt={'markets'}
                                         className={'img-thumbnail'}
                                         height={'200'}
@@ -78,11 +85,17 @@ export default function News() {
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -91,19 +104,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -112,19 +134,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -133,19 +164,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -154,19 +194,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -175,19 +224,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -196,19 +254,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -217,19 +284,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
@@ -238,19 +314,28 @@ export default function News() {
                             </Card>
                             <Card className={'col-sm-12 col-md-3 col-lg-3 m-3'}>
                                 <div>
-                                    <img src={'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'}
-                                         alt={'markets'}
-                                         className={'img-thumbnail'}
-                                         height={'200'}
+                                    <img
+                                        src={
+                                            'https://miro.medium.com/max/1024/1*2lw5D9tul5b2f4bTe8YeAw.jpeg'
+                                        }
+                                        alt={'markets'}
+                                        className={'img-thumbnail'}
+                                        height={'200'}
                                     />
                                 </div>
                                 <div>
                                     <p>
-                                        Bitcoin EFT Approval{' '}{'Hangs in the balance'} , Hopes Up on Nes SEC Chairman
+                                        Bitcoin EFT Approval{' '}
+                                        {'Hangs in the balance'} , Hopes Up on
+                                        Nes SEC Chairman
                                     </p>
                                 </div>
 
-                                <div className={'d-flex justify-content-between text-secondary'}>
+                                <div
+                                    className={
+                                        'd-flex justify-content-between text-secondary'
+                                    }
+                                >
                                     <p>@4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
