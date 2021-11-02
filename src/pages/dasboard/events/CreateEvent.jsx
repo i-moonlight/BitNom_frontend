@@ -151,7 +151,6 @@ export default function CreateEvent({ open, setOpen }) {
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
-                console.error('Error', latitude, longitude);
             })
             .catch((error) => console.error('Error', error));
     };
