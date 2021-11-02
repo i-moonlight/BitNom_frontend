@@ -44,7 +44,7 @@
         "react-places-autocomplete": "^7.3.0",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
-        "react-scripts": "^3.4.4",
+        "react-scripts": "^4.0.3",
         "react-share": "^4.4.0",
         "react-swipeable-views": "^0.14.0",
         "react-syntax-highlighter": "^15.4.4",
@@ -74,7 +74,7 @@
         "eject": "react-scripts eject",
         "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
         "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"profile\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"further perfomance boosts\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
     },
     "eslintConfig": {
         "extends": [
@@ -96,6 +96,7 @@
     },
     "devDependencies": {
         "@mui/material": "^5.0.3",
+        "eslint-plugin-react-hooks": "^4.2.0",
         "prettier": "^2.4.1",
         "prop-types": "^15.7.2",
         "redux-devtools-extension": "^2.13.9"

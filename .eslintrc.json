@@ -19,10 +19,8 @@
     },
     "plugins": ["react"],
     "rules": {
-        "template-curly-spacing": 0,
-        "no-unused-vars": 1,
-        "no-unused-expressions": 0,
-        "no-restricted-globals": 0,
+        "template-curly-spacing": "off",
+        "no-unused-vars": "warn",
         "quotes": [
             1,
             "single",

@@ -8,7 +8,6 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    //ListItemIcon,
     ListItemText,
     Popover,
     Typography,
@@ -27,8 +26,6 @@ export default function NotificationsPopover({
     isNotificationOpen,
     handleNotificationsClose,
     notifications,
-    //notificationOptionId,
-    //handleNotificationOptionOpen,
 }) {
     return (
         <Popover
