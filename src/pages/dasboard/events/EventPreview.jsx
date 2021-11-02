@@ -1,7 +1,7 @@
 import { RoomRounded, VideocamRounded } from '@mui/icons-material';
 import { Card, CardActionArea, Typography, useMediaQuery } from '@mui/material';
 import moment from 'moment';
-import React from 'react';
+
 import { useHistory } from 'react-router-dom';
 
 function EventPreview({ event }) {

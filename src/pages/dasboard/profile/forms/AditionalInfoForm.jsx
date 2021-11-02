@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { SearchRounded } from '@mui/icons-material';
 import { Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
+
 import { Button, FormikButton } from '../../../../components/Button';
 import Form from '../../../../components/Form';
 import TextField from '../../../../components/TextField';

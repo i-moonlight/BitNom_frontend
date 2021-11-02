@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';

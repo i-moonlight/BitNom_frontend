@@ -9,7 +9,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import MenuOptions from './MenuOptions';
 

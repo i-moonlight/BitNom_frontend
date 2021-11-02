@@ -8,7 +8,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import React from 'react';
+
 import { team } from '../../utilities/welcome.data';
 import TeamCard from '../cards/TeamCard';
 

@@ -7,7 +7,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {

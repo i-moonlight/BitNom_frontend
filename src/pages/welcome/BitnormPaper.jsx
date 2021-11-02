@@ -1,7 +1,6 @@
 import { Card, CardContent, Container, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
 
 export default function BitnormPaper({ title, children }) {
     const classes = useStyles();

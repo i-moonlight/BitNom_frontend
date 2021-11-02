@@ -30,6 +30,14 @@
         "semi": ["error", "always"],
         "no-undef": 2,
         "prefer-const": 1,
-        "no-shadow": 1
+        "no-shadow": 1,
+        "no-unused-expressions": 0,
+        "no-restricted-globals": 0,
+        "react/react-in-jsx-scope": 0
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

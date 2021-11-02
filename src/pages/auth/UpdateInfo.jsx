@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { DoneRounded } from '@mui/icons-material';
 import { Alert, Card, CardContent, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, FormikButton } from '../../components/Button';

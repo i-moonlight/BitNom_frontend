@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { healthCheck } from '../../utilities/welcome.data';
 
 export default function HealthCheck() {

@@ -18,7 +18,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
@@ -136,8 +137,8 @@ export default function People() {
 }
 
 function ListItemComponent({ item, getFollowStatus }) {
-    const [status, setStatus] = React.useState();
-    React.useEffect(() => {
+    const [status, setStatus] = useState();
+    useEffect(() => {
         if (getFollowStatus(item)) setStatus(true);
     }, [getFollowStatus, item]);
 

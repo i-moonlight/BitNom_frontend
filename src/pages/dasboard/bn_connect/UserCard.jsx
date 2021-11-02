@@ -15,7 +15,7 @@ import {
     Divider,
     Typography,
 } from '@mui/material';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Button } from '../../../components/Button';

@@ -19,7 +19,7 @@ import {
     Typography,
     Autocomplete,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
 //import { getUserInitials } from '../../../utilities/Helpers';
 //import { getReactionsSum } from '../utilities/functions';

@@ -12,7 +12,7 @@ import { makeStyles } from '@mui/styles';
 import { createUploadLink } from 'apollo-upload-client';
 import { print } from 'graphql';
 import { createClient } from 'graphql-ws';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Routes from './Routes';
 import { checkSessionTimeOut } from './store/actions/authActions';

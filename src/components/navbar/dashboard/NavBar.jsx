@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { AppBar, Divider, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import {

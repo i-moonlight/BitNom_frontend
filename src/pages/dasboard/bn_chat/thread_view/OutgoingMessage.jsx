@@ -10,7 +10,7 @@ import {
     Card,
 } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
 import ReactMarkdown from 'react-markdown';

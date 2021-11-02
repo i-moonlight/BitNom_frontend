@@ -19,7 +19,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';

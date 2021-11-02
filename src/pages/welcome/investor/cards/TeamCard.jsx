@@ -8,7 +8,7 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function TeamCard({ member, desc }) {
     const [descOpen, setDescOpen] = useState(false);

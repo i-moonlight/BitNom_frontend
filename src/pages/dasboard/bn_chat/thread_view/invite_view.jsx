@@ -6,7 +6,7 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-import React from 'react';
+
 import { Button } from '../../../../components/Button';
 
 import {

@@ -37,7 +37,8 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
+
 import CoinChart from './CoinChart';
 
 function createData(
@@ -205,7 +206,7 @@ const useStyles = makeStyles({
     },
 });
 export default function Overview() {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

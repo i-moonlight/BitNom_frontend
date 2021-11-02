@@ -8,7 +8,7 @@ import {
     Paper,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+
 import MenuItems from '../MenuItems';
 
 export default function MobileMenuModal({ isMenuOpen, handleMenuClose }) {

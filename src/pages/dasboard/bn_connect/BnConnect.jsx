@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';

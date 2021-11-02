@@ -7,7 +7,7 @@
 
 import { useTheme } from '@emotion/react';
 import { Card } from '@mui/material';
-import React from 'react';
+
 import ApexCharts from 'react-apexcharts';
 
 const series = [

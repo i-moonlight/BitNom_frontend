@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Card, CardContent, Chip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../../../components/Button';
 import {
     MUTATION_UPDATE_PROFILE,

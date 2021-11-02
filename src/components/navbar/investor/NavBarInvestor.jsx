@@ -9,7 +9,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { withStyles, styled } from '@mui/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';

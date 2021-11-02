@@ -10,7 +10,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // import Carousel from 'react-material-ui-carousel';
 import { ecosystem } from '../../utilities/welcome.data';
 import EcosystemCard from '../cards/EcosystemCard';
