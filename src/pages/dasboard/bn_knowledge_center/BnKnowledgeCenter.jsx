@@ -26,7 +26,8 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
+
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';
 import HeatMap from './HeatMap';
@@ -366,10 +367,10 @@ const useStyles = makeStyles({
 });
 
 export default function BnKnowledgeCenter() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [checked, setChecked] = React.useState(true);
-    const [value, setValue] = React.useState('1');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [checked, setChecked] = useState(true);
+    const [value, setValue] = useState('1');
 
     const handleChangePage = (newPage) => {
         setPage(newPage);

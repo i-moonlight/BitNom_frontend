@@ -7,7 +7,7 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { platformLayers } from '../utilities/welcome.data';
 import { INVESTOR_CARD_DISPLACEMENT } from './Landing';

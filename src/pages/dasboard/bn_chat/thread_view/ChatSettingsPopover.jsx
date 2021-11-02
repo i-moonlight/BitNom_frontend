@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
-import React from 'react';
+
 import {
     ARCHIVE_CHAT,
     BLOCK_CHAT,

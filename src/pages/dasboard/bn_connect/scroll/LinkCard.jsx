@@ -8,7 +8,6 @@ import {
     Divider,
     Typography,
 } from '@mui/material';
-import React from 'react';
 
 export default function LinkCard({ link }) {
     const { image, title, description, url, hostname } = link || {};

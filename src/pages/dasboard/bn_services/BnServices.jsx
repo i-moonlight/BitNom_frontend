@@ -6,7 +6,7 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Screen from '../../../components/Screen';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import ServiceCard from './ServiceCard';

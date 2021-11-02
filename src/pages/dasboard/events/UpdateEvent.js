@@ -23,7 +23,7 @@ import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
 import { DropzoneArea } from 'react-mui-dropzone';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 //import { useSelector } from 'react-redux';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';

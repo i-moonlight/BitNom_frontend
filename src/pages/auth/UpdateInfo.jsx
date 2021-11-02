@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client';
 import { DoneRounded } from '@mui/icons-material';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Alert, Card, CardContent, Grid, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { FormikButton } from '../../components/Button';
+import { Button, FormikButton } from '../../components/Button';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
@@ -24,7 +24,6 @@ export default function UpdateInfo() {
     });
 
     useEffect(() => {
-        user?.email?.verified && user?.displayName && history.push('/connect');
         JSON.stringify(user) === '{}' && history.push('/auth/login');
     }, [history, user]);
 
@@ -91,9 +90,47 @@ export default function UpdateInfo() {
                                         <FormikButton
                                             fullWidth
                                             className="mt-2"
+                                            disabled={
+                                                user?.email?.verified &&
+                                                user?.displayName
+                                            }
                                         >
                                             Update Details
                                         </FormikButton>
+                                        {user?.email?.verified &&
+                                            user?.displayName && (
+                                                <div className="mt-3">
+                                                    <Alert>
+                                                        Info Updated
+                                                        Successfully.
+                                                    </Alert>
+                                                    <div className="d-flex">
+                                                        <Button
+                                                            fullWidth
+                                                            className="mt-2 me-1"
+                                                            onClick={() => {
+                                                                history.push(
+                                                                    '/profile'
+                                                                );
+                                                            }}
+                                                        >
+                                                            Edit Profile
+                                                        </Button>
+                                                        <Button
+                                                            fullWidth
+                                                            className="mt-2 ms-2"
+                                                            variant="outlined"
+                                                            onClick={() => {
+                                                                history.push(
+                                                                    '/connect'
+                                                                );
+                                                            }}
+                                                        >
+                                                            Go to BN Connect
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            )}
                                     </div>
                                 </Form>
                             </CardContent>

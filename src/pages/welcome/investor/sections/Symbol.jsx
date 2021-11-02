@@ -6,7 +6,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import React from 'react';
+
 import token1Img from '../../../../assets/investor/token1.png';
 import token2Img from '../../../../assets/investor/token2.png';
 

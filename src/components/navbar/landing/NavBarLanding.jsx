@@ -13,7 +13,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';

@@ -1,7 +1,7 @@
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 import { Avatar, Container, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../../css/marquee.css';
 
 export default function SponsorsSection() {

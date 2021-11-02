@@ -1,6 +1,5 @@
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
 
 export default function QuaterCard({ title, text, list }) {
     const classes = useStyles();

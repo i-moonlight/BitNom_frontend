@@ -16,7 +16,6 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import * as React from 'react';
 
 function createData(date, open, high, low, close, volume, market_cap) {
     return { date, open, high, low, close, volume, market_cap };

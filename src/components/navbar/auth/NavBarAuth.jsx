@@ -1,5 +1,5 @@
 import { AppBar, Container, useTheme } from '@mui/material';
-import React from 'react';
+
 import { useHistory } from 'react-router-dom';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';

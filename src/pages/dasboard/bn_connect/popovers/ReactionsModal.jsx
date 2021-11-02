@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';
 

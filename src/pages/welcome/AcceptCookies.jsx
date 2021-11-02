@@ -1,5 +1,5 @@
 import { Button, Snackbar, SnackbarContent, useTheme } from '@mui/material';
-import React from 'react';
+import { Fragment } from 'react';
 
 export default function AcceptCookies() {
     const theme = useTheme();
@@ -20,7 +20,7 @@ export default function AcceptCookies() {
         >
             <SnackbarContent
                 action={
-                    <React.Fragment>
+                    <Fragment>
                         <Button
                             color="inherit"
                             size="small"
@@ -34,7 +34,7 @@ export default function AcceptCookies() {
                         >
                             I Agree
                         </Button>
-                    </React.Fragment>
+                    </Fragment>
                 }
                 style={{
                     backgroundColor: theme.palette.background.paper,

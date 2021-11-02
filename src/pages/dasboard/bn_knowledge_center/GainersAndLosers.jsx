@@ -13,7 +13,6 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import React from 'react';
 
 function createData(image, coin, volume, price, pyramid) {
     return { image, coin, volume, price, pyramid };

@@ -6,7 +6,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+
 import { useHistory } from 'react-router';
 import card1Img from '../../../assets/landing/card (1).svg';
 import card2Img from '../../../assets/landing/card (2).svg';

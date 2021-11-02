@@ -17,7 +17,7 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-import React from 'react';
+
 import { toast } from 'react-toastify';
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,

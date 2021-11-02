@@ -1,4 +1,5 @@
 //TODO: Upload video
+import React from 'react';
 import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
@@ -27,7 +28,7 @@ import {
     Typography,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../../components/Button';
