@@ -6,7 +6,9 @@ import {
     BLOCK_CHAT,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
+    PIN_CHAT,
     REPORT_USER,
+    UNPIN,
 } from '../graphql/queries';
 export default function ChatSettingPopover({
     chatSettingsAnchorEl,
@@ -45,6 +47,18 @@ export default function ChatSettingPopover({
         },
         context: { clientName: 'chat' },
     });
+    const [PinChat] = useMutation(PIN_CHAT, {
+        variables: {
+            _id: chat?._id,
+        },
+        context: { clientName: 'chat' },
+    });
+    const [UnpinChat] = useMutation(UNPIN, {
+        variables: {
+            _id: chat._id,
+        },
+        context: { clientName: 'chat' },
+    });
 
     const handleArchiveChat = () => {
         ArchiveChat();
@@ -60,6 +74,13 @@ export default function ChatSettingPopover({
     };
     const handleReport = () => {
         ReportUser();
+    };
+    const handlePinChat = () => {
+        PinChat();
+    };
+
+    const handleUnpinChat = () => {
+        UnpinChat();
     };
     return (
         <Popover
@@ -83,6 +104,21 @@ export default function ChatSettingPopover({
                 </ListItem>
                 <ListItem button divider onClick={handleMarkAsRead}>
                     <ListItemText primary="Mark As read" />
+                </ListItem>
+                <ListItem
+                    button
+                    divider
+                    onClick={
+                        chat.pinned === true ? handleUnpinChat : handlePinChat
+                    }
+                >
+                    <ListItemText
+                        primary={
+                            chat.pinned === true
+                                ? 'unpin this Chat'
+                                : 'Pin this chat'
+                        }
+                    />
                 </ListItem>
                 <ListItem button divider onClick={handleMuteConversation}>
                     <ListItemText primary="Mute conversation" />

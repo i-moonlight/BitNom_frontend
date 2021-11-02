@@ -32,6 +32,16 @@ export const SEARCH_MESSAGES = gql`
         Dialogue {
             searchMessages(data: $data) {
                 _id
+                text
+                author
+                images
+                video
+                gif
+                documents
+                date
+                chat {
+                    _id
+                }
             }
         }
     }
@@ -150,6 +160,8 @@ export const GET_DIALOGUES = gql`
                     archived
                 }
                 status
+                pinned
+                archived
                 lastMessage {
                     text
                     video
@@ -1076,7 +1088,7 @@ export const LATESTMESSAGE_SUBSCRIPTION = gql`
     }
 `;
 export const PIN_CHAT = gql`
-    mutation pin($_id: ID!) {
+    mutation ($_id: ID!) {
         Dialogue {
             pin(_id: $_id) {
                 _id
@@ -1090,6 +1102,7 @@ export const PIN_CHAT = gql`
                         bio
                     }
                     lastSeen
+                    pinned
                 }
                 recipient {
                     unreadCount
@@ -1101,6 +1114,7 @@ export const PIN_CHAT = gql`
                         bio
                     }
                     lastSeen
+                    pinned
                 }
                 otherUser {
                     info {
@@ -1112,6 +1126,7 @@ export const PIN_CHAT = gql`
                     unreadCount
                     blocked
                     lastSeen
+                    pinned
                 }
                 status
                 currentUser {
@@ -1124,6 +1139,7 @@ export const PIN_CHAT = gql`
                         bio
                     }
                     lastSeen
+                    pinned
                 }
                 lastMessage {
                     images

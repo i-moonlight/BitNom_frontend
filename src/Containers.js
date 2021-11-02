@@ -166,14 +166,14 @@ export default function AppContainers() {
     useEffect(() => {
         dispatch(checkSessionTimeOut());
 
-        palette == 'dark' && isDarkThemeOnly
+        palette === 'dark' && isDarkThemeOnly
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
     }, [dispatch, isDarkThemeOnly, palette]);
 
     return (
         <div className={classes.root}>
-            {palette == 'dark' ? (
+            {palette === 'dark' ? (
                 <DarkThemeStyles>
                     <Routes apolloClient={client} />
                 </DarkThemeStyles>
