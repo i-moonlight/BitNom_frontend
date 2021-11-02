@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';

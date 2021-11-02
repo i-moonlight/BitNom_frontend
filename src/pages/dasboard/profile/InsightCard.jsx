@@ -8,10 +8,10 @@ import {
     Typography,
 } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
 
 export default function InsightCard({ profile }) {
-    const [tabValue, setTabValue] = React.useState(0);
+    const [tabValue, setTabValue] = useState(0);
     //   const state = useSelector(st => st);
     //   const user = state.auth.user;
 

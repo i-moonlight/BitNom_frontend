@@ -1,6 +1,5 @@
 import { useTheme } from '@emotion/react';
 import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
-import React from 'react';
 
 export default function Solution() {
     const theme = useTheme();

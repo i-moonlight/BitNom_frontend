@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import NavBar from './navbar/dashboard/NavBar';
@@ -10,6 +10,7 @@ export default function Screen({ auth, children }) {
 
     useEffect(() => {
         JSON.stringify(user) === '{}' && !auth && history.push('/auth/login');
+        !user.displayName && history.push('/auth/update_info_register');
     }, [auth, history, user]);
 
     return (

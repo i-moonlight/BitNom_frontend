@@ -15,7 +15,7 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import React from 'react';
+
 import { Button } from '../../../components/Button';
 
 export default function ServicesMenu() {

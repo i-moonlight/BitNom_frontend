@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import { Container, Divider } from '@mui/material';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import scrollImg from '../../../assets/investor/scroll.svg';
 import scrollImgLight from '../../../assets/investor/scroll_light.svg';
 import NavBarInvestor from '../../../components/navbar/investor/NavBarInvestor';

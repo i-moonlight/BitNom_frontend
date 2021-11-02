@@ -8,10 +8,8 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
@@ -54,9 +52,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             context: { clientName: 'chat' },
         });
     };
-
+    const otherUser =
+        chat.otherUser.info._id === user._id
+            ? chat.currentUser
+            : chat.otherUser;
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
+
     return (
         <>
             <ListItem
@@ -74,31 +76,40 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                             backgroundColor: '#1C0C5B',
                         }}
                         src={
-                            chat?.otherUser?.profile_pic
+                            otherUser?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
                                   chat?.otherUser?.profile_pic
                                 : ''
                         }
                         alt={'avatar'}
                     >
-                        {chat?.otherUser?.profile_pic
+                        {otherUser?.profile_pic
                             ? ''
-                            : getUserInitials(
-                                  chat?.otherUser?.info.displayName
-                              )}
+                            : getUserInitials(otherUser?.info.displayName)}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
-                {chat.otherUser.info._id === OnlineData?.userIsOnline?._id &&
+                {otherUser.info._id === OnlineData?.userIsOnline?._id &&
                 OnlineData?.userIsOnline?.online == true ? (
                     <span className={classes.online_status}></span>
                 ) : (
                     <span className={classes.offline_status}></span>
                 )}
                 <ListItemText
+                    // primary={chat?.otherUser?.info?.displayName}
+                    // secondary={
+                    //     <React.Fragment>
+                    //         <span sx={{ display: 'inline' }}>
+                    //             {chat.otherUser.info.displayName}
+                    //         </span>
+                    //         <Badge
+                    //             badgeContent={chat?.currentUser?.unreadCount}
+                    //             color="primary"
+                    //             style={{ marginLeft: '120px' }}
+                    //         />
                     primary={
                         <Typography color="textPrimary">
-                            {chat?.otherUser?.info?.displayName}{' '}
+                            {otherUser?.info?.displayName}{' '}
                             <Badge
                                 badgeContent={chat?.currentUser?.unreadCount}
                                 color="primary"
@@ -109,7 +120,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     secondary={
                         <React.Fragment>
                             {chat.status === 'accepted' && (
-                                <div>
+                                <span>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
                                             data?.lastMessageUpdate?.text
@@ -137,7 +148,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : (
                                         truncateString(chat?.lastMessage?.text)
                                     )}
-                                </div>
+                                </span>
                             )}
                         </React.Fragment>
                     }

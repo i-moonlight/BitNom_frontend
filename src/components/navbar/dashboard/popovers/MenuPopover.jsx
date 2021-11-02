@@ -1,5 +1,5 @@
 import { Popover } from '@mui/material';
-import React from 'react';
+
 import MenuItems from '../MenuItems';
 
 export default function MenuPopover({

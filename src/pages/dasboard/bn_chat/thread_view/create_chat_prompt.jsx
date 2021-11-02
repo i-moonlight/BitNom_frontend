@@ -18,7 +18,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
@@ -98,12 +98,14 @@ export default function CreateChatPrompt({
                             <Typography variant="body1">
                                 Search users
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setChatInviteOpen(false);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setChatInviteOpen(false);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
                         <Divider></Divider>

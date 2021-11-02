@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import Alert from '@mui/lab/Alert';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -26,7 +26,7 @@ export default function Login() {
     const history = useHistory();
     const user = state.auth.user;
 
-    const [loginUser, { loading: loginLoading }] = useMutation(
+    const [loginUser, { loading: loginLoading, data: loginData }] = useMutation(
         MUTATION_LOGIN_USER_2,
         { context: { clientName: 'users' } }
     );
@@ -35,8 +35,6 @@ export default function Login() {
         MUTATION_GOOGLE_LOGIN,
         { context: { clientName: 'users' } }
     );
-
-    // useQuery(QUERY, { variables, context: { clientName: 'third-party' } })
 
     useEffect(() => {
         JSON.stringify(user) !== '{}' && history.push('/connect');
@@ -110,6 +108,7 @@ export default function Login() {
                                                 });
 
                                             data?.Users?.login &&
+                                                userData?.email?.verified &&
                                                 dispatch(login(userData, null));
                                         });
                                     }}
@@ -132,6 +131,18 @@ export default function Login() {
                                             type="password"
                                             fullWidth
                                         />
+                                        {loginData?.Users?.login &&
+                                            !loginData?.Users?.login?.email
+                                                ?.verified && (
+                                                <Alert
+                                                    severity="error"
+                                                    className="mb-2"
+                                                >
+                                                    Email not verified yet.
+                                                    Check your inbox for
+                                                    verification link!
+                                                </Alert>
+                                            )}
                                         <div>
                                             <Typography className="end-horizontal mb-2">
                                                 <Link

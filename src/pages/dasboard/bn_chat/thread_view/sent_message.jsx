@@ -1,7 +1,7 @@
 import { Reply } from '@mui/icons-material';
 import { Avatar, Grid, IconButton, Typography } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function SentMessage({ message, onReply = () => null }) {

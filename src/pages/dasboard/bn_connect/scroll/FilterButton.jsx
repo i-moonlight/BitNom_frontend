@@ -10,14 +10,14 @@ import {
     Paper,
     Popper,
 } from '@mui/material';
-import React from 'react';
+import { useRef, useState } from 'react';
 
 const options = ['Top Comments', 'Latest Comments'];
 
 export default function FilterButton({ setCommentFilter }) {
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleClick = () => {
         console.info(`You clicked ${options[selectedIndex]}`);

@@ -6,16 +6,23 @@ import {
     ListSubheader,
     useMediaQuery,
 } from '@mui/material';
-import React, { Fragment, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
     addToInvites,
     setArchivedChats,
     setChatInvites,
+    addToChatDialogues,
+    clearCurrentChat,
+    removeFromInvites,
     setCurrentChat,
 } from '../../../../store/actions/chatActions';
-import { GET_DIALOGUES, NEW_CHAT_ADDED } from '../graphql/queries';
+import {
+    GET_DIALOGUES,
+    NEW_CHAT_ADDED,
+    CHAT_ACCEPTED,
+} from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
@@ -60,6 +67,21 @@ function Chats({ onSetChatMobile }) {
             _id: user._id,
         },
     });
+
+    const { data: chatAccepted } = useSubscription(CHAT_ACCEPTED, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    useEffect(() => {
+        if (chatAccepted?.chatAccepted) {
+            dispatch(clearCurrentChat());
+            dispatch(addToChatDialogues(chatAccepted?.chatAccepted));
+            dispatch(setCurrentChat(chatAccepted?.chatAccepted));
+            dispatch(removeFromInvites(chatAccepted?.chatAccepted));
+        }
+    }, [chatAccepted?.chatAccepted, dispatch]);
 
     useEffect(() => {
         if (newChatData?.newChat) {

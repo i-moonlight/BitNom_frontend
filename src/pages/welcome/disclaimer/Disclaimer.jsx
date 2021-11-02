@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+
 import BitnormPaper from '../BitnormPaper';
 import Wrapper from '../Wrapper';
 

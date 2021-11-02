@@ -1,7 +1,7 @@
 import { Create } from '@mui/icons-material';
 import { Card, Container, Fab, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Screen from '../../../components/Screen';
 import SideBarHeader from './components/chat_header/side_bar_header';
 import Chats from './sidebar_menu';
@@ -36,7 +36,7 @@ export default function BnChat() {
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
-                    <Grid container spacing={3}>
+                    <Grid container>
                         {!chatMobileOpen && (
                             <Grid item xs={12} sm={4} md={4}>
                                 <Card
