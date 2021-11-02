@@ -8,8 +8,10 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
@@ -52,13 +54,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             context: { clientName: 'chat' },
         });
     };
-    console.log('ONLINE_DATA', OnlineData);
-    // const lastSeen = moment(OnlineData?.userIsOnline?.otherUser?.lastSeen);
-    // const now = moment(new Date());
-    const truncateString = (input) =>
-        input?.length > 50 ? `${input?.substring(0, 20)}...` : input;
-    console.log('LAST_MESSAGE', data?.lastMessageUpdate);
 
+    const truncateString = (input) =>
+        input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
     return (
         <>
             <ListItem

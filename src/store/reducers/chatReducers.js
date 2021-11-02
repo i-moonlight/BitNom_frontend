@@ -6,6 +6,7 @@ const initialState = {
     dialogue_messages: [],
     archived: [],
     unreadCount: null,
+    searchData: [],
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -67,6 +68,13 @@ export default function chatReducer(state = initialState, action) {
                 archived: [...action.data],
             };
 
+        case 'SET_SEARCH_OUTPUT':
+            return {
+                ...state,
+                searchData: [...action.data],
+            };
+        case 'CLEAR_SEARCH_OUTPUT':
+            return { ...state, searchData: [] };
         default:
             return { ...state };
     }

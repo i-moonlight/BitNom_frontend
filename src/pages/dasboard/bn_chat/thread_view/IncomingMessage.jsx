@@ -1,4 +1,4 @@
-import { Reply } from '@mui/icons-material';
+import { MoreVert, Reply } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
 
-export default function IncomingMessage({ message, chat, onReply }) {
+export default function IncomingMessage({ message, chat, onReply, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
     const author = message.author || {};
@@ -63,6 +63,9 @@ export default function IncomingMessage({ message, chat, onReply }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
+                    <IconButton onClick={onClick} size="small">
+                        <MoreVert style={{ width: '18px', heigth: '18px' }} />
+                    </IconButton>
                 </Typography>
                 {message.responseTo && (
                     <Typography variant="body2" component="article">
