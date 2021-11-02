@@ -7,7 +7,6 @@ import {
 import { AvatarGroup, Avatar, Button as MuiButton } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {

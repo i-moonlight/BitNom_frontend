@@ -8,12 +8,11 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    //ListItemIcon,
     ListItemText,
     Popover,
     Typography,
 } from '@mui/material';
-import React from 'react';
+
 import { Link, useHistory } from 'react-router-dom';
 import {
     getCreationTime,
@@ -27,8 +26,6 @@ export default function NotificationsPopover({
     isNotificationOpen,
     handleNotificationsClose,
     notifications,
-    //notificationOptionId,
-    //handleNotificationOptionOpen,
 }) {
     return (
         <Popover
@@ -95,6 +92,7 @@ function NotificationPreview({ notifications }) {
 function ListItemComponent({ item }) {
     const history = useHistory();
     let link;
+
     if (item?.link_to_resource?.type === 'post') {
         link = `/posts/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'event') {
@@ -114,13 +112,15 @@ function ListItemComponent({ item }) {
         });
         return name;
     };
+
     const contentClickHandler = (e) => {
         const targetLink = e.target.closest('a');
         if (!targetLink) return;
         e.preventDefault();
         e.stopPropagation();
-        history.push(targetLink.href.substring(location.origin.length));
+        history.push(targetLink.href.substring(window.location.origin.length));
     };
+
     const getNotifyingUserProfile = (ntfn) => {
         let profile;
         ntfn?.content_entities?.forEach((entity) => {
@@ -130,6 +130,7 @@ function ListItemComponent({ item }) {
         });
         return profile;
     };
+
     return (
         <ListItem
             button

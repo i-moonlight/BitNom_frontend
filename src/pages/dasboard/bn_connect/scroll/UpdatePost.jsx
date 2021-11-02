@@ -28,7 +28,7 @@ import {
     Typography,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';

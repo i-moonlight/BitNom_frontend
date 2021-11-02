@@ -7,7 +7,7 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import React from 'react';
+
 import igImg from '../../../../assets/investor/ig.png';
 
 export default function Concept() {

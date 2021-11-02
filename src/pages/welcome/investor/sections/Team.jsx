@@ -8,7 +8,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import React from 'react';
+
 import { team } from '../../utilities/welcome.data';
 import TeamCard from '../cards/TeamCard';
 
@@ -41,7 +41,7 @@ export default function Team() {
                             <CardContent>
                                 <div className="p-3 pb-0">
                                     <Grid container spacing={2}>
-                                        <Grid xs={12} sm={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <div
                                                 className="bg-white h-100 br-2"
                                                 style={{
@@ -52,7 +52,7 @@ export default function Team() {
                                                 }}
                                             ></div>
                                         </Grid>
-                                        <Grid xs={12} sm={8}>
+                                        <Grid item xs={12} sm={8}>
                                             <div className="d-flex flex-column mx-3 h-100">
                                                 <Typography>
                                                     {team[0].name}

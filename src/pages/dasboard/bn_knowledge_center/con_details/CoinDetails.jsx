@@ -18,7 +18,8 @@ import {
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Card, Container, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
+
 import { Button } from '../../../../components/Button';
 import Screen from '../../../../components/Screen';
 import Forum from './partials/Forum';
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 export default function CoinDetails() {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

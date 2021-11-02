@@ -6,6 +6,8 @@ export const useThemeDetector = () => {
 
     const [isDarkThemeOnly, setIsDarkThemeOnly] = useState(getCurrentTheme());
 
+    console.log('getCurrentTheme: ', getCurrentTheme());
+
     const mqListener = (e) => {
         setIsDarkThemeOnly(e.matches);
     };

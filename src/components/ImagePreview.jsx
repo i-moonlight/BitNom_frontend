@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
 
 function getModalStyle() {
     const top = 50;
@@ -31,7 +31,7 @@ export default function ImagePreview({
     onClose,
     imgURL = 'http://placehold.it/500',
 }) {
-    const [modalStyle] = React.useState(getModalStyle);
+    const [modalStyle] = useState(getModalStyle);
     const classes = useStyles();
 
     return (

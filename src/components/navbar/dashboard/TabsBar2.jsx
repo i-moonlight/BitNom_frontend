@@ -1,6 +1,6 @@
 import { ChevronLeftRounded, ChevronRightRounded } from '@mui/icons-material';
 import { Box, Container, MenuItem, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { tabs } from '../../utilities/data.components';
 import { useStyles } from '../../utilities/styles.components';
 

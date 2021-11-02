@@ -1,15 +1,12 @@
 import { Popover, List, ListItemText, ListItem } from '@mui/material';
-import React from 'react';
 
 export default function MessagePopover({
     messageSettingsAnchorEl,
     messageSettingsId,
     isMessageSettingsOpen,
     handleMessageClose,
-    message,
     incoming,
 }) {
-    console.log('MS', message);
     const handlePinMessage = () => {
         console.log('PIN');
     };

@@ -6,7 +6,6 @@
  */
 
 import { ArrowDropDown, Fullscreen } from '@mui/icons-material';
-import React from 'react';
 
 export default function HeatMap() {
     return (

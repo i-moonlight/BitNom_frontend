@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import Alert from '@mui/lab/Alert';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { parse } from 'querystring';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';

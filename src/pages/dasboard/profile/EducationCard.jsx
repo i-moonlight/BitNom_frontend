@@ -1,6 +1,6 @@
 import { AddRounded } from '@mui/icons-material';
 import { Card, CardContent, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../../components/Button';
 import EducationForm from './forms/EducationForm';
 import EducationFragment from './fragments/EducationFragment';

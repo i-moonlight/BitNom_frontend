@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+
 import AcceptCookies from '../AcceptCookies';
 import Wrapper from '../Wrapper';
 import HeaderSection from './HeaderSection';

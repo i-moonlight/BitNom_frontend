@@ -1,7 +1,7 @@
 import { blue, green, red } from '@mui/material/colors';
 import { Slide } from 'material-auto-rotating-carousel';
 import AutoRotatingCarousel from 'material-auto-rotating-carousel/lib/AutoRotatingCarousel';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../components/Button';
 
 export default function TrainerCarousel() {

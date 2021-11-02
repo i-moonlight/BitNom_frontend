@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, Snackbar, Typography } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../../../components/Button';
 import { useDispatch } from 'react-redux';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
