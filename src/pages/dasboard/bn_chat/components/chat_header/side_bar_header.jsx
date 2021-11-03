@@ -1,3 +1,4 @@
+// import { useQuery } from '@apollo/client';
 import { MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -7,7 +8,8 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+// import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
@@ -26,8 +28,6 @@ export default function SideBarHeader() {
     //     },
     //     context: { clientName: 'chat' },
     // });
-    // console.log('LOADING', loading);
-    // console.log('DATA_CHATS', data);
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addMessagesToCurrentChat,
+    addPinnedMessage,
     setDialogueMessages,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -18,9 +19,11 @@ import Message from './message';
 import NoChatSelected from './no_chat_selected';
 import EmptyMessages from './no_messages';
 import SendMessage from './send_message';
+import Blocked from './blocked';
 
 export default function Messages({ onExitChatMobile }) {
     const [replyText, setReplyText] = useState(undefined);
+    const [editText, setEditText] = useState(undefined);
     const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -39,6 +42,13 @@ export default function Messages({ onExitChatMobile }) {
         },
         context: { clientName: 'chat' },
     });
+    const { data: pinnedMessages } = useQuery(GET_DIALOGUE_MESSAGES, {
+        variables: {
+            chat: dialogue._id,
+            pinned: true,
+        },
+        context: { clientName: 'chat' },
+    });
 
     const { data: subscriptionData } = useSubscription(
         NEW_MESSAGE_SUBSCRIPTION,
@@ -48,13 +58,17 @@ export default function Messages({ onExitChatMobile }) {
             },
         }
     );
-
+    console.log('EDIT', editText);
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
             endRef.current.scrollIntoView();
         }
     }, [dispatch, subscriptionData?.newMessage]);
+
+    useEffect(() => {
+        dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+    }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
@@ -90,11 +104,6 @@ export default function Messages({ onExitChatMobile }) {
             )}
 
             {dialogue.status === 'new' &&
-                dialogue.recipient?.info._id === user?._id && (
-                    <InviteView dialogue={dialogue} />
-                )}
-
-            {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
                 !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
@@ -113,14 +122,14 @@ export default function Messages({ onExitChatMobile }) {
                 filteredMessages &&
                 filteredMessages.author !== user._id &&
                 filteredMessages?.length > 0
-                    ? filteredMessages.map((filtered, I) => (
+                    ? filteredMessages?.map((filtered, I) => (
                           <Message key={I} message={filtered} chat={dialogue} />
                       ))
                     : dialogue.status === 'accepted' &&
                       messages &&
                       messages.author !== user._id &&
                       messages?.length > 0
-                    ? messages.map((message, mI) => (
+                    ? messages?.map((message, mI) => (
                           <Message
                               key={mI}
                               message={message}
@@ -130,6 +139,12 @@ export default function Messages({ onExitChatMobile }) {
                                       text: message.text,
                                       _id: message._id,
                                       author: message.author,
+                                  })
+                              }
+                              onUpdateMessage={() =>
+                                  setEditText({
+                                      _id: message._id,
+                                      text: message.text,
                                   })
                               }
                           />
@@ -148,9 +163,13 @@ export default function Messages({ onExitChatMobile }) {
                 <div ref={endRef} className="mt-4" />
             </div>
             <div>
-                {(dialogue.status === 'accepted' &&
-                    messages &&
-                    messages.length) > 0 && (
+                {dialogue.status === 'accepted' &&
+                messages &&
+                messages.length > 0 &&
+                (dialogue.recipient.blocked === true ||
+                    dialogue.initiator.blocked === true) ? (
+                    <Blocked />
+                ) : (
                     <SendMessage
                         chat={dialogue._id}
                         replyText={replyText}
@@ -160,15 +179,9 @@ export default function Messages({ onExitChatMobile }) {
                 )}
             </div>
             <div>
-                {dialogue.status === 'accepted' &&
-                    !loading &&
-                    !messages.length > 0 && (
-                        <SendMessage
-                            chat={dialogue._id}
-                            replyText={replyText}
-                            onCancelReply={() => setReplyText(undefined)}
-                            setReplyText={() => setReplyText(undefined)}
-                        />
+                {dialogue.status === 'new' &&
+                    dialogue.recipient?.info._id === user?._id && (
+                        <InviteView dialogue={dialogue} />
                     )}
             </div>
         </div>

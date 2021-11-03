@@ -43,3 +43,22 @@ export const clearSearchOutput = () => {
 export const chatIndexShift = (data) => {
     return (dispatch) => dispatch({ data, type: 'LATEST_MESSAGE_CHAT_SHIFT' });
 };
+export const removeFromMessages = (data) => {
+    return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_MESSAGES' });
+};
+export const addPinnedMessage = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'ADD_PINNED_MESSAGES' });
+};
+export const addToPinnedMessage = (data) => {
+    return (dispatch) =>
+        dispatch({ data, type: 'ADD_MESSAGE_TO_PINNED_MESSAGES' });
+};
+export const deletePinnedMessage = (data) => {
+    return (dispatch) => dispatch({ data, type: 'DELETE_PINNED_MESSAGE' });
+};
+export const clearPinnedMessage = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_PINNED_MESSAGES' });
+};
+export const addPinnedChat = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'PIN_CHAT' });
+};

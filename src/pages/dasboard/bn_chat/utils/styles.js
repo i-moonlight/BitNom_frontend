@@ -61,7 +61,7 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         flex: 1,
     },
-    inviteBar: {
+    cardDefault: {
         backgroundColor: theme.palette.background.default,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
