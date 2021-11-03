@@ -1,5 +1,12 @@
+import { useMutation } from '@apollo/client';
 import { Popover, List, ListItemText, ListItem } from '@mui/material';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import {
+    addToPinnedMessage,
+    removeFromMessages,
+} from '../../../../store/actions/chatActions';
+import { DELETE_MESSAGE, PIN_MESSAGE } from '../graphql/queries';
 
 export default function MessagePopover({
     messageSettingsAnchorEl,
@@ -7,19 +14,37 @@ export default function MessagePopover({
     isMessageSettingsOpen,
     handleMessageClose,
     incoming,
+    message,
+    onReply,
+    onUpdateMessage,
+    chat,
 }) {
+    const dispatch = useDispatch();
+    const [pinMessage, { data }] = useMutation(PIN_MESSAGE, {
+        variables: {
+            data: { chat: chat._id, message: message._id },
+        },
+        context: { clientName: 'chat' },
+    });
+    const [deleteMessage] = useMutation(DELETE_MESSAGE, {
+        variables: {
+            data: { chat: chat._id, message: message._id },
+        },
+        context: { clientName: 'chat' },
+    });
     const handlePinMessage = () => {
-        console.log('PIN');
+        pinMessage();
+        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
     };
     const handleDeleteMessage = () => {
-        console.log('DELETE');
+        deleteMessage();
+        dispatch(removeFromMessages(message));
     };
-    const handleUpdateMessage = () => {
-        console.log('UPDATE');
-    };
+
     const handleReportMessage = () => {
         console.log('REPORT');
     };
+
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
@@ -38,13 +63,40 @@ export default function MessagePopover({
             style={{ marginLeft: 16, width: '100%' }}
         >
             <List>
-                <ListItem button divider onClick={handlePinMessage}>
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        handlePinMessage(), handleMessageClose();
+                    }}
+                >
                     <ListItemText primary="Pin Message" />
                 </ListItem>
-                <ListItem button divider onClick={handleDeleteMessage}>
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        onReply(), handleMessageClose();
+                    }}
+                >
+                    <ListItemText primary="Reply Message" />
+                </ListItem>
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        handleDeleteMessage(), handleMessageClose();
+                    }}
+                >
                     <ListItemText primary="Delete Message" />
                 </ListItem>
-                <ListItem button divider onClick={handleUpdateMessage}>
+                <ListItem
+                    button
+                    divider
+                    onClick={() => {
+                        onUpdateMessage(), handleMessageClose();
+                    }}
+                >
                     <ListItemText primary="Edit text" />
                 </ListItem>
                 <ListItem button onClick={handleReportMessage}>

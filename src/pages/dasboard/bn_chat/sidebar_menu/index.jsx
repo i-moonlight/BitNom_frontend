@@ -17,6 +17,7 @@ import {
     clearCurrentChat,
     removeFromInvites,
     setCurrentChat,
+    addPinnedChat,
 } from '../../../../store/actions/chatActions';
 import {
     GET_DIALOGUES,
@@ -26,6 +27,7 @@ import {
 import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
+import Pinned from './pinned';
 
 function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
@@ -57,6 +59,17 @@ function Chats({ onSetChatMobile }) {
             variables: {
                 status: 'accepted',
                 archived: true,
+            },
+            context: { clientName: 'chat' },
+        }
+    );
+
+    const { data: pinnedData, laoding: pinnedLoading } = useQuery(
+        GET_DIALOGUES,
+        {
+            variables: {
+                status: 'accepted',
+                pinned: true,
             },
             context: { clientName: 'chat' },
         }
@@ -113,9 +126,16 @@ function Chats({ onSetChatMobile }) {
         }
     }, [archivedData?.Dialogue?.get, dispatch]);
 
+    useEffect(() => {
+        if (pinnedData?.Dialogue?.get) {
+            dispatch(addPinnedChat(pinnedData?.Dialogue?.get));
+        }
+    }, [pinnedData?.Dialogue?.get, dispatch]);
+
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
+    const pinned = state.chats.pinnedChats;
     const activeChatId = state.chats.current_chat._id;
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
@@ -132,6 +152,10 @@ function Chats({ onSetChatMobile }) {
                 {invites && invites.length > 0 && (
                     <Invites invites={invites} loading={invitesLoading} />
                 )}
+
+                {pinned && pinned.length > 0 && (
+                    <Pinned pinned={pinned} loading={pinnedLoading} />
+                )}
                 {chats && chats.length > 0 && (
                     <List
                         component="nav"
@@ -139,7 +163,7 @@ function Chats({ onSetChatMobile }) {
                             <ListSubheader component="div">Chats</ListSubheader>
                         }
                     >
-                        {chats.map((chat) => (
+                        {chats?.map((chat) => (
                             <ChatItem
                                 key={chat._id}
                                 onClick={() => openChat(chat)}

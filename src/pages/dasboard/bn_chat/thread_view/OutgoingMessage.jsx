@@ -1,4 +1,4 @@
-import { Reply } from '@mui/icons-material';
+import { ExpandMoreRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -15,10 +15,11 @@ import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
 import ReactMarkdown from 'react-markdown';
 import { Code, LinkTag } from '../../../../components/markdown_renders';
-export default function OutgoingMessage({ chat, message, onReply }) {
+import { Link } from 'react-router-dom';
+export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
-
+    const author = message.author || {};
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -31,7 +32,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                 onMouseLeave={() => setShowReply(false)}
                 elevation={0}
             >
-                {/* <Typography
+                <Typography
                     variant="body1"
                     component="p"
                     style={{ marginLeft: '16px' }}
@@ -41,10 +42,23 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
-                    <IconButton onClick={onClick} size="small">
-                        <MoreVert style={{ width: '18px', heigth: '18px' }} />
-                    </IconButton>
-                </Typography> */}
+                    {show_reply && (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    fontSize: '1em',
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <ExpandMoreRounded />
+                            </IconButton>
+                        </div>
+                    )}
+                </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card
                         variant="outlined"
@@ -52,9 +66,8 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             backgroundColor: '#BDE0FF',
                             marginLeft: '8px',
                             marginRight: '8px',
-                            marginTop: '8px',
                             borderWidth: '0px 0px 0px 7px ',
-                            borderRadius: '5px 2px 2px 5px',
+                            borderRadius: '5px 5px 5px 5px',
                         }}
                     >
                         <Typography
@@ -67,7 +80,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             }}
                         >
                             <ReactMarkdown
-                                renderers={{ code: Code, link: LinkTag }}
+                                components={{ code: Code, Link: LinkTag }}
                                 escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
@@ -142,17 +155,17 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                     variant="body2"
                     component="article"
                     style={{
-                        marginTop: '8px',
+                        marginTop: '4px',
                     }}
                 >
                     <ReactMarkdown
-                        renderers={{ code: Code, link: LinkTag }}
+                        components={{ code: Code, Link: LinkTag }}
                         escapeHtml={false}
                     >
                         {message.text}
                     </ReactMarkdown>
                 </Typography>
-                {show_reply && (
+                {/* {show_reply && (
                     <div className={classes.reply}>
                         <IconButton
                             style={{
@@ -168,7 +181,7 @@ export default function OutgoingMessage({ chat, message, onReply }) {
                             <Reply />
                         </IconButton>
                     </div>
-                )}
+                )} */}
             </Paper>
             <ButtonBase>
                 <Avatar

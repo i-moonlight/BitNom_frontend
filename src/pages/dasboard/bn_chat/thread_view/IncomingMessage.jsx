@@ -1,4 +1,4 @@
-import { Reply } from '@mui/icons-material';
+import { ExpandMoreRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -17,10 +17,10 @@ import { useStyles } from '../utils/styles';
 import ReactMarkdown from 'react-markdown';
 import { Code, LinkTag } from '../../../../components/markdown_renders';
 
-export default function IncomingMessage({ message, chat, onReply }) {
+export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
-
+    const author = message.author || {};
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
@@ -52,6 +52,33 @@ export default function IncomingMessage({ message, chat, onReply }) {
                 onMouseLeave={() => setShowReply(false)}
                 elevation={0}
             >
+                <Typography
+                    variant="body1"
+                    component="p"
+                    style={{ marginLeft: '16px' }}
+                >
+                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
+                        <small className={classes.author}>
+                            <strong>@{author}</strong>
+                        </small>
+                    </Link>
+                    {show_reply && (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    fontSize: '1em',
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <ExpandMoreRounded />
+                            </IconButton>
+                        </div>
+                    )}
+                </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card
                         variant="outlined"
@@ -59,9 +86,8 @@ export default function IncomingMessage({ message, chat, onReply }) {
                             backgroundColor: '#93c7f5',
                             marginLeft: '8px',
                             marginRight: '8px',
-                            marginTop: '8px',
                             borderWidth: '0px 0px 0px 7px ',
-                            borderRadius: '5px 2px 2px 5px',
+                            borderRadius: '5px 5px 5px 5px',
                         }}
                     >
                         {' '}
@@ -75,7 +101,7 @@ export default function IncomingMessage({ message, chat, onReply }) {
                             }}
                         >
                             <ReactMarkdown
-                                renderers={{ code: Code, link: LinkTag }}
+                                components={{ code: Code, Link: LinkTag }}
                                 escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
@@ -150,32 +176,16 @@ export default function IncomingMessage({ message, chat, onReply }) {
                     variant="body2"
                     component="article"
                     style={{
-                        marginTop: '8px',
+                        marginTop: '4px',
                     }}
                 >
                     <ReactMarkdown
-                        renderers={{ code: Code, link: LinkTag }}
+                        components={{ code: Code, Link: LinkTag }}
                         escapeHtml={false}
                     >
                         {message.text}
                     </ReactMarkdown>
                 </Typography>
-                {show_reply && (
-                    <div className={classes.reply}>
-                        <IconButton
-                            style={{
-                                fontSize: '1em',
-                                bottom: '5px',
-                                right: '3px',
-                                color: '#bbb',
-                            }}
-                            size="small"
-                            onClick={onReply}
-                        >
-                            <Reply />
-                        </IconButton>
-                    </div>
-                )}
             </Paper>
             <div className={classes.time}>
                 <small>{moment(message?.date).fromNow()}</small>

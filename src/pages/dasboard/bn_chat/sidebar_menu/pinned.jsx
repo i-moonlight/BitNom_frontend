@@ -6,34 +6,34 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-import { ArchiveRounded } from '@mui/icons-material';
+import { PushPin } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentChat } from '../../../../store/actions/chatActions';
+import { addPinnedChat } from '../../../../store/actions/chatActions';
 import Chat from './chat';
 
-export default function Archived({ archived, loading }) {
+export default function Pinned({ pinned, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
-            dispatch(setCurrentChat(chat));
+            dispatch(addPinnedChat(chat));
         }
     };
     return (
         <>
-            {archived && archived.length > 0 && (
+            {pinned && pinned.length > 0 && (
                 <List
                     component="nav"
                     subheader={
                         <ListSubheader component="div">
-                            <ArchiveRounded color="primary" /> Archived
+                            <PushPin color="primary" /> Pinned
                             <Divider />
                         </ListSubheader>
                     }
                 >
-                    {archived.map((chat) => (
+                    {pinned?.map((chat) => (
                         <Chat
                             key={chat._id}
                             chat={chat}
@@ -42,8 +42,8 @@ export default function Archived({ archived, loading }) {
                     ))}
                 </List>
             )}
-            {loading && !archived.length > 0 && <CircularProgress />}
-            {!loading && !archived.length > 0 && (
+            {loading && !pinned.length > 0 && <CircularProgress />}
+            {!loading && !pinned.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
@@ -51,7 +51,7 @@ export default function Archived({ archived, loading }) {
                     direction
                     column
                 >
-                    <Typography>You have no archived chats yet!</Typography>
+                    <Typography>You have no pinned chats yet!</Typography>
                 </Grid>
             )}
         </>

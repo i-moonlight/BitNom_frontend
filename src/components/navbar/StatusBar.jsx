@@ -105,12 +105,12 @@ export default function StatusBar() {
                                     size="small"
                                     className="m-1 p-1"
                                     onClick={() => {
-                                        palette == 'light'
+                                        palette === 'light'
                                             ? dispatch(changeTheme('dark'))
                                             : dispatch(changeTheme('light'));
                                     }}
                                 >
-                                    {palette == 'light' ? (
+                                    {palette === 'light' ? (
                                         <Brightness4Rounded
                                             style={{
                                                 width: 20,
