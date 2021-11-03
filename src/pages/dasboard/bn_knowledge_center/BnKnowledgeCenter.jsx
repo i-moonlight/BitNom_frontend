@@ -5,14 +5,16 @@ import {
     GridView,
     List,
     Replay,
-    Star, StarBorderPurple500,
+    Star, StarBorderOutlined, StarBorderPurple500, StarOutline,
 } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
+    Box,
+    Button,
     Card,
     CardContent,
-    Container,
-    Paper,
+    Container, Divider,
+    Paper, Rating,
     Switch,
     Tab,
     Table,
@@ -46,11 +48,11 @@ const columns = [
     { id: 'last_7_days', label: 'Last 7 days', minWidth: 100 },
 ];
 
-const useStyles = makeStyles({ tabPanelRoot: {padding: '25px 0px',},});
+const useStyles = makeStyles({ tabPanelRoot: {padding: '0px'}});
 
 export default function BnKnowledgeCenter() {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(50);
     const [checked, setChecked] = React.useState(true);
     const [value, setValue] = React.useState('1');
     const [coins, getCoins] = useState([]);
@@ -70,6 +72,7 @@ export default function BnKnowledgeCenter() {
         )
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 getCoins(data);
             })
             .catch((err) => {
@@ -115,9 +118,25 @@ export default function BnKnowledgeCenter() {
             textTransform: 'capitalize',
             fontWeight: 'bold',
         },
+        buttonStyle: {
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+            backgroundColor: '#333333',
+            margin: '15px 15px 15px 0',
+        },
+        listGridStyle: {
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+            backgroundColor: '#333333',
+            margin: '15px 0 15px 15',
+        },
         verticalLine: {
             borderLeft: '2px solid green',
             height: '35px',
+            marginRight : '20px'
+        },
+        horizontalLine: {
+            borderLeft: '5px solid green'
         },
         darkTransparent: {
             backgroundColor: 'rgb(68 63 63 / 50%)',
@@ -126,7 +145,7 @@ export default function BnKnowledgeCenter() {
             borderRadius: '5px',
             margin: '5px',
             padding: '0.5px 0.5px',
-        },
+        }
     };
 
     return (
@@ -134,7 +153,7 @@ export default function BnKnowledgeCenter() {
             <Container>
                 {/*Crypto Header*/}
                 <section className="border-0">
-                    <Card variant="body1" className="m-2">
+                    <Box variant="body1" className="m-2">
                         <div className=" d-lg-flex d-md-flex d-sm-block flex-row m-2">
                             <h2>Cryptocurrency Prices by Market Cap </h2>
                             <small>
@@ -151,7 +170,7 @@ export default function BnKnowledgeCenter() {
                             <span className="text-danger"> -1.1% </span> change
                             in the last 24 hours <a href={'#'}>Read More</a>
                         </p>
-                    </Card>
+                    </Box>
                 </section>
                 {/*Cards Being Checked*/}
                 {checked && (
@@ -275,37 +294,36 @@ export default function BnKnowledgeCenter() {
                 <br />
                 <section>
                     {/* Tabs */}
-                    <TabContext value={value}>
-                        <Card sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <TabContext value={value} variant="fullWidth">
+                        <div sx={{ borderBottom: 1, borderColor: 'divider' ,paddingLeft: 0, marginLeft: 0}} className={'mb-3'}>
                             <TabList
                                 onChange={handleTabChanges}
                                 aria-label="lab API tabs example"
                                 variant="scrollable"
                                 allowScrollButtonsMobile
-                                scrollButtons>
-                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
-                                    <Star /> Portfolio
-                                </button>
-                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
-                                    Watchlist
-                                </button>
+                                scrollButtons
+                            >
+                                <Button  variant="contained" className={''} style={custom.buttonStyle}>
+                                    <Star style={{marginRight : '5px', color:"orange"}} /> Portfolio
+                                </Button>
+                                <Button variant="contained" className={''} style={custom.buttonStyle}>Watchlist</Button>
 
                                 <hr style={custom.verticalLine} />
                                 <Tab label="Cryptocurrency" value="1" style={custom.tabStyle}/>
                                 <Tab label="Cryptogazing" value="3" style={custom.tabStyle}/>
                                 <Tab label="Category" value="2" style={custom.tabStyle}/>
+                                <Tab label="Recently Added" value="2" style={custom.tabStyle}/>
                                 <Tab label="Gainers and Losers " value="5" style={custom.tabStyle}/>
                                 <Tab label="Heatmap" value="7" style={custom.tabStyle}/>
 
                                 {/*Show up only when table views is clicked*/}
-                                {value === 1 && (
-                                    <button className={'btn btn-secondary m-3'}>
+
+                                    <Button style={custom.buttonStyle}>
                                         <List />
-                                        <GridView />
-                                    </button>
-                                )}
+                                    </Button>
                             </TabList>
-                        </Card>
+                        <Divider flexItem />
+                        </div>
                         <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                             {/*Portfolio*/}
                             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -322,7 +340,7 @@ export default function BnKnowledgeCenter() {
                                                 <TableCell className="text-secondary"><strong>Volume (24h)</strong></TableCell>
                                                 <TableCell className="text-secondary"><strong>Mkt Cap</strong></TableCell>
                                                 <TableCell className="text-secondary"><strong>Change(24h)</strong></TableCell>
-                                                {/*<TableCell className="text-secondary-50"><strong>Price Graph</strong></TableCell>*/}
+                                                {/*<TableCell className="text-secondary"><strong>Price Graph</strong></TableCell>*/}
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -332,8 +350,8 @@ export default function BnKnowledgeCenter() {
                                                     return (
                                                             <TableRow hover role="checkbox"  key={row.id}>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`} className={'text-danger'}>
-                                                                            <StarBorderPurple500 />
+                                                                        <Link to={`/knowledge_center/${row.id}`} className={'text-secondary'}>
+                                                                            <StarOutline />
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell align="right">
@@ -342,32 +360,32 @@ export default function BnKnowledgeCenter() {
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                             <img src={row.image} alt={'coin image'} height="25px"/>
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                             {row.name}
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                             {row.symbol}
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                            ${row.current_price}
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                             ${row.total_volume}
                                                                         </Link>
                                                                     </TableCell>
                                                                     <TableCell>
-                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>
                                                                             ${row.market_cap}
                                                                         </Link>
                                                                     </TableCell>
@@ -376,6 +394,11 @@ export default function BnKnowledgeCenter() {
                                                                             {row.price_change_percentage_24h}%
                                                                         </Link>
                                                                     </TableCell>
+                                                                    {/*<TableCell className={'text-danger'}>*/}
+                                                                    {/*    <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>*/}
+                                                                    {/*        {row.price_change_percentage_24h}%*/}
+                                                                    {/*    </Link>*/}
+                                                                    {/*</TableCell>*/}
                                                             </TableRow>
 
                                                     );
@@ -385,7 +408,7 @@ export default function BnKnowledgeCenter() {
                                     </Table>
                                 </TableContainer>
                                 <TablePagination
-                                    rowsPerPageOptions={[10, 25, 100]}
+                                    rowsPerPageOptions={[50, 100, 150]}
                                     component="div"
                                     count={coins.length}
                                     rowsPerPage={rowsPerPage}
