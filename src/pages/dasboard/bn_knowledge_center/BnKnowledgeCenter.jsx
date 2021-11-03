@@ -2,10 +2,9 @@ import {
     Close,
     Favorite,
     Forum,
-    GridView,
     List,
     Replay,
-    Star, StarBorderOutlined, StarBorderPurple500, StarOutline,
+    Star,  StarOutline,
 } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
@@ -14,7 +13,7 @@ import {
     Card,
     CardContent,
     Container, Divider,
-    Paper, Rating,
+    Paper,
     Switch,
     Tab,
     Table,
@@ -304,7 +303,7 @@ export default function BnKnowledgeCenter() {
                                 scrollButtons
                             >
                                 <Button  variant="contained" className={''} style={custom.buttonStyle}>
-                                    <Star style={{marginRight : '5px', color:"orange"}} /> Portfolio
+                                    <Star style={{marginRight : '5px', color:'orange'}} /> Portfolio
                                 </Button>
                                 <Button variant="contained" className={''} style={custom.buttonStyle}>Watchlist</Button>
 
