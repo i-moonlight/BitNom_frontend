@@ -7,7 +7,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import NotificationListItem from './NotificationListItem';
 import NotificationSettingsPopover from './NotificationSettingsPopover';

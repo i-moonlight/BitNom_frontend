@@ -11,7 +11,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
+
 import Screen from '../../../components/Screen';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
 import NotificationsListCard from './NotificationsListCard';
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Notifications() {
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
 

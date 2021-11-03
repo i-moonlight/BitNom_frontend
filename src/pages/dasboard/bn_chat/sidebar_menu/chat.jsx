@@ -96,6 +96,17 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     <span className={classes.offline_status}></span>
                 )}
                 <ListItemText
+                    // primary={chat?.otherUser?.info?.displayName}
+                    // secondary={
+                    //     <React.Fragment>
+                    //         <span sx={{ display: 'inline' }}>
+                    //             {chat.otherUser.info.displayName}
+                    //         </span>
+                    //         <Badge
+                    //             badgeContent={chat?.currentUser?.unreadCount}
+                    //             color="primary"
+                    //             style={{ marginLeft: '120px' }}
+                    //         />
                     primary={
                         <Typography color="textPrimary">
                             {otherUser?.info?.displayName}{' '}
@@ -109,7 +120,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     secondary={
                         <React.Fragment>
                             {chat.status === 'accepted' && (
-                                <div>
+                                <span>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
                                             data?.lastMessageUpdate?.text
@@ -137,7 +148,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : (
                                         truncateString(chat?.lastMessage?.text)
                                     )}
-                                </div>
+                                </span>
                             )}
                         </React.Fragment>
                     }

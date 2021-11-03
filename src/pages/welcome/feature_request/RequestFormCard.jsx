@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, useTheme } from '@mui/material';
-import React from 'react';
+
 import { FormikButton } from '../../../components/Button';
 import Form from '../../../components/Form';
 import TextField from '../../../components/TextField';

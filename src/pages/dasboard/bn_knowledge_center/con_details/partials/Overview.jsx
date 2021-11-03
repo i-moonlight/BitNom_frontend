@@ -37,7 +37,8 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { useState } from 'react';
+
 import CoinChart from './CoinChart';
 
 function createData(
@@ -205,7 +206,7 @@ const useStyles = makeStyles({
     },
 });
 export default function Overview() {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -1605,22 +1606,13 @@ export default function Overview() {
                                         sentiment of Bitcoin
                                     </p>
                                 </div>
-                                <div
-                                    className={
-                                        'd-lg-flex d-md-flex d-sm-block justify-content-between'
-                                    }
-                                >
+                                <div className={'d-lg-flex d-md-flex d-sm-block justify-content-between'}>
                                     <div className={'border rounded m-1'}>
                                         <div className={'m-3'}>
                                             <h5 className={'text-secondary'}>
                                                 <strong>Summary</strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px',}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>
@@ -1632,12 +1624,7 @@ export default function Overview() {
                                                     Net Network Growth
                                                 </strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px',}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>
@@ -1647,12 +1634,7 @@ export default function Overview() {
                                             <h5 className={'text-success'}>
                                                 <strong>Concentration</strong>
                                             </h5>
-                                            <div
-                                                style={{
-                                                    minHeight: '250px',
-                                                    minWidth: '300px',
-                                                }}
-                                            >
+                                            <div style={{minHeight: '250px', minWidth: '300px',}}>
                                                 <h1> Coming soon</h1>
                                             </div>
                                         </div>

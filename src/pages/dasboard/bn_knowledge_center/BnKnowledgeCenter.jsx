@@ -5,8 +5,7 @@ import {
     GridView,
     List,
     Replay,
-    Star,
-    StarBorderOutlined,
+    Star, StarBorderPurple500,
 } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
@@ -26,350 +25,35 @@ import {
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Screen from '../../../components/Screen';
 import GainersAndLosers from './GainersAndLosers';
 import HeatMap from './HeatMap';
+import {Link} from 'react-router-dom';
 
 const columns = [
     { id: 'star', label: '#', minWidth: 10 },
     { id: 'ash', label: '', minWidth: 10 },
-    { id: 'coin_image', label: 'Coin', minWidth: 25 },
-    { id: 'coin', label: '', minWidth: 25 },
-    { id: 'currency', label: '', minWidth: 50 },
-    { id: 'price', label: 'Price', minWidth: 100 },
+    { id: 'image', label: 'Coin', minWidth: 25 },
+    { id: 'name', label: '', minWidth: 25 },
+    { id: 'symbol', label: '', minWidth: 50 },
+    { id: 'price_change_24h', label: 'Price', minWidth: 100 },
     { id: 'h_1', label: '1h', minWidth: 100 },
-    { id: 'h_24', label: '24h', minWidth: 100 },
+    { id: 'high_24hr', label: '24h', minWidth: 100 },
     { id: 'd_7', label: '7d', minWidth: 100 },
     { id: 'volume_24', label: '24h Volume', minWidth: 100 },
-    { id: 'mkt_cap', label: 'Mkt Cap', minWidth: 100 },
+    { id: 'market_cap', label: 'Mkt Cap', minWidth: 100 },
     { id: 'last_7_days', label: 'Last 7 days', minWidth: 100 },
 ];
 
-function createData(
-    star,
-    ash,
-    coin_image,
-    coin,
-    currency,
-    price,
-    h_1,
-    h_24,
-    d_7,
-    volume_24,
-    mkt_cap,
-    last_7_days
-) {
-    return {
-        star,
-        ash,
-        coin_image,
-        coin,
-        currency,
-        price,
-        h_1,
-        h_24,
-        d_7,
-        volume_24,
-        mkt_cap,
-        last_7_days,
-    };
-}
-
-const rows = [
-    createData(
-        <StarBorderOutlined />,
-        1,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        2,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        3,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        4,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        5,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        6,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        7,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        8,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        9,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        10,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        11,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        1,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        1,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-    createData(
-        <StarBorderOutlined />,
-        12,
-        <img
-            height="25px"
-            src={
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579'
-            }
-            alt="bitcoin"
-        />,
-        'Bitcoin',
-        'BTC',
-        '$44,000.090',
-        <p className="text-danger">-0.4%</p>,
-        <p className="text-danger">-2.5%</p>,
-        <p className="text-danger">-3.4%</p>,
-        '$34,560,264.399',
-        '$34,560,264.399',
-        'Images'
-    ),
-];
-
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0px',
-    },
-});
+const useStyles = makeStyles({ tabPanelRoot: {padding: '25px 0px',},});
 
 export default function BnKnowledgeCenter() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [checked, setChecked] = React.useState(true);
     const [value, setValue] = React.useState('1');
+    const [coins, getCoins] = useState([]);
 
     const handleChangePage = (newPage) => {
         setPage(newPage);
@@ -379,6 +63,19 @@ export default function BnKnowledgeCenter() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        fetch(
+            'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&sparkline=false'
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                getCoins(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const borders = {
         market: {
@@ -441,10 +138,9 @@ export default function BnKnowledgeCenter() {
                         <div className=" d-lg-flex d-md-flex d-sm-block flex-row m-2">
                             <h2>Cryptocurrency Prices by Market Cap </h2>
                             <small>
-                                <Switch
-                                    checked={checked}
-                                    onChange={handleChange}
-                                    inputProps={{ 'aria-label': 'controlled' }}
+                                <Switch checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
                                 />
                                 Show Status
                             </small>
@@ -586,47 +282,20 @@ export default function BnKnowledgeCenter() {
                                 aria-label="lab API tabs example"
                                 variant="scrollable"
                                 allowScrollButtonsMobile
-                                scrollButtons
-                            >
-                                <button
-                                    className={'btn btn-secondary m-2'}
-                                    style={custom.tabStyle}
-                                >
+                                scrollButtons>
+                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
                                     <Star /> Portfolio
                                 </button>
-                                <button
-                                    className={'btn btn-secondary m-2'}
-                                    style={custom.tabStyle}
-                                >
+                                <button className={'btn btn-secondary m-2'} style={custom.tabStyle}>
                                     Watchlist
                                 </button>
 
                                 <hr style={custom.verticalLine} />
-                                <Tab
-                                    label="Cryptocurrency"
-                                    value="1"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Cryptogazing"
-                                    value="3"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Category"
-                                    value="2"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Gainers and Losers "
-                                    value="5"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Heatmap"
-                                    value="7"
-                                    style={custom.tabStyle}
-                                />
+                                <Tab label="Cryptocurrency" value="1" style={custom.tabStyle}/>
+                                <Tab label="Cryptogazing" value="3" style={custom.tabStyle}/>
+                                <Tab label="Category" value="2" style={custom.tabStyle}/>
+                                <Tab label="Gainers and Losers " value="5" style={custom.tabStyle}/>
+                                <Tab label="Heatmap" value="7" style={custom.tabStyle}/>
 
                                 {/*Show up only when table views is clicked*/}
                                 {value === 1 && (
@@ -637,110 +306,100 @@ export default function BnKnowledgeCenter() {
                                 )}
                             </TabList>
                         </Card>
-                        <TabPanel
-                            value="1"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                             {/*Portfolio*/}
                             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                                 <TableContainer sx={{ maxHeight: 440 }}>
-                                    <Table
-                                        stickyHeader
-                                        aria-label="sticky table"
-                                    >
+                                    <Table stickyHeader aria-label="sticky table">
                                         <TableHead>
-                                            <TableRow>
-                                                {columns.map((column) => (
-                                                    <TableCell
-                                                        key={column.id}
-                                                        align={column.align}
-                                                        style={{
-                                                            minWidth:
-                                                                column.minWidth,
-                                                            backgroundColor:
-                                                                '#3e4041',
-                                                            color: '#fff',
-                                                        }}
-                                                    >
-                                                        {column.label}
-                                                    </TableCell>
-                                                ))}
+                                            <TableRow style={{backgroundColor: '#3e4041', color: '#fff'}}>
+                                                <TableCell className="text-secondary"><strong>#</strong></TableCell>
+                                                <TableCell className="text-secondary"></TableCell>
+                                                <TableCell className="text-secondary"><strong>Coin</strong></TableCell>
+                                                <TableCell className="text-secondary"></TableCell>
+                                                <TableCell className="text-secondary"></TableCell>
+                                                <TableCell className="text-secondary"><strong>Price</strong></TableCell>
+                                                <TableCell className="text-secondary"><strong>Volume (24h)</strong></TableCell>
+                                                <TableCell className="text-secondary"><strong>Mkt Cap</strong></TableCell>
+                                                <TableCell className="text-secondary"><strong>Change(24h)</strong></TableCell>
+                                                {/*<TableCell className="text-secondary-50"><strong>Price Graph</strong></TableCell>*/}
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {rows
-                                                .slice(
-                                                    page * rowsPerPage,
-                                                    page * rowsPerPage +
-                                                        rowsPerPage
-                                                )
-                                                .map((row) => {
+                                            {coins
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((row, id) => {
                                                     return (
-                                                        <TableRow
-                                                            hover
-                                                            role="checkbox"
-                                                            tabIndex={-1}
-                                                            key={row.code}
-                                                        >
-                                                            {columns.map(
-                                                                (column) => {
-                                                                    const val =
-                                                                        row[
-                                                                            column
-                                                                                .id
-                                                                        ];
-                                                                    return (
-                                                                        <TableCell
-                                                                            key={
-                                                                                column.id
-                                                                            }
-                                                                            align={
-                                                                                column.align
-                                                                            }
-                                                                        >
-                                                                            <a href="#">
-                                                                                {column.format &&
-                                                                                typeof val ===
-                                                                                    'number'
-                                                                                    ? column.format(
-                                                                                          val
-                                                                                      )
-                                                                                    : val}
-                                                                            </a>
-                                                                        </TableCell>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </TableRow>
+                                                            <TableRow hover role="checkbox"  key={row.id}>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`} className={'text-danger'}>
+                                                                            <StarBorderPurple500 />
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell align="right">
+                                                                        <Link to={`/knowledge_center/${row.id}`}>
+                                                                            {id + 1}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                            <img src={row.image} alt={'coin image'} height="25px"/>
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                            {row.name}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                            {row.symbol}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                           ${row.current_price}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                            ${row.total_volume}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-secondary'}>
+                                                                            ${row.market_cap}
+                                                                        </Link>
+                                                                    </TableCell>
+                                                                    <TableCell className={'text-danger'}>
+                                                                        <Link to={`/knowledge_center/${row.id}`}  className={'text-danger'}>
+                                                                            {row.price_change_percentage_24h}%
+                                                                        </Link>
+                                                                    </TableCell>
+                                                            </TableRow>
+
                                                     );
-                                                })}
+                                                })
+                                            }
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 100]}
                                     component="div"
-                                    count={rows.length}
+                                    count={coins.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onPageChange={handleChangePage}
-                                    onRowsPerPageChange={
-                                        handleChangeRowsPerPage
-                                    }
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
                                 />
                             </Paper>
                         </TabPanel>
-                        <TabPanel
-                            value="2"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
                             {/*Watchlist*/}
                             <Card>
                                 <TableContainer sx={{ maxHeight: 440 }}>
-                                    <Table
-                                        stickyHeader
-                                        aria-label="sticky table"
-                                    >
+                                    <Table stickyHeader aria-label="sticky table">
                                         <TableHead>
                                             <TableRow>
                                                 {columns.map((column) => (
@@ -748,13 +407,10 @@ export default function BnKnowledgeCenter() {
                                                         key={column.id}
                                                         align={column.align}
                                                         style={{
-                                                            minWidth:
-                                                                column.minWidth,
-                                                            backgroundColor:
-                                                                '#3e4041',
+                                                            minWidth: column.minWidth,
+                                                            backgroundColor: '#3e4041',
                                                             color: '#fff',
-                                                        }}
-                                                    >
+                                                        }}>
                                                         {column.label}
                                                     </TableCell>
                                                 ))}
@@ -763,29 +419,17 @@ export default function BnKnowledgeCenter() {
                                     </Table>
                                 </TableContainer>
                                 <div className="m-5 text-center">
-                                    <h4>
-                                        <strong>Your Watchlist is empty</strong>
-                                    </h4>
-                                    <p>
-                                        Start building your watchlist by
-                                        clicking button bellow
-                                    </p>
-                                    <button className=" btn btn-primary m-2">
-                                        Add Coins
-                                    </button>
+                                    <h4><strong>Your Watchlist is empty</strong></h4>
+                                    <p>Start building your watchlist by clicking button bellow</p>
+                                    <button className=" btn btn-primary m-2">Add Coins</button>
                                     <br />
-                                    <a className="text-primary">
-                                        Visit Cryptogazing
-                                    </a>
+                                    <a className="text-primary">Visit Cryptogazing</a>
                                 </div>
                             </Card>
                         </TabPanel>
-                        <TabPanel
-                            value="3"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
                             {/* Cryptogazing*/}
-                            <div className="container col-6 text-center justify-content-center">
+                            <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center">
                                 <Card>
                                     <CardContent>
                                         <div className="d-flex flex-row justify-content-between mb-3">
@@ -798,13 +442,11 @@ export default function BnKnowledgeCenter() {
                                         </div>
                                         <div className="row">
                                             <div className="col">
-                                                <img
-                                                    height="100px"
-                                                    src={
-                                                        'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'
-                                                    }
-                                                    alt="Bitcoin Image"
-                                                />
+                                                <img height="100px"
+                                                     src={
+                                                         'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'
+                                                     }
+                                                     alt="Bitcoin Image"/>
                                                 <p className="mt-1">
                                                     <strong>
                                                         Bitcoin (BTC)
@@ -864,32 +506,20 @@ export default function BnKnowledgeCenter() {
                                 </Card>
                             </div>
                         </TabPanel>
-                        <TabPanel
-                            value="4"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
                             {/*Categories*/}
                             <Card>Categories</Card>
                         </TabPanel>
-                        <TabPanel
-                            value="5"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="5" classes={{ root: classes.tabPanelRoot }}>
                             {/*Gainers and Losers*/}
                             <Card>
                                 <GainersAndLosers />
                             </Card>
                         </TabPanel>
-                        <TabPanel
-                            value="6"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="6" classes={{ root: classes.tabPanelRoot }}>
                             <Card>Coming Soon</Card>
                         </TabPanel>
-                        <TabPanel
-                            value="7"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="7" classes={{ root: classes.tabPanelRoot }}>
                             <Card>
                                 <div>
                                     <HeatMap />

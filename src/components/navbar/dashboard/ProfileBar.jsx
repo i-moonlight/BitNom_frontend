@@ -19,7 +19,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
@@ -45,7 +45,7 @@ export default function ProfileBar({
     const theme = useTheme();
     const unreadCount = state.chats.unreadCount;
     const userInitials = getUserInitials(
-        profile?.displayName || user?.displayName
+        user?.displayName || profile?.displayName
     );
     const smDown = useMediaQuery('(max-width:959px)');
     const mdUp = useMediaQuery('(min-width:960px)');
@@ -89,6 +89,7 @@ export default function ProfileBar({
                                 B
                             </Avatar>
                         )}
+
                         {!smDown && (
                             <Typography
                                 style={{ marginLeft: 16, color: '#F59301' }}
@@ -100,7 +101,7 @@ export default function ProfileBar({
                         )}
                     </div>
                     <Paper
-                        variant={theme.palette.mode == 'light' && 'outlined'}
+                        // variant={theme.palette.mode == 'light' && 'outlined'}
                         elevation={0}
                         component="form"
                         className={classes.paperSearch}
@@ -163,7 +164,6 @@ export default function ProfileBar({
                                 history.push('/chat');
                             }}
                         >
-                            {' '}
                             <Badge color="primary" badgeContent={unreadCount}>
                                 <ForumRounded />
                             </Badge>
@@ -187,9 +187,9 @@ export default function ProfileBar({
                                 }}
                                 src={
                                     process.env.REACT_APP_BACKEND_URL +
-                                        profile?.profile_pic ||
-                                    process.env.REACT_APP_BACKEND_URL +
                                         user?.profile_pic ||
+                                    process.env.REACT_APP_BACKEND_URL +
+                                        profile?.profile_pic ||
                                     `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
                             >
@@ -199,8 +199,8 @@ export default function ProfileBar({
                                 variant="body2"
                                 style={{ marginRight: 4 }}
                             >
-                                {profile?.displayName ||
-                                    user?.displayName ||
+                                {user?.displayName ||
+                                    profile?.displayName ||
                                     profile?._id ||
                                     user?.id}
                             </Typography>

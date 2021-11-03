@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { ArrowBack, RoomRounded, VideocamRounded } from '@mui/icons-material';
 import {
     Card,
+    CardActionArea,
     CardContent,
     CardHeader,
     CircularProgress,
@@ -14,7 +15,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
@@ -219,108 +220,117 @@ function EventPreview({ event }) {
     };
 
     return (
-        <Card
-            elevation={0}
-            key={event?._id}
-            onClick={() => history.push(`/events/${event?._id}`)}
-            className="mb-2"
-        >
-            <CardContent
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    cursor: 'pointer',
-                }}
+        <Card elevation={0} key={event?._id} className="mb-2">
+            <CardActionArea
+                onClick={() => history.push(`/events/${event?._id}`)}
             >
-                <div
+                <CardContent
                     style={{
-                        backgroundImage:
-                            event?.image !== null && event?.image?.trim() !== ''
-                                ? 'url(' +
-                                  process.env.REACT_APP_BACKEND_URL +
-                                  event?.image +
-                                  ')'
-                                : `url('${'https://picsum.photos/200/300'}')`,
-                        backgroundSize: 'cover',
-                        width: 170,
-                        height: 110,
-                        borderRadius: 8,
-                        marginRight: 10,
-                    }}
-                ></div>
-
-                <div
-                    style={{
-                        display: 'grid',
-                        alignItems: 'stretch',
-                        height: 110,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        cursor: 'pointer',
                     }}
                 >
-                    {!smDown && (
-                        <Typography color="textSecondary" variant="body2">
-                            {moment(event?.startDate).format(
-                                'ddd, MMMM Do YYYY, h:mm a'
-                            )}
-                        </Typography>
-                    )}
-                    <Typography
-                        style={{ textTransform: 'uppercase' }}
-                        variant="body2"
-                    >
-                        {event?.location?.type === 'physical'
-                            ? event?.title
-                            : `${event?.title} (Virtual) `}
-                    </Typography>
-                    {event?.location?.type === 'physical' ? (
-                        <div className="center-horizontal">
-                            <RoomRounded color="primary" />
-                            <Typography
-                                color="primary"
-                                style={{ textDecoration: 'underline' }}
-                            >
-                                <a
-                                    href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                                    style={{ color: 'inherit', zIndex: '3' }}
-                                    onClick={(e) => e.stopPropagation()}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {truncateText(event?.location?.address, 40)}
-                                </a>
-                            </Typography>
-                        </div>
-                    ) : (
-                        <div className="center-horizontal">
-                            <VideocamRounded color="primary" />
-                            <Typography
-                                color="primary"
-                                style={{ textDecoration: 'underline' }}
-                            >
-                                <a
-                                    //component='a'
-                                    href={event?.link}
-                                    style={{ color: 'inherit', zIndex: '3' }}
-                                    onClick={(e) => e.stopPropagation()}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Online
-                                </a>
-                            </Typography>
-                        </div>
-                    )}
+                    <div
+                        style={{
+                            backgroundImage:
+                                event?.image !== null &&
+                                event?.image?.trim() !== ''
+                                    ? 'url(' +
+                                      process.env.REACT_APP_BACKEND_URL +
+                                      event?.image +
+                                      ')'
+                                    : `url('${'https://picsum.photos/200/300'}')`,
+                            backgroundSize: 'cover',
+                            width: 170,
+                            height: 110,
+                            borderRadius: 8,
+                            marginRight: 10,
+                        }}
+                    ></div>
 
-                    <Typography variant="body2">
-                        {`${event?.attendees?.length} ${
-                            new Date(event?.endDate).getTime() <
-                            new Date().getTime()
-                                ? 'Attended'
-                                : 'Going'
-                        }`}
-                    </Typography>
-                </div>
-            </CardContent>
+                    <div
+                        style={{
+                            display: 'grid',
+                            alignItems: 'stretch',
+                            height: 110,
+                        }}
+                    >
+                        {!smDown && (
+                            <Typography color="textSecondary" variant="body2">
+                                {moment(event?.startDate).format(
+                                    'ddd, MMMM Do YYYY, h:mm a'
+                                )}
+                            </Typography>
+                        )}
+                        <Typography
+                            style={{ textTransform: 'uppercase' }}
+                            variant="body2"
+                        >
+                            {event?.location?.type === 'physical'
+                                ? event?.title
+                                : `${event?.title} (Virtual) `}
+                        </Typography>
+                        {event?.location?.type === 'physical' ? (
+                            <div className="center-horizontal">
+                                <RoomRounded color="primary" />
+                                <Typography
+                                    color="primary"
+                                    style={{ textDecoration: 'underline' }}
+                                >
+                                    <a
+                                        href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
+                                        style={{
+                                            color: 'inherit',
+                                            zIndex: '3',
+                                        }}
+                                        onClick={(e) => e.stopPropagation()}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        {truncateText(
+                                            event?.location?.address,
+                                            40
+                                        )}
+                                    </a>
+                                </Typography>
+                            </div>
+                        ) : (
+                            <div className="center-horizontal">
+                                <VideocamRounded color="primary" />
+                                <Typography
+                                    color="primary"
+                                    style={{ textDecoration: 'underline' }}
+                                >
+                                    <a
+                                        //component='a'
+                                        href={event?.link}
+                                        style={{
+                                            color: 'inherit',
+                                            zIndex: '3',
+                                        }}
+                                        onClick={(e) => e.stopPropagation()}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Online
+                                    </a>
+                                </Typography>
+                            </div>
+                        )}
+
+                        <Typography variant="body2">
+                            {`${event?.attendees?.length} ${
+                                new Date(event?.endDate).getTime() <
+                                new Date().getTime()
+                                    ? 'Attended'
+                                    : 'Going'
+                            }`}
+                        </Typography>
+                    </div>
+                </CardContent>
+            </CardActionArea>
         </Card>
     );
 }

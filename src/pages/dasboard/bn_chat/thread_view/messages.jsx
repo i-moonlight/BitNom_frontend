@@ -1,6 +1,6 @@
 import { useQuery, useSubscription } from '@apollo/client';
 import { CircularProgress, Divider } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addMessagesToCurrentChat,

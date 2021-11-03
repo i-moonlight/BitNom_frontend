@@ -29,7 +29,6 @@ const BnServices = React.lazy(() =>
 const SavedItems = React.lazy(() =>
     import('./pages/dasboard/bookmarks/SavedItems')
 );
-const EventView = React.lazy(() => import('./pages/dasboard/events/EventView'));
 const Connections = React.lazy(() =>
     import('./pages/dasboard/people/Connections')
 );
@@ -48,6 +47,7 @@ const RequireVerification = React.lazy(() =>
 const TestComponent = React.lazy(() =>
     import('./test_component/TestComponent')
 );
+const EventView = React.lazy(() => import('./pages/dasboard/events/EventView'));
 const CreatePassword = React.lazy(() => import('./pages/auth/CreatePassword'));
 const Profile = React.lazy(() => import('./pages/dasboard/profile/Profile'));
 const Posts = React.lazy(() => import('./pages/dasboard/profile/UserPosts'));
@@ -144,11 +144,7 @@ export default function Routes({ apolloClient }) {
                             component={BnKnowledgeCenter}
                             path="/knowledge_center/cryptocurrency"
                         />
-                        <Route
-                            exact
-                            component={CoinDetails}
-                            path="/knowledge_center/bitcoin" // Should be optional later
-                        />
+                        <Route exact component={CoinDetails} path="/knowledge_center/:id" />
                         <Route
                             exact
                             component={Events}

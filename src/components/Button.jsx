@@ -1,6 +1,5 @@
 import { Button as MuiButton } from '@mui/material';
 import { useFormikContext } from 'formik';
-import React from 'react';
 import logo_google from '../assets/components/google.svg';
 
 export function Button({

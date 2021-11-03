@@ -11,7 +11,7 @@ import {
     Typography,
 } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';

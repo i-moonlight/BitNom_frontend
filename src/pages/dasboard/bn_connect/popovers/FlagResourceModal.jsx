@@ -12,7 +12,7 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import React from 'react';
+
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
 export default function FlagResourceModal({

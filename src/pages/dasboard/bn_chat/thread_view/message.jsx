@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import MessagePopover from '../components/MessagePopover';
 import IncomingMessage from './IncomingMessage';

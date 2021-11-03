@@ -5,7 +5,7 @@ import {
 } from '@mui/icons-material';
 import { Card, IconButton, Typography, useMediaQuery } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 

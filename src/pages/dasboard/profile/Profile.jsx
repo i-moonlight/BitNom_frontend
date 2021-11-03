@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
+
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';

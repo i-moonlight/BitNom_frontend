@@ -8,7 +8,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import botImg from '../../../assets/landing/bot.svg';
 import ghostImg from '../../../assets/landing/ghost.svg';

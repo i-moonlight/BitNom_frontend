@@ -12,7 +12,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../store/actions/themeActions';
 import { Button } from '../Button';

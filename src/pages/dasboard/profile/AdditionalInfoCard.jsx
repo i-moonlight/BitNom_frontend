@@ -6,7 +6,7 @@ import {
     MenuItem,
     Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../../components/Button';
 import AditionalInfoForm from './forms/AditionalInfoForm';
 import GenderForm from './forms/GenderForm';

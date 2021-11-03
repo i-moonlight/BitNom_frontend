@@ -11,7 +11,7 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-import React from 'react';
+
 import { useSelector } from 'react-redux';
 import {
     GET_BOOKMARKED_COMMENTS,
