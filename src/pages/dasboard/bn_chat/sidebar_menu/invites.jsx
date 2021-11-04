@@ -29,7 +29,7 @@ export default function Invites({ invites, loading }) {
                         <ListSubheader component="div">Invites</ListSubheader>
                     }
                 >
-                    {invites.map((chat) => (
+                    {invites?.map((chat) => (
                         <ChatItem
                             key={chat._id}
                             chat={chat}

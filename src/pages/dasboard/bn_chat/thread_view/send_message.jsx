@@ -346,7 +346,7 @@ export default function SendMessage({
                         {Object.keys(sendMessageErr).length > 0 && (
                             <div>
                                 {' '}
-                                {Object.values(sendMessageErr).map((value) => (
+                                {Object.values(sendMessageErr)?.map((value) => (
                                     <Typography
                                         color="error"
                                         variant="body2"
