@@ -123,8 +123,12 @@ export default function NotificationListItem({ notification }) {
                                 aria-label="show more"
                                 aria-controls={notificationOptionId}
                                 aria-haspopup="true"
-                                onClick={handleNotificationOptionOpen}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleNotificationOptionOpen();
+                                }}
                                 color="inherit"
+                                style={{ zIndex: 2 }}
                             >
                                 <MoreVert />
                             </IconButton>
@@ -146,11 +150,6 @@ export default function NotificationListItem({ notification }) {
                     />
                 </div>
                 <Grid align="right">
-                    {/* notification?.content.includes('followed you') ? (
-            <Button variant='text'>Follow back</Button>
-          ) : (
-            '' 
-          ) */}
                     <Typography>
                         {moment(Number(notification?.date)).fromNow()}
                     </Typography>
