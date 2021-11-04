@@ -92,7 +92,7 @@ export default function HashtagView({ match }) {
         (post) => post?.images?.length > 0
     );
     const postsWithVideo = taggedPosts?.Posts?.getByHashtag?.filter(
-        (post) => post?.video?.length > 0
+        (post) => post?.video?.path
     );
 
     return (

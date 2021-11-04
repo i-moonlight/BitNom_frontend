@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
     ChevronRight,
     CloseRounded,
@@ -21,13 +21,14 @@ import {
     Typography,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { loadScrolls } from '../../../../store/actions/postActions';
 import EventPreview from '../../events/EventPreview';
 import { getFeed, mentionsFinder } from '../../utilities/functions';
 import {
@@ -56,17 +57,21 @@ export default function CreatePost({
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
-    //const theme = useTheme();
+    const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const [
-        createPost,
-        {
-            loading,
-            data,
-            //  error
+    const [createPost, { loading, data, error }] =
+        useMutation(MUTATION_CREATE_POST);
+
+    const {
+        loading: feedLoading,
+        data: feedData,
+        error: feedError,
+    } = useQuery(QUERY_LOAD_SCROLLS, {
+        variables: {
+            data: { ids: getFeed(profileData), limit: 220 },
         },
-    ] = useMutation(MUTATION_CREATE_POST);
+    });
 
     const userInitials = getUserInitials(user?.displayName);
 
@@ -98,6 +103,17 @@ export default function CreatePost({
         setOpenImage(false);
         setOpenVideo(false);
     };
+
+    useEffect(() => {
+        !error && !loading && dispatch(loadScrolls(feedData?.Posts?.get));
+    }, [
+        dispatch,
+        feedData?.Posts?.get,
+        feedError,
+        feedLoading,
+        error,
+        loading,
+    ]);
 
     const mentions = profileData?.followers?.map?.((item) => {
         return {
