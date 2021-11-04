@@ -82,7 +82,6 @@ export default function Messages({ onExitChatMobile }) {
             {dialogue.status === undefined &&
                 dialogue._id === undefined &&
                 !loading && <NoChatSelected />}
-
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -92,7 +91,6 @@ export default function Messages({ onExitChatMobile }) {
                     <Divider />
                 </div>
             )}
-
             {dialogue.status === 'accepted' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -102,12 +100,15 @@ export default function Messages({ onExitChatMobile }) {
                     <Divider />
                 </div>
             )}
-
+            {dialogue.status === 'new' &&
+                dialogue.status !== 'accepted' &&
+                dialogue.recipient?.info._id === user?._id && (
+                    <InviteView dialogue={dialogue} />
+                )}
             {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
                 !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
-
             <div
                 style={{
                     overflowY: 'auto',
@@ -161,27 +162,40 @@ export default function Messages({ onExitChatMobile }) {
                 )}
 
                 <div ref={endRef} className="mt-4" />
+            </div>{' '}
+            <div>
+                {dialogue.status === 'accepted' &&
+                    messages &&
+                    messages.length > 0 &&
+                    (dialogue.recipient.blocked === true ||
+                        dialogue.initiator.blocked === true) && <Blocked />}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
-                messages &&
-                messages.length > 0 &&
-                (dialogue.recipient.blocked === true ||
-                    dialogue.initiator.blocked === true) ? (
-                    <Blocked />
-                ) : (
-                    <SendMessage
-                        chat={dialogue._id}
-                        replyText={replyText}
-                        onCancelReply={() => setReplyText(undefined)}
-                        setReplyText={() => setReplyText(undefined)}
-                    />
-                )}
+                    messages &&
+                    messages.length > 0 &&
+                    (dialogue.recipient.blocked === false ||
+                        dialogue.initiator.blocked === false) && (
+                        <SendMessage
+                            chat={dialogue._id}
+                            replyText={replyText}
+                            onCancelReply={() => setReplyText(undefined)}
+                            setReplyText={() => setReplyText(undefined)}
+                        />
+                    )}
             </div>
             <div>
-                {dialogue.status === 'new' &&
-                    dialogue.recipient?.info._id === user?._id && (
-                        <InviteView dialogue={dialogue} />
+                {dialogue.status === 'accepted' &&
+                    !loading &&
+                    !messages.length > 0 &&
+                    (dialogue.recipient.blocked === false ||
+                        dialogue.initiator.blocked === false) && (
+                        <SendMessage
+                            chat={dialogue._id}
+                            replyText={replyText}
+                            onCancelReply={() => setReplyText(undefined)}
+                            setReplyText={() => setReplyText(undefined)}
+                        />
                     )}
             </div>
         </div>
