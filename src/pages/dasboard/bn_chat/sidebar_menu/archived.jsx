@@ -33,7 +33,7 @@ export default function Archived({ archived, loading }) {
                         </ListSubheader>
                     }
                 >
-                    {archived.map((chat) => (
+                    {archived?.map((chat) => (
                         <Chat
                             key={chat._id}
                             chat={chat}
