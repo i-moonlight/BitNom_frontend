@@ -22,6 +22,7 @@ import SendMessage from './send_message';
 import Blocked from './blocked';
 
 export default function Messages({ onExitChatMobile }) {
+    const [open, setOpen] = useState(false);
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
     const state = useSelector((st) => st);
@@ -112,8 +113,11 @@ export default function Messages({ onExitChatMobile }) {
             <div
                 style={{
                     overflowY: 'auto',
-                    minHeight: '50vh',
-                    height: window.innerHeight - 372,
+                    minHeight: open === true ? '37vh' : '50vh',
+                    height:
+                        open === true
+                            ? window.innerHeight - 750
+                            : window.innerHeight - 372,
                 }}
             >
                 {dialogue.status === 'accepted' &&
@@ -179,6 +183,8 @@ export default function Messages({ onExitChatMobile }) {
                         <SendMessage
                             chat={dialogue._id}
                             replyText={replyText}
+                            open={open}
+                            setOpen={setOpen}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
                         />
@@ -191,6 +197,8 @@ export default function Messages({ onExitChatMobile }) {
                     (dialogue.recipient.blocked === false ||
                         dialogue.initiator.blocked === false) && (
                         <SendMessage
+                            open={open}
+                            setOpen={setOpen}
                             chat={dialogue._id}
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
