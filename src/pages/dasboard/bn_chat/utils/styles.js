@@ -168,4 +168,7 @@ export const useStyles = makeStyles((theme) => ({
     activeChat: {
         backgroundColor: theme.palette.background.chatFrom,
     },
+    cardDropzone: {
+        backgroundColor: theme.palette.background.default,
+    },
 }));
