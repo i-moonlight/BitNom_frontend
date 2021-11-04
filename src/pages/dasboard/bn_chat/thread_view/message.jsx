@@ -6,7 +6,7 @@ import OutgoingMessage from './OutgoingMessage';
 
 const messageSettingsId = 'message-settings-menu';
 
-export default function Message({ message, chat, onReply }) {
+export default function Message({ message, chat, onReply, onUpdateMessage }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const author = message.author || {};
@@ -44,6 +44,9 @@ export default function Message({ message, chat, onReply }) {
                 message={message}
                 messageSettingsId={messageSettingsId}
                 incoming={user._id !== author}
+                onReply={onReply}
+                onUpdateMessage={onUpdateMessage}
+                chat={chat}
             />
         </>
     );

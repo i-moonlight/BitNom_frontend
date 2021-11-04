@@ -7,6 +7,8 @@ const initialState = {
     archived: [],
     unreadCount: null,
     searchData: [],
+    pinnedMessages: [],
+    pinnedChats: [],
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -14,7 +16,13 @@ export default function chatReducer(state = initialState, action) {
         case 'ADD_CHAT_DIALOGUES': {
             return {
                 ...state,
-                chats: [...action.data],
+                chats: [
+                    ...action.data.filter(
+                        (chat) =>
+                            (chat.currentUser.archived ||
+                                chat.currentUser.pinned) !== true
+                    ),
+                ],
                 unreadCount: action.data.reduce((a, b) => {
                     return a + b.currentUser.unreadCount;
                 }, 0),
@@ -75,6 +83,44 @@ export default function chatReducer(state = initialState, action) {
             };
         case 'CLEAR_SEARCH_OUTPUT':
             return { ...state, searchData: [] };
+        case 'REMOVE_FROM_MESSAGES':
+            return {
+                ...state,
+                dialogue_messages: state.dialogue_messages.filter(
+                    (message) => message._id !== action.data._id
+                ),
+            };
+        case 'ADD_PINNED_MESSAGES':
+            return {
+                ...state,
+                pinnedMessages: [...action.data],
+            };
+        case 'ADD_MESSAGE_TO_PINNED_MESSAGES':
+            return {
+                ...state,
+                pinnedMessages: [
+                    ...state.pinnedMessages.slice(0, action.data),
+                    action.data,
+                    ...state.pinnedMessages.slice(action.data),
+                ],
+            };
+        case 'DELETE_PINNED_MESSAGE':
+            return {
+                ...state,
+                pinnedMessages: state.pinnedMessages.filter(
+                    (pinned) => pinned._id !== action.data._id
+                ),
+            };
+        case 'CLEAR_PINNED_MESSAGES':
+            return {
+                ...state,
+                pinnedMessages: [],
+            };
+        case 'PIN_CHAT':
+            return {
+                ...state,
+                pinnedChats: [...action.data],
+            };
         default:
             return { ...state };
     }

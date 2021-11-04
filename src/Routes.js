@@ -144,11 +144,7 @@ export default function Routes({ apolloClient }) {
                             component={BnKnowledgeCenter}
                             path="/knowledge_center/cryptocurrency"
                         />
-                        <Route
-                            exact
-                            component={CoinDetails}
-                            path="/knowledge_center/bitcoin" // Should be optional later
-                        />
+                        <Route exact component={CoinDetails} path="/knowledge_center/:id" />
                         <Route
                             exact
                             component={Events}

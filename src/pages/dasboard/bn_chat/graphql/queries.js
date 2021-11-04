@@ -98,6 +98,7 @@ export const GET_DIALOGUES = gql`
         $sortOrder: String
         $sortByField: String
         $archived: Boolean
+        $pinned: Boolean
     ) {
         Dialogue {
             get(
@@ -107,6 +108,7 @@ export const GET_DIALOGUES = gql`
                     sortOrder: $sortOrder
                     sortByField: $sortByField
                     archived: $archived
+                    pinned: $pinned
                 }
             ) {
                 _id
@@ -439,12 +441,19 @@ export const UNBLOCK_DIALOGUE = gql`
     }
 `;
 export const GET_DIALOGUE_MESSAGES = gql`
-    query ($chat: ID!, $limit: Int, $skip: Int, $sortOrder: String) {
+    query (
+        $chat: ID!
+        $limit: Int
+        $skip: Int
+        $sortOrder: String
+        $pinned: Boolean
+    ) {
         Dialogue {
             getMessages(
                 data: {
                     chat: $chat
                     params: {
+                        pinned: $pinned
                         limit: $limit
                         skip: $skip
                         sortOrder: $sortOrder
@@ -460,6 +469,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 video
                 documents
                 gif
+                pinned
                 responseTo {
                     _id
                     text
@@ -1196,9 +1206,9 @@ export const PIN_CHAT = gql`
     }
 `;
 export const PIN_MESSAGE = gql`
-    mutation pinMessage($_id: ID!) {
+    mutation pinMessage($data: OMessageInput!) {
         Dialogue {
-            pinMessage(_id: $_id) {
+            pinMessage(data: $data) {
                 _id
                 chat {
                     _id
@@ -1238,6 +1248,13 @@ export const UPDATE_MESSAGE = gql`
             updateMessage(_id: $_id) {
                 _id
             }
+        }
+    }
+`;
+export const DELETE_MESSAGE = gql`
+    mutation deleteMessage($data: OMessageInput!) {
+        Dialogue {
+            deleteMessage(data: $data)
         }
     }
 `;

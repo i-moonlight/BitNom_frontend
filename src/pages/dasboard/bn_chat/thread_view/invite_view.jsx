@@ -5,6 +5,7 @@ import {
     CardContent,
     Link,
     Typography,
+    Grid,
 } from '@mui/material';
 
 import { Button } from '../../../../components/Button';
@@ -43,34 +44,43 @@ export default function InviteView({ dialogue }) {
     };
 
     return (
-        <Card className={classes.inviteBar}>
-            <CardContent>
-                <Typography>
-                    Accept to chat with{' '}
-                    <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
-                        {dialogue?.otherUser?.info?.displayName}
-                    </Link>
-                    . If you ignore this, the chat wil be removed and we wont
-                    let the sender know.
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleAccept}
-                    className="me-1"
-                >
-                    Accept
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleReject}
-                >
-                    Reject
-                </Button>
-            </CardActions>
-        </Card>
+        <Grid
+            item
+            justifyContent="center"
+            alignItems="center"
+            container
+            direction="column"
+            style={{ width: '100%', marginTop: '83%' }}
+        >
+            <Card className={classes.inviteBar}>
+                <CardContent>
+                    <Typography>
+                        Accept to chat with{' '}
+                        <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
+                            {dialogue?.otherUser?.info?.displayName}
+                        </Link>
+                        . If you ignore this, the chat wil be removed and we
+                        wont let the sender know.
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAccept}
+                        className="me-1"
+                    >
+                        Accept
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleReject}
+                    >
+                        Reject
+                    </Button>
+                </CardActions>
+            </Card>
+        </Grid>
     );
 }

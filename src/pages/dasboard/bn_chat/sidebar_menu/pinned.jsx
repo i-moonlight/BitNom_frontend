@@ -1,46 +1,49 @@
 import {
     CircularProgress,
+    Divider,
     Grid,
     List,
     ListSubheader,
     Typography,
 } from '@mui/material';
-
+import { PushPin } from '@mui/icons-material';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentChat } from '../../../../store/actions/chatActions';
-import ChatItem from './chat';
+import { addPinnedChat } from '../../../../store/actions/chatActions';
+import Chat from './chat';
 
-export default function Invites({ invites, loading }) {
+export default function Pinned({ pinned, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
-    const activeChatId = state.chats.current_chat._id;
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
-            dispatch(setCurrentChat(chat));
+            dispatch(addPinnedChat(chat));
         }
     };
     return (
         <>
-            {invites && invites.length > 0 && (
+            {pinned && pinned.length > 0 && (
                 <List
                     component="nav"
                     subheader={
-                        <ListSubheader component="div">Invites</ListSubheader>
+                        <ListSubheader component="div">
+                            <PushPin color="primary" /> Pinned
+                            <Divider />
+                        </ListSubheader>
                     }
                 >
-                    {invites?.map((chat) => (
-                        <ChatItem
+                    {pinned?.map((chat) => (
+                        <Chat
                             key={chat._id}
                             chat={chat}
                             onClick={() => openChatInvite(chat)}
-                            activeChatId={activeChatId}
                         />
                     ))}
                 </List>
             )}
-            {loading && !invites.length > 0 && <CircularProgress />}
-            {!loading && !invites.length > 0 && (
+            {loading && !pinned.length > 0 && <CircularProgress />}
+            {!loading && !pinned.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
@@ -48,7 +51,7 @@ export default function Invites({ invites, loading }) {
                     direction
                     column
                 >
-                    <Typography>You have no chat invites yet!</Typography>
+                    <Typography>You have no pinned chats yet!</Typography>
                 </Grid>
             )}
         </>
