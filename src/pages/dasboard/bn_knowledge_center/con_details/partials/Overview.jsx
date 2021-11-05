@@ -39,7 +39,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 
-import CoinChart from './CoinChart';
+import CoinChart from '../../bn_charts/CoinChart';
 
 function createData(
     number,
