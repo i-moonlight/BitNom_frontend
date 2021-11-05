@@ -1,15 +1,6 @@
-import {
-    Close,
-    Favorite,
-    Forum,
-    List,
-    Replay,
-    Star,
-    StarOutline,
-} from '@mui/icons-material';
+import { List, Star, StarOutline } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-    Box,
     Button,
     Card,
     CardContent,
@@ -29,10 +20,13 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
-import Screen from '../../../components/Screen';
-import GainersAndLosers from './GainersAndLosers';
-import HeatMap from './HeatMap';
 import { Link } from 'react-router-dom';
+import Screen from '../../../components/Screen';
+import Categories from './sub_sections/Categories';
+import { CryptoGazing } from './sub_sections/CryptoGazing';
+import GainersAndLosers from './sub_sections/GainersAndLosers';
+import HeatMap from './sub_sections/HeatMap';
+import RecentlyAdded from './sub_sections/RecentlyAdded';
 
 const columns = [
     { id: 'star', label: '#', minWidth: 10 },
@@ -68,12 +62,9 @@ export default function BnKnowledgeCenter() {
     };
 
     useEffect(() => {
-        fetch(
-            'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&sparkline=false'
-        )
+        fetch('https://api.coingecko.com/api/v3/coins')
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 getCoins(data);
             })
             .catch((err) => {
@@ -124,12 +115,19 @@ export default function BnKnowledgeCenter() {
             fontWeight: 'bold',
             backgroundColor: '#333333',
             margin: '15px 15px 15px 0',
+            borderRadius: '5px',
+            minWidth: '100px',
         },
         listGridStyle: {
             textTransform: 'capitalize',
             fontWeight: 'bold',
             backgroundColor: '#333333',
-            margin: '15px 0 15px 15',
+            margin: '15px 15px 15px 0',
+            borderRadius: '5px',
+        },
+        tableHeader: {
+            backgroundColor: '#3e4041',
+            color: '#fff',
         },
         verticalLine: {
             borderLeft: '2px solid green',
@@ -153,29 +151,38 @@ export default function BnKnowledgeCenter() {
         <Screen>
             <Container>
                 {/*Crypto Header*/}
-                <section className="border-0">
-                    <Box variant="body1" className="m-2">
-                        <div className=" d-lg-flex d-md-flex d-sm-block flex-row m-2">
-                            <h2>Cryptocurrency Prices by Market Cap </h2>
-                            <small>
-                                <Switch
-                                    checked={checked}
-                                    onChange={handleChange}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                />
-                                Show Status
-                            </small>
+                <section container>
+                    <div item className="my-2">
+                        <div className="m-3">
+                            <Typography
+                                variant="h5"
+                                color="textPrimary"
+                                className="fw-bold"
+                            >
+                                Cryptocurrency Prices by Market Cap
+                                <small style={{ fontSize: '12px' }}>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{
+                                            'aria-label': 'controlled',
+                                        }}
+                                    />
+                                    Show Status
+                                </small>
+                            </Typography>
+                            <Typography color="textPrimary">
+                                The global cryptocurrency market cap today is
+                                $2.08 Trillion, a
+                                <span className="text-danger"> -1.1% </span>{' '}
+                                change in the last 24 hours{' '}
+                                <a href={'#'}>Read More</a>
+                            </Typography>
                         </div>
-                        <p className="m-2">
-                            The global cryptocurrency market cap today is $2.08
-                            Trillion, a
-                            <span className="text-danger"> -1.1% </span> change
-                            in the last 24 hours <a href={'#'}>Read More</a>
-                        </p>
-                    </Box>
+                    </div>
                 </section>
                 {/*Cards Being Checked*/}
-                {checked && (
+                {!checked && (
                     <section className="d-lg-flex d-md-flex d-sm-block flex-row justify-content-between">
                         <div className="m-2">
                             <Card style={borders.market}>
@@ -333,6 +340,15 @@ export default function BnKnowledgeCenter() {
                                 >
                                     Watchlist
                                 </Button>
+                                <Tab
+                                    label={'Watchlist'}
+                                    style={custom.buttonStyle}
+                                    value="2"
+                                >
+                                    {/*<Button variant="contained" value='2' className={'btn btn-primary'} style={custom.buttonStyle}>*/}
+                                    {/*    Watchlist*/}
+                                    {/*</Button>*/}
+                                </Tab>
 
                                 <hr style={custom.verticalLine} />
                                 <Tab
@@ -347,16 +363,16 @@ export default function BnKnowledgeCenter() {
                                 />
                                 <Tab
                                     label="Category"
-                                    value="2"
+                                    value="4"
                                     style={custom.tabStyle}
                                 />
                                 <Tab
                                     label="Recently Added"
-                                    value="2"
+                                    value="6"
                                     style={custom.tabStyle}
                                 />
                                 <Tab
-                                    label="Gainers and Losers "
+                                    label="Gainers and Losers"
                                     value="5"
                                     style={custom.tabStyle}
                                 />
@@ -368,7 +384,7 @@ export default function BnKnowledgeCenter() {
 
                                 {/*Show up only when table views is clicked*/}
 
-                                <Button style={custom.buttonStyle}>
+                                <Button style={custom.listGridStyle}>
                                     <List />
                                 </Button>
                             </TabList>
@@ -380,42 +396,109 @@ export default function BnKnowledgeCenter() {
                         >
                             {/*Portfolio*/}
                             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                                <TableContainer sx={{ maxHeight: 440 }}>
+                                <TableContainer sx={{ maxHeight: 720 }}>
                                     <Table
                                         stickyHeader
                                         aria-label="sticky table"
                                     >
                                         <TableHead>
-                                            <TableRow
-                                                style={{
-                                                    backgroundColor: '#3e4041',
-                                                    color: '#fff',
-                                                }}
-                                            >
-                                                <TableCell className="text-secondary">
+                                            <TableRow>
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>#</strong>
                                                 </TableCell>
-                                                <TableCell className="text-secondary"></TableCell>
-                                                <TableCell className="text-secondary">
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                ></TableCell>
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>Coin</strong>
                                                 </TableCell>
-                                                <TableCell className="text-secondary"></TableCell>
-                                                <TableCell className="text-secondary"></TableCell>
-                                                <TableCell className="text-secondary">
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                ></TableCell>
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                ></TableCell>
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>Price</strong>
                                                 </TableCell>
-                                                <TableCell className="text-secondary">
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>
                                                         Volume (24h)
                                                     </strong>
                                                 </TableCell>
-                                                <TableCell className="text-secondary">
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>Mkt Cap</strong>
                                                 </TableCell>
-                                                <TableCell className="text-secondary">
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
                                                     <strong>Change(24h)</strong>
                                                 </TableCell>
-                                                {/*<TableCell className="text-secondary"><strong>Price Graph</strong></TableCell>*/}
+                                                <TableCell
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#3e4041',
+                                                        color: '#fff',
+                                                    }}
+                                                    className="text-secondary"
+                                                >
+                                                    <strong>Price Graph</strong>
+                                                </TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -458,7 +541,9 @@ export default function BnKnowledgeCenter() {
                                                                 >
                                                                     <img
                                                                         src={
-                                                                            row.image
+                                                                            row
+                                                                                .image
+                                                                                .small
                                                                         }
                                                                         alt={
                                                                             'coin image'
@@ -468,14 +553,7 @@ export default function BnKnowledgeCenter() {
                                                                 </Link>
                                                             </TableCell>
                                                             <TableCell>
-                                                                <Link
-                                                                    to={`/knowledge_center/${row.id}`}
-                                                                    className={
-                                                                        'text-theme'
-                                                                    }
-                                                                >
-                                                                    {row.name}
-                                                                </Link>
+                                                                {row.name}
                                                             </TableCell>
                                                             <TableCell>
                                                                 <Link
@@ -484,20 +562,16 @@ export default function BnKnowledgeCenter() {
                                                                         'text-theme'
                                                                     }
                                                                 >
-                                                                    {row.symbol}
-                                                                </Link>
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Link
-                                                                    to={`/knowledge_center/${row.id}`}
-                                                                    className={
-                                                                        'text-theme'
-                                                                    }
-                                                                >
-                                                                    $
-                                                                    {
-                                                                        row.current_price
-                                                                    }
+                                                                    <span
+                                                                        style={{
+                                                                            textTransform:
+                                                                                'uppercase',
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            row.symbol
+                                                                        }
+                                                                    </span>
                                                                 </Link>
                                                             </TableCell>
                                                             <TableCell>
@@ -509,7 +583,10 @@ export default function BnKnowledgeCenter() {
                                                                 >
                                                                     $
                                                                     {
-                                                                        row.total_volume
+                                                                        row
+                                                                            .market_data
+                                                                            .current_price
+                                                                            .usd
                                                                     }
                                                                 </Link>
                                                             </TableCell>
@@ -522,7 +599,26 @@ export default function BnKnowledgeCenter() {
                                                                 >
                                                                     $
                                                                     {
-                                                                        row.market_cap
+                                                                        row
+                                                                            .market_data
+                                                                            .total_volume
+                                                                            .usd
+                                                                    }
+                                                                </Link>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Link
+                                                                    to={`/knowledge_center/${row.id}`}
+                                                                    className={
+                                                                        'text-theme'
+                                                                    }
+                                                                >
+                                                                    $
+                                                                    {
+                                                                        row
+                                                                            .market_data
+                                                                            .market_cap
+                                                                            .usd
                                                                     }
                                                                 </Link>
                                                             </TableCell>
@@ -538,10 +634,16 @@ export default function BnKnowledgeCenter() {
                                                                     }
                                                                 >
                                                                     {
-                                                                        row.price_change_percentage_24h
+                                                                        row
+                                                                            .market_data
+                                                                            .price_change_24h_in_currency
+                                                                            .usd
                                                                     }
                                                                     %
                                                                 </Link>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {/*    Price Graph*/}
                                                             </TableCell>
                                                             {/*<TableCell className={'text-danger'}>*/}
                                                             {/*    <Link to={`/knowledge_center/${row.id}`}  className={'text-theme'}>*/}
@@ -621,98 +723,21 @@ export default function BnKnowledgeCenter() {
                             value="3"
                             classes={{ root: classes.tabPanelRoot }}
                         >
-                            {/* Cryptogazing*/}
-                            <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center">
-                                <Card>
-                                    <CardContent>
-                                        <div className="d-flex flex-row justify-content-between mb-3">
-                                            <button className="btn btn-success">
-                                                Rank #1
-                                            </button>
-                                            <a className="text-primary text-decoration-underline">
-                                                Visit Coin
-                                            </a>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col">
-                                                <img
-                                                    height="100px"
-                                                    src={
-                                                        'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'
-                                                    }
-                                                    alt="Bitcoin Image"
-                                                />
-                                                <p className="mt-1">
-                                                    <strong>
-                                                        Bitcoin (BTC)
-                                                    </strong>
-                                                </p>
-                                                <a className="btn btn-success mb-2">
-                                                    <strong>$44,811,17</strong>
-                                                </a>
-                                            </div>
-                                            <div className="col">
-                                                <p>
-                                                    <strong>
-                                                        Price Change 24 hours
-                                                    </strong>
-                                                </p>
-                                                <p className="text-danger">
-                                                    <strong>7.76%</strong>
-                                                </p>
-                                                <br />
-                                                <p>Available Supply</p>
-                                                <p>18,834,400</p>
-                                            </div>
-                                            <div className="col">
-                                                <p>
-                                                    <strong>Market Cap</strong>
-                                                </p>
-                                                <p className="text-success">
-                                                    <strong>
-                                                        $300,213,918,809
-                                                    </strong>
-                                                </p>
-                                                <br />
-                                                <p>Total Supply</p>
-                                                <p>21,000,000</p>
-                                            </div>
-                                        </div>
-                                        <div className="m-2">
-                                            <img alt="Bitcoin graph" />
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                                <Card className="mt-2 col-12">
-                                    <div className="d-flex flex-row justify-content-around m-3">
-                                        <div>
-                                            <Replay sx={{ color: 'red' }} />
-                                        </div>
-                                        <div>
-                                            <Close />
-                                        </div>
-                                        <div>
-                                            <Favorite />
-                                        </div>
-                                        <div>
-                                            <Forum />
-                                        </div>
-                                    </div>
-                                </Card>
-                            </div>
+                            <CryptoGazing />
                         </TabPanel>
                         <TabPanel
                             value="4"
                             classes={{ root: classes.tabPanelRoot }}
                         >
                             {/*Categories*/}
-                            <Card>Categories</Card>
+                            <Card>
+                                <Categories />
+                            </Card>
                         </TabPanel>
                         <TabPanel
                             value="5"
                             classes={{ root: classes.tabPanelRoot }}
                         >
-                            {/*Gainers and Losers*/}
                             <Card>
                                 <GainersAndLosers />
                             </Card>
@@ -721,7 +746,9 @@ export default function BnKnowledgeCenter() {
                             value="6"
                             classes={{ root: classes.tabPanelRoot }}
                         >
-                            <Card>Coming Soon</Card>
+                            <Card>
+                                <RecentlyAdded />
+                            </Card>
                         </TabPanel>
                         <TabPanel
                             value="7"

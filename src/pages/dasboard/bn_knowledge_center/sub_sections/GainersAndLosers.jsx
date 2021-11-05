@@ -110,8 +110,10 @@ export default function GainersAndLosers() {
         <div>
             <div className="d-lg-flex d-md-flex d-sm-block justify-content-evenly">
                 <div className="mb-5">
-                    <h4 className="fw-bold m-3">Top Gainers</h4>
-                    <p>24h Volume is above USD $50,000</p>
+                    <h6 className="fw-bold m-3 text-center">Top Gainers</h6>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
                     <TableContainer>
                         <Table sx={{}} aria-label="caption table">
                             <TableHead>
@@ -193,8 +195,10 @@ export default function GainersAndLosers() {
                     </TableContainer>
                 </div>
                 <div className={'mb-5'}>
-                    <h4 className="fw-bold m-3">Top Losers</h4>
-                    <p>24h Volume is above USD $50,000</p>
+                    <h6 className="fw-bold m-3 text-center">Top Losers</h6>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
                     <TableContainer>
                         <Table aria-label="caption table">
                             <TableHead>
@@ -212,13 +216,13 @@ export default function GainersAndLosers() {
                                         align="right"
                                     />
                                     <TableCell
-                                        className="text-primary"
+                                        className="text-secondary"
                                         align="right"
                                     >
                                         <strong>Volume</strong>
                                     </TableCell>
                                     <TableCell
-                                        className="text-primary"
+                                        className="text-secondary"
                                         align="right"
                                     >
                                         <strong>Price</strong>
@@ -246,31 +250,31 @@ export default function GainersAndLosers() {
                                         </TableCell>
                                         <TableCell
                                             align="right"
-                                            className="text-primary"
+                                            className="text-theme"
                                         >
                                             {row.coin}
                                         </TableCell>
                                         <TableCell
                                             align="right"
-                                            className="text-primary"
+                                            className="text-theme"
                                         >
                                             {row.volume}
                                         </TableCell>
                                         <TableCell
                                             align="right"
-                                            className="text-primary"
+                                            className="text-theme"
                                         >
                                             {row.price}
                                         </TableCell>
                                         <TableCell align="right">
-                                            <span
+                                            <small
                                                 style={{
                                                     backgroundColor: '#b4b474',
                                                     borderRadius: '25px',
                                                 }}
                                             >
                                                 {row.pyramid}
-                                            </span>
+                                            </small>
                                         </TableCell>
                                     </TableRow>
                                 ))}
