@@ -9,6 +9,7 @@ import {
     PIN_CHAT,
     REPORT_USER,
     UNPIN,
+    UNARCHIVE,
 } from '../graphql/queries';
 export default function ChatSettingPopover({
     chatSettingsAnchorEl,
@@ -18,6 +19,12 @@ export default function ChatSettingPopover({
     chat,
 }) {
     const [ArchiveChat] = useMutation(ARCHIVE_CHAT, {
+        variables: {
+            _id: chat._id,
+        },
+        context: { clientName: 'chat' },
+    });
+    const [UnarchiveChat] = useMutation(UNARCHIVE, {
         variables: {
             _id: chat._id,
         },
@@ -82,6 +89,9 @@ export default function ChatSettingPopover({
     const handleUnpinChat = () => {
         UnpinChat();
     };
+    const handleUnArchiveChat = () => {
+        UnarchiveChat();
+    };
     return (
         <Popover
             anchorEl={chatSettingsAnchorEl}
@@ -99,8 +109,22 @@ export default function ChatSettingPopover({
                 component={Card}
                 variant="outlined"
             >
-                <ListItem button divider onClick={handleArchiveChat}>
-                    <ListItemText primary="Archive" />
+                <ListItem
+                    button
+                    divider
+                    onClick={
+                        chat.currentUser.archived !== true
+                            ? handleArchiveChat
+                            : handleUnArchiveChat
+                    }
+                >
+                    <ListItemText
+                        primary={
+                            chat.currentUser.archived !== true
+                                ? 'Archive'
+                                : 'Remove From Archive'
+                        }
+                    />
                 </ListItem>
                 <ListItem button divider onClick={handleMarkAsRead}>
                     <ListItemText primary="Mark As read" />
@@ -114,8 +138,8 @@ export default function ChatSettingPopover({
                 >
                     <ListItemText
                         primary={
-                            chat.pinned === true
-                                ? 'unpin this Chat'
+                            chat.currentUser.pinned === true
+                                ? 'Unpin this Chat'
                                 : 'Pin this chat'
                         }
                     />

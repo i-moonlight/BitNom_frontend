@@ -1,11 +1,13 @@
 import {
     CircularProgress,
+    Divider,
     Grid,
     List,
     ListSubheader,
     Typography,
 } from '@mui/material';
-
+import { ArchiveRounded } from '@mui/icons-material';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
 import Chat from './chat';
@@ -25,10 +27,13 @@ export default function Archived({ archived, loading }) {
                 <List
                     component="nav"
                     subheader={
-                        <ListSubheader component="div">Archived</ListSubheader>
+                        <ListSubheader component="div">
+                            <ArchiveRounded color="primary" /> Archived
+                            <Divider />
+                        </ListSubheader>
                     }
                 >
-                    {archived.map((chat) => (
+                    {archived?.map((chat) => (
                         <Chat
                             key={chat._id}
                             chat={chat}

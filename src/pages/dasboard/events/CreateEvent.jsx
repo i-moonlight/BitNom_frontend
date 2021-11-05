@@ -45,6 +45,21 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
         alignItems: 'center',
     },
+    physicalEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            marginRight: '5px',
+        },
+        marginRight: '10px',
+    },
+    virtualEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+        },
+        textTransform: 'none',
+    },
     paperSearchAlt: {
         padding: '0px 4px',
         display: 'flex',
@@ -130,18 +145,21 @@ export default function CreateEvent({ open, setOpen }) {
         },
     ] = useMutation(MUTATION_CREATE_EVENT);
 
-    const onCreateEvent = async (ICreateEvent) => {
-        await createEvent({
+    const onCreateEvent = (ICreateEvent) => {
+        createEvent({
             variables: {
                 data: ICreateEvent,
             },
             refetchQueries: [
                 {
                     query: QUERY_LOAD_EVENTS,
-                    variables: { data: { host: user?._id, limit: 220 } },
+                    variables: { data: { host: user?._id, limit: 50 } },
                 },
             ],
         });
+        /*  .then(({ data, errors }) => {
+           
+        }) */
     };
 
     const handleSelectLocation = (location) => {
@@ -151,7 +169,6 @@ export default function CreateEvent({ open, setOpen }) {
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
-                console.error('Error', latitude, longitude);
             })
             .catch((error) => console.error('Error', error));
     };
@@ -178,6 +195,10 @@ export default function CreateEvent({ open, setOpen }) {
         }
         if (eventDescription.trim() == '') {
             setErrorText('The event description must be provided');
+            return setDescriptionErr(true);
+        }
+        if (eventDescription.length < 20) {
+            setErrorText('The event description is too shot');
             return setDescriptionErr(true);
         }
         if (locationType.trim() == '') {
@@ -735,11 +756,9 @@ export default function CreateEvent({ open, setOpen }) {
                                                     }
                                                     textCase
                                                     disableRipple
-                                                    style={{
-                                                        width: '25%',
-                                                        marginRight: '10px',
-                                                        textTransform: 'none',
-                                                    }}
+                                                    className={
+                                                        classes.physicalEvent
+                                                    }
                                                     onClick={() => {
                                                         setLocationType(
                                                             'physical'
@@ -756,10 +775,9 @@ export default function CreateEvent({ open, setOpen }) {
                                                             ? 'contained'
                                                             : 'outlined'
                                                     }
-                                                    style={{
-                                                        width: '25%',
-                                                        textTransform: 'none',
-                                                    }}
+                                                    className={
+                                                        classes.virtualEvent
+                                                    }
                                                     disableRipple
                                                     onClick={() => {
                                                         setLocationType(

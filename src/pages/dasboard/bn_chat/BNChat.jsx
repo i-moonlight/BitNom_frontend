@@ -1,11 +1,9 @@
-import { Create } from '@mui/icons-material';
-import { Card, Container, Fab, Grid, useMediaQuery } from '@mui/material';
+import { Card, Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import Screen from '../../../components/Screen';
 import SideBarHeader from './components/chat_header/side_bar_header';
 import Chats from './sidebar_menu';
-import CreateChatPrompt from './thread_view/create_chat_prompt';
 import Messages from './thread_view/messages';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BnChat() {
-    const [createChatOpen, setCreateChatInviteOpen] = useState(false);
     const [chatMobileOpen, setChatMobileOpen] = useState(false);
 
     const classes = useStyles();
@@ -44,12 +41,7 @@ export default function BnChat() {
                                         height: window.innerHeight - 200,
                                     }}
                                 >
-                                    <SideBarHeader
-                                        className={classes.root}
-                                        setChatInviteOpen={(open) =>
-                                            setCreateChatInviteOpen(open)
-                                        }
-                                    />
+                                    <SideBarHeader className={classes.root} />
                                     <div
                                         style={{
                                             maxHeight: '65vh',
@@ -61,22 +53,6 @@ export default function BnChat() {
                                                 setChatMobileOpen(true)
                                             }
                                         />
-                                    </div>
-                                    <div
-                                        style={{
-                                            margin: '20px',
-                                            position: 'absolute',
-                                            bottom: '40px',
-                                        }}
-                                    >
-                                        <Fab
-                                            color="primary"
-                                            onClick={() =>
-                                                setCreateChatInviteOpen(true)
-                                            }
-                                        >
-                                            <Create />
-                                        </Fab>
                                     </div>
                                 </Card>
                             </Grid>
@@ -98,12 +74,6 @@ export default function BnChat() {
                             </Grid>
                         )}
                     </Grid>
-                    <CreateChatPrompt
-                        openChatInvite={createChatOpen}
-                        setChatInviteOpen={(openChatInvite) =>
-                            setCreateChatInviteOpen(openChatInvite)
-                        }
-                    />
                 </Container>
             </div>
         </Screen>

@@ -1,5 +1,10 @@
 import { useQuery } from '@apollo/client';
-import { ArrowBack, RoomRounded, VideocamRounded } from '@mui/icons-material';
+import {
+    ArrowBack,
+    RoomRounded,
+    VideocamRounded,
+    EventRounded,
+} from '@mui/icons-material';
 import {
     Card,
     CardActionArea,
@@ -19,6 +24,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
+import { Button } from '../../../components/Button';
 import {
     GET_BOOKMARKED_EVENTS,
     QUERY_FETCH_PROFILE,
@@ -65,7 +71,7 @@ export default function Events() {
         QUERY_LOAD_EVENTS,
         {
             variables: {
-                data: { host: user?._id, limit: 20 },
+                data: { host: user?._id, limit: 50 },
             },
         }
     );
@@ -85,6 +91,40 @@ export default function Events() {
                             </Grid>
                         )}
                         <Grid item xs={12} sm={12} md={8} lg={7}>
+                            {mdDown && (
+                                <Card
+                                    style={{
+                                        marginBottom: '5px',
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Grid align="center">
+                                            <div>
+                                                <EventRounded
+                                                    style={{
+                                                        //marginRight: 16,
+                                                        width: 30,
+                                                        height: 30,
+                                                    }}
+                                                />
+
+                                                <Typography variant="body2">
+                                                    Host an event on BitNorm and
+                                                    invite your network
+                                                </Typography>
+                                            </div>
+                                            <Button
+                                                textCase
+                                                onClick={() =>
+                                                    setCreateEventOpen(true)
+                                                }
+                                            >
+                                                Create Event
+                                            </Button>
+                                        </Grid>
+                                    </CardContent>
+                                </Card>
+                            )}
                             <EventListCard
                                 selectedIndex={selectedIndex}
                                 loading={eventsLoading}
@@ -141,7 +181,7 @@ function EventListCard({
                 }
                 title={
                     <div className="center-horizontal">
-                        <Typography>Events</Typography>
+                        <Typography>Your Events</Typography>
                     </div>
                 }
             />

@@ -109,6 +109,8 @@ export default function EventView({ match }) {
     const smDown = useMediaQuery('(max-width:959px)');
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
+    if (!match?.params?.id) return;
+
     const { loading: eventLoading, data: eventData } = useQuery(
         QUERY_EVENT_BY_ID,
         {
@@ -308,25 +310,53 @@ export default function EventView({ match }) {
                             {eventData?.Events?.getById && (
                                 <div>
                                     {!lgUp && (
-                                        <Grid item lg={3}>
-                                            <Card
-                                                variant="outlined"
-                                                style={{ marginBottom: 12 }}
-                                            >
-                                                <CardHeader
-                                                    avatar={
-                                                        <IconButton
-                                                            size="small"
-                                                            aria-label="back"
-                                                            color="inherit"
+                                        <Grid
+                                            item
+                                            lg={3}
+                                            style={{ marginBottom: '5px' }}
+                                        >
+                                            <Card>
+                                                <CardContent>
+                                                    <Grid align="center">
+                                                        <div>
+                                                            <div>
+                                                                <IconButton
+                                                                    size="small"
+                                                                    aria-label="back"
+                                                                    color="inherit"
+                                                                    onClick={() =>
+                                                                        history.goBack()
+                                                                    }
+                                                                >
+                                                                    <ArrowBack />
+                                                                </IconButton>
+                                                                {/*  <EventRounded
+                                                                    style={{
+                                                                        //marginRight: 16,
+                                                                        width: 30,
+                                                                        height: 30,
+                                                                    }}
+                                                                /> */}
+                                                            </div>
+                                                            <Typography variant="body2">
+                                                                Host an event on
+                                                                BitNorm and
+                                                                invite your
+                                                                network
+                                                            </Typography>
+                                                        </div>
+                                                        <Button
+                                                            textCase
                                                             onClick={() =>
-                                                                history.goBack()
+                                                                setCreateEventOpen(
+                                                                    true
+                                                                )
                                                             }
                                                         >
-                                                            <ArrowBack />
-                                                        </IconButton>
-                                                    }
-                                                />
+                                                            Create Event
+                                                        </Button>
+                                                    </Grid>
+                                                </CardContent>
                                             </Card>
                                         </Grid>
                                     )}

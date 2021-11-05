@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addMessagesToCurrentChat,
+    addPinnedMessage,
     setDialogueMessages,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -18,9 +19,12 @@ import Message from './message';
 import NoChatSelected from './no_chat_selected';
 import EmptyMessages from './no_messages';
 import SendMessage from './send_message';
+import Blocked from './blocked';
 
 export default function Messages({ onExitChatMobile }) {
+    const [open, setOpen] = useState(false);
     const [replyText, setReplyText] = useState(undefined);
+    const [editText, setEditText] = useState(undefined);
     const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -28,14 +32,21 @@ export default function Messages({ onExitChatMobile }) {
 
     const dialogue = state.chats.current_chat;
     const user = state.auth.user;
-    const unOrderedMessages = state.chats.dialogue_messages;
-    const messages = [...unOrderedMessages].reverse();
-    const searchOutput = state.chats.searchData;
-    const filteredMessages = [...searchOutput].reverse();
+    const unOrderedMessages = state?.chats?.dialogue_messages;
+    const messages = [...unOrderedMessages]?.reverse();
+    const filteredMessages = state?.chats?.searchData;
+    // const filteredMessages = [...searchOutput]?.reverse();
 
     const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
         variables: {
             chat: dialogue._id,
+        },
+        context: { clientName: 'chat' },
+    });
+    const { data: pinnedMessages } = useQuery(GET_DIALOGUE_MESSAGES, {
+        variables: {
+            chat: dialogue._id,
+            pinned: true,
         },
         context: { clientName: 'chat' },
     });
@@ -48,13 +59,17 @@ export default function Messages({ onExitChatMobile }) {
             },
         }
     );
-
+    console.log('EDIT', editText);
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
             endRef.current.scrollIntoView();
         }
     }, [dispatch, subscriptionData?.newMessage]);
+
+    useEffect(() => {
+        dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+    }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
@@ -68,7 +83,6 @@ export default function Messages({ onExitChatMobile }) {
             {dialogue.status === undefined &&
                 dialogue._id === undefined &&
                 !loading && <NoChatSelected />}
-
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -78,7 +92,6 @@ export default function Messages({ onExitChatMobile }) {
                     <Divider />
                 </div>
             )}
-
             {dialogue.status === 'accepted' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -88,22 +101,23 @@ export default function Messages({ onExitChatMobile }) {
                     <Divider />
                 </div>
             )}
-
             {dialogue.status === 'new' &&
+                dialogue.status !== 'accepted' &&
                 dialogue.recipient?.info._id === user?._id && (
                     <InviteView dialogue={dialogue} />
                 )}
-
             {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
                 !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
-
             <div
                 style={{
                     overflowY: 'auto',
-                    minHeight: '50vh',
-                    height: window.innerHeight - 372,
+                    minHeight: open === true ? '37vh' : '50vh',
+                    height:
+                        open === true
+                            ? window.innerHeight - 750
+                            : window.innerHeight - 372,
                 }}
             >
                 {dialogue.status === 'accepted' &&
@@ -113,14 +127,14 @@ export default function Messages({ onExitChatMobile }) {
                 filteredMessages &&
                 filteredMessages.author !== user._id &&
                 filteredMessages?.length > 0
-                    ? filteredMessages.map((filtered, I) => (
+                    ? filteredMessages?.map((filtered, I) => (
                           <Message key={I} message={filtered} chat={dialogue} />
                       ))
                     : dialogue.status === 'accepted' &&
                       messages &&
                       messages.author !== user._id &&
                       messages?.length > 0
-                    ? messages.map((message, mI) => (
+                    ? messages?.map((message, mI) => (
                           <Message
                               key={mI}
                               message={message}
@@ -130,6 +144,12 @@ export default function Messages({ onExitChatMobile }) {
                                       text: message.text,
                                       _id: message._id,
                                       author: message.author,
+                                  })
+                              }
+                              onUpdateMessage={() =>
+                                  setEditText({
+                                      _id: message._id,
+                                      text: message.text,
                                   })
                               }
                           />
@@ -146,24 +166,39 @@ export default function Messages({ onExitChatMobile }) {
                 )}
 
                 <div ref={endRef} className="mt-4" />
+            </div>{' '}
+            <div>
+                {dialogue.status === 'accepted' &&
+                    messages &&
+                    messages.length > 0 &&
+                    (dialogue.recipient.blocked === true ||
+                        dialogue.initiator.blocked === true) && <Blocked />}
             </div>
             <div>
-                {(dialogue.status === 'accepted' &&
+                {dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length) > 0 && (
-                    <SendMessage
-                        chat={dialogue._id}
-                        replyText={replyText}
-                        onCancelReply={() => setReplyText(undefined)}
-                        setReplyText={() => setReplyText(undefined)}
-                    />
-                )}
+                    messages.length > 0 &&
+                    (dialogue.recipient.blocked === false ||
+                        dialogue.initiator.blocked === false) && (
+                        <SendMessage
+                            chat={dialogue._id}
+                            replyText={replyText}
+                            open={open}
+                            setOpen={setOpen}
+                            onCancelReply={() => setReplyText(undefined)}
+                            setReplyText={() => setReplyText(undefined)}
+                        />
+                    )}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
                     !loading &&
-                    !messages.length > 0 && (
+                    !messages.length > 0 &&
+                    (dialogue.recipient.blocked === false ||
+                        dialogue.initiator.blocked === false) && (
                         <SendMessage
+                            open={open}
+                            setOpen={setOpen}
                             chat={dialogue._id}
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}

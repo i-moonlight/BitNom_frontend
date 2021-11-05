@@ -146,7 +146,7 @@ export default function CreateChatPrompt({
                             {users && (
                                 <List>
                                     {users &&
-                                        users.map((user, index) => (
+                                        users?.map((user, index) => (
                                             <ListItem
                                                 button
                                                 key={index}

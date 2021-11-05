@@ -72,7 +72,7 @@ export default function BnConnect() {
         error: scrollError,
     } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
-            data: { ids: getFeed(profile) },
+            data: { ids: getFeed(profile), limit: 220 },
         },
     });
 

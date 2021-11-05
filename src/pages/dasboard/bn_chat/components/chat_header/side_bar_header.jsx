@@ -1,4 +1,5 @@
-import { MoreVert, Search } from '@mui/icons-material';
+// import { useQuery } from '@apollo/client';
+import { MoreVert, Search, Chat } from '@mui/icons-material';
 import {
     Divider,
     IconButton,
@@ -7,11 +8,14 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import CreateChatPrompt from '../../thread_view/create_chat_prompt';
+// import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
     const [values, setSearchString] = useState({ searchString: '' });
+    const [createChatOpen, setCreateChatInviteOpen] = useState(false);
     const theme = useTheme();
     const classes = useStyles();
     const handleChatSearch = (e) => {
@@ -26,17 +30,21 @@ export default function SideBarHeader() {
     //     },
     //     context: { clientName: 'chat' },
     // });
-    // console.log('LOADING', loading);
-    // console.log('DATA_CHATS', data);
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">
                 <Typography variant="h6" className={classes.menuHeader}>
                     Messaging
                 </Typography>
-                <IconButton>
-                    <MoreVert />
-                </IconButton>
+                <div className="align-items-end">
+                    {' '}
+                    <IconButton onClick={() => setCreateChatInviteOpen(true)}>
+                        <Chat />
+                    </IconButton>
+                    <IconButton>
+                        <MoreVert />
+                    </IconButton>
+                </div>
             </div>
             <Divider className={classes.divider} />
             <Paper
@@ -65,6 +73,12 @@ export default function SideBarHeader() {
                     onChange={handleChatSearch}
                 />
             </Paper>
+            <CreateChatPrompt
+                openChatInvite={createChatOpen}
+                setChatInviteOpen={(openChatInvite) =>
+                    setCreateChatInviteOpen(openChatInvite)
+                }
+            />
         </>
     );
 }

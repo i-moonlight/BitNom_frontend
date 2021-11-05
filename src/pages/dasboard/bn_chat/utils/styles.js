@@ -61,7 +61,7 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         flex: 1,
     },
-    inviteBar: {
+    cardDefault: {
         backgroundColor: theme.palette.background.default,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
@@ -116,16 +116,16 @@ export const useStyles = makeStyles((theme) => ({
         maxWidth: '480px',
         minWidth: '120px',
         borderRadius: '10px 10px 10px 0px',
-        backgroundColor: '#bde0ff',
-        // backgroundColor: theme.palette.background.chatFrom,
+
+        backgroundColor: theme.palette.background.chatFrom,
         marginLeft: theme.spacing(1),
     },
     outgoing: {
         maxWidth: '480px',
         minWidth: '120px',
         borderRadius: '10px 10px 0px 10px',
-        backgroundColor: '#f0f8ff',
-        // backgroundColor: theme.palette.background.chatTo,
+
+        backgroundColor: theme.palette.background.chatTo,
         marginRight: theme.spacing(1),
     },
     messageLeft: {
@@ -166,6 +166,9 @@ export const useStyles = makeStyles((theme) => ({
         fontSize: '12px',
     },
     activeChat: {
-        backgroundColor: '#F0F0F0',
+        backgroundColor: theme.palette.background.chatFrom,
+    },
+    cardDropzone: {
+        backgroundColor: theme.palette.background.default,
     },
 }));

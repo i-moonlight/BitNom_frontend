@@ -33,9 +33,11 @@ export default function SendMessage({
     replyText,
     onCancelReply,
     setReplyText,
+    open,
+    setOpen,
 }) {
     const [text, setText] = useState('');
-    const [open, setOpen] = useState(false);
+
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -154,79 +156,88 @@ export default function SendMessage({
                 </Card>
             )}
             {open ? (
-                <DropzoneArea
-                    clearOnUnmount
-                    onChange={(files) => {
-                        openFile
-                            ? setMessageDoc(files)
-                            : openImage
-                            ? setMessageImages(files)
-                            : openVideo
-                            ? setMessageVideo(files[0])
-                            : openGif
-                            ? setMessageGif(files[0])
-                            : null;
-                    }}
-                    dropzoneText={
-                        openFile
-                            ? 'Drag n drop a document here or click'
-                            : openImage
-                            ? 'Drag n drop images here or click'
-                            : openVideo
-                            ? 'Drag n drop a video here or click'
-                            : openGif
-                            ? 'Drag n drop Gif here or click'
-                            : ''
-                    }
-                    acceptedFiles={
-                        openFile
-                            ? [
-                                  '.doc',
-                                  '.pdf',
-                                  '.docx',
-                                  '.txt',
-                                  '.ppt',
-                                  '.pptx',
-                                  '.xls',
-                                  '.xlsx',
-                              ]
-                            : openImage
-                            ? ['image/*']
-                            : openVideo
-                            ? ['video/*']
-                            : openGif
-                            ? ['.gif']
-                            : null
-                    }
-                    maxFileSize={
-                        openFile
-                            ? 5000000
-                            : openImage
-                            ? 5000000
-                            : openVideo
-                            ? 10000000
-                            : openGif
-                            ? 1000000
-                            : null
-                    }
-                    filesLimit={
-                        openFile
-                            ? 5
-                            : openImage
-                            ? 5
-                            : openVideo
-                            ? 1
-                            : openGif
-                            ? 1
-                            : null
-                    }
-                    showAlerts={['error']}
-                    showPreviews={false}
-                    showPreviewsInDropzone
-                    previewGridProps={{
-                        container: { spacing: 1, direction: 'row' },
-                    }}
-                />
+                <Card className={classes.cardDropzone}>
+                    <CardHeader
+                        action={
+                            <IconButton onClick={() => setOpen(false)}>
+                                <Close />
+                            </IconButton>
+                        }
+                    />
+                    <DropzoneArea
+                        clearOnUnmount
+                        onChange={(files) => {
+                            openFile
+                                ? setMessageDoc(files)
+                                : openImage
+                                ? setMessageImages(files)
+                                : openVideo
+                                ? setMessageVideo(files[0])
+                                : openGif
+                                ? setMessageGif(files[0])
+                                : null;
+                        }}
+                        dropzoneText={
+                            openFile
+                                ? 'Drag n drop a document here or click'
+                                : openImage
+                                ? 'Drag n drop images here or click'
+                                : openVideo
+                                ? 'Drag n drop a video here or click'
+                                : openGif
+                                ? 'Drag n drop Gif here or click'
+                                : ''
+                        }
+                        acceptedFiles={
+                            openFile
+                                ? [
+                                      '.doc',
+                                      '.pdf',
+                                      '.docx',
+                                      '.txt',
+                                      '.ppt',
+                                      '.pptx',
+                                      '.xls',
+                                      '.xlsx',
+                                  ]
+                                : openImage
+                                ? ['image/*']
+                                : openVideo
+                                ? ['video/*']
+                                : openGif
+                                ? ['.gif']
+                                : null
+                        }
+                        maxFileSize={
+                            openFile
+                                ? 5000000
+                                : openImage
+                                ? 5000000
+                                : openVideo
+                                ? 10000000
+                                : openGif
+                                ? 1000000
+                                : null
+                        }
+                        filesLimit={
+                            openFile
+                                ? 5
+                                : openImage
+                                ? 5
+                                : openVideo
+                                ? 1
+                                : openGif
+                                ? 1
+                                : null
+                        }
+                        showAlerts={['error']}
+                        showPreviews={false}
+                        showPreviewsInDropzone
+                        previewGridProps={{
+                            container: { spacing: 1, direction: 'row' },
+                        }}
+                    />
+                </Card>
             ) : null}
             <div className={classes.inputRoot}>
                 <Divider className={classes.divider} />{' '}
@@ -344,7 +355,7 @@ export default function SendMessage({
                         {Object.keys(sendMessageErr).length > 0 && (
                             <div>
                                 {' '}
-                                {Object.values(sendMessageErr).map((value) => (
+                                {Object.values(sendMessageErr)?.map((value) => (
                                     <Typography
                                         color="error"
                                         variant="body2"
