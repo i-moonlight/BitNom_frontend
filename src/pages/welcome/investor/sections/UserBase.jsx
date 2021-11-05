@@ -7,8 +7,11 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
+import React from 'react';
 
-import modelImg from '../../../../assets/investor/model.png';
+const modelImg = React.lazy(() =>
+    import('../../../../assets/investor/model.png')
+);
 
 export default function UserBase() {
     const smDown = useMediaQuery('(max-width:959px)');

@@ -6,16 +6,25 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-
+import React from 'react';
 import { useHistory } from 'react-router';
-import card1Img from '../../../assets/landing/card (1).svg';
-import card2Img from '../../../assets/landing/card (2).svg';
-import card3Img from '../../../assets/landing/card (3).svg';
-import joinImg from '../../../assets/landing/img2.png';
-import visionImg from '../../../assets/landing/vision.svg';
 import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
+
+const card1Img = React.lazy(() =>
+    import('../../../assets/landing/card (1).svg')
+);
+const card2Img = React.lazy(() =>
+    import('../../../assets/landing/card (2).svg')
+);
+const card3Img = React.lazy(() =>
+    import('../../../assets/landing/card (3).svg')
+);
+const joinImg = React.lazy(() => import('../../../assets/landing/img2.png'));
+const visionImg = React.lazy(() =>
+    import('../../../assets/landing/vision.svg')
+);
 
 export default function ProjectSection() {
     const history = useHistory();

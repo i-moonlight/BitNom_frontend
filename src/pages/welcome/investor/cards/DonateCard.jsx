@@ -1,9 +1,10 @@
 import { useTheme } from '@emotion/react';
 import { DoneAll, FileCopy } from '@mui/icons-material';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
-import { useState } from 'react';
-import qrImg from '../../../../assets/investor/qr2.png';
+import React, { useState } from 'react';
 import { Button } from '../../../../components/Button';
+
+const qrImg = React.lazy(() => import('../../../../assets/investor/qr2.png'));
 
 export default function DonateCard() {
     const [justCopied, setJustCopied] = useState(false);

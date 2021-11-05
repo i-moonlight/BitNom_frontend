@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -14,17 +14,22 @@ import {
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import CreateScrollCard from './CreateScrollCard';
+import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
-import ExternalShareModal from './popovers/ExternalShareModal';
 import UpdateComment from './scroll/comment/UpdateComment';
 import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
 import UpdatePost from './scroll/UpdatePost';
-import SuggestedPeopleCard from './SuggestedPeopleCard';
-import TrendingPostsCard from './TrendingPostsCard';
-import UserCard from './UserCard';
+import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
+import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
+import SkeletonUserCard from './skeleton/SkeletonUserCard';
+import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
+
+const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
+const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
+const TrendingPostsCard = React.lazy(() => import('./TrendingPostsCard'));
+const UserCard = React.lazy(() => import('./UserCard'));
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +63,7 @@ export default function BnConnect() {
     const smDown = useMediaQuery('(max-width:959px)');
 
     const user = state.auth.user;
+    const posts = state.posts.list;
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -133,7 +139,7 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    // console.log('Posts RDC: ', trendingError);
+    console.log('Posts RDC: ', trendingError);
 
     return (
         <Screen>
@@ -161,29 +167,35 @@ export default function BnConnect() {
                     <Grid container spacing={2}>
                         {!mdDown && (
                             <Grid item lg={3}>
-                                <UserCard
-                                    following={
-                                        profileData?.Users?.profile?.following
-                                            ?.length
-                                    }
-                                    followers={
-                                        profileData?.Users?.profile?.followers
-                                            ?.length
-                                    }
+                                <Suspense fallback={<SkeletonUserCard />}>
+                                    <UserCard
+                                        following={
+                                            profileData?.Users?.profile
+                                                ?.following?.length
+                                        }
+                                        followers={
+                                            profileData?.Users?.profile
+                                                ?.followers?.length
+                                        }
+                                        setOpen={(open) =>
+                                            setCreateScrollOpen(open)
+                                        }
+                                    />
+                                </Suspense>
+                            </Grid>
+                        )}
+                        <Grid item xs={12} sm={12} md={8} lg={6}>
+                            <Suspense fallback={<SkeletonCreateScrollCard />}>
+                                <CreateScrollCard
+                                    setOpenImage={setOpenImage}
+                                    setImageDisabled={setImageDisabled}
+                                    setVideoDisabled={setVideoDisabled}
+                                    setOpenVideo={setOpenVideo}
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
                                 />
-                            </Grid>
-                        )}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <CreateScrollCard
-                                setOpenImage={setOpenImage}
-                                setImageDisabled={setImageDisabled}
-                                setVideoDisabled={setVideoDisabled}
-                                setOpenVideo={setOpenVideo}
-                                setOpen={(open) => setCreateScrollOpen(open)}
-                            />
+                            </Suspense>
                             <Grid item align="center">
                                 {scrollLoading && (
                                     // <CircularProgress
@@ -193,6 +205,7 @@ export default function BnConnect() {
                                     // />
                                     <Typography
                                         className="my-2"
+                                        s
                                         color="primary"
                                     >
                                         Updating ...
@@ -200,9 +213,10 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {scrollData?.Posts?.get
+                            {
+                                // scrollData?.Posts?.get
                                 // state.posts.list
-                                ?.map((scroll) => (
+                                posts?.map((scroll) => (
                                     <Scroll
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
@@ -233,7 +247,8 @@ export default function BnConnect() {
                                             setImagePreviewOpen(open);
                                         }}
                                     />
-                                ))}
+                                ))
+                            }
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="h3" color="primary">
@@ -245,22 +260,32 @@ export default function BnConnect() {
                         <Grid item md={4} lg={3}>
                             {!smDown && (
                                 <>
-                                    <TrendingPostsCard
-                                        trending={
-                                            trendingData?.Posts?.get
-                                            // state.posts.trending
+                                    <Suspense
+                                        fallback={<SkeletonTrendingPostsCard />}
+                                    >
+                                        <TrendingPostsCard
+                                            trending={
+                                                trendingData?.Posts?.get
+                                                // state.posts.trending
+                                            }
+                                            loading={
+                                                trendingLoading
+                                                // false
+                                            }
+                                        />
+                                    </Suspense>
+                                    <Suspense
+                                        fallback={
+                                            <SkeletonSuggestedPeopleCard />
                                         }
-                                        loading={
-                                            trendingLoading
-                                            // false
-                                        }
-                                    />
-                                    <SuggestedPeopleCard
-                                        profileData={
-                                            profileData?.Users?.profile
-                                        }
-                                        suggestedUsers={suggestedUsers}
-                                    />
+                                    >
+                                        <SuggestedPeopleCard
+                                            profileData={
+                                                profileData?.Users?.profile
+                                            }
+                                            suggestedUsers={suggestedUsers}
+                                        />
+                                    </Suspense>
                                 </>
                             )}
                         </Grid>

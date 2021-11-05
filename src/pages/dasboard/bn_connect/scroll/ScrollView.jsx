@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
     ArrowBack,
+    CloseRounded,
     CommentRounded,
     FavoriteRounded,
     ImageRounded,
@@ -11,7 +12,6 @@ import {
     ShareRounded,
     ThumbDownRounded,
     ThumbUpRounded,
-    CloseRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -32,13 +32,13 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -63,6 +63,7 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import FlagResourceModal from '../popovers/FlagResourceModal';
 import ReactionsModal from '../popovers/ReactionsModal';
 import UserCard from '../UserCard';
@@ -74,10 +75,6 @@ import FilterButton from './FilterButton';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
-
-const EmojiPickerPopover = React.lazy(() =>
-    import('../popovers/EmojiPickerPopover')
-);
 
 const useStyles = makeStyles((theme) => ({
     root: {

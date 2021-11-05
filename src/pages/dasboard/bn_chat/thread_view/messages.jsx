@@ -34,8 +34,8 @@ export default function Messages({ onExitChatMobile }) {
     const user = state.auth.user;
     const unOrderedMessages = state?.chats?.dialogue_messages;
     const messages = [...unOrderedMessages]?.reverse();
-    const searchOutput = state?.chats?.searchData;
-    const filteredMessages = [...searchOutput]?.reverse();
+    const filteredMessages = state?.chats?.searchData;
+    // const filteredMessages = [...searchOutput]?.reverse();
 
     const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
         variables: {

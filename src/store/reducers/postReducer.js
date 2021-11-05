@@ -1,6 +1,7 @@
 const initialState = {
     list: [],
     trending: [],
+    sth: [],
 };
 
 export default function postReducer(state = initialState, action) {

@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
+    CloseRounded,
     FavoriteRounded,
     ImageRounded,
     InsertEmoticon,
@@ -8,7 +9,6 @@ import {
     Send,
     ThumbDownRounded,
     ThumbUpRounded,
-    CloseRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -22,10 +22,10 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../../components/Button';
@@ -41,11 +41,8 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
+import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
-
-const EmojiPickerPopover = React.lazy(() =>
-    import('../../popovers/EmojiPickerPopover')
-);
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
