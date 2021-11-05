@@ -24,9 +24,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
-const EmojiPickerPopover = React.lazy(() =>
-    import('../../bn_connect/popovers/EmojiPickerPopover')
-);
+import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 
 const emojiPickerId = 'emoji-picker-popover';
 

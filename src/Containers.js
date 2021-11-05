@@ -67,7 +67,7 @@ class WebSocketLink extends ApolloLink {
                         }
                         return sink.error(
                             new Error(
-                                err.map(({ message }) => message).join(', ')
+                                err?.map(({ message }) => message).join(', ')
                             )
                         );
                     },

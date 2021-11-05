@@ -19,21 +19,21 @@
     },
     "plugins": ["react"],
     "rules": {
-        "template-curly-spacing": "off",
-        "no-unused-vars": "warn",
+        "react/react-in-jsx-scope": 0,
+        "react/prop-types": 0,
+        "template-curly-spacing": 0,
+        "no-unused-vars": 1,
         "quotes": [
             1,
             "single",
             { "allowTemplateLiterals": true, "avoidEscape": true }
         ],
-        "react/prop-types": 0,
         "semi": ["error", "always"],
         "no-undef": 2,
         "prefer-const": 1,
         "no-shadow": 1,
         "no-unused-expressions": 0,
-        "no-restricted-globals": 0,
-        "react/react-in-jsx-scope": 0
+        "no-restricted-globals": 0
     },
     "settings": {
         "react": {

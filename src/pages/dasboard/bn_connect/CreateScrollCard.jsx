@@ -7,7 +7,6 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-
 import image from '../../../assets/scrolls/image.svg';
 import schedule from '../../../assets/scrolls/schedule.svg';
 import video from '../../../assets/scrolls/video.svg';

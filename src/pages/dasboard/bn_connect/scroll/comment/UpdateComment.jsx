@@ -1,5 +1,4 @@
 //TODO: Upload video
-import React from 'react';
 import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
@@ -27,9 +26,9 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
@@ -40,10 +39,7 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../../utilities/queries';
-
-const EmojiPickerPopover = React.lazy(() =>
-    import('../../popovers/EmojiPickerPopover')
-);
+import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 
 export default function UpdateComment({
     updateCommentOpen,

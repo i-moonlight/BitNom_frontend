@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -14,10 +14,9 @@ import {
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
 } from '../utilities/queries';
-import CreateScrollCard from './CreateScrollCard';
+import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
-import ExternalShareModal from './popovers/ExternalShareModal';
 import UpdateComment from './scroll/comment/UpdateComment';
 import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
@@ -25,6 +24,8 @@ import UpdatePost from './scroll/UpdatePost';
 import SuggestedPeopleCard from './SuggestedPeopleCard';
 import TrendingPostsCard from './TrendingPostsCard';
 import UserCard from './UserCard';
+
+const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -177,13 +178,38 @@ export default function BnConnect() {
                             </Grid>
                         )}
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <CreateScrollCard
-                                setOpenImage={setOpenImage}
-                                setImageDisabled={setImageDisabled}
-                                setVideoDisabled={setVideoDisabled}
-                                setOpenVideo={setOpenVideo}
-                                setOpen={(open) => setCreateScrollOpen(open)}
-                            />
+                            <Suspense
+                                fallback={
+                                    <div
+                                        style={{
+                                            width: 200,
+                                            height: 200,
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            // width: window.innerWidth,
+                                            // height: window.innerHeight,
+                                            backgroundColor: window.matchMedia(
+                                                '(prefers-color-scheme: dark)'
+                                            ).matches
+                                                ? '#000'
+                                                : '#fff',
+                                        }}
+                                    >
+                                        <div>hello create scroll</div>
+                                    </div>
+                                }
+                            >
+                                <CreateScrollCard
+                                    setOpenImage={setOpenImage}
+                                    setImageDisabled={setImageDisabled}
+                                    setVideoDisabled={setVideoDisabled}
+                                    setOpenVideo={setOpenVideo}
+                                    setOpen={(open) =>
+                                        setCreateScrollOpen(open)
+                                    }
+                                />
+                            </Suspense>
                             <Grid item align="center">
                                 {scrollLoading && (
                                     // <CircularProgress
@@ -193,6 +219,7 @@ export default function BnConnect() {
                                     // />
                                     <Typography
                                         className="my-2"
+                                        s
                                         color="primary"
                                     >
                                         Updating ...
