@@ -7,11 +7,15 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import image from '../../../assets/scrolls/image.svg';
-import schedule from '../../../assets/scrolls/schedule.svg';
-import video from '../../../assets/scrolls/video.svg';
-import write from '../../../assets/scrolls/write.svg';
+import React from 'react';
 import { Button } from '../../../components/Button';
+
+const image = React.lazy(() => import('../../../assets/scrolls/image.svg'));
+const schedule = React.lazy(() =>
+    import('../../../assets/scrolls/schedule.svg')
+);
+const video = React.lazy(() => import('../../../assets/scrolls/video.svg'));
+const write = React.lazy(() => import('../../../assets/scrolls/write.svg'));
 
 export default function CreateScrollCard({
     setOpen,

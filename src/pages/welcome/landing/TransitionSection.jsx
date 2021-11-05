@@ -6,12 +6,22 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
+import React from 'react';
 
-import card4Img from '../../../assets/landing/card (4).svg';
-import card5Img from '../../../assets/landing/card (5).svg';
-import card6Img from '../../../assets/landing/card (6).svg';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
+
+const card4Img = React.lazy(() =>
+    import('../../../assets/landing/card (4).svg')
+);
+
+const card5Img = React.lazy(() =>
+    import('../../../assets/landing/card (5).svg')
+);
+
+const card6Img = React.lazy(() =>
+    import('../../../assets/landing/card (6).svg')
+);
 
 export default function TransitionSection() {
     const classes = useStyles();

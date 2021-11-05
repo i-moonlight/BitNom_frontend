@@ -17,8 +17,8 @@ import { Button } from '../../../components/Button';
 import { useDispatch } from 'react-redux';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 import ProfileForm from './forms/ProfileForm';
-import { setUpdateUser } from '../../../store/actions/userUpdateActions';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
+import { userUpdate } from '../../../store/actions/authActions';
 
 export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
@@ -64,7 +64,7 @@ export default function ProfileCard({ profile, profileView }) {
             ],
         }).then(({ data }) => {
             const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(setUpdateUser(userData));
+            data?.Users?.update && dispatch(userUpdate(userData));
         });
     };
 
@@ -86,7 +86,7 @@ export default function ProfileCard({ profile, profileView }) {
             ],
         }).then(({ data }) => {
             const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(setUpdateUser(userData));
+            data?.Users?.update && dispatch(userUpdate(userData));
         });
     };
 

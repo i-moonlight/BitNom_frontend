@@ -12,10 +12,13 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-
-import learnImg from '../../../../assets/investor/learn.svg';
-import logoImg from '../../../../assets/logo_full.svg';
+import React from 'react';
 import { Button } from '../../../../components/Button';
+
+const learnImg = React.lazy(() =>
+    import('../../../../assets/investor/learn.svg')
+);
+const logoImg = React.lazy(() => import('../../../../assets/logo_full.svg'));
 
 export default function WhitePaper() {
     const theme = useTheme();

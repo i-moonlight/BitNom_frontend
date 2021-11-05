@@ -63,6 +63,7 @@ export default function BnConnect() {
     const smDown = useMediaQuery('(max-width:959px)');
 
     const user = state.auth.user;
+    const posts = state.posts.list;
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -138,7 +139,7 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    // console.log('Posts RDC: ', trendingError);
+    console.log('Posts RDC: ', trendingError);
 
     return (
         <Screen>
@@ -212,9 +213,10 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {scrollData?.Posts?.get
+                            {
+                                // scrollData?.Posts?.get
                                 // state.posts.list
-                                ?.map((scroll) => (
+                                posts?.map((scroll) => (
                                     <Scroll
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
@@ -245,7 +247,8 @@ export default function BnConnect() {
                                             setImagePreviewOpen(open);
                                         }}
                                     />
-                                ))}
+                                ))
+                            }
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography color="primary">

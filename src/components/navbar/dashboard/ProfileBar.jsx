@@ -19,16 +19,19 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import logo from '../../../assets/logo.svg';
-import logo_full from '../../../assets/logo_full.svg';
-import logo_light from '../../../assets/logo_light.svg';
-import logo_light_full from '../../../assets/logo_light_full.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { Button } from '../../Button';
 import { useStyles } from '../../utilities/styles.components';
+
+const logo = React.lazy(() => import('../../../assets/logo.svg'));
+const logo_full = React.lazy(() => import('../../../assets/logo_full.svg'));
+const logo_light = React.lazy(() => import('../../../assets/logo_light.svg'));
+const logo_light_full = React.lazy(() =>
+    import('../../../assets/logo_light_full.svg')
+);
 
 export default function ProfileBar({
     notifications,

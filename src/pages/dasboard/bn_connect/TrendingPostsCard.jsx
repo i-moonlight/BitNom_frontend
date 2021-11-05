@@ -2,21 +2,20 @@ import { MessageOutlined } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    CircularProgress,
     Grid,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
     Paper,
+    Skeleton,
     Typography,
 } from '@mui/material';
-
 import { useHistory } from 'react-router-dom';
 import {
     contentBodyFactory,
-    truncateText,
     getReactionsSum,
+    truncateText,
 } from '../utilities/functions';
 
 export default function TrendingPostsCard({ trending, loading }) {
@@ -43,15 +42,32 @@ export default function TrendingPostsCard({ trending, loading }) {
                 <Typography style={{ marginLeft: 8 }} variant="body1">
                     Trending Posts
                 </Typography>
-                {loading && (
-                    <Grid align="center">
-                        <CircularProgress
-                            color="primary"
-                            size={24}
-                            thickness={4}
-                        />
-                    </Grid>
-                )}
+                {loading &&
+                    [1, 2, 3].map((post) => (
+                        <ListItem
+                            key={post}
+                            divider
+                            style={{ zIndex: 1, cursor: 'pointer' }}
+                        >
+                            <ListItemAvatar>
+                                <Skeleton animation="wave">
+                                    <Avatar
+                                        variant="square"
+                                        style={{ height: 50 }}
+                                    />
+                                </Skeleton>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Skeleton variant="text" animation="wave" />
+                                }
+                                secondary={
+                                    <Skeleton variant="text" animation="wave" />
+                                }
+                            />
+                        </ListItem>
+                    ))}
+
                 {trending &&
                     trending?.slice(0, 3).map((post) => (
                         <ListItem
