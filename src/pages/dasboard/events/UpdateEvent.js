@@ -25,9 +25,8 @@ import debounce from 'lodash/debounce';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
-//import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
 import {
@@ -124,8 +123,8 @@ export default function UpdateEvent({
     const [selectedLocation, setSelectedLocation] = useState(null);
     //const theme = useTheme();
 
-    /*  const state = useSelector((st) => st);
-  const user = state.auth.user; */
+    const state = useSelector((st) => st);
+    const user = state.auth.user;
     const history = useHistory();
 
     const setSearchTermDebounced = debounce(setSearchTerm, 500);
@@ -193,7 +192,14 @@ export default function UpdateEvent({
             variables: {
                 _id: id,
             },
-            refetchQueries: [{ query: QUERY_LOAD_EVENTS }],
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_EVENTS,
+                    variables: {
+                        data: { host: user?._id, limit: 50 },
+                    },
+                },
+            ],
         });
 
         setEventLink('');
@@ -220,6 +226,20 @@ export default function UpdateEvent({
         setOpenUpdate(false);
     };
 
+    const handleSetTags = () => {
+        if (tagText.length < 3) return;
+        const exist = eventTags?.filter((tag) => tag === tagText);
+
+        if (exist.length) {
+            setErrorText(`${tagText} is already added!`);
+            return setTagsErr(true);
+        }
+        setErrorText('');
+        setTagsErr(false);
+        setEventTags([...eventTags, tagText]);
+        setTagText('');
+    };
+
     const handleSelectLocation = (location) => {
         geocodeByPlaceId(location?.place_id)
             .then((results) => getLatLng(results[0]))
@@ -238,8 +258,8 @@ export default function UpdateEvent({
             setErrorText('The event title must be provided');
             return setTitleErr(true);
         }
-        if (eventDescription.trim() == '') {
-            setErrorText('The event description must be provided');
+        if (eventDescription.length < 20) {
+            setErrorText('The event description provided is too short');
             return setDescriptionErr(true);
         }
         if (locationType.trim() == '') {
@@ -728,6 +748,15 @@ export default function UpdateEvent({
                                                         className={
                                                             classes.input
                                                         }
+                                                        onKeyPress={(e) => {
+                                                            if (
+                                                                e.key ===
+                                                                'Enter'
+                                                            ) {
+                                                                e.preventDefault();
+                                                                handleSetTags();
+                                                            }
+                                                        }}
                                                         placeholder='eg "CryptoEvent"'
                                                         inputProps={{
                                                             'aria-label':
@@ -736,45 +765,7 @@ export default function UpdateEvent({
                                                         endAdornment={
                                                             <Button
                                                                 onClick={() => {
-                                                                    if (
-                                                                        tagText.length <
-                                                                        3
-                                                                    )
-                                                                        return;
-                                                                    const exist =
-                                                                        eventTags?.filter(
-                                                                            (
-                                                                                tag
-                                                                            ) =>
-                                                                                tag ===
-                                                                                tagText
-                                                                        );
-
-                                                                    if (
-                                                                        exist.length
-                                                                    ) {
-                                                                        setErrorText(
-                                                                            `${tagText} is already added!`
-                                                                        );
-                                                                        return setTagsErr(
-                                                                            true
-                                                                        );
-                                                                    }
-                                                                    setErrorText(
-                                                                        ''
-                                                                    );
-                                                                    setTagsErr(
-                                                                        false
-                                                                    );
-                                                                    setEventTags(
-                                                                        [
-                                                                            ...eventTags,
-                                                                            tagText,
-                                                                        ]
-                                                                    );
-                                                                    setTagText(
-                                                                        ''
-                                                                    );
+                                                                    handleSetTags();
                                                                 }}
                                                                 //disabled={addLoading}
                                                                 size="small"

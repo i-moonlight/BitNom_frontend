@@ -34,7 +34,11 @@ import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { mentionsFinder, mentionsUpdate } from '../../utilities/functions';
+import {
+    mentionsFinder,
+    getFeed,
+    mentionsUpdate,
+} from '../../utilities/functions';
 import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
@@ -79,7 +83,18 @@ export default function UpdatePost({
             variables: {
                 _id: id,
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: { data: { author: user?._id, limit: 220 } },
+                },
+            ],
         });
         setScrollText('');
         setScrollImages(null);
@@ -97,7 +112,14 @@ export default function UpdatePost({
             variables: {
                 data: IUpdatePost,
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+            ],
         });
         setScrollText('');
         setScrollImages(null);

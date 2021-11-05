@@ -193,12 +193,8 @@ export default function CreateEvent({ open, setOpen }) {
             setErrorText('The event title must be provided');
             return setTitleErr(true);
         }
-        if (eventDescription.trim() == '') {
-            setErrorText('The event description must be provided');
-            return setDescriptionErr(true);
-        }
         if (eventDescription.length < 20) {
-            setErrorText('The event description is too shot');
+            setErrorText('The event description provided is too short');
             return setDescriptionErr(true);
         }
         if (locationType.trim() == '') {

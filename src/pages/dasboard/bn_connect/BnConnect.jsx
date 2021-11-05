@@ -142,7 +142,7 @@ export default function BnConnect() {
                 <title>BN Connect</title>
                 <link
                     rel="canonical"
-                    href={`${window.location.origin}/dashboard`}
+                    href={`${window.location.origin}/connect`}
                 />
             </Helmet>
             <ToastContainer
@@ -236,9 +236,8 @@ export default function BnConnect() {
                                 ))}
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography color="primary">
-                                        Create a post or follow people you may
-                                        know to see theirs!!
+                                    <Typography variant="h3" color="primary">
+                                        .
                                     </Typography>
                                 </Grid>
                             )}

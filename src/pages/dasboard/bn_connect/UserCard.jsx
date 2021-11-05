@@ -56,8 +56,10 @@ export default function UserCard({ setOpen, followers, following }) {
                 <CardMedia
                     style={{ height: 100 }}
                     image={
-                        process.env.REACT_APP_BACKEND_URL + user?.cover_pic ||
-                        'https://picsum.photos/300/200'
+                        user?.cover_pic
+                            ? process.env.REACT_APP_BACKEND_URL +
+                              user?.cover_pic
+                            : 'https://picsum.photos/300/200'
                     }
                     component="img"
                     // title='Contemplative Reptile'
