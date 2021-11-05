@@ -43,12 +43,6 @@ export default function TabsBar({
                                         menuItems &&
                                             handleTabOptionsOpen(event);
                                     }}
-                                    // onMouseEnter={(event) => {
-                                    //     menuItems && setTabOptions(menuItems);
-                                    //     menuItems &&
-                                    //         handleTabOptionsOpen(event);
-                                    // }}
-                                    // onMouseLeave={handleTabOptionsClose}
                                 />
                             );
                         })}

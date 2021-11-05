@@ -5,8 +5,7 @@
  * Time: 9:06 PM
  */
 
-
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,7 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {Card, LinearProgress} from '@mui/material';
+import { Card, LinearProgress } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -44,18 +43,22 @@ export default function Categories() {
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/categories`;
         fetch(url)
-            .then(response =>response.json())
-            .then(data=>{
+            .then((response) => response.json())
+            .then((data) => {
                 console.log(data);
                 getCategories(data);
                 loadCategories(true);
             })
             .catch(loadCategories(false));
-    },[]);
+    }, []);
 
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ maxHeight: 500 }} aria-label='coins table' stickyHeader>
+            <Table
+                sx={{ maxHeight: 500 }}
+                aria-label="coins table"
+                stickyHeader
+            >
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>#</StyledTableCell>
@@ -66,12 +69,13 @@ export default function Categories() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {categoryLoaded ? (categories.map((row, id) => (
+                    {categoryLoaded ? (
+                        categories.map((row, id) => (
                             <StyledTableRow key={row.name}>
-                                <StyledTableCell component='th' scope='row'>
+                                <StyledTableCell component="th" scope="row">
                                     {id + 1}
                                 </StyledTableCell>
-                                <StyledTableCell component='th' scope='row'>
+                                <StyledTableCell component="th" scope="row">
                                     {row.name}
                                 </StyledTableCell>
                                 <StyledTableCell>
@@ -84,12 +88,12 @@ export default function Categories() {
                                     ${row.volume_24h}
                                 </StyledTableCell>
                             </StyledTableRow>
-                        )))
-                        :
+                        ))
+                    ) : (
                         <Card className={'text-center'}>
-                            <LinearProgress color='inherit' />
+                            <LinearProgress color="inherit" />
                         </Card>
-                    }
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>

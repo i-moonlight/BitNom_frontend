@@ -1,5 +1,5 @@
-import {Card, CardContent} from '@mui/material';
-import {Close, Favorite, Forum, Replay} from '@mui/icons-material';
+import { Card, CardContent } from '@mui/material';
+import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
 import React from 'react';
 
 /**
@@ -9,30 +9,29 @@ import React from 'react';
  * Time: 1:31 AM
  */
 
-export function CryptoGazing()
-{
-    return(
+export function CryptoGazing() {
+    return (
         <>
             <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center">
                 <Card>
                     <CardContent>
                         <div className="d-flex flex-row justify-content-between mb-3">
-                            <button className="btn btn-success">
-                                Rank #1
-                            </button>
+                            <button className="btn btn-success">Rank #1</button>
                             <a className="text-primary text-decoration-underline">
                                 Visit Coin
                             </a>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <img height="100px"
-                                     src={'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'}
-                                     alt="Bitcoin Image"/>
+                                <img
+                                    height="100px"
+                                    src={
+                                        'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579'
+                                    }
+                                    alt="Bitcoin Image"
+                                />
                                 <p className="mt-1">
-                                    <strong>
-                                        Bitcoin (BTC)
-                                    </strong>
+                                    <strong>Bitcoin (BTC)</strong>
                                 </p>
                                 <a className="btn btn-success mb-2">
                                     <strong>$44,811,17</strong>
@@ -40,9 +39,7 @@ export function CryptoGazing()
                             </div>
                             <div className="col">
                                 <p>
-                                    <strong>
-                                        Price Change 24 hours
-                                    </strong>
+                                    <strong>Price Change 24 hours</strong>
                                 </p>
                                 <p className="text-danger">
                                     <strong>7.76%</strong>
@@ -56,9 +53,7 @@ export function CryptoGazing()
                                     <strong>Market Cap</strong>
                                 </p>
                                 <p className="text-success">
-                                    <strong>
-                                        $300,213,918,809
-                                    </strong>
+                                    <strong>$300,213,918,809</strong>
                                 </p>
                                 <br />
                                 <p>Total Supply</p>
@@ -87,5 +82,6 @@ export function CryptoGazing()
                     </div>
                 </Card>
             </div>
-        </>);
+        </>
+    );
 }

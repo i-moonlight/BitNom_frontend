@@ -64,7 +64,7 @@ function themeOptions(theme) {
         },
         fill: {
             // colors: [theme.palette.primary.light, theme.palette.success.light],
-            type:'gradient'
+            type: 'gradient',
         },
         colors: [theme.palette.primary.main, theme.palette.success.main],
         chart: {

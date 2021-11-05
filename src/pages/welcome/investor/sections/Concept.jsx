@@ -7,8 +7,9 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
+import React from 'react';
 
-import igImg from '../../../../assets/investor/ig.png';
+const igImg = React.lazy(() => import('../../../../assets/investor/ig.png'));
 
 export default function Concept() {
     const theme = useTheme();

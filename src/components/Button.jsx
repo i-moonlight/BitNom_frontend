@@ -1,6 +1,8 @@
 import { Button as MuiButton } from '@mui/material';
 import { useFormikContext } from 'formik';
-import logo_google from '../assets/components/google.svg';
+import React from 'react';
+
+const logo_google = React.lazy(() => import('../assets/components/google.svg'));
 
 export function Button({
     // eslint-disable-next-line no-unused-vars

@@ -92,3 +92,9 @@ export const checkSessionTimeOut = () => {
         }
     };
 };
+
+export const userUpdate = (user) => {
+    return (dispatch) => {
+        dispatch({ type: 'USER_UPDATE', user });
+    };
+};

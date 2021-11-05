@@ -111,11 +111,18 @@ export default function GainersAndLosers() {
             <div className="d-lg-flex d-md-flex d-sm-block justify-content-evenly">
                 <div className="mb-5">
                     <h6 className="fw-bold m-3 text-center">Top Gainers</h6>
-                    <p><small>24h Volume is above USD $50,000</small></p>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
                     <TableContainer>
                         <Table sx={{}} aria-label="caption table">
                             <TableHead>
-                                <TableRow style={{backgroundColor: '#3e4041', color: '#fff',}}>
+                                <TableRow
+                                    style={{
+                                        backgroundColor: '#3e4041',
+                                        color: '#fff',
+                                    }}
+                                >
                                     <TableCell className="text-white">
                                         <strong>Coin</strong>
                                     </TableCell>
@@ -147,15 +154,28 @@ export default function GainersAndLosers() {
                                 {rows.map((row) => (
                                     <TableRow key={row.name}>
                                         <TableCell align="right">
-                                            <img src={row.image} alt={'coin image'} height="25px"/>
+                                            <img
+                                                src={row.image}
+                                                alt={'coin image'}
+                                                height="25px"
+                                            />
                                         </TableCell>
-                                        <TableCell align="right" className="text-primary">
+                                        <TableCell
+                                            align="right"
+                                            className="text-primary"
+                                        >
                                             {row.coin}
                                         </TableCell>
-                                        <TableCell align="right" className="text-primary">
+                                        <TableCell
+                                            align="right"
+                                            className="text-primary"
+                                        >
                                             {row.volume}
                                         </TableCell>
-                                        <TableCell align="right" className="text-primary">
+                                        <TableCell
+                                            align="right"
+                                            className="text-primary"
+                                        >
                                             {row.price}
                                         </TableCell>
                                         <TableCell align="right">
@@ -176,7 +196,9 @@ export default function GainersAndLosers() {
                 </div>
                 <div className={'mb-5'}>
                     <h6 className="fw-bold m-3 text-center">Top Losers</h6>
-                    <p><small>24h Volume is above USD $50,000</small></p>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
                     <TableContainer>
                         <Table aria-label="caption table">
                             <TableHead>
