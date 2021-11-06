@@ -5,6 +5,7 @@ import {
     ImageRounded,
     Public,
     VideocamRounded,
+    InsertEmoticon,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -30,6 +31,7 @@ import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { loadScrolls } from '../../../../store/actions/postActions';
 import EventPreview from '../../events/EventPreview';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { getFeed, mentionsFinder } from '../../utilities/functions';
 import {
     MUTATION_CREATE_POST,
@@ -37,6 +39,7 @@ import {
 } from '../../utilities/queries';
 import ScrollPreview from './ScrollPreview';
 
+const emojiPickerId = 'emoji-picker-popover';
 export default function CreatePost({
     open,
     setOpen,
@@ -57,6 +60,10 @@ export default function CreatePost({
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
+    const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
+
+    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -121,6 +128,19 @@ export default function CreatePost({
             display: item?.userId?.displayName,
         };
     });
+
+    const handleEmojiPickerOpen = (event) => {
+        setEmojiPickerAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiPickerClose = () => {
+        setEmojiPickerAnchorEl(null);
+    };
+
+    const handleSelectEmoji = (emoji) => {
+        handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji.native}`);
+    };
 
     const handleCreatePost = (e) => {
         e.preventDefault();
@@ -342,6 +362,17 @@ export default function CreatePost({
                                     >
                                         <VideocamRounded />
                                     </IconButton>
+                                    <IconButton
+                                        size="small"
+                                        aria-label="pick emoji"
+                                        aria-controls={emojiPickerId}
+                                        aria-haspopup="true"
+                                        onClick={(e) => {
+                                            handleEmojiPickerOpen(e);
+                                        }}
+                                    >
+                                        <InsertEmoticon />
+                                    </IconButton>
                                     {createPostIcons.map(({ Icon }) => {
                                         return (
                                             <IconButton
@@ -375,6 +406,13 @@ export default function CreatePost({
                                 )}
                             </div>
                         </CardContent>
+                        <EmojiPickerPopover
+                            emojiPickerId={emojiPickerId}
+                            emojiPickerAnchorEl={emojiPickerAnchorEl}
+                            isEmojiPickerOpen={isEmojiPickerOpen}
+                            handleEmojiPickerClose={handleEmojiPickerClose}
+                            handleSelectEmoji={handleSelectEmoji}
+                        />
                     </Card>
                 </Grid>
             </Grid>

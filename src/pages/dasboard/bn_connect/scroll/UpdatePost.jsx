@@ -6,6 +6,7 @@ import {
     ImageRounded,
     Public,
     VideocamRounded,
+    InsertEmoticon,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -33,6 +34,7 @@ import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 //import TextField from '../../../../components/TextField';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     mentionsFinder,
@@ -45,6 +47,7 @@ import {
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 
+const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({
     updateScrollOpen,
     setUpdateScrollOpen,
@@ -66,6 +69,10 @@ export default function UpdatePost({
     const [scroll_images, setScrollImages] = useState(null);
     const [scroll_video, setScrollVideo] = useState(undefined);
     const [openDelete, setOpenDelete] = useState(false);
+    const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
+
+    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const [
@@ -150,6 +157,19 @@ export default function UpdatePost({
             display: item?.userId?.displayName,
         };
     });
+
+    const handleEmojiPickerOpen = (event) => {
+        setEmojiPickerAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiPickerClose = () => {
+        setEmojiPickerAnchorEl(null);
+    };
+
+    const handleSelectEmoji = (emoji) => {
+        handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji.native}`);
+    };
 
     const handleUpdatePost = (e) => {
         e.preventDefault();
@@ -343,7 +363,7 @@ export default function UpdatePost({
                             {(postToEdit?.video?.path ||
                                 postToEdit?.images?.length > 0) &&
                                 fileType !== null && (
-                                    <Card>
+                                    <Card className="mt-2">
                                         <div className="space-between mx-3 my-2">
                                             <Typography variant="body2"></Typography>
                                             <Typography variant="body1"></Typography>
@@ -486,6 +506,17 @@ export default function UpdatePost({
                                     >
                                         <VideocamRounded />
                                     </IconButton>
+                                    <IconButton
+                                        size="small"
+                                        aria-label="pick emoji"
+                                        aria-controls={emojiPickerId}
+                                        aria-haspopup="true"
+                                        onClick={(e) => {
+                                            handleEmojiPickerOpen(e);
+                                        }}
+                                    >
+                                        <InsertEmoticon />
+                                    </IconButton>
                                 </div>
                                 <div>
                                     <Button
@@ -518,6 +549,13 @@ export default function UpdatePost({
                                 </div>
                             </div>
                         </CardContent>
+                        <EmojiPickerPopover
+                            emojiPickerId={emojiPickerId}
+                            emojiPickerAnchorEl={emojiPickerAnchorEl}
+                            isEmojiPickerOpen={isEmojiPickerOpen}
+                            handleEmojiPickerClose={handleEmojiPickerClose}
+                            handleSelectEmoji={handleSelectEmoji}
+                        />
                     </Card>
                 </Grid>
             </Grid>

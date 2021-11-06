@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import ImagePreview from '../../../components/ImagePreview';
@@ -25,6 +24,7 @@ import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
 import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
+import SEO from '../../../components/SEO';
 
 const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
@@ -143,14 +143,11 @@ export default function BnConnect() {
 
     return (
         <Screen>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>BN Connect</title>
-                <link
-                    rel="canonical"
-                    href={`${window.location.origin}/connect`}
-                />
-            </Helmet>
+            <SEO
+                title="BN Connect"
+                url={`${window.location.origin}/connect`}
+                description={`Bitnorm Community Platform`}
+            />
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
@@ -251,7 +248,7 @@ export default function BnConnect() {
                             }
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography variant="h3" color="primary">
+                                    <Typography variant="h5" color="primary">
                                         .
                                     </Typography>
                                 </Grid>

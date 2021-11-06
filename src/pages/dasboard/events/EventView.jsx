@@ -30,13 +30,13 @@ import {
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
 //import IosShareIcon from '@mui/icons-material/IosShare'
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import ExternalShareModal from '../bn_connect/popovers/ExternalShareModal';
 import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
@@ -251,14 +251,17 @@ export default function EventView({ match }) {
 
     return (
         <Screen>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Event | Bitnorm</title>
-                <link
-                    rel="canonical"
-                    href={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
-                />
-            </Helmet>
+            <SEO
+                title="Event | Bitnorm"
+                url={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
+                description={eventData?.Events?.getById?.description}
+                image={
+                    eventData?.Posts?.getById?.image
+                        ? process.env.REACT_APP_BACKEND_URL +
+                          eventData?.Events?.getById?.image
+                        : null
+                }
+            />
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
