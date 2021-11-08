@@ -1,5 +1,12 @@
 import { useQuery, useSubscription } from '@apollo/client';
-import { CircularProgress, Divider } from '@mui/material';
+import {
+    Card,
+    CardContent,
+    CircularProgress,
+    Divider,
+    List,
+    ListSubheader,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,6 +27,7 @@ import NoChatSelected from './no_chat_selected';
 import EmptyMessages from './no_messages';
 import SendMessage from './send_message';
 import Blocked from './blocked';
+import PinnedMessages from './PinnedMessages';
 
 export default function Messages({ onExitChatMobile }) {
     const [open, setOpen] = useState(false);
@@ -35,7 +43,7 @@ export default function Messages({ onExitChatMobile }) {
     const unOrderedMessages = state?.chats?.dialogue_messages;
     const messages = [...unOrderedMessages]?.reverse();
     const filteredMessages = state?.chats?.searchData;
-    // const filteredMessages = [...searchOutput]?.reverse();
+    const messagePins = state.chats.pinnedMessages;
 
     const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
         variables: {
@@ -99,13 +107,35 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
+                    {messagePins && messagePins.length > 0 && (
+                        <Card className={classes.pinnedList}>
+                            <CardContent>
+                                <List
+                                    component="nav"
+                                    subheader={
+                                        <ListSubheader>
+                                            Pinned Messages
+                                        </ListSubheader>
+                                    }
+                                    style={{
+                                        overflowY: 'auto',
+                                        height: '100px',
+                                    }}
+                                    dense
+                                >
+                                    {' '}
+                                    {messagePins?.map((message) => (
+                                        <PinnedMessages
+                                            key={message?._id}
+                                            message={message}
+                                        />
+                                    ))}{' '}
+                                </List>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             )}
-            {dialogue.status === 'new' &&
-                dialogue.status !== 'accepted' &&
-                dialogue.recipient?.info._id === user?._id && (
-                    <InviteView dialogue={dialogue} />
-                )}
             {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
@@ -113,13 +143,29 @@ export default function Messages({ onExitChatMobile }) {
             <div
                 style={{
                     overflowY: 'auto',
-                    minHeight: open === true ? '37vh' : '50vh',
+                    minHeight:
+                        open === true
+                            ? '37vh'
+                            : open === true && messagePins.length > 0
+                            ? '30vh'
+                            : messagePins.length > 0
+                            ? '37vh'
+                            : '50vh',
                     height:
                         open === true
                             ? window.innerHeight - 750
+                            : open === true && messagePins.length > 0
+                            ? window.innerHeight - 750
+                            : messagePins.length > 0
+                            ? window.innerHeight - 500
                             : window.innerHeight - 372,
                 }}
             >
+                {' '}
+                {dialogue.status === 'new' &&
+                    dialogue.recipient?.info._id === user?._id && (
+                        <InviteView dialogue={dialogue} />
+                    )}
                 {dialogue.status === 'accepted' &&
                     !messages.length > 0 &&
                     !loading && <EmptyMessages />}
@@ -155,7 +201,6 @@ export default function Messages({ onExitChatMobile }) {
                           />
                       ))
                     : ''}
-
                 {loading && (
                     <div
                         className="d-flex justify-content-center align-items-center mx-auto w-100"
@@ -164,7 +209,6 @@ export default function Messages({ onExitChatMobile }) {
                         <CircularProgress />
                     </div>
                 )}
-
                 <div ref={endRef} className="mt-4" />
             </div>{' '}
             <div>
