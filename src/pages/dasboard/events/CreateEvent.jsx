@@ -136,14 +136,11 @@ export default function CreateEvent({ open, setOpen }) {
         }
     );
 
-    const [
-        createEvent,
-        {
-            loading,
-            data,
-            //  error
-        },
-    ] = useMutation(MUTATION_CREATE_EVENT);
+    const [createEvent, { loading, data }] = useMutation(
+        MUTATION_CREATE_EVENT
+    );
+
+ 
 
     const onCreateEvent = (ICreateEvent) => {
         createEvent({

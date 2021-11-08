@@ -213,21 +213,23 @@ export default function UpdatePost({
                         <div className="space-between mx-3 my-2">
                             <Typography variant="body2"></Typography>
                             <Typography variant="body1">Update Post</Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setUpdateScrollOpen(!updateScrollOpen);
-                                        setPostToEdit(null);
-                                        setOpenImage(false);
-                                        setOpenVideo(false);
-                                        setScrollImages(null);
-                                        setScrollVideo(null);
-                                        setUpdatePostErr(false);
-                                        setFileType(null);
-                                        setImageDisabled(false);
-                                        setVideoDisabled(false);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setUpdateScrollOpen(!updateScrollOpen);
+                                    setPostToEdit(null);
+                                    setOpenImage(false);
+                                    setOpenVideo(false);
+                                    setScrollImages(null);
+                                    setScrollVideo(null);
+                                    setUpdatePostErr(false);
+                                    setFileType(null);
+                                    setImageDisabled(false);
+                                    setVideoDisabled(false);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
 

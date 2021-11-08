@@ -388,36 +388,38 @@ export default function UpdateEvent({
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body2"></Typography>
                             <Typography variant="body1">
-                                Create Event
+                                Update Event
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpenUpdate(!openUpdate);
-                                        setEventLink('');
-                                        setEventImage(null);
-                                        setEventTitle('');
-                                        setEventDescription('');
-                                        setDescriptionErr(false);
-                                        setOrganizerErr(false);
-                                        setTagsErr(false);
-                                        setTitleErr(false);
-                                        setLinkErr(false);
-                                        setDateErr(false);
-                                        setLocationErr(false);
-                                        setEventStartDate('');
-                                        setEventEndDate('');
-                                        setLocationType('');
-                                        setLatitude('');
-                                        setAddress('');
-                                        setLongitude('');
-                                        setEventTags([]);
-                                        setTagText('');
-                                        setPreviewURL();
-                                        setEventOrganizers([]);
-                                        setEventToEdit(null);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setOpenUpdate(!openUpdate);
+                                    setEventLink('');
+                                    setEventImage(null);
+                                    setEventTitle('');
+                                    setEventDescription('');
+                                    setDescriptionErr(false);
+                                    setOrganizerErr(false);
+                                    setTagsErr(false);
+                                    setTitleErr(false);
+                                    setLinkErr(false);
+                                    setDateErr(false);
+                                    setLocationErr(false);
+                                    setEventStartDate('');
+                                    setEventEndDate('');
+                                    setLocationType('');
+                                    setLatitude('');
+                                    setAddress('');
+                                    setLongitude('');
+                                    setEventTags([]);
+                                    setTagText('');
+                                    setPreviewURL();
+                                    setEventOrganizers([]);
+                                    setEventToEdit(null);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
 

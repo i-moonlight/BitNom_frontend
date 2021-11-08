@@ -93,13 +93,15 @@ export default function ReactionsModal({
                         <div className="space-between mx-3 my-2">
                             <Typography variant="body2"></Typography>
                             <Typography variant="body1">Reactions</Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpenReactions(false);
-                                        setResourceReactions(null);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setOpenReactions(false);
+                                    setResourceReactions(null);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
                         <Divider />

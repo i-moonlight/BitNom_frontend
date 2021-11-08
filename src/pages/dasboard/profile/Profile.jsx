@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
+import { ToastContainer } from 'react-toastify';
 import Screen from '../../../components/Screen';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -37,6 +37,17 @@ export default function Profile() {
 
     return (
         <Screen>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

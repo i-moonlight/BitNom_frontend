@@ -122,6 +122,13 @@ export default function CreatePost({
         loading,
     ]);
 
+    useEffect(() => {
+        if (sharedResource) {
+            setImageDisabled(true);
+            setVideoDisabled(true);
+        }
+    }, [sharedResource, setImageDisabled, setVideoDisabled]);
+
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
@@ -193,21 +200,23 @@ export default function CreatePost({
                                     ? `Share to your followers`
                                     : 'Create Post'}
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpen(!open);
-                                        setOpenImage(false);
-                                        setScrollText('');
-                                        setOpenVideo(false);
-                                        setScrollImages([]);
-                                        setScrollVideo(null);
-                                        setCreatePostErr(false);
-                                        setSharedResource(null);
-                                        setImageDisabled(false);
-                                        setVideoDisabled(false);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setOpen(!open);
+                                    setOpenImage(false);
+                                    setScrollText('');
+                                    setOpenVideo(false);
+                                    setScrollImages([]);
+                                    setScrollVideo(null);
+                                    setCreatePostErr(false);
+                                    setSharedResource(null);
+                                    setImageDisabled(false);
+                                    setVideoDisabled(false);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
 

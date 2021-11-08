@@ -132,7 +132,7 @@ export default function UserCard({ setOpen, followers, following }) {
                         </div>
                         <div
                             className={classes.clickableTypography}
-                            onClick={() => history.push('/profile/connections')}
+                            onClick={() => history.push('/profile/friends')}
                         >
                             <Typography variant="body2">Followers</Typography>
                             <div className="center-horizontal">
@@ -146,12 +146,12 @@ export default function UserCard({ setOpen, followers, following }) {
                                 </Typography>
                             </div>
                         </div>
-                        <Typography
+                        <div
                             className={classes.clickableTypography}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
-                                history.push('/profile/connections/following');
+                                history.push('/profile/friends/following');
                             }}
                         >
                             <Typography variant="body2">Following</Typography>
@@ -165,7 +165,7 @@ export default function UserCard({ setOpen, followers, following }) {
                                     {following}
                                 </Typography>
                             </div>
-                        </Typography>
+                        </div>
                     </div>
                 </CardContent>
                 <Divider />
