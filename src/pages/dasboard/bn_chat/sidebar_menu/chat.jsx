@@ -15,6 +15,7 @@ import {
     LATESTMESSAGE_SUBSCRIPTION,
     USER_IS_ONLINE,
     USER_ONLINE_STATUS,
+    UNREAD_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
@@ -32,10 +33,16 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             _id: chat._id,
         },
     });
+    //unread count
+    const { data: countData } = useSubscription(UNREAD_COUNT, {
+        variables: {
+            _id: chat._id,
+        },
+    });
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: user._id,
+            _id: chat._id,
         },
     });
     useEffect(() => {
@@ -89,8 +96,8 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
-                {otherUser.info._id === OnlineData?.userIsOnline?._id &&
-                OnlineData?.userIsOnline?.online == true ? (
+                {otherUser.info._id === OnlineData?.userIsOnline?.user &&
+                OnlineData?.userIsOnline?.online === true ? (
                     <span className={classes.online_status}></span>
                 ) : (
                     <span className={classes.offline_status}></span>
@@ -111,7 +118,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                         <Typography color="textPrimary">
                             {otherUser?.info?.displayName}{' '}
                             <Badge
-                                badgeContent={chat?.currentUser?.unreadCount}
+                                badgeContent={
+                                    countData?.UnreadCount?.user ===
+                                        chat?.currentUser?.info?._id &&
+                                    countData?.UnreadCount?._id !== activeChatId
+                                        ? countData?.UnreadCount?.count
+                                        : chat?.currentUser?.unreadCount
+                                }
                                 color="primary"
                                 style={{ marginLeft: '120px' }}
                             />

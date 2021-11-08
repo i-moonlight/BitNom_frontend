@@ -1051,22 +1051,24 @@ export const NEW_CHAT_ADDED = gql`
     }
 `;
 export const USER_IS_ONLINE = gql`
-    subscription ($_id: String!) {
+    subscription userIsOnline($_id: ID!) {
         userIsOnline(_id: $_id) {
             _id
+            user
+            lastSeen
             online
         }
     }
 `;
 export const USER_ONLINE_STATUS = gql`
-    mutation ($_id: ID!) {
+    mutation updateLastSeen($_id: ID!) {
         Dialogue {
             updateLastSeen(_id: $_id)
         }
     }
 `;
 export const CHAT_ACCEPTED = gql`
-    subscription ($_id: ID!) {
+    subscription chatAccepted($_id: ID!) {
         chatAccepted(_id: $_id) {
             _id
             initiator {
@@ -1137,6 +1139,15 @@ export const LATESTMESSAGE_SUBSCRIPTION = gql`
             video
             documents
             gif
+        }
+    }
+`;
+export const UNREAD_COUNT = gql`
+    subscription UnreadCount($_id: ID!) {
+        UnreadCount(_id: $_id) {
+            _id
+            user
+            count
         }
     }
 `;

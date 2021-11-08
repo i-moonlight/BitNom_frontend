@@ -171,4 +171,7 @@ export const useStyles = makeStyles((theme) => ({
     cardDropzone: {
         backgroundColor: theme.palette.background.default,
     },
+    pinnedList: {
+        backgroundColor: theme.palette.background.default,
+    },
 }));

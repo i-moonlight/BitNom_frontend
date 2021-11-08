@@ -5,7 +5,6 @@ import {
     CardContent,
     Link,
     Typography,
-    Grid,
 } from '@mui/material';
 
 import { Button } from '../../../../components/Button';
@@ -44,15 +43,11 @@ export default function InviteView({ dialogue }) {
     };
 
     return (
-        <Grid
-            item
-            justifyContent="center"
-            alignItems="center"
-            container
-            direction="column"
-            style={{ width: '100%', marginTop: '83%' }}
+        <div
+            style={{ minHeight: '64vh' }}
+            className="d-flex justify-content-center align-items-end mx-auto w-100"
         >
-            <Card className={classes.inviteBar}>
+            <Card className={classes.cardDefault}>
                 <CardContent>
                     <Typography>
                         Accept to chat with{' '}
@@ -81,6 +76,6 @@ export default function InviteView({ dialogue }) {
                     </Button>
                 </CardActions>
             </Card>
-        </Grid>
+        </div>
     );
 }
