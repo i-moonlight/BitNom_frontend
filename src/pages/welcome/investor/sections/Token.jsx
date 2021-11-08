@@ -1,9 +1,12 @@
 import { useTheme } from '@emotion/react';
 import { ChevronRightRounded } from '@mui/icons-material';
 import { Container, Grid, Typography } from '@mui/material';
-
-import supplyImg from '../../../../assets/investor/image_5.png';
+import React from 'react';
 import { Button } from '../../../../components/Button';
+
+const supplyImg = React.lazy(() =>
+    import('../../../../assets/investor/image_5.png')
+);
 
 export default function Token() {
     const theme = useTheme();

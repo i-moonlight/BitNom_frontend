@@ -1,18 +1,42 @@
-import ecosystem1 from '../../../assets/investor/ecosystem1.svg';
-import ecosystem2 from '../../../assets/investor/ecosystem2.svg';
-import ecosystem3 from '../../../assets/investor/ecosystem3.svg';
-import ecosystem4 from '../../../assets/investor/ecosystem4.svg';
-import ecosystem5 from '../../../assets/investor/ecosystem5.svg';
-import ecosystem6 from '../../../assets/investor/ecosystem6.svg';
-import image1 from '../../../assets/investor/team/team (1).png';
-import image2 from '../../../assets/investor/team/team (2).png';
-import image3 from '../../../assets/investor/team/team (3).png';
-// import image4 from '../../../assets/investor/team/team (4).png';
-import image5 from '../../../assets/investor/team/team (5).png';
-import image6 from '../../../assets/investor/team/team (6).png';
-import media2Img from '../../../assets/landing/img7.png';
-import media1Img from '../../../assets/landing/img8.png';
-import media3Img from '../../../assets/landing/img9.png';
+import React from 'react';
+
+const ecosystem1 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem1.svg')
+);
+const ecosystem2 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem2.svg')
+);
+const ecosystem3 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem3.svg')
+);
+const ecosystem4 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem4.svg')
+);
+const ecosystem5 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem5.svg')
+);
+const ecosystem6 = React.lazy(() =>
+    import('../../../assets/investor/ecosystem6.svg')
+);
+const image1 = React.lazy(() =>
+    import('../../../assets/investor/team/team (1).png')
+);
+const image2 = React.lazy(() =>
+    import('../../../assets/investor/team/team (2).png')
+);
+const image3 = React.lazy(() =>
+    import('../../../assets/investor/team/team (3).png')
+);
+// const image4 = React.lazy(() => import('../../../assets/investor/team/team (4).png'));
+const image5 = React.lazy(() =>
+    import('../../../assets/investor/team/team (5).png')
+);
+const image6 = React.lazy(() =>
+    import('../../../assets/investor/team/team (6).png')
+);
+const media2Img = React.lazy(() => import('../../../assets/landing/img7.png'));
+const media1Img = React.lazy(() => import('../../../assets/landing/img8.png'));
+const media3Img = React.lazy(() => import('../../../assets/landing/img9.png'));
 
 export const platformLayers = [
     {

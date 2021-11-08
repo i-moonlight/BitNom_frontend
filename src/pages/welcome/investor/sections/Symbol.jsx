@@ -6,9 +6,14 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
+import React from 'react';
 
-import token1Img from '../../../../assets/investor/token1.png';
-import token2Img from '../../../../assets/investor/token2.png';
+const token1Img = React.lazy(() =>
+    import('../../../../assets/investor/token1.png')
+);
+const token2Img = React.lazy(() =>
+    import('../../../../assets/investor/token2.png')
+);
 
 export default function Symbol() {
     const smDown = useMediaQuery('(max-width:959px)');

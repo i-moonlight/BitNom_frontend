@@ -110,75 +110,12 @@ export default function GainersAndLosers() {
         <div>
             <div className="d-lg-flex d-md-flex d-sm-block justify-content-evenly">
                 <div className="mb-5">
-                    <h4 className="fw-bold m-3">Top Gainers</h4>
-                    <p>24h Volume is above USD $50,000</p>
+                    <h6 className="fw-bold m-3 text-center">Top Gainers</h6>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
                     <TableContainer>
                         <Table sx={{}} aria-label="caption table">
-                            <TableHead>
-                                <TableRow style={{backgroundColor: '#3e4041', color: '#fff',}}>
-                                    <TableCell className="text-white">
-                                        <strong>Coin</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    />
-                                    <TableCell
-                                        className="text-primary"
-                                        align="right"
-                                    >
-                                        <strong>Volume</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-primary"
-                                        align="right"
-                                    >
-                                        <strong>Price</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    >
-                                        <ChangeHistorySharp />
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow key={row.name}>
-                                        <TableCell align="right">
-                                            <img src={row.image} alt={'coin image'} height="25px"/>
-                                        </TableCell>
-                                        <TableCell align="right" className="text-primary">
-                                            {row.coin}
-                                        </TableCell>
-                                        <TableCell align="right" className="text-primary">
-                                            {row.volume}
-                                        </TableCell>
-                                        <TableCell align="right" className="text-primary">
-                                            {row.price}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <span
-                                                style={{
-                                                    backgroundColor: '#b4b474',
-                                                    borderRadius: '25px',
-                                                }}
-                                            >
-                                                {row.pyramid}
-                                            </span>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                <div className={'mb-5'}>
-                    <h4 className="fw-bold m-3">Top Losers</h4>
-                    <p>24h Volume is above USD $50,000</p>
-                    <TableContainer>
-                        <Table aria-label="caption table">
                             <TableHead>
                                 <TableRow
                                     style={{
@@ -213,12 +150,9 @@ export default function GainersAndLosers() {
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody
-                                variant="scrollable"
-                                scrollButtons="auto"
-                            >
+                            <TableBody>
                                 {rows.map((row) => (
-                                    <TableRow key={row.name} tabIndex={-1}>
+                                    <TableRow key={row.name}>
                                         <TableCell align="right">
                                             <img
                                                 src={row.image}
@@ -253,6 +187,94 @@ export default function GainersAndLosers() {
                                             >
                                                 {row.pyramid}
                                             </span>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+                <div className={'mb-5'}>
+                    <h6 className="fw-bold m-3 text-center">Top Losers</h6>
+                    <p>
+                        <small>24h Volume is above USD $50,000</small>
+                    </p>
+                    <TableContainer>
+                        <Table aria-label="caption table">
+                            <TableHead>
+                                <TableRow
+                                    style={{
+                                        backgroundColor: '#3e4041',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    <TableCell className="text-white">
+                                        <strong>Coin</strong>
+                                    </TableCell>
+                                    <TableCell
+                                        className="text-white"
+                                        align="right"
+                                    />
+                                    <TableCell
+                                        className="text-secondary"
+                                        align="right"
+                                    >
+                                        <strong>Volume</strong>
+                                    </TableCell>
+                                    <TableCell
+                                        className="text-secondary"
+                                        align="right"
+                                    >
+                                        <strong>Price</strong>
+                                    </TableCell>
+                                    <TableCell
+                                        className="text-white"
+                                        align="right"
+                                    >
+                                        <ChangeHistorySharp />
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody
+                                variant="scrollable"
+                                scrollButtons="auto"
+                            >
+                                {rows.map((row) => (
+                                    <TableRow key={row.name} tabIndex={-1}>
+                                        <TableCell align="right">
+                                            <img
+                                                src={row.image}
+                                                alt={'coin image'}
+                                                height="25px"
+                                            />
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            className="text-theme"
+                                        >
+                                            {row.coin}
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            className="text-theme"
+                                        >
+                                            {row.volume}
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            className="text-theme"
+                                        >
+                                            {row.price}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <small
+                                                style={{
+                                                    backgroundColor: '#b4b474',
+                                                    borderRadius: '25px',
+                                                }}
+                                            >
+                                                {row.pyramid}
+                                            </small>
                                         </TableCell>
                                     </TableRow>
                                 ))}

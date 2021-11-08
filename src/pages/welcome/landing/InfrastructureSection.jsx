@@ -8,13 +8,16 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import botImg from '../../../assets/landing/bot.svg';
-import ghostImg from '../../../assets/landing/ghost.svg';
-import infrastructureImg from '../../../assets/landing/infrastructure.svg';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
+
+const botImg = React.lazy(() => import('../../../assets/landing/bot.svg'));
+const ghostImg = React.lazy(() => import('../../../assets/landing/ghost.svg'));
+const infrastructureImg = React.lazy(() =>
+    import('../../../assets/landing/infrastructure.svg')
+);
 
 export default function InfrastructureSection() {
     const classes = useStyles();

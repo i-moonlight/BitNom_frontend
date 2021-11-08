@@ -26,6 +26,12 @@ export default function authReducer(state = initialState, action) {
                 justRegistered: false,
                 err: null,
             };
+        case 'USER_UPDATE':
+            return {
+                ...state,
+                user: action.user,
+                err: null,
+            };
         case 'USER_LOGIN_TOKEN':
             return {
                 ...state,

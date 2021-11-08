@@ -6,10 +6,13 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-
+import React from 'react';
 import { Link } from 'react-router-dom';
-import investorGraphicImg from '../../../assets/landing/articles.png';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
+
+const investorGraphicImg = React.lazy(() =>
+    import('../../../assets/landing/articles.png')
+);
 
 export default function InvestorSection() {
     const classes = useStyles();

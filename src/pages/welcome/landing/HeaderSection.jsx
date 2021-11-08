@@ -7,11 +7,14 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import headerBgImg from '../../../assets/landing/img12.png';
 import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
+
+const headerBgImg = React.lazy(() =>
+    import('../../../assets/landing/img12.png')
+);
 
 export default function HeaderSection() {
     const [videoOpen, setVideoOpen] = useState(false);

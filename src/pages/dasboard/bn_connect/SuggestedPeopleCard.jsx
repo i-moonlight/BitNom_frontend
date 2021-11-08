@@ -2,15 +2,14 @@ import { useMutation } from '@apollo/client';
 import {
     Avatar,
     Card,
-    CircularProgress,
     Divider,
-    Grid,
     List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
     Paper,
+    Skeleton,
     Typography,
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -70,15 +69,36 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                 <Typography style={{ marginLeft: 8 }} variant="body1">
                     People you may know
                 </Typography>
-                {!notFollowed && (
-                    <Grid align="center">
-                        <CircularProgress
-                            color="primary"
-                            size={24}
-                            thickness={4}
-                        />
-                    </Grid>
-                )}
+                {!notFollowed &&
+                    [1, 2, 3]?.map((user) => (
+                        <ListItem key={user} divider>
+                            <ListItemAvatar>
+                                <Skeleton animation="wave">
+                                    <Avatar
+                                        variant="square"
+                                        style={{ height: 50 }}
+                                    />
+                                </Skeleton>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={
+                                    <Skeleton variant="text" animation="wave" />
+                                }
+                                secondary={
+                                    <Skeleton variant="text" animation="wave" />
+                                }
+                            />
+                            <ListItemIcon>
+                                <Skeleton
+                                    className="ms-2"
+                                    variant="rectangular"
+                                    animation="wave"
+                                    width={50}
+                                    height={24}
+                                />
+                            </ListItemIcon>
+                        </ListItem>
+                    ))}
                 {notFollowed?.slice(0, 3)?.map((user) => (
                     <ListItemComponent
                         key={user?._id}
