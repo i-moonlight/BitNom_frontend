@@ -14,6 +14,7 @@ import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Button } from '../../../components/Button';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 import ProfileForm from './forms/ProfileForm';
@@ -24,6 +25,7 @@ export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
     const [profilePreviewURL, setProfilePreviewURL] = useState(null);
     const [coverPreviewURL, setCoverPreviewURL] = useState(null);
+    //const [uploadErrors, setUploadErrors] = useState([]);
     const dispatch = useDispatch();
     const onClose = () => {
         setShowForm(false);
@@ -65,6 +67,7 @@ export default function ProfileCard({ profile, profileView }) {
         }).then(({ data }) => {
             const userData = data?.Users?.update;
             data?.Users?.update && dispatch(userUpdate(userData));
+            //setUploadErrors([]);
         });
     };
 
@@ -161,17 +164,75 @@ export default function ProfileCard({ profile, profileView }) {
                                 <DropzoneArea
                                     dropzoneClass="profile-upload-dropzone"
                                     clearOnUnmount
-                                    onChange={(files) => {
+                                    /* onChange={(files) => {
                                         if (files.length < 1) return;
                                         setProfilePreviewURL(
                                             URL.createObjectURL(files[0])
                                         );
                                         handleUpdateProfilePic(files[0]);
+                                    }} */
+                                    onChange={(files) => {
+                                        if (files.length < 1) return;
+                                        const errors = [];
+                                        let counter = 0;
+                                        files.map((file) => {
+                                            const image = new Image();
+                                            console.log(
+                                                image.width,
+                                                image.height,
+                                                file.size,
+                                                'image.width'
+                                            );
+                                            image.addEventListener(
+                                                'load',
+                                                () => {
+                                                    // only select images within width/height/size limits
+
+                                                    if (
+                                                        (image.width < 1200) &
+                                                        (image.height < 1200) &
+                                                        (file.size < 2500000)
+                                                    ) {
+                                                        counter += 1;
+                                                        //setUploadErrors([]);
+                                                    } else {
+                                                        errors.push(
+                                                            'Image is too large. Trim to 1200px by 1200px or less.'
+                                                        );
+                                                        //setUploadErrors(errors);
+                                                        toast.error(
+                                                            'Image is too large. Trim to 1200px by 1200px or less',
+                                                            {
+                                                                position:
+                                                                    'bottom-left',
+                                                                autoClose: 3000,
+                                                                hideProgressBar: true,
+                                                                closeOnClick: true,
+                                                                pauseOnHover: true,
+                                                                draggable: true,
+                                                            }
+                                                        );
+                                                    }
+                                                    if (counter === 1) {
+                                                        setProfilePreviewURL(
+                                                            URL.createObjectURL(
+                                                                file
+                                                            )
+                                                        );
+                                                        handleUpdateProfilePic(
+                                                            file
+                                                        );
+                                                    }
+                                                }
+                                            );
+                                            image.src =
+                                                URL.createObjectURL(file);
+                                        });
                                     }}
                                     Icon={CameraAltRounded}
                                     dropzoneText={false}
-                                    acceptedFiles={['image/*']}
-                                    maxFileSize={5000000}
+                                    acceptedFiles={['image/jpeg', 'image/png']}
+                                    maxFileSize={2500000}
                                     filesLimit={1}
                                     showAlerts={['error']}
                                     showPreviews={false}

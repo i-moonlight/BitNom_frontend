@@ -190,21 +190,23 @@ export default function UpdateComment({
                                 <Typography variant="body1">
                                     Update Comment
                                 </Typography>
-                                <IconButton size="small" className="m-1 p-1">
-                                    <CloseRounded
-                                        onClick={() => {
-                                            setUpdateCommentOpen(
-                                                !updateCommentOpen
-                                            );
-                                            setCommentToEdit(null);
-                                            setOpenImage(false);
-                                            setCommentImage(undefined);
-                                            setUpdateCommentErr(false);
-                                            setFileType(null);
-                                            setPreviewURL();
-                                            setFileErrors([]);
-                                        }}
-                                    />
+                                <IconButton
+                                    onClick={() => {
+                                        setUpdateCommentOpen(
+                                            !updateCommentOpen
+                                        );
+                                        setCommentToEdit(null);
+                                        setOpenImage(false);
+                                        setCommentImage(undefined);
+                                        setUpdateCommentErr(false);
+                                        setFileType(null);
+                                        setPreviewURL();
+                                        setFileErrors([]);
+                                    }}
+                                    size="small"
+                                    className="m-1 p-1"
+                                >
+                                    <CloseRounded />
                                 </IconButton>
                             </div>
 
@@ -383,16 +385,13 @@ export default function UpdateComment({
                                             size="small"
                                             color="primary"
                                             className="m-1 p-1"
+                                            onClick={() => {
+                                                setPreviewURL();
+                                                setFileErrors([]);
+                                                setCommentImage(null);
+                                            }}
                                         >
-                                            <CloseRounded
-                                                color="secondary"
-                                                onClick={() => {
-                                                    setPreviewURL();
-                                                    setFileErrors([]);
-                                                    setCommentImage(null);
-                                                }}
-                                                P
-                                            />
+                                            <CloseRounded color="secondary" />
                                         </IconButton>
                                     </div>
                                 </Card>
@@ -425,15 +424,12 @@ export default function UpdateComment({
                                                 <IconButton
                                                     size="small"
                                                     className="m-1 p-1"
+                                                    onClick={() => {
+                                                        setFileType(null);
+                                                        setCommentImage(null);
+                                                    }}
                                                 >
-                                                    <CloseRounded
-                                                        onClick={() => {
-                                                            setFileType(null);
-                                                            setCommentImage(
-                                                                null
-                                                            );
-                                                        }}
-                                                    />
+                                                    <CloseRounded />
                                                 </IconButton>
                                             </div>
                                         </Card>
