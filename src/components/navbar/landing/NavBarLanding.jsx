@@ -5,7 +5,6 @@ import {
 } from '@mui/icons-material';
 import {
     AppBar,
-    Avatar,
     Container,
     Divider,
     IconButton,
