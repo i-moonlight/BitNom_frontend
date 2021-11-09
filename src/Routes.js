@@ -48,54 +48,15 @@ const Faqs = React.lazy(() => import('./pages/welcome/faqs/Faqs'));
 const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 
-const Susp = ({ children }) => {
-    return (
-        <Suspense
-            fallback={() => (
-                <div
-                    id="preloader-body"
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: ' 100%',
-                        height: ' 100%',
-                        backgroundColor: '#000',
-                        zIndex: 2100,
-                    }}
-                >
-                    <div className="preloader-speeding-wheel"></div>
-                    work
-                </div>
-            )}
-        >
-            <>{children}</>
-        </Suspense>
-    );
-};
-
 export default function Routes({ apolloClient }) {
     return (
         <>
             <BrowserRouter>
                 <ApolloProvider client={apolloClient}>
                     <Switch>
-                        <Route
-                            exact
-                            component={() => (
-                                <Susp>
-                                    <Landing />
-                                </Susp>
-                            )}
-                            path="/"
-                        />
                         <Suspense
                             fallback={() => (
                                 <div
-                                    id="preloader-body"
                                     style={{
                                         position: 'fixed',
                                         top: 0,
@@ -103,16 +64,19 @@ export default function Routes({ apolloClient }) {
                                         display: 'flex',
                                         justifyContent: 'center',
                                         alignItems: 'center',
-                                        width: ' 100%',
-                                        height: ' 100%',
+                                        width: '100vh',
+                                        height: '100vh',
                                         backgroundColor: '#000',
                                         zIndex: 2100,
                                     }}
-                                ></div>
+                                >
+                                    <div className="preloader-speeding-wheel"></div>
+                                </div>
                             )}
                         >
                             <>
                                 {/* Landing */}
+                                <Route exact component={Landing} path="/" />
                                 <Route exact component={Faqs} path="/faqs" />
                                 <Route exact component={Terms} path="/terms" />
                                 <Route
@@ -199,56 +163,88 @@ export default function Routes({ apolloClient }) {
                                     component={CreatePassword}
                                     path="/auth/password_reset/:key"
                                 />
+
+                                {/* Dashboard */}
+                                <Route
+                                    exact
+                                    component={BnConnect}
+                                    path="/connect"
+                                />
+                                <Route exact component={BnChat} path="/chat" />
+                                <Route
+                                    exact
+                                    component={BnServices}
+                                    path="/services"
+                                />
+                                <Route
+                                    exact
+                                    component={BnKnowledgeCenter}
+                                    path="/knowledge_center/cryptocurrency"
+                                />
+                                <Route
+                                    exact
+                                    component={CoinDetails}
+                                    path="/knowledge_center/:id"
+                                />
+
+                                <Route
+                                    exact
+                                    component={Events}
+                                    path="/events"
+                                />
+                                <Route
+                                    exact
+                                    component={EventView}
+                                    path="/events/:id"
+                                />
+                                <Route
+                                    exact
+                                    component={People}
+                                    path="/people"
+                                />
+                                <Route
+                                    exact
+                                    component={Connections}
+                                    path="/profile/friends/:active_tab?"
+                                />
+                                <Route
+                                    exact
+                                    component={HashtagView}
+                                    path="/hashtags/:hashtag"
+                                />
+                                <Route
+                                    exact
+                                    component={PostView}
+                                    path="/posts/:id"
+                                />
+                                <Route
+                                    exact
+                                    component={Posts}
+                                    path="/profile/posts"
+                                />
+                                <Route
+                                    exact
+                                    component={Profile}
+                                    path="/profile"
+                                />
+                                <Route
+                                    exact
+                                    component={SavedItems}
+                                    path="/profile/bookmarks"
+                                />
+                                <Route
+                                    exact
+                                    component={Notifications}
+                                    path="/notifications"
+                                />
+                                <Route
+                                    exact
+                                    component={ProfileView}
+                                    path="/users/:id"
+                                />
+                                {/* <Route component={NotFound} path='*' /> */}
                             </>
                         </Suspense>
-
-                        {/* Dashboard */}
-                        <Route exact component={BnConnect} path="/connect" />
-                        <Route exact component={BnChat} path="/chat" />
-                        <Route exact component={BnServices} path="/services" />
-                        <Route
-                            exact
-                            component={BnKnowledgeCenter}
-                            path="/knowledge_center/cryptocurrency"
-                        />
-                        <Route
-                            exact
-                            component={CoinDetails}
-                            path="/knowledge_center/:id"
-                        />
-
-                        <Route exact component={Events} path="/events" />
-                        <Route exact component={EventView} path="/events/:id" />
-                        <Route exact component={People} path="/people" />
-                        <Route
-                            exact
-                            component={Connections}
-                            path="/profile/friends/:active_tab?"
-                        />
-                        <Route
-                            exact
-                            component={HashtagView}
-                            path="/hashtags/:hashtag"
-                        />
-                        <Route exact component={PostView} path="/posts/:id" />
-                        <Route exact component={Posts} path="/profile/posts" />
-                        <Route exact component={Profile} path="/profile" />
-                        <Route
-                            exact
-                            component={SavedItems}
-                            path="/profile/bookmarks"
-                        />
-                        <Route
-                            exact
-                            component={Notifications}
-                            path="/notifications"
-                        />
-                        <Route
-                            exact
-                            component={ProfileView}
-                            path="/users/:id"
-                        />
-                        {/* <Route component={NotFound} path='*' /> */}
                     </Switch>
                 </ApolloProvider>
             </BrowserRouter>
