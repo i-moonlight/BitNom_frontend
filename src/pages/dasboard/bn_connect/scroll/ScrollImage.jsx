@@ -405,13 +405,13 @@ export default function ScrollImage({
 
                         <Typography display="inline" style={{ zIndex: 2 }}>
                             <Typography
-                                /*  onClick={(e) => {
-                                e.stopPropagation();
-                                setOpenReactions(true);
-                                setResourceReactions(scroll);
-                            }} */
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenReactions(true);
+                                    setResourceReactions(scroll);
+                                }}
                                 display="inline"
-                                //className={classes.clickableTypography}
+                                className={classes.clickableTypography}
                             >
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
