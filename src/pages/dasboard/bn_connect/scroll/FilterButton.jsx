@@ -14,17 +14,17 @@ import { useRef, useState } from 'react';
 
 const options = ['Top Comments', 'Latest Comments'];
 
-export default function FilterButton({ setCommentFilter }) {
+export default function FilterButton({ setCommentFilter, commentFilter }) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    //const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleClick = () => {
-        console.info(`You clicked ${options[selectedIndex]}`);
+        console.info(`You clicked ${options[commentFilter]}`);
     };
 
     const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
+        //setSelectedIndex(index);
         setOpen(false);
         setCommentFilter(index);
     };
@@ -64,7 +64,7 @@ export default function FilterButton({ setCommentFilter }) {
                         }}
                         onClick={handleClick}
                     >
-                        {options[selectedIndex]}
+                        {options[commentFilter]}
                     </Button>
                     <Button
                         size="small"
@@ -107,7 +107,7 @@ export default function FilterButton({ setCommentFilter }) {
                                             <MenuItem
                                                 key={option}
                                                 selected={
-                                                    index === selectedIndex
+                                                    index === commentFilter
                                                 }
                                                 onClick={(event) => {
                                                     handleMenuItemClick(

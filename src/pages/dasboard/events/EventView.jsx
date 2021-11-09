@@ -4,6 +4,7 @@ import {
     ArrowBack,
     BookmarkBorderRounded,
     Launch,
+    ShareRounded,
     MoreHorizRounded,
     Public,
     RoomRounded,
@@ -256,7 +257,7 @@ export default function EventView({ match }) {
                 url={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
                 description={eventData?.Events?.getById?.description}
                 image={
-                    eventData?.Posts?.getById?.image
+                    eventData?.Events?.getById?.image
                         ? process.env.REACT_APP_BACKEND_URL +
                           eventData?.Events?.getById?.image
                         : null
@@ -644,7 +645,7 @@ export default function EventView({ match }) {
                                                             );
                                                         }}
                                                     >
-                                                        <Launch color="primary" />
+                                                        <ShareRounded color="primary" />
                                                     </IconButton>
                                                 </Tooltip>
                                                 <IconButton

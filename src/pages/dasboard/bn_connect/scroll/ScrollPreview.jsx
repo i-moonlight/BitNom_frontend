@@ -47,9 +47,11 @@ export default function ScrollPreview({ scroll }) {
                                 process.env.REACT_APP_BACKEND_URL +
                                 scroll?.author?.profile_pic
                             }
-                            aria-label="recipe"
+                            sx={{ width: '30px', height: '30px' }}
                         >
-                            {authorInitials}
+                            <Typography variant="body2">
+                                {authorInitials}
+                            </Typography>
                         </Avatar>
                     }
                     title={
@@ -58,7 +60,7 @@ export default function ScrollPreview({ scroll }) {
                                 variant="body2"
                                 style={{ marginRight: 8 }}
                             >
-                                {scroll?.author?.displayName}
+                                <strong>{scroll?.author?.displayName}</strong>
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                                 {`@${scroll?.author?._id}`}
@@ -74,6 +76,7 @@ export default function ScrollPreview({ scroll }) {
                         component="p"
                     >
                         <Typography
+                            variant="body2"
                             onClick={(e) => contentClickHandler(e)}
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
@@ -123,8 +126,8 @@ export default function ScrollPreview({ scroll }) {
                                 ))}
                         </Grid>
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography variant="body2" display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
                                         ? 'Reaction'
@@ -132,7 +135,7 @@ export default function ScrollPreview({ scroll }) {
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${scroll?.comments} ${
                                     scroll?.comments === 1
                                         ? 'Comment'
