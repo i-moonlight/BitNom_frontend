@@ -8,8 +8,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import React from 'react';
-
-const igImg = React.lazy(() => import('../../../../assets/investor/ig.png'));
+import igImg from '../../../../assets/investor/ig.png';
+import LazyImage from '../../../../components/LazyImage';
 
 export default function Concept() {
     const theme = useTheme();
@@ -89,11 +89,14 @@ export default function Concept() {
                                         <CardContent>
                                             <div className="d-flex p-2 ">
                                                 {!smDown && (
-                                                    <img
-                                                        src={igImg}
-                                                        alt=""
-                                                        className="mx-5"
+                                                    <LazyImage
                                                         style={{
+                                                            marginLeft: 24,
+                                                            marginRight: 24,
+                                                        }}
+                                                        image={{
+                                                            src: igImg,
+                                                            alt: 'Concept Image',
                                                             height: 50,
                                                         }}
                                                     />

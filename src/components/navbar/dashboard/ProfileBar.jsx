@@ -90,16 +90,6 @@ export default function ProfileBar({
                                     height: 40,
                                 }}
                             />
-                            // <Avatar
-                            //     className="me-1"
-                            //     src={
-                            //         theme.palette.mode == 'light'
-                            //             ? logo
-                            //             : logo_light
-                            //     }
-                            // >
-                            //     B
-                            // </Avatar>
                         )}
 
                         {!smDown && (
@@ -192,7 +182,6 @@ export default function ProfileBar({
                             <Avatar
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 30,
                                     height: 30,

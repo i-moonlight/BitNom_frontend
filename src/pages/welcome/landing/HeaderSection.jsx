@@ -33,6 +33,10 @@ export default function HeaderSection() {
                             backgroundSize: 'cover',
                             borderRadius: 30,
                             padding: '5%',
+                            backgroundColor:
+                                theme.palette.mode == 'light'
+                                    ? '#ddd'
+                                    : '#232323',
                         }}
                         item
                         lg={12}
