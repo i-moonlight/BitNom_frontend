@@ -13,6 +13,7 @@ export default function WorkFragment({
     description,
     photoURL,
     current,
+    profileView,
 }) {
     const [formOpen, setFormOpen] = useState(false);
     const classes = useStyles();
@@ -46,16 +47,18 @@ export default function WorkFragment({
                         <div className="mx-3  w-100">
                             <div className="center-horizontal space-between">
                                 <Typography variant="body2">{title}</Typography>
-                                <Button
-                                    onClick={() => {
-                                        setFormOpen(true);
-                                    }}
-                                    textCase
-                                    variant="text"
-                                    size="small"
-                                >
-                                    Edit
-                                </Button>
+                                {!profileView && (
+                                    <Button
+                                        onClick={() => {
+                                            setFormOpen(true);
+                                        }}
+                                        textCase
+                                        variant="text"
+                                        size="small"
+                                    >
+                                        Edit
+                                    </Button>
+                                )}
                             </div>
                             <Typography color="primary" variant="body2">
                                 {company}

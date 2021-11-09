@@ -1,8 +1,8 @@
 import { Button as MuiButton } from '@mui/material';
 import { useFormikContext } from 'formik';
 import React from 'react';
-
-const logo_google = React.lazy(() => import('../assets/components/google.svg'));
+import logo_google from '../assets/components/google.svg';
+import LazyImage from './LazyImage';
 
 export function Button({
     // eslint-disable-next-line no-unused-vars
@@ -28,10 +28,13 @@ export function Button({
             {...props}
         >
             {google && (
-                <img
-                    src={logo_google}
-                    alt=""
-                    style={{ width: 20, marginRight: 16 }}
+                <LazyImage
+                    style={{ marginRight: 16 }}
+                    image={{
+                        src: logo_google,
+                        alt: 'Google Logo',
+                        width: 20,
+                    }}
                 />
             )}
             {children}

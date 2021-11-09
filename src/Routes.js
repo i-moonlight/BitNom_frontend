@@ -1,13 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import CreatePassword from './pages/auth/CreatePassword';
-import Login from './pages/auth/Login';
-import RequireVerification from './pages/auth/RequireVerification';
-import ResetPassword from './pages/auth/ResetPassword';
-import Signup from './pages/auth/Signup';
-import UpdateInfo from './pages/auth/UpdateInfo';
-import VerifyEmail from './pages/auth/VerifyEmail';
 import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import HashtagView from './pages/dasboard/bn_connect/HashtagView';
@@ -24,18 +17,36 @@ import People from './pages/dasboard/people/People';
 import Profile from './pages/dasboard/profile/Profile';
 import ProfileView from './pages/dasboard/profile/ProfileView';
 import Posts from './pages/dasboard/profile/UserPosts';
-import Cookie from './pages/welcome/cookie/Cookie';
-import Disclaimer from './pages/welcome/disclaimer/Disclaimer';
-import Faqs from './pages/welcome/faqs/Faqs';
-import FeatureRequest from './pages/welcome/feature_request/FeatureRequest';
-import Investors from './pages/welcome/investor/Investors';
-import Support from './pages/welcome/investor/Support';
-import Landing from './pages/welcome/landing/Landing';
-import Privacy from './pages/welcome/privacy/Privacy';
-import RoadMap from './pages/welcome/roadmap/RoadMap';
-import Terms from './pages/welcome/terms/Terms';
-import TestComponent from './test_component/TestComponent';
 import Redirect from './utilities/Redirect';
+
+const FeatureRequest = React.lazy(() =>
+    import('./pages/welcome/feature_request/FeatureRequest')
+);
+const Disclaimer = React.lazy(() =>
+    import('./pages/welcome/disclaimer/Disclaimer')
+);
+const Investors = React.lazy(() =>
+    import('./pages/welcome/investor/Investors')
+);
+const RequireVerification = React.lazy(() =>
+    import('./pages/auth/RequireVerification')
+);
+const TestComponent = React.lazy(() =>
+    import('./test_component/TestComponent')
+);
+const CreatePassword = React.lazy(() => import('./pages/auth/CreatePassword'));
+const ResetPassword = React.lazy(() => import('./pages/auth/ResetPassword'));
+const Support = React.lazy(() => import('./pages/welcome/investor/Support'));
+const Landing = React.lazy(() => import('./pages/welcome/landing/Landing'));
+const Privacy = React.lazy(() => import('./pages/welcome/privacy/Privacy'));
+const RoadMap = React.lazy(() => import('./pages/welcome/roadmap/RoadMap'));
+const Cookie = React.lazy(() => import('./pages/welcome/cookie/Cookie'));
+const VerifyEmail = React.lazy(() => import('./pages/auth/VerifyEmail'));
+const UpdateInfo = React.lazy(() => import('./pages/auth/UpdateInfo'));
+const Terms = React.lazy(() => import('./pages/welcome/terms/Terms'));
+const Faqs = React.lazy(() => import('./pages/welcome/faqs/Faqs'));
+const Signup = React.lazy(() => import('./pages/auth/Signup'));
+const Login = React.lazy(() => import('./pages/auth/Login'));
 
 export default function Routes({ apolloClient }) {
     return (
@@ -43,66 +54,102 @@ export default function Routes({ apolloClient }) {
             <BrowserRouter>
                 <ApolloProvider client={apolloClient}>
                     <Switch>
-                        {/* Landing */}
-                        <Route exact component={Landing} path="/" />
-                        <Route exact component={Faqs} path="/faqs" />
-                        <Route exact component={Terms} path="/terms" />
-                        <Route
-                            exact
-                            component={Privacy}
-                            path="/privacy_policy"
-                        />
-                        <Route exact component={Cookie} path="/cookie_policy" />
-                        <Route
-                            exact
-                            component={Disclaimer}
-                            path="/disclaimer"
-                        />
-                        <Route
-                            exact
-                            component={FeatureRequest}
-                            path="/feature_request"
-                        />
-                        <Route exact component={RoadMap} path="/roadmap" />
-                        <Route exact component={Redirect} path="/redirect" />
-                        <Route
-                            exact
-                            component={TestComponent}
-                            path="/test-component"
-                        />
+                        <Suspense
+                            fallback={() => (
+                                <div
+                                    id="preloader-body"
+                                    style={{
+                                        position: 'fixed',
+                                        top: 0,
+                                        left: 0,
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: ' 100%',
+                                        height: ' 100%',
+                                        backgroundColor: '#000',
+                                        zIndex: 2100,
+                                    }}
+                                ></div>
+                            )}
+                        >
+                            {/* Landing */}
+                            <Route exact component={Landing} path="/" />
+                            <Route exact component={Faqs} path="/faqs" />
+                            <Route exact component={Terms} path="/terms" />
+                            <Route
+                                exact
+                                component={Privacy}
+                                path="/privacy_policy"
+                            />
+                            <Route
+                                exact
+                                component={Cookie}
+                                path="/cookie_policy"
+                            />
+                            <Route
+                                exact
+                                component={Disclaimer}
+                                path="/disclaimer"
+                            />
+                            <Route
+                                exact
+                                component={FeatureRequest}
+                                path="/feature_request"
+                            />
+                            <Route exact component={RoadMap} path="/roadmap" />
+                            <Route
+                                exact
+                                component={Redirect}
+                                path="/redirect"
+                            />
+                            <Route
+                                exact
+                                component={TestComponent}
+                                path="/test-component"
+                            />
 
-                        {/* Investor  */}
-                        <Route exact component={Investors} path="/investors" />
-                        <Route exact component={Support} path="/support" />
+                            {/* Investor  */}
+                            <Route
+                                exact
+                                component={Investors}
+                                path="/investors"
+                            />
+                            <Route exact component={Support} path="/support" />
 
-                        {/* Auth */}
-                        <Route exact component={Login} path="/auth/login" />
-                        <Route exact component={Signup} path="/auth/signup" />
-                        <Route
-                            exact
-                            component={UpdateInfo}
-                            path="/auth/update_info_register"
-                        />
-                        <Route
-                            exact
-                            component={RequireVerification}
-                            path="/auth/require_verify"
-                        />
-                        <Route
-                            exact
-                            component={VerifyEmail}
-                            path="/auth/verify_email"
-                        />
-                        <Route
-                            exact
-                            component={ResetPassword}
-                            path="/auth/request_reset_link"
-                        />
-                        <Route
-                            exact
-                            component={CreatePassword}
-                            path="/auth/password_reset/:key"
-                        />
+                            {/* Auth */}
+                            <Route exact component={Login} path="/auth/login" />
+                            <Route
+                                exact
+                                component={Signup}
+                                path="/auth/signup"
+                            />
+                            <Route
+                                exact
+                                component={UpdateInfo}
+                                path="/auth/update_info_register"
+                            />
+                            <Route
+                                exact
+                                component={RequireVerification}
+                                path="/auth/require_verify"
+                            />
+                            <Route
+                                exact
+                                component={VerifyEmail}
+                                path="/auth/verify_email"
+                            />
+                            <Route
+                                exact
+                                component={ResetPassword}
+                                path="/auth/request_reset_link"
+                            />
+                            <Route
+                                exact
+                                component={CreatePassword}
+                                path="/auth/password_reset/:key"
+                            />
+                        </Suspense>
 
                         {/* Dashboard */}
                         <Route exact component={BnConnect} path="/connect" />

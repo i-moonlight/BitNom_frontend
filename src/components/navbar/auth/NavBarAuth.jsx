@@ -1,11 +1,8 @@
 import { AppBar, Container, useTheme } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-
-const logo_full = React.lazy(() => import('../../../assets/logo_full.svg'));
-const logo_light_full = React.lazy(() =>
-    import('../../../assets/logo_light_full.svg')
-);
+import logo_full from '../../../assets/logo_full.svg';
+import logo_light_full from '../../../assets/logo_light_full.svg';
 
 export default function NavBarAuth() {
     const history = useHistory();
