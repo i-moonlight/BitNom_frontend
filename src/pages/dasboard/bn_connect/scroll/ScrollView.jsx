@@ -34,7 +34,6 @@ import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -44,8 +43,10 @@ import { useHistory } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import ImagePreview from '../../../../components/ImagePreview';
+import ImageModal from '../../../../components/ImageModal';
 import ReactionButton from '../../../../components/ReactionButton';
 import Screen from '../../../../components/Screen';
+import SEO from '../../../../components/SEO';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import {
@@ -129,6 +130,9 @@ function PostView({ match }) {
     const [resourceReactions, setResourceReactions] = useState(null);
     const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
+    const [postToPreview, setPostToPreview] = useState(null);
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+    const [imageIndex, setImageIndex] = useState(null);
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [sharedResource, setSharedResource] = useState(null);
     const [postToEdit, setPostToEdit] = useState(null);
@@ -353,14 +357,21 @@ function PostView({ match }) {
 
     return (
         <Screen>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Post | Bitnorm</title>
-                <link
-                    rel="canonical"
-                    href={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
-                />
-            </Helmet>
+            <SEO
+                title="Post | Bitnorm"
+                url={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
+                description={postData?.Posts?.getById?.content}
+                image={
+                    postData?.Posts?.getById?.images?.length > 0 ||
+                    postData?.Posts?.getById?.video?.thumbnail
+                        ? postData?.Posts?.getById?.video?.thumbnail
+                            ? process.env.REACT_APP_BACKEND_URL +
+                              postData?.Posts?.getById?.video?.thumbnail
+                            : process.env.REACT_APP_BACKEND_URL +
+                              postData?.Posts?.getById?.images[0]
+                        : null
+                }
+            />
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
@@ -530,7 +541,7 @@ function PostView({ match }) {
                                             {postData?.Posts?.getById?.images
                                                 .length > 0 &&
                                                 postData?.Posts?.getById?.images?.map(
-                                                    (imageURL) => (
+                                                    (imageURL, index) => (
                                                         <Grid
                                                             className="mt-3"
                                                             key={imageURL}
@@ -544,12 +555,15 @@ function PostView({ match }) {
                                                                     : 12
                                                             }
                                                             onClick={() => {
-                                                                setImagePreviewURL(
-                                                                    process.env
-                                                                        .REACT_APP_BACKEND_URL +
-                                                                        imageURL
+                                                                setPostToPreview(
+                                                                    postData
+                                                                        ?.Posts
+                                                                        ?.getById
                                                                 );
-                                                                setImagePreviewOpen(
+                                                                setImageIndex(
+                                                                    index
+                                                                );
+                                                                setImageModalOpen(
                                                                     true
                                                                 );
                                                             }}
@@ -811,8 +825,9 @@ function PostView({ match }) {
                                                             '#fed132',
                                                     }}
                                                     src={
-                                                        postData?.Posts?.getById
-                                                            ?.author?.image
+                                                        process.env
+                                                            .REACT_APP_BACKEND_URL +
+                                                        user?.profile_pic
                                                     }
                                                     className="mx-2"
                                                 >
@@ -1015,7 +1030,7 @@ function PostView({ match }) {
                                                                     'image/png',
                                                                 ]}
                                                                 maxFileSize={
-                                                                    5000000
+                                                                    2500000
                                                                 }
                                                                 filesLimit={1}
                                                                 showPreviewsInDropzone
@@ -1243,6 +1258,26 @@ function PostView({ match }) {
                     setImagePreviewOpen(false);
                     setImagePreviewURL(null);
                 }}
+            />
+            <ImageModal
+                open={imageModalOpen}
+                setImageIndex={setImageIndex}
+                imageIndex={imageIndex}
+                post={postToPreview}
+                onClose={() => {
+                    setImageModalOpen(false);
+                    setPostToPreview(null);
+                    setImageIndex(null);
+                }}
+                setOpen={() => setCreateScrollOpen(true)}
+                profileData={profileData?.Users?.profile}
+                setUpdateCommentOpen={setUpdateCommentOpen}
+                setOpenFlag={setOpenFlag}
+                setFlaggedResource={setFlaggedResource}
+                setOpenReactions={setOpenReactions}
+                setResourceReactions={setResourceReactions}
+                setSharedResource={setSharedResource}
+                setCommentToEdit={setCommentToEdit}
             />
             <FlagResourceModal
                 openFlag={openFlag}

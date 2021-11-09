@@ -16,10 +16,10 @@ import {
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import UserCard from '../bn_connect/UserCard';
 //import SavedComment from './SavedComment';
 //import SavedEvent from './SavedEvent';
@@ -97,14 +97,11 @@ export default function HashtagView({ match }) {
 
     return (
         <Screen>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Hashtag | Bitnorm</title>
-                <link
-                    rel="canonical"
-                    href={`${window.location.origin}/hashtags/${match?.params?.hashtag}`}
-                />
-            </Helmet>
+            <SEO
+                title="Hashtag | Bitnorm"
+                url={`${window.location.origin}/hashtags/${match?.params?.hashtag}`}
+                description={`#${match?.params?.hashtag}`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

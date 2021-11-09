@@ -62,13 +62,15 @@ export default function FlagResourceModal({
                             <Typography variant="body1">
                                 Report this {flaggedResource?.resourceType}
                             </Typography>
-                            <IconButton size="small" className="m-1 p-1">
-                                <CloseRounded
-                                    onClick={() => {
-                                        setOpenFlag(false);
-                                        setFlaggedResource(null);
-                                    }}
-                                />
+                            <IconButton
+                                onClick={() => {
+                                    setOpenFlag(false);
+                                    setFlaggedResource(null);
+                                }}
+                                size="small"
+                                className="m-1 p-1"
+                            >
+                                <CloseRounded />
                             </IconButton>
                         </div>
 

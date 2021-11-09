@@ -189,11 +189,10 @@ export default function ProfileBar({
                                     height: 30,
                                 }}
                                 src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                        user?.profile_pic ||
-                                    process.env.REACT_APP_BACKEND_URL +
-                                        profile?.profile_pic ||
-                                    `https://ui-avatars.com/api/?name=${userInitials}&background=random`
+                                    user?.profile_pic
+                                        ? process.env.REACT_APP_BACKEND_URL +
+                                          user?.profile_pic
+                                        : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
                             >
                                 {userInitials}

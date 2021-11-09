@@ -118,28 +118,14 @@ export default function Routes({ apolloClient }) {
                             component={CoinDetails}
                             path="/knowledge_center/:id"
                         />
-                        <Route
-                            exact
-                            component={Events}
-                            path="/dashboard/events"
-                        />
-                        <Route
-                            exact
-                            component={EventView}
-                            path="/dashboard/events/:id"
-                        />
-                        <Route
-                            exact
-                            component={People}
-                            path="/dashboard/people"
-                        />
+
                         <Route exact component={Events} path="/events" />
                         <Route exact component={EventView} path="/events/:id" />
                         <Route exact component={People} path="/people" />
                         <Route
                             exact
                             component={Connections}
-                            path="/profile/connections/:active_tab?"
+                            path="/profile/friends/:active_tab?"
                         />
                         <Route
                             exact

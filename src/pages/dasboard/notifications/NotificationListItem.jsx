@@ -125,7 +125,7 @@ export default function NotificationListItem({ notification }) {
                                 aria-haspopup="true"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleNotificationOptionOpen();
+                                    handleNotificationOptionOpen(e);
                                 }}
                                 color="inherit"
                                 style={{ zIndex: 2 }}

@@ -2,10 +2,10 @@ import { useQuery } from '@apollo/client';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import ImagePreview from '../../../components/ImagePreview';
+import ImageModal from '../../../components/ImageModal';
 import Screen from '../../../components/Screen';
 import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
 import { getFeed } from '../utilities/functions';
@@ -25,6 +25,7 @@ import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
 import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
+import SEO from '../../../components/SEO';
 
 const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
@@ -50,6 +51,9 @@ export default function BnConnect() {
     const [imageDisabled, setImageDisabled] = useState(false);
     const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+    const [imageIndex, setImageIndex] = useState(null);
+    const [postToPreview, setPostToPreview] = useState(null);
     const [sharedResource, setSharedResource] = useState(null);
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
@@ -139,18 +143,13 @@ export default function BnConnect() {
         });
     }, [user._id]);
 
-    console.log('Posts RDC: ', trendingError);
-
     return (
         <Screen>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>BN Connect</title>
-                <link
-                    rel="canonical"
-                    href={`${window.location.origin}/dashboard`}
-                />
-            </Helmet>
+            <SEO
+                title="BN Connect"
+                url={`${window.location.origin}/connect`}
+                description={`Bitnorm Community Platform`}
+            />
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
@@ -205,7 +204,6 @@ export default function BnConnect() {
                                     // />
                                     <Typography
                                         className="my-2"
-                                        s
                                         color="primary"
                                     >
                                         Updating ...
@@ -236,6 +234,8 @@ export default function BnConnect() {
                                             setResourceReactions
                                         }
                                         setSharedResource={setSharedResource}
+                                        setImageIndex={setImageIndex}
+                                        setPostToPreview={setPostToPreview}
                                         setCommentToEdit={setCommentToEdit}
                                         setPostToEdit={setPostToEdit}
                                         key={scroll?._id}
@@ -246,14 +246,16 @@ export default function BnConnect() {
                                         setImagePreviewOpen={(open) => {
                                             setImagePreviewOpen(open);
                                         }}
+                                        setImageModalOpen={(open) => {
+                                            setImageModalOpen(open);
+                                        }}
                                     />
                                 ))
                             }
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography color="primary">
-                                        Create a post or follow people you may
-                                        know to see theirs!!
+                                    <Typography variant="h5" color="primary">
+                                        .
                                     </Typography>
                                 </Grid>
                             )}
@@ -343,6 +345,26 @@ export default function BnConnect() {
                     setImagePreviewOpen(false);
                     setImagePreviewURL(null);
                 }}
+            />
+            <ImageModal
+                open={imageModalOpen}
+                setImageIndex={setImageIndex}
+                imageIndex={imageIndex}
+                post={postToPreview}
+                onClose={() => {
+                    setImageModalOpen(false);
+                    setPostToPreview(null);
+                    setImageIndex(null);
+                }}
+                setOpen={() => setCreateScrollOpen(true)}
+                profileData={profileData?.Users?.profile}
+                setUpdateCommentOpen={setUpdateCommentOpen}
+                setOpenFlag={setCreateFlagOpen}
+                setFlaggedResource={setFlaggedResource}
+                setOpenReactions={setOpenReactions}
+                setResourceReactions={setResourceReactions}
+                setSharedResource={setSharedResource}
+                setCommentToEdit={setCommentToEdit}
             />
             <FlagResourceModal
                 openFlag={createFlagOpen}
