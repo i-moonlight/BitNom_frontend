@@ -48,12 +48,50 @@ const Faqs = React.lazy(() => import('./pages/welcome/faqs/Faqs'));
 const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 
+const Susp = ({ children }) => {
+    return (
+        <Suspense
+            fallback={() => (
+                <div
+                    id="preloader-body"
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: ' 100%',
+                        height: ' 100%',
+                        backgroundColor: '#000',
+                        zIndex: 2100,
+                    }}
+                >
+                    <div className="preloader-speeding-wheel"></div>
+                    work
+                </div>
+            )}
+        >
+            <>{children}</>
+        </Suspense>
+    );
+};
+
 export default function Routes({ apolloClient }) {
     return (
         <>
             <BrowserRouter>
                 <ApolloProvider client={apolloClient}>
                     <Switch>
+                        <Route
+                            exact
+                            component={() => (
+                                <Susp>
+                                    <Landing />
+                                </Susp>
+                            )}
+                            path="/"
+                        />
                         <Suspense
                             fallback={() => (
                                 <div
@@ -73,82 +111,95 @@ export default function Routes({ apolloClient }) {
                                 ></div>
                             )}
                         >
-                            {/* Landing */}
-                            <Route exact component={Landing} path="/" />
-                            <Route exact component={Faqs} path="/faqs" />
-                            <Route exact component={Terms} path="/terms" />
-                            <Route
-                                exact
-                                component={Privacy}
-                                path="/privacy_policy"
-                            />
-                            <Route
-                                exact
-                                component={Cookie}
-                                path="/cookie_policy"
-                            />
-                            <Route
-                                exact
-                                component={Disclaimer}
-                                path="/disclaimer"
-                            />
-                            <Route
-                                exact
-                                component={FeatureRequest}
-                                path="/feature_request"
-                            />
-                            <Route exact component={RoadMap} path="/roadmap" />
-                            <Route
-                                exact
-                                component={Redirect}
-                                path="/redirect"
-                            />
-                            <Route
-                                exact
-                                component={TestComponent}
-                                path="/test-component"
-                            />
+                            <>
+                                {/* Landing */}
+                                <Route exact component={Faqs} path="/faqs" />
+                                <Route exact component={Terms} path="/terms" />
+                                <Route
+                                    exact
+                                    component={Privacy}
+                                    path="/privacy_policy"
+                                />
+                                <Route
+                                    exact
+                                    component={Cookie}
+                                    path="/cookie_policy"
+                                />
+                                <Route
+                                    exact
+                                    component={Disclaimer}
+                                    path="/disclaimer"
+                                />
+                                <Route
+                                    exact
+                                    component={FeatureRequest}
+                                    path="/feature_request"
+                                />
+                                <Route
+                                    exact
+                                    component={RoadMap}
+                                    path="/roadmap"
+                                />
+                                <Route
+                                    exact
+                                    component={Redirect}
+                                    path="/redirect"
+                                />
+                                <Route
+                                    exact
+                                    component={TestComponent}
+                                    path="/test-component"
+                                />
 
-                            {/* Investor  */}
-                            <Route
-                                exact
-                                component={Investors}
-                                path="/investors"
-                            />
-                            <Route exact component={Support} path="/support" />
+                                {/* Investor  */}
+                                <Route
+                                    exact
+                                    component={Investors}
+                                    path="/investors"
+                                />
+                                <Route
+                                    exact
+                                    component={Support}
+                                    path="/support"
+                                />
 
-                            {/* Auth */}
-                            <Route exact component={Login} path="/auth/login" />
-                            <Route
-                                exact
-                                component={Signup}
-                                path="/auth/signup"
-                            />
-                            <Route
-                                exact
-                                component={UpdateInfo}
-                                path="/auth/update_info_register"
-                            />
-                            <Route
-                                exact
-                                component={RequireVerification}
-                                path="/auth/require_verify"
-                            />
-                            <Route
-                                exact
-                                component={VerifyEmail}
-                                path="/auth/verify_email"
-                            />
-                            <Route
-                                exact
-                                component={ResetPassword}
-                                path="/auth/request_reset_link"
-                            />
-                            <Route
-                                exact
-                                component={CreatePassword}
-                                path="/auth/password_reset/:key"
-                            />
+                                {/* Auth */}
+                                <Route
+                                    exact
+                                    component={Login}
+                                    path="/auth/login"
+                                />
+                                <Route
+                                    exact
+                                    component={Signup}
+                                    path="/auth/signup"
+                                />
+                                <Route
+                                    exact
+                                    component={UpdateInfo}
+                                    path="/auth/update_info_register"
+                                />
+                                <Route
+                                    exact
+                                    component={RequireVerification}
+                                    path="/auth/require_verify"
+                                />
+                                <Route
+                                    exact
+                                    component={VerifyEmail}
+                                    path="/auth/verify_email"
+                                />
+                                <Route
+                                    exact
+                                    component={ResetPassword}
+                                    path="/auth/request_reset_link"
+                                />
+                                <Route
+                                    exact
+                                    component={CreatePassword}
+                                    path="/auth/password_reset/:key"
+                                />
+                            </>
                         </Suspense>
 
                         {/* Dashboard */}
