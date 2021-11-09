@@ -2,9 +2,9 @@ import { Card, Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import Screen from '../../../components/Screen';
-import SideBarHeader from './components/chat_header/side_bar_header';
+import SideBarHeader from './components/chat_header/SideBarHeader';
 import Chats from './sidebar_menu';
-import Messages from './thread_view/messages';
+import Messages from './thread_view/Messages';
 
 const useStyles = makeStyles((theme) => ({
     root: {

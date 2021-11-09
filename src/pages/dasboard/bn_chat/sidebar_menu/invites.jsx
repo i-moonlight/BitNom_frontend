@@ -8,7 +8,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
-import ChatItem from './chat';
+import ChatItem from './Chat';
 
 export default function Invites({ invites, loading }) {
     const dispatch = useDispatch();

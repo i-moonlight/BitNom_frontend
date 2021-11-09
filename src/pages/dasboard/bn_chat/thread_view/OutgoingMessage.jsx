@@ -42,6 +42,13 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
+                    {message?.edited === true ? (
+                        <div className={classes.Edited}>
+                            <strong>(Edited)</strong>
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     {show_reply && (
                         <div className={classes.reply}>
                             <IconButton

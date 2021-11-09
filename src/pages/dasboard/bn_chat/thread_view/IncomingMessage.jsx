@@ -29,9 +29,9 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     style={{ textDecoration: 'none' }}
                 >
                     <Avatar
-                        alt={chat.otherUser.info.displayName}
+                        alt={chat?.otherUser?.info?.displayName}
                         src={
-                            chat?.otherUser.info.profile_pic
+                            chat?.otherUser?.info?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
                                   chat?.otherUser?.info.profile_pic
                                 : ''
@@ -62,6 +62,13 @@ export default function IncomingMessage({ message, chat, onClick }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
+                    {message?.edited === true ? (
+                        <div>
+                            <strong>(Edited)</strong>
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     {show_reply && (
                         <div className={classes.reply}>
                             <IconButton
@@ -134,7 +141,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                         />
                     </Grid>
                 )}
-                {message?.images.length > 0 &&
+                {message?.images?.length > 0 &&
                     message?.images?.map((imageURL) => (
                         <Grid
                             className="mt-3"

@@ -18,16 +18,20 @@ import {
     removeFromInvites,
     setCurrentChat,
     addPinnedChat,
+    addToPinnedChats,
+    addToArchivedChats,
 } from '../../../../store/actions/chatActions';
 import {
     GET_DIALOGUES,
     NEW_CHAT_ADDED,
     CHAT_ACCEPTED,
+    PIN_CHAT_SUB,
+    ARCHIVE_CHAT_SUB,
 } from '../graphql/queries';
-import Archived from './archived';
-import ChatItem from './chat';
-import Invites from './invites';
-import Pinned from './pinned';
+import Archived from './Archived';
+import ChatItem from './Chat';
+import Invites from './Invites';
+import Pinned from './Pinned';
 
 function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
@@ -87,6 +91,17 @@ function Chats({ onSetChatMobile }) {
         },
     });
 
+    const { data: pinnedChatData } = useSubscription(PIN_CHAT_SUB, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    const { data: archivedChatData } = useSubscription(ARCHIVE_CHAT_SUB, {
+        variables: {
+            _id: user._id,
+        },
+    });
     useEffect(() => {
         if (chatAccepted?.chatAccepted) {
             dispatch(clearCurrentChat());
@@ -132,6 +147,17 @@ function Chats({ onSetChatMobile }) {
         }
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
+    useEffect(() => {
+        if (pinnedChatData?.pinChat) {
+            dispatch(addToPinnedChats(pinnedChatData?.pinChat));
+        }
+    }, [dispatch, pinnedChatData?.pinChat]);
+
+    useEffect(() => {
+        if (archivedChatData?.archivedChat) {
+            dispatch(addToArchivedChats(archivedChatData?.archivedChat));
+        }
+    }, [dispatch, archivedChatData?.archivedChat]);
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
@@ -145,7 +171,6 @@ function Chats({ onSetChatMobile }) {
             xsDown && onSetChatMobile();
         }
     };
-
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>
