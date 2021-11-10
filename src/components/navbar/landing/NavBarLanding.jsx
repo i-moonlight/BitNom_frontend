@@ -5,7 +5,6 @@ import {
 } from '@mui/icons-material';
 import {
     AppBar,
-    Avatar,
     Container,
     Divider,
     IconButton,
@@ -15,21 +14,16 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import logo from '../../../assets/logo.svg';
+import logo_full from '../../../assets/logo_full.svg';
+import logo_light from '../../../assets/logo_light.svg';
+import logo_light_full from '../../../assets/logo_light_full.svg';
 import { Button } from '../../Button';
+import LazyImage from '../../LazyImage';
 import { menuEcosystem, menuProduct } from '../../utilities/data.components';
 import StatusBar from '../StatusBar';
 import NavBarMenu from './MenuOptions';
 import MobileMenu from './MobileMenu';
-
-const logo = React.lazy(() => import('../../../assets/logo.svg'));
-
-const logo_full = React.lazy(() => import('../../../assets/logo_full.svg'));
-
-const logo_light = React.lazy(() => import('../../../assets/logo_light.svg'));
-
-const logo_light_full = React.lazy(() =>
-    import('../../../assets/logo_light_full.svg')
-);
 
 export default function NavBarLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -60,30 +54,31 @@ export default function NavBarLanding() {
                     >
                         {!xsDown && (
                             <div>
-                                <img
-                                    style={{
+                                <LazyImage
+                                    style={{ marginRight: 8 }}
+                                    image={{
+                                        src:
+                                            theme.palette.mode == 'light'
+                                                ? logo_full
+                                                : logo_light_full,
+                                        alt: 'BN Logo',
                                         height: 40,
                                     }}
-                                    src={
-                                        theme.palette.mode == 'light'
-                                            ? logo_full
-                                            : logo_light_full
-                                    }
-                                    alt=""
                                 />
                             </div>
                         )}
                         {!smUp && (
-                            <Avatar
-                                className="me-1"
-                                src={
-                                    theme.palette.mode == 'light'
-                                        ? logo
-                                        : logo_light
-                                }
-                            >
-                                B
-                            </Avatar>
+                            <LazyImage
+                                style={{ marginRight: 8 }}
+                                image={{
+                                    src:
+                                        theme.palette.mode == 'light'
+                                            ? logo
+                                            : logo_light,
+                                    alt: 'BN Logo',
+                                    height: 40,
+                                }}
+                            />
                         )}
                     </div>
                     {!smDown && (

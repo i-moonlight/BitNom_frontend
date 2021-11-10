@@ -7,13 +7,9 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import React from 'react';
-
-const token1Img = React.lazy(() =>
-    import('../../../../assets/investor/token1.png')
-);
-const token2Img = React.lazy(() =>
-    import('../../../../assets/investor/token2.png')
-);
+import token1Img from '../../../../assets/investor/token1.png';
+import token2Img from '../../../../assets/investor/token2.png';
+import LazyImage from '../../../../components/LazyImage';
 
 export default function Symbol() {
     const smDown = useMediaQuery('(max-width:959px)');
@@ -34,10 +30,12 @@ export default function Symbol() {
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12} sm={3}>
                                 <div className="w-100 text-center">
-                                    <img
-                                        src={token2Img}
-                                        alt=""
-                                        className="w-75"
+                                    <LazyImage
+                                        style={{ width: '75%' }}
+                                        image={{
+                                            src: token2Img,
+                                            alt: 'Upload Image',
+                                        }}
                                     />
                                 </div>
                             </Grid>
@@ -70,10 +68,12 @@ export default function Symbol() {
                             {!smDown && (
                                 <Grid item xs={12} sm={3}>
                                     <div className="w-100 text-end">
-                                        <img
-                                            src={token1Img}
-                                            alt=""
-                                            className="w-75"
+                                        <LazyImage
+                                            style={{ width: '75%' }}
+                                            image={{
+                                                src: token1Img,
+                                                alt: 'Upload Image',
+                                            }}
                                         />
                                     </div>
                                 </Grid>

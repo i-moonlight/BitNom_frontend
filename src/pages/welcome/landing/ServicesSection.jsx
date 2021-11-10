@@ -1,11 +1,9 @@
 import { Container, Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import servicesImg from '../../../assets/landing/img3.png';
+import LazyImage from '../../../components/LazyImage';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
-
-const servicesImg = React.lazy(() =>
-    import('../../../assets/landing/img3.png')
-);
 
 export default function ServicesSection() {
     const classes = useStyles();
@@ -50,10 +48,12 @@ export default function ServicesSection() {
                         </Typography>
                     </Grid>
                     <Grid item sm={10} md={6}>
-                        <img
+                        <LazyImage
                             style={{ width: '100%' }}
-                            src={servicesImg}
-                            alt=""
+                            image={{
+                                src: servicesImg,
+                                alt: 'Services Image',
+                            }}
                         />
                     </Grid>
                 </Grid>

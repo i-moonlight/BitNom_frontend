@@ -11,10 +11,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
-
-const headerBgImg = React.lazy(() =>
-    import('../../../assets/landing/img12.png')
-);
+import headerBgImg from '../../../assets/landing/img12.png';
 
 export default function HeaderSection() {
     const [videoOpen, setVideoOpen] = useState(false);
@@ -36,6 +33,10 @@ export default function HeaderSection() {
                             backgroundSize: 'cover',
                             borderRadius: 30,
                             padding: '5%',
+                            backgroundColor:
+                                theme.palette.mode == 'light'
+                                    ? '#ddd'
+                                    : '#232323',
                         }}
                         item
                         lg={12}

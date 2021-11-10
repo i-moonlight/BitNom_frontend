@@ -13,12 +13,10 @@ import {
     Typography,
 } from '@mui/material';
 import React from 'react';
+import learnImg from '../../../../assets/investor/learn.svg';
+import logoImg from '../../../../assets/logo_full.svg';
 import { Button } from '../../../../components/Button';
-
-const learnImg = React.lazy(() =>
-    import('../../../../assets/investor/learn.svg')
-);
-const logoImg = React.lazy(() => import('../../../../assets/logo_full.svg'));
+import LazyImage from '../../../../components/LazyImage';
 
 export default function WhitePaper() {
     const theme = useTheme();
@@ -70,10 +68,16 @@ export default function WhitePaper() {
                                                         around the globe
                                                     </Typography>
                                                 </div>
-                                                <img
-                                                    src={logoImg}
-                                                    alt=""
-                                                    className="w-50 align-self-baseline mt-3"
+                                                <LazyImage
+                                                    style={{
+                                                        width: '50%',
+                                                        alignSelf: 'baseline',
+                                                        marginTop: 16,
+                                                    }}
+                                                    image={{
+                                                        src: logoImg,
+                                                        alt: 'Logo Image',
+                                                    }}
                                                 />
                                             </div>
                                         </Grid>
@@ -169,14 +173,14 @@ export default function WhitePaper() {
                                 }}
                             >
                                 <CardContent>
-                                    <img
-                                        style={{
-                                            maxHeight: 200,
+                                    <LazyImage
+                                        style={{ width: '50%', maxHeight: 200 }}
+                                        image={{
+                                            src: learnImg,
+                                            alt: 'Learn Image',
                                         }}
-                                        src={learnImg}
-                                        alt=""
-                                        className="w-50 "
                                     />
+
                                     <br />
                                     <Button
                                         size="large"

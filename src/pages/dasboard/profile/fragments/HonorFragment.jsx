@@ -12,6 +12,7 @@ export default function HonorFragment({
     dateTo,
     photoURL,
     expires,
+    profileView,
 }) {
     const [formOpen, setFormOpen] = useState(false);
     const classes = useStyles();
@@ -46,9 +47,15 @@ export default function HonorFragment({
                                 <Typography variant="body2" className="flex-1">
                                     {name}
                                 </Typography>
-                                <Button textCase variant="text" size="small">
-                                    Edit
-                                </Button>
+                                {!profileView && (
+                                    <Button
+                                        textCase
+                                        variant="text"
+                                        size="small"
+                                    >
+                                        Edit
+                                    </Button>
+                                )}
                             </div>
                             <Typography color="primary" variant="body2">
                                 {organization}

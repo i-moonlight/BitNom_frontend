@@ -54,6 +54,7 @@ export default function HonorCard({ profile, profileView }) {
                                 expires={expires}
                                 url={url}
                                 photoURL="https://picsum.photos/200"
+                                profileView={profileView}
                             />
                         )
                     )}

@@ -22,16 +22,14 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import logo from '../../../assets/logo.svg';
+import logo_full from '../../../assets/logo_full.svg';
+import logo_light from '../../../assets/logo_light.svg';
+import logo_light_full from '../../../assets/logo_light_full.svg';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { Button } from '../../Button';
+import LazyImage from '../../LazyImage';
 import { useStyles } from '../../utilities/styles.components';
-
-const logo = React.lazy(() => import('../../../assets/logo.svg'));
-const logo_full = React.lazy(() => import('../../../assets/logo_full.svg'));
-const logo_light = React.lazy(() => import('../../../assets/logo_light.svg'));
-const logo_light_full = React.lazy(() =>
-    import('../../../assets/logo_light_full.svg')
-);
 
 export default function ProfileBar({
     notifications,
@@ -65,32 +63,33 @@ export default function ProfileBar({
                         {!smDown && (
                             <>
                                 <div>
-                                    <img
-                                        style={{
+                                    <LazyImage
+                                        style={{ marginRight: 16 }}
+                                        image={{
+                                            src:
+                                                theme.palette.mode == 'light'
+                                                    ? logo_full
+                                                    : logo_light_full,
+                                            alt: 'BN Logo',
                                             height: 40,
                                         }}
-                                        src={
-                                            theme.palette.mode == 'light'
-                                                ? logo_full
-                                                : logo_light_full
-                                        }
-                                        alt=""
                                     />
                                 </div>
                             </>
                         )}
 
                         {!mdUp && (
-                            <Avatar
-                                className="me-1"
-                                src={
-                                    theme.palette.mode == 'light'
-                                        ? logo
-                                        : logo_light
-                                }
-                            >
-                                B
-                            </Avatar>
+                            <LazyImage
+                                style={{ marginRight: 8 }}
+                                image={{
+                                    src:
+                                        theme.palette.mode == 'light'
+                                            ? logo
+                                            : logo_light,
+                                    alt: 'BN Logo',
+                                    height: 40,
+                                }}
+                            />
                         )}
 
                         {!smDown && (
@@ -183,7 +182,6 @@ export default function ProfileBar({
                             <Avatar
                                 variant="rounded"
                                 style={{
-                                    backgroundColor: '#fed132',
                                     marginRight: 12,
                                     width: 30,
                                     height: 30,

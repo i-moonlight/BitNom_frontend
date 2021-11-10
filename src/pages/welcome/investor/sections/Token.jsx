@@ -2,11 +2,9 @@ import { useTheme } from '@emotion/react';
 import { ChevronRightRounded } from '@mui/icons-material';
 import { Container, Grid, Typography } from '@mui/material';
 import React from 'react';
+import supplyImg from '../../../../assets/investor/image_5.png';
 import { Button } from '../../../../components/Button';
-
-const supplyImg = React.lazy(() =>
-    import('../../../../assets/investor/image_5.png')
-);
+import LazyImage from '../../../../components/LazyImage';
 
 export default function Token() {
     const theme = useTheme();
@@ -90,10 +88,12 @@ export default function Token() {
                                     </Typography>
                                 </div>
                                 <div className="w-100 br-2 bg-white py-1 text-center">
-                                    <img
-                                        className="w-75"
-                                        src={supplyImg}
-                                        alt=""
+                                    <LazyImage
+                                        style={{ width: '75%' }}
+                                        image={{
+                                            src: supplyImg,
+                                            alt: 'Token Image',
+                                        }}
                                     />
                                 </div>
                             </div>
