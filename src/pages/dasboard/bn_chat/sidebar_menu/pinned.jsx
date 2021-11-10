@@ -10,7 +10,7 @@ import { PushPin } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
-import Chat from './Chat';
+import Chat from './chat';
 
 export default function Pinned({ pinned, loading }) {
     const dispatch = useDispatch();

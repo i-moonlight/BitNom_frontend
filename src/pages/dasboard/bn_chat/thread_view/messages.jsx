@@ -15,7 +15,7 @@ import {
     setDialogueMessages,
     updateMessage,
 } from '../../../../store/actions/chatActions';
-import ChatHeader from '../components/chat_header/ChatHeader';
+import ChatHeader from '../components/chat_header/chat_header';
 import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
@@ -24,11 +24,11 @@ import {
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
 import InviteView from './InviteView';
-import Message from './Message';
+import Message from './message';
 import NoChatSelected from './NoChatSelected';
 import EmptyMessages from './NoMessages';
 import SendMessage from './SendMessage';
-import Blocked from './Blocked';
+import Blocked from './blocked';
 import PinnedMessages from './PinnedMessages';
 
 export default function Messages({ onExitChatMobile }) {

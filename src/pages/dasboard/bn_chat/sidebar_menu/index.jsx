@@ -28,10 +28,10 @@ import {
     PIN_CHAT_SUB,
     ARCHIVE_CHAT_SUB,
 } from '../graphql/queries';
-import Archived from './Archived';
-import ChatItem from './Chat';
-import Invites from './Invites';
-import Pinned from './Pinned';
+import Archived from './archived';
+import ChatItem from './chat';
+import Invites from './invites';
+import Pinned from './pinned';
 
 function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
