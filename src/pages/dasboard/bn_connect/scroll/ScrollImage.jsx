@@ -28,8 +28,6 @@ import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-//import ImagePreview from '../../../components/ImagePreview';
-//import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
@@ -196,14 +194,6 @@ export default function ScrollImage({
             image: comment_image,
         });
     };
-
-    /*  const handleScrollOptionOpen = (event) => {
-        setScrollOptionAnchorEl(event.currentTarget);
-    }; */
-
-    /* const handleScrollOptionClose = () => {
-        setScrollOptionAnchorEl(null);
-    }; */
 
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);

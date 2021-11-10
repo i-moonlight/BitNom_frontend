@@ -92,6 +92,7 @@ export default function ScrollPreview({ scroll }) {
                                         poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
                                         src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                         controls
+                                        preload="metadata"
                                     />
                                 </Grid>
                             )}

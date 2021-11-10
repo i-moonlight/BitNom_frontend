@@ -414,6 +414,7 @@ export default function Scroll({
                                         poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
                                         src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                         controls
+                                        preload="metadata"
                                     />
                                 </Grid>
                             )}
@@ -427,11 +428,6 @@ export default function Scroll({
                                         xs={scroll?.images.length > 1 ? 6 : 12}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            /* setImagePreviewURL(
-                                            process.env.REACT_APP_BACKEND_URL +
-                                                imageURL
-                                        );
-                                        setImagePreviewOpen(true); */
                                             setPostToPreview(scroll);
                                             setImageIndex(index);
                                             setImageModalOpen(true);

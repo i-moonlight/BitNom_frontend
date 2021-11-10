@@ -561,6 +561,7 @@ function PostView({ match }) {
                                                         poster={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.thumbnail}`}
                                                         src={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.path}`}
                                                         controls
+                                                        preload="auto"
                                                     />
                                                 </Grid>
                                             )}

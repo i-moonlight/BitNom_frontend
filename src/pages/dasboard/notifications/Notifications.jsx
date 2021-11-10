@@ -55,6 +55,7 @@ export default function Notifications() {
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <NotificationsListCard
                                 selectedIndex={selectedIndex}
+                                setSelectedIndex={setSelectedIndex}
                                 notifications={data?.Notification?.get}
                                 loading={loading}
                             />
