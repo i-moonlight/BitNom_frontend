@@ -8,7 +8,6 @@ import {
     PeopleRounded,
     ForumRounded,
     Notifications,
-    Badge,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -19,6 +18,7 @@ import {
     Typography,
     useMediaQuery,
     useTheme,
+    Badge,
 } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
