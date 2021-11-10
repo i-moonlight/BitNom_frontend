@@ -25,6 +25,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -44,6 +45,7 @@ import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
+    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -162,6 +164,9 @@ export default function Scroll({
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
                 },
                 {
                     query: QUERY_GET_COMMENTS,
@@ -222,7 +227,14 @@ export default function Scroll({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+            ],
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -236,7 +248,14 @@ export default function Scroll({
                     type: 'post',
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+            ],
         });
         setIcon();
         setUserReaction();
@@ -302,7 +321,7 @@ export default function Scroll({
     return (
         <>
             <Card style={{ ...style, marginBottom: 16 }}>
-                <CardContent
+                <div
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
@@ -359,126 +378,131 @@ export default function Scroll({
                                 </Typography>
                             </div>
                         }
-                        subheader={moment(scroll?.createdAt).fromNow()}
+                        subheader={
+                            <Typography variant="body2">
+                                {moment(scroll?.createdAt).fromNow()}
+                            </Typography>
+                        }
                     />
-
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                    >
+                    <CardContent>
                         <Typography
-                            onClick={(e) => contentClickHandler(e)}
-                            dangerouslySetInnerHTML={{
-                                __html: contentBodyFactory(scroll),
-                            }}
-                            style={{ zIndex: 2 }}
-                        ></Typography>
-                    </Typography>
-                    <Grid container spacing={2} className="mb-2">
-                        {scroll?.video?.path && (
-                            <Grid
-                                item
-                                xs={12}
-                                onClick={(e) => {
-                                    e.stopPropagation();
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                        >
+                            <Typography
+                                onClick={(e) => contentClickHandler(e)}
+                                dangerouslySetInnerHTML={{
+                                    __html: contentBodyFactory(scroll),
                                 }}
                                 style={{ zIndex: 2 }}
-                            >
-                                <CardMedia
-                                    className="br-2"
-                                    component="video"
-                                    poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
-                                    src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
-                                    controls
-                                />
-                            </Grid>
-                        )}
-                        {scroll?.images.length > 0 &&
-                            scroll?.images?.map((imageURL, index) => (
+                            ></Typography>
+                        </Typography>
+                        <Grid container spacing={2} className="mb-2">
+                            {scroll?.video?.path && (
                                 <Grid
-                                    className="mt-3"
-                                    key={imageURL}
                                     item
-                                    style={{ zIndex: 2 }}
-                                    xs={scroll?.images.length > 1 ? 6 : 12}
+                                    xs={12}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        /* setImagePreviewURL(
-                                            process.env.REACT_APP_BACKEND_URL +
-                                                imageURL
-                                        );
-                                        setImagePreviewOpen(true); */
-                                        setPostToPreview(scroll);
-                                        setImageIndex(index);
-                                        setImageModalOpen(true);
                                     }}
+                                    style={{ zIndex: 2 }}
                                 >
-                                    <div
-                                        style={{
-                                            height: 200,
-                                            borderRadius: 8,
-                                            width: '100%',
-                                            backgroundImage:
-                                                'url(' +
-                                                process.env
-                                                    .REACT_APP_BACKEND_URL +
-                                                imageURL +
-                                                ')',
-                                            backgroundSize: 'cover',
-                                            backgroundColor: 'rgba(0,0,0,0.2)',
-                                            backgroundBlendMode: 'soft-light',
-                                            cursor: 'pointer',
-                                        }}
+                                    <CardMedia
+                                        className="br-2"
+                                        component="video"
+                                        poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
+                                        controls
+                                        preload="metadata"
                                     />
                                 </Grid>
-                            ))}
-                    </Grid>
-                    {scroll?.shared_resource?._id &&
-                        scroll?.shared_resource?.type === 'post' && (
-                            <ScrollPreview
-                                scroll={scroll?.shared_resource?._id}
-                            />
-                        )}
-                    {scroll?.shared_resource?._id &&
-                        scroll?.shared_resource?.type === 'event' && (
-                            <EventPreview
-                                event={scroll?.shared_resource?._id}
-                            />
-                        )}
-                    <br />
+                            )}
+                            {scroll?.images.length > 0 &&
+                                scroll?.images?.map((imageURL, index) => (
+                                    <Grid
+                                        className="mt-3"
+                                        key={imageURL}
+                                        item
+                                        style={{ zIndex: 2 }}
+                                        xs={scroll?.images.length > 1 ? 6 : 12}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPostToPreview(scroll);
+                                            setImageIndex(index);
+                                            setImageModalOpen(true);
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                height: 200,
+                                                borderRadius: 8,
+                                                width: '100%',
+                                                backgroundImage:
+                                                    'url(' +
+                                                    process.env
+                                                        .REACT_APP_BACKEND_URL +
+                                                    imageURL +
+                                                    ')',
+                                                backgroundSize: 'cover',
+                                                backgroundColor:
+                                                    'rgba(0,0,0,0.2)',
+                                                backgroundBlendMode:
+                                                    'soft-light',
+                                                cursor: 'pointer',
+                                            }}
+                                        />
+                                    </Grid>
+                                ))}
+                        </Grid>
+                        {scroll?.shared_resource?._id &&
+                            scroll?.shared_resource?.type === 'post' && (
+                                <ScrollPreview
+                                    scroll={scroll?.shared_resource?._id}
+                                />
+                            )}
+                        {scroll?.shared_resource?._id &&
+                            scroll?.shared_resource?.type === 'event' && (
+                                <EventPreview
+                                    event={scroll?.shared_resource?._id}
+                                />
+                            )}
+                        <br />
 
-                    <Typography display="inline" style={{ zIndex: 2 }}>
-                        <Typography
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setOpenReactions(true);
-                                setResourceReactions(scroll);
-                            }}
-                            display="inline"
-                            className={classes.clickableTypography}
-                        >
-                            {`${getReactionsSum(scroll)} ${
-                                getReactionsSum(scroll) === 1
-                                    ? 'Reaction'
-                                    : 'Reactions'
-                            }`}
+                        <Typography display="inline" style={{ zIndex: 2 }}>
+                            <Typography
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenReactions(true);
+                                    setResourceReactions(scroll);
+                                }}
+                                display="inline"
+                                className={classes.clickableTypography}
+                            >
+                                {`${getReactionsSum(scroll)} ${
+                                    getReactionsSum(scroll) === 1
+                                        ? 'Reaction'
+                                        : 'Reactions'
+                                }`}
+                            </Typography>
+                            {' . '}
+                            <Typography
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenComments(true);
+                                }}
+                                className={classes.replies}
+                                display="inline"
+                            >
+                                {`${scroll?.comments} ${
+                                    scroll?.comments === 1
+                                        ? 'Comment'
+                                        : 'Comments'
+                                }`}
+                            </Typography>
                         </Typography>
-                        {' . '}
-                        <Typography
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setOpenComments(true);
-                            }}
-                            className={classes.replies}
-                            display="inline"
-                        >
-                            {`${scroll?.comments} ${
-                                scroll?.comments === 1 ? 'Comment' : 'Comments'
-                            }`}
-                        </Typography>
-                    </Typography>
-                </CardContent>
+                    </CardContent>
+                </div>
                 <Divider />
                 <Card
                     style={{
@@ -595,20 +619,25 @@ export default function Scroll({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <CardContent>
+                    <div style={{ padding: '5px' }}>
                         <div className="d-flex align-items-center">
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
-                                }
-                                className="mx-2"
-                            >
-                                {currentUserInitials}
-                            </Avatar>
+                            <Hidden smDown>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#fed132',
+                                        marginRight: '3px',
+                                    }}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
+                                    sx={{ width: '30px', height: '30px' }}
+                                >
+                                    <Typography variant="body2">
+                                        {currentUserInitials}
+                                    </Typography>
+                                </Avatar>
+                            </Hidden>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -818,7 +847,7 @@ export default function Scroll({
                                         comment_image={comment_image}
                                     />
                                 ))}
-                    </CardContent>
+                    </div>
                 )}
             </Card>
             <ScrollOptionsPopover

@@ -54,6 +54,7 @@ import {
     getReactionsSum,
     getTopComments,
     mentionsFinder,
+    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -167,10 +168,12 @@ function PostView({ match }) {
     const history = useHistory();
     const user = state.auth.user;
 
+    const postId = match?.params?.id;
+
     const { loading: postLoading, data: postData } = useQuery(
         QUERY_POST_BY_ID,
         {
-            variables: { _id: match?.params?.id },
+            variables: { _id: postId },
         }
     );
     const {
@@ -193,7 +196,7 @@ function PostView({ match }) {
         // loading: commentsLoading,
         // error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postData?.Posts?.getById?._id } },
+        variables: { data: { scroll_id: postId } },
     });
 
     const onCreateComment = (ICreateComment) => {
@@ -203,17 +206,25 @@ function PostView({ match }) {
             },
             refetchQueries: [
                 {
-                    query: QUERY_LOAD_SCROLLS,
-                },
-                {
                     query: QUERY_GET_COMMENTS,
                     variables: {
-                        data: { scroll_id: postData?.Posts?.getById?._id },
+                        data: { scroll_id: postId },
                     },
+                },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
                 },
             ],
         });
         if (!createCommentData) console.log(createCommentData);
+        setCommentFilter(1);
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
@@ -237,7 +248,7 @@ function PostView({ match }) {
         onCreateComment({
             content: mentionsData.content,
             content_entities: mentionsData.contentEntities,
-            scroll: postData?.Posts?.getById?._id,
+            scroll: postId,
             image: comment_image,
         });
     };
@@ -267,7 +278,12 @@ function PostView({ match }) {
                     reaction: reaction,
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
+                },
+            ],
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -281,7 +297,12 @@ function PostView({ match }) {
                     type: 'post',
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
+                },
+            ],
         });
         setIcon();
         setUserReaction();
@@ -340,13 +361,6 @@ function PostView({ match }) {
     );
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    useEffect(() => {
-        const reaction = getUserReaction(postData?.Posts?.getById);
-        setUserReaction(reaction);
-        setIcon(reaction);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const latestComments = commentsData?.Comments?.get.filter(
         (comment) => !comment.response_to
     );
@@ -355,6 +369,11 @@ function PostView({ match }) {
         .filter((comment) => !comment.response_to)
         .sort((a, b) => getTopComments(b) - getTopComments(a));
 
+    useEffect(() => {
+        const reaction = getUserReaction(postData?.Posts?.getById);
+        setUserReaction(reaction);
+        setIcon(reaction);
+    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
     return (
         <Screen>
             <SEO
@@ -383,7 +402,7 @@ function PostView({ match }) {
                 draggable
                 pauseOnHover
             />
-            <div>
+            <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         <Hidden mdDown>
@@ -406,23 +425,24 @@ function PostView({ match }) {
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card style={{ marginBottom: 12 }}>
+                            <Card
+                                variant="outlined"
+                                style={{ marginBottom: 12 }}
+                            >
                                 <CardHeader
                                     avatar={
                                         <IconButton
                                             size="small"
-                                            className="m-1 p-1"
                                             aria-label="back"
                                             color="inherit"
-                                            onClick={() =>
-                                                history.push(`/connect`)
-                                            }
+                                            onClick={() => history.goBack()}
                                         >
                                             <ArrowBack />
                                         </IconButton>
                                     }
                                 />
                             </Card>
+
                             <Grid item align="center">
                                 {postLoading && (
                                     <CircularProgress
@@ -435,11 +455,11 @@ function PostView({ match }) {
                             {postData?.Posts?.getById && (
                                 <Card
                                     style={{ marginBottom: 16, zIndex: 1 }}
-                                    onClick={() =>
+                                    /* onClick={() =>
                                         history.push(
                                             `/posts/${postData?.Posts?.getById?._id}`
                                         )
-                                    }
+                                    } */
                                 >
                                     <CardHeader
                                         avatar={
@@ -460,7 +480,7 @@ function PostView({ match }) {
                                         action={
                                             <IconButton
                                                 size="small"
-                                                className="m-1 p-1"
+                                                //className="m-1 p-1"
                                                 aria-label="show more"
                                                 aria-controls={scrollOptionId}
                                                 aria-haspopup="true"
@@ -474,6 +494,7 @@ function PostView({ match }) {
                                             <div className=" d-flex align-items-center">
                                                 <Typography
                                                     component="a"
+                                                    variant="body2"
                                                     style={{
                                                         marginRight: 8,
                                                         zIndex: 2,
@@ -499,9 +520,14 @@ function PostView({ match }) {
                                                 </Typography>
                                             </div>
                                         }
-                                        subheader={moment(
-                                            postData?.Posts?.getById?.createdAt
-                                        ).fromNow()}
+                                        subheader={
+                                            <Typography variant="body2">
+                                                {moment(
+                                                    postData?.Posts?.getById
+                                                        ?.createdAt
+                                                ).fromNow()}
+                                            </Typography>
+                                        }
                                     />
                                     <CardContent>
                                         <Typography
@@ -535,6 +561,7 @@ function PostView({ match }) {
                                                         poster={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.thumbnail}`}
                                                         src={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.path}`}
                                                         controls
+                                                        preload="auto"
                                                     />
                                                 </Grid>
                                             )}
@@ -817,22 +844,32 @@ function PostView({ match }) {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <CardContent>
+                                        <div style={{ padding: '5px' }}>
                                             <div className="d-flex align-items-center">
-                                                <Avatar
-                                                    style={{
-                                                        backgroundColor:
-                                                            '#fed132',
-                                                    }}
-                                                    src={
-                                                        process.env
-                                                            .REACT_APP_BACKEND_URL +
-                                                        user?.profile_pic
-                                                    }
-                                                    className="mx-2"
-                                                >
-                                                    {currentUserInitials}
-                                                </Avatar>
+                                                <Hidden smDown>
+                                                    <Avatar
+                                                        style={{
+                                                            backgroundColor:
+                                                                '#fed132',
+                                                            marginRight: '3px',
+                                                        }}
+                                                        src={
+                                                            process.env
+                                                                .REACT_APP_BACKEND_URL +
+                                                            user?.profile_pic
+                                                        }
+                                                        sx={{
+                                                            width: '30px',
+                                                            height: '30px',
+                                                        }}
+                                                    >
+                                                        <Typography variant="body2">
+                                                            {
+                                                                currentUserInitials
+                                                            }
+                                                        </Typography>
+                                                    </Avatar>
+                                                </Hidden>
                                                 <div className="w-100">
                                                     <MentionsInput
                                                         spellcheck="false"
@@ -1087,6 +1124,9 @@ function PostView({ match }) {
                                                         setCommentFilter={
                                                             setCommentFilter
                                                         }
+                                                        commentFilter={
+                                                            commentFilter
+                                                        }
                                                     />
                                                 </Typography>
                                             )}
@@ -1187,7 +1227,7 @@ function PostView({ match }) {
                                                         />
                                                     )
                                                 )}
-                                        </CardContent>
+                                        </div>
                                     )}
                                 </Card>
                             )}

@@ -5,7 +5,6 @@ import {
     FavoriteRounded,
     ImageRounded,
     InsertEmoticon,
-    Close,
     PanToolRounded,
     Send,
     ShareRounded,
@@ -23,13 +22,12 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-//import ImagePreview from '../../../components/ImagePreview';
-//import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
@@ -197,14 +195,6 @@ export default function ScrollImage({
         });
     };
 
-    /*  const handleScrollOptionOpen = (event) => {
-        setScrollOptionAnchorEl(event.currentTarget);
-    }; */
-
-    /* const handleScrollOptionClose = () => {
-        setScrollOptionAnchorEl(null);
-    }; */
-
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);
     };
@@ -327,29 +317,37 @@ export default function ScrollImage({
 
     return (
         <>
-            <Card elevation={0} style={{ overflowY: 'auto', width: '100%' }}>
+            <Card
+                variant="outlined"
+                elevation={0}
+                style={{ overflowY: 'auto', width: '100%' }}
+            >
                 <div
                     style={{ zIndex: 1 }}
-                    onClick={() => history.push(`/posts/${scroll?._id}`)}
+                    //onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
                     <CardHeader
                         avatar={
                             <Avatar
                                 style={{
                                     backgroundColor: '#fed132',
+                                    marginRight: '3px',
                                 }}
                                 src={
                                     process.env.REACT_APP_BACKEND_URL +
                                     scroll?.author?.profile_pic
                                 }
+                                sx={{ width: '30px', height: '30px' }}
                             >
-                                {authorInitials}
+                                <Typography variant="body2">
+                                    {authorInitials}
+                                </Typography>
                             </Avatar>
                         }
-                        action={
+                        /* action={
                             <IconButton
                                 size="small"
-                                className="m-1 p-1"
+                                //className="m-1 p-1"
                                 aria-label="close modal"
                                 style={{ zIndex: 2 }}
                                 aria-haspopup="true"
@@ -361,12 +359,12 @@ export default function ScrollImage({
                             >
                                 <Close />
                             </IconButton>
-                        }
+                        } */
                         title={
                             <div className=" d-flex align-items-center">
                                 <Typography
+                                    variant="body2"
                                     component="a"
-                                    style={{ marginRight: 8, zIndex: 2 }}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         history.push(
@@ -384,7 +382,11 @@ export default function ScrollImage({
                                 </Typography>
                             </div>
                         }
-                        subheader={moment(scroll?.createdAt).fromNow()}
+                        subheader={
+                            <Typography variant="body2">
+                                {moment(scroll?.createdAt).fromNow()}
+                            </Typography>
+                        }
                     />
                     <CardContent>
                         <Typography
@@ -405,13 +407,13 @@ export default function ScrollImage({
 
                         <Typography display="inline" style={{ zIndex: 2 }}>
                             <Typography
-                                /*  onClick={(e) => {
-                                e.stopPropagation();
-                                setOpenReactions(true);
-                                setResourceReactions(scroll);
-                            }} */
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenReactions(true);
+                                    setResourceReactions(scroll);
+                                }}
                                 display="inline"
-                                //className={classes.clickableTypography}
+                                className={classes.clickableTypography}
                             >
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
@@ -554,20 +556,25 @@ export default function ScrollImage({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <CardContent>
+                    <div style={{ padding: '5px' }}>
                         <div className="d-flex align-items-center">
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
-                                }
-                                className="mx-2"
-                            >
-                                {currentUserInitials}
-                            </Avatar>
+                            <Hidden smDown>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#fed132',
+                                        marginRight: '3px',
+                                    }}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
+                                    sx={{ width: '30px', height: '30px' }}
+                                >
+                                    <Typography variant="body2">
+                                        {currentUserInitials}
+                                    </Typography>
+                                </Avatar>
+                            </Hidden>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -777,7 +784,7 @@ export default function ScrollImage({
                                         comment_image={comment_image}
                                     />
                                 ))}
-                    </CardContent>
+                    </div>
                 )}
             </Card>
             <EmojiPickerPopover

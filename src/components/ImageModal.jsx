@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     Container: {
         height: '600px',
         overflowX: 'hidden',
+        [theme.breakpoints.down('sm')]: {
+            height: 'fit-content',
+        },
     },
     Carousel: {
         display: 'flex',
@@ -49,7 +52,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '10px 50px',
         margin: 0,
         [theme.breakpoints.down('sm')]: {
-            padding: '5px',
+            height: '300px',
+            padding: '3px',
+            marginBottom: '3px',
         },
     },
     Content: {
@@ -57,7 +62,8 @@ const useStyles = makeStyles((theme) => ({
         height: '550px',
         padding: '10px',
         [theme.breakpoints.down('sm')]: {
-            padding: '5px',
+            height: 'fit-content',
+            padding: '3px',
             alignItems: 'center',
         },
     },
@@ -136,7 +142,7 @@ export default function ImageModal({
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
             <Grid container className={classes.Container}>
-                <Grid xs={12} md={6} lg={7}>
+                <Grid xs={12} md={6} lg={6}>
                     <div className={classes.Carousel}>
                         <div style={{ visibility: numSlides < 2 && 'hidden' }}>
                             <Arrow
@@ -161,7 +167,7 @@ export default function ImageModal({
                         </div>
                     </div>
                 </Grid>
-                <Grid xs={12} md={6} lg={5}>
+                <Grid xs={12} md={6} lg={6}>
                     <div className={classes.Content}>
                         <ScrollImage
                             scroll={postData?.Posts?.getById}

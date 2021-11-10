@@ -131,8 +131,40 @@ export default function ProfileCard({ profile, profileView }) {
                         }}
                         onChange={(files) => {
                             if (files.length < 1) return;
-                            setCoverPreviewURL(URL.createObjectURL(files[0]));
-                            handleUpdateCoverPic(files[0]);
+                            let counter = 0;
+                            files.map((file) => {
+                                const image = new Image();
+                                image.addEventListener('load', () => {
+                                    // only select images within width/height/size limits
+
+                                    if (
+                                        (image.width < 1200) &
+                                        (image.height < 1350) &
+                                        (file.size < 2500000)
+                                    ) {
+                                        counter += 1;
+                                    } else {
+                                        toast.error(
+                                            'Image should be less than 1200px by 1350px & below 2mb.',
+                                            {
+                                                position: 'bottom-left',
+                                                autoClose: 3000,
+                                                hideProgressBar: true,
+                                                closeOnClick: true,
+                                                pauseOnHover: true,
+                                                draggable: true,
+                                            }
+                                        );
+                                    }
+                                    if (counter === 1) {
+                                        setCoverPreviewURL(
+                                            URL.createObjectURL(file)
+                                        );
+                                        handleUpdateCoverPic(file);
+                                    }
+                                });
+                                image.src = URL.createObjectURL(file);
+                            });
                         }}
                     />
                 </div>
@@ -164,25 +196,11 @@ export default function ProfileCard({ profile, profileView }) {
                                 <DropzoneArea
                                     dropzoneClass="profile-upload-dropzone"
                                     clearOnUnmount
-                                    /* onChange={(files) => {
-                                        if (files.length < 1) return;
-                                        setProfilePreviewURL(
-                                            URL.createObjectURL(files[0])
-                                        );
-                                        handleUpdateProfilePic(files[0]);
-                                    }} */
                                     onChange={(files) => {
                                         if (files.length < 1) return;
-                                        const errors = [];
                                         let counter = 0;
                                         files.map((file) => {
                                             const image = new Image();
-                                            console.log(
-                                                image.width,
-                                                image.height,
-                                                file.size,
-                                                'image.width'
-                                            );
                                             image.addEventListener(
                                                 'load',
                                                 () => {
@@ -190,18 +208,13 @@ export default function ProfileCard({ profile, profileView }) {
 
                                                     if (
                                                         (image.width < 1200) &
-                                                        (image.height < 1200) &
+                                                        (image.height < 1350) &
                                                         (file.size < 2500000)
                                                     ) {
                                                         counter += 1;
-                                                        //setUploadErrors([]);
                                                     } else {
-                                                        errors.push(
-                                                            'Image is too large. Trim to 1200px by 1200px or less.'
-                                                        );
-                                                        //setUploadErrors(errors);
                                                         toast.error(
-                                                            'Image is too large. Trim to 1200px by 1200px or less',
+                                                            'Image should be less than 1200px by 1350px & below 2mb.',
                                                             {
                                                                 position:
                                                                     'bottom-left',

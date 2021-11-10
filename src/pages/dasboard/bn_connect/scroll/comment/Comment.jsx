@@ -19,6 +19,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -202,7 +203,7 @@ export default function Comment({
         onCreateComment({
             content: mentionsData.content,
             content_entities: mentionsData.contentEntities,
-            scroll: scroll._id,
+            scroll: scroll?._id,
             image: comment_image,
             response_to: responseTo,
         });
@@ -243,6 +244,24 @@ export default function Comment({
 
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
+    //moment js single letter formatting for comments
+    moment.locale('en', {
+        relativeTime: {
+            future: 'in %s',
+            past: '%s',
+            s: 'now',
+            m: '1 min',
+            mm: '%d min',
+            h: '1 h',
+            hh: '%d h',
+            d: '1 d',
+            dd: '%d d',
+            M: '1 mth',
+            MM: '%d mth',
+            y: '1 y',
+            yy: '%d y',
+        },
+    });
 
     return (
         <>
@@ -251,14 +270,17 @@ export default function Comment({
                     style={{
                         backgroundColor: '#fed132',
                         zIndex: 0,
+                        marginRight: '3px',
                     }}
                     src={
                         process.env.REACT_APP_BACKEND_URL +
                         comment?.author?.profile_pic
                     }
-                    className="mx-2"
+                    sx={{ width: '30px', height: '30px' }}
                 >
-                    {commentUserInitials}
+                    <Typography variant="body2">
+                        {commentUserInitials}
+                    </Typography>
                 </Avatar>
                 <div className="mb-3 flex-1 w-100">
                     <Card
@@ -269,8 +291,19 @@ export default function Comment({
                     >
                         <CardContent>
                             <div className="center-horizontal space-between w-100">
-                                <Typography display="inline">
-                                    {comment?.author?.displayName}{' '}
+                                <Typography variant="body2" display="inline">
+                                    <Typography
+                                        variant="body2"
+                                        component="a"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            history.push(
+                                                `/users/${comment?.author?._id}`
+                                            );
+                                        }}
+                                    >
+                                        {comment?.author?.displayName}
+                                    </Typography>
                                     <Typography
                                         display="inline"
                                         variant="body2"
@@ -289,7 +322,7 @@ export default function Comment({
                                 </Typography>
                                 <IconButton
                                     size="small"
-                                    className="m-1 p-1"
+                                    //className="m-1 p-1"
                                     aria-label="show more"
                                     aria-controls={commentOptionId}
                                     aria-haspopup="true"
@@ -304,6 +337,7 @@ export default function Comment({
                                 component="p"
                             >
                                 <Typography
+                                    variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(comment),
@@ -457,6 +491,7 @@ export default function Comment({
                                 textCase
                                 variantAlt="text"
                                 className="p-0 my-1"
+                                variant="body2"
                             >
                                 Reply
                             </Typography>
@@ -464,7 +499,7 @@ export default function Comment({
                         {!comment?.response_to && (
                             <>
                                 <Typography
-                                    className="mx-2 my-2"
+                                    style={{ margin: '3px' }}
                                     variant="body2"
                                     color="textSecondary"
                                 >
@@ -487,18 +522,23 @@ export default function Comment({
                     {openReplies && (
                         <>
                             <div className="center-horizontal">
-                                <Avatar
-                                    style={{
-                                        backgroundColor: '#fed132',
-                                    }}
-                                    src={
-                                        process.env.REACT_APP_BACKEND_URL +
-                                        user?.profile_pic
-                                    }
-                                    className="mx-2"
-                                >
-                                    {currentUserInitials}
-                                </Avatar>
+                                <Hidden smDown>
+                                    <Avatar
+                                        style={{
+                                            backgroundColor: '#fed132',
+                                            marginRight: '3px',
+                                        }}
+                                        src={
+                                            process.env.REACT_APP_BACKEND_URL +
+                                            user?.profile_pic
+                                        }
+                                        sx={{ width: '30px', height: '30px' }}
+                                    >
+                                        <Typography variant="body2">
+                                            {currentUserInitials}
+                                        </Typography>
+                                    </Avatar>
+                                </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
                                         spellcheck="false"
@@ -616,7 +656,7 @@ export default function Comment({
                                                                     (image.height <
                                                                         1350) &
                                                                     (file.size <
-                                                                        5000000)
+                                                                        2500000)
                                                                 ) {
                                                                     counter += 1;
                                                                     setFileErrors(
@@ -655,7 +695,7 @@ export default function Comment({
                                                     'image/jpeg',
                                                     '.png',
                                                 ]}
-                                                maxFileSize={5000000}
+                                                maxFileSize={2500000}
                                                 filesLimit={1}
                                                 showPreviewsInDropzone
                                                 showPreviews={false}

@@ -54,7 +54,7 @@ export default function SavedPost({
                 style={{ marginBottom: 16, zIndex: 1 }}
                 onClick={() => history.push(`/posts/${scroll?._id}`)}
             >
-                <CardActionArea disableRipple>
+                <CardActionArea style={{ margin: 0, padding: 0 }} disableRipple>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -130,6 +130,7 @@ export default function SavedPost({
                                         poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
                                         src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                         controls
+                                        preload="metadata"
                                     />
                                 </Grid>
                             )}
