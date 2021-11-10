@@ -31,6 +31,7 @@ import { Button } from '../../../../components/Button';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { loadScrolls } from '../../../../store/actions/postActions';
+import { toast } from 'react-toastify';
 import EventPreview from '../../events/EventPreview';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { getFeed, mentionsFinder } from '../../utilities/functions';
@@ -414,7 +415,7 @@ export default function CreatePost({
                                     }
                                     maxFileSize={openImage ? 2500000 : 4500000}
                                     filesLimit={openImage ? 4 : 1}
-                                    showAlerts={['error']}
+                                    showAlerts={false}
                                     showPreviews={false}
                                     showPreviewsInDropzone
                                     previewGridProps={{
@@ -422,6 +423,18 @@ export default function CreatePost({
                                             spacing: 1,
                                             direction: 'row',
                                         },
+                                    }}
+                                    onAlert={(message, variant) => {
+                                        if (variant == 'error') {
+                                            toast.error(message, {
+                                                position: 'bottom-left',
+                                                autoClose: 5000,
+                                                hideProgressBar: true,
+                                                closeOnClick: true,
+                                                pauseOnHover: true,
+                                                draggable: true,
+                                            });
+                                        }
                                     }}
                                 />
                             </Card>

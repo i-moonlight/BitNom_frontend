@@ -145,7 +145,7 @@ export default function ImageModal({
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
             <Grid container className={classes.Container}>
-                <Grid xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={6} lg={6}>
                     <div className={classes.Carousel}>
                         <div style={{ visibility: numSlides < 2 && 'hidden' }}>
                             <Arrow
@@ -170,7 +170,7 @@ export default function ImageModal({
                         </div>
                     </div>
                 </Grid>
-                <Grid xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={6} lg={6}>
                     <div className={classes.Content}>
                         <ScrollImage
                             scroll={postData?.Posts?.getById}
