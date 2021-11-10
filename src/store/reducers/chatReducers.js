@@ -45,6 +45,13 @@ export default function chatReducer(state = initialState, action) {
                     ...state.dialogue_messages.slice(action.data),
                 ],
             };
+        case 'UPDATE_MESSAGE':
+            return {
+                ...state,
+                dialogue_messages: state.dialogue_messages.map((message) =>
+                    message._id === action.data._id ? action.data : message
+                ),
+            };
         case 'ADD_CHAT_TO_INVITES':
             return {
                 ...state,
@@ -120,6 +127,15 @@ export default function chatReducer(state = initialState, action) {
             return {
                 ...state,
                 pinnedChats: [...action.data],
+            };
+        case 'ADD_TO_PINNED_CHATS':
+            return {
+                ...state,
+                pinnedChats: [
+                    ...state.pinnedChats.slice(0, action.data),
+                    action.data,
+                    ...state.pinnedChats.slice(0, action.data),
+                ],
             };
         default:
             return { ...state };

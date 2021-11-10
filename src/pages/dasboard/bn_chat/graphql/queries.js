@@ -470,6 +470,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 documents
                 gif
                 pinned
+                edited
                 responseTo {
                     _id
                     text
@@ -497,6 +498,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 images
                 documents
                 gif
+                edited
                 responseTo {
                     _id
                     text
@@ -956,6 +958,7 @@ export const REPORT_USER = gql`
                 chat
                 author
                 text
+                edited
                 responseTo {
                     _id
                     text
@@ -979,6 +982,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             video
             documents
             gif
+            edited
             responseTo {
                 _id
                 text
@@ -1254,10 +1258,20 @@ export const UNPIN_MESSAGE = gql`
     }
 `;
 export const UPDATE_MESSAGE = gql`
-    mutation updateMessage($_id: ID!) {
+    mutation updateMessage($data: IUpdateMessage!) {
         Dialogue {
-            updateMessage(_id: $_id) {
+            updateMessage(data: $data) {
                 _id
+                text
+                chat {
+                    _id
+                }
+                author
+                date
+                images
+                video
+                documents
+                gif
             }
         }
     }
@@ -1266,6 +1280,44 @@ export const DELETE_MESSAGE = gql`
     mutation deleteMessage($data: OMessageInput!) {
         Dialogue {
             deleteMessage(data: $data)
+        }
+    }
+`;
+
+export const PIN_CHAT_SUB = gql`
+    subscription pinChat($_id: ID!) {
+        pinChat(_id: $_id) {
+            _id
+        }
+    }
+`;
+export const ARCHIVE_CHAT_SUB = gql`
+    subscription archiveChat($_id: ID!) {
+        archiveChat(_id: $_id) {
+            _id
+        }
+    }
+`;
+export const MESSAGE_UPDATE_SUB = gql`
+    subscription messageUpdate($_id: ID!) {
+        messageUpdate(_id: $_id) {
+            _id
+            chat {
+                _id
+            }
+            author
+            text
+            date
+            images
+            video
+            documents
+            gif
+            edited
+            responseTo {
+                _id
+                text
+                author
+            }
         }
     }
 `;

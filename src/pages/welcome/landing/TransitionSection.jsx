@@ -7,21 +7,12 @@ import {
     useTheme,
 } from '@mui/material';
 import React from 'react';
-
+import card4Img from '../../../assets/landing/card (4).svg';
+import card5Img from '../../../assets/landing/card (5).svg';
+import card6Img from '../../../assets/landing/card (6).svg';
+import LazyImage from '../../../components/LazyImage';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
-
-const card4Img = React.lazy(() =>
-    import('../../../assets/landing/card (4).svg')
-);
-
-const card5Img = React.lazy(() =>
-    import('../../../assets/landing/card (5).svg')
-);
-
-const card6Img = React.lazy(() =>
-    import('../../../assets/landing/card (6).svg')
-);
 
 export default function TransitionSection() {
     const classes = useStyles();
@@ -55,10 +46,12 @@ export default function TransitionSection() {
                                 <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
-                                            <img
+                                            <LazyImage
                                                 style={{ width: '100%' }}
-                                                src={card4Img}
-                                                alt=""
+                                                image={{
+                                                    src: card4Img,
+                                                    alt: 'Card Image',
+                                                }}
                                             />
                                         </CardContent>
                                     </Card>
@@ -68,10 +61,12 @@ export default function TransitionSection() {
                                 <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
-                                            <img
+                                            <LazyImage
                                                 style={{ width: '100%' }}
-                                                src={card5Img}
-                                                alt=""
+                                                image={{
+                                                    src: card5Img,
+                                                    alt: 'Card Image',
+                                                }}
                                             />
                                         </CardContent>
                                     </Card>
@@ -81,10 +76,12 @@ export default function TransitionSection() {
                                 <DarkThemeOnly>
                                     <Card className={classes.cardImg}>
                                         <CardContent>
-                                            <img
+                                            <LazyImage
                                                 style={{ width: '100%' }}
-                                                src={card6Img}
-                                                alt=""
+                                                image={{
+                                                    src: card6Img,
+                                                    alt: 'Card Image',
+                                                }}
                                             />
                                         </CardContent>
                                     </Card>

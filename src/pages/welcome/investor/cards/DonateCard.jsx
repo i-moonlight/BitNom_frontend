@@ -2,9 +2,9 @@ import { useTheme } from '@emotion/react';
 import { DoneAll, FileCopy } from '@mui/icons-material';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import qrImg from '../../../../assets/investor/qr2.png';
 import { Button } from '../../../../components/Button';
-
-const qrImg = React.lazy(() => import('../../../../assets/investor/qr2.png'));
+import LazyImage from '../../../../components/LazyImage';
 
 export default function DonateCard() {
     const [justCopied, setJustCopied] = useState(false);
@@ -28,12 +28,14 @@ export default function DonateCard() {
                     <Typography className="mt-2">
                         Do you love and would like to support us?
                     </Typography>
-                    <img
-                        style={{ width: '60%' }}
-                        className="p-4"
-                        src={qrImg}
-                        alt=""
+                    <LazyImage
+                        style={{ width: '60%', padding: 16 }}
+                        image={{
+                            src: qrImg,
+                            alt: 'Donate Image',
+                        }}
                     />
+
                     <Typography className="mb-2">
                         1JWxkcmz3SxiGXQS8KAhC38oy6Q7xXdhQ1
                     </Typography>

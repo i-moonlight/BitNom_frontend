@@ -4,9 +4,10 @@ import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import ImagePreview from '../../../components/ImagePreview';
 import ImageModal from '../../../components/ImageModal';
+import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
 import { getFeed } from '../utilities/functions';
 import {
@@ -22,10 +23,9 @@ import CreatePost from './scroll/CreatePost';
 import Scroll from './scroll/Scroll';
 import UpdatePost from './scroll/UpdatePost';
 import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
+import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
-import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
-import SEO from '../../../components/SEO';
 
 const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
@@ -211,47 +211,35 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {
-                                // scrollData?.Posts?.get
-                                // state.posts.list
-                                posts?.map((scroll) => (
-                                    <Scroll
-                                        setOpen={() =>
-                                            setCreateScrollOpen(true)
-                                        }
-                                        setOpenShareModal={setOpenShareModal}
-                                        setUpdateOpen={setUpdateScrollOpen}
-                                        profileData={
-                                            profileData?.Users?.profile
-                                        }
-                                        setUpdateCommentOpen={
-                                            setUpdateCommentOpen
-                                        }
-                                        setOpenFlag={setCreateFlagOpen}
-                                        setFlaggedResource={setFlaggedResource}
-                                        setOpenReactions={setOpenReactions}
-                                        setResourceReactions={
-                                            setResourceReactions
-                                        }
-                                        setSharedResource={setSharedResource}
-                                        setImageIndex={setImageIndex}
-                                        setPostToPreview={setPostToPreview}
-                                        setCommentToEdit={setCommentToEdit}
-                                        setPostToEdit={setPostToEdit}
-                                        key={scroll?._id}
-                                        scroll={scroll}
-                                        setImagePreviewURL={(url) => {
-                                            setImagePreviewURL(url);
-                                        }}
-                                        setImagePreviewOpen={(open) => {
-                                            setImagePreviewOpen(open);
-                                        }}
-                                        setImageModalOpen={(open) => {
-                                            setImageModalOpen(open);
-                                        }}
-                                    />
-                                ))
-                            }
+                            {posts?.map((scroll) => (
+                                <Scroll
+                                    setOpen={() => setCreateScrollOpen(true)}
+                                    setOpenShareModal={setOpenShareModal}
+                                    setUpdateOpen={setUpdateScrollOpen}
+                                    profileData={profileData?.Users?.profile}
+                                    setUpdateCommentOpen={setUpdateCommentOpen}
+                                    setOpenFlag={setCreateFlagOpen}
+                                    setFlaggedResource={setFlaggedResource}
+                                    setOpenReactions={setOpenReactions}
+                                    setResourceReactions={setResourceReactions}
+                                    setSharedResource={setSharedResource}
+                                    setImageIndex={setImageIndex}
+                                    setPostToPreview={setPostToPreview}
+                                    setCommentToEdit={setCommentToEdit}
+                                    setPostToEdit={setPostToEdit}
+                                    key={scroll?._id}
+                                    scroll={scroll}
+                                    setImagePreviewURL={(url) => {
+                                        setImagePreviewURL(url);
+                                    }}
+                                    setImagePreviewOpen={(open) => {
+                                        setImagePreviewOpen(open);
+                                    }}
+                                    setImageModalOpen={(open) => {
+                                        setImageModalOpen(open);
+                                    }}
+                                />
+                            ))}
                             {scrollData?.Posts?.get?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="h5" color="primary">

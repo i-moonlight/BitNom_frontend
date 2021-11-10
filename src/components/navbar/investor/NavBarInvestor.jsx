@@ -1,23 +1,22 @@
 import { Brightness4Rounded, Brightness7Rounded } from '@mui/icons-material';
 import {
     AppBar,
-    Avatar,
     Container,
     IconButton,
     Tab,
     Tabs,
     useTheme,
 } from '@mui/material';
-import { withStyles, styled } from '@mui/styles';
+import { styled, withStyles } from '@mui/styles';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import logo from '../../../assets/logo.svg';
+import logo_light from '../../../assets/logo_light.svg';
 import { changeTheme } from '../../../store/actions/themeActions';
 import { Button } from '../../Button';
+import LazyImage from '../../LazyImage';
 import { investorTabs } from '../../utilities/data.components';
-
-const logo = React.lazy(() => import('../../../assets/logo.svg'));
-const logo_light = React.lazy(() => import('../../../assets/logo_light.svg'));
 
 const InvestorTabs = styled(Tabs)({
     '& .MuiTabs-indicator': {
@@ -48,9 +47,17 @@ export default function NavBarInvestor() {
                         className="center-horizontal c-pointer me-3"
                         onClick={() => history.push('/')}
                     >
-                        <Avatar src={palette == 'light' ? logo : logo_light}>
-                            B
-                        </Avatar>
+                        <LazyImage
+                            style={{ marginRight: 16 }}
+                            image={{
+                                src:
+                                    theme.palette.mode == 'light'
+                                        ? logo
+                                        : logo_light,
+                                alt: 'BN Logo',
+                                height: 40,
+                            }}
+                        />
                     </div>
 
                     <InvestorTabs

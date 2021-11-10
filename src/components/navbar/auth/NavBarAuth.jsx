@@ -1,11 +1,9 @@
 import { AppBar, Container, useTheme } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-
-const logo_full = React.lazy(() => import('../../../assets/logo_full.svg'));
-const logo_light_full = React.lazy(() =>
-    import('../../../assets/logo_light_full.svg')
-);
+import logo_full from '../../../assets/logo_full.svg';
+import logo_light_full from '../../../assets/logo_light_full.svg';
+import LazyImage from '../../LazyImage';
 
 export default function NavBarAuth() {
     const history = useHistory();
@@ -26,16 +24,16 @@ export default function NavBarAuth() {
                         onClick={() => history.push('/')}
                     >
                         <div>
-                            <img
-                                style={{
+                            <LazyImage
+                                style={{ marginRight: 16 }}
+                                image={{
+                                    src:
+                                        theme.palette.mode == 'light'
+                                            ? logo_full
+                                            : logo_light_full,
+                                    alt: 'BN Logo',
                                     height: 40,
                                 }}
-                                src={
-                                    theme.palette.mode == 'light'
-                                        ? logo_full
-                                        : logo_light_full
-                                }
-                                alt=""
                             />
                         </div>
                     </div>

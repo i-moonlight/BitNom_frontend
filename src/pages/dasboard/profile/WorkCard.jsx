@@ -51,6 +51,7 @@ export default function WorkCard({ profile, profileView }) {
                                 description={description}
                                 photoURL="https://picsum.photos/200"
                                 current={current}
+                                profileView={profileView}
                             />
                         )
                     )}

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { Popover, List, ListItemText, ListItem } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     addToPinnedMessage,
     removeFromMessages,
@@ -20,6 +20,8 @@ export default function MessagePopover({
     chat,
 }) {
     const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const user = state.auth.user;
     const [pinMessage, { data }] = useMutation(PIN_MESSAGE, {
         variables: {
             data: { chat: chat._id, message: message._id },
@@ -87,18 +89,22 @@ export default function MessagePopover({
                     onClick={() => {
                         handleDeleteMessage(), handleMessageClose();
                     }}
+                    disabled={user._id === message.author ? false : true}
                 >
                     <ListItemText primary="Delete Message" />
                 </ListItem>
+
                 <ListItem
                     button
                     divider
                     onClick={() => {
                         onUpdateMessage(), handleMessageClose();
                     }}
+                    disabled={user._id === message.author ? false : true}
                 >
                     <ListItemText primary="Edit text" />
                 </ListItem>
+
                 <ListItem button onClick={handleReportMessage}>
                     <ListItemText primary="Report Message" />
                 </ListItem>

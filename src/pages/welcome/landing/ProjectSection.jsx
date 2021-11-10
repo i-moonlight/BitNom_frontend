@@ -1,4 +1,5 @@
 import {
+    ButtonBase,
     Card,
     CardContent,
     Container,
@@ -8,23 +9,15 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
+import card1Img from '../../../assets/landing/card (1).svg';
+import card2Img from '../../../assets/landing/card (2).svg';
+import card3Img from '../../../assets/landing/card (3).svg';
+import joinImg from '../../../assets/landing/img2.png';
+import visionImg from '../../../assets/landing/vision.svg';
 import { Button } from '../../../components/Button';
+import LazyImage from '../../../components/LazyImage';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
-
-const card1Img = React.lazy(() =>
-    import('../../../assets/landing/card (1).svg')
-);
-const card2Img = React.lazy(() =>
-    import('../../../assets/landing/card (2).svg')
-);
-const card3Img = React.lazy(() =>
-    import('../../../assets/landing/card (3).svg')
-);
-const joinImg = React.lazy(() => import('../../../assets/landing/img2.png'));
-const visionImg = React.lazy(() =>
-    import('../../../assets/landing/vision.svg')
-);
 
 export default function ProjectSection() {
     const history = useHistory();
@@ -75,10 +68,12 @@ export default function ProjectSection() {
                                     <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
-                                                <img
+                                                <LazyImage
                                                     style={{ width: '100%' }}
-                                                    src={card1Img}
-                                                    alt=""
+                                                    image={{
+                                                        src: card1Img,
+                                                        alt: 'Card Image',
+                                                    }}
                                                 />
                                             </CardContent>
                                         </Card>
@@ -88,10 +83,12 @@ export default function ProjectSection() {
                                     <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
-                                                <img
+                                                <LazyImage
                                                     style={{ width: '100%' }}
-                                                    src={card2Img}
-                                                    alt=""
+                                                    image={{
+                                                        src: card2Img,
+                                                        alt: 'Card Image',
+                                                    }}
                                                 />
                                             </CardContent>
                                         </Card>
@@ -101,10 +98,12 @@ export default function ProjectSection() {
                                     <DarkThemeOnly>
                                         <Card className={classes.cardImg}>
                                             <CardContent>
-                                                <img
+                                                <LazyImage
                                                     style={{ width: '100%' }}
-                                                    src={card3Img}
-                                                    alt=""
+                                                    image={{
+                                                        src: card3Img,
+                                                        alt: 'Card Image',
+                                                    }}
                                                 />
                                             </CardContent>
                                         </Card>
@@ -119,10 +118,12 @@ export default function ProjectSection() {
                 <Grid container spacing={5}>
                     <Grid item md={6} sm={10} className="text-center my-5">
                         <div className="m-3">
-                            <img
+                            <LazyImage
                                 style={{ width: '100%' }}
-                                src={joinImg}
-                                alt=""
+                                image={{
+                                    src: joinImg,
+                                    alt: 'Card Image',
+                                }}
                             />
                             <Button
                                 onClick={() => {
@@ -145,15 +146,23 @@ export default function ProjectSection() {
                             >
                                 Share your vision instantly
                             </Typography>
-                            <img
-                                style={{ width: '80%' }}
-                                src={visionImg}
-                                alt=""
-                                className="my-2"
-                                onClick={() => {
-                                    history.push('/connect');
-                                }}
-                            />
+                            <ButtonBase>
+                                <LazyImage
+                                    onClick={() => {
+                                        history.push('/connect');
+                                    }}
+                                    style={{
+                                        width: '80%',
+                                        marginTop: 16,
+                                        marginBottom: 16,
+                                    }}
+                                    image={{
+                                        src: visionImg,
+                                        alt: 'Card Image',
+                                    }}
+                                />
+                            </ButtonBase>
+
                             <Typography
                                 className={classes.sectionText + 'mt-2'}
                                 gutterBottom
