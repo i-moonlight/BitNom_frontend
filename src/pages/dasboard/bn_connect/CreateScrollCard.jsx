@@ -8,14 +8,12 @@ import {
     useTheme,
 } from '@mui/material';
 import React from 'react';
+import image from '../../../assets/scrolls/image.svg';
+import schedule from '../../../assets/scrolls/schedule.svg';
+import video from '../../../assets/scrolls/video.svg';
+import write from '../../../assets/scrolls/write.svg';
 import { Button } from '../../../components/Button';
-
-const image = React.lazy(() => import('../../../assets/scrolls/image.svg'));
-const schedule = React.lazy(() =>
-    import('../../../assets/scrolls/schedule.svg')
-);
-const video = React.lazy(() => import('../../../assets/scrolls/video.svg'));
-const write = React.lazy(() => import('../../../assets/scrolls/write.svg'));
+import LazyImage from '../../../components/LazyImage';
 
 export default function CreateScrollCard({
     setOpen,
@@ -64,10 +62,13 @@ export default function CreateScrollCard({
                         color="inherit"
                     >
                         <div className="center-horizontal">
-                            <img
-                                style={{ marginRight: 10, width: 20 }}
-                                src={image}
-                                alt="img"
+                            <LazyImage
+                                style={{ marginRight: 10 }}
+                                image={{
+                                    src: image,
+                                    alt: 'Upload Image',
+                                    width: 20,
+                                }}
                             />
                             {!xsDown && (
                                 <Typography variant="body2">Image</Typography>
@@ -85,11 +86,15 @@ export default function CreateScrollCard({
                         color="inherit"
                     >
                         <div className="center-horizontal">
-                            <img
-                                style={{ marginRight: 10, width: 20 }}
-                                src={video}
-                                alt="img"
+                            <LazyImage
+                                style={{ marginRight: 10 }}
+                                image={{
+                                    src: video,
+                                    alt: 'Upload Video',
+                                    width: 20,
+                                }}
                             />
+
                             {!xsDown && (
                                 <Typography variant="body2">Video</Typography>
                             )}
@@ -97,11 +102,15 @@ export default function CreateScrollCard({
                     </Button>
                     <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
-                            <img
-                                style={{ marginRight: 10, width: 20 }}
-                                src={schedule}
-                                alt="img"
+                            <LazyImage
+                                style={{ marginRight: 10 }}
+                                image={{
+                                    src: schedule,
+                                    alt: 'Shedule Post',
+                                    width: 20,
+                                }}
                             />
+
                             {!xsDown && (
                                 <Typography variant="body2">
                                     Schedule
@@ -111,10 +120,13 @@ export default function CreateScrollCard({
                     </Button>
                     <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
-                            <img
-                                style={{ marginRight: 10, width: 20 }}
-                                src={write}
-                                alt="img"
+                            <LazyImage
+                                style={{ marginRight: 10 }}
+                                image={{
+                                    src: write,
+                                    alt: 'Write Article',
+                                    width: 20,
+                                }}
                             />
                             {!xsDown && (
                                 <Typography variant="body2">Article</Typography>

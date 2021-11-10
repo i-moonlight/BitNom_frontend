@@ -1,6 +1,9 @@
 import { useTheme } from '@emotion/react';
 import { Container, Divider } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
+import scrollImg from '../../../assets/investor/scroll.svg';
+import scrollImgLight from '../../../assets/investor/scroll_light.svg';
+import LazyImage from '../../../components/LazyImage';
 import NavBarInvestor from '../../../components/navbar/investor/NavBarInvestor';
 import Footer from '../Footer';
 import Concept from './sections/Concept';
@@ -14,13 +17,6 @@ import Team from './sections/Team';
 import Token from './sections/Token';
 import UserBase from './sections/UserBase';
 import WhitePaper from './sections/WhitePaper';
-
-const scrollImg = React.lazy(() =>
-    import('../../../assets/investor/scroll.svg')
-);
-const scrollImgLight = React.lazy(() =>
-    import('../../../assets/investor/scroll_light.svg')
-);
 
 export default function Investors() {
     const toTop = useRef(null);
@@ -48,14 +44,15 @@ export default function Investors() {
                 }}
             >
                 <Container>
-                    <img
-                        className="w-100"
-                        src={
-                            theme.palette.mode == 'dark'
-                                ? scrollImg
-                                : scrollImgLight
-                        }
-                        alt=""
+                    <LazyImage
+                        style={{ width: '100%' }}
+                        image={{
+                            src:
+                                theme.palette.mode == 'dark'
+                                    ? scrollImg
+                                    : scrollImgLight,
+                            alt: 'Investors Image',
+                        }}
                     />
                 </Container>
             </section>

@@ -8,10 +8,8 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import React from 'react';
-
-const modelImg = React.lazy(() =>
-    import('../../../../assets/investor/model.png')
-);
+import modelImg from '../../../../assets/investor/model.png';
+import LazyImage from '../../../../components/LazyImage';
 
 export default function UserBase() {
     const smDown = useMediaQuery('(max-width:959px)');
@@ -120,10 +118,15 @@ export default function UserBase() {
                                     {!smDown && (
                                         <Grid item xs={12} sm={6} md={4}>
                                             <div className="w-100">
-                                                <img
-                                                    src={modelImg}
-                                                    alt=""
-                                                    className="w-75 mt-4"
+                                                <LazyImage
+                                                    style={{
+                                                        width: '75%',
+                                                        marginTop: 16,
+                                                    }}
+                                                    image={{
+                                                        src: modelImg,
+                                                        alt: 'Crypto Image',
+                                                    }}
                                                 />
                                             </div>
                                         </Grid>

@@ -51,6 +51,7 @@ export default function EducationCard({ profile, profileView }) {
                                 dateTo={end_date}
                                 description={description}
                                 photoURL="https://picsum.photos/200"
+                                profileView={profileView}
                             />
                         )
                     )}

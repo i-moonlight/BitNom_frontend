@@ -1,18 +1,12 @@
-import React from 'react';
 // import popup3 from '../../assets/landing/popup3.svg';
 // import popup4 from '../../assets/landing/popup4.svg';
 // import popup7 from '../../assets/landing/popup7.svg';
 // import popup9 from '../../assets/landing/popup9.svg';
-
-const popup1 = React.lazy(() => import('../../assets/landing/popup1.svg'));
-
-const popup2 = React.lazy(() => import('../../assets/landing/popup2.svg'));
-
-const popup5 = React.lazy(() => import('../../assets/landing/popup5.svg'));
-
-const popup6 = React.lazy(() => import('../../assets/landing/popup6.svg'));
-
-const popup8 = React.lazy(() => import('../../assets/landing/popup8.svg'));
+import popup1 from '../../assets/landing/popup1.svg';
+import popup2 from '../../assets/landing/popup2.svg';
+import popup5 from '../../assets/landing/popup5.svg';
+import popup6 from '../../assets/landing/popup6.svg';
+import popup8 from '../../assets/landing/popup8.svg';
 
 export const menuEcosystem = [
     { icon: popup1, text: 'AI Engine' },

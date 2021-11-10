@@ -13,6 +13,7 @@ export default function EducationFragment({
     description,
     dateTo,
     photoURL,
+    profileView,
 }) {
     const [formOpen, setFormOpen] = useState(false);
     const classes = useStyles();
@@ -48,16 +49,18 @@ export default function EducationFragment({
                                 <Typography variant="body2" className="flex-1">
                                     {institution}
                                 </Typography>
-                                <Button
-                                    onClick={() => {
-                                        setFormOpen(true);
-                                    }}
-                                    textCase
-                                    variant="text"
-                                    size="small"
-                                >
-                                    Edit
-                                </Button>
+                                {!profileView && (
+                                    <Button
+                                        onClick={() => {
+                                            setFormOpen(true);
+                                        }}
+                                        textCase
+                                        variant="text"
+                                        size="small"
+                                    >
+                                        Edit
+                                    </Button>
+                                )}
                             </div>
                             <Typography variant="body2">{major}</Typography>
                             <Typography variant="body2">

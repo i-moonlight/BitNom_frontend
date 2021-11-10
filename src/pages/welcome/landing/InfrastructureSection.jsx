@@ -10,14 +10,12 @@ import {
 } from '@mui/material';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
+import botImg from '../../../assets/landing/bot.svg';
+import ghostImg from '../../../assets/landing/ghost.svg';
+import infrastructureImg from '../../../assets/landing/infrastructure.svg';
+import LazyImage from '../../../components/LazyImage';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
 import { useStyles } from './Landing';
-
-const botImg = React.lazy(() => import('../../../assets/landing/bot.svg'));
-const ghostImg = React.lazy(() => import('../../../assets/landing/ghost.svg'));
-const infrastructureImg = React.lazy(() =>
-    import('../../../assets/landing/infrastructure.svg')
-);
 
 export default function InfrastructureSection() {
     const classes = useStyles();
@@ -50,14 +48,14 @@ export default function InfrastructureSection() {
                             elevation={4}
                         >
                             {!xsDown && (
-                                <img
-                                    style={{
-                                        maxWidth: '40%',
+                                <LazyImage
+                                    style={{ maxWidth: '40%' }}
+                                    image={{
+                                        src: infrastructureImg,
+                                        alt: 'Infrastructure Image',
                                         height: imageContainer.current
                                             ?.clientHeight,
                                     }}
-                                    src={infrastructureImg}
-                                    alt=""
                                 />
                             )}
                             <div className="p-3">
@@ -139,15 +137,17 @@ export default function InfrastructureSection() {
                                             >
                                                 Widgets and bots
                                             </Typography>
-                                            <img
+                                            <LazyImage
                                                 style={{
-                                                    height: 100,
                                                     position: 'relative',
                                                     top: -50,
                                                     zIndex: 20,
                                                 }}
-                                                src={botImg}
-                                                alt=""
+                                                image={{
+                                                    src: botImg,
+                                                    alt: 'Upload Image',
+                                                    height: 100,
+                                                }}
                                             />
                                         </div>
                                         <Typography
@@ -187,15 +187,17 @@ export default function InfrastructureSection() {
                                             >
                                                 Job Board
                                             </Typography>
-                                            <img
+                                            <LazyImage
                                                 style={{
-                                                    height: 100,
                                                     position: 'relative',
                                                     top: -50,
                                                     zIndex: 20,
                                                 }}
-                                                src={ghostImg}
-                                                alt=""
+                                                image={{
+                                                    src: ghostImg,
+                                                    alt: 'Upload Image',
+                                                    height: 100,
+                                                }}
                                             />
                                         </div>
                                         <Typography
