@@ -95,7 +95,7 @@ export default function Messages({ onExitChatMobile }) {
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
-        if (data?.Dialogue?.getMessages.length > 0) {
+        if (data?.Dialogue?.getMessages?.length > 0) {
             endRef.current.scrollIntoView();
         }
     }, [data?.Dialogue?.getMessages, dispatch]);
@@ -121,7 +121,7 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins && messagePins.length > 0 && (
+                    {messagePins && messagePins?.length > 0 && (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
@@ -153,16 +153,16 @@ export default function Messages({ onExitChatMobile }) {
             {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
-                !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
+                !messages?.length > 0 && <AwaitResponse dialogue={dialogue} />}
             <div
                 style={{
                     overflowY: 'auto',
                     minHeight:
                         open === true
                             ? '37vh'
-                            : open === true && messagePins.length > 0
+                            : open === true && messagePins?.length > 0
                             ? '30vh'
-                            : messagePins.length > 0
+                            : messagePins?.length > 0
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
@@ -171,9 +171,9 @@ export default function Messages({ onExitChatMobile }) {
                     height:
                         open === true
                             ? window.innerHeight - 750
-                            : open === true && messagePins.length > 0
+                            : open === true && messagePins?.length > 0
                             ? window.innerHeight - 750
-                            : messagePins.length > 0
+                            : messagePins?.length > 0
                             ? window.innerHeight - 500
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
@@ -187,7 +187,7 @@ export default function Messages({ onExitChatMobile }) {
                         <InviteView dialogue={dialogue} />
                     )}
                 {dialogue.status === 'accepted' &&
-                    !messages.length > 0 &&
+                    !messages?.length > 0 &&
                     !loading && <EmptyMessages />}
                 {dialogue.status === 'accepted' &&
                 filteredMessages &&
@@ -234,14 +234,14 @@ export default function Messages({ onExitChatMobile }) {
             <div>
                 {dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length > 0 &&
+                    messages?.length > 0 &&
                     (dialogue.recipient.blocked === true ||
                         dialogue.initiator.blocked === true) && <Blocked />}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length > 0 &&
+                    messages?.length > 0 &&
                     (dialogue.recipient.blocked === false ||
                         dialogue.initiator.blocked === false) && (
                         <SendMessage
@@ -260,7 +260,7 @@ export default function Messages({ onExitChatMobile }) {
             <div>
                 {dialogue.status === 'accepted' &&
                     !loading &&
-                    !messages.length > 0 &&
+                    !messages?.length > 0 &&
                     (dialogue.recipient.blocked === false ||
                         dialogue.initiator.blocked === false) && (
                         <SendMessage

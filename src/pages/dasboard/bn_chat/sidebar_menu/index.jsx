@@ -174,14 +174,14 @@ function Chats({ onSetChatMobile }) {
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>
-                {invites && invites.length > 0 && (
+                {invites && invites?.length > 0 && (
                     <Invites invites={invites} loading={invitesLoading} />
                 )}
 
-                {pinned && pinned.length > 0 && (
+                {pinned && pinned?.length > 0 && (
                     <Pinned pinned={pinned} loading={pinnedLoading} />
                 )}
-                {chats && chats.length > 0 && (
+                {chats && chats?.length > 0 && (
                     <List
                         component="nav"
                         subheader={
@@ -198,10 +198,10 @@ function Chats({ onSetChatMobile }) {
                         ))}
                     </List>
                 )}
-                {archived && archived.length > 0 && (
+                {archived && archived?.length > 0 && (
                     <Archived archived={archived} loading={archivedLoading} />
                 )}
-                {loading && !chats.length > 0 && (
+                {loading && !chats?.length > 0 && (
                     <Grid
                         alignItems="center"
                         justifyContent="center"

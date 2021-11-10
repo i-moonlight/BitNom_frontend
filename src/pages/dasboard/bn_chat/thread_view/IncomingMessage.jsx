@@ -112,11 +112,11 @@ export default function IncomingMessage({ message, chat, onClick }) {
                                 escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
-                                    ? message?.responseTo?.text.substring(
+                                    ? message?.responseTo?.text?.substring(
                                           0,
                                           200
                                       ) + '...'
-                                    : message.responseTo.text}
+                                    : message?.responseTo?.text}
                             </ReactMarkdown>
                         </Typography>
                     </Card>

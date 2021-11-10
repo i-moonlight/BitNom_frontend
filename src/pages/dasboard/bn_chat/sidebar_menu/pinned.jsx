@@ -23,7 +23,7 @@ export default function Pinned({ pinned, loading }) {
     };
     return (
         <>
-            {pinned && pinned.length > 0 && (
+            {pinned && pinned?.length > 0 && (
                 <List
                     component="nav"
                     subheader={
@@ -42,8 +42,8 @@ export default function Pinned({ pinned, loading }) {
                     ))}
                 </List>
             )}
-            {loading && !pinned.length > 0 && <CircularProgress />}
-            {!loading && !pinned.length > 0 && (
+            {loading && !pinned?.length > 0 && <CircularProgress />}
+            {!loading && !pinned?.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
