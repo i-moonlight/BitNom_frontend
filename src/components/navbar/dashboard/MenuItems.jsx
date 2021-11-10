@@ -6,7 +6,7 @@ import {
     ChevronRight,
     ExitToAppRounded,
     PeopleRounded,
-    Forum,
+    ForumRounded,
     Notifications,
     Badge,
 } from '@mui/icons-material';
@@ -189,7 +189,7 @@ export default function ListItems({ handleMenuClose }) {
                                     color="primary"
                                     badgeContent={messagesCount}
                                 >
-                                    <Forum />
+                                    <ForumRounded />
                                 </Badge>
                             </ListItemIcon>
                             <ListItemText primary="Messages" />
