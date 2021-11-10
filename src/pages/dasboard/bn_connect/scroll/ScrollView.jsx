@@ -549,8 +549,7 @@ function PostView({ match }) {
                                         </Typography>
                                         <Grid
                                             container
-                                            spacing={2}
-                                            className="mb-2"
+                                            style={{ margin: '3px 0px' }}
                                         >
                                             {postData?.Posts?.getById?.video
                                                 ?.path && (
@@ -570,7 +569,10 @@ function PostView({ match }) {
                                                 postData?.Posts?.getById?.images?.map(
                                                     (imageURL, index) => (
                                                         <Grid
-                                                            className="mt-3"
+                                                            style={{
+                                                                zIndex: 2,
+                                                                padding: '1px',
+                                                            }}
                                                             key={imageURL}
                                                             item
                                                             xs={

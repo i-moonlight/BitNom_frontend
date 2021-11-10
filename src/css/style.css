@@ -187,12 +187,10 @@ ul li::before {
     border: 1px solid transparent;
 }
 
-.comment-dropzone {
-    display: 'none';
-}
-.reply-dropzone {
-    display: 'none';
-}
+.post-dropzone,
+.update-post-dropzone,
+.comment-dropzone,
+.reply-dropzone,
 .update-comment-dropzone {
     display: 'none';
 }

@@ -20,6 +20,7 @@ import {
     ListItemText,
     Modal,
     Typography,
+    CardMedia,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useState, useEffect } from 'react';
@@ -60,6 +61,8 @@ export default function CreatePost({
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
+    const [imagePreviewURLS, setImagePreviewURLS] = useState([]);
+    const [videoPreviewURL, setVideoPreviewURL] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -109,6 +112,8 @@ export default function CreatePost({
         setVideoDisabled(false);
         setOpenImage(false);
         setOpenVideo(false);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
     };
 
     useEffect(() => {
@@ -147,6 +152,22 @@ export default function CreatePost({
     const handleSelectEmoji = (emoji) => {
         handleEmojiPickerClose();
         setScrollText(`${scroll_text} ${emoji.native}`);
+    };
+
+    const handleSelectImages = (files) => {
+        if (files.length < 1) return;
+        const previews = [];
+        files.forEach((file) => {
+            previews.push(URL.createObjectURL(file));
+        });
+        setImagePreviewURLS(previews);
+        setScrollImages(files);
+    };
+
+    const handleSelectVideo = (file) => {
+        if (!file) return;
+        setVideoPreviewURL(URL.createObjectURL(file));
+        setScrollVideo(file);
     };
 
     const handleCreatePost = (e) => {
@@ -212,6 +233,8 @@ export default function CreatePost({
                                     setSharedResource(null);
                                     setImageDisabled(false);
                                     setVideoDisabled(false);
+                                    setImagePreviewURLS([]);
+                                    setVideoPreviewURL(null);
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -294,20 +317,90 @@ export default function CreatePost({
                                 {createPostErr &&
                                     'The post content cannot be empty'}
                             </Typography>
+                            {imagePreviewURLS.length > 0 && (
+                                <>
+                                    {/*  <div className="space-between mx-3 my-2 center-horizontal">
+                                        <Typography variant="body2"></Typography>
+                                        <Typography variant="body1"></Typography>
+                                        <IconButton
+                                            onClick={() => {
+                                                setScrollImages([]);
+                                                setImagePreviewURLS([]);
+                                            }}
+                                            size="small"
+                                        >
+                                            <CloseRounded />
+                                        </IconButton>
+                                    </div> */}
+                                    <Grid
+                                        container
+                                        style={{ margin: '3px 0px' }}
+                                    >
+                                        {imagePreviewURLS.map((imageURL) => (
+                                            <Grid
+                                                style={{ padding: '1px' }}
+                                                key={imageURL}
+                                                item
+                                                xs={
+                                                    imagePreviewURLS.length > 1
+                                                        ? 6
+                                                        : 12
+                                                }
+                                            >
+                                                <div
+                                                    style={{
+                                                        height: 200,
+                                                        borderRadius: 8,
+                                                        width: '100%',
+                                                        backgroundImage:
+                                                            'url(' +
+                                                            imageURL +
+                                                            ')',
+                                                        backgroundSize: 'cover',
+                                                        backgroundColor:
+                                                            'rgba(0,0,0,0.2)',
+                                                        backgroundBlendMode:
+                                                            'soft-light',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </>
+                            )}
+                            {videoPreviewURL && (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    style={{ marginTop: '3px' }}
+                                >
+                                    <CardMedia
+                                        className="br-2"
+                                        component="video"
+                                        src={videoPreviewURL}
+                                        controls
+                                        preload="metadata"
+                                    />
+                                </Grid>
+                            )}
                             <Card
                                 style={{
-                                    display:
-                                        openImage || openVideo
-                                            ? 'block'
-                                            : 'none',
+                                    marginTop: '3px',
+                                    display: 'none',
                                 }}
                             >
                                 <DropzoneArea
                                     clearOnUnmount
+                                    dropzoneClass="post-dropzone"
+                                    clickable={true}
                                     onChange={(files) => {
-                                        openImage
-                                            ? setScrollImages(files)
-                                            : setScrollVideo(files[0]);
+                                        openVideo
+                                            ? handleSelectVideo(files[0])
+                                            : handleSelectImages(files);
                                     }}
                                     dropzoneText={
                                         openImage
@@ -345,28 +438,38 @@ export default function CreatePost({
                                 <div className="center-horizontal">
                                     <IconButton
                                         size="small"
-                                        className="m-1 p-1"
+                                        //className="m-1 p-1"
                                         onClick={() => {
                                             setOpenImage(true);
                                             setVideoDisabled(true);
+                                            document
+                                                .getElementsByClassName(
+                                                    'post-dropzone'
+                                                )[0]
+                                                .click();
                                         }}
                                         disabled={imageDisabled}
                                         style={{
-                                            marginRight: 10,
+                                            marginRight: '2px',
                                         }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
                                     <IconButton
                                         size="small"
-                                        className="m-1 p-1"
+                                        //className="m-1 p-1"
                                         onClick={() => {
                                             setOpenVideo(true);
                                             setImageDisabled(true);
+                                            document
+                                                .getElementsByClassName(
+                                                    'post-dropzone'
+                                                )[0]
+                                                .click();
                                         }}
                                         disabled={videoDisabled}
                                         style={{
-                                            marginRight: 10,
+                                            marginRight: '2px',
                                         }}
                                     >
                                         <VideocamRounded />
@@ -379,6 +482,9 @@ export default function CreatePost({
                                         onClick={(e) => {
                                             handleEmojiPickerOpen(e);
                                         }}
+                                        style={{
+                                            marginRight: '2px',
+                                        }}
                                     >
                                         <InsertEmoticon />
                                     </IconButton>
@@ -386,10 +492,10 @@ export default function CreatePost({
                                         return (
                                             <IconButton
                                                 size="small"
-                                                className="m-1 p-1"
+                                                //className="m-1 p-1"
                                                 key={`${Math.random() * 1000}`}
                                                 style={{
-                                                    marginRight: 10,
+                                                    marginRight: '2px',
                                                 }}
                                             >
                                                 <Icon />

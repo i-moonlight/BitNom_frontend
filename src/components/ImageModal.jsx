@@ -103,9 +103,12 @@ export default function ImageModal({
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
 
-    const { data: postData } = useQuery(QUERY_POST_BY_ID, {
-        variables: { _id: post?._id },
-    });
+    const { data: postData, loading: postLoading } = useQuery(
+        QUERY_POST_BY_ID,
+        {
+            variables: { _id: post?._id },
+        }
+    );
 
     const onArrowClick = (direction) => {
         const increment = direction === 'left' ? -1 : 1;
@@ -171,6 +174,7 @@ export default function ImageModal({
                     <div className={classes.Content}>
                         <ScrollImage
                             scroll={postData?.Posts?.getById}
+                            loading={postLoading}
                             onClose={onClose}
                             setOpen={setOpen}
                             profileData={profileData}
