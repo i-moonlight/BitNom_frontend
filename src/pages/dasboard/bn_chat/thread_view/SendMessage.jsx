@@ -160,9 +160,9 @@ export default function SendMessage({
                             component="span"
                             style={{ margin: '1px 5px' }}
                         >
-                            {replyText.text.length > 80
-                                ? replyText.text.substring(0, 80) + '...'
-                                : replyText.text}
+                            {replyText.text?.length > 80
+                                ? replyText?.text.substring(0, 80) + '...'
+                                : replyText?.text}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -199,9 +199,9 @@ export default function SendMessage({
                             component="span"
                             style={{ margin: '1px 5px' }}
                         >
-                            {editText.text.length > 80
-                                ? editText.text.substring(0, 80) + '...'
-                                : editText.text}
+                            {editText?.text?.length > 80
+                                ? editText?.text?.substring(0, 80) + '...'
+                                : editText?.text}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -396,7 +396,7 @@ export default function SendMessage({
                                         ? handleSendMessage()
                                         : null
                                 }
-                                error={Object.keys(sendMessageErr).length > 0}
+                                error={Object.keys(sendMessageErr)?.length > 0}
                             />
                             <IconButton
                                 size="small"
@@ -411,7 +411,7 @@ export default function SendMessage({
                                 <SendOutlined />
                             </IconButton>
                         </Paper>
-                        {Object.keys(sendMessageErr).length > 0 && (
+                        {Object.keys(sendMessageErr)?.length > 0 && (
                             <div>
                                 {' '}
                                 {Object.values(sendMessageErr)?.map((value) => (

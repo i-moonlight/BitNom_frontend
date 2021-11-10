@@ -140,13 +140,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                         )
                                     ) : data?.lastMessageUpdate?.video ? (
                                         <VideoLibrary />
-                                    ) : data?.lastMessageUpdate?.images.length >
-                                      0 ? (
+                                    ) : data?.lastMessageUpdate?.images
+                                          ?.length > 0 ? (
                                         <Image />
                                     ) : data?.lastMessageUpdate?.gif ? (
                                         <Gif />
                                     ) : data?.lastMessageUpdate?.documents
-                                          .length > 0 ? (
+                                          ?.length > 0 ? (
                                         <AttachFile />
                                     ) : chat?.lastMessage?.images?.length >
                                       0 ? (

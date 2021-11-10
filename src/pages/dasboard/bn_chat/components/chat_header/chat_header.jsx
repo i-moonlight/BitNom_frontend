@@ -68,7 +68,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     });
 
     useEffect(() => {
-        if (data?.Dialogue?.searchMessages.length > 0) {
+        if (data?.Dialogue?.searchMessages?.length > 0) {
             dispatch(setSearchOutput(data?.Dialogue?.searchMessages));
         }
     }, [dispatch, data?.Dialogue?.searchMessages]);
