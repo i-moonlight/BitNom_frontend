@@ -23,7 +23,7 @@ export default function Archived({ archived, loading }) {
     };
     return (
         <>
-            {archived && archived.length > 0 && (
+            {archived && archived?.length > 0 && (
                 <List
                     component="nav"
                     subheader={
@@ -42,8 +42,8 @@ export default function Archived({ archived, loading }) {
                     ))}
                 </List>
             )}
-            {loading && !archived.length > 0 && <CircularProgress />}
-            {!loading && !archived.length > 0 && (
+            {loading && !archived?.length > 0 && <CircularProgress />}
+            {!loading && !archived?.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"
