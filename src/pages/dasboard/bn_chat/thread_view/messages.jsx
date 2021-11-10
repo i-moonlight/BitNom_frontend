@@ -13,19 +13,21 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
+    updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
 import {
     GET_DIALOGUE_MESSAGES,
+    MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import AwaitResponse from './await_response';
-import InviteView from './invite_view';
+import AwaitResponse from './AwaitResponse';
+import InviteView from './InviteView';
 import Message from './message';
-import NoChatSelected from './no_chat_selected';
-import EmptyMessages from './no_messages';
-import SendMessage from './send_message';
+import NoChatSelected from './NoChatSelected';
+import EmptyMessages from './NoMessages';
+import SendMessage from './SendMessage';
 import Blocked from './blocked';
 import PinnedMessages from './PinnedMessages';
 
@@ -67,13 +69,25 @@ export default function Messages({ onExitChatMobile }) {
             },
         }
     );
-    console.log('EDIT', editText);
+
+    const { data: messageUpdateData } = useSubscription(MESSAGE_UPDATE_SUB, {
+        variables: {
+            _id: dialogue._id,
+        },
+    });
+
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
             endRef.current.scrollIntoView();
         }
     }, [dispatch, subscriptionData?.newMessage]);
+
+    useEffect(() => {
+        if (messageUpdateData?.messageUpdate) {
+            dispatch(updateMessage(messageUpdateData?.messageUpdate));
+        }
+    }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
         dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
@@ -150,6 +164,9 @@ export default function Messages({ onExitChatMobile }) {
                             ? '30vh'
                             : messagePins.length > 0
                             ? '37vh'
+                            : typeof replyText !== 'undefined' ||
+                              typeof editText !== 'undefined'
+                            ? '48vh'
                             : '50vh',
                     height:
                         open === true
@@ -158,6 +175,9 @@ export default function Messages({ onExitChatMobile }) {
                             ? window.innerHeight - 750
                             : messagePins.length > 0
                             ? window.innerHeight - 500
+                            : typeof replyText !== 'undefined' ||
+                              typeof editText !== 'undefined'
+                            ? window.innerHeight - 450
                             : window.innerHeight - 372,
                 }}
             >
@@ -231,6 +251,9 @@ export default function Messages({ onExitChatMobile }) {
                             setOpen={setOpen}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
+                            editText={editText}
+                            setEditText={() => setEditText(undefined)}
+                            onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
             </div>
@@ -247,6 +270,8 @@ export default function Messages({ onExitChatMobile }) {
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
+                            editText={editText}
+                            onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
             </div>

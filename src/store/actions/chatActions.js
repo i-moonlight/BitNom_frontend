@@ -1,3 +1,4 @@
+//chat Dialogues:chat dialogue actions
 export const addChatDialogues = (data = []) => {
     if (data) {
         return (dispatch) => dispatch({ data, type: 'ADD_CHAT_DIALOGUES' });
@@ -12,6 +13,16 @@ export const clearCurrentChat = () => {
 export const setChatInvites = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'SET_CHAT_INVITES' });
 };
+export const addToInvites = (data) => {
+    return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_INVITES' });
+};
+export const removeFromInvites = (data) => {
+    return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_INVITES' });
+};
+export const addToChatDialogues = (data) => {
+    return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_DIALOGUES' });
+};
+//chat message actions
 export const setDialogueMessages = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'SET_CHAT_MESSAGES' });
 };
@@ -19,20 +30,9 @@ export const addMessagesToCurrentChat = (data) => {
     return (dispatch) =>
         dispatch({ data, type: 'ADD_MESSAGES_TO_CURRENT_CHAT' });
 };
-export const addToInvites = (data) => {
-    return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_INVITES' });
-};
-export const addToChatDialogues = (data) => {
-    return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_DIALOGUES' });
-};
-export const removeFromInvites = (data) => {
-    return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_INVITES' });
-};
-export const addArchivedChats = (data) => {
-    return (dispatch) => dispatch({ data, type: 'ADD_TO_ARCHIVED' });
-};
-export const setArchivedChats = (data = []) => {
-    return (dispatch) => dispatch({ data, type: 'SET_ARCHIVED_CHATS' });
+export const updateMessage = (data) => {
+    console.log('DATA', data);
+    return (dispatch) => dispatch({ data, type: 'UPDATE_MESSAGE' });
 };
 export const setSearchOutput = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'SET_SEARCH_OUTPUT' });
@@ -46,6 +46,7 @@ export const chatIndexShift = (data) => {
 export const removeFromMessages = (data) => {
     return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_MESSAGES' });
 };
+//pinned chats::chat actions to manipulate state around pinned messages
 export const addPinnedMessage = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'ADD_PINNED_MESSAGES' });
 };
@@ -59,6 +60,23 @@ export const deletePinnedMessage = (data) => {
 export const clearPinnedMessage = () => {
     return (dispatch) => dispatch({ type: 'CLEAR_PINNED_MESSAGES' });
 };
+//pinned chats:: chat pinned actions
 export const addPinnedChat = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'PIN_CHAT' });
+};
+export const addToPinnedChats = (data) => {
+    return (dispatch) => dispatch({ data, type: 'ADD_TO_PINNED_CHATS' });
+};
+export const deletePinnedChat = (data) => {
+    return (dispatch) => dispatch({ data, type: 'DELETE_PINNED_CHAT' });
+};
+export const clearPinnedChats = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_PINNED_CHATs' });
+};
+//archived Chats::archived chats actions
+export const setArchivedChats = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'SET_ARCHIVED_CHATS' });
+};
+export const addToArchivedChats = (data) => {
+    return (dispatch) => dispatch({ data, type: 'ADD_TO_ARCHIVED' });
 };

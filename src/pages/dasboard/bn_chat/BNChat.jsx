@@ -2,7 +2,7 @@ import { Card, Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import Screen from '../../../components/Screen';
-import SideBarHeader from './components/chat_header/side_bar_header';
+import SideBarHeader from './components/chat_header/sid_bar_header';
 import Chats from './sidebar_menu';
 import Messages from './thread_view/messages';
 

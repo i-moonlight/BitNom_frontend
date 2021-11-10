@@ -19,6 +19,7 @@ export default function DarkThemeOnly({ children }) {
                 chatFrom: '#E5EFF4',
                 chatTo: '#E5EFF4',
                 chatActive: '#bde0ff',
+                messagePrompt: '#93c7f5',
             },
         },
     });
