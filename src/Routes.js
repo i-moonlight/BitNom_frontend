@@ -8,7 +8,7 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Signup from './pages/auth/Signup';
 import UpdateInfo from './pages/auth/UpdateInfo';
 import VerifyEmail from './pages/auth/VerifyEmail';
-import BnChat from './pages/dasboard/bn_chat/BnChat';
+import BnChat from './pages/dasboard/bn_chat/BNChat';
 import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import HashtagView from './pages/dasboard/bn_connect/HashtagView';
 import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
