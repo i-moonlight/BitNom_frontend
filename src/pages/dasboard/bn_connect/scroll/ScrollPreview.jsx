@@ -85,12 +85,17 @@ export default function ScrollPreview({ scroll }) {
                         ></Typography>
                         <br />
                         <Grid container spacing={2} className="mb-2">
-                            {scroll?.video?.path && (
+                            {(scroll?.video?.length > 0 ||
+                                scroll?.video?.path) && (
                                 <Grid item xs={12}>
                                     <CardMedia
                                         component="video"
-                                        poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
-                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
+                                        //poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                        src={
+                                            typeof scroll?.video == 'string'
+                                                ? `${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`
+                                                : `${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`
+                                        }
                                         controls
                                         preload="metadata"
                                     />
