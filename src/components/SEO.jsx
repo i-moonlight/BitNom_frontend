@@ -139,11 +139,6 @@ const SchemaFactory = (props) => {
                     name: props?.resource?.location?.address,
                 },
                 description: props?.description,
-                organizer: {
-                    '@type': 'Person',
-                    name: props?.resource?.organizers[0].displayName,
-                    url: `https://${location.origin}/users/${props?.resource?.organizers[0]._id}/`,
-                },
                 publisher: {
                     '@type': 'Organization',
                     name: 'Bitnorm',
@@ -173,11 +168,6 @@ const SchemaFactory = (props) => {
                     url: props?.image,
                 },
                 description: props?.description,
-                organizer: {
-                    '@type': 'Person',
-                    name: props?.resource?.organizers[0].displayName,
-                    url: `https://${location.origin}/users/${props?.resource?.organizers[0]._id}/`,
-                },
                 publisher: {
                     '@type': 'Organization',
                     name: 'Bitnorm',
