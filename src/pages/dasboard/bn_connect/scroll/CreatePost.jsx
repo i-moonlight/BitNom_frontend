@@ -288,7 +288,7 @@ export default function CreatePost({
                                 />
                             </ListItem>
                             <MentionsInput
-                                spellcheck="false"
+                                spellCheck="false"
                                 className="mentions-textarea"
                                 id="content-field"
                                 placeholder="What's happening"

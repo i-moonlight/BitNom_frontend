@@ -195,7 +195,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={EventView}
-                                    path="/events/:id"
+                                    path="/events/:eventId"
                                 />
                                 <Route
                                     exact
@@ -215,7 +215,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={PostView}
-                                    path="/posts/:id"
+                                    path="/posts/:postId"
                                 />
                                 <Route
                                     exact

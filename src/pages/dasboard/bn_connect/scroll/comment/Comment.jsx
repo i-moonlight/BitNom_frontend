@@ -541,7 +541,7 @@ export default function Comment({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellcheck="false"
+                                        spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {

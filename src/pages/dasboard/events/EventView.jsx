@@ -31,7 +31,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 //import IosShareIcon from '@mui/icons-material/IosShare'
 //import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EventView({ match }) {
+export default function EventView() {
     const [eventOptionsAnchorEl, setEventOptionsAnchorEl] = useState(null);
     const [openInvite, setOpenInvite] = useState(false);
     const [createEventOpen, setCreateEventOpen] = useState(false);
@@ -104,18 +104,18 @@ export default function EventView({ match }) {
 
     const classes = useStyles();
     const history = useHistory();
+    const { eventId } = useParams();
 
     const mdDown = useMediaQuery('(max-width:1279px)');
     const lgUp = useMediaQuery('(min-width:1280px)');
     const smDown = useMediaQuery('(max-width:959px)');
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
-    if (!match?.params?.id) return;
 
     const { loading: eventLoading, data: eventData } = useQuery(
         QUERY_EVENT_BY_ID,
         {
-            variables: { _id: match?.params?.id },
+            variables: { _id: eventId },
         }
     );
 
@@ -162,7 +162,7 @@ export default function EventView({ match }) {
             refetchQueries: [
                 {
                     query: QUERY_EVENT_BY_ID,
-                    variables: { _id: match?.params?.id },
+                    variables: { _id: eventId },
                 },
             ],
         });
@@ -176,7 +176,7 @@ export default function EventView({ match }) {
             refetchQueries: [
                 {
                     query: QUERY_EVENT_BY_ID,
-                    variables: { _id: match?.params?.id },
+                    variables: { _id: eventId },
                 },
             ],
         });

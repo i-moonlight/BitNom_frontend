@@ -97,8 +97,7 @@ const useStyles = makeStyles((theme) => ({
 const emojiPickerId = 'emoji-picker-popover';
 
 export default function ScrollImage({
-    scroll,
-    loading,
+    postId,
     profileData,
     setSharedResource,
     setCommentToEdit,
@@ -136,13 +135,17 @@ export default function ScrollImage({
     const user = state.auth.user;
 
     const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
+    const { data: postData, loading } = useQuery(QUERY_POST_BY_ID, {
+        variables: { _id: postId },
+    });
 
+    const scroll = postData?.Posts?.getById;
     const {
         data: commentsData,
         // loading: commentsLoading,
         // error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: scroll?._id } },
+        variables: { data: { scroll_id: postId } },
     });
 
     const onCreateComment = (ICreateComment) => {
@@ -160,12 +163,12 @@ export default function ScrollImage({
                 {
                     query: QUERY_POST_BY_ID,
                     variables: {
-                        _id: scroll?._id,
+                        _id: postId,
                     },
                 },
                 {
                     query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: scroll?._id } },
+                    variables: { data: { scroll_id: postId } },
                 },
             ],
         });
@@ -192,7 +195,7 @@ export default function ScrollImage({
         onCreateComment({
             content: mentionsData.content,
             content_entities: mentionsData.contentEntities,
-            scroll: scroll?._id,
+            scroll: postId,
             image: comment_image,
         });
     };
@@ -209,7 +212,7 @@ export default function ScrollImage({
         createReaction({
             variables: {
                 data: {
-                    _id: scroll?._id,
+                    _id: postId,
                     type: 'post',
                     reaction: reaction,
                 },
@@ -224,7 +227,7 @@ export default function ScrollImage({
                 {
                     query: QUERY_POST_BY_ID,
                     variables: {
-                        _id: scroll?._id,
+                        _id: postId,
                     },
                 },
             ],
@@ -237,7 +240,7 @@ export default function ScrollImage({
         removeReaction({
             variables: {
                 data: {
-                    _id: scroll?._id,
+                    _id: postId,
                     type: 'post',
                 },
             },
@@ -251,7 +254,7 @@ export default function ScrollImage({
                 {
                     query: QUERY_POST_BY_ID,
                     variables: {
-                        _id: scroll?._id,
+                        _id: postId,
                     },
                 },
             ],
@@ -640,7 +643,7 @@ export default function ScrollImage({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellcheck="false"
+                                        spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {
