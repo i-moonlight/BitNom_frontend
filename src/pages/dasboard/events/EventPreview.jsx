@@ -1,7 +1,6 @@
 import { RoomRounded, VideocamRounded } from '@mui/icons-material';
 import { Card, Typography, useMediaQuery } from '@mui/material';
 import moment from 'moment';
-
 import { useHistory } from 'react-router-dom';
 
 function EventPreview({ event }) {
@@ -42,12 +41,10 @@ function EventPreview({ event }) {
             <div
                 style={{
                     backgroundImage:
-                        event?.image !== null && event?.image?.trim() !== ''
-                            ? 'url(' +
-                              process.env.REACT_APP_BACKEND_URL +
-                              event?.image +
-                              ')'
-                            : `url('${'https://picsum.photos/200/300'}')`,
+                        'url(' +
+                        process.env.REACT_APP_BACKEND_URL +
+                        event?.image +
+                        ')',
                     backgroundSize: 'cover',
                     width: 170,
                     height: 110,

@@ -3,14 +3,15 @@ import {
     ChevronRight,
     CloseRounded,
     ImageRounded,
+    InsertEmoticon,
     Public,
     VideocamRounded,
-    InsertEmoticon,
 } from '@mui/icons-material';
 import {
     Avatar,
     Card,
     CardContent,
+    CardMedia,
     CircularProgress,
     Divider,
     Grid,
@@ -20,28 +21,27 @@ import {
     ListItemText,
     Modal,
     Typography,
-    CardMedia,
 } from '@mui/material';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
-//import TextField from '../../../../components/TextField';
+import { loadScrolls } from '../../../../store/actions/postActions';
 import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { loadScrolls } from '../../../../store/actions/postActions';
-import { toast } from 'react-toastify';
 import EventPreview from '../../events/EventPreview';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { getFeed, mentionsFinder } from '../../utilities/functions';
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollPreview from './ScrollPreview';
 
 const emojiPickerId = 'emoji-picker-popover';
+
 export default function CreatePost({
     open,
     setOpen,
@@ -58,7 +58,6 @@ export default function CreatePost({
     setSharedResource,
 }) {
     const [createPostErr, setCreatePostErr] = useState(null);
-
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
@@ -71,14 +70,11 @@ export default function CreatePost({
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+
     const [createPost, { loading, data, error }] =
         useMutation(MUTATION_CREATE_POST);
 
-    const {
-        loading: feedLoading,
-        data: feedData,
-        error: feedError,
-    } = useQuery(QUERY_LOAD_SCROLLS, {
+    const { data: feedData } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: { ids: getFeed(profileData), limit: 220 },
         },
@@ -92,12 +88,12 @@ export default function CreatePost({
                 data: ICreatePost,
             },
             refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
+                // {
+                //     query: QUERY_LOAD_SCROLLS,
+                //     variables: {
+                //         data: { ids: getFeed(profileData), limit: 220 },
+                //     },
+                // },
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
@@ -119,21 +115,14 @@ export default function CreatePost({
 
     useEffect(() => {
         !error && !loading && dispatch(loadScrolls(feedData?.Posts?.get));
-    }, [
-        dispatch,
-        feedData?.Posts?.get,
-        feedError,
-        feedLoading,
-        error,
-        loading,
-    ]);
+    }, [dispatch, error, feedData?.Posts?.get, loading]);
 
     useEffect(() => {
         if (sharedResource) {
             setImageDisabled(true);
             setVideoDisabled(true);
         }
-    }, [sharedResource, setImageDisabled, setVideoDisabled]);
+    }, [setImageDisabled, setVideoDisabled, sharedResource]);
 
     const mentions = profileData?.followers?.map?.((item) => {
         return {

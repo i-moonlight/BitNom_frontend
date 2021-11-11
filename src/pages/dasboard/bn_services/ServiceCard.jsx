@@ -22,7 +22,6 @@ export default function ServiceCard() {
                     component="img"
                     style={{ height: 100 }}
                     image={'https://picsum.photos/300/200'}
-                    // title='Contemplative Reptile'
                 />
                 <CardContent
                     style={{

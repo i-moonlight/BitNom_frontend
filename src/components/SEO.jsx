@@ -11,24 +11,34 @@ function SEO(props) {
             htmlAttributes={{ lang: `en` }}
         >
             {/* General tags */}
-            <title>{title}</title>
+            <title>{title || 'BitNorm Website'}</title>
             {/*  <meta charSet="utf-8" /> */}
             <meta name="description" content={description} />
-            <meta name="image" content={image} />
-            <link rel="canonical" href={url} />
+            <meta name="image" content={image || null} />
+            <link rel="canonical" href={url || window.location.origin} />
 
             {/* OpenGraph tags */}
             {resource ? <meta property="og:type" content="article" /> : null}
             <meta property="og:url" content={url} />
             <meta property="og:title" content={title} />
-            <meta property="og:description" content={description} />
-            <meta property="og:image" content={image} />
+            <meta
+                property="og:description"
+                content={
+                    description || 'BitNorm | The ultimate Cryptocurrence suite'
+                }
+            />
+            <meta property="og:image" content={image || null} />
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content="@BitNorm" />
-            <meta name="twitter:title" content={title} />
-            <meta name="twitter:description" content={description} />
-            <meta name="twitter:image" content={image} />
+            <meta name="twitter:title" content={title || 'BitNorm Website'} />
+            <meta
+                name="twitter:description"
+                content={
+                    description || 'BitNorm | The ultimate Cryptocurrency suite'
+                }
+            />
+            <meta name="twitter:image" content={image || null} />
         </Helmet>
     );
 }
@@ -70,7 +80,7 @@ const SchemaFactory = (props) => {
             },
             image: {
                 '@type': 'ImageObject',
-                url: props?.image,
+                url: props?.image || null,
             },
             text: props?.resource?.content,
             headline: props?.resource?.content?.substring(0, 15),

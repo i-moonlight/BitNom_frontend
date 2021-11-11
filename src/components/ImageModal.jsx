@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Dialog, Slide, Grid, IconButton, Typography } from '@mui/material';
 import {
     ArrowBackIos,
@@ -7,80 +7,8 @@ import {
 } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
-
-function Arrow(props) {
-    const { direction, clickFunction } = props;
-    const icon =
-        direction === 'left' ? (
-            <ArrowBackIos fontSize="small" />
-        ) : (
-            <ArrowForwardIos fontSize="small" />
-        );
-
-    return (
-        <IconButton color="inherit" onClick={clickFunction}>
-            {icon}
-        </IconButton>
-    );
-}
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-        ':focus-visibile:': {
-            outline: 'none !important',
-        },
-    };
-}
-
-const useStyles = makeStyles((theme) => ({
-    Container: {
-        height: '600px',
-        overflowX: 'hidden',
-        [theme.breakpoints.down('sm')]: {
-            height: 'fit-content',
-        },
-    },
-    Carousel: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '550px',
-        padding: '10px 50px',
-        margin: 0,
-        [theme.breakpoints.down('sm')]: {
-            height: '300px',
-            padding: '3px',
-            marginBottom: '3px',
-        },
-    },
-    Content: {
-        display: 'flex',
-        height: '550px',
-        padding: '10px',
-        [theme.breakpoints.down('sm')]: {
-            height: 'fit-content',
-            padding: '3px',
-            alignItems: 'center',
-        },
-    },
-    Arrow: {
-        height: '30px',
-        cursor: 'pointer',
-    },
-    Img: {
-        //position: 'absolute',
-        margin: 'auto',
-        overflow: 'scroll',
-        maxWidth: '90%',
-        maxHeight: '550px',
-    },
-}));
+// import { useQuery } from '@apollo/client';
+// import { QUERY_POST_BY_ID } from '../pages/dasboard/utilities/queries';
 
 export default function ImageModal({
     post,
@@ -101,25 +29,33 @@ export default function ImageModal({
 }) {
     const [modalStyle] = useState(getModalStyle);
     const classes = useStyles();
+
     const content = post?.images[imageIndex];
     const numSlides = post?.images?.length;
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
 
-    const onArrowClick = (direction) => {
-        const increment = direction === 'left' ? -1 : 1;
-        const newIndex = (imageIndex + increment + numSlides) % numSlides;
+    // const { data: postData } = useQuery(QUERY_POST_BY_ID, {
+    //     variables: { _id: post?._id },
+    // });
 
-        const oppDirection = direction === 'left' ? 'right' : 'left';
-        setSlideDirection(direction);
-        setSlideIn(false);
+    const onArrowClick = useCallback(
+        (direction) => {
+            const increment = direction === 'left' ? -1 : 1;
+            const newIndex = (imageIndex + increment + numSlides) % numSlides;
 
-        setTimeout(() => {
-            setImageIndex(newIndex);
-            setSlideDirection(oppDirection);
-            setSlideIn(true);
-        }, 500);
-    };
+            const oppDirection = direction === 'left' ? 'right' : 'left';
+            setSlideDirection(direction);
+            setSlideIn(false);
+
+            setTimeout(() => {
+                setImageIndex(newIndex);
+                setSlideDirection(oppDirection);
+                setSlideIn(true);
+            }, 500);
+        },
+        [imageIndex, numSlides, setImageIndex]
+    );
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -136,7 +72,7 @@ export default function ImageModal({
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    });
+    }, [onArrowClick]);
 
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
@@ -205,3 +141,70 @@ export default function ImageModal({
         </Dialog>
     );
 }
+
+function Arrow(props) {
+    const { direction, clickFunction } = props;
+    const icon =
+        direction === 'left' ? (
+            <ArrowBackIos fontSize="small" />
+        ) : (
+            <ArrowForwardIos fontSize="small" />
+        );
+
+    return (
+        <IconButton color="inherit" onClick={clickFunction}>
+            {icon}
+        </IconButton>
+    );
+}
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+        ':focus-visibile:': {
+            outline: 'none !important',
+        },
+    };
+}
+
+const useStyles = makeStyles((theme) => ({
+    Container: {
+        height: '600px',
+        overflowX: 'hidden',
+    },
+    Carousel: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '550px',
+        padding: '10px 50px',
+        margin: 0,
+        [theme.breakpoints.down('sm')]: {
+            padding: '5px',
+        },
+    },
+    Content: {
+        display: 'flex',
+        height: '550px',
+        padding: '10px',
+        [theme.breakpoints.down('sm')]: {
+            padding: '5px',
+            alignItems: 'center',
+        },
+    },
+    Arrow: {
+        height: '30px',
+        cursor: 'pointer',
+    },
+    Img: {
+        margin: 'auto',
+        overflow: 'scroll',
+        maxWidth: '90%',
+        maxHeight: '550px',
+    },
+}));

@@ -4,8 +4,9 @@ import { useHistory } from 'react-router';
 import NavBar from './navbar/dashboard/NavBar';
 
 export default function Screen({ auth, children }) {
-    const state = useSelector((st) => st);
     const history = useHistory();
+    const state = useSelector((st) => st);
+
     const user = state.auth.user;
 
     useEffect(() => {
