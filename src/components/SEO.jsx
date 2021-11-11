@@ -66,7 +66,7 @@ const SchemaFactory = (props) => {
             '@type': 'SocialMediaPosting',
             '@id': props?.url,
             datePublished: moment(props?.resource?.createdAt).format(
-                'YYYY-MM-dd'
+                'YYYY-MM-DD'
             ),
             author: {
                 '@type': 'Person',
@@ -121,8 +121,12 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).toISOString(),
-                endDate: moment(props?.resource?.endDate).toISOString(),
+                startDate: moment(props?.resource?.startDate).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                ),
+                endDate: moment(props?.resource?.endDate).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                ),
                 eventAttendanceMode:
                     'https://schema.org/OfflineEventAttendanceMode',
                 eventStatus: 'https://schema.org/EventScheduled',
@@ -151,8 +155,12 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).toISOString(),
-                endDate: moment(props?.resource?.endDate).toISOString(),
+                startDate: moment(props?.resource?.startDate).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                ),
+                endDate: moment(props?.resource?.endDate).format(
+                    'YYYY-MM-DDTHH:mm:ssZ'
+                ),
                 eventAttendanceMode:
                     'https://schema.org/OnlineEventAttendanceMode',
                 eventStatus: 'https://schema.org/EventScheduled',
