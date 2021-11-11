@@ -47,7 +47,7 @@ export default function ScrollPreview({ scroll }) {
                                 process.env.REACT_APP_BACKEND_URL +
                                 scroll?.author?.profile_pic
                             }
-                            sx={{ width: '30px', height: '30px' }}
+                            sx={{ width: '28px', height: '28px' }}
                         >
                             <Typography variant="body2">
                                 {authorInitials}
@@ -55,19 +55,20 @@ export default function ScrollPreview({ scroll }) {
                         </Avatar>
                     }
                     title={
-                        <div className="center-horizontal">
-                            <Typography
-                                variant="body2"
-                                style={{ marginRight: 8 }}
-                            >
-                                <strong>{scroll?.author?.displayName}</strong>
+                        <div className="d-flex align-items-center">
+                            <Typography variant="body2">
+                                {scroll?.author?.displayName}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                                {`@${scroll?.author?._id}`}
+                                {` @${scroll?.author?._id}`}
                             </Typography>
                         </div>
                     }
-                    subheader={moment(scroll?.createdAt).fromNow()}
+                    subheader={
+                        <Typography variant="body2">
+                            {moment(scroll?.createdAt).fromNow()}
+                        </Typography>
+                    }
                 />
                 <CardContent>
                     <Typography
@@ -84,7 +85,7 @@ export default function ScrollPreview({ scroll }) {
                             style={{ zIndex: 2 }}
                         ></Typography>
                         <br />
-                        <Grid container spacing={2} className="mb-2">
+                        <Grid container style={{ margin: '3px 0px' }}>
                             {(scroll?.video?.length > 0 ||
                                 scroll?.video?.path) && (
                                 <Grid item xs={12}>
@@ -104,7 +105,7 @@ export default function ScrollPreview({ scroll }) {
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        className="mt-3"
+                                        style={{ zIndex: 2, padding: '1px' }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}

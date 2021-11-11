@@ -204,7 +204,7 @@ export default function CreatePost({
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -215,11 +215,14 @@ export default function CreatePost({
                 <Grid item lg={3} md={2} sm={1} xs={1}></Grid>
                 <Grid item lg={6} md={8} sm={10} xs={10}>
                     <Card>
-                        <div className="space-between mx-3 my-2 center-horizontal">
+                        <div
+                            className="space-between center-horizontal"
+                            style={{ margin: '2px' }}
+                        >
                             <Typography variant="body2"></Typography>
                             <Typography variant="body1">
                                 {sharedResource
-                                    ? `Share to your followers`
+                                    ? `Share to your friends`
                                     : 'Create Post'}
                             </Typography>
                             <IconButton
@@ -462,9 +465,6 @@ export default function CreatePost({
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
-                                        style={{
-                                            marginRight: '2px',
-                                        }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
@@ -481,9 +481,6 @@ export default function CreatePost({
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
-                                        style={{
-                                            marginRight: '2px',
-                                        }}
                                     >
                                         <VideocamRounded />
                                     </IconButton>
@@ -495,9 +492,6 @@ export default function CreatePost({
                                         onClick={(e) => {
                                             handleEmojiPickerOpen(e);
                                         }}
-                                        style={{
-                                            marginRight: '2px',
-                                        }}
                                     >
                                         <InsertEmoticon />
                                     </IconButton>
@@ -505,11 +499,7 @@ export default function CreatePost({
                                         return (
                                             <IconButton
                                                 size="small"
-                                                //className="m-1 p-1"
                                                 key={`${Math.random() * 1000}`}
-                                                style={{
-                                                    marginRight: '2px',
-                                                }}
                                             >
                                                 <Icon />
                                             </IconButton>
@@ -517,7 +507,10 @@ export default function CreatePost({
                                     })}
                                 </div>
                                 {!loading && (
-                                    <Button onClick={handleCreatePost}>
+                                    <Button
+                                        size="small"
+                                        onClick={handleCreatePost}
+                                    >
                                         Post
                                     </Button>
                                 )}

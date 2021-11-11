@@ -1026,7 +1026,7 @@ export default function EventView() {
                                                                 ?.getById?.host
                                                                 ?._id ===
                                                             profile?._id
-                                                                ? 'Your event has not attendees yet. Invite your friends. or share to your followers'
+                                                                ? '0 Attendees. Invite your network or share to your friends'
                                                                 : '0 Attendees'}
                                                         </Typography>
                                                     </Grid>

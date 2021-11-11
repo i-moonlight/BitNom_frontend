@@ -850,7 +850,7 @@ function PostView() {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <div style={{ padding: '5px' }}>
+                                        <div style={{ padding: '3px' }}>
                                             <div className="d-flex align-items-center">
                                                 <Hidden smDown>
                                                     <Avatar
@@ -949,7 +949,6 @@ function PostView() {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    //className='m-1 p-1'
                                                     onClick={() => {
                                                         document
                                                             .getElementsByClassName(
@@ -962,7 +961,6 @@ function PostView() {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    className="m-1 p-1"
                                                     onClick={
                                                         handleCreateComment
                                                     }

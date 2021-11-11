@@ -322,7 +322,6 @@ export default function Comment({
                                 </Typography>
                                 <IconButton
                                     size="small"
-                                    //className="m-1 p-1"
                                     aria-label="show more"
                                     aria-controls={commentOptionId}
                                     aria-haspopup="true"
@@ -609,7 +608,6 @@ export default function Comment({
                                 </IconButton>
                                 <IconButton
                                     size="small"
-                                    className="m-1 p-1"
                                     onClick={handleCreateReply}
                                 >
                                     <Send />

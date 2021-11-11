@@ -396,10 +396,7 @@ export default function ScrollImage({
                     elevation={0}
                     style={{ overflowY: 'auto', width: '100%' }}
                 >
-                    <div
-                        style={{ zIndex: 1 }}
-                        //onClick={() => history.push(`/posts/${scroll?._id}`)}
-                    >
+                    <div style={{ zIndex: 1 }}>
                         <CardHeader
                             avatar={
                                 <Avatar
@@ -622,7 +619,7 @@ export default function ScrollImage({
                         )}
                     </CardActionArea>
                     {openComments && (
-                        <div style={{ padding: '5px' }}>
+                        <div style={{ padding: '3px' }}>
                             <div className="d-flex align-items-center">
                                 <Hidden smDown>
                                     <Avatar
@@ -699,9 +696,7 @@ export default function ScrollImage({
                                 </IconButton>
                                 <IconButton
                                     size="small"
-                                    //className='m-1 p-1'
                                     onClick={() => {
-                                        //setOpenImage(true);
                                         document
                                             .getElementsByClassName(
                                                 'comment-dropzone'
@@ -713,7 +708,6 @@ export default function ScrollImage({
                                 </IconButton>
                                 <IconButton
                                     size="small"
-                                    className="m-1 p-1"
                                     onClick={handleCreateComment}
                                 >
                                     <Send />
@@ -742,7 +736,6 @@ export default function ScrollImage({
                                             <DropzoneArea
                                                 clearOnUnmount
                                                 dropzoneClass="comment-dropzone"
-                                                //id="dropzone"
                                                 clickable={true}
                                                 onChange={(files) => {
                                                     const errors = [];
