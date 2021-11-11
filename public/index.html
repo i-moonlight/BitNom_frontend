@@ -92,9 +92,8 @@
                 height: 100%;
                 background-color: #000;
                 z-index: 2100;
-            "> -->
-    <!-- <img style='width:50px;height:50px' src='%PUBLIC_URL%/logo.svg' alt="Logo image"></img> -->
-    <!-- <div class="preloader-speeding-wheel"></div>
+            ">
+        <div class="preloader-speeding-wheel"></div>
     </div> -->
     <!--
       This HTML file is a template.
@@ -111,8 +110,10 @@
     <script>
         window.onload = function () {
             console.log('Loaded ==>');
-            document.getElementById('preloader-body').style.display =
-                'none';
+            let preLoader = document.getElementById('preloader-body')
+            if (preLoader) {
+                preLoader.style.display = 'none';
+            }
         };
     </script>
 </body>

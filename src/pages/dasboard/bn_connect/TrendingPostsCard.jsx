@@ -43,6 +43,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                     Trending Posts
                 </Typography>
                 {loading &&
+                    trending?.length < 1 &&
                     [1, 2, 3].map((post) => (
                         <ListItem
                             key={post}
@@ -130,14 +131,15 @@ export default function TrendingPostsCard({ trending, loading }) {
                             />
                         </ListItem>
                     ))}
-                {!loading && trending?.length === 0 && (
-                    <Grid className="p-2">
-                        <Typography color="Primary" variant="body2">
-                            Trending posts will appear hear..start
-                            participating.
-                        </Typography>
-                    </Grid>
-                )}
+                {(!loading && trending?.length === 0) ||
+                    (!trending && (
+                        <Grid className="p-2">
+                            <Typography color="Primary" variant="body2">
+                                Trending posts will appear here ... start
+                                participating.
+                            </Typography>
+                        </Grid>
+                    ))}
             </List>
         </Paper>
     );
