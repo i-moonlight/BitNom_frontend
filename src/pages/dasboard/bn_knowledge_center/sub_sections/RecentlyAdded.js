@@ -52,11 +52,7 @@ export default function RecentlyAdded() {
         <>
             {coinsLoaded ? (
                 <TableContainer component={Paper}>
-                    <Table
-                        sx={{ maxHeight: 500 }}
-                        aria-label="coins table"
-                        stickyHeader
-                    >
+                    <Table sx={{ maxHeight: 500 }} aria-label="coins table" stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell>#</StyledTableCell>
