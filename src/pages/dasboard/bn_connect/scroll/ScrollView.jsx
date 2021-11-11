@@ -394,6 +394,7 @@ function PostView() {
                               postData?.Posts?.getById?.images[0]
                         : null
                 }
+                resource={postData?.Posts?.getById}
             />
             <ToastContainer
                 position="bottom-left"

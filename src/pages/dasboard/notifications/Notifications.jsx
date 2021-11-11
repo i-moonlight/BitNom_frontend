@@ -14,6 +14,7 @@ import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
 import NotificationsListCard from './NotificationsListCard';
 
@@ -41,6 +42,11 @@ export default function Notifications() {
 
     return (
         <Screen>
+            <SEO
+                title="Notifications | Bitnorm"
+                url={`${window.location.origin}/notifications`}
+                description={`Notifications from your activity on Bitnorm`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

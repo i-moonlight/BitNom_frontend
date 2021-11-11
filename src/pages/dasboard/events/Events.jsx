@@ -32,6 +32,7 @@ import {
 } from '../utilities/queries';
 import CreateEvent from './CreateEvent';
 import CreateEventCard from './CreateEventCard';
+import SEO from '../../../components/SEO';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +79,11 @@ export default function Events() {
 
     return (
         <Screen>
+            <SEO
+                title="Your Events | Bitnorm"
+                url={`${window.location.origin}/events`}
+                description={`All Events`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
