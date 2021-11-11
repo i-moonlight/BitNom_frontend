@@ -4,7 +4,7 @@ import { helmetJsonLdProp } from 'react-schemaorg';
 import moment from 'moment';
 
 function SEO(props) {
-    const { title, description, url, image } = props;
+    const { title, description, url, image, resource } = props;
     return (
         <Helmet
             script={[helmetJsonLdProp(SchemaFactory(props))]}
@@ -12,11 +12,13 @@ function SEO(props) {
         >
             {/* General tags */}
             <title>{title}</title>
-            <meta charSet="utf-8" />
+            {/*  <meta charSet="utf-8" /> */}
             <meta name="description" content={description} />
             <meta name="image" content={image} />
             <link rel="canonical" href={url} />
+
             {/* OpenGraph tags */}
+            {resource ? <meta property="og:type" content="article" /> : null}
             <meta property="og:url" content={url} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
@@ -61,10 +63,16 @@ const SchemaFactory = (props) => {
                 name: props?.resource?.author?.displayName,
                 url: `https://${location.origin}/users/${props?.resource?.author?._id}/`,
             },
+            publisher: {
+                '@type': 'Organization',
+                name: 'Bitnorm',
+                url: location.origin,
+            },
             image: {
                 '@type': 'ImageObject',
                 url: props?.image,
             },
+            text: props?.resource?.content,
             headline: props?.resource?.content?.substring(0, 15),
             sharedContent: props?.resource?.shared_resource?._id
                 ? {
@@ -122,6 +130,11 @@ const SchemaFactory = (props) => {
                     name: props?.resource?.organizers[0].displayName,
                     url: `https://${location.origin}/users/${props?.resource?.organizers[0]._id}/`,
                 },
+                publisher: {
+                    '@type': 'Organization',
+                    name: 'Bitnorm',
+                    url: location.origin,
+                },
             });
         } else {
             schema = JSON.stringify({
@@ -146,6 +159,11 @@ const SchemaFactory = (props) => {
                     '@type': 'Person',
                     name: props?.resource?.organizers[0].displayName,
                     url: `https://${location.origin}/users/${props?.resource?.organizers[0]._id}/`,
+                },
+                publisher: {
+                    '@type': 'Organization',
+                    name: 'Bitnorm',
+                    url: location.origin,
                 },
             });
         }
