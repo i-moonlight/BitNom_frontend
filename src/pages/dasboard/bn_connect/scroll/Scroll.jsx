@@ -155,7 +155,7 @@ export default function Scroll({
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: scroll?._id } },
     });
-    console.log(scroll, 'scroll');
+
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {

@@ -245,7 +245,7 @@ export default function Comment({
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
     //moment js single letter formatting for comments
-    moment.locale('en', {
+    moment.updateLocale('en', {
         relativeTime: {
             future: 'in %s',
             past: '%s',
