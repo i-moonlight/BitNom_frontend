@@ -372,13 +372,10 @@ export default function EventView({ match }) {
                                             image={
                                                 eventData?.Events?.getById
                                                     ?.image &&
-                                                eventData?.Events?.getById
-                                                    ?.image !== null
-                                                    ? process.env
-                                                          .REACT_APP_BACKEND_URL +
-                                                      eventData?.Events?.getById
-                                                          ?.image
-                                                    : 'https://picsum.photos/400/500'
+                                                process.env
+                                                    .REACT_APP_BACKEND_URL +
+                                                    eventData?.Events?.getById
+                                                        ?.image
                                             }
                                             component="img"
                                             // title='Contemplative Reptile'

@@ -4,9 +4,9 @@ import {
     ChevronRight,
     CloseRounded,
     ImageRounded,
+    InsertEmoticon,
     Public,
     VideocamRounded,
-    InsertEmoticon,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -28,17 +28,15 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
+import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
-//import TextField from '../../../../components/TextField';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
-    mentionsFinder,
     getFeed,
+    mentionsFinder,
     mentionsUpdate,
 } from '../../utilities/functions';
 import {
@@ -46,6 +44,7 @@ import {
     MUTATION_UPDATE_POST,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
+import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 
 const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({
@@ -75,14 +74,9 @@ export default function UpdatePost({
 
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const [
-        updatePost,
-        {
-            loading,
-            // data,
-            //  error
-        },
-    ] = useMutation(MUTATION_UPDATE_POST);
+
+    const [updatePost, { loading }] = useMutation(MUTATION_UPDATE_POST);
+
     const [deletePost] = useMutation(MUTATION_DELETE_POST);
 
     const onDeletePost = async (id) => {
@@ -91,12 +85,12 @@ export default function UpdatePost({
                 _id: id,
             },
             refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
+                // {
+                //     query: QUERY_LOAD_SCROLLS,
+                //     variables: {
+                //         data: { ids: getFeed(profileData), limit: 220 },
+                //     },
+                // },
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
@@ -114,6 +108,7 @@ export default function UpdatePost({
         setOpenVideo(false);
         setPostToEdit(null);
     };
+
     const onUpdatePost = async (IUpdatePost) => {
         await updatePost({
             variables: {
@@ -182,6 +177,7 @@ export default function UpdatePost({
             images: scroll_images,
             video: scroll_video,
         });
+
         setUpdateScrollOpen(false);
     };
 

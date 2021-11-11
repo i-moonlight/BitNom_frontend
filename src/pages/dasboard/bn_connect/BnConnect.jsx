@@ -10,11 +10,7 @@ import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
 import { getFeed } from '../utilities/functions';
-import {
-    QUERY_FETCH_PROFILE,
-    QUERY_GET_USERS,
-    QUERY_LOAD_SCROLLS,
-} from '../utilities/queries';
+import { QUERY_GET_USERS, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
@@ -60,30 +56,20 @@ export default function BnConnect() {
     const [flaggedResource, setFlaggedResource] = useState(null);
     const [openShareModal, setOpenShareModal] = useState(false);
 
+    const classes = useStyles();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
-    const classes = useStyles();
-    const mdDown = useMediaQuery('(max-width:1279px)');
-    const smDown = useMediaQuery('(max-width:959px)');
 
     const user = state.auth.user;
     const posts = state.posts.list;
+    const trending = state.posts.trending;
 
-    const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
+    const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
-    const profile = profileData?.Users?.profile;
-
-    const {
-        loading: scrollLoading,
-        data: scrollData,
-        error: scrollError,
-    } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: {
-            data: { ids: getFeed(profile), limit: 220 },
-        },
-    });
+    // const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
+    //     context: { clientName: 'users' },
+    // });
 
     const { data: usersData } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
@@ -95,13 +81,23 @@ export default function BnConnect() {
     );
 
     const {
+        loading: scrollLoading,
+        data: scrollData,
+        error: scrollError,
+    } = useQuery(QUERY_LOAD_SCROLLS, {
+        variables: {
+            data: { ids: getFeed(user), limit: 220 },
+        },
+    });
+
+    const {
         loading: trendingLoading,
         data: trendingData,
         error: trendingError,
     } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: {
-                ids: getFeed(profile),
+                ids: getFeed(user),
                 sortByField: 'trending',
                 limit: 5,
             },
@@ -109,12 +105,12 @@ export default function BnConnect() {
     });
 
     useEffect(() => {
+        !trendingError &&
+            !trendingLoading &&
+            dispatch(loadTrending(trendingData?.Posts?.get));
         !scrollError &&
             !scrollLoading &&
             dispatch(loadScrolls(scrollData?.Posts?.get));
-        !trendingError &&
-            trendingLoading &&
-            dispatch(loadTrending(trendingData?.Posts?.get));
     }, [
         dispatch,
         scrollData?.Posts?.get,
@@ -168,14 +164,8 @@ export default function BnConnect() {
                             <Grid item lg={3}>
                                 <Suspense fallback={<SkeletonUserCard />}>
                                     <UserCard
-                                        following={
-                                            profileData?.Users?.profile
-                                                ?.following?.length
-                                        }
-                                        followers={
-                                            profileData?.Users?.profile
-                                                ?.followers?.length
-                                        }
+                                        following={user?.following?.length}
+                                        followers={user?.followers?.length}
                                         setOpen={(open) =>
                                             setCreateScrollOpen(open)
                                         }
@@ -196,12 +186,10 @@ export default function BnConnect() {
                                 />
                             </Suspense>
                             <Grid item align="center">
-                                {scrollLoading && (
-                                    // <CircularProgress
-                                    //     color="primary"
-                                    //     size={60}
-                                    //     thickness={6}
-                                    // />
+                                {false && (
+                                    // scrollLoading
+                                    // TODO
+
                                     <Typography
                                         className="my-2"
                                         color="primary"
@@ -210,13 +198,12 @@ export default function BnConnect() {
                                     </Typography>
                                 )}
                             </Grid>
-
                             {posts?.map((scroll) => (
                                 <Scroll
                                     setOpen={() => setCreateScrollOpen(true)}
                                     setOpenShareModal={setOpenShareModal}
                                     setUpdateOpen={setUpdateScrollOpen}
-                                    profileData={profileData?.Users?.profile}
+                                    profileData={user}
                                     setUpdateCommentOpen={setUpdateCommentOpen}
                                     setOpenFlag={setCreateFlagOpen}
                                     setFlaggedResource={setFlaggedResource}
@@ -240,7 +227,7 @@ export default function BnConnect() {
                                     }}
                                 />
                             ))}
-                            {scrollData?.Posts?.get?.length < 1 && (
+                            {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="h5" color="primary">
                                         .
@@ -255,14 +242,8 @@ export default function BnConnect() {
                                         fallback={<SkeletonTrendingPostsCard />}
                                     >
                                         <TrendingPostsCard
-                                            trending={
-                                                trendingData?.Posts?.get
-                                                // state.posts.trending
-                                            }
-                                            loading={
-                                                trendingLoading
-                                                // false
-                                            }
+                                            trending={trending}
+                                            loading={trendingLoading}
                                         />
                                     </Suspense>
                                     <Suspense
@@ -271,9 +252,7 @@ export default function BnConnect() {
                                         }
                                     >
                                         <SuggestedPeopleCard
-                                            profileData={
-                                                profileData?.Users?.profile
-                                            }
+                                            profileData={user}
                                             suggestedUsers={suggestedUsers}
                                         />
                                     </Suspense>
@@ -284,7 +263,7 @@ export default function BnConnect() {
                 </Container>
             </div>
             <CreatePost
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 open={createScrollOpen}
                 setOpen={(open) => setCreateScrollOpen(open)}
                 openImage={openImage}
@@ -299,7 +278,7 @@ export default function BnConnect() {
                 setSharedResource={setSharedResource}
             />
             <UpdatePost
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 updateScrollOpen={updateScrollOpen}
                 postToEdit={postToEdit}
                 setPostToEdit={setPostToEdit}
@@ -316,7 +295,7 @@ export default function BnConnect() {
                 setOpenVideo={setOpenVideo}
             />
             <UpdateComment
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 updateCommentOpen={updateCommentOpen}
                 commentToEdit={commentToEdit}
                 setCommentToEdit={setCommentToEdit}
@@ -334,26 +313,28 @@ export default function BnConnect() {
                     setImagePreviewURL(null);
                 }}
             />
-            <ImageModal
-                open={imageModalOpen}
-                setImageIndex={setImageIndex}
-                imageIndex={imageIndex}
-                post={postToPreview}
-                onClose={() => {
-                    setImageModalOpen(false);
-                    setPostToPreview(null);
-                    setImageIndex(null);
-                }}
-                setOpen={() => setCreateScrollOpen(true)}
-                profileData={profileData?.Users?.profile}
-                setUpdateCommentOpen={setUpdateCommentOpen}
-                setOpenFlag={setCreateFlagOpen}
-                setFlaggedResource={setFlaggedResource}
-                setOpenReactions={setOpenReactions}
-                setResourceReactions={setResourceReactions}
-                setSharedResource={setSharedResource}
-                setCommentToEdit={setCommentToEdit}
-            />
+            {postToPreview && (
+                <ImageModal
+                    open={imageModalOpen}
+                    setImageIndex={setImageIndex}
+                    imageIndex={imageIndex}
+                    post={postToPreview}
+                    onClose={() => {
+                        setImageModalOpen(false);
+                        setPostToPreview(null);
+                        setImageIndex(null);
+                    }}
+                    setOpen={() => setCreateScrollOpen(true)}
+                    profileData={user}
+                    setUpdateCommentOpen={setUpdateCommentOpen}
+                    setOpenFlag={setCreateFlagOpen}
+                    setFlaggedResource={setFlaggedResource}
+                    setOpenReactions={setOpenReactions}
+                    setResourceReactions={setResourceReactions}
+                    setSharedResource={setSharedResource}
+                    setCommentToEdit={setCommentToEdit}
+                />
+            )}
             <FlagResourceModal
                 openFlag={createFlagOpen}
                 setOpenFlag={(openFlag) => setCreateFlagOpen(openFlag)}

@@ -63,14 +63,9 @@ export default function UpdateComment({
 
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const [
-        updateComment,
-        {
-            loading,
-            // data,
-            //  error
-        },
-    ] = useMutation(MUTATION_UPDATE_COMMENT);
+
+    const [updateComment, { loading }] = useMutation(MUTATION_UPDATE_COMMENT);
+
     const [deleteComment] = useMutation(MUTATION_DELETE_COMMENT);
 
     const onDeleteComment = async (id) => {
@@ -173,7 +168,6 @@ export default function UpdateComment({
             <Modal
                 style={{
                     outline: 'none',
-
                     '&:focus-visible': {
                         outline: 'none',
                     },
