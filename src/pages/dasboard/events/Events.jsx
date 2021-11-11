@@ -303,12 +303,12 @@ function EventPreview({ event }) {
                             </Typography>
                         )}
                         <Typography
-                            style={{ textTransform: 'uppercase' }}
+                            style={{ textTransform: 'capitalize' }}
                             variant="body2"
                         >
                             {event?.location?.type === 'physical'
                                 ? event?.title
-                                : `${event?.title} (Virtual) `}
+                                : `${event?.title} - Virtual `}
                         </Typography>
                         {event?.location?.type === 'physical' ? (
                             <div className="center-horizontal">
@@ -316,6 +316,7 @@ function EventPreview({ event }) {
                                 <Typography
                                     color="primary"
                                     style={{ textDecoration: 'underline' }}
+                                    variant="body2"
                                 >
                                     <a
                                         href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
@@ -340,6 +341,7 @@ function EventPreview({ event }) {
                                 <Typography
                                     color="primary"
                                     style={{ textDecoration: 'underline' }}
+                                    variant="body2"
                                 >
                                     <a
                                         //component='a'

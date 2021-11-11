@@ -9,7 +9,7 @@ import {
     useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
-import CreateChatPrompt from '../../thread_view/create_chat_prompt';
+import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
 // import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 

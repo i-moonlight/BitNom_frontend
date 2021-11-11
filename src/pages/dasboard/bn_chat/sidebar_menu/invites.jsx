@@ -22,7 +22,7 @@ export default function Invites({ invites, loading }) {
     };
     return (
         <>
-            {invites && invites.length > 0 && (
+            {invites && invites?.length > 0 && (
                 <List
                     component="nav"
                     subheader={
@@ -39,8 +39,8 @@ export default function Invites({ invites, loading }) {
                     ))}
                 </List>
             )}
-            {loading && !invites.length > 0 && <CircularProgress />}
-            {!loading && !invites.length > 0 && (
+            {loading && !invites?.length > 0 && <CircularProgress />}
+            {!loading && !invites?.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"

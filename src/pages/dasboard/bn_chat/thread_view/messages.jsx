@@ -13,19 +13,21 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
+    updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
 import {
     GET_DIALOGUE_MESSAGES,
+    MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import AwaitResponse from './await_response';
-import InviteView from './invite_view';
+import AwaitResponse from './AwaitResponse';
+import InviteView from './InviteView';
 import Message from './message';
-import NoChatSelected from './no_chat_selected';
-import EmptyMessages from './no_messages';
-import SendMessage from './send_message';
+import NoChatSelected from './NoChatSelected';
+import EmptyMessages from './NoMessages';
+import SendMessage from './SendMessage';
 import Blocked from './blocked';
 import PinnedMessages from './PinnedMessages';
 
@@ -67,7 +69,13 @@ export default function Messages({ onExitChatMobile }) {
             },
         }
     );
-    console.log('EDIT', editText);
+
+    const { data: messageUpdateData } = useSubscription(MESSAGE_UPDATE_SUB, {
+        variables: {
+            _id: dialogue._id,
+        },
+    });
+
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
@@ -76,12 +84,18 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, subscriptionData?.newMessage]);
 
     useEffect(() => {
+        if (messageUpdateData?.messageUpdate) {
+            dispatch(updateMessage(messageUpdateData?.messageUpdate));
+        }
+    }, [dispatch, messageUpdateData?.messageUpdate]);
+
+    useEffect(() => {
         dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
-        if (data?.Dialogue?.getMessages.length > 0) {
+        if (data?.Dialogue?.getMessages?.length > 0) {
             endRef.current.scrollIntoView();
         }
     }, [data?.Dialogue?.getMessages, dispatch]);
@@ -107,7 +121,7 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins && messagePins.length > 0 && (
+                    {messagePins && messagePins?.length > 0 && (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
@@ -139,25 +153,31 @@ export default function Messages({ onExitChatMobile }) {
             {dialogue.status === 'new' &&
                 dialogue?.initiator?.info?._id === user?._id &&
                 !loading &&
-                !messages.length > 0 && <AwaitResponse dialogue={dialogue} />}
+                !messages?.length > 0 && <AwaitResponse dialogue={dialogue} />}
             <div
                 style={{
                     overflowY: 'auto',
                     minHeight:
                         open === true
                             ? '37vh'
-                            : open === true && messagePins.length > 0
+                            : open === true && messagePins?.length > 0
                             ? '30vh'
-                            : messagePins.length > 0
+                            : messagePins?.length > 0
                             ? '37vh'
+                            : typeof replyText !== 'undefined' ||
+                              typeof editText !== 'undefined'
+                            ? '48vh'
                             : '50vh',
                     height:
                         open === true
                             ? window.innerHeight - 750
-                            : open === true && messagePins.length > 0
+                            : open === true && messagePins?.length > 0
                             ? window.innerHeight - 750
-                            : messagePins.length > 0
+                            : messagePins?.length > 0
                             ? window.innerHeight - 500
+                            : typeof replyText !== 'undefined' ||
+                              typeof editText !== 'undefined'
+                            ? window.innerHeight - 450
                             : window.innerHeight - 372,
                 }}
             >
@@ -167,7 +187,7 @@ export default function Messages({ onExitChatMobile }) {
                         <InviteView dialogue={dialogue} />
                     )}
                 {dialogue.status === 'accepted' &&
-                    !messages.length > 0 &&
+                    !messages?.length > 0 &&
                     !loading && <EmptyMessages />}
                 {dialogue.status === 'accepted' &&
                 filteredMessages &&
@@ -214,14 +234,14 @@ export default function Messages({ onExitChatMobile }) {
             <div>
                 {dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length > 0 &&
+                    messages?.length > 0 &&
                     (dialogue.recipient.blocked === true ||
                         dialogue.initiator.blocked === true) && <Blocked />}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
                     messages &&
-                    messages.length > 0 &&
+                    messages?.length > 0 &&
                     (dialogue.recipient.blocked === false ||
                         dialogue.initiator.blocked === false) && (
                         <SendMessage
@@ -231,13 +251,16 @@ export default function Messages({ onExitChatMobile }) {
                             setOpen={setOpen}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
+                            editText={editText}
+                            setEditText={() => setEditText(undefined)}
+                            onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
             </div>
             <div>
                 {dialogue.status === 'accepted' &&
                     !loading &&
-                    !messages.length > 0 &&
+                    !messages?.length > 0 &&
                     (dialogue.recipient.blocked === false ||
                         dialogue.initiator.blocked === false) && (
                         <SendMessage
@@ -247,6 +270,8 @@ export default function Messages({ onExitChatMobile }) {
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
+                            editText={editText}
+                            onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
             </div>

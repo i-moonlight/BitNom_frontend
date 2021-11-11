@@ -9,7 +9,7 @@ import {
 import { PushPin } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPinnedChat } from '../../../../store/actions/chatActions';
+import { setCurrentChat } from '../../../../store/actions/chatActions';
 import Chat from './chat';
 
 export default function Pinned({ pinned, loading }) {
@@ -18,12 +18,12 @@ export default function Pinned({ pinned, loading }) {
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
-            dispatch(addPinnedChat(chat));
+            dispatch(setCurrentChat(chat));
         }
     };
     return (
         <>
-            {pinned && pinned.length > 0 && (
+            {pinned && pinned?.length > 0 && (
                 <List
                     component="nav"
                     subheader={
@@ -42,8 +42,8 @@ export default function Pinned({ pinned, loading }) {
                     ))}
                 </List>
             )}
-            {loading && !pinned.length > 0 && <CircularProgress />}
-            {!loading && !pinned.length > 0 && (
+            {loading && !pinned?.length > 0 && <CircularProgress />}
+            {!loading && !pinned?.length > 0 && (
                 <Grid
                     alignItems="centre"
                     justifyContent="centre"

@@ -16,7 +16,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
@@ -37,20 +37,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HashtagView({ match }) {
+export default function HashtagView() {
     const [value, setValue] = React.useState(0);
     const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
     const [imagePreviewURL, setImagePreviewURL] = useState(null);
 
     const history = useHistory();
     const classes = useStyles();
+    const { hashtag } = useParams();
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { data: taggedPosts, loading: taggedPostsLoading } = useQuery(
         QUERY_POSTS_BY_HASHTAG,
         {
             variables: {
-                hashtag: `#${match?.params?.hashtag}`,
+                hashtag: `#${hashtag}`,
             },
         }
     );
@@ -59,7 +60,7 @@ export default function HashtagView({ match }) {
         QUERY_EVENTS_BY_HASHTAG,
         {
             variables: {
-                hashtag: `#${match?.params?.hashtag}`,
+                hashtag: `#${hashtag}`,
             },
         }
     );
@@ -99,8 +100,8 @@ export default function HashtagView({ match }) {
         <Screen>
             <SEO
                 title="Hashtag | Bitnorm"
-                url={`${window.location.origin}/hashtags/${match?.params?.hashtag}`}
-                description={`#${match?.params?.hashtag}`}
+                url={`${window.location.origin}/hashtags/${hashtag}`}
+                description={`#${hashtag}`}
             />
             <div className={classes.root}>
                 <Container maxWidth="lg">
@@ -140,7 +141,7 @@ export default function HashtagView({ match }) {
                                         title={
                                             <div className="center-horizontal">
                                                 <Typography variant="h6">
-                                                    {`#${match?.params?.hashtag}`}
+                                                    {`#${hashtag}`}
                                                 </Typography>
                                             </div>
                                         }
@@ -280,7 +281,7 @@ export default function HashtagView({ match }) {
                                             variant="h6"
                                             color="primary"
                                         >
-                                            {`0 results for #${match?.params?.hashtag}`}
+                                            {`0 results for #${hashtag}`}
                                         </Typography>
                                     </Grid>
                                 ) : (

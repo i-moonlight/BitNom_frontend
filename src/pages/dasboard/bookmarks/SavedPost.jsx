@@ -21,11 +21,7 @@ import SavedItemsOptionPopover from './SavedItemsOptionPopover';
 
 const savedItemOptionId = 'menu-savedItem-option';
 
-export default function SavedPost({
-    scroll,
-    setImagePreviewOpen,
-    setImagePreviewURL,
-}) {
+export default function SavedPost({ scroll }) {
     const [savedItemOptionAnchorEl, setSavedItemOptionAnchorEl] =
         useState(null);
     const isSavedItemOptionOpen = Boolean(savedItemOptionAnchorEl);
@@ -54,7 +50,7 @@ export default function SavedPost({
                 style={{ marginBottom: 16, zIndex: 1 }}
                 onClick={() => history.push(`/posts/${scroll?._id}`)}
             >
-                <CardActionArea disableRipple>
+                <CardActionArea style={{ margin: 0, padding: 0 }} disableRipple>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -122,7 +118,7 @@ export default function SavedPost({
                                 style={{ zIndex: 2 }}
                             ></Typography>
                         </Typography>
-                        <Grid container spacing={2} className="mb-2">
+                        <Grid container style={{ margin: '3px 0px' }}>
                             {scroll?.video?.path && (
                                 <Grid item xs={12}>
                                     <CardMedia
@@ -130,24 +126,19 @@ export default function SavedPost({
                                         poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
                                         src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
                                         controls
+                                        preload="metadata"
                                     />
                                 </Grid>
                             )}
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        className="mt-3"
+                                        style={{
+                                            padding: '1px',
+                                        }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}
-                                        onClick={() => {
-                                            setImagePreviewURL(
-                                                process.env
-                                                    .REACT_APP_BACKEND_URL +
-                                                    imageURL
-                                            );
-                                            setImagePreviewOpen(true);
-                                        }}
                                     >
                                         <div
                                             style={{

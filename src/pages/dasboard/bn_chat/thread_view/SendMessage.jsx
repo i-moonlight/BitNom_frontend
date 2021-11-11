@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import {
     AttachFile,
@@ -21,7 +21,7 @@ import {
     CardContent,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
-import { CREATE_DIALOGUE_MESSAGE } from '../graphql/queries';
+import { CREATE_DIALOGUE_MESSAGE, UPDATE_MESSAGE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
@@ -35,6 +35,9 @@ export default function SendMessage({
     setReplyText,
     open,
     setOpen,
+    editText,
+    setEditText,
+    onCancelMessageUpdate,
 }) {
     const [text, setText] = useState('');
 
@@ -70,6 +73,8 @@ export default function SendMessage({
         },
     });
 
+    const [updateMessage] = useMutation(UPDATE_MESSAGE);
+
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
             variables: {
@@ -85,6 +90,16 @@ export default function SendMessage({
         setMessageGif(null);
         setOpen(false);
         setReplyText();
+    };
+    const onUpdateMessage = async (IUpdateMessage) => {
+        await updateMessage({
+            variables: {
+                data: IUpdateMessage,
+            },
+            context: { clientName: 'chat' },
+        });
+        setText('');
+        setEditText();
     };
 
     const handleChange = (e) => {
@@ -107,22 +122,19 @@ export default function SendMessage({
             documents: message_docs,
         });
     };
+
+    const handleUpdateMessage = (e) => {
+        e.preventDefault();
+        onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
+    };
+    useEffect(() => {
+        setText(editText?.text);
+    }, [editText]);
     return (
         <>
             {' '}
             {replyText && (
-                <Card
-                    variant="outlined"
-                    style={{
-                        backgroundColor: '#93c7f5',
-                        marginLeft: '8px',
-                        marginRight: '8px',
-                        marginTop: '8px',
-                        borderWidth: '0px 0px 0px 7px ',
-                        borderRadius: '5px 2px 2px 5px',
-                        height: '60px',
-                    }}
-                >
+                <Card variant="outlined" className={classes.promptCard}>
                     <CardHeader
                         style={{ marginTop: '-15px' }}
                         action={
@@ -148,9 +160,48 @@ export default function SendMessage({
                             component="span"
                             style={{ margin: '1px 5px' }}
                         >
-                            {replyText.text.length > 80
-                                ? replyText.text.substring(0, 80) + '...'
-                                : replyText.text}
+                            {replyText.text?.length > 80
+                                ? replyText?.text.substring(0, 80) + '...'
+                                : replyText?.text}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            )}
+            {editText?.text && (
+                <Card variant="outlined" className={classes.promptCard}>
+                    <CardHeader
+                        style={{ marginTop: '-15px' }}
+                        action={
+                            <IconButton
+                                onClick={() => {
+                                    onCancelMessageUpdate(), setText('');
+                                }}
+                                size="small"
+                            >
+                                <Close />
+                            </IconButton>
+                        }
+                        subheader={
+                            <Typography
+                                variant="body2"
+                                component="span"
+                                style={{ margin: '1px 5px' }}
+                            >
+                                <strong>Edit</strong>
+                            </Typography>
+                        }
+                    />
+
+                    <CardContent style={{ marginTop: '-35px' }}>
+                        {' '}
+                        <Typography
+                            variant="body2"
+                            component="span"
+                            style={{ margin: '1px 5px' }}
+                        >
+                            {editText?.text?.length > 80
+                                ? editText?.text?.substring(0, 80) + '...'
+                                : editText?.text}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -335,24 +386,32 @@ export default function SendMessage({
                                 onChange={handleChange}
                                 multiline
                                 margin="dense"
-                                maxRows={5}
+                                maxRows={3}
                                 onKeyDown={(e) =>
-                                    e.key === 'Enter' && e.shiftKey
-                                        ? handleSendMessage
+                                    e.key === 'Enter' &&
+                                    e.shiftKey &&
+                                    editText?.text?.length > 0
+                                        ? handleUpdateMessage()
+                                        : e.key === 'Enter' && e.shiftKey
+                                        ? handleSendMessage()
                                         : null
                                 }
-                                error={Object.keys(sendMessageErr).length > 0}
+                                error={Object.keys(sendMessageErr)?.length > 0}
                             />
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="send"
-                                onClick={handleSendMessage}
+                                onClick={
+                                    editText?.text?.length > 0
+                                        ? handleUpdateMessage
+                                        : handleSendMessage
+                                }
                             >
                                 <SendOutlined />
                             </IconButton>
                         </Paper>
-                        {Object.keys(sendMessageErr).length > 0 && (
+                        {Object.keys(sendMessageErr)?.length > 0 && (
                             <div>
                                 {' '}
                                 {Object.values(sendMessageErr)?.map((value) => (

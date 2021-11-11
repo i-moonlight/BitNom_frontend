@@ -42,6 +42,13 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
+                    {message?.edited === true ? (
+                        <div className={classes.Edited}>
+                            <strong>(Edited)</strong>
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     {show_reply && (
                         <div className={classes.reply}>
                             <IconButton
@@ -88,7 +95,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                                           0,
                                           200
                                       ) + '...'
-                                    : message.responseTo.text}
+                                    : message?.responseTo?.text}
                             </ReactMarkdown>
                         </Typography>
                     </Card>
@@ -113,7 +120,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                         />
                     </Grid>
                 )}
-                {message?.images.length > 0 &&
+                {message?.images?.length > 0 &&
                     message?.images?.map((imageURL) => (
                         <Grid
                             className="mt-3"

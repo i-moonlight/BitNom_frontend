@@ -12,21 +12,31 @@ import {
 } from '@mui/material';
 import { useRef, useState } from 'react';
 
-const options = ['Top Comments', 'Latest Comments'];
+const options = [
+    'All notifications',
+    'Comments & mentions',
+    'Reactions',
+    'Your content',
+    'Your profile',
+    'Job board',
+    'Forum',
+    'Announcements',
+];
 
-export default function FilterButton({ setCommentFilter, commentFilter }) {
+export default function NotificationFilter({
+    setNotificationFilter,
+    notificationFilter,
+}) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
-    //const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleClick = () => {
-        console.info(`You clicked ${options[commentFilter]}`);
+        console.info(`You clicked ${options[notificationFilter]}`);
     };
 
     const handleMenuItemClick = (event, index) => {
-        //setSelectedIndex(index);
         setOpen(false);
-        setCommentFilter(index);
+        setNotificationFilter(index);
     };
 
     const handleToggle = () => {
@@ -42,20 +52,14 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
     };
 
     return (
-        <Grid
-            container
-            direction="column"
-            alignItems="flex-start"
-            style={{
-                margin: '15px 0px',
-            }}
-        >
+        <Grid container direction="column" alignItems="flex-start">
             <Grid item xs={12}>
                 <ButtonGroup
                     variant="text"
                     ref={anchorRef}
-                    aria-label="split button"
+                    aria-label="notification filter"
                     size="small"
+                    color="inherit"
                 >
                     <Button
                         fullWidth
@@ -64,7 +68,7 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                         }}
                         onClick={handleClick}
                     >
-                        {options[commentFilter]}
+                        {options[notificationFilter]}
                     </Button>
                     <Button
                         size="small"
@@ -74,7 +78,7 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                         }}
                         aria-controls={open ? 'split-button-menu' : undefined}
                         aria-expanded={open ? 'true' : undefined}
-                        aria-label="selectcomments filter"
+                        aria-label="select notifications filter"
                         aria-haspopup="menu"
                         onClick={handleToggle}
                     >
@@ -86,6 +90,7 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                     anchorEl={anchorRef.current}
                     role={undefined}
                     transition
+                    style={{ zIndex: 3 }}
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow
@@ -107,14 +112,14 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                                             <MenuItem
                                                 key={option}
                                                 selected={
-                                                    index === commentFilter
+                                                    index === notificationFilter
                                                 }
                                                 onClick={(event) => {
+                                                    event.stopPropagation();
                                                     handleMenuItemClick(
                                                         event,
                                                         index
                                                     );
-                                                    //setUploadedFile(null);
                                                 }}
                                             >
                                                 {option}

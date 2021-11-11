@@ -175,10 +175,10 @@ export const getCreationTime = (time) => {
     const minutes = Math.round(ms / (1000 * 60));
     const hours = Math.round(ms / (1000 * 60 * 60));
     const days = Math.round(ms / (1000 * 60 * 60 * 24));
-    if (seconds < 60) return 'a few seconds ago';
-    else if (minutes < 60) return minutes + ' minutes';
-    else if (hours < 24) return hours + ' hours';
-    else return days + ' days';
+    if (seconds < 60) return seconds + ' s';
+    else if (minutes < 60) return minutes + ' m';
+    else if (hours < 24) return hours + ' h';
+    else return days + ' d';
 };
 
 export function generateRandomColor() {

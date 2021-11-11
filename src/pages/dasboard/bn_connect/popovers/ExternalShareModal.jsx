@@ -116,6 +116,7 @@ export default function ExternalShareModal({
                                     sharedResource?.title
                                 }
                                 className={classes.link}
+                                onShareWindowClose={handleClose}
                             >
                                 <TwitterIcon round={true} size={36} />
                             </TwitterShareButton>

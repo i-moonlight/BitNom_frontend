@@ -18,11 +18,15 @@ import {
     removeFromInvites,
     setCurrentChat,
     addPinnedChat,
+    addToPinnedChats,
+    addToArchivedChats,
 } from '../../../../store/actions/chatActions';
 import {
     GET_DIALOGUES,
     NEW_CHAT_ADDED,
     CHAT_ACCEPTED,
+    PIN_CHAT_SUB,
+    ARCHIVE_CHAT_SUB,
 } from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';
@@ -87,6 +91,17 @@ function Chats({ onSetChatMobile }) {
         },
     });
 
+    const { data: pinnedChatData } = useSubscription(PIN_CHAT_SUB, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    const { data: archivedChatData } = useSubscription(ARCHIVE_CHAT_SUB, {
+        variables: {
+            _id: user._id,
+        },
+    });
     useEffect(() => {
         if (chatAccepted?.chatAccepted) {
             dispatch(clearCurrentChat());
@@ -132,6 +147,17 @@ function Chats({ onSetChatMobile }) {
         }
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
+    useEffect(() => {
+        if (pinnedChatData?.pinChat) {
+            dispatch(addToPinnedChats(pinnedChatData?.pinChat));
+        }
+    }, [dispatch, pinnedChatData?.pinChat]);
+
+    useEffect(() => {
+        if (archivedChatData?.archivedChat) {
+            dispatch(addToArchivedChats(archivedChatData?.archivedChat));
+        }
+    }, [dispatch, archivedChatData?.archivedChat]);
     const chats = state.chats.chats;
     const invites = state.chats.invites;
     const archived = state.chats.archived;
@@ -145,18 +171,17 @@ function Chats({ onSetChatMobile }) {
             xsDown && onSetChatMobile();
         }
     };
-
     return (
         <Fragment>
             <div style={{ overflow: 'auto' }}>
-                {invites && invites.length > 0 && (
+                {invites && invites?.length > 0 && (
                     <Invites invites={invites} loading={invitesLoading} />
                 )}
 
-                {pinned && pinned.length > 0 && (
+                {pinned && pinned?.length > 0 && (
                     <Pinned pinned={pinned} loading={pinnedLoading} />
                 )}
-                {chats && chats.length > 0 && (
+                {chats && chats?.length > 0 && (
                     <List
                         component="nav"
                         subheader={
@@ -173,10 +198,10 @@ function Chats({ onSetChatMobile }) {
                         ))}
                     </List>
                 )}
-                {archived && archived.length > 0 && (
+                {archived && archived?.length > 0 && (
                     <Archived archived={archived} loading={archivedLoading} />
                 )}
-                {loading && !chats.length > 0 && (
+                {loading && !chats?.length > 0 && (
                     <Grid
                         alignItems="center"
                         justifyContent="center"

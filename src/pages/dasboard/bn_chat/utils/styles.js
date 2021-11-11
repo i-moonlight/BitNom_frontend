@@ -162,6 +162,14 @@ export const useStyles = makeStyles((theme) => ({
         alignItems: 'end',
         marginTop: '-20px',
     },
+    Edited: {
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'end',
+        marginTop: '-20px',
+        marginRight: '40px',
+        fontSize: '12px',
+    },
     author: {
         fontSize: '12px',
     },
@@ -173,5 +181,14 @@ export const useStyles = makeStyles((theme) => ({
     },
     pinnedList: {
         backgroundColor: theme.palette.background.default,
+    },
+    promptCard: {
+        backgroundColor: theme.palette.background.messagePrompt,
+        marginLeft: '8px',
+        marginRight: '8px',
+        marginTop: '8px',
+        borderWidth: '0px 0px 0px 7px ',
+        borderRadius: '5px 2px 2px 5px',
+        height: '60px',
     },
 }));
