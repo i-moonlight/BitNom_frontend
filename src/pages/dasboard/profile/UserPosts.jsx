@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import UserCard from '../bn_connect/UserCard';
 import SavedPost from '../bookmarks/SavedPost';
 import { QUERY_FETCH_PROFILE, QUERY_LOAD_SCROLLS } from '../utilities/queries';
@@ -48,6 +49,11 @@ export default function UserPosts() {
 
     return (
         <Screen>
+            <SEO
+                title="Your Posts | Bitnorm"
+                url={`${window.location.origin}/profile/posts`}
+                description={`Your Posts`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

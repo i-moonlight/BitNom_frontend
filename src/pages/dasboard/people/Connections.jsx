@@ -23,6 +23,7 @@ import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import { getUserInitials } from '../../../utilities/Helpers';
 import UserCard from '../bn_connect/UserCard';
 import {} from '../utilities/functions';
@@ -73,6 +74,11 @@ export default function Connections() {
 
     return (
         <Screen>
+            <SEO
+                title="Your friends"
+                url={`${window.location.origin}/profile/friends`}
+                description={`Your followers and the friends you follow`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

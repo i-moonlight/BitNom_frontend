@@ -253,7 +253,7 @@ export default function EventView() {
     return (
         <Screen>
             <SEO
-                title="Event | Bitnorm"
+                title={`${eventData?.Events?.getById?.title} | Bitnorm`}
                 url={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
                 description={eventData?.Events?.getById?.description}
                 image={
@@ -262,6 +262,7 @@ export default function EventView() {
                           eventData?.Events?.getById?.image
                         : null
                 }
+                resource={eventData?.Events?.getById}
             />
             <ToastContainer
                 position="bottom-left"

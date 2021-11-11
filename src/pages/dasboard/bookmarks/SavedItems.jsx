@@ -17,6 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import UserCard from '../bn_connect/UserCard';
 import {
     GET_BOOKMARKED_COMMENTS,
@@ -100,6 +101,11 @@ export default function SavedItems() {
 
     return (
         <Screen>
+            <SEO
+                title="Saved Items | Bitnorm"
+                url={`${window.location.origin}/profile/bookmarks`}
+                description={'All your bookamrks in one place'}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

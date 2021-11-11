@@ -56,11 +56,13 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                     ref={anchorRef}
                     aria-label="split button"
                     size="small"
+                    color="inherit"
                 >
                     <Button
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
                         onClick={handleClick}
                     >
