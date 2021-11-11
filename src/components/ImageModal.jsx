@@ -1,10 +1,12 @@
-import { useQuery } from '@apollo/client';
 import { useState, useEffect } from 'react';
-import { Dialog, Slide, Grid, IconButton } from '@mui/material';
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { Dialog, Slide, Grid, IconButton, Typography } from '@mui/material';
+import {
+    ArrowBackIos,
+    ArrowForwardIos,
+    CloseRounded,
+} from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
-import { QUERY_POST_BY_ID } from '../pages/dasboard/utilities/queries';
 
 function Arrow(props) {
     const { direction, clickFunction } = props;
@@ -81,11 +83,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ImageModal({
+    post,
     open,
     onClose,
     imageIndex,
     setImageIndex,
-    post,
+
     profileData,
     setSharedResource,
     setCommentToEdit,
@@ -102,10 +105,6 @@ export default function ImageModal({
     const numSlides = post?.images?.length;
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
-
-    const { data: postData } = useQuery(QUERY_POST_BY_ID, {
-        variables: { _id: post?._id },
-    });
 
     const onArrowClick = (direction) => {
         const increment = direction === 'left' ? -1 : 1;
@@ -141,8 +140,24 @@ export default function ImageModal({
 
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
+            <div
+                className="space-between center-horizontal"
+                style={{ margin: '2px' }}
+            >
+                <Typography variant="body2"></Typography>
+                <Typography variant="body1"></Typography>
+                <IconButton
+                    onClick={() => {
+                        onClose();
+                    }}
+                    size="small"
+                    className="m-1 p-1"
+                >
+                    <CloseRounded />
+                </IconButton>
+            </div>
             <Grid container className={classes.Container}>
-                <Grid xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={6} lg={6}>
                     <div className={classes.Carousel}>
                         <div style={{ visibility: numSlides < 2 && 'hidden' }}>
                             <Arrow
@@ -167,22 +182,24 @@ export default function ImageModal({
                         </div>
                     </div>
                 </Grid>
-                <Grid xs={12} md={6} lg={6}>
-                    <div className={classes.Content}>
-                        <ScrollImage
-                            scroll={postData?.Posts?.getById}
-                            onClose={onClose}
-                            setOpen={setOpen}
-                            profileData={profileData}
-                            setUpdateCommentOpen={setUpdateCommentOpen}
-                            setOpenFlag={setOpenFlag}
-                            setFlaggedResource={setFlaggedResource}
-                            setOpenReactions={setOpenReactions}
-                            setResourceReactions={setResourceReactions}
-                            setSharedResource={setSharedResource}
-                            setCommentToEdit={setCommentToEdit}
-                        />
-                    </div>
+                <Grid item xs={12} md={6} lg={6}>
+                    {post && (
+                        <div className={classes.Content}>
+                            <ScrollImage
+                                postId={post?._id}
+                                onClose={onClose}
+                                setOpen={setOpen}
+                                profileData={profileData}
+                                setUpdateCommentOpen={setUpdateCommentOpen}
+                                setOpenFlag={setOpenFlag}
+                                setFlaggedResource={setFlaggedResource}
+                                setOpenReactions={setOpenReactions}
+                                setResourceReactions={setResourceReactions}
+                                setSharedResource={setSharedResource}
+                                setCommentToEdit={setCommentToEdit}
+                            />
+                        </div>
+                    )}
                 </Grid>
             </Grid>
         </Dialog>

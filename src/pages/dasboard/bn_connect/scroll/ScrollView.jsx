@@ -39,7 +39,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import ImagePreview from '../../../../components/ImagePreview';
@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
-function PostView({ match }) {
+function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
     const [updateCommentOpen, setUpdateCommentOpen] = useState(false);
@@ -168,7 +168,40 @@ function PostView({ match }) {
     const history = useHistory();
     const user = state.auth.user;
 
-    const postId = match?.params?.id;
+    const { postId } = useParams();
+
+    //const postId = match?.params?.id;
+
+    const getUserReaction = useCallback(
+        (resource) => {
+            let reaction;
+            resource?.reacted_to_by?.forEach((item) => {
+                if (item?.user_id?._id === user?._id)
+                    reaction = item?.reaction_type;
+            });
+            return reaction;
+        },
+        [user?._id]
+    );
+
+    const setIcon = useCallback(
+        (reaction) => {
+            if (reaction === 'like') {
+                setReactionIcon(<ThumbUpRounded className={classes.primary} />);
+            } else if (reaction === 'love') {
+                setReactionIcon(<FavoriteRounded className={classes.red} />);
+            } else if (reaction === 'dislike') {
+                setReactionIcon(
+                    <ThumbDownRounded className={classes.primary} />
+                );
+            } else if (reaction === 'celebrate') {
+                setReactionIcon(<PanToolRounded className={classes.green} />);
+            } else {
+                setReactionIcon();
+            }
+        },
+        [classes.green, classes.primary, classes.red]
+    );
 
     const { loading: postLoading, data: postData } = useQuery(
         QUERY_POST_BY_ID,
@@ -176,6 +209,13 @@ function PostView({ match }) {
             variables: { _id: postId },
         }
     );
+
+    useEffect(() => {
+        const reaction = getUserReaction(postData?.Posts?.getById);
+        setUserReaction(reaction);
+        setIcon(reaction);
+    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+
     const {
         //  loading,
         data: profileData,
@@ -313,37 +353,6 @@ function PostView({ match }) {
         setCommentText(`${comment_text} ${emoji.native}`);
     };
 
-    const getUserReaction = useCallback(
-        (resource) => {
-            let reaction;
-            resource?.reacted_to_by?.forEach((item) => {
-                if (item?.user_id?._id === user?._id)
-                    reaction = item?.reaction_type;
-            });
-            return reaction;
-        },
-        [user?._id]
-    );
-
-    const setIcon = useCallback(
-        (reaction) => {
-            if (reaction === 'like') {
-                setReactionIcon(<ThumbUpRounded className={classes.primary} />);
-            } else if (reaction === 'love') {
-                setReactionIcon(<FavoriteRounded className={classes.red} />);
-            } else if (reaction === 'dislike') {
-                setReactionIcon(
-                    <ThumbDownRounded className={classes.primary} />
-                );
-            } else if (reaction === 'celebrate') {
-                setReactionIcon(<PanToolRounded className={classes.green} />);
-            } else {
-                setReactionIcon();
-            }
-        },
-        [classes.green, classes.primary, classes.red]
-    );
-
     const contentClickHandler = (e) => {
         const targetLink = e.target.closest('a');
         if (!targetLink) return;
@@ -369,11 +378,6 @@ function PostView({ match }) {
         .filter((comment) => !comment.response_to)
         .sort((a, b) => getTopComments(b) - getTopComments(a));
 
-    useEffect(() => {
-        const reaction = getUserReaction(postData?.Posts?.getById);
-        setUserReaction(reaction);
-        setIcon(reaction);
-    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
     return (
         <Screen>
             <SEO
@@ -549,8 +553,7 @@ function PostView({ match }) {
                                         </Typography>
                                         <Grid
                                             container
-                                            spacing={2}
-                                            className="mb-2"
+                                            style={{ margin: '3px 0px' }}
                                         >
                                             {postData?.Posts?.getById?.video
                                                 ?.path && (
@@ -570,7 +573,10 @@ function PostView({ match }) {
                                                 postData?.Posts?.getById?.images?.map(
                                                     (imageURL, index) => (
                                                         <Grid
-                                                            className="mt-3"
+                                                            style={{
+                                                                zIndex: 2,
+                                                                padding: '1px',
+                                                            }}
                                                             key={imageURL}
                                                             item
                                                             xs={
@@ -844,7 +850,7 @@ function PostView({ match }) {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <div style={{ padding: '5px' }}>
+                                        <div style={{ padding: '3px' }}>
                                             <div className="d-flex align-items-center">
                                                 <Hidden smDown>
                                                     <Avatar
@@ -872,7 +878,7 @@ function PostView({ match }) {
                                                 </Hidden>
                                                 <div className="w-100">
                                                     <MentionsInput
-                                                        spellcheck="false"
+                                                        spellCheck="false"
                                                         className="mentions-textarea"
                                                         id="content-field"
                                                         onKeyPress={(e) => {
@@ -943,7 +949,6 @@ function PostView({ match }) {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    //className='m-1 p-1'
                                                     onClick={() => {
                                                         document
                                                             .getElementsByClassName(
@@ -956,7 +961,6 @@ function PostView({ match }) {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    className="m-1 p-1"
                                                     onClick={
                                                         handleCreateComment
                                                     }

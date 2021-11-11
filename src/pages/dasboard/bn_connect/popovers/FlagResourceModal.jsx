@@ -46,7 +46,7 @@ export default function FlagResourceModal({
         <Modal
             style={{
                 outline: 'none',
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}

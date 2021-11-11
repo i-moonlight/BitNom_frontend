@@ -174,7 +174,7 @@ export default function UpdateComment({
                 style={{
                     outline: 'none',
 
-                    '&:focus-visible': {
+                    '&:focusVisible': {
                         outline: 'none',
                     },
                 }}
@@ -257,14 +257,14 @@ export default function UpdateComment({
                                     />
                                 </ListItem>
                                 <MentionsInput
-                                    spellcheck="false"
+                                    spellCheck="false"
                                     className="mentions-textarea"
                                     id="content-field"
-                                    /* onKeyPress={(e) => {
-                                    if (e.key === 'Enter') {
-                                        handleCreateComment(e);
-                                    }
-                                    }} */
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleUpdateComment(e);
+                                        }
+                                    }}
                                     placeholder="Write Comment"
                                     onChange={(e) =>
                                         setCommentText(
@@ -491,7 +491,6 @@ export default function UpdateComment({
                                         </IconButton>
                                         <IconButton
                                             size="small"
-                                            className="m-1 p-1"
                                             onClick={() => {
                                                 setFileType(null);
                                                 setCommentImage(null);
@@ -500,9 +499,6 @@ export default function UpdateComment({
                                                         'update-comment-dropzone'
                                                     )[0]
                                                     .click();
-                                            }}
-                                            style={{
-                                                marginRight: 10,
                                             }}
                                         >
                                             <ImageRounded />
@@ -513,15 +509,17 @@ export default function UpdateComment({
                                             style={{
                                                 backgroundColor: '#ba000d',
                                                 color: '#FFFFFF',
-                                                marginRight: '12px',
+                                                marginRight: '3px',
                                             }}
                                             variant="contained"
+                                            size="small"
                                             onClick={() => setOpenDelete(true)}
                                         >
                                             Delete
                                         </Button>
                                         {!loading && (
                                             <Button
+                                                size="small"
                                                 onClick={handleUpdateComment}
                                             >
                                                 Update
