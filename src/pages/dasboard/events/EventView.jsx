@@ -253,7 +253,7 @@ export default function EventView() {
     return (
         <Screen>
             <SEO
-                title={`${eventData?.Events?.getById?.title} | Bitnorm`}
+                title={`Event | Bitnorm`}
                 url={`${window.location.origin}/events/${eventData?.Events?.getById?._id}`}
                 description={eventData?.Events?.getById?.description}
                 image={

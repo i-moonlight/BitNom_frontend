@@ -1,15 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { helmetJsonLdProp } from 'react-schemaorg';
+//import { helmetJsonLdProp } from 'react-schemaorg';
 import moment from 'moment';
 
-function SEO(props) {
-    const { title, description, url, image, resource } = props;
+function SEO(data) {
+    const { title, description, url, image, resource } = data;
+
     return (
         <Helmet
-            script={[helmetJsonLdProp(SchemaFactory(props))]}
+            //script={[helmetJsonLdProp(SchemaFactory(data))]}
             htmlAttributes={{ lang: `en` }}
         >
+            <script type="application/ld+json">{SchemaFactory(data)}</script>
             {/* General tags */}
             <title>{title || 'BitNorm Website'}</title>
             {/*  <meta charSet="utf-8" /> */}
@@ -24,7 +26,7 @@ function SEO(props) {
             <meta
                 property="og:description"
                 content={
-                    description || 'BitNorm | The ultimate Cryptocurrence suite'
+                    description || 'BitNorm | The ultimate Cryptocurrency suite'
                 }
             />
             <meta property="og:image" content={image || null} />
@@ -48,7 +50,7 @@ export default SEO;
 const SchemaFactory = (props) => {
     let schema;
     if (!props?.resource) {
-        schema = JSON.stringify({
+        schema = {
             '@context': 'https://schema.org',
             '@type': 'WebPage',
             headline: props?.title,
@@ -58,10 +60,10 @@ const SchemaFactory = (props) => {
                 name: 'Bitnorm',
                 url: props?.url,
             },
-        });
+        };
     }
     if (props?.resource?.__typename === 'OPost') {
-        schema = JSON.stringify({
+        schema = {
             '@context': 'https://schema.org',
             '@type': 'SocialMediaPosting',
             '@id': props?.url,
@@ -113,11 +115,11 @@ const SchemaFactory = (props) => {
                       },
                   }
                 : null,
-        });
+        };
     }
     if (props?.resource?.__typename === 'OEvent') {
         if (props?.resource?.location?.type === 'physical') {
-            schema = JSON.stringify({
+            schema = {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
@@ -144,9 +146,9 @@ const SchemaFactory = (props) => {
                     name: 'Bitnorm',
                     url: location.origin,
                 },
-            });
+            };
         } else {
-            schema = JSON.stringify({
+            schema = {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
@@ -173,8 +175,8 @@ const SchemaFactory = (props) => {
                     name: 'Bitnorm',
                     url: location.origin,
                 },
-            });
+            };
         }
     }
-    return schema;
+    return JSON.stringify(schema);
 };

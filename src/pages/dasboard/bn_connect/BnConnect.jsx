@@ -142,7 +142,7 @@ export default function BnConnect() {
     return (
         <Screen>
             <SEO
-                title="BN Connect"
+                title="BitNorm | The ultimate Cryptocurrency suite"
                 url={`${window.location.origin}/connect`}
                 description={`Bitnorm Community Platform`}
             />
