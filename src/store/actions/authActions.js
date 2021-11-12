@@ -1,56 +1,100 @@
-// import axios from "axios";
-// import { deviceName, Environment } from "../local/contents";
-// const baseUrl = Environment.apiUrl;
+export const login = (userdata, errors) => {
+    return (dispatch) => {
+        const setBusy = (busy) => {
+            dispatch({ type: 'LOGIN_BUSY', busy });
+        };
 
-export const login = (username, password) => {
-  return (dispatch, getState) => {
-    // const config = {
-    //   headers: {
-    //     Accept: 'application/json',
-    //   },
-    // };
+        setBusy(true);
 
-    // const body = {
-    //   username,
-    //   password,
-    //   device_name: deviceName,
-    // };
+        let err = null;
+        dispatch({ type: 'USER_LOGIN_ERROR', err });
 
-    const setBusy = busy => {
-      dispatch({ type: 'LOGIN_BUSY', busy });
+        const loginDate = new Date().getTime();
+
+        const user = { ...userdata, loginDate };
+
+        dispatch({ type: 'USER_LOGIN', user });
+        setBusy(false);
+
+        err = errors;
+        errors && dispatch({ type: 'USER_LOGIN_ERROR', err });
     };
-
-    setBusy(true);
-
-    // REMOVE
-    let user = { name: 'Mark' };
-    dispatch({ type: 'USER_LOGIN', user });
-    setBusy(false);
-    //REMOVE
-
-    // let err = null;
-    // dispatch({ type: 'USER_LOGIN_ERROR', err });
-
-    // axios
-    //   .post(`${baseUrl}/login`, body, config)
-    //   .then(res => {
-    //     let user = res.data.member;
-    //     let token = res.data.tokens.access_token;
-
-    //     dispatch({ type: 'USER_LOGIN', user });
-    //     dispatch({ type: 'USER_LOGIN_TOKEN', token });
-    //     setBusy(false);
-    //   })
-    //   .catch(error => {
-    //     let err = error?.response?.data;
-    //     dispatch({ type: 'USER_LOGIN_ERROR', err });
-    //     setBusy(false);
-    //   });
-  };
 };
 
-export const signout = (username, password) => {
-  return (dispatch, getState) => {
-    dispatch({ type: 'USER_LOGOUT' });
-  };
+export const register = (userdata, errors) => {
+    return (dispatch) => {
+        const setBusy = (busy) => {
+            dispatch({ type: 'REGISTER_BUSY', busy });
+        };
+
+        setBusy(true);
+
+        let err = null;
+        dispatch({ type: 'USER_LOGIN_ERROR', err });
+
+        const user = userdata;
+        dispatch({ type: 'USER_REGISTER', user });
+        setBusy(false);
+
+        err = errors;
+        errors && dispatch({ type: 'USER_REGISTER_ERROR', err });
+    };
+};
+
+export const verifySuccess = () => {
+    return (dispatch) => {
+        const setBusy = (busy) => {
+            dispatch({ type: 'REGISTER_BUSY', busy });
+        };
+
+        setBusy(true);
+
+        dispatch({ type: 'USER_VERIFY_SUCCESS' });
+        setBusy(true);
+    };
+};
+
+export const signout = () => {
+    return (dispatch) => {
+        // const [, , removeCookie] = useCookies(['connect.sid']);
+        // removeCookie('connect.sid', {
+        //   path: '/',
+        //   domain: `${location.href}`,
+        // });
+
+        dispatch({ type: 'USER_LOGOUT' });
+    };
+};
+
+export const checkSessionTimeOut = () => {
+    return (dispatch, getState) => {
+        const setBusy = (busy) => {
+            dispatch({ type: 'LOGIN_BUSY', busy });
+        };
+
+        setBusy(true);
+
+        const hours = 24;
+        const now = new Date().getTime();
+
+        const userData = getState().auth.user;
+
+        if (!userData.login_date) {
+            return;
+        }
+
+        const loginDate = userData.login_date;
+        const timeDiff = now - loginDate;
+
+        if (timeDiff > hours * 60 * 60 * 1000) {
+            dispatch({ type: 'USER_LOGOUT' });
+            setBusy(false);
+        }
+    };
+};
+
+export const userUpdate = (user) => {
+    return (dispatch) => {
+        dispatch({ type: 'USER_UPDATE', user });
+    };
 };

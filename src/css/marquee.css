@@ -1,0 +1,39 @@
+.marquee {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee_widget {
+    display: inline-block;
+    -webkit-animation: slide_prices 15s linear infinite;
+    animation: slide_prices 15s linear infinite;
+}
+
+.marquee_widget_content:first-child {
+    position: relative;
+    left: 0;
+    -webkit-animation: swap 30s linear infinite;
+    animation: swap 30s linear infinite;
+}
+
+@keyframes slide_prices {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes swap {
+    0%,
+    50% {
+        left: 0;
+    }
+    50.01%,
+    100% {
+        left: 100%;
+    }
+}

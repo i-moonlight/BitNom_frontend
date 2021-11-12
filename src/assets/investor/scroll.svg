@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1304" height="28" viewBox="0 0 1304 28">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.5" x2="0.103" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b7b7b7"/>
+      <stop offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_123" data-name="Group 123" transform="translate(-313 -1012)">
+    <rect id="Rectangle_1240" data-name="Rectangle 1240" width="622" height="2" rx="1" transform="translate(313 1025)" fill="url(#linear-gradient)"/>
+    <g id="Rectangle_1241" data-name="Rectangle 1241" transform="translate(949 1012)" fill="none" stroke="#b7b7b7" stroke-width="1.5">
+      <rect width="21" height="28" rx="10.5" stroke="none"/>
+      <rect x="0.75" y="0.75" width="19.5" height="26.5" rx="9.75" fill="none"/>
+    </g>
+    <circle id="Ellipse_17" data-name="Ellipse 17" cx="2.5" cy="2.5" r="2.5" transform="translate(957 1019)" fill="#b7b7b7"/>
+    <rect id="Rectangle_1242" data-name="Rectangle 1242" width="622" height="2" rx="1" transform="translate(1617 1027) rotate(180)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
