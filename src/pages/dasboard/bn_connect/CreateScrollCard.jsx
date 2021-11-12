@@ -57,6 +57,11 @@ export default function CreateScrollCard({
                             setOpen(true);
                             setOpenImage(true);
                             setVideoDisabled(true);
+                            setTimeout(() => {
+                                document
+                                    .getElementsByClassName('post-dropzone')[0]
+                                    .click();
+                            }, 1000);
                         }}
                         variant="text"
                         color="inherit"
@@ -81,6 +86,11 @@ export default function CreateScrollCard({
                             setOpen(true);
                             setOpenVideo(true);
                             setImageDisabled(true);
+                            setTimeout(() => {
+                                document
+                                    .getElementsByClassName('post-dropzone')[0]
+                                    .click();
+                            }, 1000);
                         }}
                         variant="text"
                         color="inherit"

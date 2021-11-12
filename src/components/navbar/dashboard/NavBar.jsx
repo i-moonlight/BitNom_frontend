@@ -44,11 +44,13 @@ export default function NavBar() {
     const [notificationOptionAnchorEl, setNotificationOptionAnchorEl] =
         useState(null);
 
-    const theme = useTheme();
-    const dispatch = useDispatch();
     const history = useHistory();
+    const dispatch = useDispatch();
+    const theme = useTheme();
     const state = useSelector((st) => st);
+
     const user = state.auth.user;
+    const _count = state.count.count;
 
     const smUp = useMediaQuery('(min-width:600px)');
 
@@ -63,9 +65,6 @@ export default function NavBar() {
             context: { clientName: 'users' },
         }
     );
-
-    const isAuth =
-        profileLoading || (!profileLoading && profileData?.Users?.profile);
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
@@ -93,6 +92,25 @@ export default function NavBar() {
             context: { clientName: 'notifications' },
         }
     );
+
+    const response = data?.Notification?.get;
+    const isAuth =
+        profileLoading || (!profileLoading && profileData?.Users?.profile);
+
+    const handleMarkAsSeen = () => {
+        markAsSeen({
+            variables: {
+                _id: user?._id,
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_GET_USER_NOTIFICATIONS,
+                    context: { clientName: 'notifications' },
+                },
+            ],
+        });
+        dispatch(resetCount());
+    };
 
     const handleMenuOpen = (event) => {
         smUp ? setMenuAnchorEl(event.currentTarget) : setMobileMenuOpen(true);
@@ -132,24 +150,6 @@ export default function NavBar() {
         setTabValue(newValue);
     };
 
-    const handleMarkAsSeen = () => {
-        markAsSeen({
-            variables: {
-                _id: user?._id,
-            },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_USER_NOTIFICATIONS,
-                    context: { clientName: 'notifications' },
-                },
-            ],
-        });
-        dispatch(resetCount());
-    };
-
-    const response = data?.Notification?.get;
-    const _count = state.count.count;
-
     useEffect(() => {
         !user?.email?.verified && history.push('/auth/require_verify');
 
@@ -175,7 +175,9 @@ export default function NavBar() {
         if (window.location.pathname == '/investors') {
             setTabValue(4);
         }
+    }, [history, user?.email?.verified]);
 
+    useEffect(() => {
         const count =
             subscriptionData && subscriptionData.liveUpdates.count
                 ? subscriptionData.liveUpdates.count
@@ -221,16 +223,12 @@ export default function NavBar() {
     }, [
         _count,
         dispatch,
-        history,
+        eventsData?.Events?.get,
         isAuth,
-        profileData,
-        profileLoading,
         response,
         subscriptionData,
-        userPosts,
         user._id,
-        eventsData,
-        user?.email?.verified,
+        userPosts,
     ]);
 
     return (
@@ -244,12 +242,16 @@ export default function NavBar() {
             <StatusBar />
             <Divider />
             <ProfileBar
-                notifications={_count}
+                notifications={
+                    // _count
+                    // TODO
+                    0
+                }
                 menuId={menuId}
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
-                profile={profileData?.Users?.profile}
+                profile={user}
             />
             <TabsBar
                 value={tabValue}
@@ -259,7 +261,6 @@ export default function NavBar() {
                 handleTabOptionsOpen={handleTabOptionsOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
             />
-            <Divider />
             <Divider />
             <TabOptionsPopover
                 value={tabValue}
@@ -280,7 +281,7 @@ export default function NavBar() {
                 handleMenuClose={handleMenuClose}
             />
             <NotificationsPopover
-                notifications={data?.Notification?.get}
+                notifications={_count}
                 notificationAnchorEl={notificationAnchorEl}
                 notificationId={notificationId}
                 isNotificationOpen={isNotificationOpen}

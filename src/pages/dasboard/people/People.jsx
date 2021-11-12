@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import { getUserInitials } from '../../../utilities/Helpers';
 import UserCard from '../bn_connect/UserCard';
 import {} from '../utilities/functions';
@@ -73,6 +74,11 @@ export default function People() {
 
     return (
         <Screen>
+            <SEO
+                title="People You May Know | Bitnorm"
+                url={`${window.location.origin}/people`}
+                description={`New friend suggestions`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>

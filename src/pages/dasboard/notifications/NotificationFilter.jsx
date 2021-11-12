@@ -57,8 +57,9 @@ export default function NotificationFilter({
                 <ButtonGroup
                     variant="text"
                     ref={anchorRef}
-                    aria-label="split button"
+                    aria-label="notification filter"
                     size="small"
+                    color="inherit"
                 >
                     <Button
                         fullWidth
@@ -89,6 +90,7 @@ export default function NotificationFilter({
                     anchorEl={anchorRef.current}
                     role={undefined}
                     transition
+                    style={{ zIndex: 3 }}
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow
@@ -113,6 +115,7 @@ export default function NotificationFilter({
                                                     index === notificationFilter
                                                 }
                                                 onClick={(event) => {
+                                                    event.stopPropagation();
                                                     handleMenuItemClick(
                                                         event,
                                                         index

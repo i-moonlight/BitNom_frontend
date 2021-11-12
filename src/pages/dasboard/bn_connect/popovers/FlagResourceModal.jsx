@@ -12,7 +12,6 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-
 import { MUTATION_CREATE_FLAG } from '../../utilities/queries';
 
 export default function FlagResourceModal({
@@ -46,7 +45,7 @@ export default function FlagResourceModal({
         <Modal
             style={{
                 outline: 'none',
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}

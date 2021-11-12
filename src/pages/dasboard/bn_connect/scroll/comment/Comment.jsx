@@ -245,7 +245,7 @@ export default function Comment({
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
     //moment js single letter formatting for comments
-    moment.locale('en', {
+    moment.updateLocale('en', {
         relativeTime: {
             future: 'in %s',
             past: '%s',
@@ -256,8 +256,8 @@ export default function Comment({
             hh: '%d h',
             d: '1 d',
             dd: '%d d',
-            M: '1 mth',
-            MM: '%d mth',
+            M: '1 month',
+            MM: '%d m',
             y: '1 y',
             yy: '%d y',
         },
@@ -322,7 +322,6 @@ export default function Comment({
                                 </Typography>
                                 <IconButton
                                     size="small"
-                                    //className="m-1 p-1"
                                     aria-label="show more"
                                     aria-controls={commentOptionId}
                                     aria-haspopup="true"
@@ -541,7 +540,7 @@ export default function Comment({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellcheck="false"
+                                        spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {
@@ -609,7 +608,6 @@ export default function Comment({
                                 </IconButton>
                                 <IconButton
                                     size="small"
-                                    className="m-1 p-1"
                                     onClick={handleCreateReply}
                                 >
                                     <Send />

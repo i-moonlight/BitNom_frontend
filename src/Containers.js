@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Routes from './Routes';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
-import DarkThemeStyles from './utilities/DarkThemeStyles';
 import LightThemeStyles from './utilities/LightThemeStyles';
 
 //GraphQL and Apollo Client Setup
@@ -191,7 +190,7 @@ export default function AppContainers() {
 
     return (
         <div className={classes.root}>
-            {palette === 'dark' ? (
+            {/* {palette === 'dark' ? (
                 <DarkThemeStyles>
                     <Routes apolloClient={client} />
                 </DarkThemeStyles>
@@ -199,7 +198,11 @@ export default function AppContainers() {
                 <LightThemeStyles>
                     <Routes apolloClient={client} />
                 </LightThemeStyles>
-            )}
+            )} */}
+
+            <LightThemeStyles>
+                <Routes apolloClient={client} />
+            </LightThemeStyles>
         </div>
     );
 }

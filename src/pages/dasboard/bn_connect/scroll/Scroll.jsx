@@ -25,14 +25,11 @@ import {
     IconButton,
     Typography,
     useTheme,
-    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-//import ImagePreview from '../../../components/ImagePreview';
-//import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
@@ -45,7 +42,6 @@ import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
-    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -55,52 +51,13 @@ import {
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import Comment from './comment/Comment';
-// import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-import ScrollPreview from './ScrollPreview';
-
-const useStyles = makeStyles((theme) => ({
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
+
+const ScrollPreview = React.lazy(() => import('./ScrollPreview'));
+const Comment = React.lazy(() => import('./comment/Comment'));
 
 export default function Scroll({
     scroll,
@@ -138,16 +95,10 @@ export default function Scroll({
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
-
-    const theme = useTheme();
-    const state = useSelector((st) => st);
-    const history = useHistory();
-    const user = state.auth.user;
-
     const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-
     const {
         data: commentsData,
         // loading: commentsLoading,
@@ -155,6 +106,12 @@ export default function Scroll({
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: scroll?._id } },
     });
+
+    const history = useHistory();
+    const theme = useTheme();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -164,9 +121,6 @@ export default function Scroll({
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
                 },
                 {
                     query: QUERY_GET_COMMENTS,
@@ -202,22 +156,6 @@ export default function Scroll({
         });
     };
 
-    const handleScrollOptionOpen = (event) => {
-        setScrollOptionAnchorEl(event.currentTarget);
-    };
-
-    const handleScrollOptionClose = () => {
-        setScrollOptionAnchorEl(null);
-    };
-
-    const handleEmojiPickerOpen = (event) => {
-        setEmojiPickerAnchorEl(event.currentTarget);
-    };
-
-    const handleEmojiPickerClose = () => {
-        setEmojiPickerAnchorEl(null);
-    };
-
     const handleCreateReaction = (reaction) => {
         createReaction({
             variables: {
@@ -227,14 +165,7 @@ export default function Scroll({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-            ],
+            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -248,14 +179,7 @@ export default function Scroll({
                     type: 'post',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-            ],
+            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
         });
         setIcon();
         setUserReaction();
@@ -312,6 +236,22 @@ export default function Scroll({
     const authorInitials = getUserInitials(scroll?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
 
+    const handleScrollOptionOpen = (event) => {
+        setScrollOptionAnchorEl(event.currentTarget);
+    };
+
+    const handleScrollOptionClose = () => {
+        setScrollOptionAnchorEl(null);
+    };
+
+    const handleEmojiPickerOpen = (event) => {
+        setEmojiPickerAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiPickerClose = () => {
+        setEmojiPickerAnchorEl(null);
+    };
+
     useEffect(() => {
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);
@@ -321,7 +261,7 @@ export default function Scroll({
     return (
         <>
             <Card style={{ ...style, marginBottom: 16 }}>
-                <div
+                <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
@@ -378,131 +318,122 @@ export default function Scroll({
                                 </Typography>
                             </div>
                         }
-                        subheader={
-                            <Typography variant="body2">
-                                {moment(scroll?.createdAt).fromNow()}
-                            </Typography>
-                        }
+                        subheader={moment(scroll?.createdAt).fromNow()}
                     />
-                    <CardContent>
+
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                    >
                         <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                        >
-                            <Typography
-                                onClick={(e) => contentClickHandler(e)}
-                                dangerouslySetInnerHTML={{
-                                    __html: contentBodyFactory(scroll),
+                            onClick={(e) => contentClickHandler(e)}
+                            dangerouslySetInnerHTML={{
+                                __html: contentBodyFactory(scroll),
+                            }}
+                            style={{ zIndex: 2 }}
+                        ></Typography>
+                    </Typography>
+                    <Grid container spacing={2} className="mb-2">
+                        {scroll?.video?.path && (
+                            <Grid
+                                item
+                                xs={12}
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                 }}
                                 style={{ zIndex: 2 }}
-                            ></Typography>
-                        </Typography>
-                        <Grid container spacing={2} className="mb-2">
-                            {scroll?.video?.path && (
+                            >
+                                <CardMedia
+                                    className="br-2"
+                                    component="video"
+                                    poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                    src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
+                                    controls
+                                />
+                            </Grid>
+                        )}
+                        {scroll?.images.length > 0 &&
+                            scroll?.images?.map((imageURL, index) => (
                                 <Grid
+                                    className="mt-3"
+                                    key={imageURL}
                                     item
-                                    xs={12}
+                                    style={{ zIndex: 2 }}
+                                    xs={scroll?.images.length > 1 ? 6 : 12}
                                     onClick={(e) => {
                                         e.stopPropagation();
+
+                                        setPostToPreview(scroll);
+                                        setImageIndex(index);
+                                        setImageModalOpen(true);
                                     }}
-                                    style={{ zIndex: 2 }}
                                 >
-                                    <CardMedia
-                                        className="br-2"
-                                        component="video"
-                                        poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
-                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
-                                        controls
-                                        preload="metadata"
+                                    <div
+                                        style={{
+                                            height: 200,
+                                            borderRadius: 8,
+                                            width: '100%',
+                                            backgroundImage:
+                                                'url(' +
+                                                process.env
+                                                    .REACT_APP_BACKEND_URL +
+                                                imageURL +
+                                                ')',
+                                            backgroundSize: 'cover',
+                                            backgroundColor: 'rgba(0,0,0,0.2)',
+                                            backgroundBlendMode: 'soft-light',
+                                            cursor: 'pointer',
+                                        }}
                                     />
                                 </Grid>
-                            )}
-                            {scroll?.images.length > 0 &&
-                                scroll?.images?.map((imageURL, index) => (
-                                    <Grid
-                                        className="mt-3"
-                                        key={imageURL}
-                                        item
-                                        style={{ zIndex: 2 }}
-                                        xs={scroll?.images.length > 1 ? 6 : 12}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setPostToPreview(scroll);
-                                            setImageIndex(index);
-                                            setImageModalOpen(true);
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                height: 200,
-                                                borderRadius: 8,
-                                                width: '100%',
-                                                backgroundImage:
-                                                    'url(' +
-                                                    process.env
-                                                        .REACT_APP_BACKEND_URL +
-                                                    imageURL +
-                                                    ')',
-                                                backgroundSize: 'cover',
-                                                backgroundColor:
-                                                    'rgba(0,0,0,0.2)',
-                                                backgroundBlendMode:
-                                                    'soft-light',
-                                                cursor: 'pointer',
-                                            }}
-                                        />
-                                    </Grid>
-                                ))}
-                        </Grid>
-                        {scroll?.shared_resource?._id &&
-                            scroll?.shared_resource?.type === 'post' && (
-                                <ScrollPreview
-                                    scroll={scroll?.shared_resource?._id}
-                                />
-                            )}
-                        {scroll?.shared_resource?._id &&
-                            scroll?.shared_resource?.type === 'event' && (
-                                <EventPreview
-                                    event={scroll?.shared_resource?._id}
-                                />
-                            )}
-                        <br />
+                            ))}
+                    </Grid>
+                    {scroll?.shared_resource?._id &&
+                        scroll?.shared_resource?.type === 'post' && (
+                            <ScrollPreview
+                                scroll={scroll?.shared_resource?._id}
+                            />
+                        )}
+                    {scroll?.shared_resource?._id &&
+                        scroll?.shared_resource?.type === 'event' && (
+                            <EventPreview
+                                event={scroll?.shared_resource?._id}
+                            />
+                        )}
+                    <br />
 
-                        <Typography display="inline" style={{ zIndex: 2 }}>
-                            <Typography
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenReactions(true);
-                                    setResourceReactions(scroll);
-                                }}
-                                display="inline"
-                                className={classes.clickableTypography}
-                            >
-                                {`${getReactionsSum(scroll)} ${
-                                    getReactionsSum(scroll) === 1
-                                        ? 'Reaction'
-                                        : 'Reactions'
-                                }`}
-                            </Typography>
-                            {' . '}
-                            <Typography
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenComments(true);
-                                }}
-                                className={classes.replies}
-                                display="inline"
-                            >
-                                {`${scroll?.comments} ${
-                                    scroll?.comments === 1
-                                        ? 'Comment'
-                                        : 'Comments'
-                                }`}
-                            </Typography>
+                    <Typography display="inline" style={{ zIndex: 2 }}>
+                        <Typography
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenReactions(true);
+                                setResourceReactions(scroll);
+                            }}
+                            display="inline"
+                            className={classes.clickableTypography}
+                        >
+                            {`${getReactionsSum(scroll)} ${
+                                getReactionsSum(scroll) === 1
+                                    ? 'Reaction'
+                                    : 'Reactions'
+                            }`}
                         </Typography>
-                    </CardContent>
-                </div>
+                        {' . '}
+                        <Typography
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenComments(true);
+                            }}
+                            className={classes.replies}
+                            display="inline"
+                        >
+                            {`${scroll?.comments} ${
+                                scroll?.comments === 1 ? 'Comment' : 'Comments'
+                            }`}
+                        </Typography>
+                    </Typography>
+                </CardContent>
                 <Divider />
                 <Card
                     style={{
@@ -619,25 +550,20 @@ export default function Scroll({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <div style={{ padding: '5px' }}>
+                    <CardContent>
                         <div className="d-flex align-items-center">
-                            <Hidden smDown>
-                                <Avatar
-                                    style={{
-                                        backgroundColor: '#fed132',
-                                        marginRight: '3px',
-                                    }}
-                                    src={
-                                        process.env.REACT_APP_BACKEND_URL +
-                                        user?.profile_pic
-                                    }
-                                    sx={{ width: '30px', height: '30px' }}
-                                >
-                                    <Typography variant="body2">
-                                        {currentUserInitials}
-                                    </Typography>
-                                </Avatar>
-                            </Hidden>
+                            <Avatar
+                                style={{
+                                    backgroundColor: '#fed132',
+                                }}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    user?.profile_pic
+                                }
+                                className="mx-2"
+                            >
+                                {currentUserInitials}
+                            </Avatar>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -737,7 +663,6 @@ export default function Scroll({
                                         <DropzoneArea
                                             clearOnUnmount
                                             dropzoneClass="comment-dropzone"
-                                            //id="dropzone"
                                             clickable={true}
                                             onChange={(files) => {
                                                 const errors = [];
@@ -847,7 +772,7 @@ export default function Scroll({
                                         comment_image={comment_image}
                                     />
                                 ))}
-                    </div>
+                    </CardContent>
                 )}
             </Card>
             <ScrollOptionsPopover
@@ -873,3 +798,42 @@ export default function Scroll({
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
