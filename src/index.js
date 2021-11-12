@@ -1,81 +1,64 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import App from './App';
 import reportWebVitals from './pwa/reportWebVitals';
 import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
-// Use Local Storage Persistance
-// Save to local storage
-const saveToLocalStorage = state => {
-  try {
-    let stringState = JSON.stringify(state);
-    localStorage.setItem('@knjhffkgjbmbmnccmnvfseab', stringState);
-  } catch (err) {
-    console.log(err);
-  }
+const storeName = '5637759616334';
+
+// Save to local storage // Use Local Storage Persistance
+const saveToLocalStorage = (state) => {
+    try {
+        const stringState = JSON.stringify(state);
+        localStorage.setItem(storeName, stringState);
+    } catch (err) {
+        console.log('Error saving state to local storage: ', err);
+    }
 };
 
-// Load from local storage
+// Load from local storage // Use Local Storage Persistance
 const loadFromLocalStorage = () => {
-  try {
-    let stringState = localStorage.getItem('@knjhffkgjbmbmnccmnvfseab');
-    if (stringState === null) return undefined;
-    return JSON.parse(stringState);
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
+    try {
+        const stringState = localStorage.getItem(storeName);
+        if (stringState === null) return undefined;
+        return JSON.parse(stringState);
+    } catch (err) {
+        console.log(err);
+        return undefined;
+    }
 };
 
+// Use Local Storage Persistance
 const persistedStorage = loadFromLocalStorage();
 
 // Initialize Store
 const store = createStore(
-  rootReducer,
-  persistedStorage,
-  applyMiddleware(thunk)
+    rootReducer,
+    persistedStorage,
+    composeWithDevTools(applyMiddleware(thunk))
 );
 
+//Sync to local storage everytime store changes
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
-//Create MUI Theme
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      main: '#006097',
-    },
-    secondary: {
-      main: '#0EA0F3',
-    },
-    background: {
-      paper: '#242526',
-      default: '#18191A',
-    },
-  },
-});
-
-//Sync to local storage everytime store changes
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.unregister();
+serviceWorkerRegistration.register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

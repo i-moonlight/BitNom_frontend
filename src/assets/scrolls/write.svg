@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <g id="Group_3632" data-name="Group 3632" transform="translate(-962 -613)">
+    <g id="blog" transform="translate(962 613)">
+      <path id="Path_2590" data-name="Path 2590" d="M369.617,2.793A2.793,2.793,0,0,0,366.824,0h-4.062A.762.762,0,0,0,362,.762V5.586h6.855a.762.762,0,0,0,.762-.762Z" transform="translate(-343.617)" fill="#ff6426"/>
+      <path id="Path_2591" data-name="Path 2591" d="M2.793,0A2.793,2.793,0,0,0,0,2.793V4.824a.762.762,0,0,0,.762.762H19.145V0Z" fill="#beebfa"/>
+      <path id="Path_2592" data-name="Path 2592" d="M256,0h6.145V5.586H256Z" transform="translate(-243)" fill="#7ed8f7"/>
+      <path id="Path_2593" data-name="Path 2593" d="M0,95v18.383a2.8,2.8,0,0,0,2.793,2.793H23.207A2.8,2.8,0,0,0,26,113.383V95Z" transform="translate(0 -90.176)" fill="#fff5f5"/>
+      <path id="Path_2594" data-name="Path 2594" d="M256,95v21.176h10.207A2.8,2.8,0,0,0,269,113.383V95Z" transform="translate(-243 -90.176)" fill="#ebe1dc"/>
+      <path id="Path_2600" data-name="Path 2600" d="M98.012,166.586H81.762a.762.762,0,0,1-.762-.762v-4.062a.762.762,0,0,1,.762-.762h16.25a.762.762,0,0,1,.762.762v4.063A.762.762,0,0,1,98.012,166.586Z" transform="translate(-76.887 -152.824)" fill="#7ed8f7"/>
+      <path id="Path_2601" data-name="Path 2601" d="M264.125,161H256v5.586h8.125a.762.762,0,0,0,.762-.762v-4.062A.762.762,0,0,0,264.125,161Z" transform="translate(-243 -152.824)" fill="#2fc0f0"/>
+      <line id="Line_117" data-name="Line 117" x2="17.588" transform="translate(4.206 16.696)" fill="none" stroke="#707070" stroke-width="1"/>
+      <line id="Line_118" data-name="Line 118" x2="17.588" transform="translate(4.206 19.245)" fill="none" stroke="#707070" stroke-width="1"/>
+      <line id="Line_119" data-name="Line 119" x2="8.922" transform="translate(4.206 21.794)" fill="none" stroke="#707070" stroke-width="1"/>
+    </g>
+    <text id="ARTICLE" transform="translate(966.459 626)" fill="#fff" font-size="4" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">ARTICLE</tspan></text>
+  </g>
+</svg>
