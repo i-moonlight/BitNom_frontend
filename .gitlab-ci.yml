@@ -70,7 +70,7 @@ deploy_on_server:
     REACT_APP_BACKEND_URL: 'https://bitnorm.com'
     REACT_APP_SOCKET_URL: 'wss://bitnorm.com/notifications/graphql' 
   environment:
-    name: staging
+    name: production
     url: $DEPLOYMENT_SERVER_IP
   script:
     - export REACT_APP_API_GATEWAY=$REACT_APP_API_GATEWAY
