@@ -31,6 +31,7 @@ import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
+import { toast } from 'react-toastify';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -676,12 +677,10 @@ export default function Scroll({
                                                         () => {
                                                             // only select images within width/height/size limits
                                                             if (
-                                                                (image.width <
+                                                                (image.width <=
                                                                     1200) &
-                                                                (image.height <
-                                                                    1350) &
-                                                                (file.size <
-                                                                    2500000)
+                                                                (image.height <=
+                                                                    1350)
                                                             ) {
                                                                 counter += 1;
                                                                 setFileErrors(
@@ -689,7 +688,7 @@ export default function Scroll({
                                                                 );
                                                             } else {
                                                                 errors.push(
-                                                                    'Image is too large. Trim to 1200px by 1350px or less.'
+                                                                    'Image should be less than 1200px by 1350px & below 2mb.'
                                                                 );
                                                                 setFileErrors(
                                                                     errors
@@ -722,6 +721,19 @@ export default function Scroll({
                                             showPreviewsInDropzone
                                             showPreviews={false}
                                             showFileNames={false}
+                                            showAlerts={false}
+                                            onAlert={(message, variant) => {
+                                                if (variant == 'error') {
+                                                    toast.error(message, {
+                                                        position: 'bottom-left',
+                                                        autoClose: 5000,
+                                                        hideProgressBar: true,
+                                                        closeOnClick: true,
+                                                        pauseOnHover: true,
+                                                        draggable: true,
+                                                    });
+                                                }
+                                            }}
                                         />
                                     </div>
                                 </div>
