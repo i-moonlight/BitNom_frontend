@@ -88,12 +88,12 @@ export default function UpdatePost({
                 _id: id,
             },
             refetchQueries: [
-                // {
-                //     query: QUERY_LOAD_SCROLLS,
-                //     variables: {
-                //         data: { ids: getFeed(profileData), limit: 220 },
-                //     },
-                // },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },

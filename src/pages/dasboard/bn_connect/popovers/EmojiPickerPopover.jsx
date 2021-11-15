@@ -1,10 +1,10 @@
 import { Popover } from '@mui/material';
-import { NimblePicker } from 'emoji-mart';
+// import { NimblePicker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
-import data from 'emoji-mart/data/google.json';
+// import data from 'emoji-mart/data/google.json';
 
 function EmojiPickerPopover({
-    handleSelectEmoji,
+    // handleSelectEmoji,
     emojiPickerAnchorEl,
     emojiPickerId,
     isEmojiPickerOpen,
@@ -23,14 +23,14 @@ function EmojiPickerPopover({
             style={{ marginLeft: 16, width: '100%' }}
             disableScrollLock
         >
-            <NimblePicker
+            {/* <NimblePicker
                 onSelect={handleSelectEmoji}
                 showSkinTones={false}
                 emojiTooltip={false}
                 showPreview={false}
                 sheetSize={32}
                 data={data}
-            />
+            /> */}
         </Popover>
     );
 }

@@ -43,7 +43,7 @@ export default function Signup() {
     });
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/connect');
+        user && JSON.stringify(user) !== '{}' && history.push('/connect');
 
         if (justRegistered) {
             setTimeout(() => {

@@ -4,7 +4,7 @@ import {
     ThumbDownRounded,
     ThumbUpRounded,
 } from '@mui/icons-material';
-import { AvatarGroup, Avatar, Button as MuiButton } from '@mui/material';
+import { Avatar, AvatarGroup, Button as MuiButton } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 

@@ -5,22 +5,21 @@ import {
     Brightness7Rounded,
     ChevronRight,
     ExitToAppRounded,
-    PeopleRounded,
     ForumRounded,
     Notifications,
+    PeopleRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
+    Badge,
     ListItem,
+    ListItemButton,
     ListItemIcon,
     ListItemText,
-    ListItemButton,
     Typography,
     useMediaQuery,
     useTheme,
-    Badge,
 } from '@mui/material';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { signout } from '../../../store/actions/authActions';

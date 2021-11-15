@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Dialog, Slide, Grid, IconButton, Typography } from '@mui/material';
 import {
     ArrowBackIos,
     ArrowForwardIos,
     CloseRounded,
 } from '@mui/icons-material';
+import { Dialog, Grid, IconButton, Slide, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useCallback, useEffect, useState } from 'react';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
 // import { useQuery } from '@apollo/client';
 // import { QUERY_POST_BY_ID } from '../pages/dasboard/utilities/queries';

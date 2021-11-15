@@ -12,6 +12,7 @@ import {
 import {
     checkSessionTimeOut,
     signout,
+    userUpdate,
 } from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
@@ -151,7 +152,13 @@ export default function NavBar() {
     };
 
     useEffect(() => {
-        !user?.email?.verified && history.push('/auth/require_verify');
+        dispatch(userUpdate(profileData?.Users?.profile));
+    }, [dispatch, profileData]);
+
+    useEffect(() => {
+        user?.email &&
+            !user?.email?.verified &&
+            history.push('/auth/require_verify');
 
         if (window.location.pathname == '/connect') {
             setTabValue(0);
@@ -175,7 +182,7 @@ export default function NavBar() {
         if (window.location.pathname == '/investors') {
             setTabValue(4);
         }
-    }, [history, user?.email?.verified]);
+    }, [history, user?.email, user?.email?.verified]);
 
     useEffect(() => {
         const count =
@@ -196,7 +203,6 @@ export default function NavBar() {
         );
         const upcomingEvents = userEvents?.length > 0 ? userEvents?.length : 0;
         dispatch(setEventCount(upcomingEvents));
-
         dispatch(checkSessionTimeOut());
         const notSeenArray = [];
         response?.forEach((notification) => {
@@ -242,11 +248,7 @@ export default function NavBar() {
             <StatusBar />
             <Divider />
             <ProfileBar
-                notifications={
-                    // _count
-                    // TODO
-                    0
-                }
+                notifications={_count}
                 menuId={menuId}
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}

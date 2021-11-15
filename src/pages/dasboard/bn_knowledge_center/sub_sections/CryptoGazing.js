@@ -1,5 +1,5 @@
-import { Card, CardContent } from '@mui/material';
 import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
+import { Card, CardContent } from '@mui/material';
 import React from 'react';
 
 /**
