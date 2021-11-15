@@ -188,7 +188,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={CoinDetails}
-                                    path="/knowledge_center/:id"
+                                    path="/knowledge_center/cryptocurrency/:id"
                                 />
 
                                 <Route
