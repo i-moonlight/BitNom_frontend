@@ -1,4 +1,4 @@
-import { Box, Card, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -7,12 +7,10 @@ function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
+        <div role="tabpanel"
+            hidden={value !== index} id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
-            {...other}
+             {...other}
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
@@ -36,9 +34,7 @@ function tabProps(index) {
     };
 }
 const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
+    tabPanelRoot: {padding: '25px 0',},
 });
 
 const custom = {
@@ -67,7 +63,7 @@ export default function ProjectInfo() {
     const classes = useStyles();
 
     return (
-        <Card>
+        <Typography color={'textPrimary'}>
             <Box sx={{ flexGrow: 1, display: 'flex' }}>
                 <Tabs
                     orientation="vertical"
@@ -415,6 +411,6 @@ export default function ProjectInfo() {
                     </div>
                 </TabPanel>
             </Box>
-        </Card>
+        </Typography>
     );
 }
