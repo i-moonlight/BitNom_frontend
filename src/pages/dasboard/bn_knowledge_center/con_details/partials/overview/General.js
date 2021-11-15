@@ -1,8 +1,13 @@
+/**
+ * Created by PhpStorm.
+ * User: don@donphelix.com
+ * Date: 11/14/21
+ * Time: 12:59 PM
+ */
 import {
-    Button,
     Card, CardContent,
-    Checkbox, CircularProgress,
-    FormControlLabel,
+    Checkbox, Chip, CircularProgress,
+    FormControlLabel, Stack,
     Table, TableBody, TableCell,
     TableContainer,
     TableHead,
@@ -20,14 +25,12 @@ import {
     MoreHoriz
 } from '@mui/icons-material';
 import CoinChart from '../../../bn_charts/CoinChart';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {customOverview} from '../utils/styles';
+import {convertDate, volumePercentage} from '../utils/utilities';
+import {buttonData, GeneralButtons} from '../utils/GeneralButtons';
 
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/14/21
- * Time: 12:59 PM
- */
+
 
 export default function General ()
 {
@@ -38,9 +41,8 @@ export default function General ()
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=10&sparkline=true`;
         fetch(url)
-            .then((response) => response.json())
+            .then(response => response.json())
             .then((data) => {
-                console.log(data);
                 getRows(data);
                 loadedRow(true);
             })
@@ -50,46 +52,18 @@ export default function General ()
             });
     }, []);
 
-    function convertDate(date){
-        const today = new Date(date);
-        return today.getDate()
-            + '-' +
-            parseInt(today.getMonth() + 1)
-            + '-' +
-            today.getFullYear();
-    }
-
-    function volumePercentage(all,volume){
-        return (volume/all)*100;
-    }
-
-    const custom = {
-        tabStyle: {
-            textTransform: 'capitalize',
-        },
-        buttonStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-            backgroundColor: '#333333',
-            margin: '5px 5px 5px 0',
-            borderRadius: '50px',
-            minWidth: '120px'
-        },
-        coinsBorder: {
-            borderLeft: '5px solid blue',
-            minWidth: '250px',
-        },
-        trendingCoins: {
-            backgroundColor: '#b4b474',
-            borderRadius: '25px',
-        }
+    const handleClick = () => {
+        console.info('You clicked the Chip.');
     };
+
+    const [activeButton, setActiveButton] = useState(0);
+
     return (<>
         <div>
             {/*First row*/}
             <div className={'row mt-3'}>
                 {/*left side card*/}
-                <Typography color='textPrimary' className={'col-sm-12 col-md-7 col-lg-7'}>
+                <Typography color='textPrimary' className={'col-sm-12 col-md-8 col-lg-8'}>
                     {/*Bitcoin (BTC) Price Chart*/}
                     <div className={'m-3'}>
                         <div className={'d-flex justify-content-between'}>
@@ -101,43 +75,31 @@ export default function General ()
                         </div>
                         {/*Chart*/}
                         <div className={'d-flex justify-content-between'}>
-                            <Card className={''}>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    Price
-                                </button>
-                                <Button className={'btn btn-info m-1 btn-sm'}>
-                                    Market Cap
-                                </Button>
-                                <Button className={'btn btn-info m-1 btn-sm'}>
-                                    Trading views
-                                </Button>
+                            <Card>
+                                <div className={'m-1'}>
+                                    {buttonData.map((item, index) => (
+                                        <GeneralButtons
+                                            key={item.value}
+                                            id={index}
+                                            value={item.value}
+                                            setActiveButton={setActiveButton}
+                                            active={activeButton === index}
+                                        />
+                                    ))}
+                                </div>
                             </Card>
-                            <div>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    1d
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    7d
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    1m
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    3m
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    1y
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    YTD
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
-                                    ALL
-                                </button>
-                                <button className={'btn btn-info m-1 btn-sm'}>
+                            <Card>
+                                <Stack direction="row" className={'my-1 mx-1'} spacing={0.1}>
+                                    <Chip label="1d" size={'small'} className={'mx-1'}  variant={'outlined'} onClick={handleClick} />
+                                    <Chip label="2d" size={'small'} className={'mx-1'}  variant="outlined" onClick={handleClick} />
+                                    <Chip label="1m" size={'small'} className={'mx-1'}  variant="outlined" onClick={handleClick} />
+                                    <Chip label="3m" size={'small'} className={'mx-1'} variant="outlined" onClick={handleClick} />
+                                    <Chip label="1y" size={'small'} className={'mx-1'} variant="outlined" onClick={handleClick} />
+                                    <Chip label="YTD" size={'small'} className={'mx-1'} variant="outlined" onClick={handleClick} />
+                                    <Chip label="ALL" size={'small'} className={'mx-1'} variant="outlined" onClick={handleClick} />
                                     <DateRange />
-                                </button>
-                            </div>
+                                </Stack>
+                            </Card>
                         </div>
                         <div className={'mt-2'}>
                             <Card>
@@ -182,7 +144,7 @@ export default function General ()
 
 
                 {/*Right side card*/}
-                <div className={'col-sm-12 col-md-5 col-lg-5'}>
+                <div className={'col-sm-12 col-md-4 col-lg-4'}>
                     {/*BTC to USD Converter card*/}
                     <Card>
                         <div className={'m-2'}>
@@ -202,7 +164,7 @@ export default function General ()
                             <div className={'text-center display-5'}>
                                 <CompareArrows />
                             </div>
-                            <Typography color='textPrimary' className='my-1'>
+                            <Typography color='textPrimary' className='my-1' fontSize={10}>
                                 <div className='input-group'>
                                     <div className='input-group-prepend w-25'>
                                         <div className='input-group-text bg-black'>
@@ -725,7 +687,7 @@ export default function General ()
                 <hr />
                 <section className='d-sm-block d-md-flex d-lg-flex mb-4'>
                     <div className='m-2'>
-                        <Card style={custom.coinsBorder}>
+                        <Card style={customOverview.coinsBorder}>
                             <CardContent>
                                 <Typography variant='caption'>
                                     <div className='float-md-right'>
@@ -751,7 +713,7 @@ export default function General ()
                         </Card>
                     </div>
                     <div className='m-2'>
-                        <Card style={custom.coinsBorder}>
+                        <Card style={customOverview.coinsBorder}>
                             <CardContent>
                                 <Typography variant='caption'>
                                     <div className='float-md-right'>
@@ -777,7 +739,7 @@ export default function General ()
                         </Card>
                     </div>
                     <div className='m-2'>
-                        <Card style={custom.coinsBorder}>
+                        <Card style={customOverview.coinsBorder}>
                             <CardContent>
                                 <Typography variant='caption'>
                                     <div className='float-md-right'>
@@ -793,7 +755,7 @@ export default function General ()
                                             <p className={'text-secondary'}>
                                                 $4.07
                                             </p>
-                                            <a className={'btn btn-danger btn-sm'} style={custom.trendingCoins}>
+                                            <a className={'btn btn-danger btn-sm'} style={customOverview.trendingCoins}>
                                                 -2.01%
                                             </a>
                                         </section>
@@ -803,7 +765,7 @@ export default function General ()
                         </Card>
                     </div>
                     <div className='m-2'>
-                        <Card style={custom.coinsBorder}>
+                        <Card style={customOverview.coinsBorder}>
                             <CardContent>
                                 <Typography variant='caption'>
                                     <div className='float-md-right'>
