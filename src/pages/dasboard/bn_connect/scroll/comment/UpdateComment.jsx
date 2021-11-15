@@ -478,9 +478,9 @@ export default function UpdateComment({
                                             aria-label="pick emoji"
                                             aria-controls={emojiPickerId}
                                             aria-haspopup="true"
-                                            // onClick={(e) => {
-                                            //     handleEmojiPickerOpen(e);
-                                            // }}
+                                            onClick={(e) => {
+                                                handleEmojiPickerOpen(e);
+                                            }}
                                         >
                                             <InsertEmoticon />
                                         </IconButton>
