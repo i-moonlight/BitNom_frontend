@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CoinDetails() {
+export default function CoinDetails({match}) {
     const [value, setValue] = useState('1');
     const [coinDetail, getCoinDetail] = useState([]);
     const [coinLoaded, coinStatus] = useState(false);
@@ -81,9 +81,8 @@ export default function CoinDetails() {
 
     useEffect(() =>
     {
-        // const main_url = window.location.href;
-        // const coin_id = main_url.split('/').pop();
-        const url = `https://api.coingecko.com/api/v3/coins/${'bitcoin'}`;
+        const coin_id = match.params.id;
+        const url = `https://api.coingecko.com/api/v3/coins/${coin_id}`;
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
@@ -94,7 +93,7 @@ export default function CoinDetails() {
                 console.log(err);
                 coinStatus(false);
             });
-    }, []);
+    }, [match]);
 
     return (
         <Screen>
