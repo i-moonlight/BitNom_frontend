@@ -138,8 +138,8 @@ export default function ProfileCard({ profile, profileView }) {
                                     // only select images within width/height/size limits
 
                                     if (
-                                        (image.width < 1200) &
-                                        (image.height < 1350) &
+                                        (image.width <= 1200) &
+                                        (image.height <= 1350) &
                                         (file.size < 2500000)
                                     ) {
                                         counter += 1;
@@ -207,8 +207,8 @@ export default function ProfileCard({ profile, profileView }) {
                                                     // only select images within width/height/size limits
 
                                                     if (
-                                                        (image.width < 1200) &
-                                                        (image.height < 1350) &
+                                                        (image.width <= 1200) &
+                                                        (image.height <= 1350) &
                                                         (file.size < 2500000)
                                                     ) {
                                                         counter += 1;

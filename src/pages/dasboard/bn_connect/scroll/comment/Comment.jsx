@@ -649,9 +649,9 @@ export default function Comment({
                                                             () => {
                                                                 // only select images within width/height/size limits
                                                                 if (
-                                                                    (image.width <
+                                                                    (image.width <=
                                                                         1200) &
-                                                                    (image.height <
+                                                                    (image.height <=
                                                                         1350) &
                                                                     (file.size <
                                                                         2500000)

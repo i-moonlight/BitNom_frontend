@@ -37,6 +37,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
+import { toast } from 'react-toastify';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -1026,12 +1027,10 @@ function PostView() {
                                                                                 () => {
                                                                                     // only select images within width/height/size limits
                                                                                     if (
-                                                                                        (image.width <
+                                                                                        (image.width <=
                                                                                             1200) &
-                                                                                        (image.height <
-                                                                                            1350) &
-                                                                                        (file.size <
-                                                                                            5000000)
+                                                                                        (image.height <=
+                                                                                            1350)
                                                                                     ) {
                                                                                         counter += 1;
                                                                                         setFileErrors(
@@ -1039,7 +1038,7 @@ function PostView() {
                                                                                         );
                                                                                     } else {
                                                                                         errors.push(
-                                                                                            'Image is too large. Trim to 1200px by 1200px or less.'
+                                                                                            'Image should be less than 1200px by 1350px & below 2mb.'
                                                                                         );
                                                                                         setFileErrors(
                                                                                             errors
@@ -1082,6 +1081,31 @@ function PostView() {
                                                                 showFileNames={
                                                                     false
                                                                 }
+                                                                showAlerts={
+                                                                    false
+                                                                }
+                                                                onAlert={(
+                                                                    message,
+                                                                    variant
+                                                                ) => {
+                                                                    if (
+                                                                        variant ==
+                                                                        'error'
+                                                                    ) {
+                                                                        toast.error(
+                                                                            message,
+                                                                            {
+                                                                                position:
+                                                                                    'bottom-left',
+                                                                                autoClose: 5000,
+                                                                                hideProgressBar: true,
+                                                                                closeOnClick: true,
+                                                                                pauseOnHover: true,
+                                                                                draggable: true,
+                                                                            }
+                                                                        );
+                                                                    }
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
