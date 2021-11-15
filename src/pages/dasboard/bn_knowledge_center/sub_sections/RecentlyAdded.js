@@ -5,7 +5,6 @@
  * Time: 9:06 PM
  */
 import { Card, CircularProgress } from '@mui/material';
-import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -46,12 +45,15 @@ export default function RecentlyAdded() {
                 getCoinList(data);
                 coinLoaded(true);
             })
-            .catch(coinLoaded(false));
+            .catch((err) => {
+                coinLoaded(false);
+                console.log(err);
+            });
     }, []);
     return (
         <>
             {coinsLoaded ? (
-                <TableContainer component={Paper}>
+                <TableContainer>
                     <Table
                         sx={{ maxHeight: 500 }}
                         aria-label="coins table"

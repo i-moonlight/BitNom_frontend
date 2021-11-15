@@ -7,14 +7,12 @@
 
 import { DateRange } from '@mui/icons-material';
 import {
-    Card,
-    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
+    TableRow, Typography,
 } from '@mui/material';
 
 function createData(date, open, high, low, close, volume, market_cap) {
@@ -80,7 +78,7 @@ const rows = [
 
 export default function HistoricalData() {
     return (
-        <Card>
+        <Typography color={'textPrimary'}>
             <div className={'m-3'}>
                 <div className={'mb-3 d-flex justify-content-between'}>
                     <h3>Historical Data For Bitcoin</h3>
@@ -90,7 +88,7 @@ export default function HistoricalData() {
                 </div>
                 <hr />
                 <div>
-                    <TableContainer component={Paper}>
+                    <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead className={'bg-secondary'}>
                                 <TableRow>
@@ -142,6 +140,6 @@ export default function HistoricalData() {
                     </TableContainer>
                 </div>
             </div>
-        </Card>
+        </Typography>
     );
 }
