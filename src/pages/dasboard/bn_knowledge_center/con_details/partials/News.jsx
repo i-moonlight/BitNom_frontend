@@ -7,7 +7,7 @@
 
 import { LinkSharp } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Card, Tab } from '@mui/material';
+import {Card, Tab, Typography} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 
@@ -41,32 +41,20 @@ export default function News() {
     };
 
     return (
-        <Card sx={{ width: '100%', typography: 'body1' }}>
+        <Typography color={'textPrimary'} sx={{ width: '100%', typography: 'body1' }}>
             <div className={'m-3'}>
                 <TabContext value={value}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Card sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList
-                            onChange={handleChange}
-                            variant="scrollable"
-                            allowScrollButtonsMobile
-                            scrollButtons
-                            aria-label="Bitcoin New tab"
-                        >
+                            onChange={handleChange} variant="scrollable" allowScrollButtonsMobile
+                            scrollButtons aria-label="Bitcoin New tab">
                             <h6 className={'m-3'}>
                                 <strong>BitCoin Markets</strong>
                             </h6>
-                            <Tab
-                                label="Recent"
-                                value="1"
-                                style={custom.tabStyle}
-                            />
-                            <Tab
-                                label="Hot"
-                                value="2"
-                                style={custom.tabStyle}
-                            />
+                            <Tab label="Recent" value="1" style={custom.tabStyle}/>
+                            <Tab label="Hot" value="2" style={custom.tabStyle}/>
                         </TabList>
-                    </Box>
+                    </Card>
                     <TabPanel
                         value="1"
                         classes={{ root: classes.tabPanelRoot }}
@@ -96,7 +84,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -126,7 +114,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -156,7 +144,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -186,7 +174,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -216,7 +204,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -246,7 +234,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -276,7 +264,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -306,7 +294,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -336,7 +324,7 @@ export default function News() {
                                         'd-flex justify-content-between text-secondary'
                                     }
                                 >
-                                    <p>@4Min ago</p>
+                                    <p>4Min ago</p>
                                     <p>
                                         Bitcoin Warrior <LinkSharp />
                                     </p>
@@ -352,6 +340,6 @@ export default function News() {
                     </TabPanel>
                 </TabContext>
             </div>
-        </Card>
+        </Typography>
     );
 }

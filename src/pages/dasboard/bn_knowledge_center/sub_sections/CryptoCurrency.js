@@ -15,10 +15,10 @@ import {
     TablePagination,
     CircularProgress, Card
 } from '@mui/material';
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
-export default function CryptoCurrency()
+export default function CryptoCurrencyPage()
 {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(50);
@@ -43,13 +43,11 @@ export default function CryptoCurrency()
                 getCoins(data);
                 checkLoadedCoin(true);
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch((err) => {console.log(err);});
     }, []);
 
     return(
-        <Fragment>
+        <>
             {coinIsLoaded ? (
                 <>
                     <TableContainer sx={{ maxHeight: 720 }}>
@@ -191,5 +189,5 @@ export default function CryptoCurrency()
                 </Card>
             )}
 
-        </Fragment>);
+        </>);
 }

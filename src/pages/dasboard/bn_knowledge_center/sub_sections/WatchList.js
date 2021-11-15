@@ -5,7 +5,7 @@
  * Time: 1:35 AM
  */
 import React, {Fragment} from 'react';
-import {Table, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
+import {Table, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material';
 const columns = [
     { id: 'star', label: '#', minWidth: 10 },
     { id: 'ash', label: '', minWidth: 10 },
@@ -48,7 +48,7 @@ export default function WatchList ()
                   </TableHead>
               </Table>
           </TableContainer>
-          <div className="m-5 text-center">
+          <Typography color='textPrimary' className="m-5 text-center">
               <h4>
                   <strong>Your Watchlist is empty</strong>
               </h4>
@@ -56,14 +56,14 @@ export default function WatchList ()
                   Start building your watchlist by
                   clicking button bellow
               </p>
-              <button className=" btn btn-primary m-2">
+              <button type="button" className="btn btn-primary btn-lg btn-block w-25">
                   Add Coins
               </button>
               <br />
               <a className="text-primary">
                   Visit Cryptogazing
               </a>
-          </div>
+          </Typography>
 
       </Fragment>);
 }

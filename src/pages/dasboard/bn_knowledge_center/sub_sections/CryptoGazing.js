@@ -15,7 +15,7 @@ export function CryptoGazing() {
 
     useEffect(() =>
     {
-        const coin_list = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
+        // const coin_list = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
         const url = `https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true`;
 
         fetch(url)

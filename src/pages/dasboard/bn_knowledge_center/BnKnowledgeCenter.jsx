@@ -1,11 +1,8 @@
-import { List, Star, StarOutline } from '@mui/icons-material';
+import { List, Star} from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import {
-    Button, Card, Container, Divider, Paper, Tab, Table, TableCell,
-    TableContainer, TableHead, TableRow,
-} from '@mui/material';
+import {Button, Card, Container, Divider, Tab, Typography} from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Screen from '../../../components/Screen';
 import Categories from './sub_sections/Categories';
 import { CryptoGazing } from './sub_sections/CryptoGazing';
@@ -20,9 +17,7 @@ const useStyles = makeStyles({ tabPanelRoot: { padding: '0px' } });
 
 export default function BnKnowledgeCenter() {
     const [value, setValue] = React.useState('1');
-    const handleTabChanges = (event, newValue) => {
-        setValue(newValue);
-    };
+    const handleTabChanges = (event, newValue) => {setValue(newValue);};
     const classes = useStyles();
     const custom = {
         tabStyle: {
@@ -69,11 +64,9 @@ export default function BnKnowledgeCenter() {
     return (
         <Screen>
             <Container>
-                {/*Crypto Header*/}
                 <TopSection />
                 <br />
                 <section>
-                    {/* Tabs */}
                     <TabContext value={value} variant="fullWidth">
                         <div sx={{borderBottom: 1, borderColor: 'divider', paddingLeft: 0, marginLeft: 0}} className={'mb-3'}>
                             <TabList onChange={handleTabChanges} aria-label="Tab list for cryptocurrency section"
@@ -98,32 +91,32 @@ export default function BnKnowledgeCenter() {
                             <Divider flexItem />
                         </div>
                         <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <div sx={{ width: '100%', overflow: 'hidden' }}>
                                 <CryptoCurrency />
-                            </Paper>
+                            </div>
                         </TabPanel>
                         <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
-                            <Card>
+                            <div>
                                 <WatchList />
-                            </Card>
+                            </div>
                         </TabPanel>
                         <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
                             <CryptoGazing />
                         </TabPanel>
                         <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
-                            <Card>
+                            <div>
                                 <Categories />
-                            </Card>
+                            </div>
                         </TabPanel>
                         <TabPanel value="5" classes={{ root: classes.tabPanelRoot }}>
-                            <Card>
+                            <Typography color='textPrimary'>
                                 <GainersAndLosers />
-                            </Card>
+                            </Typography>
                         </TabPanel>
                         <TabPanel value="6" classes={{ root: classes.tabPanelRoot }}>
-                            <Card>
+                            <div>
                                 <RecentlyAdded />
-                            </Card>
+                            </div>
                         </TabPanel>
                         <TabPanel value="7" classes={{ root: classes.tabPanelRoot }}>
                             <Card>
