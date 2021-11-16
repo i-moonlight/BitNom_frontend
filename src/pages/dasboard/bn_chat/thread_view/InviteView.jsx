@@ -6,9 +6,7 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-
 import { Button } from '../../../../components/Button';
-
 import {
     ACCEPT_DIALOGUE_INVITE,
     REJECT_DIALOGUE_INVITE,

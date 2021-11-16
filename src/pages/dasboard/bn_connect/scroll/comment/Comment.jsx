@@ -177,6 +177,7 @@ export default function Comment({
         });
         setUserReaction(reaction);
     };
+
     const handleRemoveReaction = () => {
         removeReaction({
             variables: {
@@ -292,7 +293,7 @@ export default function Comment({
                         <CardContent>
                             <div className="center-horizontal space-between w-100">
                                 <Typography variant="body2" display="inline">
-                                    <Typography
+                                    <span
                                         variant="body2"
                                         component="a"
                                         onClick={(e) => {
@@ -303,22 +304,16 @@ export default function Comment({
                                         }}
                                     >
                                         {comment?.author?.displayName}
-                                    </Typography>
-                                    <Typography
-                                        display="inline"
-                                        variant="body2"
-                                    >
+                                    </span>
+                                    <span display="inline" variant="body2">
                                         . @{comment?.author?._id}
-                                    </Typography>
-                                    <Typography
-                                        display="inline"
-                                        variant="body2"
-                                    >
+                                    </span>
+                                    <span display="inline" variant="body2">
                                         .{' '}
                                         {moment(
                                             comment.creation_date
                                         ).fromNow()}
-                                    </Typography>
+                                    </span>
                                 </Typography>
                                 <IconButton
                                     size="small"
@@ -335,14 +330,14 @@ export default function Comment({
                                 color="textSecondary"
                                 component="p"
                             >
-                                <Typography
+                                <span
                                     variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(comment),
                                     }}
                                     style={{ zIndex: 2 }}
-                                ></Typography>
+                                ></span>
 
                                 {comment?.image.length > 0 && (
                                     <Grid container spacing={2}>
@@ -540,7 +535,7 @@ export default function Comment({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellCheck="false"
+                                        // spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {
@@ -705,14 +700,13 @@ export default function Comment({
                                         size="small"
                                         color="primary"
                                         className="m-1 p-1"
+                                        onClick={() => {
+                                            setPreviewURL();
+                                            setFileErrors([]);
+                                            setCommentImage(null);
+                                        }}
                                     >
-                                        <CloseRounded
-                                            onClick={() => {
-                                                setPreviewURL();
-                                                setFileErrors([]);
-                                                setCommentImage(null);
-                                            }}
-                                        />
+                                        <CloseRounded />
                                     </IconButton>
                                 </div>
                             </Card>
@@ -748,7 +742,6 @@ export default function Comment({
                             ))}
                 </div>
             </div>
-
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
                 emojiPickerAnchorEl={emojiPickerAnchorEl}

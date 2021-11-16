@@ -514,6 +514,7 @@ export const QUERY_LOAD_SCROLLS = gql`
     }
   }
 `;
+
 export const GET_BOOKMARKED_SCROLLS = gql`
   query ($data: IGetBookmarked) {
     Posts {

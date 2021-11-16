@@ -1,74 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" id="favicon" href="%PUBLIC_URL%/logo.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content="BitNorm Website" />
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
-            rel="stylesheet"
-        />
 
-        <style>
-            .preloader-speeding-wheel {
-                width: 49px;
-                height: 49px;
-                margin: 0 auto;
-                border: 3px solid #006097;
-                border-radius: 50%;
-                border-left-color: transparent;
-                border-right-color: transparent;
-                animation: cssload-spin 575ms infinite linear;
-                -o-animation: cssload-spin 575ms infinite linear;
-                -ms-animation: cssload-spin 575ms infinite linear;
-                -webkit-animation: cssload-spin 575ms infinite linear;
-                -moz-animation: cssload-spin 575ms infinite linear;
-            }
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" id="favicon" href="%PUBLIC_URL%/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="BitNorm Website" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
 
-            @keyframes cssload-spin {
-                100% {
-                    transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
-            }
+    <style>
+        .preloader-speeding-wheel {
+            width: 49px;
+            height: 49px;
+            margin: 0 auto;
+            border: 3px solid #006097;
+            border-radius: 50%;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            animation: cssload-spin 575ms infinite linear;
+            -o-animation: cssload-spin 575ms infinite linear;
+            -ms-animation: cssload-spin 575ms infinite linear;
+            -webkit-animation: cssload-spin 575ms infinite linear;
+            -moz-animation: cssload-spin 575ms infinite linear;
+        }
 
-            @-o-keyframes cssload-spin {
-                100% {
-                    -o-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
+        @keyframes cssload-spin {
+            100% {
+                transform: rotate(360deg);
+                transform: rotate(360deg);
             }
+        }
 
-            @-ms-keyframes cssload-spin {
-                100% {
-                    -ms-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
+        @-o-keyframes cssload-spin {
+            100% {
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
+        }
 
-            @-webkit-keyframes cssload-spin {
-                100% {
-                    -webkit-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
+        @-ms-keyframes cssload-spin {
+            100% {
+                -ms-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
+        }
 
-            @-moz-keyframes cssload-spin {
-                100% {
-                    -moz-transform: rotate(360deg);
-                    transform: rotate(360deg);
-                }
+        @-webkit-keyframes cssload-spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
-        </style>
-        <!--
+        }
+
+        @-moz-keyframes cssload-spin {
+            100% {
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-        <!--
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -77,13 +75,13 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-        <title>BitNorm</title>
-    </head>
+    <title>BitNorm</title>
+</head>
 
-    <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root"></div>
-        <!-- <div id="preloader-body" style="
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div id="preloader-body" style="
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -94,16 +92,10 @@
                 height: 100%;
                 background-color: #000;
                 z-index: 2100;
-<<<<<<< HEAD
-            "> -->
-        <!-- <img style='width:50px;height:50px' src='%PUBLIC_URL%/logo.svg' alt="Logo image"></img> -->
-        <!-- <div class="preloader-speeding-wheel"></div>
-=======
             ">
         <div class="preloader-speeding-wheel"></div>
->>>>>>> f5c34d395a332495af52c7639fa90cff549fb553
-    </div> -->
-        <!--
+    </div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -114,18 +106,16 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-        <script
-            src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
-            async=""
-        ></script>
-        <script>
-            window.onload = function () {
-                console.log('Loaded ==>');
-                let preLoader = document.getElementById('preloader-body');
-                if (preLoader) {
-                    preLoader.style.display = 'none';
-                }
-            };
-        </script>
-    </body>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+        window.onload = function () {
+            console.log('Loaded ==>');
+            let preLoader = document.getElementById('preloader-body');
+            if (preLoader) {
+                preLoader.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+
 </html>

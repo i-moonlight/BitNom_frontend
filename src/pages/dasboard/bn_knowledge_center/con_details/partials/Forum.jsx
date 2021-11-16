@@ -163,7 +163,7 @@ export default function Forum() {
                                     <Announcement /> Announcement
                                 </p>
                                 <p>
-                                    <Message /> Q&A
+                                    <Message /> Q&amp;A
                                 </p>
                             </div>
                         </Card>

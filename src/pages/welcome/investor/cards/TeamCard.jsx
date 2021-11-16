@@ -42,10 +42,29 @@ export default function TeamCard({ member, desc }) {
                                 </Typography>
                                 <div className="mt-4 d-flex align-items-center justify-content-between w-100 ">
                                     <div>
-                                        <IconButton size="small">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => {
+                                                member.socials.email?.length >
+                                                    1 &&
+                                                    window.open(
+                                                        `mailto:${member.socials.email}`
+                                                    );
+                                            }}
+                                        >
                                             <MailRounded />
                                         </IconButton>
-                                        <IconButton size="small">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => {
+                                                member.socials.linkedIn
+                                                    ?.length > 1 &&
+                                                    window.open(
+                                                        `${member.socials.linkedIn}`,
+                                                        '_blank'
+                                                    );
+                                            }}
+                                        >
                                             <LinkedIn />
                                         </IconButton>
                                     </div>

@@ -5,7 +5,7 @@
  * Time: 9:06 PM
  */
 
-import React, { useEffect } from 'react';
+import { Card, LinearProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,7 +13,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Card, LinearProgress } from '@mui/material';
+import React, { useEffect } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -53,7 +53,11 @@ export default function Categories() {
 
     return (
         <TableContainer>
-            <Table sx={{ maxHeight: 500 }} aria-label="coins table" stickyHeader>
+            <Table
+                sx={{ maxHeight: 500 }}
+                aria-label="coins table"
+                stickyHeader
+            >
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>#</StyledTableCell>

@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
-
 import {
     ARCHIVE_CHAT,
     BLOCK_CHAT,
@@ -8,9 +7,10 @@ import {
     MUTE_CONVERSATION,
     PIN_CHAT,
     REPORT_USER,
-    UNPIN,
     UNARCHIVE,
+    UNPIN,
 } from '../graphql/queries';
+
 export default function ChatSettingPopover({
     chatSettingsAnchorEl,
     chatSettingsId,

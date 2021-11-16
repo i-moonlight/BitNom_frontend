@@ -37,7 +37,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/connect');
+        user && JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [user, history]);
 
     const responseGoogle = (response) => {

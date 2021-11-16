@@ -1,5 +1,5 @@
 // import { useQuery } from '@apollo/client';
-import { MoreVert, Search, Chat } from '@mui/icons-material';
+import { Chat, MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
     IconButton,
