@@ -25,6 +25,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -551,20 +552,28 @@ export default function Scroll({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <CardContent>
+                    <div className={classes.commentSection}>
                         <div className="d-flex align-items-center">
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
-                                }
-                                className="mx-2"
-                            >
-                                {currentUserInitials}
-                            </Avatar>
+                            <Hidden smDown>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#fed132',
+                                        marginRight: '3px',
+                                    }}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
+                                    sx={{
+                                        width: '30px',
+                                        height: '30px',
+                                    }}
+                                >
+                                    <Typography variant="body2">
+                                        {currentUserInitials}
+                                    </Typography>
+                                </Avatar>
+                            </Hidden>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -784,7 +793,7 @@ export default function Scroll({
                                         comment_image={comment_image}
                                     />
                                 ))}
-                    </CardContent>
+                    </div>
                 )}
             </Card>
             <ScrollOptionsPopover
@@ -837,6 +846,12 @@ const useStyles = makeStyles((theme) => ({
         padding: '0px 10px 0px 5px',
         [theme.breakpoints.up('md')]: {
             padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
         },
     },
     red: {

@@ -110,6 +110,12 @@ const useStyles = makeStyles((theme) => ({
             padding: '0px 30px 0px 20px',
         },
     },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
     red: {
         color: red[500],
     },
@@ -852,7 +858,7 @@ function PostView() {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <div style={{ padding: '3px' }}>
+                                        <div className={classes.commentSection}>
                                             <div className="d-flex align-items-center">
                                                 <Hidden smDown>
                                                     <Avatar
@@ -1008,7 +1014,6 @@ function PostView() {
                                                             <DropzoneArea
                                                                 clearOnUnmount
                                                                 dropzoneClass="comment-dropzone"
-                                                                //id="dropzone"
                                                                 clickable={true}
                                                                 onChange={(
                                                                     files
