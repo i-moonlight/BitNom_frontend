@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useMutation } from '@apollo/client';
 import {
     AttachFile,
@@ -21,8 +21,13 @@ import {
     CardContent,
 } from '@mui/material';
 import { DropzoneArea } from 'react-mui-dropzone';
-import { CREATE_DIALOGUE_MESSAGE, UPDATE_MESSAGE } from '../graphql/queries';
+import {
+    CREATE_DIALOGUE_MESSAGE,
+    UPDATE_MESSAGE,
+    USER_TYPING,
+} from '../graphql/queries';
 import { useStyles } from '../utils/styles';
+import debounce from 'lodash/debounce';
 
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 
@@ -38,9 +43,12 @@ export default function SendMessage({
     editText,
     setEditText,
     onCancelMessageUpdate,
+    currentUser,
+    otherUser,
 }) {
     const [text, setText] = useState('');
 
+    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -74,6 +82,7 @@ export default function SendMessage({
     });
 
     const [updateMessage] = useMutation(UPDATE_MESSAGE);
+    const [userTypingMutation] = useMutation(USER_TYPING);
 
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
@@ -102,6 +111,14 @@ export default function SendMessage({
         setEditText();
     };
 
+    const onUserTyping = async (IUserTyping) => {
+        await userTypingMutation({
+            variables: {
+                data: IUserTyping,
+            },
+            context: { clientName: 'chat' },
+        });
+    };
     const handleChange = (e) => {
         setText(
             text?.length >= 250
@@ -130,6 +147,38 @@ export default function SendMessage({
     useEffect(() => {
         setText(editText?.text);
     }, [editText]);
+    useEffect(() => {
+        if (
+            text === '' ||
+            replyText?.text?.length > 0 ||
+            editText?.text?.length > 0
+        ) {
+            inputRef.current.focus();
+        }
+    }, [text, replyText, editText]);
+
+    const handleUserTyping = () => {
+        onUserTyping({
+            currentUser: currentUser?.info._id,
+            otherUser: otherUser?.info._id,
+            typing: true,
+            chat: chat,
+        });
+    };
+    const handleUserNotTyping = () => {
+        onUserTyping({
+            currentUser: currentUser?.info._id,
+            otherUser: otherUser?.info._id,
+            typing: false,
+            chat: chat,
+        });
+    };
+    // eslint-disable-next-line
+    const debouncedUserTyping = useCallback(
+        debounce(handleUserNotTyping, 1000),
+        []
+    );
+
     return (
         <>
             {' '}
@@ -380,22 +429,25 @@ export default function SendMessage({
                                 size="small"
                                 name="text"
                                 value={text}
+                                inputRef={inputRef}
                                 className={classes.inputField}
                                 placeholder="Type a message"
                                 fullWidth
+                                onKeyDownCapture={handleUserTyping}
+                                onKeyUp={debouncedUserTyping}
                                 onChange={handleChange}
                                 multiline
                                 margin="dense"
                                 maxRows={3}
-                                onKeyDown={(e) =>
+                                onKeyDown={(e) => {
                                     e.key === 'Enter' &&
                                     e.shiftKey &&
                                     editText?.text?.length > 0
                                         ? handleUpdateMessage()
                                         : e.key === 'Enter' && e.shiftKey
                                         ? handleSendMessage()
-                                        : null
-                                }
+                                        : null;
+                                }}
                                 error={Object.keys(sendMessageErr)?.length > 0}
                             />
                             <IconButton

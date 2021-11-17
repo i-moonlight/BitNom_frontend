@@ -21,6 +21,7 @@ import { useStyles } from '../utils/styles';
 
 export default function ChatItem({ chat, onClick, activeChatId }) {
     const [isOnline, setIsOnline] = useState(0);
+    const [online, setOnline] = useState(false);
     const classes = useStyles();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -42,7 +43,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: chat._id,
+            _id: chat.otherUser.info._id,
         },
     });
     useEffect(() => {
@@ -53,6 +54,16 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         };
         // eslint-disable-next-line
     }, []);
+    useEffect(() => {
+        if (OnlineData?.userIsOnline?.online === true) {
+            setOnline(true);
+        }
+    }, [OnlineData?.userIsOnline?.online]);
+    useEffect(() => {
+        if (typeof OnlineData?.userIsOnline?.online === 'undefined') {
+            setOnline(false);
+        }
+    }, [OnlineData?.userIsOnline?.online]);
     const updateLastSeen = () => {
         UpdateLastSeenMutation({
             variables: { _id: user._id },
@@ -96,8 +107,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
-                {otherUser.info._id === OnlineData?.userIsOnline?.user &&
-                OnlineData?.userIsOnline?.online === true ? (
+                {online === true ? (
                     <span className={classes.online_status}></span>
                 ) : (
                     <span className={classes.offline_status}></span>

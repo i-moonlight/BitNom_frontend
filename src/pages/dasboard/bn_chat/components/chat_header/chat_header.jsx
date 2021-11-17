@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import {
     ArrowBackRounded,
     ArrowDropDown,
@@ -19,14 +19,19 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash/debounce';
 import {
     clearSearchOutput,
     setSearchOutput,
 } from '../../../../../store/actions/chatActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { SEARCH_MESSAGES } from '../../graphql/queries';
+import {
+    SEARCH_MESSAGES,
+    USER_TYPING_SUBS,
+    USER_IS_ONLINE,
+} from '../../graphql/queries';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
 
@@ -41,10 +46,16 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
 
-    const [searchTerm, setValues] = useState('');
+    const [debouncedSearchTerm, setDebouncedValues] = useState('');
+    const [online, setIsOnline] = useState(false);
+
     const [searchOpen, setSearchOpen] = useState(false);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
     const user = state.auth.user;
+    const otherUser =
+        chat?.otherUser?.info?._id === user?._id
+            ? chat?.currentUser
+            : chat?.otherUser;
     const handleChatSettingsClose = () => {
         setChatSettingsAnchorEl(null);
     };
@@ -54,24 +65,47 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     };
 
     const handleSearchMessage = (e) => {
-        setValues(
-            searchTerm?.length >= 250
-                ? e.target.value.substring(0, e.target.value.length - 1)
-                : e.target.value.substring(0, 250)
-        );
+        setDebouncedValues(e.target.value);
     };
+    const handleDebouncedSearch = useMemo(
+        () => debounce(handleSearchMessage, 500),
+        []
+    );
     const { data } = useQuery(SEARCH_MESSAGES, {
         variables: {
-            data: { chat: chat._id, params: { searchString: searchTerm } },
+            data: {
+                chat: chat._id,
+                params: { searchString: debouncedSearchTerm },
+            },
         },
         context: { clientName: 'chat' },
     });
+    const { data: userTypingData } = useSubscription(USER_TYPING_SUBS, {
+        variables: { data: { _id: otherUser?.info?._id, chat: chat._id } },
+    });
 
+    const { data: UserOnlineData } = useSubscription(USER_IS_ONLINE, {
+        variables: {
+            _id: chat?.otherUser?.info?._id,
+        },
+    });
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
             dispatch(setSearchOutput(data?.Dialogue?.searchMessages));
         }
     }, [dispatch, data?.Dialogue?.searchMessages]);
+
+    useEffect(() => {
+        if (UserOnlineData?.userIsOnline?.online === true) {
+            setIsOnline(true);
+        }
+    }, [UserOnlineData?.userIsOnline?.online]);
+    useEffect(() => {
+        if (UserOnlineData?.userIsOnline?.online === undefined) {
+            setIsOnline(false);
+        }
+    }, [UserOnlineData?.userIsOnline?.online]);
+
     const handleDownIndex = () => {
         console.log('Down SEARCH INDEX');
     };
@@ -83,10 +117,8 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         setSearchOpen(false);
         dispatch(clearSearchOutput());
     };
-    const otherUser =
-        chat?.otherUser?.info?._id === user?._id
-            ? chat?.currentUser
-            : chat?.otherUser;
+    const onlineUser = UserOnlineData?.userIsOnline?.user;
+
     return (
         <>
             <CardHeader
@@ -114,7 +146,8 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 horizontal: 'right',
                             }}
                             badgeContent={
-                                otherUser?.lastSeen === Date.now() ? (
+                                onlineUser === chat?.otherUser?.info?._id &&
+                                online === true ? (
                                     <span className={classes.online}></span>
                                 ) : (
                                     <span className={classes.offline}></span>
@@ -167,6 +200,21 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                     Software Dev
                                 </Typography>
                             </div>
+                            {userTypingData?.userTyping?.typing === true ? (
+                                <div
+                                    className="d-flex align-items-center"
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    <Typography
+                                        variant="subtitle2"
+                                        style={{ fontStyle: 'italic' }}
+                                    >
+                                        Typing...
+                                    </Typography>
+                                </div>
+                            ) : (
+                                ''
+                            )}
                             <Divider
                                 className={classes.dividerStatus}
                                 orientation="vertical"
@@ -212,8 +260,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                             'aria-label': 'search Messages',
                                         }}
                                         name="searchString"
-                                        value={searchTerm}
-                                        onChange={handleSearchMessage}
+                                        onChange={handleDebouncedSearch}
                                     />
                                     <Divider orientation="vertical" flexItem />
                                     <Typography variant="body2">0/0</Typography>

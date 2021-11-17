@@ -137,6 +137,18 @@ export default function chatReducer(state = initialState, action) {
                     ...state.pinnedChats.slice(0, action.data),
                 ],
             };
+        case 'DELETE_ARCHIVED_CHAT':
+            return {
+                ...state,
+                archived: state.archived.filter(
+                    (archived) => archived !== action.data
+                ),
+            };
+        case 'SET_TOTAL_COUNT':
+            return {
+                ...state,
+                unreadCount: action.data,
+            };
         default:
             return { ...state };
     }

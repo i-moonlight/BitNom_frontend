@@ -150,6 +150,7 @@ function Chats({ onSetChatMobile }) {
     useEffect(() => {
         if (pinnedChatData?.pinChat) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
+            dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
     }, [dispatch, pinnedChatData?.pinChat]);
 

@@ -33,6 +33,7 @@ import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
     notifications,
+    unreadCount,
     menuId,
     handleMenuOpen,
     notificationId,
@@ -44,7 +45,7 @@ export default function ProfileBar({
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
-    const unreadCount = state.chats.unreadCount;
+
     const userInitials = getUserInitials(
         user?.displayName || profile?.displayName
     );

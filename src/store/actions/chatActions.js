@@ -80,3 +80,11 @@ export const setArchivedChats = (data = []) => {
 export const addToArchivedChats = (data) => {
     return (dispatch) => dispatch({ data, type: 'ADD_TO_ARCHIVED' });
 };
+export const deleteArchivedchat = (data) => {
+    return (dispatch) => dispatch({ data, type: 'DELETE_ARCHIVED_CHAT' });
+};
+//total count
+export const setTotalCount = (data) => {
+    console.log('COUNT', data);
+    return (dispatch) => dispatch({ data, type: 'SET_TOTAL_COUNT' });
+};

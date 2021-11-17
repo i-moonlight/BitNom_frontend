@@ -1,6 +1,11 @@
 import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
-
+import { useDispatch } from 'react-redux';
+import {
+    deleteArchivedchat,
+    deletePinnedChat,
+} from '../../../../store/actions/chatActions';
+import React, { useEffect } from 'react';
 import {
     ARCHIVE_CHAT,
     BLOCK_CHAT,
@@ -18,13 +23,14 @@ export default function ChatSettingPopover({
     handleChatSettingsClose,
     chat,
 }) {
+    const dispatch = useDispatch();
     const [ArchiveChat] = useMutation(ARCHIVE_CHAT, {
         variables: {
             _id: chat._id,
         },
         context: { clientName: 'chat' },
     });
-    const [UnarchiveChat] = useMutation(UNARCHIVE, {
+    const [UnarchiveChat, { data: unarchiveData }] = useMutation(UNARCHIVE, {
         variables: {
             _id: chat._id,
         },
@@ -60,7 +66,7 @@ export default function ChatSettingPopover({
         },
         context: { clientName: 'chat' },
     });
-    const [UnpinChat] = useMutation(UNPIN, {
+    const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
         variables: {
             _id: chat._id,
         },
@@ -92,6 +98,16 @@ export default function ChatSettingPopover({
     const handleUnArchiveChat = () => {
         UnarchiveChat();
     };
+    useEffect(() => {
+        if (unpinData === true) {
+            dispatch(deletePinnedChat(chat));
+        }
+    }, [dispatch, unpinData, chat]);
+    useEffect(() => {
+        if (unarchiveData === true) {
+            dispatch(deleteArchivedchat(chat));
+        }
+    }, [dispatch, unarchiveData, chat]);
     return (
         <Popover
             anchorEl={chatSettingsAnchorEl}
@@ -133,7 +149,9 @@ export default function ChatSettingPopover({
                     button
                     divider
                     onClick={
-                        chat.pinned === true ? handleUnpinChat : handlePinChat
+                        chat.currentUser.pinned === true
+                            ? handleUnpinChat
+                            : handlePinChat
                     }
                 >
                     <ListItemText

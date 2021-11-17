@@ -13,6 +13,7 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
+    setTotalCount,
     updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -20,6 +21,7 @@ import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
+    TOTAL_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
@@ -75,11 +77,21 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue._id,
         },
     });
+    const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    useEffect(() => {
+        if (totalCountData?.totalCount?.count) {
+            dispatch(setTotalCount(totalCountData?.totalCount?.count));
+        }
+    }, [totalCountData?.totalCount?.count, dispatch]);
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
-            endRef.current.scrollIntoView();
         }
     }, [dispatch, subscriptionData?.newMessage]);
 
@@ -95,10 +107,10 @@ export default function Messages({ onExitChatMobile }) {
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
-        if (data?.Dialogue?.getMessages?.length > 0) {
-            endRef.current.scrollIntoView();
-        }
     }, [data?.Dialogue?.getMessages, dispatch]);
+    useEffect(() => {
+        endRef.current.scrollIntoView();
+    });
 
     return (
         <div>
@@ -150,10 +162,6 @@ export default function Messages({ onExitChatMobile }) {
                     )}
                 </div>
             )}
-            {dialogue.status === 'new' &&
-                dialogue?.initiator?.info?._id === user?._id &&
-                !loading &&
-                !messages?.length > 0 && <AwaitResponse dialogue={dialogue} />}
             <div
                 style={{
                     overflowY: 'auto',
@@ -182,6 +190,12 @@ export default function Messages({ onExitChatMobile }) {
                 }}
             >
                 {' '}
+                {dialogue.status === 'new' &&
+                    dialogue?.initiator?.info?._id === user?._id &&
+                    !loading &&
+                    !messages?.length > 0 && (
+                        <AwaitResponse dialogue={dialogue} />
+                    )}
                 {dialogue.status === 'new' &&
                     dialogue.recipient?.info._id === user?._id && (
                         <InviteView dialogue={dialogue} />
@@ -249,6 +263,8 @@ export default function Messages({ onExitChatMobile }) {
                             replyText={replyText}
                             open={open}
                             setOpen={setOpen}
+                            currentUser={dialogue.currentUser}
+                            otherUser={dialogue.otherUser}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
                             editText={editText}
@@ -267,6 +283,8 @@ export default function Messages({ onExitChatMobile }) {
                             open={open}
                             setOpen={setOpen}
                             chat={dialogue._id}
+                            currentUser={dialogue.currentUser}
+                            otherUser={dialogue.otherUser}
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}

@@ -87,16 +87,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     )}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
-                    <Card
-                        variant="outlined"
-                        style={{
-                            backgroundColor: '#93c7f5',
-                            marginLeft: '8px',
-                            marginRight: '8px',
-                            borderWidth: '0px 0px 0px 7px ',
-                            borderRadius: '5px 5px 5px 5px',
-                        }}
-                    >
+                    <Card variant="outlined" className={classes.responseTo}>
                         {' '}
                         <Typography
                             variant="body2"
