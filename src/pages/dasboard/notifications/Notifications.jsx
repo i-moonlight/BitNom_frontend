@@ -14,6 +14,7 @@ import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 
 import Screen from '../../../components/Screen';
+import SEO from '../../../components/SEO';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
 import NotificationsListCard from './NotificationsListCard';
 
@@ -41,6 +42,11 @@ export default function Notifications() {
 
     return (
         <Screen>
+            <SEO
+                title="Notifications | Bitnorm"
+                url={`${window.location.origin}/notifications`}
+                description={`Notifications from your activity on Bitnorm`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
@@ -55,6 +61,7 @@ export default function Notifications() {
                         <Grid item xs={12} sm={12} md={8} lg={6}>
                             <NotificationsListCard
                                 selectedIndex={selectedIndex}
+                                setSelectedIndex={setSelectedIndex}
                                 notifications={data?.Notification?.get}
                                 loading={loading}
                             />

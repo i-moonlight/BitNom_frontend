@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
     AccountBalanceWalletOutlined,
     Brightness4Rounded,
@@ -5,21 +6,30 @@ import {
     ChevronRight,
     ExitToAppRounded,
     PeopleRounded,
+    ForumRounded,
+    Notifications,
 } from '@mui/icons-material';
 import {
     Avatar,
     ListItem,
     ListItemIcon,
     ListItemText,
+    ListItemButton,
     Typography,
     useMediaQuery,
     useTheme,
+    Badge,
 } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { signout } from '../../../store/actions/authActions';
+import { resetCount } from '../../../store/actions/countActions';
 import { changeTheme } from '../../../store/actions/themeActions';
+import {
+    MARK_NOTIFICAION_AS_SEEN,
+    QUERY_GET_USER_NOTIFICATIONS,
+} from '../../utilities/queries.components';
 
 export default function ListItems({ handleMenuClose }) {
     const palette = useSelector((st) => st.theme.palette);
@@ -27,6 +37,30 @@ export default function ListItems({ handleMenuClose }) {
     const theme = useTheme();
     const history = useHistory();
     const smUp = useMediaQuery('(min-width:600px)');
+    const state = useSelector((st) => st);
+    const notificationsCount = state.count.count;
+    const messagesCount = state.chats.unreadCount;
+    const user = state.auth.user;
+
+    const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
+        variables: { _id: user?._id },
+        context: { clientName: 'notifications' },
+    });
+
+    const handleMarkAsSeen = () => {
+        markAsSeen({
+            variables: {
+                _id: user?._id,
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_GET_USER_NOTIFICATIONS,
+                    context: { clientName: 'notifications' },
+                },
+            ],
+        });
+        dispatch(resetCount());
+    };
 
     return (
         <>
@@ -141,6 +175,47 @@ export default function ListItems({ handleMenuClose }) {
                     <AccountBalanceWalletOutlined />
                 </ListItemIcon>
             </ListItem>
+            {!smUp && (
+                <>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                history.push('/chat');
+                            }}
+                        >
+                            <ListItemIcon>
+                                <Badge
+                                    color="primary"
+                                    badgeContent={messagesCount}
+                                >
+                                    <ForumRounded />
+                                </Badge>
+                            </ListItemIcon>
+                            <ListItemText primary="Messages" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                history.push('/notifications');
+                                handleMarkAsSeen();
+                            }}
+                        >
+                            <ListItemIcon>
+                                <Badge
+                                    color="primary"
+                                    badgeContent={notificationsCount}
+                                >
+                                    <Notifications />
+                                </Badge>
+                            </ListItemIcon>
+                            <ListItemText primary="Notifications" />
+                        </ListItemButton>
+                    </ListItem>
+                </>
+            )}
 
             <ListItem divider button onClick={() => dispatch(signout())}>
                 <ListItemText primary="Sign Out" />

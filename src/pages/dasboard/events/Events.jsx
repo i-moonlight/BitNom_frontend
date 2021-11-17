@@ -32,6 +32,7 @@ import {
 } from '../utilities/queries';
 import CreateEvent from './CreateEvent';
 import CreateEventCard from './CreateEventCard';
+import SEO from '../../../components/SEO';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +79,11 @@ export default function Events() {
 
     return (
         <Screen>
+            <SEO
+                title="Your Events | Bitnorm"
+                url={`${window.location.origin}/events`}
+                description={`All Events`}
+            />
             <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
@@ -276,12 +282,10 @@ function EventPreview({ event }) {
                         style={{
                             backgroundImage:
                                 event?.image !== null &&
-                                event?.image?.trim() !== ''
-                                    ? 'url(' +
-                                      process.env.REACT_APP_BACKEND_URL +
-                                      event?.image +
-                                      ')'
-                                    : `url('${'https://picsum.photos/200/300'}')`,
+                                'url(' +
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    event?.image +
+                                    ')',
                             backgroundSize: 'cover',
                             width: 170,
                             height: 110,
@@ -305,12 +309,12 @@ function EventPreview({ event }) {
                             </Typography>
                         )}
                         <Typography
-                            style={{ textTransform: 'uppercase' }}
+                            style={{ textTransform: 'capitalize' }}
                             variant="body2"
                         >
                             {event?.location?.type === 'physical'
                                 ? event?.title
-                                : `${event?.title} (Virtual) `}
+                                : `${event?.title} - Virtual `}
                         </Typography>
                         {event?.location?.type === 'physical' ? (
                             <div className="center-horizontal">
@@ -318,6 +322,7 @@ function EventPreview({ event }) {
                                 <Typography
                                     color="primary"
                                     style={{ textDecoration: 'underline' }}
+                                    variant="body2"
                                 >
                                     <a
                                         href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
@@ -342,6 +347,7 @@ function EventPreview({ event }) {
                                 <Typography
                                     color="primary"
                                     style={{ textDecoration: 'underline' }}
+                                    variant="body2"
                                 >
                                     <a
                                         //component='a'

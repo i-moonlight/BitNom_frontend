@@ -6,9 +6,11 @@ import {
     Grid,
     IconButton,
     Typography,
+    Hidden,
 } from '@mui/material';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import NotificationFilter from './NotificationFilter';
 import NotificationListItem from './NotificationListItem';
 import NotificationSettingsPopover from './NotificationSettingsPopover';
 
@@ -17,10 +19,12 @@ const notificationSettingsId = 'notification-setting-menu';
 export default function NotificationsListCard({
     notifications,
     selectedIndex,
+    setSelectedIndex,
 }) {
     const history = useHistory();
     const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
         useState(null);
+    //const [notificationFilter, setNotificationFilter] = useState(0);
 
     const isNotificationSettingsOpen = Boolean(notificationSettingsAnchorEl);
     const handleNotificationSettingsClose = () => {
@@ -66,41 +70,73 @@ export default function NotificationsListCard({
     return (
         <>
             <Card style={{ padding: '0 8px 10px 8px' }}>
-                <CardHeader
-                    action={
-                        <IconButton
-                            aria-label="notification settings"
-                            aria-controls={notificationSettingsId}
-                            aria-haspopup="true"
-                            onClick={handleNotificationSettingsOpen}
-                        >
-                            <MoreVert />
-                        </IconButton>
-                    }
-                    avatar={
-                        <IconButton
-                            size="small"
-                            className="m-1 p-1"
-                            aria-label="back"
-                            color="inherit"
-                            onClick={() => history.goBack()}
-                        >
-                            <ArrowBack />
-                        </IconButton>
-                    }
-                    title={
-                        <div className="center-horizontal">
-                            <Typography variant="body1">
-                                Notifications
-                            </Typography>
-                        </div>
-                    }
-                    subheader={
-                        <Typography variant="body2" color="textSecondary">
-                            All your BNSocial notifications in one place.
-                        </Typography>
-                    }
-                />
+                <Hidden mdUp>
+                    <CardHeader
+                        action={
+                            <IconButton
+                                aria-label="notification settings"
+                                aria-controls={notificationSettingsId}
+                                aria-haspopup="true"
+                                onClick={handleNotificationSettingsOpen}
+                            >
+                                <MoreVert />
+                            </IconButton>
+                        }
+                        avatar={
+                            <>
+                                <IconButton
+                                    size="small"
+                                    className="m-1 p-1"
+                                    aria-label="back"
+                                    color="inherit"
+                                    onClick={() => history.goBack()}
+                                >
+                                    <ArrowBack />
+                                </IconButton>
+                            </>
+                        }
+                        title={
+                            <div className="center-horizontal">
+                                <NotificationFilter
+                                    notificationFilter={selectedIndex}
+                                    setNotificationFilter={setSelectedIndex}
+                                />
+                            </div>
+                        }
+                    />
+                </Hidden>
+                <Hidden smDown>
+                    <CardHeader
+                        action={
+                            <IconButton
+                                aria-label="notification settings"
+                                aria-controls={notificationSettingsId}
+                                aria-haspopup="true"
+                                onClick={handleNotificationSettingsOpen}
+                            >
+                                <MoreVert />
+                            </IconButton>
+                        }
+                        avatar={
+                            <IconButton
+                                size="small"
+                                className="m-1 p-1"
+                                aria-label="back"
+                                color="inherit"
+                                onClick={() => history.goBack()}
+                            >
+                                <ArrowBack />
+                            </IconButton>
+                        }
+                        title={
+                            <div className="center-horizontal">
+                                <Typography variant="body1">
+                                    Notifications
+                                </Typography>
+                            </div>
+                        }
+                    />
+                </Hidden>
                 <Divider />
                 {selectedIndex === 0 &&
                     notifications?.map((notification) => (

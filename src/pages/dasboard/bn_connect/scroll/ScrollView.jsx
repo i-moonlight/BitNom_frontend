@@ -39,7 +39,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import ImagePreview from '../../../../components/ImagePreview';
@@ -54,6 +54,7 @@ import {
     getReactionsSum,
     getTopComments,
     mentionsFinder,
+    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -121,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
-function PostView({ match }) {
+function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
     const [updateCommentOpen, setUpdateCommentOpen] = useState(false);
@@ -167,130 +168,9 @@ function PostView({ match }) {
     const history = useHistory();
     const user = state.auth.user;
 
-    const { loading: postLoading, data: postData } = useQuery(
-        QUERY_POST_BY_ID,
-        {
-            variables: { _id: match?.params?.id },
-        }
-    );
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
-    const [
-        createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const { postId } = useParams();
 
-    const {
-        data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
-    } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postData?.Posts?.getById?._id } },
-    });
-
-    const onCreateComment = (ICreateComment) => {
-        createComment({
-            variables: {
-                data: ICreateComment,
-            },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: {
-                        data: { scroll_id: postData?.Posts?.getById?._id },
-                    },
-                },
-            ],
-        });
-        if (!createCommentData) console.log(createCommentData);
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setFileErrors([]);
-        setPreviewURL();
-    };
-
-    const mentions = profileData?.followers?.map?.((item) => {
-        return {
-            id: item?.userId?._id,
-            display: item?.userId?.displayName,
-        };
-    });
-
-    const handleCreateComment = (e) => {
-        e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
-
-        const mentionsData = mentionsFinder(comment_text);
-        onCreateComment({
-            content: mentionsData.content,
-            content_entities: mentionsData.contentEntities,
-            scroll: postData?.Posts?.getById?._id,
-            image: comment_image,
-        });
-    };
-
-    const handleScrollOptionOpen = (event) => {
-        setScrollOptionAnchorEl(event.currentTarget);
-    };
-
-    const handleScrollOptionClose = () => {
-        setScrollOptionAnchorEl(null);
-    };
-
-    const handleEmojiPickerOpen = (event) => {
-        setEmojiPickerAnchorEl(event.currentTarget);
-    };
-
-    const handleEmojiPickerClose = () => {
-        setEmojiPickerAnchorEl(null);
-    };
-
-    const handleCreateReaction = (reaction) => {
-        createReaction({
-            variables: {
-                data: {
-                    _id: postData?.Posts?.getById?._id,
-                    type: 'post',
-                    reaction: reaction,
-                },
-            },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
-        });
-        setUserReaction(reaction);
-        setIcon(reaction);
-    };
-
-    const handleRemoveReaction = () => {
-        removeReaction({
-            variables: {
-                data: {
-                    _id: postData?.Posts?.getById?._id,
-                    type: 'post',
-                },
-            },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
-        });
-        setIcon();
-        setUserReaction();
-    };
-
-    const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
-    };
+    //const postId = match?.params?.id;
 
     const getUserReaction = useCallback(
         (resource) => {
@@ -323,6 +203,156 @@ function PostView({ match }) {
         [classes.green, classes.primary, classes.red]
     );
 
+    const { loading: postLoading, data: postData } = useQuery(
+        QUERY_POST_BY_ID,
+        {
+            variables: { _id: postId },
+        }
+    );
+
+    useEffect(() => {
+        const reaction = getUserReaction(postData?.Posts?.getById);
+        setUserReaction(reaction);
+        setIcon(reaction);
+    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+
+    const {
+        //  loading,
+        data: profileData,
+    } = useQuery(QUERY_FETCH_PROFILE, {
+        context: { clientName: 'users' },
+    });
+    const [
+        createComment,
+        {
+            data: createCommentData,
+            // loading: createCommentLoading,
+            // error: createCommentError,
+        },
+    ] = useMutation(MUTATION_CREATE_COMMENT);
+
+    const {
+        data: commentsData,
+        // loading: commentsLoading,
+        // error: commentsError,
+    } = useQuery(QUERY_GET_COMMENTS, {
+        variables: { data: { scroll_id: postId } },
+    });
+
+    const onCreateComment = (ICreateComment) => {
+        createComment({
+            variables: {
+                data: ICreateComment,
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_GET_COMMENTS,
+                    variables: {
+                        data: { scroll_id: postId },
+                    },
+                },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
+                },
+            ],
+        });
+        if (!createCommentData) console.log(createCommentData);
+        setCommentFilter(1);
+        setCommentText('');
+        setCommentImage(null);
+        setCreateCommentErr(false);
+        setFileErrors([]);
+        setPreviewURL();
+    };
+
+    const mentions = profileData?.followers?.map?.((item) => {
+        return {
+            id: item?.userId?._id,
+            display: item?.userId?.displayName,
+        };
+    });
+
+    const handleCreateComment = (e) => {
+        e.preventDefault();
+        if (comment_text.trim() == '' && !comment_image)
+            return setCreateCommentErr(true);
+
+        const mentionsData = mentionsFinder(comment_text);
+        onCreateComment({
+            content: mentionsData.content,
+            content_entities: mentionsData.contentEntities,
+            scroll: postId,
+            image: comment_image,
+        });
+    };
+
+    const handleScrollOptionOpen = (event) => {
+        setScrollOptionAnchorEl(event.currentTarget);
+    };
+
+    const handleScrollOptionClose = () => {
+        setScrollOptionAnchorEl(null);
+    };
+
+    const handleEmojiPickerOpen = (event) => {
+        setEmojiPickerAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiPickerClose = () => {
+        setEmojiPickerAnchorEl(null);
+    };
+
+    const handleCreateReaction = (reaction) => {
+        createReaction({
+            variables: {
+                data: {
+                    _id: postData?.Posts?.getById?._id,
+                    type: 'post',
+                    reaction: reaction,
+                },
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
+                },
+            ],
+        });
+        setUserReaction(reaction);
+        setIcon(reaction);
+    };
+
+    const handleRemoveReaction = () => {
+        removeReaction({
+            variables: {
+                data: {
+                    _id: postData?.Posts?.getById?._id,
+                    type: 'post',
+                },
+            },
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postId },
+                },
+            ],
+        });
+        setIcon();
+        setUserReaction();
+    };
+
+    const handleSelectEmoji = (emoji) => {
+        handleEmojiPickerClose();
+        setCommentText(`${comment_text} ${emoji.native}`);
+    };
+
     const contentClickHandler = (e) => {
         const targetLink = e.target.closest('a');
         if (!targetLink) return;
@@ -339,13 +369,6 @@ function PostView({ match }) {
         postData?.Posts?.getById?.author?.displayName
     );
     const currentUserInitials = getUserInitials(user?.displayName);
-
-    useEffect(() => {
-        const reaction = getUserReaction(postData?.Posts?.getById);
-        setUserReaction(reaction);
-        setIcon(reaction);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const latestComments = commentsData?.Comments?.get.filter(
         (comment) => !comment.response_to
@@ -371,6 +394,7 @@ function PostView({ match }) {
                               postData?.Posts?.getById?.images[0]
                         : null
                 }
+                resource={postData?.Posts?.getById}
             />
             <ToastContainer
                 position="bottom-left"
@@ -383,7 +407,7 @@ function PostView({ match }) {
                 draggable
                 pauseOnHover
             />
-            <div>
+            <div className={classes.root}>
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         <Hidden mdDown>
@@ -406,23 +430,24 @@ function PostView({ match }) {
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card style={{ marginBottom: 12 }}>
+                            <Card
+                                variant="outlined"
+                                style={{ marginBottom: 12 }}
+                            >
                                 <CardHeader
                                     avatar={
                                         <IconButton
                                             size="small"
-                                            className="m-1 p-1"
                                             aria-label="back"
                                             color="inherit"
-                                            onClick={() =>
-                                                history.push(`/connect`)
-                                            }
+                                            onClick={() => history.goBack()}
                                         >
                                             <ArrowBack />
                                         </IconButton>
                                     }
                                 />
                             </Card>
+
                             <Grid item align="center">
                                 {postLoading && (
                                     <CircularProgress
@@ -435,11 +460,11 @@ function PostView({ match }) {
                             {postData?.Posts?.getById && (
                                 <Card
                                     style={{ marginBottom: 16, zIndex: 1 }}
-                                    onClick={() =>
+                                    /* onClick={() =>
                                         history.push(
                                             `/posts/${postData?.Posts?.getById?._id}`
                                         )
-                                    }
+                                    } */
                                 >
                                     <CardHeader
                                         avatar={
@@ -460,7 +485,7 @@ function PostView({ match }) {
                                         action={
                                             <IconButton
                                                 size="small"
-                                                className="m-1 p-1"
+                                                //className="m-1 p-1"
                                                 aria-label="show more"
                                                 aria-controls={scrollOptionId}
                                                 aria-haspopup="true"
@@ -474,6 +499,7 @@ function PostView({ match }) {
                                             <div className=" d-flex align-items-center">
                                                 <Typography
                                                     component="a"
+                                                    variant="body2"
                                                     style={{
                                                         marginRight: 8,
                                                         zIndex: 2,
@@ -499,9 +525,14 @@ function PostView({ match }) {
                                                 </Typography>
                                             </div>
                                         }
-                                        subheader={moment(
-                                            postData?.Posts?.getById?.createdAt
-                                        ).fromNow()}
+                                        subheader={
+                                            <Typography variant="body2">
+                                                {moment(
+                                                    postData?.Posts?.getById
+                                                        ?.createdAt
+                                                ).fromNow()}
+                                            </Typography>
+                                        }
                                     />
                                     <CardContent>
                                         <Typography
@@ -523,8 +554,7 @@ function PostView({ match }) {
                                         </Typography>
                                         <Grid
                                             container
-                                            spacing={2}
-                                            className="mb-2"
+                                            style={{ margin: '3px 0px' }}
                                         >
                                             {postData?.Posts?.getById?.video
                                                 ?.path && (
@@ -535,6 +565,7 @@ function PostView({ match }) {
                                                         poster={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.thumbnail}`}
                                                         src={`${process.env.REACT_APP_BACKEND_URL}${postData?.Posts?.getById?.video?.path}`}
                                                         controls
+                                                        preload="auto"
                                                     />
                                                 </Grid>
                                             )}
@@ -543,7 +574,10 @@ function PostView({ match }) {
                                                 postData?.Posts?.getById?.images?.map(
                                                     (imageURL, index) => (
                                                         <Grid
-                                                            className="mt-3"
+                                                            style={{
+                                                                zIndex: 2,
+                                                                padding: '1px',
+                                                            }}
                                                             key={imageURL}
                                                             item
                                                             xs={
@@ -817,25 +851,35 @@ function PostView({ match }) {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <CardContent>
+                                        <div style={{ padding: '3px' }}>
                                             <div className="d-flex align-items-center">
-                                                <Avatar
-                                                    style={{
-                                                        backgroundColor:
-                                                            '#fed132',
-                                                    }}
-                                                    src={
-                                                        process.env
-                                                            .REACT_APP_BACKEND_URL +
-                                                        user?.profile_pic
-                                                    }
-                                                    className="mx-2"
-                                                >
-                                                    {currentUserInitials}
-                                                </Avatar>
+                                                <Hidden smDown>
+                                                    <Avatar
+                                                        style={{
+                                                            backgroundColor:
+                                                                '#fed132',
+                                                            marginRight: '3px',
+                                                        }}
+                                                        src={
+                                                            process.env
+                                                                .REACT_APP_BACKEND_URL +
+                                                            user?.profile_pic
+                                                        }
+                                                        sx={{
+                                                            width: '30px',
+                                                            height: '30px',
+                                                        }}
+                                                    >
+                                                        <Typography variant="body2">
+                                                            {
+                                                                currentUserInitials
+                                                            }
+                                                        </Typography>
+                                                    </Avatar>
+                                                </Hidden>
                                                 <div className="w-100">
                                                     <MentionsInput
-                                                        spellcheck="false"
+                                                        spellCheck="false"
                                                         className="mentions-textarea"
                                                         id="content-field"
                                                         onKeyPress={(e) => {
@@ -906,7 +950,6 @@ function PostView({ match }) {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    //className='m-1 p-1'
                                                     onClick={() => {
                                                         document
                                                             .getElementsByClassName(
@@ -919,7 +962,6 @@ function PostView({ match }) {
                                                 </IconButton>
                                                 <IconButton
                                                     size="small"
-                                                    className="m-1 p-1"
                                                     onClick={
                                                         handleCreateComment
                                                     }
@@ -1087,6 +1129,9 @@ function PostView({ match }) {
                                                         setCommentFilter={
                                                             setCommentFilter
                                                         }
+                                                        commentFilter={
+                                                            commentFilter
+                                                        }
                                                     />
                                                 </Typography>
                                             )}
@@ -1187,7 +1232,7 @@ function PostView({ match }) {
                                                         />
                                                     )
                                                 )}
-                                        </CardContent>
+                                        </div>
                                     )}
                                 </Card>
                             )}

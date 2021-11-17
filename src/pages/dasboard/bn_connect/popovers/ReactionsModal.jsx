@@ -79,7 +79,7 @@ export default function ReactionsModal({
             style={{
                 outline: 'none',
                 maxHeight: '75vh',
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}

@@ -13,7 +13,6 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Card, LinearProgress } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,12 +52,8 @@ export default function Categories() {
     }, []);
 
     return (
-        <TableContainer component={Paper}>
-            <Table
-                sx={{ maxHeight: 500 }}
-                aria-label="coins table"
-                stickyHeader
-            >
+        <TableContainer>
+            <Table sx={{ maxHeight: 500 }} aria-label="coins table" stickyHeader>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>#</StyledTableCell>

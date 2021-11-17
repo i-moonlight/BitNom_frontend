@@ -25,8 +25,6 @@ export default function ProfileView({ match }) {
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
 
-    console.log('prfprps: ', match.params.id);
-
     const {
         // error,
         //  loading,

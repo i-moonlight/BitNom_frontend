@@ -127,12 +127,6 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
 function ListItemComponent({ user, getFollowStatus }) {
     const [status, setStatus] = React.useState();
 
-    useEffect(() => {
-        if (getFollowStatus(user)) {
-            setStatus(true);
-        }
-    }, [getFollowStatus, user]);
-
     const [
         followUser,
         {
@@ -141,6 +135,7 @@ function ListItemComponent({ user, getFollowStatus }) {
             //   error
         },
     ] = useMutation(MUTATION_FOLLOW_USER);
+
     const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
 
     const handleFollowUser = (user_id) => {
@@ -190,6 +185,11 @@ function ListItemComponent({ user, getFollowStatus }) {
         //setFollowing(following - 1);
     };
 
+    useEffect(() => {
+        if (getFollowStatus(user)) {
+            setStatus(true);
+        }
+    }, [getFollowStatus, user]);
     return (
         <ListItem divider>
             <ListItemAvatar>

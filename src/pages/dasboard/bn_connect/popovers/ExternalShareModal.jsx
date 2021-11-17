@@ -7,22 +7,22 @@ import Slide from '@mui/material/Slide';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import {
-    FacebookShareButton,
-    WhatsappShareButton,
-    TwitterShareButton,
-    TelegramShareButton,
-    LinkedinShareButton,
-    RedditShareButton,
-    EmailShareButton,
-    LineShareButton,
-    FacebookIcon,
-    WhatsappIcon,
-    TwitterIcon,
-    TelegramIcon,
-    LinkedinIcon,
-    RedditIcon,
     EmailIcon,
+    EmailShareButton,
+    FacebookIcon,
+    FacebookShareButton,
     LineIcon,
+    LineShareButton,
+    LinkedinIcon,
+    LinkedinShareButton,
+    RedditIcon,
+    RedditShareButton,
+    TelegramIcon,
+    TelegramShareButton,
+    TwitterIcon,
+    TwitterShareButton,
+    WhatsappIcon,
+    WhatsappShareButton,
 } from 'react-share';
 
 const useStyles = makeStyles(() => ({
@@ -71,6 +71,7 @@ export default function ExternalShareModal({
     } else if (sharedResource?.__typename === 'OEvent') {
         link = `${location.origin}/events/${sharedResource?._id}`;
     }
+
     return (
         <div>
             <Dialog
@@ -115,6 +116,7 @@ export default function ExternalShareModal({
                                     sharedResource?.title
                                 }
                                 className={classes.link}
+                                onShareWindowClose={handleClose}
                             >
                                 <TwitterIcon round={true} size={36} />
                             </TwitterShareButton>

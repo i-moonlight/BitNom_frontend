@@ -2,7 +2,7 @@ import { ApolloProvider } from '@apollo/client';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import BnChat from './pages/dasboard/bn_chat/BNChat';
-import BnConnect from './pages/dasboard/bn_connect/BnConnect';
+// import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import HashtagView from './pages/dasboard/bn_connect/HashtagView';
 import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
 import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
@@ -48,6 +48,10 @@ const Faqs = React.lazy(() => import('./pages/welcome/faqs/Faqs'));
 const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 
+const BnConnect = React.lazy(() =>
+    import('./pages/dasboard/bn_connect/BnConnect')
+);
+
 export default function Routes({ apolloClient }) {
     return (
         <>
@@ -55,7 +59,7 @@ export default function Routes({ apolloClient }) {
                 <ApolloProvider client={apolloClient}>
                     <Switch>
                         <Suspense
-                            fallback={() => (
+                            fallback={
                                 <div
                                     style={{
                                         position: 'fixed',
@@ -64,15 +68,15 @@ export default function Routes({ apolloClient }) {
                                         display: 'flex',
                                         justifyContent: 'center',
                                         alignItems: 'center',
-                                        width: '100vh',
-                                        height: '100vh',
+                                        width: '100%',
+                                        height: '100%',
                                         backgroundColor: '#000',
                                         zIndex: 2100,
                                     }}
                                 >
                                     <div className="preloader-speeding-wheel"></div>
                                 </div>
-                            )}
+                            }
                         >
                             <>
                                 {/* Landing */}
@@ -184,7 +188,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={CoinDetails}
-                                    path="/knowledge_center/:id"
+                                    path="/knowledge_center/cryptocurrency/:id"
                                 />
 
                                 <Route
@@ -195,7 +199,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={EventView}
-                                    path="/events/:id"
+                                    path="/events/:eventId"
                                 />
                                 <Route
                                     exact
@@ -215,7 +219,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={PostView}
-                                    path="/posts/:id"
+                                    path="/posts/:postId"
                                 />
                                 <Route
                                     exact

@@ -30,8 +30,6 @@ import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-//import ImagePreview from '../../../components/ImagePreview';
-//import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
 import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
@@ -53,52 +51,13 @@ import {
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import Comment from './comment/Comment';
-// import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-import ScrollPreview from './ScrollPreview';
-
-const useStyles = makeStyles((theme) => ({
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
+
+const ScrollPreview = React.lazy(() => import('./ScrollPreview'));
+const Comment = React.lazy(() => import('./comment/Comment'));
 
 export default function Scroll({
     scroll,
@@ -136,16 +95,10 @@ export default function Scroll({
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
-
-    const theme = useTheme();
-    const state = useSelector((st) => st);
-    const history = useHistory();
-    const user = state.auth.user;
-
     const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-
     const {
         data: commentsData,
         // loading: commentsLoading,
@@ -153,6 +106,12 @@ export default function Scroll({
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: scroll?._id } },
     });
+
+    const history = useHistory();
+    const theme = useTheme();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -195,22 +154,6 @@ export default function Scroll({
             scroll: scroll?._id,
             image: comment_image,
         });
-    };
-
-    const handleScrollOptionOpen = (event) => {
-        setScrollOptionAnchorEl(event.currentTarget);
-    };
-
-    const handleScrollOptionClose = () => {
-        setScrollOptionAnchorEl(null);
-    };
-
-    const handleEmojiPickerOpen = (event) => {
-        setEmojiPickerAnchorEl(event.currentTarget);
-    };
-
-    const handleEmojiPickerClose = () => {
-        setEmojiPickerAnchorEl(null);
     };
 
     const handleCreateReaction = (reaction) => {
@@ -292,6 +235,22 @@ export default function Scroll({
 
     const authorInitials = getUserInitials(scroll?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
+
+    const handleScrollOptionOpen = (event) => {
+        setScrollOptionAnchorEl(event.currentTarget);
+    };
+
+    const handleScrollOptionClose = () => {
+        setScrollOptionAnchorEl(null);
+    };
+
+    const handleEmojiPickerOpen = (event) => {
+        setEmojiPickerAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiPickerClose = () => {
+        setEmojiPickerAnchorEl(null);
+    };
 
     useEffect(() => {
         const reaction = getUserReaction(scroll);
@@ -404,11 +363,7 @@ export default function Scroll({
                                     xs={scroll?.images.length > 1 ? 6 : 12}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        /* setImagePreviewURL(
-                                            process.env.REACT_APP_BACKEND_URL +
-                                                imageURL
-                                        );
-                                        setImagePreviewOpen(true); */
+
                                         setPostToPreview(scroll);
                                         setImageIndex(index);
                                         setImageModalOpen(true);
@@ -708,7 +663,6 @@ export default function Scroll({
                                         <DropzoneArea
                                             clearOnUnmount
                                             dropzoneClass="comment-dropzone"
-                                            //id="dropzone"
                                             clickable={true}
                                             onChange={(files) => {
                                                 const errors = [];
@@ -844,3 +798,42 @@ export default function Scroll({
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));

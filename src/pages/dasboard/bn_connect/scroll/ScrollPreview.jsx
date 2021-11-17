@@ -47,25 +47,28 @@ export default function ScrollPreview({ scroll }) {
                                 process.env.REACT_APP_BACKEND_URL +
                                 scroll?.author?.profile_pic
                             }
-                            aria-label="recipe"
+                            sx={{ width: '28px', height: '28px' }}
                         >
-                            {authorInitials}
+                            <Typography variant="body2">
+                                {authorInitials}
+                            </Typography>
                         </Avatar>
                     }
                     title={
-                        <div className="center-horizontal">
-                            <Typography
-                                variant="body2"
-                                style={{ marginRight: 8 }}
-                            >
+                        <div className="d-flex align-items-center">
+                            <Typography variant="body2">
                                 {scroll?.author?.displayName}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                                {`@${scroll?.author?._id}`}
+                                {` @${scroll?.author?._id}`}
                             </Typography>
                         </div>
                     }
-                    subheader={moment(scroll?.createdAt).fromNow()}
+                    subheader={
+                        <Typography variant="body2">
+                            {moment(scroll?.createdAt).fromNow()}
+                        </Typography>
+                    }
                 />
                 <CardContent>
                     <Typography
@@ -74,6 +77,7 @@ export default function ScrollPreview({ scroll }) {
                         component="p"
                     >
                         <Typography
+                            variant="body2"
                             onClick={(e) => contentClickHandler(e)}
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
@@ -81,21 +85,27 @@ export default function ScrollPreview({ scroll }) {
                             style={{ zIndex: 2 }}
                         ></Typography>
                         <br />
-                        <Grid container spacing={2} className="mb-2">
-                            {scroll?.video?.path && (
+                        <Grid container style={{ margin: '3px 0px' }}>
+                            {(scroll?.video?.length > 0 ||
+                                scroll?.video?.path) && (
                                 <Grid item xs={12}>
                                     <CardMedia
                                         component="video"
-                                        poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
-                                        src={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`}
+                                        //poster={`${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.thumbnail}`}
+                                        src={
+                                            typeof scroll?.video == 'string'
+                                                ? `${process.env.REACT_APP_BACKEND_URL}${scroll?.video}`
+                                                : `${process.env.REACT_APP_BACKEND_URL}${scroll?.video?.path}`
+                                        }
                                         controls
+                                        preload="metadata"
                                     />
                                 </Grid>
                             )}
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        className="mt-3"
+                                        style={{ zIndex: 2, padding: '1px' }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}
@@ -123,8 +133,8 @@ export default function ScrollPreview({ scroll }) {
                                 ))}
                         </Grid>
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography variant="body2" display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
                                         ? 'Reaction'
@@ -132,7 +142,7 @@ export default function ScrollPreview({ scroll }) {
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${scroll?.comments} ${
                                     scroll?.comments === 1
                                         ? 'Comment'
