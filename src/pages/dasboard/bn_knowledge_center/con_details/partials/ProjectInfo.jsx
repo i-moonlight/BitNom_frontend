@@ -7,10 +7,12 @@ function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div role="tabpanel"
-            hidden={value !== index} id={`vertical-tabpanel-${index}`}
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
-             {...other}
+            {...other}
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
@@ -34,7 +36,7 @@ function tabProps(index) {
     };
 }
 const useStyles = makeStyles({
-    tabPanelRoot: {padding: '25px 0',},
+    tabPanelRoot: { padding: '25px 0' },
 });
 
 const custom = {

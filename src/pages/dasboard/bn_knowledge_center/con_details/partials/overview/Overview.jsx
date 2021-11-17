@@ -6,9 +6,9 @@
  */
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import {Box,Tab} from '@mui/material';
+import { Box, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import General from './General';
 import Developer from './Developer';
 import Analysis from './Analysis';
@@ -34,7 +34,7 @@ export default function Overview() {
             backgroundColor: '#333333',
             margin: '5px 5px 5px 0',
             borderRadius: '50px',
-            minWidth: '120px'
+            minWidth: '120px',
         },
         coinsBorder: {
             borderLeft: '5px solid blue',
@@ -45,20 +45,49 @@ export default function Overview() {
 
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
-            <TabContext sx={{ width: '100%', typography: 'body1' }} value={value}>
-                <div >
-                    <TabList onChange={handleChange} aria-label="lab API tabs example" className={'m-1'}
-                        variant="scrollable" allowScrollButtonsMobile crollButtons>
-                        <Tab label="General" className={'m-2'} value="1" style={custom.buttonStyle}/>
-                        <Tab label="Developers" className={'m-2'} value="2" style={custom.buttonStyle}/>
-                        <Tab label="Widget" className={'m-2'} value="3" style={custom.buttonStyle} />
-                        <Tab label="Analysis" className={'m-2'} value="4" style={custom.buttonStyle}/>
+            <TabContext
+                sx={{ width: '100%', typography: 'body1' }}
+                value={value}
+            >
+                <div>
+                    <TabList
+                        onChange={handleChange}
+                        aria-label="lab API tabs example"
+                        className={'m-1'}
+                        variant="scrollable"
+                        allowScrollButtonsMobile
+                        crollButtons
+                    >
+                        <Tab
+                            label="General"
+                            className={'m-2'}
+                            value="1"
+                            style={custom.buttonStyle}
+                        />
+                        <Tab
+                            label="Developers"
+                            className={'m-2'}
+                            value="2"
+                            style={custom.buttonStyle}
+                        />
+                        <Tab
+                            label="Widget"
+                            className={'m-2'}
+                            value="3"
+                            style={custom.buttonStyle}
+                        />
+                        <Tab
+                            label="Analysis"
+                            className={'m-2'}
+                            value="4"
+                            style={custom.buttonStyle}
+                        />
                     </TabList>
                 </div>
 
                 {/*General*/}
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                   <General />
+                    <General />
                 </TabPanel>
 
                 {/*Developers*/}

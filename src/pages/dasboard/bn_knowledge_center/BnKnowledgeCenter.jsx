@@ -1,6 +1,13 @@
-import { List, Star} from '@mui/icons-material';
+import { List, Star } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import {Button, Card, Container, Divider, Tab, Typography} from '@mui/material';
+import {
+    Button,
+    Card,
+    Container,
+    Divider,
+    Tab,
+    Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Screen from '../../../components/Screen';
@@ -17,7 +24,9 @@ const useStyles = makeStyles({ tabPanelRoot: { padding: '0px' } });
 
 export default function BnKnowledgeCenter() {
     const [value, setValue] = React.useState('1');
-    const handleTabChanges = (event, newValue) => {setValue(newValue);};
+    const handleTabChanges = (event, newValue) => {
+        setValue(newValue);
+    };
     const classes = useStyles();
     const custom = {
         tabStyle: {
@@ -68,57 +77,128 @@ export default function BnKnowledgeCenter() {
                 <br />
                 <section>
                     <TabContext value={value} variant="fullWidth">
-                        <div sx={{borderBottom: 1, borderColor: 'divider', paddingLeft: 0, marginLeft: 0}} className={'mb-3'}>
-                            <TabList onChange={handleTabChanges} aria-label="Tab list for cryptocurrency section"
-                                variant="scrollable" allowScrollButtonsMobile scrollButtons>
-                                <Button variant="contained" className={''} style={custom.buttonStyle}>
-                                    <Star style={{marginRight: '5px', color: 'orange',}}/>
+                        <div
+                            sx={{
+                                borderBottom: 1,
+                                borderColor: 'divider',
+                                paddingLeft: 0,
+                                marginLeft: 0,
+                            }}
+                            className={'mb-3'}
+                        >
+                            <TabList
+                                onChange={handleTabChanges}
+                                aria-label="Tab list for cryptocurrency section"
+                                variant="scrollable"
+                                allowScrollButtonsMobile
+                                scrollButtons
+                            >
+                                <Button
+                                    variant="contained"
+                                    className={''}
+                                    style={custom.buttonStyle}
+                                >
+                                    <Star
+                                        style={{
+                                            marginRight: '5px',
+                                            color: 'orange',
+                                        }}
+                                    />
                                     Portfolio
                                 </Button>
-                                <Tab label={'Watchlist'} style={custom.buttonStyle} value="2" />
+                                <Tab
+                                    label={'Watchlist'}
+                                    style={custom.buttonStyle}
+                                    value="2"
+                                />
 
                                 <hr style={custom.verticalLine} />
-                                <Tab label="Cryptocurrency" value="1" style={custom.tabStyle}/>
-                                <Tab label="Cryptogazing" value="3" style={custom.tabStyle}/>
-                                <Tab label="Category" value="4" style={custom.tabStyle}/>
-                                <Tab label="Recently Added" value="6" style={custom.tabStyle}/>
-                                <Tab label="Gainers and Losers" value="5" style={custom.tabStyle}/>
-                                <Tab label="Heatmap" value="7" style={custom.tabStyle}/>
+                                <Tab
+                                    label="Cryptocurrency"
+                                    value="1"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Cryptogazing"
+                                    value="3"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Category"
+                                    value="4"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Recently Added"
+                                    value="6"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Gainers and Losers"
+                                    value="5"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Heatmap"
+                                    value="7"
+                                    style={custom.tabStyle}
+                                />
                                 <Button style={custom.listGridStyle}>
                                     <List />
                                 </Button>
                             </TabList>
                             <Divider flexItem />
                         </div>
-                        <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="1"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <div sx={{ width: '100%', overflow: 'hidden' }}>
                                 <CryptoCurrency />
                             </div>
                         </TabPanel>
-                        <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="2"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <div>
                                 <WatchList />
                             </div>
                         </TabPanel>
-                        <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="3"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <CryptoGazing />
                         </TabPanel>
-                        <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="4"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <div>
                                 <Categories />
                             </div>
                         </TabPanel>
-                        <TabPanel value="5" classes={{ root: classes.tabPanelRoot }}>
-                            <Typography color='textPrimary'>
+                        <TabPanel
+                            value="5"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
+                            <Typography color="textPrimary">
                                 <GainersAndLosers />
                             </Typography>
                         </TabPanel>
-                        <TabPanel value="6" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="6"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <div>
                                 <RecentlyAdded />
                             </div>
                         </TabPanel>
-                        <TabPanel value="7" classes={{ root: classes.tabPanelRoot }}>
+                        <TabPanel
+                            value="7"
+                            classes={{ root: classes.tabPanelRoot }}
+                        >
                             <Card>
                                 <div>
                                     <HeatMap />

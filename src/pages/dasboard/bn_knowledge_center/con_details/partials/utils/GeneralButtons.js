@@ -5,10 +5,10 @@
  * Time: 11:24 PM
  */
 import React from 'react';
-import {Button, Chip} from '@mui/material';
-import {useStyles} from './styles';
+import { Button, Chip } from '@mui/material';
+import { useStyles } from './styles';
 
-export const GeneralButtons = props => {
+export const GeneralButtons = (props) => {
     const btnColor = useStyles();
     const clickButtonHandler = () => {
         props.setActiveButton(props.id);
@@ -16,17 +16,19 @@ export const GeneralButtons = props => {
     return (
         <Button
             color={'inherit'}
-            className={`${props.active ? btnColor.bGActive : btnColor.bGNormal}`}
+            className={`${
+                props.active ? btnColor.bGActive : btnColor.bGNormal
+            }`}
             size={'small'}
             value={props.value}
-            onClick={clickButtonHandler}>
+            onClick={clickButtonHandler}
+        >
             {props.value}
         </Button>
     );
-
 };
 
-export const GeneralChips = props =>{
+export const GeneralChips = (props) => {
     const btnColor = useStyles();
     const clickChipHandler = () => {
         props.setActiveChip(props.id);
@@ -35,58 +37,60 @@ export const GeneralChips = props =>{
         <>
             <Chip
                 color={'inherit'}
-                className={`${props.active ? btnColor.bGActive : btnColor.bGNormal}`}
+                className={`${
+                    props.active ? btnColor.bGActive : btnColor.bGNormal
+                }`}
                 size={'small'}
                 label={props.value}
                 value={props.value}
-                onClick={clickChipHandler} />
+                onClick={clickChipHandler}
+            />
         </>
     );
 };
 
-
 export const buttonData = [
     {
         name: 'Price',
-        value: 'Price'
+        value: 'Price',
     },
     {
         name: 'Market Cap',
-        value: 'Market Cap'
+        value: 'Market Cap',
     },
     {
         name: 'Trading views',
-        value: 'Trading views'
+        value: 'Trading views',
     },
 ];
 
 export const chipLabels = [
     {
         name: '1d',
-        value: '1d'
+        value: '1d',
     },
     {
         name: '2d',
-        value: '2d'
+        value: '2d',
     },
     {
         name: '1m',
-        value: '1m'
+        value: '1m',
     },
     {
         name: '3m',
-        value: '3m'
+        value: '3m',
     },
     {
         name: '1y',
-        value: '1y'
+        value: '1y',
     },
     {
         name: 'YTD',
-        value: 'YTD'
+        value: 'YTD',
     },
     {
         name: 'ALL',
-        value: 'ALL'
+        value: 'ALL',
     },
 ];

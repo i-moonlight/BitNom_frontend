@@ -16,7 +16,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, Typography,
+    TableRow,
+    Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import * as React from 'react';
@@ -210,23 +211,46 @@ export default function Market() {
     };
 
     return (
-        <Typography color={'textPrimary'} sx={{ width: '100%', typography: 'body1' }}>
+        <Typography
+            color={'textPrimary'}
+            sx={{ width: '100%', typography: 'body1' }}
+        >
             <div className={'m-3'}>
                 <TabContext value={value}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Card>
-                            <TabList onChange={handleChange} variant="scrollable" allowScrollButtonsMobile
-                                     scrollButtons aria-label="Bitcoin markets tabs">
+                            <TabList
+                                onChange={handleChange}
+                                variant="scrollable"
+                                allowScrollButtonsMobile
+                                scrollButtons
+                                aria-label="Bitcoin markets tabs"
+                            >
                                 <h6 className={'m-3'}>
                                     <strong>BitCoin Markets</strong>
                                 </h6>
-                                <Tab label="Spot" value="1" style={custom.tabStyle}/>
-                                <Tab label="Perpetual" value="2" style={custom.tabStyle}/>
-                                <Tab label="Futures" value="3" style={custom.tabStyle}/>
+                                <Tab
+                                    label="Spot"
+                                    value="1"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Perpetual"
+                                    value="2"
+                                    style={custom.tabStyle}
+                                />
+                                <Tab
+                                    label="Futures"
+                                    value="3"
+                                    style={custom.tabStyle}
+                                />
                             </TabList>
                         </Card>
                     </Box>
-                    <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
+                    <TabPanel
+                        value="1"
+                        classes={{ root: classes.tabPanelRoot }}
+                    >
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                             <TableContainer sx={{ maxHeight: 440 }}>
                                 <Table stickyHeader aria-label="caption table">

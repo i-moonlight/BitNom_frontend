@@ -12,7 +12,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, Typography,
+    TableRow,
+    Typography,
 } from '@mui/material';
 
 function createData(date, open, high, low, close, volume, market_cap) {

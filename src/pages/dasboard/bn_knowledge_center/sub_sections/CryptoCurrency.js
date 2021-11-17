@@ -4,7 +4,7 @@
  * Date: 11/5/21
  * Time: 1:35 AM
  */
-import {StarOutline } from '@mui/icons-material';
+import { StarOutline } from '@mui/icons-material';
 import {
     Table,
     TableCell,
@@ -13,13 +13,13 @@ import {
     TableBody,
     TableRow,
     TablePagination,
-    CircularProgress, Card
+    CircularProgress,
+    Card,
 } from '@mui/material';
-import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-export default function CryptoCurrencyPage()
-{
+export default function CryptoCurrencyPage() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(50);
     const [coins, getCoins] = useState([]);
@@ -30,24 +30,24 @@ export default function CryptoCurrencyPage()
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) =>
-    {
+    const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         fetch('https://api.coingecko.com/api/v3/coins')
             .then((response) => response.json())
             .then((data) => {
                 getCoins(data);
                 checkLoadedCoin(true);
             })
-            .catch((err) => {console.log(err);});
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
 
-    return(
+    return (
         <>
             {coinIsLoaded ? (
                 <>
@@ -56,57 +56,85 @@ export default function CryptoCurrencyPage()
                             <TableHead>
                                 <TableRow>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff'}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>#</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     />
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>Coin</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     />
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     />
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>Price</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
-                                        <strong>
-                                            Volume (24h)
-                                        </strong>
+                                        <strong>Volume (24h)</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>Mkt Cap</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>Change(24h)</strong>
                                     </TableCell>
                                     <TableCell
-                                        style={{backgroundColor: '#3e4041', color: '#fff',}}
+                                        style={{
+                                            backgroundColor: '#3e4041',
+                                            color: '#fff',
+                                        }}
                                         className="text-secondary"
                                     >
                                         <strong>Price Graph</strong>
@@ -115,44 +143,79 @@ export default function CryptoCurrencyPage()
                             </TableHead>
                             <TableBody>
                                 {coins
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(
+                                        page * rowsPerPage,
+                                        page * rowsPerPage + rowsPerPage
+                                    )
                                     .map((row, id) => {
                                         return (
-                                            <TableRow hover role="checkbox" key={row.id}
-                                                      className={'c-pointer'}
-                                                      onClick={
-                                                          () => {
-                                                            history.push(`/knowledge_center/cryptocurrency/${row.id}`);
-                                                          }
-                                                      }>
+                                            <TableRow
+                                                hover
+                                                role="checkbox"
+                                                key={row.id}
+                                                className={'c-pointer'}
+                                                onClick={() => {
+                                                    history.push(
+                                                        `/knowledge_center/cryptocurrency/${row.id}`
+                                                    );
+                                                }}
+                                            >
                                                 <TableCell>
-                                                        <StarOutline />
+                                                    <StarOutline />
                                                 </TableCell>
                                                 <TableCell align="right">
-                                                        {id + 1}
+                                                    {id + 1}
                                                 </TableCell>
                                                 <TableCell>
-                                                        <img src={row.image.small} alt={'coin image'} height="25px"/>
+                                                    <img
+                                                        src={row.image.small}
+                                                        alt={'coin image'}
+                                                        height="25px"
+                                                    />
                                                 </TableCell>
                                                 <TableCell>
                                                     {row.name}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span style={{textTransform: 'uppercase',}}>
+                                                    <span
+                                                        style={{
+                                                            textTransform:
+                                                                'uppercase',
+                                                        }}
+                                                    >
                                                         {row.symbol}
                                                     </span>
                                                 </TableCell>
                                                 <TableCell>
-                                                        ${row.market_data.current_price.usd}
+                                                    $
+                                                    {
+                                                        row.market_data
+                                                            .current_price.usd
+                                                    }
                                                 </TableCell>
                                                 <TableCell>
-                                                        ${row.market_data.total_volume.usd}
+                                                    $
+                                                    {
+                                                        row.market_data
+                                                            .total_volume.usd
+                                                    }
                                                 </TableCell>
                                                 <TableCell>
-                                                        ${row.market_data.market_cap.usd}
+                                                    $
+                                                    {
+                                                        row.market_data
+                                                            .market_cap.usd
+                                                    }
                                                 </TableCell>
-                                                <TableCell className={'text-danger'}>
-                                                        {row.market_data.price_change_24h_in_currency.usd}%
+                                                <TableCell
+                                                    className={'text-danger'}
+                                                >
+                                                    {
+                                                        row.market_data
+                                                            .price_change_24h_in_currency
+                                                            .usd
+                                                    }
+                                                    %
                                                 </TableCell>
                                                 <TableCell>
                                                     {/*<Sparklines*/}
@@ -172,13 +235,14 @@ export default function CryptoCurrencyPage()
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage} />
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </>
             ) : (
                 <Card className={'text-danger text-center'}>
                     <CircularProgress color="secondary" />
                 </Card>
             )}
-
-        </>);
+        </>
+    );
 }
