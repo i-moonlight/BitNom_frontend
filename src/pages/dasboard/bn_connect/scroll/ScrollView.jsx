@@ -38,7 +38,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
 import { toast } from 'react-toastify';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -110,6 +109,12 @@ const useStyles = makeStyles((theme) => ({
             padding: '0px 30px 0px 20px',
         },
     },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
     red: {
         color: red[500],
     },
@@ -145,7 +150,6 @@ function PostView() {
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
     const [previewURL, setPreviewURL] = useState();
-    const [fileErrors, setFileErrors] = useState([]);
 
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
@@ -269,7 +273,6 @@ function PostView() {
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
-        setFileErrors([]);
         setPreviewURL();
     };
 
@@ -279,6 +282,41 @@ function PostView() {
             display: item?.userId?.displayName,
         };
     });
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
 
     const handleCreateComment = (e) => {
         e.preventDefault();
@@ -852,7 +890,7 @@ function PostView() {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <div style={{ padding: '3px' }}>
+                                        <div className={classes.commentSection}>
                                             <div className="d-flex align-items-center">
                                                 <Hidden smDown>
                                                     <Avatar
@@ -953,9 +991,9 @@ function PostView() {
                                                     size="small"
                                                     onClick={() => {
                                                         document
-                                                            .getElementsByClassName(
-                                                                'comment-dropzone'
-                                                            )[0]
+                                                            .getElementById(
+                                                                'scrollview-comment-image'
+                                                            )
                                                             .click();
                                                     }}
                                                 >
@@ -1005,107 +1043,21 @@ function PostView() {
                                                                 display: 'none',
                                                             }}
                                                         >
-                                                            <DropzoneArea
-                                                                clearOnUnmount
-                                                                dropzoneClass="comment-dropzone"
-                                                                //id="dropzone"
-                                                                clickable={true}
+                                                            <input
+                                                                id="scrollview-comment-image"
+                                                                type="file"
                                                                 onChange={(
-                                                                    files
+                                                                    e
                                                                 ) => {
-                                                                    const errors =
-                                                                        [];
-                                                                    let counter = 0;
-                                                                    files.map(
-                                                                        (
-                                                                            file
-                                                                        ) => {
-                                                                            const image =
-                                                                                new Image();
-                                                                            image.addEventListener(
-                                                                                'load',
-                                                                                () => {
-                                                                                    // only select images within width/height/size limits
-                                                                                    if (
-                                                                                        (image.width <=
-                                                                                            1200) &
-                                                                                        (image.height <=
-                                                                                            1350)
-                                                                                    ) {
-                                                                                        counter += 1;
-                                                                                        setFileErrors(
-                                                                                            []
-                                                                                        );
-                                                                                    } else {
-                                                                                        errors.push(
-                                                                                            'Image should be less than 1200px by 1350px & below 2mb.'
-                                                                                        );
-                                                                                        setFileErrors(
-                                                                                            errors
-                                                                                        );
-                                                                                    }
-                                                                                    if (
-                                                                                        counter ===
-                                                                                        1
-                                                                                    ) {
-                                                                                        setPreviewURL(
-                                                                                            URL.createObjectURL(
-                                                                                                file
-                                                                                            )
-                                                                                        );
-                                                                                        setCommentImage(
-                                                                                            file
-                                                                                        );
-                                                                                    }
-                                                                                }
-                                                                            );
-                                                                            image.src =
-                                                                                URL.createObjectURL(
-                                                                                    file
-                                                                                );
-                                                                        }
+                                                                    handleSelectImage(
+                                                                        Array.from(
+                                                                            e
+                                                                                .target
+                                                                                .files
+                                                                        )
                                                                     );
                                                                 }}
-                                                                acceptedFiles={[
-                                                                    'image/jpeg',
-                                                                    'image/png',
-                                                                ]}
-                                                                maxFileSize={
-                                                                    2500000
-                                                                }
-                                                                filesLimit={1}
-                                                                showPreviewsInDropzone
-                                                                showPreviews={
-                                                                    false
-                                                                }
-                                                                showFileNames={
-                                                                    false
-                                                                }
-                                                                showAlerts={
-                                                                    false
-                                                                }
-                                                                onAlert={(
-                                                                    message,
-                                                                    variant
-                                                                ) => {
-                                                                    if (
-                                                                        variant ==
-                                                                        'error'
-                                                                    ) {
-                                                                        toast.error(
-                                                                            message,
-                                                                            {
-                                                                                position:
-                                                                                    'bottom-left',
-                                                                                autoClose: 5000,
-                                                                                hideProgressBar: true,
-                                                                                closeOnClick: true,
-                                                                                pauseOnHover: true,
-                                                                                draggable: true,
-                                                                            }
-                                                                        );
-                                                                    }
-                                                                }}
+                                                                accept="image/jpeg, image/png"
                                                             />
                                                         </div>
                                                     </div>
@@ -1117,9 +1069,7 @@ function PostView() {
                                                         <CloseRounded
                                                             onClick={() => {
                                                                 setPreviewURL();
-                                                                setFileErrors(
-                                                                    []
-                                                                );
+
                                                                 setCommentImage(
                                                                     null
                                                                 );
@@ -1129,17 +1079,6 @@ function PostView() {
                                                 </div>
                                             </Card>
 
-                                            <div
-                                                className={classes.inputHelper}
-                                            >
-                                                <Typography
-                                                    color="error"
-                                                    variant="body2"
-                                                >
-                                                    {fileErrors.length > 0 &&
-                                                        fileErrors[0]}
-                                                </Typography>
-                                            </div>
                                             {postData?.Posts?.getById
                                                 ?.comments > 0 && (
                                                 <Typography

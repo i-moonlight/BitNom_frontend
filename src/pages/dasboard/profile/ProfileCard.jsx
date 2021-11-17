@@ -10,7 +10,6 @@ import {
     TimelineRounded,
 } from '@mui/icons-material';
 import { Card, CardContent, Snackbar, Typography } from '@mui/material';
-import { DropzoneArea } from 'react-mui-dropzone';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { Button } from '../../../components/Button';
@@ -25,7 +24,6 @@ export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
     const [profilePreviewURL, setProfilePreviewURL] = useState(null);
     const [coverPreviewURL, setCoverPreviewURL] = useState(null);
-    //const [uploadErrors, setUploadErrors] = useState([]);
     const dispatch = useDispatch();
     const onClose = () => {
         setShowForm(false);
@@ -48,6 +46,78 @@ export default function ProfileCard({ profile, profileView }) {
         }
     }, [profile?.profile_pic, profile?.cover_pic]);
 
+    const handleSelectProfile = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size < 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 3000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setProfilePreviewURL(URL.createObjectURL(file));
+                    handleUpdateProfilePic(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
+    const handleSelectCover = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size < 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 3000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setCoverPreviewURL(URL.createObjectURL(file));
+                    handleUpdateCoverPic(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
     const handleUpdateProfilePic = (pic) => {
         if (!pic) return;
         updateUser({
@@ -67,7 +137,6 @@ export default function ProfileCard({ profile, profileView }) {
         }).then(({ data }) => {
             const userData = data?.Users?.update;
             data?.Users?.update && dispatch(userUpdate(userData));
-            //setUploadErrors([]);
         });
     };
 
@@ -105,68 +174,34 @@ export default function ProfileCard({ profile, profileView }) {
                         cursor: 'pointer',
                         position: 'absolute',
                     }}
+                    onClick={() => {
+                        document.getElementById('cover-image').click();
+                    }}
                 ></div>
                 <div
                     style={{
+                        height: 120,
                         backgroundImage:
                             coverPreviewURL && `url('${coverPreviewURL}')`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundColor: '#aaa',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                     }}
                 >
-                    <DropzoneArea
-                        dropzoneClass="cover-upload-dropzone"
-                        clearOnUnmount
-                        Icon={CameraAltRounded}
-                        dropzoneText={' '}
-                        acceptedFiles={['image/jpeg', 'image/png']}
-                        maxFileSize={2500000}
-                        filesLimit={1}
-                        showAlerts={['error']}
-                        showPreviews={false}
-                        showPreviewsInDropzone={false}
-                        previewGridProps={{
-                            container: { spacing: 1, direction: 'row' },
-                        }}
-                        onChange={(files) => {
-                            if (files.length < 1) return;
-                            let counter = 0;
-                            files.map((file) => {
-                                const image = new Image();
-                                image.addEventListener('load', () => {
-                                    // only select images within width/height/size limits
-
-                                    if (
-                                        (image.width <= 1200) &
-                                        (image.height <= 1350) &
-                                        (file.size < 2500000)
-                                    ) {
-                                        counter += 1;
-                                    } else {
-                                        toast.error(
-                                            'Image should be less than 1200px by 1350px & below 2mb.',
-                                            {
-                                                position: 'bottom-left',
-                                                autoClose: 3000,
-                                                hideProgressBar: true,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                            }
-                                        );
-                                    }
-                                    if (counter === 1) {
-                                        setCoverPreviewURL(
-                                            URL.createObjectURL(file)
-                                        );
-                                        handleUpdateCoverPic(file);
-                                    }
-                                });
-                                image.src = URL.createObjectURL(file);
-                            });
-                        }}
-                    />
+                    <CameraAltRounded />
+                    <div style={{ display: 'none' }}>
+                        <input
+                            id="cover-image"
+                            type="file"
+                            onChange={(e) => {
+                                handleSelectCover(Array.from(e.target.files));
+                            }}
+                            accept="image/jpeg, image/png"
+                        />
+                    </div>
                 </div>
 
                 <CardContent
@@ -191,72 +226,31 @@ export default function ProfileCard({ profile, profileView }) {
                                     marginRight: 12,
                                     width: 80,
                                     height: 80,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    border: 'dotted 1px #000',
+                                }}
+                                onClick={() => {
+                                    document
+                                        .getElementById('profile-image')
+                                        .click();
                                 }}
                             >
-                                <DropzoneArea
-                                    dropzoneClass="profile-upload-dropzone"
-                                    clearOnUnmount
-                                    onChange={(files) => {
-                                        if (files.length < 1) return;
-                                        let counter = 0;
-                                        files.map((file) => {
-                                            const image = new Image();
-                                            image.addEventListener(
-                                                'load',
-                                                () => {
-                                                    // only select images within width/height/size limits
-
-                                                    if (
-                                                        (image.width <= 1200) &
-                                                        (image.height <= 1350) &
-                                                        (file.size < 2500000)
-                                                    ) {
-                                                        counter += 1;
-                                                    } else {
-                                                        toast.error(
-                                                            'Image should be less than 1200px by 1350px & below 2mb.',
-                                                            {
-                                                                position:
-                                                                    'bottom-left',
-                                                                autoClose: 3000,
-                                                                hideProgressBar: true,
-                                                                closeOnClick: true,
-                                                                pauseOnHover: true,
-                                                                draggable: true,
-                                                            }
-                                                        );
-                                                    }
-                                                    if (counter === 1) {
-                                                        setProfilePreviewURL(
-                                                            URL.createObjectURL(
-                                                                file
-                                                            )
-                                                        );
-                                                        handleUpdateProfilePic(
-                                                            file
-                                                        );
-                                                    }
-                                                }
+                                <CameraAltRounded />
+                                <div style={{ display: 'none' }}>
+                                    <input
+                                        id="profile-image"
+                                        type="file"
+                                        onChange={(e) => {
+                                            handleSelectProfile(
+                                                Array.from(e.target.files)
                                             );
-                                            image.src =
-                                                URL.createObjectURL(file);
-                                        });
-                                    }}
-                                    Icon={CameraAltRounded}
-                                    dropzoneText={false}
-                                    acceptedFiles={['image/jpeg', 'image/png']}
-                                    maxFileSize={2500000}
-                                    filesLimit={1}
-                                    showAlerts={['error']}
-                                    showPreviews={false}
-                                    showPreviewsInDropzone={false}
-                                    previewGridProps={{
-                                        container: {
-                                            spacing: 1,
-                                            direction: 'row',
-                                        },
-                                    }}
-                                />
+                                        }}
+                                        accept="image/jpeg, image/png"
+                                    />
+                                </div>
                             </div>
                             <Typography className="pt-1" variant="body2">
                                 {profile?.displayName}
