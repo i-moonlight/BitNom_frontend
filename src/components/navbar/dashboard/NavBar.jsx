@@ -160,26 +160,23 @@ export default function NavBar() {
             !user?.email?.verified &&
             history.push('/auth/require_verify');
 
-        if (window.location.pathname == '/connect') {
+        if (window.location.pathname?.includes('/connect')) {
             setTabValue(0);
         }
 
-        if (
-            window.location.pathname == '/knowledge_center/cryptocurrency' ||
-            window.location.pathname == '/knowledge_center/bitcoin'
-        ) {
+        if (window.location.pathname?.includes('/knowledge_center')) {
             setTabValue(1);
         }
 
-        if (window.location.pathname == '/events') {
+        if (window.location.pathname?.includes('/events')) {
             setTabValue(2);
         }
 
-        if (window.location.pathname == '/chat') {
+        if (window.location.pathname?.includes('/chat')) {
             setTabValue(3);
         }
 
-        if (window.location.pathname == '/investors') {
+        if (window.location.pathname?.includes('/investors')) {
             setTabValue(4);
         }
     }, [history, user?.email, user?.email?.verified]);
