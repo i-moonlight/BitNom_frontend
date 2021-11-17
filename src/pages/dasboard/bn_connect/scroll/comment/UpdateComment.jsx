@@ -29,7 +29,6 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { toast } from 'react-toastify';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
@@ -140,6 +139,41 @@ export default function UpdateComment({
             display: item?.userId?.displayName,
         };
     });
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
 
     const handleUpdateComment = (e) => {
         e.preventDefault();
@@ -309,91 +343,17 @@ export default function UpdateComment({
                                     <div className="space-between">
                                         <div>
                                             <div style={{ display: 'none' }}>
-                                                <DropzoneArea
-                                                    clearOnUnmount
-                                                    dropzoneClass="update-comment-dropzone"
-                                                    //id="dropzone"
-                                                    clickable={true}
-                                                    onChange={(files) => {
-                                                        const errors = [];
-                                                        let counter = 0;
-                                                        files.map((file) => {
-                                                            const image =
-                                                                new Image();
-                                                            image.addEventListener(
-                                                                'load',
-                                                                () => {
-                                                                    // only select images within width/height/size limits
-                                                                    if (
-                                                                        (image.width <=
-                                                                            1200) &
-                                                                        (image.height <=
-                                                                            1350)
-                                                                    ) {
-                                                                        counter += 1;
-                                                                        setFileErrors(
-                                                                            []
-                                                                        );
-                                                                    } else {
-                                                                        errors.push(
-                                                                            'Image should be less than 1200px by 1350px & below 2mb.'
-                                                                        );
-                                                                        setFileErrors(
-                                                                            errors
-                                                                        );
-                                                                    }
-                                                                    if (
-                                                                        counter ===
-                                                                        1
-                                                                    ) {
-                                                                        setPreviewURL(
-                                                                            URL.createObjectURL(
-                                                                                file
-                                                                            )
-                                                                        );
-                                                                        setCommentImage(
-                                                                            file
-                                                                        );
-                                                                    }
-                                                                }
-                                                            );
-                                                            image.src =
-                                                                URL.createObjectURL(
-                                                                    file
-                                                                );
-                                                        });
+                                                <input
+                                                    id="updating-comment-image"
+                                                    type="file"
+                                                    onChange={(e) => {
+                                                        handleSelectImage(
+                                                            Array.from(
+                                                                e.target.files
+                                                            )
+                                                        );
                                                     }}
-                                                    acceptedFiles={[
-                                                        'image/jpeg',
-                                                        'image/png',
-                                                    ]}
-                                                    maxFileSize={2500000}
-                                                    filesLimit={1}
-                                                    showPreviewsInDropzone
-                                                    showPreviews={false}
-                                                    showFileNames={false}
-                                                    showAlerts={false}
-                                                    onAlert={(
-                                                        message,
-                                                        variant
-                                                    ) => {
-                                                        if (
-                                                            variant == 'error'
-                                                        ) {
-                                                            toast.error(
-                                                                message,
-                                                                {
-                                                                    position:
-                                                                        'bottom-left',
-                                                                    autoClose: 5000,
-                                                                    hideProgressBar: true,
-                                                                    closeOnClick: true,
-                                                                    pauseOnHover: true,
-                                                                    draggable: true,
-                                                                }
-                                                            );
-                                                        }
-                                                    }}
+                                                    accept="image/jpeg, image/png"
                                                 />
                                             </div>
                                         </div>
@@ -511,9 +471,9 @@ export default function UpdateComment({
                                                 setFileType(null);
                                                 setCommentImage(null);
                                                 document
-                                                    .getElementsByClassName(
-                                                        'update-comment-dropzone'
-                                                    )[0]
+                                                    .getElementById(
+                                                        'update-comment-image'
+                                                    )
                                                     .click();
                                             }}
                                         >
