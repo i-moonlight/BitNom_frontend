@@ -5,10 +5,16 @@
  * Time: 12:59 PM
  */
 import {
-    Card, CardContent,
-    Checkbox, Chip, CircularProgress,
-    FormControlLabel, Stack,
-    Table, TableBody, TableCell,
+    Card,
+    CardContent,
+    Checkbox,
+    Chip,
+    CircularProgress,
+    FormControlLabel,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
     TableContainer,
     TableHead,
     TableRow,
@@ -16,7 +22,8 @@ import {
 } from '@mui/material';
 import {
     ArrowBack,
-    ArrowDropDown, ArrowForward,
+    ArrowDropDown,
+    ArrowForward,
     CompareArrows,
     DateRange,
     Fireplace,
@@ -31,8 +38,7 @@ import {convertDate, volumePercentage} from '../utils/utilities';
 import {buttonData, GeneralButtons} from '../utils/GeneralButtons';
 
 
-
-export default function General ()
+export default function General ({coinDetail})
 {
     const [rows, getRows] = React.useState([]);
     const [rowLoaded, loadedRow] = React.useState(false);
@@ -52,11 +58,21 @@ export default function General ()
             });
     }, []);
 
+    const coinDescription = () =>
+    {
+        const description = coinDetail.description?.en;
+        return  description.split('\n').map((c, idx) => {
+            return (<p key={idx} dangerouslySetInnerHTML={{__html:c}} />);
+        }) ;
+    };
+
     const handleClick = () => {
         console.info('You clicked the Chip.');
     };
 
     const [activeButton, setActiveButton] = useState(0);
+    const [coinFeature, setActiveCoinFeature] = useState('price');
+    const [showLess, setShowLess] = React.useState(true);
 
     return (<>
         <div>
@@ -67,7 +83,7 @@ export default function General ()
                     {/*Bitcoin (BTC) Price Chart*/}
                     <div className={'m-3'}>
                         <div className={'d-flex justify-content-between'}>
-                            <h4>Bitcoin (BTC) Price Chart</h4>
+                            <h4>{coinDetail && `${coinDetail.name} (${coinDetail.symbol})`} Price Chart</h4>
                             <div>
                                 <Fullscreen className={'m-1'} />
                                 <MoreHoriz className={'m-1'} />
@@ -82,7 +98,9 @@ export default function General ()
                                             key={item.value}
                                             id={index}
                                             value={item.value}
+                                            name={item.name}
                                             setActiveButton={setActiveButton}
+                                            setActiveCoinFeature={setActiveCoinFeature}
                                             active={activeButton === index}
                                         />
                                     ))}
@@ -103,7 +121,7 @@ export default function General ()
                         </div>
                         <div className={'mt-2'}>
                             <Card>
-                                <CoinChart />
+                                <CoinChart coinFeature={coinFeature} coinDetail={coinDetail} />
                             </Card>
                             <div className={'d-flex justify-content-start'}>
                                 <FormControlLabel control={<Checkbox defaultChecked />} label='BTC'/>
@@ -113,31 +131,19 @@ export default function General ()
                     </div>
 
                     <div className={'mt-5'}>
-                        <h2>About Bitcoin</h2>
+                        <h2>About {coinDetail && coinDetail.name}</h2>
                         <hr />
-                        <h5>What is Bitcoin (BTC)</h5>
-                        <p>
-                            <span>
-                                Lorem ipsum dolor sit amet,
-                                consectetur adipisicing elit.
-                                Corporis dicta dolorem eum maxime
-                                neque odit optio placeat recusandae
-                                rem rerum? Alias doloremque dolorum
-                                eos ratione reprehenderit unde vel
-                                voluptate voluptatem.
+                        <h5>
+                            What is {coinDetail && coinDetail.name}
+                            <span className={'text-uppercase'}>
+                                ({coinDetail && coinDetail.symbol})
                             </span>
-                            <span>
-                                A animi autem beatae consequatur
-                                delectus error et facere hic
-                                inventore ipsum maiores nesciunt non
-                                obcaecati perspiciatis placeat
-                                provident repellat repellendus
-                                repudiandae, sapiente sint sit
-                                temporibus unde. Eos eum, quos!
-                            </span>
-                        </p>
-                        <a href={'#'} className={'text-primary'}>
-                            Read More <KeyboardArrowDown />{' '}
+                        </h5>
+                        <>
+                            {coinDescription()}
+                        </>
+                        <a href={'#'} className={'text-primary'} onClick={setShowLess(!showLess)}>
+                            Read More <KeyboardArrowDown />
                         </a>
                     </div>
                 </Typography>

@@ -37,12 +37,14 @@ const useStyles = makeStyles({
 
 export default function CoinDetails({match}) {
     const [value, setValue] = useState('1');
-    const [coinDetail, getCoinDetail] = useState([]);
+    const [coinDetail, getCoinDetail] = useState({});
     const [coinLoaded, coinStatus] = useState(false);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (event, newValue) =>
+    {
         setValue(newValue);
     };
+
     const custom = {
         darkTransparent: {
             backgroundColor: 'rgb(68 63 63 / 50%)',
@@ -78,11 +80,11 @@ export default function CoinDetails({match}) {
         },
     };
     const classes = useStyles();
+    const coin_id = match.params.id;
+    const url = `https://api.coingecko.com/api/v3/coins/${coin_id}`;
 
     useEffect(() =>
     {
-        const coin_id = match.params.id;
-        const url = `https://api.coingecko.com/api/v3/coins/${coin_id}`;
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
@@ -93,7 +95,7 @@ export default function CoinDetails({match}) {
                 console.log(err);
                 coinStatus(false);
             });
-    }, [match]);
+    }, []);
 
     return (
         <Screen>
@@ -104,7 +106,9 @@ export default function CoinDetails({match}) {
                         <div className="m-3">
                             <a className="text-secondary">CryptoCurrencies</a>
                             <KeyboardArrowRightSharp />
-                            <a>{coinDetail.name}</a>
+                            <a>
+                                {coinDetail.name}
+                            </a>
                         </div>
                     </Typography>
 
@@ -115,7 +119,7 @@ export default function CoinDetails({match}) {
                          col-md-7 col-sm-12 mt-3 justify-content-evenly">
                                 <div>
                                     <div>
-                                        <img alt={'Bitcoin image'} src={coinDetail.image.small}/>
+                                        <img alt={'Bitcoin image'} />
                                     </div>
                                     <div>
                                         <p>
@@ -308,9 +312,10 @@ export default function CoinDetails({match}) {
                             </div>
                             {/*<hr/>*/}
                             <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                                <Overview />
+                                <Overview coinDetail={coinDetail} />
                             </TabPanel>
-                            <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}><Market />
+                            <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
+                                <Market />
                             </TabPanel>
                             <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
                                 <News />

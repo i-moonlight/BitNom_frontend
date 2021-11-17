@@ -21,9 +21,9 @@ const series = [
     },
 ];
 
-export default function PriceChart() {
+export default function PriceChart({coinFeature}) {
     const theme = useTheme();
-
+    console.log(coinFeature);
     return (
         <Card>
             <ApexCharts

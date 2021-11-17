@@ -18,7 +18,7 @@ const useStyles = makeStyles({
         padding: '25px 0',
     },
 });
-export default function Overview() {
+export default function Overview({coinDetail}) {
     const [value, setValue] = useState('1');
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -58,7 +58,7 @@ export default function Overview() {
 
                 {/*General*/}
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                   <General />
+                   <General coinDetail={coinDetail}/>
                 </TabPanel>
 
                 {/*Developers*/}
