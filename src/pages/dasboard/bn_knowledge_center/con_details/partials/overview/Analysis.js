@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import React from 'react';
+import { Button } from '../../../../../../components/Button';
 
 /**
  * Created by PhpStorm.
@@ -11,7 +12,7 @@ import React from 'react';
 export default function Analysis() {
     return (
         <>
-            <Typography color={'textPrimary'}>
+            <Typography color={'textPrimary'} component="div">
                 <div className={'m-3'}>
                     <div>
                         <h5>
@@ -105,9 +106,9 @@ export default function Analysis() {
                             </div>
                         </div>
                     </div>
-                    <button className={'btn btn-primary mt-3'}>
+                    <Button textCase className="mt-3">
                         Dive Deeper
-                    </button>
+                    </Button>
                     <div className={'mt-5'}>
                         <div>
                             <h4>
@@ -170,9 +171,9 @@ export default function Analysis() {
                             </div>
                         </div>
                     </div>
-                    <button className={'btn btn-primary mt-3'}>
+                    <Button textCase className="mt-3">
                         See More Signals
-                    </button>
+                    </Button>
                 </div>
             </Typography>
         </>

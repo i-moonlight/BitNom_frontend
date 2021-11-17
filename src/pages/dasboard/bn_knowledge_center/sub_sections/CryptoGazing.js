@@ -1,13 +1,6 @@
 import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
-import { Card, CardContent, CircularProgress } from '@mui/material';
+import { Card, CardContent, Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/5/21
- * Time: 1:31 AM
- */
 
 export function CryptoGazing() {
     const [coinDetails, getCoin] = useState([]);
@@ -21,7 +14,6 @@ export function CryptoGazing() {
             .then((response) => response.json())
             .then((data) => {
                 getCoin(data);
-                console.log(data);
                 checkLoadedCoin(true);
             })
             .catch((err) => {
@@ -32,7 +24,7 @@ export function CryptoGazing() {
     return (
         <>
             {coinIsLoaded ? (
-                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center">
+                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center pb-5">
                     <Card>
                         <CardContent>
                             <div className="d-flex flex-row justify-content-between mb-3">
@@ -132,9 +124,20 @@ export function CryptoGazing() {
                     </Card>
                 </div>
             ) : (
-                <Card className={'text-danger text-center'}>
-                    <CircularProgress color="secondary" />
-                </Card>
+                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center pb-5">
+                    <Skeleton
+                        animation="wave"
+                        className="mb-3 br-1"
+                        variant="rectangular"
+                        height={250}
+                    />
+                    <Skeleton
+                        animation="wave"
+                        className="mb-2 br-1"
+                        variant="rectangular"
+                        height={30}
+                    />
+                </div>
             )}
         </>
     );

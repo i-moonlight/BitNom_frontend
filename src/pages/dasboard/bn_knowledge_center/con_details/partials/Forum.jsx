@@ -22,72 +22,6 @@ import {
 import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
-function createData(date, open, high, low, close, volume, market_cap) {
-    return { date, open, high, low, close, volume, market_cap };
-}
-
-const rows = [
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-    createData(
-        'Oct 04, 2021',
-        '$48,208.91',
-        '$49,208.91',
-        '$47,208.91',
-        '$48,208.91',
-        '$48,208,897.91',
-        '$48,208,897.91'
-    ),
-];
-
 export default function Forum() {
     const [value, setValue] = React.useState('1');
     const classes = useStyles();
@@ -96,33 +30,6 @@ export default function Forum() {
         setValue(newValue);
     };
 
-    const custom = {
-        darkTransparent: {
-            backgroundColor: 'rgb(68 63 63 / 50%)',
-            text: '#fff',
-            height: '10px',
-            borderRadius: '5px',
-            margin: '5px',
-            padding: '0.5px 0.5px',
-        },
-        greenBg: {
-            backgroundColor: 'rgb(16 150 16)',
-            text: '#fff',
-            height: '10px',
-            borderRadius: '5px',
-            padding: '5px',
-            margin: '2px',
-        },
-        verticalLine: {
-            borderLeft: '2px solid green',
-            height: '150px',
-            marginTop: '25px',
-        },
-        tabStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-        },
-    };
     return (
         <Card>
             <TabContext value={value} className={'m-3'}>
@@ -134,9 +41,9 @@ export default function Forum() {
                         scrollButtons
                         aria-label="lab API tabs example"
                     >
-                        <h6 className={'m-3'}>
+                        {/* <h6 className={'m-3'}>
                             <strong>BitCoin Threads</strong>
-                        </h6>
+                        </h6> */}
                         <Tab label="Recent" value="1" style={custom.tabStyle} />
                         <Tab label="Hot" value="2" style={custom.tabStyle} />
                         <Tab
@@ -197,9 +104,9 @@ export default function Forum() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {rows.map((row, id) => (
                                             <TableRow
-                                                key={row.date}
+                                                key={id}
                                                 sx={{
                                                     '&:last-child td, &:last-child th':
                                                         { border: 0 },
@@ -247,3 +154,98 @@ export default function Forum() {
         </Card>
     );
 }
+
+const useStyles = makeStyles({
+    tabPanelRoot: {
+        padding: '25px 0',
+    },
+});
+
+const custom = {
+    darkTransparent: {
+        backgroundColor: 'rgb(68 63 63 / 50%)',
+        text: '#fff',
+        height: '10px',
+        borderRadius: '5px',
+        margin: '5px',
+        padding: '0.5px 0.5px',
+    },
+    greenBg: {
+        backgroundColor: 'rgb(16 150 16)',
+        text: '#fff',
+        height: '10px',
+        borderRadius: '5px',
+        padding: '5px',
+        margin: '2px',
+    },
+    verticalLine: {
+        borderLeft: '2px solid green',
+        height: '150px',
+        marginTop: '25px',
+    },
+    tabStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+    },
+};
+
+function createData(date, open, high, low, close, volume, market_cap) {
+    return { date, open, high, low, close, volume, market_cap };
+}
+
+const rows = [
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+    createData(
+        'Oct 04, 2021',
+        '$48,208.91',
+        '$49,208.91',
+        '$47,208.91',
+        '$48,208.91',
+        '$48,208,897.91',
+        '$48,208,897.91'
+    ),
+];

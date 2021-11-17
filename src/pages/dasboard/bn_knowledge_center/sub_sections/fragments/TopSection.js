@@ -1,18 +1,13 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/9/21
- * Time: 8:42 AM
- */
-
 import { Card, CardContent, Switch, Typography } from '@mui/material';
-import React from 'react';
+import { useState } from 'react';
 
 export default function TopSection() {
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = useState(true);
+
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
+
     const borders = {
         market: { borderLeft: '5px solid red', minWidth: '200px' },
         volume: { borderLeft: '5px solid green', minWidth: '200px' },
@@ -20,15 +15,17 @@ export default function TopSection() {
         nft: { borderLeft: '5px solid yellow', minWidth: '200px' },
         coins: { borderLeft: '5px solid purple', minWidth: '200px' },
     };
+
     return (
         <>
-            <section container>
-                <div item className="my-2">
+            <section>
+                <div className="my-2">
                     <div className="m-3">
                         <Typography
                             variant="h5"
                             color="textPrimary"
                             className="fw-bold"
+                            component="div"
                         >
                             Cryptocurrency Prices by Market Cap
                             <small style={{ fontSize: '12px' }}>
@@ -52,12 +49,12 @@ export default function TopSection() {
                 </div>
             </section>
             {/*Cards Being Checked*/}
-            {!checked && (
+            {checked && (
                 <section className="d-lg-flex d-md-flex d-sm-block flex-row justify-content-between">
-                    <div className="m-2">
+                    <div className="m-3">
                         <Card style={borders.market}>
                             <CardContent>
-                                <Typography variant="caption">
+                                <Typography component="div" variant="caption">
                                     <div className="float-md-right">
                                         <span className="text-danger float-end">
                                             -4.9 %
@@ -74,14 +71,14 @@ export default function TopSection() {
                         </Card>
                     </div>
 
-                    <div className="m-2">
+                    <div className="m-3">
                         <Card
                             variant="contained"
                             color="primary"
                             style={borders.volume}
                         >
                             <CardContent>
-                                <Typography variant="caption">
+                                <Typography component="div" variant="caption">
                                     <div className="float-md-right">
                                         <span className="text-danger float-end">
                                             {' '}
@@ -99,14 +96,14 @@ export default function TopSection() {
                         </Card>
                     </div>
 
-                    <div className="m-2">
+                    <div className="m-3">
                         <Card
                             variant="contained"
                             color="primary"
                             style={borders.carp}
                         >
                             <CardContent>
-                                <Typography variant="caption">
+                                <Typography component="div" variant="caption">
                                     <div className="float-md-right">
                                         <span className="text-info float-end">
                                             Bitcoin
@@ -123,14 +120,14 @@ export default function TopSection() {
                         </Card>
                     </div>
 
-                    <div className="m-2">
+                    <div className="m-3">
                         <Card
                             variant="contained"
                             color="primary"
                             style={borders.nft}
                         >
                             <CardContent>
-                                <Typography variant="caption">
+                                <Typography component="div" variant="caption">
                                     <div>
                                         <br />
                                         <br />
@@ -144,14 +141,14 @@ export default function TopSection() {
                         </Card>
                     </div>
 
-                    <div className="m-2">
+                    <div className="m-3">
                         <Card
                             variant="contained"
                             color="primary"
                             style={borders.coins}
                         >
                             <CardContent>
-                                <Typography variant="caption">
+                                <Typography component="div" variant="caption">
                                     <div>
                                         <br />
                                         <br />

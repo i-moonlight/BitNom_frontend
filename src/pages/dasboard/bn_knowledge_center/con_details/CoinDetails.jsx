@@ -1,22 +1,15 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/13/21
- * Time: 6:53 AM
- */
 import {
     ArrowDropDown,
     Facebook,
     GitHub,
-    KeyboardArrowRightSharp,
     LinkOutlined,
-    ShareTwoTone,
     Star,
     Telegram,
     Twitter,
 } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
+    Breadcrumbs,
     Card,
     CircularProgress,
     Container,
@@ -26,7 +19,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import Screen from '../../../../components/Screen';
 import Forum from './partials/Forum';
@@ -36,12 +29,6 @@ import News from './partials/News';
 import Overview from './partials/overview/Overview';
 import ProjectInfo from './partials/ProjectInfo';
 
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
-
 export default function CoinDetails({ match }) {
     const [value, setValue] = useState('1');
     const [coinDetail, getCoinDetail] = useState([]);
@@ -50,40 +37,7 @@ export default function CoinDetails({ match }) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const custom = {
-        darkTransparent: {
-            backgroundColor: 'rgb(68 63 63 / 50%)',
-            text: '#fff',
-            height: '10px',
-            borderRadius: '5px',
-            margin: '5px',
-            padding: '0.5px 0.5px',
-        },
-        buttonStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-            backgroundColor: '#333333',
-            margin: '1px 1px 1px 0',
-            borderRadius: '5px',
-        },
-        greenBg: {
-            backgroundColor: 'rgb(16 150 16)',
-            text: '#fff',
-            height: '10px',
-            borderRadius: '5px',
-            padding: '5px',
-            margin: '2px',
-        },
-        verticalLine: {
-            borderLeft: '2px solid green',
-            height: '150px',
-            marginTop: '25px',
-        },
-        tabStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-        },
-    };
+
     const classes = useStyles();
 
     useEffect(() => {
@@ -104,20 +58,25 @@ export default function CoinDetails({ match }) {
     return (
         <Screen>
             {coinLoaded ? (
-                <Container>
+                <Container maxWidth="lg">
                     {/*Links to menus and coins*/}
-                    <Typography color="textPrimary">
-                        <div className="m-3">
-                            <a className="text-secondary">CryptoCurrencies</a>
-                            <KeyboardArrowRightSharp />
-                            <a>{coinDetail.name}</a>
-                        </div>
-                    </Typography>
+                    <Breadcrumbs aria-label="breadcrumb" className="m-3">
+                        <Link
+                            to="/knowledge_center/cryptocurrency"
+                            underline="hover"
+                            color="inherit"
+                            href="/"
+                        >
+                            CryptoCurrencies
+                        </Link>
+                        <Typography>{coinDetail.name}</Typography>
+                    </Breadcrumbs>
 
                     {/*Coin Details*/}
-                    <div className="container mt-3">
+                    <div className="mt-3">
                         <div className="d-lg-flex d-md-flex d-sm-block row">
                             <Typography
+                                component="div"
                                 color="textPrimary"
                                 className="d-lg-flex d-md-flex d-sm-block col-lg-7
                          col-md-7 col-sm-12 mt-3 justify-content-evenly"
@@ -227,6 +186,7 @@ export default function CoinDetails({ match }) {
                                 <hr style={custom.verticalLine} />
                             </Typography>
                             <Typography
+                                component="div"
                                 color="textPrimary"
                                 className="col-lg-5 col-md-5 col-sm-12"
                             >
@@ -421,7 +381,7 @@ export default function CoinDetails({ match }) {
                                         value="6"
                                         style={custom.tabStyle}
                                     />
-                                    <Button
+                                    {/* <Button
                                         textColor={'#333333'}
                                         className={'float-end'}
                                         style={{
@@ -433,7 +393,7 @@ export default function CoinDetails({ match }) {
                                         <span style={{ marginLeft: '5px' }}>
                                             Share
                                         </span>
-                                    </Button>
+                                    </Button> */}
                                 </TabList>
                                 <Divider
                                     orientation="horizontal"
@@ -481,10 +441,53 @@ export default function CoinDetails({ match }) {
                     </div>
                 </Container>
             ) : (
-                <Card className={'text-danger text-center'}>
-                    <CircularProgress color="secondary" />
-                </Card>
+                <Container maxWidth="lg">
+                    <Card className={'text-danger text-center'}>
+                        <CircularProgress color="secondary" />
+                    </Card>
+                </Container>
             )}
         </Screen>
     );
 }
+
+const useStyles = makeStyles({
+    tabPanelRoot: {
+        padding: '25px 0',
+    },
+});
+
+const custom = {
+    darkTransparent: {
+        backgroundColor: 'rgb(68 63 63 / 50%)',
+        text: '#fff',
+        height: '10px',
+        borderRadius: '5px',
+        margin: '5px',
+        padding: '0.5px 0.5px',
+    },
+    buttonStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+        backgroundColor: '#333333',
+        margin: '1px 1px 1px 0',
+        borderRadius: '5px',
+    },
+    greenBg: {
+        backgroundColor: 'rgb(16 150 16)',
+        text: '#fff',
+        height: '10px',
+        borderRadius: '5px',
+        padding: '5px',
+        margin: '2px',
+    },
+    verticalLine: {
+        borderLeft: '2px solid green',
+        height: '150px',
+        marginTop: '25px',
+    },
+    tabStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+    },
+};

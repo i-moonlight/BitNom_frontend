@@ -5,7 +5,7 @@
  * Time: 9:06 PM
  */
 
-import { Card, LinearProgress } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -44,7 +44,6 @@ export default function Categories() {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 getCategories(data);
                 loadCategories(true);
             })
@@ -67,9 +66,9 @@ export default function Categories() {
                         <StyledTableCell>Volume (24h)</StyledTableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {categoryLoaded ? (
-                        categories.map((row, id) => (
+                {categoryLoaded ? (
+                    <TableBody>
+                        {categories.map((row, id) => (
                             <StyledTableRow key={row.name}>
                                 <StyledTableCell component="th" scope="row">
                                     {id + 1}
@@ -87,13 +86,26 @@ export default function Categories() {
                                     ${row.volume_24h}
                                 </StyledTableCell>
                             </StyledTableRow>
-                        ))
-                    ) : (
-                        <Card className={'text-center'}>
-                            <LinearProgress color="inherit" />
-                        </Card>
-                    )}
-                </TableBody>
+                        ))}
+                    </TableBody>
+                ) : (
+                    <TableBody>
+                        {[0, 1, 2, 3, 4].map((row) => (
+                            <TableRow key={row}>
+                                {[0, 1, 2, 3, 4].map((cell) => (
+                                    <TableCell key={cell}>
+                                        <Skeleton
+                                            animation="wave"
+                                            className="mb-2 br-1"
+                                            width={'100%'}
+                                            variant="text"
+                                        />
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                )}
             </Table>
         </TableContainer>
     );

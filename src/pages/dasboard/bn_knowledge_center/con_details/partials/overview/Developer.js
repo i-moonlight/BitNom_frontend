@@ -2,17 +2,10 @@ import { Brightness1, CallSplit, LocalBar, Star } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import React from 'react';
 
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/15/21
- * Time: 6:17 AM
- */
-
 export default function Developer() {
     return (
         <>
-            <Typography color={'textPrimary'}>
+            <Typography color={'textPrimary'} component="div">
                 <div className={'m-3'}>
                     <div>
                         <p className={'text-primary fw-bold'}>bitcoin</p>

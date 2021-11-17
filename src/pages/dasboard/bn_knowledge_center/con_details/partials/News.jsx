@@ -1,21 +1,8 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/17/21
- * Time: 11:02 AM
- */
-
 import { LinkSharp } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Card, Tab, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import * as React from 'react';
-
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
 
 export default function News() {
     const [value, setValue] = React.useState('1');
@@ -26,24 +13,11 @@ export default function News() {
 
     const classes = useStyles();
 
-    const custom = {
-        tabStyle: {
-            textTransform: 'capitalize',
-            backgroundColor: 'rgb(68 63 63 / 50%)',
-            borderRadius: '5px',
-            marginRight: '5px',
-            fontWeight: 'bold',
-        },
-        coinsBorder: {
-            borderLeft: '5px solid blue',
-            minWidth: '250px',
-        },
-    };
-
     return (
         <Typography
             color={'textPrimary'}
             sx={{ width: '100%', typography: 'body1' }}
+            component="div"
         >
             <div className={'m-3'}>
                 <TabContext value={value}>
@@ -55,9 +29,9 @@ export default function News() {
                             scrollButtons
                             aria-label="Bitcoin New tab"
                         >
-                            <h6 className={'m-3'}>
+                            {/* <h6 className={'m-3'}>
                                 <strong>BitCoin Markets</strong>
-                            </h6>
+                            </h6> */}
                             <Tab
                                 label="Recent"
                                 value="1"
@@ -358,3 +332,23 @@ export default function News() {
         </Typography>
     );
 }
+
+const useStyles = makeStyles({
+    tabPanelRoot: {
+        padding: '25px 0',
+    },
+});
+
+const custom = {
+    tabStyle: {
+        textTransform: 'capitalize',
+        backgroundColor: 'rgb(68 63 63 / 50%)',
+        borderRadius: '5px',
+        marginRight: '5px',
+        fontWeight: 'bold',
+    },
+    coinsBorder: {
+        borderLeft: '5px solid blue',
+        minWidth: '250px',
+    },
+};

@@ -1,73 +1,22 @@
-import { List, Star } from '@mui/icons-material';
+import { Star } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import {
-    Button,
-    Card,
-    Container,
-    Divider,
-    Tab,
-    Typography,
-} from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import React from 'react';
+import { Container, Divider, Tab } from '@mui/material';
+import React, { useState } from 'react';
 import Screen from '../../../components/Screen';
 import Categories from './sub_sections/Categories';
+import CryptoCurrency from './sub_sections/CryptoCurrency';
 import { CryptoGazing } from './sub_sections/CryptoGazing';
+import TopSection from './sub_sections/fragments/TopSection';
 import GainersAndLosers from './sub_sections/GainersAndLosers';
 import HeatMap from './sub_sections/HeatMap';
 import RecentlyAdded from './sub_sections/RecentlyAdded';
-import TopSection from './sub_sections/fragments/TopSection';
-import CryptoCurrency from './sub_sections/CryptoCurrency';
 import WatchList from './sub_sections/WatchList';
 
-const useStyles = makeStyles({ tabPanelRoot: { padding: '0px' } });
-
 export default function BnKnowledgeCenter() {
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = useState('1');
+
     const handleTabChanges = (event, newValue) => {
         setValue(newValue);
-    };
-    const classes = useStyles();
-    const custom = {
-        tabStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-        },
-        buttonStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-            backgroundColor: '#333333',
-            margin: '15px 15px 15px 0',
-            borderRadius: '5px',
-            minWidth: '100px',
-        },
-        listGridStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-            backgroundColor: '#333333',
-            margin: '15px 15px 15px 0',
-            borderRadius: '5px',
-        },
-        tableHeader: {
-            backgroundColor: '#3e4041',
-            color: '#fff',
-        },
-        verticalLine: {
-            borderLeft: '2px solid green',
-            height: '35px',
-            marginRight: '20px',
-        },
-        horizontalLine: {
-            borderLeft: '5px solid green',
-        },
-        darkTransparent: {
-            backgroundColor: 'rgb(68 63 63 / 50%)',
-            text: '#fff',
-            height: '10px',
-            borderRadius: '5px',
-            margin: '5px',
-            padding: '0.5px 0.5px',
-        },
     };
 
     return (
@@ -76,134 +25,100 @@ export default function BnKnowledgeCenter() {
                 <TopSection />
                 <br />
                 <section>
-                    <TabContext value={value} variant="fullWidth">
-                        <div
-                            sx={{
-                                borderBottom: 1,
-                                borderColor: 'divider',
-                                paddingLeft: 0,
-                                marginLeft: 0,
-                            }}
-                            className={'mb-3'}
+                    <TabContext value={value}>
+                        <TabList
+                            // className="mb-2"
+                            onChange={handleTabChanges}
+                            aria-label="Tab list for cryptocurrency section"
+                            variant="scrollable"
+                            allowScrollButtonsMobile
+                            scrollButtons
                         >
-                            <TabList
-                                onChange={handleTabChanges}
-                                aria-label="Tab list for cryptocurrency section"
-                                variant="scrollable"
-                                allowScrollButtonsMobile
-                                scrollButtons
-                            >
-                                <Button
-                                    variant="contained"
-                                    className={''}
-                                    style={custom.buttonStyle}
-                                >
-                                    <Star
-                                        style={{
-                                            marginRight: '5px',
-                                            color: 'orange',
-                                        }}
-                                    />
-                                    Portfolio
-                                </Button>
-                                <Tab
-                                    label={'Watchlist'}
-                                    style={custom.buttonStyle}
-                                    value="2"
-                                />
+                            <Tab
+                                label={
+                                    <span className="d-flex align-items-center">
+                                        <Star className="me-2" /> Portfolio
+                                    </span>
+                                }
+                                style={custom.buttonStyle}
+                                value="0"
+                            />
+                            <Tab
+                                label={'Watchlist'}
+                                style={custom.buttonStyle}
+                                value="2"
+                            />
+                            {/* <hr style={custom.verticalLine} /> */}
+                            <Tab
+                                label="Cryptocurrency"
+                                value="1"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Cryptogazing"
+                                value="3"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Category"
+                                value="4"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Recently Added"
+                                value="6"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Gainers and Losers"
+                                value="5"
+                                style={custom.tabStyle}
+                            />
+                            <Tab
+                                label="Heatmap"
+                                value="7"
+                                style={custom.tabStyle}
+                            />
+                        </TabList>
+                        <Divider flexItem />
+                        {/* <Button style={custom.listGridStyle}>
+                                <List />
+                            </Button> */}
 
-                                <hr style={custom.verticalLine} />
-                                <Tab
-                                    label="Cryptocurrency"
-                                    value="1"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Cryptogazing"
-                                    value="3"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Category"
-                                    value="4"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Recently Added"
-                                    value="6"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Gainers and Losers"
-                                    value="5"
-                                    style={custom.tabStyle}
-                                />
-                                <Tab
-                                    label="Heatmap"
-                                    value="7"
-                                    style={custom.tabStyle}
-                                />
-                                <Button style={custom.listGridStyle}>
-                                    <List />
-                                </Button>
-                            </TabList>
-                            <Divider flexItem />
-                        </div>
-                        <TabPanel
-                            value="1"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
-                            <div sx={{ width: '100%', overflow: 'hidden' }}>
+                        <TabPanel value="1">
+                            <div>
                                 <CryptoCurrency />
                             </div>
                         </TabPanel>
-                        <TabPanel
-                            value="2"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="2">
                             <div>
                                 <WatchList />
                             </div>
                         </TabPanel>
-                        <TabPanel
-                            value="3"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
-                            <CryptoGazing />
+                        <TabPanel value="3">
+                            <div>
+                                <CryptoGazing />
+                            </div>
                         </TabPanel>
-                        <TabPanel
-                            value="4"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="4">
                             <div>
                                 <Categories />
                             </div>
                         </TabPanel>
-                        <TabPanel
-                            value="5"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
-                            <Typography color="textPrimary">
+                        <TabPanel value="5">
+                            <div>
                                 <GainersAndLosers />
-                            </Typography>
+                            </div>
                         </TabPanel>
-                        <TabPanel
-                            value="6"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
+                        <TabPanel value="6">
                             <div>
                                 <RecentlyAdded />
                             </div>
                         </TabPanel>
-                        <TabPanel
-                            value="7"
-                            classes={{ root: classes.tabPanelRoot }}
-                        >
-                            <Card>
-                                <div>
-                                    <HeatMap />
-                                </div>
-                            </Card>
+                        <TabPanel value="7">
+                            <div>
+                                <HeatMap />
+                            </div>
                         </TabPanel>
                     </TabContext>
                 </section>
@@ -211,3 +126,45 @@ export default function BnKnowledgeCenter() {
         </Screen>
     );
 }
+
+const custom = {
+    tabStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+    },
+    buttonStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+        backgroundColor: '#333333',
+        margin: '15px 10px 0px 0',
+        borderRadius: '5px 5px 0 0',
+        minWidth: '100px',
+    },
+    listGridStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+        backgroundColor: '#333333',
+        margin: '15px 15px 15px 0',
+        borderRadius: '5px',
+    },
+    tableHeader: {
+        backgroundColor: '#3e4041',
+        color: '#fff',
+    },
+    verticalLine: {
+        borderLeft: '2px solid green',
+        height: '35px',
+        marginRight: '20px',
+    },
+    horizontalLine: {
+        borderLeft: '5px solid green',
+    },
+    darkTransparent: {
+        backgroundColor: 'rgb(68 63 63 / 50%)',
+        text: '#fff',
+        height: '10px',
+        borderRadius: '5px',
+        margin: '5px',
+        padding: '0.5px 0.5px',
+    },
+};

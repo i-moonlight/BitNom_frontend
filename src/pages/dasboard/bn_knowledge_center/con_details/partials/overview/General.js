@@ -71,6 +71,7 @@ export default function General() {
                     <Typography
                         color="textPrimary"
                         className={'col-sm-12 col-md-8 col-lg-8'}
+                        component="div"
                     >
                         {/*Bitcoin (BTC) Price Chart*/}
                         <div className={'m-3'}>
@@ -230,6 +231,7 @@ export default function General() {
                                     color="textPrimary"
                                     className="my-1"
                                     fontSize={10}
+                                    component="div"
                                 >
                                     <div className="input-group">
                                         <div className="input-group-prepend w-25">
@@ -240,8 +242,10 @@ export default function General() {
                                                 </span>
                                             </div>
                                         </div>
-                                        <select className="form-control">
-                                            <option selected></option>
+                                        <select
+                                            defaultValue="1"
+                                            className="form-control"
+                                        >
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
@@ -477,7 +481,11 @@ export default function General() {
                                 </div>
                             </div>
                         </Card>
-                        <Typography color="textPrimary" className={'mt-3'}>
+                        <Typography
+                            color="textPrimary"
+                            className={'mt-3'}
+                            component="div"
+                        >
                             <div className={'float-end m-2 text-primary'}>
                                 <a>See All Markets</a> <ArrowForward />
                             </div>
@@ -487,7 +495,11 @@ export default function General() {
 
                 {/*Bitcoin Market*/}
                 {rowLoaded ? (
-                    <Typography color="textPrimary" className={'row mt-3'}>
+                    <Typography
+                        color="textPrimary"
+                        className={'row mt-3'}
+                        component="div"
+                    >
                         <h4>Bitcoin Market</h4>
                         <hr />
                         <TableContainer>
@@ -537,7 +549,7 @@ export default function General() {
                                 </TableHead>
                                 <TableBody>
                                     {rows.map((row, id) => (
-                                        <TableRow key={row.number}>
+                                        <TableRow key={id}>
                                             <TableCell>{id + 1}</TableCell>
                                             <TableCell>
                                                 <img
@@ -610,7 +622,11 @@ export default function General() {
                 )}
 
                 {/*Bitcoin News*/}
-                <Typography color={'textPrimary'} className={'row mt-3'}>
+                <Typography
+                    color={'textPrimary'}
+                    className={'row mt-3'}
+                    component="div"
+                >
                     {/*Top Bitcoin news*/}
                     <section className={'d-flex justify-content-between'}>
                         <h4>Bitcoin News</h4>
@@ -810,7 +826,11 @@ export default function General() {
                 </Typography>
 
                 {/*Trending Coins*/}
-                <Typography color={'textPrimary'} className={'row mt-3'}>
+                <Typography
+                    color={'textPrimary'}
+                    className={'row mt-3'}
+                    component="div"
+                >
                     <section className={'d-flex justify-content-between mt-3'}>
                         <h4>Trending Coins</h4>
                         <div>
@@ -824,7 +844,10 @@ export default function General() {
                         <div className="m-2">
                             <Card style={customOverview.coinsBorder}>
                                 <CardContent>
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        component="div"
+                                    >
                                         <div className="float-md-right">
                                             <span className="float-end">
                                                 Dominance: 4.9%
@@ -858,7 +881,10 @@ export default function General() {
                         <div className="m-2">
                             <Card style={customOverview.coinsBorder}>
                                 <CardContent>
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        component="div"
+                                    >
                                         <div className="float-md-right">
                                             <span className="float-end">
                                                 Dominance: 4.9%
@@ -892,7 +918,10 @@ export default function General() {
                         <div className="m-2">
                             <Card style={customOverview.coinsBorder}>
                                 <CardContent>
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        component="div"
+                                    >
                                         <div className="float-md-right">
                                             <span className="float-end">
                                                 Dominance: 4.9%
@@ -929,7 +958,10 @@ export default function General() {
                         <div className="m-2">
                             <Card style={customOverview.coinsBorder}>
                                 <CardContent>
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        component="div"
+                                    >
                                         <div className="float-md-right">
                                             <span className="float-end">
                                                 Dominance: 4.9%

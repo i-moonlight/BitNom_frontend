@@ -13,34 +13,13 @@ import General from './General';
 import Developer from './Developer';
 import Analysis from './Analysis';
 
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
 export default function Overview() {
     const [value, setValue] = useState('1');
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const custom = {
-        tabStyle: {
-            textTransform: 'capitalize',
-        },
-        buttonStyle: {
-            textTransform: 'capitalize',
-            fontWeight: 'bold',
-            backgroundColor: '#333333',
-            margin: '5px 5px 5px 0',
-            borderRadius: '50px',
-            minWidth: '120px',
-        },
-        coinsBorder: {
-            borderLeft: '5px solid blue',
-            minWidth: '250px',
-        },
-    };
     const classes = useStyles();
 
     return (
@@ -56,7 +35,7 @@ export default function Overview() {
                         className={'m-1'}
                         variant="scrollable"
                         allowScrollButtonsMobile
-                        crollButtons
+                        scrollButtons
                     >
                         <Tab
                             label="General"
@@ -85,24 +64,17 @@ export default function Overview() {
                     </TabList>
                 </div>
 
-                {/*General*/}
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
                     <General />
                 </TabPanel>
-
-                {/*Developers*/}
                 <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
                     <Developer />
                 </TabPanel>
-
-                {/*Widget*/}
                 <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
                     <div>
                         <strong>To be discussed</strong>
                     </div>
                 </TabPanel>
-
-                {/*Analyse*/}
                 <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
                     <Analysis />
                 </TabPanel>
@@ -110,3 +82,27 @@ export default function Overview() {
         </Box>
     );
 }
+
+const useStyles = makeStyles({
+    tabPanelRoot: {
+        padding: '25px 0',
+    },
+});
+
+const custom = {
+    tabStyle: {
+        textTransform: 'capitalize',
+    },
+    buttonStyle: {
+        textTransform: 'capitalize',
+        fontWeight: 'bold',
+        backgroundColor: '#333333',
+        margin: '5px 5px 5px 0',
+        borderRadius: '50px',
+        minWidth: '120px',
+    },
+    coinsBorder: {
+        borderLeft: '5px solid blue',
+        minWidth: '250px',
+    },
+};
