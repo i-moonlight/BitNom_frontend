@@ -33,7 +33,14 @@ export default function AboutCard({ profile, profileView }) {
                     />
                 )}
                 {!showForm && (
-                    <Typography variant="body2" className="mt-2">
+                    <Typography
+                        style={{
+                            overflowWrap: 'break-word',
+                            wordWrap: 'break-word',
+                        }}
+                        variant="body2"
+                        className="mt-2"
+                    >
                         {profile?.bio}
                     </Typography>
                 )}

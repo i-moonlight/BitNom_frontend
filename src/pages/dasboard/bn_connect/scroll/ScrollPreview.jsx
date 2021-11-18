@@ -82,7 +82,11 @@ export default function ScrollPreview({ scroll }) {
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
                         ></Typography>
                         <br />
                         <Grid container style={{ margin: '3px 0px' }}>

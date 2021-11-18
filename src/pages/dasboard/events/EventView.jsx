@@ -902,6 +902,10 @@ export default function EventView() {
                                                             }
                                                             style={{
                                                                 zIndex: 2,
+                                                                overflowWrap:
+                                                                    'break-word',
+                                                                wordWrap:
+                                                                    'break-word',
                                                             }}
                                                             dangerouslySetInnerHTML={{
                                                                 __html: contentBodyFactory(

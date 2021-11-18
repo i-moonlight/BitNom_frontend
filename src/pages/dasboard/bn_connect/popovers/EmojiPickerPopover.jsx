@@ -1,4 +1,4 @@
-import { Popover } from '@mui/material';
+import { Popover, useTheme } from '@mui/material';
 import { Picker } from 'emoji-mart/dist-modern/index.js';
 import 'emoji-mart/css/emoji-mart.css';
 
@@ -9,6 +9,7 @@ function EmojiPickerPopover({
     isEmojiPickerOpen,
     handleEmojiPickerClose,
 }) {
+    const theme = useTheme();
     return (
         <Popover
             anchorEl={emojiPickerAnchorEl}
@@ -28,7 +29,8 @@ function EmojiPickerPopover({
                 emojiTooltip={false}
                 showPreview={false}
                 sheetSize={32}
-                set={'apple'}
+                theme={theme.palette.mode === 'dark' ? 'dark' : 'light'}
+                set="apple"
             />
         </Popover>
     );

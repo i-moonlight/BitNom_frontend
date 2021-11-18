@@ -588,7 +588,11 @@ function PostView() {
                                                         postData?.Posts?.getById
                                                     ),
                                                 }}
-                                                style={{ zIndex: 2 }}
+                                                style={{
+                                                    zIndex: 2,
+                                                    overflowWrap: 'break-word',
+                                                    wordWrap: 'break-word',
+                                                }}
                                             ></Typography>
                                         </Typography>
                                         <Grid

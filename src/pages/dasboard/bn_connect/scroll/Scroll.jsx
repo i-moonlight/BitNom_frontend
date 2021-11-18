@@ -359,7 +359,11 @@ export default function Scroll({
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
                         ></span>
                     </Typography>
                     <Grid

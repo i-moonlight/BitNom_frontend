@@ -271,7 +271,17 @@ function ListItemComponent({ item, getFollowStatus }) {
                         </Typography>
                     </div>
                 }
-                secondary={item?.userId?.bio}
+                secondary={
+                    <Typography
+                        style={{
+                            overflowWrap: 'break-word',
+                            wordWrap: 'break-word',
+                        }}
+                        variant="body2"
+                    >
+                        {item?.userId?.bio}
+                    </Typography>
+                }
             />
             <ListItemIcon
                 aria-label="show more"
