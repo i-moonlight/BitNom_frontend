@@ -1,9 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/15/21
- * Time: 11:24 PM
- */
 import React from 'react';
 import { Button, Chip } from '@mui/material';
 import { useStyles } from './styles';
@@ -12,6 +6,7 @@ export const GeneralButtons = (props) => {
     const btnColor = useStyles();
     const clickButtonHandler = () => {
         props.setActiveButton(props.id);
+        props.setActiveCoinFeature(props.name);
     };
     return (
         <Button
@@ -21,6 +16,7 @@ export const GeneralButtons = (props) => {
             }`}
             size={'small'}
             value={props.value}
+            name={props.name}
             onClick={clickButtonHandler}
         >
             {props.value}
@@ -51,15 +47,15 @@ export const GeneralChips = (props) => {
 
 export const buttonData = [
     {
-        name: 'Price',
+        name: 'price',
         value: 'Price',
     },
     {
-        name: 'Market Cap',
+        name: 'market_cap',
         value: 'Market Cap',
     },
     {
-        name: 'Trading views',
+        name: 'trading_views',
         value: 'Trading views',
     },
 ];

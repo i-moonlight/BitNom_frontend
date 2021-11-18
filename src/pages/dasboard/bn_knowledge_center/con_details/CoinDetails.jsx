@@ -31,8 +31,8 @@ import ProjectInfo from './partials/ProjectInfo';
 
 export default function CoinDetails({ match }) {
     const [value, setValue] = useState('1');
-    const [coinDetail, getCoinDetail] = useState([]);
-    const [coinLoaded, coinStatus] = useState(false);
+    const [coinDetail, setCoinDetail] = useState({});
+    const [coinLoaded, setCoinLoaded] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -46,14 +46,15 @@ export default function CoinDetails({ match }) {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                getCoinDetail(data);
-                coinStatus(true);
+                console.log(data);
+                setCoinDetail(data);
+                setCoinLoaded(true);
             })
             .catch((err) => {
                 console.log(err);
-                coinStatus(false);
+                setCoinLoaded(false);
             });
-    }, [match]);
+    }, [match.params.id]);
 
     return (
         <Screen>
@@ -69,7 +70,7 @@ export default function CoinDetails({ match }) {
                         >
                             CryptoCurrencies
                         </Link>
-                        <Typography>{coinDetail.name}</Typography>
+                        <Typography>{coinDetail?.name}</Typography>
                     </Breadcrumbs>
 
                     {/*Coin Details*/}
@@ -83,23 +84,20 @@ export default function CoinDetails({ match }) {
                             >
                                 <div>
                                     <div>
-                                        <img
-                                            alt={'Bitcoin image'}
-                                            src={coinDetail.image.small}
-                                        />
+                                        <img alt={'Bitcoin image'} />
                                     </div>
                                     <div>
                                         <p>
                                             <span className={'text-secondary'}>
-                                                {coinDetail.name}{' '}
+                                                {coinDetail?.name}{' '}
                                                 <span
                                                     className={'text-uppercase'}
                                                 >
-                                                    ({coinDetail.symbol})
+                                                    ({coinDetail?.symbol})
                                                 </span>
                                             </span>
                                             <a style={custom.greenBg}>
-                                                #{coinDetail.coingecko_rank}
+                                                #{coinDetail?.coingecko_rank}
                                             </a>{' '}
                                             <Star />
                                         </p>
@@ -405,7 +403,7 @@ export default function CoinDetails({ match }) {
                                 value="1"
                                 classes={{ root: classes.tabPanelRoot }}
                             >
-                                <Overview />
+                                <Overview coinDetail={coinDetail} />
                             </TabPanel>
                             <TabPanel
                                 value="2"

@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/13/21
- * Time: 9:51 AM
- */
-
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -13,7 +6,7 @@ import General from './General';
 import Developer from './Developer';
 import Analysis from './Analysis';
 
-export default function Overview() {
+export default function Overview({ coinDetail }) {
     const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
@@ -65,7 +58,7 @@ export default function Overview() {
                 </div>
 
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                    <General />
+                    {/* <General coinDetail={coinDetail} /> */}
                 </TabPanel>
                 <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
                     <Developer />

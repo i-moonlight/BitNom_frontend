@@ -20,6 +20,22 @@ The following are best practices that developers on this repo should adhere to s
 -   Always use `formik` and `yup` for forms and validation
 -   Organize imports regularly `Shift + Alt + O` on Visual Studio Code
 -   Always clean out `console.log()` and `console.warn()` after debugging
+-   use standard naming convention for `useState`. The first element is the value and the second is the setValue:
+    -   [ ] Correction: `bn_chat` subfolders and files
+
+```javascript
+// use
+const [state, setState] = useState();
+const [userPosts, setUserPosts] = useState();
+const [books, setBooks] = useState();
+const [loaded, setLoaded] = useState();
+// you get the idea
+
+// do not use
+const [varName, diferentUnrelatedVarname] = useState();
+const [data, getData] = useState();
+```
+
 -   Always make sure your **_console_** is clean before submitting a merge request especially if they're **_fixable errors_**. In case of sturbon errors and warning, **seek help**. The only exceptions are these known errors:
 
 ```
