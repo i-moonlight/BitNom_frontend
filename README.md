@@ -21,7 +21,7 @@ The following are best practices that developers on this repo should adhere to s
 -   Organize imports regularly `Shift + Alt + O` on Visual Studio Code
 -   Always clean out `console.log()` and `console.warn()` after debugging
 -   use standard naming convention for `useState`. The first element is the value and the second is the setValue:
-    -   [ ] Correction: `bn_chat` subfolders and files
+    -   [ ] Correction: `bn_knowledge_center` subfolders and files
 
 ```javascript
 // use
@@ -67,6 +67,7 @@ Please update the following components: SideEffect(NullComponent)
 import { makeStyles } from '@mui/material';
 import React from 'react';
 
+// do not place styles and constants here
 export default function Component() {
     const classes = useStyles();
 
