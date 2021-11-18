@@ -36,7 +36,8 @@ export default function General({ coinDetail }) {
     const [rowLoaded, setRowLoaded] = useState(false);
     const [error, setError] = useState(false);
     const [activeButton, setActiveButton] = useState(0);
-    const [coinFeature, setActiveCoinFeature] = useState('price');
+    // const [coinFeature, setActiveCoinFeature] = useState('price');
+    const [, setActiveCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
 
     useEffect(() => {

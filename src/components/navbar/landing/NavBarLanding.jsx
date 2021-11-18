@@ -56,7 +56,7 @@ export default function NavBarLanding() {
                 <div className="space-between my-3">
                     <div
                         className="center-horizontal c-pointer"
-                        onClick={() => history.push('/connect')}
+                        onClick={() => history.push('/')}
                     >
                         {!xsDown && (
                             <div>
@@ -92,6 +92,9 @@ export default function NavBarLanding() {
                         <>
                             <div className="center-horizontal">
                                 <Button
+                                    onClick={() => {
+                                        history.push('/');
+                                    }}
                                     className="mx-2"
                                     color={theme.palette.text.primary}
                                     variant="text"

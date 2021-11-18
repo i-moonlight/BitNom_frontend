@@ -2,11 +2,12 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import General from './General';
+// import General from './General';
 import Developer from './Developer';
 import Analysis from './Analysis';
 
-export default function Overview({ coinDetail }) {
+// export default function Overview({ coinDetail }) {
+export default function Overview() {
     const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
