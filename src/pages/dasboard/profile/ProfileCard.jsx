@@ -230,7 +230,8 @@ export default function ProfileCard({ profile, profileView }) {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     cursor: 'pointer',
-                                    border: 'dotted 1px #000',
+                                    border:
+                                        !profilePreviewURL && 'dotted 1px #000',
                                 }}
                                 onClick={() => {
                                     document

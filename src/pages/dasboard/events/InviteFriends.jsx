@@ -107,8 +107,8 @@ export default function InviteFriends({
                                 getOptionLabel={(option) =>
                                     option?.userId?.displayName
                                 }
-                                renderOption={(option, { selected }) => (
-                                    <>
+                                renderOption={(props, option, { selected }) => (
+                                    <div {...props}>
                                         <Checkbox
                                             icon={icon}
                                             checkedIcon={checkedIcon}
@@ -116,7 +116,7 @@ export default function InviteFriends({
                                             checked={selected}
                                         />
                                         {option?.userId?.displayName}
-                                    </>
+                                    </div>
                                 )}
                                 style={{ width: '100%' }}
                                 renderInput={(params) => (
