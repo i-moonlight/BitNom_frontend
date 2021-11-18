@@ -34,7 +34,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
             >
                 <Typography
                     variant="body1"
-                    component="p"
+                    component="div"
                     style={{ marginLeft: '16px' }}
                 >
                     <Link to={`/profile`} style={{ textDecoration: 'none' }}>
@@ -79,7 +79,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     >
                         <Typography
                             variant="body2"
-                            component="article"
+                            component="div"
                             style={{
                                 marginLeft: '8px',
                                 marginTop: '8px',
@@ -88,7 +88,6 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                         >
                             <ReactMarkdown
                                 components={{ code: Code, Link: LinkTag }}
-                                escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
                                     ? message?.responseTo?.text.substring(
@@ -160,15 +159,12 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                 <Typography
                     className={classes.message}
                     variant="body2"
-                    component="article"
+                    component="div"
                     style={{
                         marginTop: '4px',
                     }}
                 >
-                    <ReactMarkdown
-                        components={{ code: Code, Link: LinkTag }}
-                        escapeHtml={false}
-                    >
+                    <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message.text}
                     </ReactMarkdown>
                 </Typography>

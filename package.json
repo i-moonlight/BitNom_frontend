@@ -91,6 +91,7 @@
         ]
     },
     "devDependencies": {
+        "eslint-plugin-graphql": "^4.0.0",
         "eslint-plugin-react": "^7.26.1",
         "eslint-plugin-react-hooks": "^4.2.1-alpha-5cccacd13-20211101",
         "prettier": "^2.4.1",

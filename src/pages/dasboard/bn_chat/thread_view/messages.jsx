@@ -138,9 +138,9 @@ export default function Messages({ onExitChatMobile }) {
                                     dense
                                 >
                                     {' '}
-                                    {messagePins?.map((message) => (
+                                    {messagePins?.map((message, id) => (
                                         <PinnedMessages
-                                            key={message?._id}
+                                            key={id}
                                             message={message}
                                         />
                                     ))}{' '}

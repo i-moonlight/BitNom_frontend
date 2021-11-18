@@ -1,5 +1,4 @@
 export const loadScrolls = (scrolls) => {
-    console.log('scrolls => ', scrolls);
     return (dispatch) => {
         scrolls && dispatch({ type: 'LOAD_SCROLLS', scrolls });
     };

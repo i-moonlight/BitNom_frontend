@@ -99,7 +99,7 @@ export default function InviteFriends({
                             <Autocomplete
                                 multiple
                                 id="invite-friends-to-event"
-                                options={profile?.followers}
+                                options={profile?.followers || []}
                                 disableCloseOnSelect
                                 onChange={(event, value) => {
                                     setSelectedFriends(value);
