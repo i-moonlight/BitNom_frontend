@@ -146,11 +146,12 @@ export default function ProjectSection() {
                             >
                                 Share your vision instantly
                             </Typography>
-                            <ButtonBase>
+                            <ButtonBase
+                                onClick={() => {
+                                    history.push('/connect');
+                                }}
+                            >
                                 <LazyImage
-                                    onClick={() => {
-                                        history.push('/connect');
-                                    }}
                                     style={{
                                         width: '80%',
                                         marginTop: 16,

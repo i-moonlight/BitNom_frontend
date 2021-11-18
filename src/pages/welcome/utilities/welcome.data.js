@@ -304,8 +304,11 @@ export const footerLinks = [
     [
         { title: true, text: 'COMPANY' },
         { link: '/', text: 'Home' },
-        { link: '/#', text: 'About Us' },
-        { link: '/#', text: 'White Paper' },
+        { link: '/investors', text: 'About Us' },
+        {
+            href: `${window.location.origin}/assets/BitNorm Whitepaper.pdf`,
+            text: 'White Paper',
+        },
         // { link: '', text: 'Brand Guidelines' },
         { link: '/roadmap', text: 'RoadMap' },
         // { link: '', text: 'Blogs' },
@@ -316,7 +319,7 @@ export const footerLinks = [
         // { link: '/', text: 'Developers' },
         // { link: '/', text: 'Documentation' },
         // { link: '/', text: 'Partner' },
-        { link: '/#', text: 'Career' },
+        // { link: '/#', text: 'Career' },
         { link: '/investors', text: 'Investor Page' },
     ],
     [
@@ -345,13 +348,16 @@ export const footerLinks = [
             link: '/redirect?link=mailto:contact@bitnorm.com',
             text: 'contact@bitnorm.com',
         },
-        // {
-        //   link: '/redirect?link=mailto:hello@bitnorm.com',
-        //   text: 'hello@bitnorm.com',
-        // },
+        {
+            link: '/support',
+            text: 'Support',
+        },
         { title: true, text: 'EXPLORE' },
-        { link: '/#', text: 'BN Token' },
-        { link: '/faqs', text: 'How to buy BN Token' },
+        {
+            link: 'https://etherscan.io/token/0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013',
+            text: 'BN Token',
+        },
+        // { link: '/faqs', text: 'How to buy BN Token' },
     ],
 ];
 

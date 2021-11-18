@@ -75,12 +75,23 @@ export default function Footer() {
                                                 gutterBottom
                                                 // color='textPrimary'
                                             >
-                                                <Link
-                                                    to={link?.link}
-                                                    className="alt"
-                                                >
-                                                    {link?.text}
-                                                </Link>
+                                                {link.href ? (
+                                                    <a
+                                                        style={{
+                                                            color: '#fff',
+                                                        }}
+                                                        href={link.href}
+                                                    >
+                                                        {link?.text}
+                                                    </a>
+                                                ) : (
+                                                    <Link
+                                                        to={link?.link}
+                                                        className="alt"
+                                                    >
+                                                        {link?.text}
+                                                    </Link>
+                                                )}
                                             </Typography>
                                         )}
                                     </div>
