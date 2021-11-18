@@ -1251,6 +1251,7 @@ function PostView() {
                 setOpenImage={setOpenImage}
                 openVideo={openVideo}
                 setOpenVideo={setOpenVideo}
+                postView
             />
             <UpdateComment
                 profileData={profileData?.Users?.profile}

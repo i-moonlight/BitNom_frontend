@@ -45,6 +45,7 @@ import {
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import { useHistory } from 'react-router';
 
 const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({
@@ -59,6 +60,7 @@ export default function UpdatePost({
     videoDisabled,
     setOpenVideo,
     setVideoDisabled,
+    postView,
 }) {
     const [updatePostErr, setUpdatePostErr] = useState(null);
     const [fileType, setFileType] = useState(null);
@@ -74,6 +76,7 @@ export default function UpdatePost({
 
     const state = useSelector((st) => st);
     const user = state.auth.user;
+    const history = useHistory();
 
     const [updatePost, { loading }] = useMutation(MUTATION_UPDATE_POST);
 
@@ -107,6 +110,7 @@ export default function UpdatePost({
         setFileType(null);
         setOpenVideo(false);
         setPostToEdit(null);
+        if (postView) history.push('/connect');
     };
 
     const onUpdatePost = async (IUpdatePost) => {
