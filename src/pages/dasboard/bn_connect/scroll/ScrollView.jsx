@@ -588,7 +588,11 @@ function PostView() {
                                                         postData?.Posts?.getById
                                                     ),
                                                 }}
-                                                style={{ zIndex: 2 }}
+                                                style={{
+                                                    zIndex: 2,
+                                                    overflowWrap: 'break-word',
+                                                    wordWrap: 'break-word',
+                                                }}
                                             ></Typography>
                                         </Typography>
                                         <Grid
@@ -615,7 +619,7 @@ function PostView() {
                                                         <Grid
                                                             style={{
                                                                 zIndex: 2,
-                                                                padding: '1px',
+                                                                padding: '2px',
                                                             }}
                                                             key={imageURL}
                                                             item
@@ -1247,6 +1251,7 @@ function PostView() {
                 setOpenImage={setOpenImage}
                 openVideo={openVideo}
                 setOpenVideo={setOpenVideo}
+                postView
             />
             <UpdateComment
                 profileData={profileData?.Users?.profile}
@@ -1269,6 +1274,8 @@ function PostView() {
             />
             <ImageModal
                 open={imageModalOpen}
+                setImagePreviewURL={setImagePreviewURL}
+                setImagePreviewOpen={setImagePreviewOpen}
                 setImageIndex={setImageIndex}
                 imageIndex={imageIndex}
                 post={postToPreview}

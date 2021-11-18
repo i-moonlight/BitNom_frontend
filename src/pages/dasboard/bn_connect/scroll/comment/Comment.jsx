@@ -371,7 +371,11 @@ export default function Comment({
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(comment),
                                     }}
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        overflowWrap: 'break-word',
+                                        wordWrap: 'break-word',
+                                    }}
                                 ></span>
 
                                 {comment?.image.length > 0 && (

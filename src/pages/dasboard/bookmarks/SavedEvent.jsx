@@ -144,17 +144,19 @@ function SavedEvent({ event }) {
                     </Typography>
                 </div>
             </div>
-            <IconButton
-                aria-label="show more"
-                aria-controls={savedItemOptionId}
-                aria-haspopup="true"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    handleSavedItemOptionOpen(e);
-                }}
-            >
-                <MoreHorizRounded />
-            </IconButton>
+            <div>
+                <IconButton
+                    aria-label="show more"
+                    aria-controls={savedItemOptionId}
+                    aria-haspopup="true"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleSavedItemOptionOpen(e);
+                    }}
+                >
+                    <MoreHorizRounded />
+                </IconButton>
+            </div>
             <SavedItemsOptionPopover
                 savedItem={event}
                 itemType="event"

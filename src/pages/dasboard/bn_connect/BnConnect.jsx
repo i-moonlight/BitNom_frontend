@@ -18,6 +18,7 @@ import UpdateComment from './scroll/comment/UpdateComment';
 import CreatePostModal from './scroll/CreatePost';
 import UpdatePostModal from './scroll/UpdatePost';
 import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
+import SkeletonScrollCard from './skeleton/SkeletonScrollCard';
 import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
@@ -199,7 +200,7 @@ export default function BnConnect() {
                             {posts?.map((scroll) => (
                                 <Suspense
                                     key={scroll?._id}
-                                    fallback={<SkeletonCreateScrollCard />}
+                                    fallback={<SkeletonScrollCard />}
                                 >
                                     <Scroll
                                         setOpen={() =>
@@ -325,6 +326,12 @@ export default function BnConnect() {
             {postToPreview && (
                 <ImageModal
                     open={imageModalOpen}
+                    setImagePreviewURL={(url) => {
+                        setImagePreviewURL(url);
+                    }}
+                    setImagePreviewOpen={(open) => {
+                        setImagePreviewOpen(open);
+                    }}
                     setImageIndex={setImageIndex}
                     imageIndex={imageIndex}
                     post={postToPreview}

@@ -106,7 +106,7 @@ export default function UpdateEvent({
 
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
-    const [eventImage, setEventImage] = useState(null);
+    const [eventImage, setEventImage] = useState(undefined);
     const [eventStartDate, setEventStartDate] = useState('');
     const [eventEndDate, setEventEndDate] = useState('');
     const [eventTitle, setEventTitle] = useState('');
@@ -205,7 +205,7 @@ export default function UpdateEvent({
 
         setEventLink('');
         setPreviewURL();
-        setEventImage(null);
+        setEventImage(undefined);
         setEventTitle('');
         setEventDescription('');
         setDescriptionErr(false);
@@ -380,7 +380,7 @@ export default function UpdateEvent({
         });
         setDateErr(false);
         setEventLink('');
-        setEventImage(null);
+        setEventImage(undefined);
         setEventTitle('');
         setEventDescription('');
         setDescriptionErr(false);
@@ -430,7 +430,7 @@ export default function UpdateEvent({
                                 onClick={() => {
                                     setOpenUpdate(!openUpdate);
                                     setEventLink('');
-                                    setEventImage(null);
+                                    setEventImage(undefined);
                                     setEventTitle('');
                                     setEventDescription('');
                                     setDescriptionErr(false);

@@ -27,10 +27,11 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
+import { toast } from 'react-toastify';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
+
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
@@ -83,6 +84,12 @@ const useStyles = makeStyles((theme) => ({
             padding: '0px 30px 0px 20px',
         },
     },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
     red: {
         color: red[500],
     },
@@ -119,7 +126,6 @@ export default function ScrollImage({
     const [openComments, setOpenComments] = useState(false);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
-    const [fileErrors, setFileErrors] = useState([]);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
@@ -175,7 +181,6 @@ export default function ScrollImage({
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
-        setFileErrors([]);
         setPreviewURL();
     };
 
@@ -185,6 +190,41 @@ export default function ScrollImage({
             display: item?.userId?.displayName,
         };
     });
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
 
     const handleCreateComment = (e) => {
         e.preventDefault();
@@ -455,7 +495,11 @@ export default function ScrollImage({
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(scroll),
                                     }}
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        overflowWrap: 'break-word',
+                                        wordWrap: 'break-word',
+                                    }}
                                 ></Typography>
                             </Typography>
 
@@ -619,7 +663,7 @@ export default function ScrollImage({
                         )}
                     </CardActionArea>
                     {openComments && (
-                        <div style={{ padding: '3px' }}>
+                        <div className={classes.commentSection}>
                             <div className="d-flex align-items-center">
                                 <Hidden smDown>
                                     <Avatar
@@ -698,9 +742,9 @@ export default function ScrollImage({
                                     size="small"
                                     onClick={() => {
                                         document
-                                            .getElementsByClassName(
-                                                'comment-dropzone'
-                                            )[0]
+                                            .getElementById(
+                                                'scrollimage-comment-image'
+                                            )
                                             .click();
                                     }}
                                 >
@@ -721,82 +765,29 @@ export default function ScrollImage({
                             </div>
                             <Card
                                 style={{
-                                    display: previewURL ? 'block' : 'none',
+                                    display: !previewURL && 'none',
                                     height: 300,
                                     borderRadius: 8,
-                                    width: '100%',
                                     backgroundImage:
                                         previewURL && 'url(' + previewURL + ')',
                                     backgroundSize: 'cover',
+                                    marginBottom: '5px',
                                 }}
                             >
                                 <div className="space-between">
                                     <div>
                                         <div style={{ display: 'none' }}>
-                                            <DropzoneArea
-                                                clearOnUnmount
-                                                dropzoneClass="comment-dropzone"
-                                                clickable={true}
-                                                onChange={(files) => {
-                                                    const errors = [];
-                                                    let counter = 0;
-                                                    files.map((file) => {
-                                                        const image =
-                                                            new Image();
-                                                        image.addEventListener(
-                                                            'load',
-                                                            () => {
-                                                                // only select images within width/height/size limits
-                                                                if (
-                                                                    (image.width <
-                                                                        1200) &
-                                                                    (image.height <
-                                                                        1350) &
-                                                                    (file.size <
-                                                                        2500000)
-                                                                ) {
-                                                                    counter += 1;
-                                                                    setFileErrors(
-                                                                        []
-                                                                    );
-                                                                } else {
-                                                                    errors.push(
-                                                                        'Image is too large. Trim to 1200px by 1350px or less.'
-                                                                    );
-                                                                    setFileErrors(
-                                                                        errors
-                                                                    );
-                                                                }
-                                                                if (
-                                                                    counter ===
-                                                                    1
-                                                                ) {
-                                                                    setPreviewURL(
-                                                                        URL.createObjectURL(
-                                                                            file
-                                                                        )
-                                                                    );
-                                                                    setCommentImage(
-                                                                        file
-                                                                    );
-                                                                }
-                                                            }
-                                                        );
-                                                        image.src =
-                                                            URL.createObjectURL(
-                                                                file
-                                                            );
-                                                    });
+                                            <input
+                                                id="scrollimage-comment-image"
+                                                type="file"
+                                                onChange={(e) => {
+                                                    handleSelectImage(
+                                                        Array.from(
+                                                            e.target.files
+                                                        )
+                                                    );
                                                 }}
-                                                acceptedFiles={[
-                                                    'image/jpeg',
-                                                    'image/png',
-                                                ]}
-                                                maxFileSize={2500000}
-                                                filesLimit={1}
-                                                showPreviewsInDropzone
-                                                showPreviews={false}
-                                                showFileNames={false}
+                                                accept="image/jpeg, image/png"
                                             />
                                         </div>
                                     </div>
@@ -808,19 +799,13 @@ export default function ScrollImage({
                                         <CloseRounded
                                             onClick={() => {
                                                 setPreviewURL();
-                                                setFileErrors([]);
+
                                                 setCommentImage(null);
                                             }}
                                         />
                                     </IconButton>
                                 </div>
                             </Card>
-
-                            <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {fileErrors.length > 0 && fileErrors[0]}
-                                </Typography>
-                            </div>
                             {commentsData &&
                                 commentsData?.Comments?.get
                                     .filter((comment) => !comment.response_to)

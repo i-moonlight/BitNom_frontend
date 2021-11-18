@@ -171,12 +171,18 @@ export default function ProfileCard({ profile, profileView }) {
                         height: 120,
                         backgroundColor: 'transparent',
                         width: '100%',
-                        cursor: 'pointer',
+                        cursor: !profileView && 'pointer',
                         position: 'absolute',
                     }}
-                    onClick={() => {
-                        document.getElementById('cover-image').click();
-                    }}
+                    onClick={
+                        !profileView
+                            ? () => {
+                                  document
+                                      .getElementById('cover-image')
+                                      .click();
+                              }
+                            : undefined
+                    }
                 ></div>
                 <div
                     style={{
@@ -191,7 +197,19 @@ export default function ProfileCard({ profile, profileView }) {
                         justifyContent: 'center',
                     }}
                 >
-                    <CameraAltRounded />
+                    {!profileView && (
+                        <CameraAltRounded
+                            onClick={
+                                !profileView
+                                    ? () => {
+                                          document
+                                              .getElementById('cover-image')
+                                              .click();
+                                      }
+                                    : undefined
+                            }
+                        />
+                    )}
                     <div style={{ display: 'none' }}>
                         <input
                             id="cover-image"
@@ -229,16 +247,37 @@ export default function ProfileCard({ profile, profileView }) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    cursor: 'pointer',
-                                    border: 'dotted 1px #000',
+                                    cursor: !profileView && 'pointer',
+                                    border:
+                                        !profilePreviewURL && 'dotted 1px #000',
                                 }}
-                                onClick={() => {
-                                    document
-                                        .getElementById('profile-image')
-                                        .click();
-                                }}
+                                onClick={
+                                    !profileView
+                                        ? () => {
+                                              document
+                                                  .getElementById(
+                                                      'profile-image'
+                                                  )
+                                                  .click();
+                                          }
+                                        : undefined
+                                }
                             >
-                                <CameraAltRounded />
+                                {!profileView && (
+                                    <CameraAltRounded
+                                        onClick={
+                                            !profileView
+                                                ? () => {
+                                                      document
+                                                          .getElementById(
+                                                              'profile-image'
+                                                          )
+                                                          .click();
+                                                  }
+                                                : undefined
+                                        }
+                                    />
+                                )}
                                 <div style={{ display: 'none' }}>
                                     <input
                                         id="profile-image"
