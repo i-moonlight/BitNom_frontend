@@ -211,7 +211,7 @@ export const roadMap = [
             },
             {
                 name: 'Q2',
-                state: 'ongoing',
+                state: 'completed',
                 text: null,
                 list: [
                     'Listing of BN on major exchanges',
@@ -221,7 +221,7 @@ export const roadMap = [
             },
             {
                 name: 'Q3',
-                state: 'upcoming',
+                state: 'ongoing',
                 text: null,
                 list: [
                     'BNConnect feature release marketing',
@@ -304,8 +304,11 @@ export const footerLinks = [
     [
         { title: true, text: 'COMPANY' },
         { link: '/', text: 'Home' },
-        { link: '/#', text: 'About Us' },
-        { link: '/#', text: 'White Paper' },
+        { link: '/investors', text: 'About Us' },
+        {
+            href: `${window.location.origin}/assets/BitNorm Whitepaper.pdf`,
+            text: 'White Paper',
+        },
         // { link: '', text: 'Brand Guidelines' },
         { link: '/roadmap', text: 'RoadMap' },
         // { link: '', text: 'Blogs' },
@@ -316,7 +319,7 @@ export const footerLinks = [
         // { link: '/', text: 'Developers' },
         // { link: '/', text: 'Documentation' },
         // { link: '/', text: 'Partner' },
-        { link: '/#', text: 'Career' },
+        // { link: '/#', text: 'Career' },
         { link: '/investors', text: 'Investor Page' },
     ],
     [
@@ -345,13 +348,16 @@ export const footerLinks = [
             link: '/redirect?link=mailto:contact@bitnorm.com',
             text: 'contact@bitnorm.com',
         },
-        // {
-        //   link: '/redirect?link=mailto:hello@bitnorm.com',
-        //   text: 'hello@bitnorm.com',
-        // },
+        {
+            link: '/support',
+            text: 'Support',
+        },
         { title: true, text: 'EXPLORE' },
-        { link: '/#', text: 'BN Token' },
-        { link: '/faqs', text: 'How to buy BN Token' },
+        {
+            link: 'https://etherscan.io/token/0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013',
+            text: 'BN Token',
+        },
+        // { link: '/faqs', text: 'How to buy BN Token' },
     ],
 ];
 
@@ -408,7 +414,10 @@ export const team = [
         name: 'Samuel Mwangi',
         role: 'Team Lead',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/samuel-mwangi-74428b19a/',
+            email: 'crystalflow.mwangi@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -416,7 +425,10 @@ export const team = [
         name: 'Lawrence Maluki',
         role: 'Product Designer',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/lawrence-maluki/',
+            email: 'Lawmaluki@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -424,7 +436,7 @@ export const team = [
         name: 'Loise Njeri',
         role: 'Product Manager',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: { linkedIn: '', email: 'loisenjerigacoki@gmail.com' },
         desc: '',
         image: '',
     },
@@ -432,7 +444,10 @@ export const team = [
         name: 'Mark Aloo',
         role: 'Frontend Lead',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/thecodeinfluencer/',
+            email: 'mbenjerminne@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -440,7 +455,10 @@ export const team = [
         name: 'Jack Mkimbo',
         role: 'Backend Lead',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/jackmkimbo/',
+            email: 'jackmkimbo@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -448,7 +466,10 @@ export const team = [
         name: 'Nic Mtungu',
         role: 'UI/UX Designer',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://dribbble.com/nicmutungu',
+            email: 'https://dribbble.com/nicmutungu',
+        },
         desc: '',
         image: '',
     },
@@ -456,7 +477,10 @@ export const team = [
         name: 'Mark Mburu',
         role: 'Developer',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/markmburu/',
+            email: 'markmburu685@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -464,7 +488,10 @@ export const team = [
         name: 'Victor Kiprotich',
         role: 'Backend Developer',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: {
+            linkedIn: 'https://www.linkedin.com/in/victor-kiprotich-4349291a5/',
+            email: 'vkosgei001@gmail.com',
+        },
         desc: '',
         image: '',
     },
@@ -472,7 +499,7 @@ export const team = [
         name: 'Evans Kiptoo',
         role: 'Developer',
         category: 'dev',
-        socials: { linkedIn: '', email: '' },
+        socials: { linkedIn: '', email: 'evantoo56@gmail.com' },
         desc: '',
         image: '',
     },

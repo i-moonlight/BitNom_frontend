@@ -5,8 +5,8 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import App from './App';
-import reportWebVitals from './pwa/reportWebVitals';
-import * as serviceWorkerRegistration from './pwa/serviceWorkerRegistration';
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import rootReducer from './store/reducers/rootReducer';
 
 const storeName = '5637759616334';

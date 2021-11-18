@@ -8,7 +8,6 @@ import {
     Paper,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import MenuItems from '../MenuItems';
 
 export default function MobileMenuModal({ isMenuOpen, handleMenuClose }) {

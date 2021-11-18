@@ -26,8 +26,8 @@ import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
@@ -177,6 +177,7 @@ export default function Comment({
         });
         setUserReaction(reaction);
     };
+
     const handleRemoveReaction = () => {
         removeReaction({
             variables: {
@@ -193,6 +194,41 @@ export default function Comment({
             ],
         });
         setUserReaction();
+    };
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
     };
 
     const handleCreateReply = (e) => {
@@ -292,7 +328,7 @@ export default function Comment({
                         <CardContent>
                             <div className="center-horizontal space-between w-100">
                                 <Typography variant="body2" display="inline">
-                                    <Typography
+                                    <span
                                         variant="body2"
                                         component="a"
                                         onClick={(e) => {
@@ -303,22 +339,16 @@ export default function Comment({
                                         }}
                                     >
                                         {comment?.author?.displayName}
-                                    </Typography>
-                                    <Typography
-                                        display="inline"
-                                        variant="body2"
-                                    >
+                                    </span>
+                                    <span display="inline" variant="body2">
                                         . @{comment?.author?._id}
-                                    </Typography>
-                                    <Typography
-                                        display="inline"
-                                        variant="body2"
-                                    >
+                                    </span>
+                                    <span display="inline" variant="body2">
                                         .{' '}
                                         {moment(
                                             comment.creation_date
                                         ).fromNow()}
-                                    </Typography>
+                                    </span>
                                 </Typography>
                                 <IconButton
                                     size="small"
@@ -335,14 +365,14 @@ export default function Comment({
                                 color="textSecondary"
                                 component="p"
                             >
-                                <Typography
+                                <span
                                     variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(comment),
                                     }}
                                     style={{ zIndex: 2 }}
-                                ></Typography>
+                                ></span>
 
                                 {comment?.image.length > 0 && (
                                     <Grid container spacing={2}>
@@ -540,7 +570,7 @@ export default function Comment({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellCheck="false"
+                                        // spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {
@@ -598,9 +628,7 @@ export default function Comment({
                                     size="small"
                                     onClick={() => {
                                         document
-                                            .getElementsByClassName(
-                                                'reply-dropzone'
-                                            )[0]
+                                            .getElementById('reply-image')
                                             .click();
                                     }}
                                 >
@@ -633,71 +661,17 @@ export default function Comment({
                                 <div className="space-between">
                                     <div>
                                         <div style={{ display: 'none' }}>
-                                            <DropzoneArea
-                                                clearOnUnmount
-                                                dropzoneClass="reply-dropzone"
-                                                //id="dropzone"
-                                                clickable={true}
-                                                onChange={(files) => {
-                                                    const errors = [];
-                                                    let counter = 0;
-                                                    files.map((file) => {
-                                                        const image =
-                                                            new Image();
-                                                        image.addEventListener(
-                                                            'load',
-                                                            () => {
-                                                                // only select images within width/height/size limits
-                                                                if (
-                                                                    (image.width <
-                                                                        1200) &
-                                                                    (image.height <
-                                                                        1350) &
-                                                                    (file.size <
-                                                                        2500000)
-                                                                ) {
-                                                                    counter += 1;
-                                                                    setFileErrors(
-                                                                        []
-                                                                    );
-                                                                } else {
-                                                                    errors.push(
-                                                                        'Image is too large. Trim to 1200px by 1200px or less.'
-                                                                    );
-                                                                    setFileErrors(
-                                                                        errors
-                                                                    );
-                                                                }
-                                                                if (
-                                                                    counter ===
-                                                                    1
-                                                                ) {
-                                                                    setPreviewURL(
-                                                                        URL.createObjectURL(
-                                                                            file
-                                                                        )
-                                                                    );
-                                                                    setCommentImage(
-                                                                        file
-                                                                    );
-                                                                }
-                                                            }
-                                                        );
-                                                        image.src =
-                                                            URL.createObjectURL(
-                                                                file
-                                                            );
-                                                    });
+                                            <input
+                                                id="reply-image"
+                                                type="file"
+                                                onChange={(e) => {
+                                                    handleSelectImage(
+                                                        Array.from(
+                                                            e.target.files
+                                                        )
+                                                    );
                                                 }}
-                                                acceptedFiles={[
-                                                    'image/jpeg',
-                                                    '.png',
-                                                ]}
-                                                maxFileSize={2500000}
-                                                filesLimit={1}
-                                                showPreviewsInDropzone
-                                                showPreviews={false}
-                                                showFileNames={false}
+                                                accept="image/jpeg, image/png"
                                             />
                                         </div>
                                     </div>
@@ -705,14 +679,13 @@ export default function Comment({
                                         size="small"
                                         color="primary"
                                         className="m-1 p-1"
+                                        onClick={() => {
+                                            setPreviewURL();
+                                            setFileErrors([]);
+                                            setCommentImage(null);
+                                        }}
                                     >
-                                        <CloseRounded
-                                            onClick={() => {
-                                                setPreviewURL();
-                                                setFileErrors([]);
-                                                setCommentImage(null);
-                                            }}
-                                        />
+                                        <CloseRounded />
                                     </IconButton>
                                 </div>
                             </Card>
@@ -748,7 +721,6 @@ export default function Comment({
                             ))}
                 </div>
             </div>
-
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
                 emojiPickerAnchorEl={emojiPickerAnchorEl}

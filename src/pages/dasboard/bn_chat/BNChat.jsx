@@ -6,23 +6,6 @@ import SideBarHeader from './components/chat_header/sid_bar_header';
 import Chats from './sidebar_menu';
 import Messages from './thread_view/messages';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    devider: {
-        height: '70vh',
-        margin: 4,
-    },
-    sidebar: {
-        width: '33%',
-        borderRight: '1px solid #ddd',
-    },
-    threadView: {
-        width: '67%',
-    },
-}));
-
 export default function BnChat() {
     const [chatMobileOpen, setChatMobileOpen] = useState(false);
 
@@ -33,7 +16,7 @@ export default function BnChat() {
         <Screen>
             <div className={classes.root}>
                 <Container maxWidth="lg">
-                    <Grid container>
+                    <Grid container spacing={2}>
                         {!chatMobileOpen && (
                             <Grid item xs={12} sm={4} md={4}>
                                 <Card
@@ -79,3 +62,20 @@ export default function BnChat() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    devider: {
+        height: '70vh',
+        margin: 4,
+    },
+    sidebar: {
+        width: '33%',
+        borderRight: '1px solid #ddd',
+    },
+    threadView: {
+        width: '67%',
+    },
+}));

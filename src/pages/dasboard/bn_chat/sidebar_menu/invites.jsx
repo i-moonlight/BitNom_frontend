@@ -5,7 +5,6 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
 import ChatItem from './chat';

@@ -59,7 +59,7 @@ export default function CreateScrollCard({
                             setVideoDisabled(true);
                             setTimeout(() => {
                                 document
-                                    .getElementsByClassName('post-dropzone')[0]
+                                    .getElementById('create-post-images')
                                     .click();
                             }, 1000);
                         }}
@@ -88,7 +88,7 @@ export default function CreateScrollCard({
                             setImageDisabled(true);
                             setTimeout(() => {
                                 document
-                                    .getElementsByClassName('post-dropzone')[0]
+                                    .getElementById('create-post-video')
                                     .click();
                             }, 1000);
                         }}

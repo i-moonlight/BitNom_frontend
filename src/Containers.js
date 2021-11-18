@@ -169,6 +169,9 @@ const client = new ApolloClient({
                     Events: {
                         merge: true,
                     },
+                    Dialogue: {
+                        merge: true,
+                    },
                 },
             },
         },

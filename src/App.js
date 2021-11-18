@@ -3,7 +3,6 @@ import {
     StyledEngineProvider,
     ThemeProvider,
 } from '@mui/material/styles';
-
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
 import './css/bootstrap.css';

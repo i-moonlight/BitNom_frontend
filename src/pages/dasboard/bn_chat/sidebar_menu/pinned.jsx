@@ -1,3 +1,4 @@
+import { PushPin } from '@mui/icons-material';
 import {
     CircularProgress,
     Divider,
@@ -6,7 +7,6 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-import { PushPin } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';

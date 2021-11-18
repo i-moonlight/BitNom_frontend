@@ -30,7 +30,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
@@ -54,11 +53,9 @@ export default function UpdatePost({
     postToEdit,
     profileData,
     setPostToEdit,
-    openImage,
     imageDisabled,
     setOpenImage,
     setImageDisabled,
-    openVideo,
     videoDisabled,
     setOpenVideo,
     setVideoDisabled,
@@ -88,12 +85,12 @@ export default function UpdatePost({
                 _id: id,
             },
             refetchQueries: [
-                // {
-                //     query: QUERY_LOAD_SCROLLS,
-                //     variables: {
-                //         data: { ids: getFeed(profileData), limit: 220 },
-                //     },
-                // },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
@@ -185,18 +182,55 @@ export default function UpdatePost({
 
     const handleSelectImages = (files) => {
         if (files.length < 1) return;
+        if (files.length > 4) {
+            return toast.error('You can only upload maximum of 4 images', {
+                position: 'bottom-left',
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        }
         const previews = [];
+        const allowedFiles = [];
         files.forEach((file) => {
-            previews.push(URL.createObjectURL(file));
+            if (file.size > 2500000) {
+                previews.splice(0, previews.length);
+                allowedFiles.splice(0, allowedFiles.length);
+                return toast.error('Each image should be less than 2MB', {
+                    position: 'bottom-left',
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+            } else {
+                previews.push(URL.createObjectURL(file));
+                allowedFiles.push(URL.createObjectURL(file));
+            }
         });
         setImagePreviewURLS(previews);
-        setScrollImages(files);
+        setScrollImages(allowedFiles);
     };
 
-    const handleSelectVideo = (file) => {
-        if (!file) return;
-        setVideoPreviewURL(URL.createObjectURL(file));
-        setScrollVideo(file);
+    const handleSelectVideo = (files) => {
+        if (files.length < 1) return;
+        const file = files[0];
+        if (file.size > 4000000) {
+            return toast.error('The video should be less than 4MB', {
+                position: 'bottom-left',
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        } else {
+            setVideoPreviewURL(URL.createObjectURL(file));
+            setScrollVideo(file);
+        }
     };
 
     const handleUpdatePost = (e) => {
@@ -339,19 +373,6 @@ export default function UpdatePost({
                             </Typography>
                             {imagePreviewURLS.length > 0 && (
                                 <>
-                                    {/*  <div className="space-between mx-3 my-2 center-horizontal">
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            onClick={() => {
-                                                setScrollImages([]);
-                                                setImagePreviewURLS([]);
-                                            }}
-                                            size="small"
-                                        >
-                                            <CloseRounded />
-                                        </IconButton>
-                                    </div> */}
                                     <Grid
                                         container
                                         style={{ margin: '3px 0px' }}
@@ -412,7 +433,28 @@ export default function UpdatePost({
                                     display: 'none',
                                 }}
                             >
-                                <DropzoneArea
+                                <input
+                                    id="update-post-images"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectImages(
+                                            Array.from(e.target.files)
+                                        );
+                                    }}
+                                    accept="image/jpeg, image/png"
+                                    multiple
+                                />
+                                <input
+                                    id="update-post-video"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectVideo(
+                                            Array.from(e.target.files)
+                                        );
+                                    }}
+                                    accept="video/mp4"
+                                />
+                                {/*  <DropzoneArea
                                     clearOnUnmount
                                     dropzoneClass="update-post-dropzone"
                                     clickable={true}
@@ -454,7 +496,7 @@ export default function UpdatePost({
                                             });
                                         }
                                     }}
-                                />
+                                /> */}
                             </Card>
                             {(postToEdit?.video?.path ||
                                 postToEdit?.images?.length > 0) &&
@@ -581,9 +623,9 @@ export default function UpdatePost({
                                             setScrollVideo(null);
                                             setVideoDisabled(true);
                                             document
-                                                .getElementsByClassName(
-                                                    'update-post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'update-post-images'
+                                                )
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
@@ -601,9 +643,9 @@ export default function UpdatePost({
                                             setScrollVideo(null);
                                             setImageDisabled(true);
                                             document
-                                                .getElementsByClassName(
-                                                    'update-post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'update-post-video'
+                                                )
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
