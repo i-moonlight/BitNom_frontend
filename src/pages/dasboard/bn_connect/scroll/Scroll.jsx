@@ -362,7 +362,12 @@ export default function Scroll({
                             style={{ zIndex: 2 }}
                         ></span>
                     </Typography>
-                    <Grid container spacing={2} className="mb-2">
+                    <Grid
+                        container
+                        style={{
+                            margin: '3px 0px',
+                        }}
+                    >
                         {scroll?.video?.path && (
                             <Grid
                                 item
@@ -385,10 +390,12 @@ export default function Scroll({
                         {scroll?.images.length > 0 &&
                             scroll?.images?.map((imageURL, index) => (
                                 <Grid
-                                    className="mt-3"
                                     key={imageURL}
                                     item
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        padding: '2px',
+                                    }}
                                     xs={scroll?.images.length > 1 ? 6 : 12}
                                     onClick={(e) => {
                                         e.stopPropagation();

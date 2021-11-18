@@ -105,7 +105,7 @@ export default function ScrollPreview({ scroll }) {
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        style={{ zIndex: 2, padding: '1px' }}
+                                        style={{ zIndex: 2, padding: '2px' }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}

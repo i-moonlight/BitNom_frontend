@@ -169,7 +169,7 @@ export default function CreatePost({
                 });
             } else {
                 previews.push(URL.createObjectURL(file));
-                allowedFiles.push(URL.createObjectURL(file));
+                allowedFiles.push(file);
             }
         });
         setImagePreviewURLS(previews);

@@ -134,7 +134,7 @@ export default function SavedPost({ scroll }) {
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
                                         style={{
-                                            padding: '1px',
+                                            padding: '2px',
                                         }}
                                         key={imageURL}
                                         item

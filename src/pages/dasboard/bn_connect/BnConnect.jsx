@@ -325,6 +325,12 @@ export default function BnConnect() {
             {postToPreview && (
                 <ImageModal
                     open={imageModalOpen}
+                    setImagePreviewURL={(url) => {
+                        setImagePreviewURL(url);
+                    }}
+                    setImagePreviewOpen={(open) => {
+                        setImagePreviewOpen(open);
+                    }}
                     setImageIndex={setImageIndex}
                     imageIndex={imageIndex}
                     post={postToPreview}

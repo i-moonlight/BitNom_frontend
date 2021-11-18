@@ -208,7 +208,7 @@ export default function UpdatePost({
                 });
             } else {
                 previews.push(URL.createObjectURL(file));
-                allowedFiles.push(URL.createObjectURL(file));
+                allowedFiles.push(file);
             }
         });
         setImagePreviewURLS(previews);
