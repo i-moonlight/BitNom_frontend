@@ -21,7 +21,6 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -77,6 +76,7 @@ import FilterButton from './FilterButton';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -488,13 +488,7 @@ function PostView() {
                             </Card>
 
                             <Grid item align="center">
-                                {postLoading && (
-                                    <CircularProgress
-                                        color="primary"
-                                        size={60}
-                                        thickness={6}
-                                    />
-                                )}
+                                {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
                                 <Card
