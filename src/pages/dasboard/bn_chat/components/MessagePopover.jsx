@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Popover, List, ListItemText, ListItem } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addToPinnedMessage,
@@ -36,9 +36,6 @@ export default function MessagePopover({
     });
     const handlePinMessage = () => {
         pinMessage();
-        if (data?.Dialogue?.pinMessage !== undefined) {
-            dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
-        }
     };
     const handleDeleteMessage = () => {
         deleteMessage();
@@ -48,6 +45,9 @@ export default function MessagePopover({
     const handleReportMessage = () => {
         console.log('REPORT');
     };
+    useEffect(() => {
+        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+    }, [data?.Dialogue?.pinMessage, dispatch]);
     console.log('data', data);
     return (
         <Popover

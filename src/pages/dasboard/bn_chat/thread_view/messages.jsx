@@ -4,8 +4,10 @@ import {
     CardContent,
     CircularProgress,
     Divider,
+    IconButton,
     List,
     ListSubheader,
+    Tooltip,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,9 +34,11 @@ import EmptyMessages from './NoMessages';
 import SendMessage from './SendMessage';
 import Blocked from './blocked';
 import PinnedMessages from './PinnedMessages';
+import { CloseRounded } from '@mui/icons-material';
 
 export default function Messages({ onExitChatMobile }) {
     const [open, setOpen] = useState(false);
+    const [pinOpen, setPinOpen] = useState(false);
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
     const state = useSelector((st) => st);
@@ -104,6 +108,7 @@ export default function Messages({ onExitChatMobile }) {
     useEffect(() => {
         if (pinnedMessages?.Dialogue?.getMessages !== undefined) {
             dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+            setPinOpen(true);
         }
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
@@ -135,7 +140,9 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins && messagePins?.length > 0 && (
+                    {messagePins &&
+                    messagePins?.length > 0 &&
+                    pinOpen === true ? (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
@@ -146,6 +153,15 @@ export default function Messages({ onExitChatMobile }) {
                                             id="nested-list-subheader"
                                         >
                                             Pinned Messages
+                                            <Tooltip>
+                                                <IconButton
+                                                    onClick={() =>
+                                                        setPinOpen(false)
+                                                    }
+                                                >
+                                                    <CloseRounded />
+                                                </IconButton>
+                                            </Tooltip>
                                         </ListSubheader>
                                     }
                                     style={{
@@ -164,6 +180,8 @@ export default function Messages({ onExitChatMobile }) {
                                 </List>
                             </CardContent>
                         </Card>
+                    ) : (
+                        ''
                     )}
                 </div>
             )}
@@ -173,9 +191,9 @@ export default function Messages({ onExitChatMobile }) {
                     minHeight:
                         open === true
                             ? '37vh'
-                            : open === true && messagePins?.length > 0
+                            : open === true && pinOpen === true
                             ? '30vh'
-                            : messagePins?.length > 0
+                            : pinOpen === true
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
@@ -184,9 +202,9 @@ export default function Messages({ onExitChatMobile }) {
                     height:
                         open === true
                             ? window.innerHeight - 750
-                            : open === true && messagePins?.length > 0
+                            : open === true && pinOpen === true
                             ? window.innerHeight - 750
-                            : messagePins?.length > 0
+                            : pinOpen === true
                             ? window.innerHeight - 500
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'

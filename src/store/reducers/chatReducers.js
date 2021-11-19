@@ -108,9 +108,10 @@ export default function chatReducer(state = initialState, action) {
             return {
                 ...state,
                 pinnedMessages: [
-                    ...state.pinnedMessages.slice(0, action.data),
+                    ...state.pinnedMessages,
                     action.data,
-                    ...state.pinnedMessages.slice(0, action.data),
+                    // action.data,
+                    // ...state.pinnedMessages.slice(0, action.data),
                 ],
             };
         case 'DELETE_PINNED_MESSAGE':
