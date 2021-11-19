@@ -29,11 +29,11 @@ export default function Support() {
                         <Container maxWidth="lg">
                             <div style={{ backgroundColor: '#000' }}>
                                 <Grid container spacing={2}>
-                                    <Grid item md={3} sm={2} xs={0}></Grid>
+                                    <Grid item md={3} sm={2}></Grid>
                                     <Grid item md={6} sm={8} xs={12}>
                                         <DonateCard />
                                     </Grid>
-                                    <Grid item md={3} sm={2} xs={0}></Grid>
+                                    <Grid item md={3} sm={2}></Grid>
                                 </Grid>
                             </div>
                         </Container>
