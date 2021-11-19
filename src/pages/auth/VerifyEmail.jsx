@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
-import Alert from '@mui/lab/Alert';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Alert, Card, CardContent, Grid, Typography } from '@mui/material';
 import { parse } from 'querystring';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

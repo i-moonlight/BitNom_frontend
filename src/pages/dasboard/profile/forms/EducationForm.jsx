@@ -1,7 +1,8 @@
 import { useMutation } from '@apollo/client';
 import { SearchRounded } from '@mui/icons-material';
-import { Alert } from '@mui/lab';
+
 import {
+    Alert,
     Card,
     CardContent,
     Checkbox,
