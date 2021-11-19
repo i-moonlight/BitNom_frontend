@@ -3,8 +3,8 @@
     "name": "BitNorm",
     "icons": [
         {
-            "src": "favicon.png",
-            "sizes": "64x64",
+            "src": "logo.svg",
+            "sizes": "150x150",
             "type": "image/x-icon"
         },
         {
