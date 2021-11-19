@@ -32,8 +32,8 @@ import LazyImage from '../../LazyImage';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
-    notifications,
     unreadCount,
+    notificationCount,
     menuId,
     handleMenuOpen,
     notificationId,

@@ -25,7 +25,6 @@ import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import debounce from 'lodash/debounce';
-import UserSearch from './UserSearch';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -79,15 +78,6 @@ export default function CreateChatPrompt({
                 {' '}
                 <Grid item lg={5} md={2} sm={1} xs={1}></Grid>
                 <Grid item lg={3} md={8} sm={10} xs={10}>
-                    {/* <UserSearch
-                        searchResults={null}
-                        loading={userLoading}
-                        setSearchedValues={null}
-                        searchTerm={null}
-                        updateSearchTerm={null}
-                        setSearchRecipients={null}
-                        chatRecipients={users}
-                    /> */}
                     <Card>
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body1">
