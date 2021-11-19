@@ -90,7 +90,6 @@ function EventPreview({ event }) {
                                 onClick={(e) => e.stopPropagation()}
                                 target="_blank"
                                 rel="noreferrer"
-                                on
                             >
                                 {truncateText(event?.location?.address, 40)}
                             </a>

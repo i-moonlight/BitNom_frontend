@@ -352,7 +352,7 @@ export default function Scroll({
                     <Typography
                         variant="body2"
                         color="textSecondary"
-                        component="p"
+                        component="div"
                     >
                         <span
                             onClick={(e) => contentClickHandler(e)}

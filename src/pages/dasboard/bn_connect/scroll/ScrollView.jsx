@@ -28,6 +28,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Alert,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -78,56 +79,6 @@ import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    commentSection: {
-        padding: '5px 4px',
-        [theme.breakpoints.up('md')]: {
-            padding: '15px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
-const scrollOptionId = 'menu-scroll-option';
-const emojiPickerId = 'emoji-picker-popover';
 function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -162,6 +113,7 @@ function PostView() {
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [getPostErr, setGetPostErr] = useState(null);
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -208,18 +160,34 @@ function PostView() {
         [classes.green, classes.primary, classes.red]
     );
 
-    const { loading: postLoading, data: postData } = useQuery(
-        QUERY_POST_BY_ID,
-        {
-            variables: { _id: postId },
-        }
-    );
+    const {
+        error: postError,
+        loading: postLoading,
+        data: postData,
+    } = useQuery(QUERY_POST_BY_ID, {
+        variables: { _id: postId },
+    });
 
     useEffect(() => {
         const reaction = getUserReaction(postData?.Posts?.getById);
         setUserReaction(reaction);
         setIcon(reaction);
     }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+
+    useEffect(() => {
+        postError &&
+            postError.graphQLErrors.length > 0 &&
+            postError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find a post with the ID you provided!'
+                ) {
+                    setGetPostErr(
+                        'This post might have been deleted by the author.'
+                    );
+                }
+            });
+    }, [postError]);
 
     const {
         //  loading,
@@ -486,8 +454,14 @@ function PostView() {
                                     }
                                 />
                             </Card>
-
-                            <Grid item align="center">
+                            <Grid item>
+                                {getPostErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getPostErr}</Typography>
+                                    </Alert>
+                                )}
+                            </Grid>
+                            <Grid item>
                                 {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
@@ -1323,3 +1297,54 @@ function PostView() {
 }
 
 export default PostView;
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const scrollOptionId = 'menu-scroll-option';
+const emojiPickerId = 'emoji-picker-popover';

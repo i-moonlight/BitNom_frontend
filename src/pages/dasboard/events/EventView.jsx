@@ -27,6 +27,7 @@ import {
     Tooltip,
     Typography,
     useMediaQuery,
+    Alert,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
@@ -75,6 +76,7 @@ export default function EventView() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [createFlagOpen, setCreateFlagOpen] = useState(false);
     const [openShareModal, setOpenShareModal] = useState(false);
+    const [getEventErr, setGetEventErr] = useState(null);
 
     const classes = useStyles();
     const history = useHistory();
@@ -86,12 +88,28 @@ export default function EventView() {
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
 
-    const { loading: eventLoading, data: eventData } = useQuery(
-        QUERY_EVENT_BY_ID,
-        {
-            variables: { _id: eventId },
-        }
-    );
+    const {
+        loading: eventLoading,
+        data: eventData,
+        error: eventError,
+    } = useQuery(QUERY_EVENT_BY_ID, {
+        variables: { _id: eventId },
+    });
+
+    useEffect(() => {
+        eventError &&
+            eventError.graphQLErrors.length > 0 &&
+            eventError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find an event with the ID you provided!'
+                ) {
+                    setGetEventErr(
+                        'This event might have been deleted by the host.'
+                    );
+                }
+            });
+    }, [eventError]);
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -293,6 +311,13 @@ export default function EventView() {
                                         size={60}
                                         thickness={6}
                                     />
+                                )}
+                            </Grid>
+                            <Grid item>
+                                {getEventErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getEventErr}</Typography>
+                                    </Alert>
                                 )}
                             </Grid>
                             {eventData?.Events?.getById && (

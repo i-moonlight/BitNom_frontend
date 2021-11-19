@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Container, Divider, Grid, Typography } from '@mui/material';
+import { Container, Divider, Grid, Typography, Alert } from '@mui/material';
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logo_light_full from '../../assets/logo_light_full.svg';
@@ -7,7 +7,7 @@ import { Button } from '../../components/Button';
 import LazyImage from '../../components/LazyImage';
 import TextField from '../../components/TextField';
 import DarkThemeOnly from '../../utilities/DarkThemeOnly';
-import Alert from '@mui/lab/Alert';
+
 import {
     MUTATION_CREATE_EMAIL_SUBSCRIBER,
     MUTATION_REMOVE_EMAIL_SUBSCRIBER,

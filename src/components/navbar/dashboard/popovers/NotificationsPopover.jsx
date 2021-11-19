@@ -99,7 +99,7 @@ function ListItemComponent({ item }) {
     } else if (item?.link_to_resource?.type === 'comment') {
         link = `/posts/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'user') {
-        link = `/users/${item?.link_to_resource?._id}`;
+        link = `/users/${item?.content_entities[0]?.url?._id}`;
     }
 
     const getNotifyingUser = (notification) => {

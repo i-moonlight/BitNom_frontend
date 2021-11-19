@@ -77,8 +77,15 @@ export default function BnConnect() {
         context: { clientName: 'users' },
     });
 
+    const following = [];
+    user?.following?.forEach((item) => following.push(item?.userId?._id));
+
     const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
     );
 
     const {
@@ -239,8 +246,8 @@ export default function BnConnect() {
 
                             {posts?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography variant="h5" color="primary">
-                                        .
+                                    <Typography variant="body2" color="primary">
+                                        Connect. Share. Learn.
                                     </Typography>
                                 </Grid>
                             )}
