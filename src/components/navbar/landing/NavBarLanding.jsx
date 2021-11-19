@@ -34,8 +34,9 @@ export default function NavBarLanding() {
     const theme = useTheme();
     const history = useHistory();
     const state = useSelector((st) => st);
+    const user = state.auth.user;
 
-    const loggedIn = state.auth.user;
+    const loggedIn = user && JSON.stringify(user) !== '{}';
 
     const xsDown = useMediaQuery('(max-width:599px)');
     const smUp = useMediaQuery('(min-width:600px)');
