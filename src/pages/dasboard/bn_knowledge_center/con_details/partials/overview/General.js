@@ -36,9 +36,9 @@ export default function General({ coinDetail }) {
     const [rowLoaded, setRowLoaded] = useState(false);
     const [error, setError] = useState(false);
     const [activeButton, setActiveButton] = useState(0);
-    // const [coinFeature, setActiveCoinFeature] = useState('price');
     const [, setActiveCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
+    // const [coinFeature, setActiveCoinFeature] = useState('price');
 
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=10&sparkline=true`;

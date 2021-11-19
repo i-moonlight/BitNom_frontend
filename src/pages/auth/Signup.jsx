@@ -124,9 +124,6 @@ export default function Signup() {
             <Grid
                 container
                 spacing={0}
-                // direction="column"
-                // alignItems="center"
-                // justifyContent="center"
                 style={{
                     minHeight: '100vh',
                     paddingTop: 50,
@@ -195,6 +192,7 @@ export default function Signup() {
                                         errorText={emailErr && emailErr[0]}
                                         name="email"
                                         label="Email Address"
+                                        type="email"
                                         variant="outlined"
                                         fullWidth
                                     />

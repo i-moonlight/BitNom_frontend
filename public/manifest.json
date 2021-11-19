@@ -1,10 +1,10 @@
 {
-    "short_name": "React App",
-    "name": "Create React App Sample",
+    "short_name": "BitNorm",
+    "name": "BitNorm",
     "icons": [
         {
-            "src": "favicon.ico",
-            "sizes": "64x64 32x32 24x24 16x16",
+            "src": "logo.svg",
+            "sizes": "150x150",
             "type": "image/x-icon"
         },
         {
@@ -16,10 +16,37 @@
             "src": "logo512.png",
             "type": "image/png",
             "sizes": "512x512"
+        },
+        {
+            "src": "logo512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Investor Page",
+            "short_name": "Investors",
+            "description": "View the investor page",
+            "url": "/investors",
+            "icons": [
+                {
+                    "src": "logo192.png",
+                    "sizes": "192x192"
+                }
+            ]
         }
     ],
     "start_url": ".",
     "display": "standalone",
     "theme_color": "#000000",
-    "background_color": "#ffffff"
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "url": ".",
+    "manifestUrl": "manifest.json",
+    "lang": "en",
+    "scope": "/",
+    "description": "BitNorm | The ultimate cryptocurrency suite.",
+    "categories": ["social"]
 }

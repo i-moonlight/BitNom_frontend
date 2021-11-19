@@ -26,7 +26,7 @@ export default function RequestDisplayCard() {
                         <Typography>5</Typography>
                         <ThumbDownRounded />
                     </Grid>
-                    <Grid sm={11}>
+                    <Grid item sm={11}>
                         <div className="space-between center-horizontal">
                             <div className="center-horizontal">
                                 <Avatar style={{ width: 30, height: 30 }}>

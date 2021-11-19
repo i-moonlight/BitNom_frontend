@@ -354,7 +354,7 @@ export const footerLinks = [
         },
         { title: true, text: 'EXPLORE' },
         {
-            link: 'https://etherscan.io/token/0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013',
+            link: '/redirect?link=https://etherscan.io/token/0x42edc1c5ff57ff5240c90e2d8dfa269d77d68013',
             text: 'BN Token',
         },
         // { link: '/faqs', text: 'How to buy BN Token' },

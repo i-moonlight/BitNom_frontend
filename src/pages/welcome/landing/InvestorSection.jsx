@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import investorGraphicImg from '../../../assets/landing/articles.png';
-import investorPageImg from '../../../assets/landing/piggy.jpg';
+import investorPageImg from '../../../assets/landing/investor.png';
 import LazyImage from '../../../components/LazyImage';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
@@ -60,11 +60,12 @@ export default function InvestorSection() {
                                 <LazyImage
                                     style={{
                                         width: '100%',
+                                        borderRadius: '20px 20px 0 0',
+                                        height: 400,
                                     }}
                                     image={{
                                         src: investorPageImg,
                                         alt: 'Card Image',
-                                        height: 400,
                                     }}
                                 />
                             </Grid>
