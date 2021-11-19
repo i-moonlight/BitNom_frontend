@@ -100,7 +100,7 @@ export default function TextField({
                 ) : null}
                 {errorText && (
                     <small
-                        className="ml-5 mt-1 text-sm text-start"
+                        className="ml-5 mt-1 text-sm text-start "
                         style={{ color: '#F44336' }}
                     >
                         {errorText}

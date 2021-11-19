@@ -12,7 +12,7 @@ export default function Wrapper({ children, authPage }) {
 
     useEffect(() => {
         if (JSON.stringify(user) !== '{}') {
-            if (!user?.email?.verified) {
+            if (user?.email && !user?.email?.verified) {
                 history.push('/auth/require_verify');
             } else {
                 if (user?.email?.verified && !user?.displayName) {

@@ -2,25 +2,27 @@ import { ExpandMoreRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
+    Card,
     CardMedia,
     Grid,
     IconButton,
     Paper,
     Typography,
-    Card,
 } from '@mui/material';
 import moment from 'moment';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
+import { Code, LinkTag } from '../../../../components/markdown_renders';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
-import ReactMarkdown from 'react-markdown';
-import { Code, LinkTag } from '../../../../components/markdown_renders';
 
 export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
+
     const author = message.author || {};
+
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
@@ -54,7 +56,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
             >
                 <Typography
                     variant="body1"
-                    component="p"
+                    component="div"
                     style={{ marginLeft: '16px' }}
                 >
                     <Link to={`/profile`} style={{ textDecoration: 'none' }}>
@@ -91,7 +93,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                         {' '}
                         <Typography
                             variant="body2"
-                            component="article"
+                            component="div"
                             style={{
                                 marginLeft: '8px',
                                 marginTop: '8px',
@@ -100,7 +102,6 @@ export default function IncomingMessage({ message, chat, onClick }) {
                         >
                             <ReactMarkdown
                                 components={{ code: Code, Link: LinkTag }}
-                                escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
                                     ? message?.responseTo?.text?.substring(
@@ -172,15 +173,12 @@ export default function IncomingMessage({ message, chat, onClick }) {
                 <Typography
                     className={classes.message}
                     variant="body2"
-                    component="article"
+                    component="div"
                     style={{
                         marginTop: '4px',
                     }}
                 >
-                    <ReactMarkdown
-                        components={{ code: Code, Link: LinkTag }}
-                        escapeHtml={false}
-                    >
+                    <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message.text}
                     </ReactMarkdown>
                 </Typography>

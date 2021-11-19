@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Dialog, Slide, Grid, IconButton, Typography } from '@mui/material';
 import {
     ArrowBackIos,
     ArrowForwardIos,
     CloseRounded,
 } from '@mui/icons-material';
+import { Dialog, Grid, IconButton, Slide, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useCallback, useEffect, useState } from 'react';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
-// import { useQuery } from '@apollo/client';
-// import { QUERY_POST_BY_ID } from '../pages/dasboard/utilities/queries';
 
 export default function ImageModal({
     post,
@@ -16,7 +14,6 @@ export default function ImageModal({
     onClose,
     imageIndex,
     setImageIndex,
-
     profileData,
     setSharedResource,
     setCommentToEdit,
@@ -26,6 +23,8 @@ export default function ImageModal({
     setOpenReactions,
     setResourceReactions,
     setOpen,
+    setImagePreviewURL,
+    setImagePreviewOpen,
 }) {
     const [modalStyle] = useState(getModalStyle);
     const classes = useStyles();
@@ -34,10 +33,6 @@ export default function ImageModal({
     const numSlides = post?.images?.length;
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
-
-    // const { data: postData } = useQuery(QUERY_POST_BY_ID, {
-    //     variables: { _id: post?._id },
-    // });
 
     const onArrowClick = useCallback(
         (direction) => {
@@ -76,10 +71,7 @@ export default function ImageModal({
 
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
-            <div
-                className="space-between center-horizontal"
-                style={{ margin: '2px' }}
-            >
+            <div className="space-between center-horizontal">
                 <Typography variant="body2"></Typography>
                 <Typography variant="body1"></Typography>
                 <IconButton
@@ -87,7 +79,7 @@ export default function ImageModal({
                         onClose();
                     }}
                     size="small"
-                    className="m-1 p-1"
+                    style={{ margin: '2px' }}
                 >
                     <CloseRounded />
                 </IconButton>
@@ -133,6 +125,8 @@ export default function ImageModal({
                                 setResourceReactions={setResourceReactions}
                                 setSharedResource={setSharedResource}
                                 setCommentToEdit={setCommentToEdit}
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setImagePreviewURL={setImagePreviewURL}
                             />
                         </div>
                     )}
@@ -174,8 +168,9 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
     Container: {
-        height: '600px',
+        height: '650px',
         overflowX: 'hidden',
+        overflowY: 'auto',
     },
     Carousel: {
         display: 'flex',
@@ -190,7 +185,7 @@ const useStyles = makeStyles((theme) => ({
     },
     Content: {
         display: 'flex',
-        height: '550px',
+        height: '540px',
         padding: '10px',
         [theme.breakpoints.down('sm')]: {
             padding: '5px',
@@ -205,6 +200,6 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         overflow: 'scroll',
         maxWidth: '90%',
-        maxHeight: '550px',
+        maxHeight: '500px',
     },
 }));

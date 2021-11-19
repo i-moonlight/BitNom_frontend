@@ -17,7 +17,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { DropzoneArea } from 'react-mui-dropzone';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
@@ -178,6 +178,41 @@ export default function CreateEvent({ open, setOpen }) {
         setTagsErr(false);
         setEventTags([...eventTags, tagText]);
         setTagText('');
+    };
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setEventImage(file);
+                    setPreviewURL(URL.createObjectURL(file));
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
     };
 
     const handleCreateEvent = (e) => {
@@ -361,39 +396,33 @@ export default function CreateEvent({ open, setOpen }) {
                                         backgroundImage:
                                             'url(' + previewURL + ')',
                                         backgroundSize: 'cover',
-                                        backgroundColor: '#aaa',
+                                        backgroundColor: !previewURL && '#aaa',
                                         backgroundBlendMode: 'soft-light',
                                         marginBottom: '15px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        document
+                                            .getElementById('event-image')
+                                            .click();
                                     }}
                                 >
-                                    <DropzoneArea
-                                        dropzoneClass="event-upload-dropzone"
-                                        clearOnUnmount
-                                        Icon={CameraAltRounded}
-                                        dropzoneText={' '}
-                                        acceptedFiles={['.jpeg', '.png']}
-                                        maxFileSize={2500000}
-                                        filesLimit={1}
-                                        showAlerts={['error']}
-                                        showPreviews={false}
-                                        showPreviewsInDropzone={false}
-                                        previewGridProps={{
-                                            container: {
-                                                spacing: 1,
-                                                direction: 'row',
-                                            },
-                                        }}
-                                        onChange={(files) => {
-                                            setEventImage(files[0]);
-                                            if (files[0]) {
-                                                setPreviewURL(
-                                                    URL.createObjectURL(
-                                                        files[0]
-                                                    )
+                                    <CameraAltRounded />
+                                    <div style={{ display: 'none' }}>
+                                        <input
+                                            id="event-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
                                                 );
-                                            }
-                                        }}
-                                    />
+                                            }}
+                                            accept="image/jpeg, image/png"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <TextField

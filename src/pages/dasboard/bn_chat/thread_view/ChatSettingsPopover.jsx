@@ -13,9 +13,10 @@ import {
     MUTE_CONVERSATION,
     PIN_CHAT,
     REPORT_USER,
-    UNPIN,
     UNARCHIVE,
+    UNPIN,
 } from '../graphql/queries';
+
 export default function ChatSettingPopover({
     chatSettingsAnchorEl,
     chatSettingsId,

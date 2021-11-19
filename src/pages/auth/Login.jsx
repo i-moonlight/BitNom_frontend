@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Alert from '@mui/lab/Alert';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Backdrop, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ import { loginUserValidationSchema } from './utilities/validation_schemas';
 export default function Login() {
     const [loginErr, setLoginErr] = useState(null);
     const [googleErr, setGoogleErr] = useState(null);
+
     const state = useSelector((st) => st);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,7 +38,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/connect');
+        user && JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [user, history]);
 
     const responseGoogle = (response) => {
@@ -66,12 +67,10 @@ export default function Login() {
                 <Grid
                     container
                     spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '100vh' }}
+                    style={{ minHeight: '100vh', marginTop: 80 }}
                 >
-                    <Grid item xs={11} sm={7} md={6} lg={4}>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                    <Grid item xs={10} sm={8} md={6} lg={4}>
                         <div className="text-center my-3 px-sm-5">
                             <Typography color="textPrimary" variant="h5">
                                 Hi! WELCOME BACK
@@ -218,7 +217,11 @@ export default function Login() {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
                 </Grid>
+                <Backdrop open={googleLoading || loginLoading}>
+                    <div className="preloader-speeding-wheel"></div>
+                </Backdrop>
             </div>
         </>
     );

@@ -16,7 +16,7 @@ export default function PinnedMessages({ message }) {
             <ListItemText
                 secondary={
                     <>
-                        <Typography>
+                        <Typography component="div">
                             {message?.text
                                 ? message?.text
                                 : message?.images

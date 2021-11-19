@@ -79,7 +79,7 @@ export const checkSessionTimeOut = () => {
 
         const userData = getState().auth.user;
 
-        if (!userData.login_date) {
+        if (!userData?.login_date) {
             return;
         }
 
@@ -95,6 +95,6 @@ export const checkSessionTimeOut = () => {
 
 export const userUpdate = (user) => {
     return (dispatch) => {
-        dispatch({ type: 'USER_UPDATE', user });
+        user && dispatch({ type: 'USER_UPDATE', user });
     };
 };

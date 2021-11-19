@@ -1,7 +1,7 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
 //import { helmetJsonLdProp } from 'react-schemaorg';
 import moment from 'moment';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
 function SEO(data) {
     const { title, description, url, image, resource } = data;

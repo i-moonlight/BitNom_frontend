@@ -13,9 +13,9 @@ import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
+    UNREAD_COUNT,
     USER_IS_ONLINE,
     USER_ONLINE_STATUS,
-    UNREAD_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 

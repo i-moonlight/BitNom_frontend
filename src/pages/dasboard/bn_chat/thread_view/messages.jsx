@@ -27,14 +27,14 @@ import {
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
+import Blocked from './blocked';
 import InviteView from './InviteView';
 import Message from './message';
 import NoChatSelected from './NoChatSelected';
 import EmptyMessages from './NoMessages';
-import SendMessage from './SendMessage';
-import Blocked from './blocked';
 import PinnedMessages from './PinnedMessages';
 import { CloseRounded } from '@mui/icons-material';
+import SendMessage from './SendMessage';
 
 export default function Messages({ onExitChatMobile }) {
     const [open, setOpen] = useState(false);
@@ -171,9 +171,9 @@ export default function Messages({ onExitChatMobile }) {
                                     dense
                                 >
                                     {' '}
-                                    {messagePins?.map((message) => (
+                                    {messagePins?.map((message, id) => (
                                         <PinnedMessages
-                                            key={message?._id}
+                                            key={id}
                                             message={message}
                                         />
                                     ))}{' '}

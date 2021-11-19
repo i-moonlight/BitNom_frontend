@@ -1,20 +1,12 @@
-import {Card, CardContent, CircularProgress} from '@mui/material';
 import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
-import React, {useEffect, useState} from 'react';
-
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/5/21
- * Time: 1:31 AM
- */
+import { Card, CardContent, Skeleton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 export function CryptoGazing() {
     const [coinDetails, getCoin] = useState([]);
     const [coinIsLoaded, checkLoadedCoin] = useState(false);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         // const coin_list = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
         const url = `https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true`;
 
@@ -22,7 +14,6 @@ export function CryptoGazing() {
             .then((response) => response.json())
             .then((data) => {
                 getCoin(data);
-                console.log(data);
                 checkLoadedCoin(true);
             })
             .catch((err) => {
@@ -33,11 +24,13 @@ export function CryptoGazing() {
     return (
         <>
             {coinIsLoaded ? (
-                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center">
+                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center pb-5">
                     <Card>
                         <CardContent>
                             <div className="d-flex flex-row justify-content-between mb-3">
-                                <button className="btn btn-success">Rank #{coinDetails.coingecko_rank}</button>
+                                <button className="btn btn-success">
+                                    Rank #{coinDetails.coingecko_rank}
+                                </button>
                                 <a className="text-primary text-decoration-underline">
                                     Visit Coin
                                 </a>
@@ -50,10 +43,25 @@ export function CryptoGazing() {
                                         alt="Bitcoin Image"
                                     />
                                     <p className="mt-1">
-                                        <strong>{coinDetails.name} <span style={{textTransform: 'uppercase'}}>({coinDetails.symbol})</span></strong>
+                                        <strong>
+                                            {coinDetails.name}{' '}
+                                            <span
+                                                style={{
+                                                    textTransform: 'uppercase',
+                                                }}
+                                            >
+                                                ({coinDetails.symbol})
+                                            </span>
+                                        </strong>
                                     </p>
                                     <a className="btn btn-success mb-2">
-                                        <strong>${coinDetails.market_data.current_price.usd}</strong>
+                                        <strong>
+                                            $
+                                            {
+                                                coinDetails.market_data
+                                                    .current_price.usd
+                                            }
+                                        </strong>
                                     </a>
                                 </div>
                                 <div className="col">
@@ -61,7 +69,13 @@ export function CryptoGazing() {
                                         <strong>Price Change 24 hours</strong>
                                     </p>
                                     <p className="text-danger">
-                                        <strong>{coinDetails.market_data.price_change_24h}%</strong>
+                                        <strong>
+                                            {
+                                                coinDetails.market_data
+                                                    .price_change_24h
+                                            }
+                                            %
+                                        </strong>
                                     </p>
                                     <br />
                                     <p>Available Supply</p>
@@ -72,11 +86,19 @@ export function CryptoGazing() {
                                         <strong>Market Cap</strong>
                                     </p>
                                     <p className="text-success">
-                                        <strong>${coinDetails.market_data.market_cap.usd}</strong>
+                                        <strong>
+                                            $
+                                            {
+                                                coinDetails.market_data
+                                                    .market_cap.usd
+                                            }
+                                        </strong>
                                     </p>
                                     <br />
                                     <p>Total Supply</p>
-                                    <p>{coinDetails.market_data.total_supply}</p>
+                                    <p>
+                                        {coinDetails.market_data.total_supply}
+                                    </p>
                                 </div>
                             </div>
                             <div className="m-2">
@@ -102,9 +124,20 @@ export function CryptoGazing() {
                     </Card>
                 </div>
             ) : (
-                <Card className={'text-danger text-center'}>
-                    <CircularProgress color="secondary" />
-                </Card>
+                <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center pb-5">
+                    <Skeleton
+                        animation="wave"
+                        className="mb-3 br-1"
+                        variant="rectangular"
+                        height={250}
+                    />
+                    <Skeleton
+                        animation="wave"
+                        className="mb-2 br-1"
+                        variant="rectangular"
+                        height={30}
+                    />
+                </div>
             )}
         </>
     );

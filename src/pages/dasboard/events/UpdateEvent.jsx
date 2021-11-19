@@ -22,7 +22,8 @@ import {
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { DropzoneArea } from 'react-mui-dropzone';
+
+import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { useSelector } from 'react-redux';
@@ -105,7 +106,7 @@ export default function UpdateEvent({
 
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
-    const [eventImage, setEventImage] = useState(null);
+    const [eventImage, setEventImage] = useState(undefined);
     const [eventStartDate, setEventStartDate] = useState('');
     const [eventEndDate, setEventEndDate] = useState('');
     const [eventTitle, setEventTitle] = useState('');
@@ -204,7 +205,7 @@ export default function UpdateEvent({
 
         setEventLink('');
         setPreviewURL();
-        setEventImage(null);
+        setEventImage(undefined);
         setEventTitle('');
         setEventDescription('');
         setDescriptionErr(false);
@@ -250,6 +251,41 @@ export default function UpdateEvent({
                 console.error('Error', latitude, longitude);
             })
             .catch((error) => console.error('Error', error));
+    };
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setEventImage(file);
+                    setPreviewURL(URL.createObjectURL(file));
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
     };
 
     const handleUpdateEvent = (e) => {
@@ -344,7 +380,7 @@ export default function UpdateEvent({
         });
         setDateErr(false);
         setEventLink('');
-        setEventImage(null);
+        setEventImage(undefined);
         setEventTitle('');
         setEventDescription('');
         setDescriptionErr(false);
@@ -394,7 +430,7 @@ export default function UpdateEvent({
                                 onClick={() => {
                                     setOpenUpdate(!openUpdate);
                                     setEventLink('');
-                                    setEventImage(null);
+                                    setEventImage(undefined);
                                     setEventTitle('');
                                     setEventDescription('');
                                     setDescriptionErr(false);
@@ -437,55 +473,35 @@ export default function UpdateEvent({
                                             previewURL &&
                                             'url(' + previewURL + ')',
                                         backgroundSize: 'cover',
-                                        backgroundColor: '#aaa',
+                                        backgroundColor: !previewURL && '#aaa',
                                         backgroundBlendMode: 'soft-light',
                                         marginBottom: '15px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        document
+                                            .getElementById(
+                                                'update-event-image'
+                                            )
+                                            .click();
                                     }}
                                 >
-                                    <div className="space-between mx-3 my-2">
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            color="primary"
-                                            size="small"
-                                            className="m-1 p-1"
-                                        >
-                                            <CloseRounded
-                                                onClick={() => {
-                                                    setEventImage(null);
-                                                    setPreviewURL();
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </div>
-                                    <DropzoneArea
-                                        dropzoneClass="event-upload-dropzone"
-                                        clearOnUnmount
-                                        Icon={CameraAltRounded}
-                                        dropzoneText={' '}
-                                        acceptedFiles={['image/*']}
-                                        maxFileSize={5000000}
-                                        filesLimit={1}
-                                        showAlerts={['error']}
-                                        showPreviews={false}
-                                        showPreviewsInDropzone={false}
-                                        previewGridProps={{
-                                            container: {
-                                                spacing: 1,
-                                                direction: 'row',
-                                            },
-                                        }}
-                                        onChange={(files) => {
-                                            setEventImage(files[0]);
-                                            if (files[0]) {
-                                                setPreviewURL(
-                                                    URL.createObjectURL(
-                                                        files[0]
-                                                    )
+                                    <CameraAltRounded />
+                                    <div style={{ display: 'none' }}>
+                                        <input
+                                            id="update-event-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
                                                 );
-                                            }
-                                        }}
-                                    />
+                                            }}
+                                            accept="image/jpeg, image/png"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <TextField

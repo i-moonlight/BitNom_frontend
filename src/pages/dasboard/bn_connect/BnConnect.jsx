@@ -15,14 +15,15 @@ import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
 import UpdateComment from './scroll/comment/UpdateComment';
-import CreatePost from './scroll/CreatePost';
-import Scroll from './scroll/Scroll';
-import UpdatePost from './scroll/UpdatePost';
+import CreatePostModal from './scroll/CreatePost';
+import UpdatePostModal from './scroll/UpdatePost';
 import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
+import SkeletonScrollCard from './skeleton/SkeletonScrollCard';
 import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
 
+const Scroll = React.lazy(() => import('./scroll/Scroll'));
 const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
 const TrendingPostsCard = React.lazy(() => import('./TrendingPostsCard'));
@@ -186,10 +187,7 @@ export default function BnConnect() {
                                 />
                             </Suspense>
                             <Grid item align="center">
-                                {false && (
-                                    // scrollLoading
-                                    // TODO
-
+                                {scrollLoading && (
                                     <Typography
                                         className="my-2"
                                         color="primary"
@@ -198,35 +196,47 @@ export default function BnConnect() {
                                     </Typography>
                                 )}
                             </Grid>
+
                             {posts?.map((scroll) => (
-                                <Scroll
-                                    setOpen={() => setCreateScrollOpen(true)}
-                                    setOpenShareModal={setOpenShareModal}
-                                    setUpdateOpen={setUpdateScrollOpen}
-                                    profileData={user}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setOpenFlag={setCreateFlagOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                    setSharedResource={setSharedResource}
-                                    setImageIndex={setImageIndex}
-                                    setPostToPreview={setPostToPreview}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setPostToEdit={setPostToEdit}
+                                <Suspense
                                     key={scroll?._id}
-                                    scroll={scroll}
-                                    setImagePreviewURL={(url) => {
-                                        setImagePreviewURL(url);
-                                    }}
-                                    setImagePreviewOpen={(open) => {
-                                        setImagePreviewOpen(open);
-                                    }}
-                                    setImageModalOpen={(open) => {
-                                        setImageModalOpen(open);
-                                    }}
-                                />
+                                    fallback={<SkeletonScrollCard />}
+                                >
+                                    <Scroll
+                                        setOpen={() =>
+                                            setCreateScrollOpen(true)
+                                        }
+                                        setOpenShareModal={setOpenShareModal}
+                                        setUpdateOpen={setUpdateScrollOpen}
+                                        profileData={user}
+                                        setUpdateCommentOpen={
+                                            setUpdateCommentOpen
+                                        }
+                                        setOpenFlag={setCreateFlagOpen}
+                                        setFlaggedResource={setFlaggedResource}
+                                        setOpenReactions={setOpenReactions}
+                                        setResourceReactions={
+                                            setResourceReactions
+                                        }
+                                        setSharedResource={setSharedResource}
+                                        setImageIndex={setImageIndex}
+                                        setPostToPreview={setPostToPreview}
+                                        setCommentToEdit={setCommentToEdit}
+                                        setPostToEdit={setPostToEdit}
+                                        scroll={scroll}
+                                        setImagePreviewURL={(url) => {
+                                            setImagePreviewURL(url);
+                                        }}
+                                        setImagePreviewOpen={(open) => {
+                                            setImagePreviewOpen(open);
+                                        }}
+                                        setImageModalOpen={(open) => {
+                                            setImageModalOpen(open);
+                                        }}
+                                    />
+                                </Suspense>
                             ))}
+
                             {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="h5" color="primary">
@@ -262,7 +272,7 @@ export default function BnConnect() {
                     </Grid>
                 </Container>
             </div>
-            <CreatePost
+            <CreatePostModal
                 profileData={user}
                 open={createScrollOpen}
                 setOpen={(open) => setCreateScrollOpen(open)}
@@ -277,7 +287,7 @@ export default function BnConnect() {
                 sharedResource={sharedResource}
                 setSharedResource={setSharedResource}
             />
-            <UpdatePost
+            <UpdatePostModal
                 profileData={user}
                 updateScrollOpen={updateScrollOpen}
                 postToEdit={postToEdit}
@@ -316,6 +326,12 @@ export default function BnConnect() {
             {postToPreview && (
                 <ImageModal
                     open={imageModalOpen}
+                    setImagePreviewURL={(url) => {
+                        setImagePreviewURL(url);
+                    }}
+                    setImagePreviewOpen={(open) => {
+                        setImagePreviewOpen(open);
+                    }}
                     setImageIndex={setImageIndex}
                     imageIndex={imageIndex}
                     post={postToPreview}

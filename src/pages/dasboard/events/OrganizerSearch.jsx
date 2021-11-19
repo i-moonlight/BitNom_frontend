@@ -63,12 +63,13 @@ function OrganizerSearch({
                     }}
                 />
             )}
-            renderOption={(option) => {
+            renderOption={(props, option) => {
+                console.log(option);
                 /*  const matches = match(option?.displayName, inputValue);
         const parts = parse(option?.displayName, matches);
         ); */
                 return (
-                    <Grid container alignItems="center">
+                    <Grid {...props} container alignItems="center">
                         <Avatar
                             src={
                                 option?.profile_pic

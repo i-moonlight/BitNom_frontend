@@ -79,7 +79,7 @@ export default function NotificationListItem({ notification }) {
     const userInitials = getUserInitials(getNotifyingUser(notification));
     return (
         <>
-            <Card elevation={0}>
+            <Card elevation={0} style={{ margin: '5px 0px' }}>
                 <div
                     style={{
                         display: 'grid',

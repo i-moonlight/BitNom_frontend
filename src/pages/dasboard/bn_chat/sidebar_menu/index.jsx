@@ -10,23 +10,23 @@ import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
-    addToInvites,
-    setArchivedChats,
-    setChatInvites,
+    addPinnedChat,
+    addToArchivedChats,
     addToChatDialogues,
+    addToInvites,
+    addToPinnedChats,
     clearCurrentChat,
     removeFromInvites,
+    setArchivedChats,
+    setChatInvites,
     setCurrentChat,
-    addPinnedChat,
-    addToPinnedChats,
-    addToArchivedChats,
 } from '../../../../store/actions/chatActions';
 import {
+    ARCHIVE_CHAT_SUB,
+    CHAT_ACCEPTED,
     GET_DIALOGUES,
     NEW_CHAT_ADDED,
-    CHAT_ACCEPTED,
     PIN_CHAT_SUB,
-    ARCHIVE_CHAT_SUB,
 } from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';

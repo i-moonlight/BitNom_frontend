@@ -25,19 +25,19 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import EventPreview from '../../events/EventPreview';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -56,6 +56,7 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
 
+const EventPreview = React.lazy(() => import('../../events/EventPreview'));
 const ScrollPreview = React.lazy(() => import('./ScrollPreview'));
 const Comment = React.lazy(() => import('./comment/Comment'));
 
@@ -88,7 +89,6 @@ export default function Scroll({
     const [openComments, setOpenComments] = useState(false);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
-    const [fileErrors, setFileErrors] = useState([]);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
@@ -99,18 +99,13 @@ export default function Scroll({
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-    const {
-        data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
-    } = useQuery(QUERY_GET_COMMENTS, {
+    const { data: commentsData } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: scroll?._id } },
     });
 
     const history = useHistory();
     const theme = useTheme();
     const state = useSelector((st) => st);
-
     const user = state.auth.user;
 
     const onCreateComment = (ICreateComment) => {
@@ -131,7 +126,6 @@ export default function Scroll({
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
-        setFileErrors([]);
         setPreviewURL();
     };
 
@@ -190,6 +184,40 @@ export default function Scroll({
         setCommentText(`${comment_text} ${emoji.native}`);
     };
 
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
     const getUserReaction = useCallback(
         (resource) => {
             let reaction;
@@ -261,80 +289,89 @@ export default function Scroll({
     return (
         <>
             <Card style={{ ...style, marginBottom: 16 }}>
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            style={{
+                                backgroundColor: '#fed132',
+                            }}
+                            src={
+                                process.env.REACT_APP_BACKEND_URL +
+                                scroll?.author?.profile_pic
+                            }
+                        >
+                            {authorInitials}
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton
+                            size="small"
+                            className="m-1 p-1"
+                            aria-label="post options"
+                            aria-controls={scrollOptionId}
+                            style={{ zIndex: 2 }}
+                            aria-haspopup="true"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleScrollOptionOpen(e);
+                            }}
+                            color="inherit"
+                        >
+                            <MoreVert />
+                        </IconButton>
+                    }
+                    title={
+                        <div className=" d-flex align-items-center">
+                            <Typography
+                                component="a"
+                                style={{ marginRight: 8, zIndex: 2 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    history.push(
+                                        `/users/${scroll?.author?._id}`
+                                    );
+                                }}
+                            >
+                                {scroll?.author?.displayName}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                {`@${scroll?.author?._id}`}
+                            </Typography>
+                        </div>
+                    }
+                    subheader={moment(scroll?.createdAt).fromNow()}
+                />
                 <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
-                    <CardHeader
-                        avatar={
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    scroll?.author?.profile_pic
-                                }
-                            >
-                                {authorInitials}
-                            </Avatar>
-                        }
-                        action={
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                aria-label="post options"
-                                aria-controls={scrollOptionId}
-                                style={{ zIndex: 2 }}
-                                aria-haspopup="true"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleScrollOptionOpen(e);
-                                }}
-                                color="inherit"
-                            >
-                                <MoreVert />
-                            </IconButton>
-                        }
-                        title={
-                            <div className=" d-flex align-items-center">
-                                <Typography
-                                    component="a"
-                                    style={{ marginRight: 8, zIndex: 2 }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        history.push(
-                                            `/users/${scroll?.author?._id}`
-                                        );
-                                    }}
-                                >
-                                    {scroll?.author?.displayName}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                >
-                                    {`@${scroll?.author?._id}`}
-                                </Typography>
-                            </div>
-                        }
-                        subheader={moment(scroll?.createdAt).fromNow()}
-                    />
-
                     <Typography
                         variant="body2"
                         color="textSecondary"
                         component="p"
                     >
-                        <Typography
+                        <span
                             onClick={(e) => contentClickHandler(e)}
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
-                        ></Typography>
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
+                        ></span>
                     </Typography>
-                    <Grid container spacing={2} className="mb-2">
+                    <Grid
+                        container
+                        style={{
+                            margin: '3px 0px',
+                        }}
+                    >
                         {scroll?.video?.path && (
                             <Grid
                                 item
@@ -353,13 +390,16 @@ export default function Scroll({
                                 />
                             </Grid>
                         )}
+
                         {scroll?.images.length > 0 &&
                             scroll?.images?.map((imageURL, index) => (
                                 <Grid
-                                    className="mt-3"
                                     key={imageURL}
                                     item
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        padding: '2px',
+                                    }}
                                     xs={scroll?.images.length > 1 ? 6 : 12}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -389,22 +429,25 @@ export default function Scroll({
                                 </Grid>
                             ))}
                     </Grid>
+
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'post' && (
                             <ScrollPreview
                                 scroll={scroll?.shared_resource?._id}
                             />
                         )}
+
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'event' && (
                             <EventPreview
                                 event={scroll?.shared_resource?._id}
                             />
                         )}
+
                     <br />
 
                     <Typography display="inline" style={{ zIndex: 2 }}>
-                        <Typography
+                        <span
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenReactions(true);
@@ -418,9 +461,9 @@ export default function Scroll({
                                     ? 'Reaction'
                                     : 'Reactions'
                             }`}
-                        </Typography>
+                        </span>
                         {' . '}
-                        <Typography
+                        <span
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenComments(true);
@@ -431,7 +474,7 @@ export default function Scroll({
                             {`${scroll?.comments} ${
                                 scroll?.comments === 1 ? 'Comment' : 'Comments'
                             }`}
-                        </Typography>
+                        </span>
                     </Typography>
                 </CardContent>
                 <Divider />
@@ -468,6 +511,7 @@ export default function Scroll({
                         textCase
                         onClick={() => {
                             handleCreateReaction('love');
+
                             setLikeHovered(false);
                         }}
                         variant="text"
@@ -479,6 +523,7 @@ export default function Scroll({
                         textCase
                         onClick={() => {
                             handleCreateReaction('dislike');
+
                             setLikeHovered(false);
                         }}
                         variant="text"
@@ -492,6 +537,7 @@ export default function Scroll({
                         textCase
                         onClick={() => {
                             handleCreateReaction('celebrate');
+
                             setLikeHovered(false);
                         }}
                         variant="text"
@@ -550,20 +596,28 @@ export default function Scroll({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <CardContent>
+                    <div className={classes.commentSection}>
                         <div className="d-flex align-items-center">
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
-                                }
-                                className="mx-2"
-                            >
-                                {currentUserInitials}
-                            </Avatar>
+                            <Hidden smDown>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#fed132',
+                                        marginRight: '3px',
+                                    }}
+                                    src={
+                                        process.env.REACT_APP_BACKEND_URL +
+                                        user?.profile_pic
+                                    }
+                                    sx={{
+                                        width: '30px',
+                                        height: '30px',
+                                    }}
+                                >
+                                    <Typography variant="body2">
+                                        {currentUserInitials}
+                                    </Typography>
+                                </Avatar>
+                            </Hidden>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -620,13 +674,9 @@ export default function Scroll({
                             </IconButton>
                             <IconButton
                                 size="small"
-                                //className='m-1 p-1'
                                 onClick={() => {
-                                    //setOpenImage(true);
                                     document
-                                        .getElementsByClassName(
-                                            'comment-dropzone'
-                                        )[0]
+                                        .getElementById('scroll-comment-image')
                                         .click();
                                 }}
                             >
@@ -660,66 +710,15 @@ export default function Scroll({
                             <div className="space-between">
                                 <div>
                                     <div style={{ display: 'none' }}>
-                                        <DropzoneArea
-                                            clearOnUnmount
-                                            dropzoneClass="comment-dropzone"
-                                            clickable={true}
-                                            onChange={(files) => {
-                                                const errors = [];
-                                                let counter = 0;
-                                                files.map((file) => {
-                                                    const image = new Image();
-                                                    image.addEventListener(
-                                                        'load',
-                                                        () => {
-                                                            // only select images within width/height/size limits
-                                                            if (
-                                                                (image.width <
-                                                                    1200) &
-                                                                (image.height <
-                                                                    1350) &
-                                                                (file.size <
-                                                                    2500000)
-                                                            ) {
-                                                                counter += 1;
-                                                                setFileErrors(
-                                                                    []
-                                                                );
-                                                            } else {
-                                                                errors.push(
-                                                                    'Image is too large. Trim to 1200px by 1350px or less.'
-                                                                );
-                                                                setFileErrors(
-                                                                    errors
-                                                                );
-                                                            }
-                                                            if (counter === 1) {
-                                                                setPreviewURL(
-                                                                    URL.createObjectURL(
-                                                                        file
-                                                                    )
-                                                                );
-                                                                setCommentImage(
-                                                                    file
-                                                                );
-                                                            }
-                                                        }
-                                                    );
-                                                    image.src =
-                                                        URL.createObjectURL(
-                                                            file
-                                                        );
-                                                });
+                                        <input
+                                            id="scroll-comment-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
+                                                );
                                             }}
-                                            acceptedFiles={[
-                                                'image/jpeg',
-                                                'image/png',
-                                            ]}
-                                            maxFileSize={2500000}
-                                            filesLimit={1}
-                                            showPreviewsInDropzone
-                                            showPreviews={false}
-                                            showFileNames={false}
+                                            accept="image/jpeg, image/png"
                                         />
                                     </div>
                                 </div>
@@ -727,25 +726,20 @@ export default function Scroll({
                                     size="small"
                                     color="primary"
                                     className="m-1 p-1"
+                                    onClick={() => {
+                                        setPreviewURL();
+
+                                        setCommentImage(null);
+                                    }}
                                 >
-                                    <CloseRounded
-                                        onClick={() => {
-                                            setPreviewURL();
-                                            setFileErrors([]);
-                                            setCommentImage(null);
-                                        }}
-                                    />
+                                    <CloseRounded />
                                 </IconButton>
                             </div>
                         </Card>
 
-                        <div className={classes.inputHelper}>
-                            <Typography color="error" variant="body2">
-                                {fileErrors.length > 0 && fileErrors[0]}
-                            </Typography>
-                        </div>
-                        {commentsData &&
-                            commentsData?.Comments?.get
+                        {
+                            // commentsData?.Comments?.get
+                            []
                                 .filter((comment) => !comment.response_to)
                                 .map((comment) => (
                                     <Comment
@@ -771,8 +765,9 @@ export default function Scroll({
                                         }
                                         comment_image={comment_image}
                                     />
-                                ))}
-                    </CardContent>
+                                ))
+                        }
+                    </div>
                 )}
             </Card>
             <ScrollOptionsPopover
@@ -825,6 +820,12 @@ const useStyles = makeStyles((theme) => ({
         padding: '0px 10px 0px 5px',
         [theme.breakpoints.up('md')]: {
             padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
         },
     },
     red: {

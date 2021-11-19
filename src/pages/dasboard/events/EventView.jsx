@@ -4,10 +4,10 @@ import {
     ArrowBack,
     BookmarkBorderRounded,
     Launch,
-    ShareRounded,
     MoreHorizRounded,
     Public,
     RoomRounded,
+    ShareRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -32,8 +32,6 @@ import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-//import IosShareIcon from '@mui/icons-material/IosShare'
-//import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
@@ -48,6 +46,7 @@ import {
     MUTATION_REMOVE_EVENT_ATTENDANCE,
     QUERY_EVENT_BY_ID,
     QUERY_FETCH_PROFILE,
+    GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 import AttendeeComponent from './AttendeeComponent';
 import CreateEvent from './CreateEvent';
@@ -58,31 +57,6 @@ import InviteFriends from './InviteFriends';
 import UpdateEvent from './UpdateEvent';
 
 const eventOptionsId = 'event-options-menu';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    details: {
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: '3fr 2fr',
-        },
-    },
-
-    endTime: {
-        color: theme.palette.primary.main,
-    },
-    avatar: {
-        backgroundColor: '#fed132',
-        marginRight: '8px',
-        [theme.breakpoints.up('md')]: {
-            width: 80,
-            height: 80,
-        },
-    },
-}));
 
 export default function EventView() {
     const [eventOptionsAnchorEl, setEventOptionsAnchorEl] = useState(null);
@@ -190,6 +164,16 @@ export default function EventView() {
                     type: 'event',
                 },
             },
+            refetchQueries: [
+                {
+                    query: GET_BOOKMARKED_EVENTS,
+                    variables: {
+                        data: {
+                            sortAscending: true,
+                        },
+                    },
+                },
+            ],
         });
         toast.success('Added to saved items', {
             position: 'bottom-left',
@@ -199,7 +183,6 @@ export default function EventView() {
             pauseOnHover: true,
             draggable: true,
         });
-
         handleEventOptionsClose();
     };
 
@@ -470,6 +453,7 @@ export default function EventView() {
                                                     <Typography
                                                         className="text-success"
                                                         variant="body2"
+                                                        component="div"
                                                     >
                                                         {eventData?.Events
                                                             ?.getById?.host
@@ -554,7 +538,7 @@ export default function EventView() {
                                             </div>
                                         </CardContent>
                                         <Divider />
-                                        <CardActions className="space-between">
+                                        <CardActions className="space-between pb-0">
                                             <div>
                                                 <Tabs
                                                     value={value}
@@ -699,6 +683,7 @@ export default function EventView() {
                                                                 display="inline-flex"
                                                                 className="center-horizontal"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Typography variant="body2">
                                                                     Organizers :
@@ -706,6 +691,7 @@ export default function EventView() {
                                                                 <Typography
                                                                     display="inline-flex"
                                                                     className="center-horizontal"
+                                                                    component="div"
                                                                 >
                                                                     {eventData
                                                                         ?.Events
@@ -749,6 +735,7 @@ export default function EventView() {
                                                                 display="inline-flex"
                                                                 className="center-horizontal"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Typography variant="body2">
                                                                     Tags :
@@ -756,6 +743,7 @@ export default function EventView() {
                                                                 <Typography
                                                                     display="inline-flex"
                                                                     className="center-horizontal"
+                                                                    component="div"
                                                                 >
                                                                     {eventData?.Events?.getById?.tags?.map(
                                                                         (
@@ -791,6 +779,7 @@ export default function EventView() {
                                                                 className="center-horizontal"
                                                                 variant="body2"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Launch
                                                                     fontSize="small"
@@ -902,7 +891,7 @@ export default function EventView() {
                                                         Description
                                                     </Typography>
                                                     <Typography
-                                                        component="p"
+                                                        component="div"
                                                         variant="body2"
                                                     >
                                                         <Typography
@@ -913,6 +902,10 @@ export default function EventView() {
                                                             }
                                                             style={{
                                                                 zIndex: 2,
+                                                                overflowWrap:
+                                                                    'break-word',
+                                                                wordWrap:
+                                                                    'break-word',
                                                             }}
                                                             dangerouslySetInnerHTML={{
                                                                 __html: contentBodyFactory(
@@ -1101,3 +1094,28 @@ export default function EventView() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    details: {
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        [theme.breakpoints.up('md')]: {
+            gridTemplateColumns: '3fr 2fr',
+        },
+    },
+
+    endTime: {
+        color: theme.palette.primary.main,
+    },
+    avatar: {
+        backgroundColor: '#fed132',
+        marginRight: '8px',
+        [theme.breakpoints.up('md')]: {
+            width: 80,
+            height: 80,
+        },
+    },
+}));
