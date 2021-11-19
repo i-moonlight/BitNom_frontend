@@ -11,7 +11,6 @@ import { getUserInitials } from '../../../../utilities/Helpers';
 export default function UserSearch({
     searchResults,
     loading,
-
     setSearchedValues,
     searchTerm,
     updateSearchTerm,

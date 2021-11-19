@@ -23,6 +23,66 @@ export const SEARCH_CHATS = gql`
         Dialogue {
             search(params: $params) {
                 _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                otherUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                status
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }

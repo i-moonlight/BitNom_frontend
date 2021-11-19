@@ -7,8 +7,9 @@ const initialState = {
     archived: [],
     unreadCount: null,
     searchData: [],
-    pinnedMessages: [],
     pinnedChats: [],
+    searchedChats: [],
+    pinnedMessages: [],
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -102,13 +103,14 @@ export default function chatReducer(state = initialState, action) {
                 ...state,
                 pinnedMessages: [...action.data],
             };
+
         case 'ADD_MESSAGE_TO_PINNED_MESSAGES':
             return {
                 ...state,
                 pinnedMessages: [
                     ...state.pinnedMessages.slice(0, action.data),
                     action.data,
-                    ...state.pinnedMessages.slice(action.data),
+                    ...state.pinnedMessages.slice(0, action.data),
                 ],
             };
         case 'DELETE_PINNED_MESSAGE':
@@ -148,6 +150,17 @@ export default function chatReducer(state = initialState, action) {
             return {
                 ...state,
                 unreadCount: action.data,
+            };
+
+        case 'SET_CHAT_SRCH_DATA':
+            return {
+                ...state,
+                searchedChats: [...action.data],
+            };
+        case 'CLEAR_CHAT_SRCH_DATA':
+            return {
+                ...state,
+                searchedChats: [],
             };
         default:
             return { ...state };

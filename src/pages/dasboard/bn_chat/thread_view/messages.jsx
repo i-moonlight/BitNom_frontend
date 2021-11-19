@@ -102,7 +102,9 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
-        dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+        if (pinnedMessages?.Dialogue?.getMessages !== undefined) {
+            dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+        }
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
     useEffect(() => {
@@ -139,7 +141,10 @@ export default function Messages({ onExitChatMobile }) {
                                 <List
                                     component="nav"
                                     subheader={
-                                        <ListSubheader>
+                                        <ListSubheader
+                                            component="div"
+                                            id="nested-list-subheader"
+                                        >
                                             Pinned Messages
                                         </ListSubheader>
                                     }

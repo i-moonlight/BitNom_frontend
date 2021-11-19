@@ -36,7 +36,9 @@ export default function MessagePopover({
     });
     const handlePinMessage = () => {
         pinMessage();
-        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        if (data?.Dialogue?.pinMessage !== undefined) {
+            dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        }
     };
     const handleDeleteMessage = () => {
         deleteMessage();
@@ -46,7 +48,7 @@ export default function MessagePopover({
     const handleReportMessage = () => {
         console.log('REPORT');
     };
-
+    console.log('data', data);
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
