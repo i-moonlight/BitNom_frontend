@@ -1,27 +1,25 @@
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import {Box, Tab, Tabs, Typography} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 
 export default function ProjectInfo() {
     const [value, setValue] = React.useState(0);
+    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const classes = useStyles();
-
     return (
-        <Typography color={'textPrimary'} component="div">
+        <Typography color={'textPrimary'} sx={{ width: '100%', typography: 'body1' }}  component="div">
             <Box sx={{ flexGrow: 1, display: 'flex' }}>
                 <Tabs
                     orientation="vertical"
-                    variant="scrollable"
                     value={value}
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
-                    sx={{ borderRight: 1, borderColor: 'none' }}
+                    sx={{ borderColor: 'none', minWidth: '100px'}}
                     style={custom.tabsContainer}
                 >
                     <Tab
@@ -258,11 +256,7 @@ export default function ProjectInfo() {
                         </div>
                     </div>
                 </TabPanel>
-                <TabPanel
-                    value={value}
-                    index={1}
-                    classes={{ root: classes.tabPanelRoot }}
-                >
+                <TabPanel value={value} index={1} classes={{ root: classes.tabPanelRoot }}>
                     <div>
                         <h4>
                             <strong>Investors</strong>
@@ -370,8 +364,7 @@ function TabPanel(props) {
 
     return (
         <div
-            role="tabpanel"
-            hidden={value !== index}
+            role="tabpanel" hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
