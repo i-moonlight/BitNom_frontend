@@ -50,7 +50,7 @@ export const verifySuccess = () => {
         setBusy(true);
 
         dispatch({ type: 'USER_VERIFY_SUCCESS' });
-        setBusy(true);
+        setBusy(false);
     };
 };
 
