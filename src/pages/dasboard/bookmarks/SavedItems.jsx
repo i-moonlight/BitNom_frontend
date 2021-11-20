@@ -248,7 +248,7 @@ export default function SavedItems() {
                                 !bookmarksLoading ? (
                                     <Grid align="center">
                                         <Typography
-                                            variant="body1"
+                                            variant="body2"
                                             color="primary"
                                         >
                                             Nothing here yet.

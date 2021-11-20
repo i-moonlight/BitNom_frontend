@@ -160,7 +160,7 @@ function getModalStyle() {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
-        ':focus-visibile:': {
+        ':focusVisibile:': {
             outline: 'none !important',
         },
     };
@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '550px',
-        padding: '10px 50px',
+        padding: '10px',
         margin: 0,
         [theme.breakpoints.down('sm')]: {
             padding: '5px',

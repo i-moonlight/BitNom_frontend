@@ -45,47 +45,6 @@ import {
 import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
 
-const useStyles = makeStyles((theme) => ({
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
-const commentOptionId = 'menu-comment-option';
-const emojiPickerId = 'emoji-picker-popover';
 export default function Comment({
     comment,
     style,
@@ -327,8 +286,12 @@ export default function Comment({
                     >
                         <CardContent>
                             <div className="center-horizontal space-between w-100">
-                                <Typography variant="body2" display="inline">
-                                    <span
+                                <Typography
+                                    component="div"
+                                    variant="body2"
+                                    display="inline"
+                                >
+                                    <Typography
                                         variant="body2"
                                         component="a"
                                         onClick={(e) => {
@@ -339,16 +302,24 @@ export default function Comment({
                                         }}
                                     >
                                         {comment?.author?.displayName}
-                                    </span>
-                                    <span display="inline" variant="body2">
+                                    </Typography>
+                                    <Typography
+                                        display="inline"
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
                                         . @{comment?.author?._id}
-                                    </span>
-                                    <span display="inline" variant="body2">
+                                    </Typography>
+                                    <Typography
+                                        display="inline"
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
                                         .{' '}
                                         {moment(
                                             comment.creation_date
                                         ).fromNow()}
-                                    </span>
+                                    </Typography>
                                 </Typography>
                                 <IconButton
                                     size="small"
@@ -360,12 +331,8 @@ export default function Comment({
                                     <MoreHorizRounded />
                                 </IconButton>
                             </div>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                            >
-                                <span
+                            <Typography variant="body2" component="div">
+                                <Typography
                                     variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
@@ -376,7 +343,7 @@ export default function Comment({
                                         overflowWrap: 'break-word',
                                         wordWrap: 'break-word',
                                     }}
-                                ></span>
+                                ></Typography>
 
                                 {comment?.image.length > 0 && (
                                     <Grid container spacing={2}>
@@ -515,7 +482,7 @@ export default function Comment({
                         {/* {comment?.response_to ? '' : '.'} */}
                         {!comment?.response_to && (
                             <Typography
-                                color="inherit"
+                                color="textSecondary"
                                 component={Button}
                                 onClick={() => {
                                     setOpenReplies(true);
@@ -523,8 +490,8 @@ export default function Comment({
                                 }}
                                 textCase
                                 variantAlt="text"
-                                className="p-0 my-1"
                                 variant="body2"
+                                className={classes.replies}
                             >
                                 Reply
                             </Typography>
@@ -748,3 +715,45 @@ export default function Comment({
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+            color: 'inherit',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    replies: {
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+            color: 'inherit',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const commentOptionId = 'menu-comment-option';
+const emojiPickerId = 'emoji-picker-popover';

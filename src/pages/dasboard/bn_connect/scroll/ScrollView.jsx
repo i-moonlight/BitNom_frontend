@@ -236,7 +236,7 @@ function PostView() {
                 },
             ],
         });
-        if (!createCommentData) console.log(createCommentData);
+        if (!createCommentData) console.log('');
         setCommentFilter(1);
         setCommentText('');
         setCommentImage(null);
@@ -533,7 +533,10 @@ function PostView() {
                                             </div>
                                         }
                                         subheader={
-                                            <Typography variant="body2">
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                            >
                                                 {moment(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
@@ -544,10 +547,10 @@ function PostView() {
                                     <CardContent>
                                         <Typography
                                             variant="body2"
-                                            color="textSecondary"
-                                            component="p"
+                                            component="div"
                                         >
                                             <Typography
+                                                variant="body2"
                                                 onClick={(e) =>
                                                     contentClickHandler(e)
                                                 }
@@ -666,8 +669,13 @@ function PostView() {
                                             )}
                                         <br />
 
-                                        <Typography display="inline">
+                                        <Typography
+                                            display="inline"
+                                            component="div"
+                                            color="textSecondary"
+                                        >
                                             <Typography
+                                                variant="body2"
                                                 onClick={() => {
                                                     setOpenReactions(true);
                                                     setResourceReactions(
@@ -691,6 +699,7 @@ function PostView() {
                                             </Typography>
                                             {' . '}
                                             <Typography
+                                                variant="body2"
                                                 onClick={() =>
                                                     setOpenComments(true)
                                                 }
@@ -1037,16 +1046,15 @@ function PostView() {
                                                         size="small"
                                                         color="primary"
                                                         className="m-1 p-1"
-                                                    >
-                                                        <CloseRounded
-                                                            onClick={() => {
-                                                                setPreviewURL();
+                                                        onClick={() => {
+                                                            setPreviewURL();
 
-                                                                setCommentImage(
-                                                                    null
-                                                                );
-                                                            }}
-                                                        />
+                                                            setCommentImage(
+                                                                null
+                                                            );
+                                                        }}
+                                                    >
+                                                        <CloseRounded />
                                                     </IconButton>
                                                 </div>
                                             </Card>
@@ -1059,6 +1067,7 @@ function PostView() {
                                                     style={{
                                                         margin: '15px 0px',
                                                     }}
+                                                    component="div"
                                                 >
                                                     <FilterButton
                                                         setCommentFilter={
@@ -1303,20 +1312,20 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     clickableTypography: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
         [theme.breakpoints.down('md')]: {
             textDecoration: 'underline',
         },
     },
     replies: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
     },
     inputHelper: {

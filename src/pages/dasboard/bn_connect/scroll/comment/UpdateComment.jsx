@@ -32,7 +32,11 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { mentionsFinder, mentionsUpdate } from '../../../utilities/functions';
+import {
+    mentionsFinder,
+    mentionsUpdate,
+    getFeed,
+} from '../../../utilities/functions';
 import {
     MUTATION_DELETE_COMMENT,
     MUTATION_UPDATE_COMMENT,
@@ -74,7 +78,12 @@ export default function UpdateComment({
                 _id: id,
             },
             refetchQueries: [
-                { query: QUERY_LOAD_SCROLLS },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_GET_COMMENTS,
                     variables: { data: { scroll_id: commentToEdit?.scroll } },
@@ -95,6 +104,12 @@ export default function UpdateComment({
                 data: IUpdateComment,
             },
             refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_GET_COMMENTS,
                     variables: { data: { scroll_id: commentToEdit?.scroll } },

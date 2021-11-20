@@ -108,9 +108,10 @@ export default function SavedPost({ scroll }) {
                         <Typography
                             variant="body2"
                             color="textSecondary"
-                            component="p"
+                            component="div"
                         >
                             <Typography
+                                variant="body2"
                                 onClick={(e) => contentClickHandler(e)}
                                 dangerouslySetInnerHTML={{
                                     __html: contentBodyFactory(scroll),
@@ -180,8 +181,8 @@ export default function SavedPost({ scroll }) {
                             )}
 
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography component="div" display="inline">
+                            <Typography display="inline" variant="body2">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
                                         ? 'Reaction'
@@ -189,7 +190,7 @@ export default function SavedPost({ scroll }) {
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${scroll?.comments} ${
                                     scroll?.comments === 1
                                         ? 'Comment'

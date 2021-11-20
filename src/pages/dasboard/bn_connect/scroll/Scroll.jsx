@@ -349,12 +349,10 @@ export default function Scroll({
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="div"
-                    >
-                        <span
+                    <Typography component="div">
+                        <Typography
+                            variant="body2"
+                            component="span"
                             onClick={(e) => contentClickHandler(e)}
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
@@ -364,7 +362,7 @@ export default function Scroll({
                                 overflowWrap: 'break-word',
                                 wordWrap: 'break-word',
                             }}
-                        ></span>
+                        ></Typography>
                     </Typography>
                     <Grid
                         container
@@ -447,7 +445,10 @@ export default function Scroll({
                     <br />
 
                     <Typography display="inline" style={{ zIndex: 2 }}>
-                        <span
+                        <Typography
+                            component="span"
+                            color="textSecondary"
+                            variant="body2"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenReactions(true);
@@ -461,9 +462,12 @@ export default function Scroll({
                                     ? 'Reaction'
                                     : 'Reactions'
                             }`}
-                        </span>
+                        </Typography>
                         {' . '}
-                        <span
+                        <Typography
+                            color="textSecondary"
+                            component="span"
+                            variant="body2"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenComments(true);
@@ -474,7 +478,7 @@ export default function Scroll({
                             {`${scroll?.comments} ${
                                 scroll?.comments === 1 ? 'Comment' : 'Comments'
                             }`}
-                        </span>
+                        </Typography>
                     </Typography>
                 </CardContent>
                 <Divider />
@@ -796,20 +800,20 @@ export default function Scroll({
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
         [theme.breakpoints.down('md')]: {
             textDecoration: 'underline',
         },
     },
     replies: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
     },
     inputHelper: {
