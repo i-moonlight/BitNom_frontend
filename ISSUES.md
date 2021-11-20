@@ -39,3 +39,4 @@ Uncaught (in promise) f: OneSignal: The OneSignal web SDK can only be initialize
 ## Updates
 
 -   [ ] Add limit to number of login attempts
+-   [ ] DDOS attempts protection?
