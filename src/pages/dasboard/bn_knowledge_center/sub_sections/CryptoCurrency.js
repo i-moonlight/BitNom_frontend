@@ -44,9 +44,7 @@ export default function CryptoCurrencyPage() {
                 getCoins(data);
                 checkLoadedCoin(true);
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(() => {});
     }, []);
 
     return (

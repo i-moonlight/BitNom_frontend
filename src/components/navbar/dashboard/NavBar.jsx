@@ -64,6 +64,7 @@ export default function NavBar() {
         QUERY_FETCH_PROFILE,
         {
             context: { clientName: 'users' },
+            fetchPolicy: 'network-only',
         }
     );
 

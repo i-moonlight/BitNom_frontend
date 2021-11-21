@@ -16,9 +16,7 @@ export function CryptoGazing() {
                 getCoin(data);
                 checkLoadedCoin(true);
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(() => {});
     }, []);
 
     return (

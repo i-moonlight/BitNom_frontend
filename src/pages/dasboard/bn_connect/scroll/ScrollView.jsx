@@ -78,56 +78,9 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    commentSection: {
-        padding: '5px 4px',
-        [theme.breakpoints.up('md')]: {
-            padding: '15px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
+
 function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -150,7 +103,6 @@ function PostView() {
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
     const [previewURL, setPreviewURL] = useState();
-
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -162,7 +114,6 @@ function PostView() {
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
-
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -227,13 +178,14 @@ function PostView() {
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+
     const [
         createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
+        // {
+        //     data: createCommentData,
+        //     // loading: createCommentLoading,
+        //     // error: createCommentError,
+        // },
     ] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
@@ -268,7 +220,8 @@ function PostView() {
                 },
             ],
         });
-        if (!createCommentData) console.log(createCommentData);
+
+        // if (!createCommentData) console.log(createCommentData);
         setCommentFilter(1);
         setCommentText('');
         setCommentImage(null);
@@ -407,6 +360,7 @@ function PostView() {
     const authorInitials = getUserInitials(
         postData?.Posts?.getById?.author?.displayName
     );
+
     const currentUserInitials = getUserInitials(user?.displayName);
 
     const latestComments = commentsData?.Comments?.get.filter(
@@ -1320,5 +1274,53 @@ function PostView() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
 
 export default PostView;

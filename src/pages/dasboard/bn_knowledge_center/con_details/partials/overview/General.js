@@ -67,6 +67,7 @@ export default function General({ coinDetail }) {
     // };
 
     const handleClick = () => {
+        // eslint-disable-next-line no-console
         console.info('You clicked the Chip.');
     };
 

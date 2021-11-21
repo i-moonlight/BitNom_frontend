@@ -17,6 +17,7 @@ const saveToLocalStorage = (state) => {
         const stringState = JSON.stringify(state);
         localStorage.setItem(storeName, stringState);
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log('Error saving state to local storage: ', err);
     }
 };
@@ -28,7 +29,6 @@ const loadFromLocalStorage = () => {
         if (stringState === null) return undefined;
         return JSON.parse(stringState);
     } catch (err) {
-        console.log(err);
         return undefined;
     }
 };
@@ -36,11 +36,20 @@ const loadFromLocalStorage = () => {
 // Use Local Storage Persistance
 const persistedStorage = loadFromLocalStorage();
 
+// const thunk = createThunkMiddleware({
+//     extraArgumentsEnhanced: {
+//         fetch,
+//     },
+// });
+
+const middleware = [thunk];
+
 // Initialize Store
 const store = createStore(
     rootReducer,
     persistedStorage,
-    composeWithDevTools(applyMiddleware(thunk))
+    // applyMiddleware(thunk)
+    composeWithDevTools(applyMiddleware(...middleware))
 );
 
 //Sync to local storage everytime store changes

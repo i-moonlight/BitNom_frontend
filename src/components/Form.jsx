@@ -5,6 +5,7 @@ export default function Form({
     onSubmit,
     validationSchema,
     children,
+    enterSubmit,
 }) {
     return (
         <Formik
@@ -12,18 +13,20 @@ export default function Form({
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {() => {
+            {({ isSubmitting, values }) => {
                 return (
                     <>
-                        {children}
-                        {/* {JSON.stringify(errors) !== "{}" &&
-              JSON.stringify(touched) !== "{}" && (
-                <div className="container">
-                  <div className="alert alert-danger">
-                    Check the errors above
-                  </div>
-                </div>
-              )} */}
+                        <div
+                            onKeyUp={(e) => {
+                                if (enterSubmit) {
+                                    if (e.key === 'Enter') {
+                                        !isSubmitting && onSubmit(values);
+                                    }
+                                }
+                            }}
+                        >
+                            {children}
+                        </div>
                     </>
                 );
             }}

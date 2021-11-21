@@ -28,7 +28,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import { loadScrolls } from '../../../../store/actions/postActions';
-import { createPostIcons } from '../../../../store/local/dummy';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import { getFeed, mentionsFinder } from '../../utilities/functions';
@@ -483,7 +482,7 @@ export default function CreatePost({
                                     >
                                         <InsertEmoticon />
                                     </IconButton>
-                                    {createPostIcons.map(({ Icon }) => {
+                                    {/* {createPostIcons.map(({ Icon }) => {
                                         return (
                                             <IconButton
                                                 size="small"
@@ -492,7 +491,7 @@ export default function CreatePost({
                                                 <Icon />
                                             </IconButton>
                                         );
-                                    })}
+                                    })} */}
                                 </div>
                                 {!loading && (
                                     <Button

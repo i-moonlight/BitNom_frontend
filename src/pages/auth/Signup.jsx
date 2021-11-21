@@ -115,6 +115,7 @@ export default function Signup() {
     };
 
     const failureGoogle = (response) => {
+        // eslint-disable-next-line no-console
         console.log('googleErr: ', response);
     };
 
@@ -145,6 +146,7 @@ export default function Signup() {
                     <Card elevation={4}>
                         <CardContent>
                             <Form
+                                enterSubmit
                                 initialValues={createUserInitialValues}
                                 validationSchema={createUserValidationSchema}
                                 onSubmit={({ username, email, password }) => {
