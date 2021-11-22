@@ -212,21 +212,21 @@ function EventListCard({
                 </Grid>
                 {selectedIndex === 0 && upcomingEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have no upcoming events.
                         </Typography>
                     </Grid>
                 )}
                 {selectedIndex === 1 && pastEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have no past events.
                         </Typography>
                     </Grid>
                 )}
                 {selectedIndex === 2 && savedEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have not saved any events.
                         </Typography>
                     </Grid>
@@ -321,47 +321,37 @@ function EventPreview({ event }) {
                                 <RoomRounded color="primary" />
                                 <Typography
                                     color="primary"
-                                    style={{ textDecoration: 'underline' }}
                                     variant="body2"
+                                    href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
+                                    style={{
+                                        color: 'inherit',
+                                        zIndex: '3',
+                                        textDecoration: 'underline',
+                                    }}
+                                    onClick={(e) => e.stopPropagation()}
+                                    target="_blank"
+                                    rel="noreferrer"
                                 >
-                                    <a
-                                        href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                                        style={{
-                                            color: 'inherit',
-                                            zIndex: '3',
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        {truncateText(
-                                            event?.location?.address,
-                                            40
-                                        )}
-                                    </a>
+                                    {truncateText(event?.location?.address, 40)}
                                 </Typography>
                             </div>
                         ) : (
                             <div className="center-horizontal">
                                 <VideocamRounded color="primary" />
                                 <Typography
+                                    component="a"
                                     color="primary"
-                                    style={{ textDecoration: 'underline' }}
                                     variant="body2"
+                                    style={{
+                                        textDecoration: 'underline',
+                                        zIndex: '3',
+                                    }}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href={event?.link}
+                                    onClick={(e) => e.stopPropagation()}
                                 >
-                                    <a
-                                        //component='a'
-                                        href={event?.link}
-                                        style={{
-                                            color: 'inherit',
-                                            zIndex: '3',
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        Online
-                                    </a>
+                                    Online
                                 </Typography>
                             </div>
                         )}

@@ -65,7 +65,7 @@ export default function ScrollPreview({ scroll }) {
                         </div>
                     }
                     subheader={
-                        <Typography variant="body2">
+                        <Typography component="span" variant="body2">
                             {moment(scroll?.createdAt).fromNow()}
                         </Typography>
                     }
@@ -74,11 +74,12 @@ export default function ScrollPreview({ scroll }) {
                     <Typography
                         variant="body2"
                         color="textSecondary"
-                        component="p"
+                        component="div"
                     >
                         <Typography
                             variant="body2"
                             onClick={(e) => contentClickHandler(e)}
+                            component="div"
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
@@ -137,7 +138,11 @@ export default function ScrollPreview({ scroll }) {
                                 ))}
                         </Grid>
                         <br />
-                        <Typography variant="body2" display="inline">
+                        <Typography
+                            component="div"
+                            variant="body2"
+                            display="inline"
+                        >
                             <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
