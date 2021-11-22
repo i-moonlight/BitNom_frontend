@@ -1307,9 +1307,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     mainCard: {
+        marginTop: 16,
         [theme.breakpoints.down('md')]: {
             marginBottom: 16,
-            marginTop: 16,
         },
     },
     clickableTypography: {
