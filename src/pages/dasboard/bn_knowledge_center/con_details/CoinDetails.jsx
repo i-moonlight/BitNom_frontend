@@ -22,12 +22,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import Screen from '../../../../components/Screen';
-import Forum from './partials/Forum';
+import Forum from './partials/forum/Forum';
 import HistoricalData from './partials/HistoricalData';
-import Market from './partials/Market';
-import News from './partials/News';
+import Market from './partials/market/Market';
+import News from './partials/news/News';
 import Overview from './partials/overview/Overview';
-import ProjectInfo from './partials/ProjectInfo';
+import ProjectInfo from './partials/project_info/ProjectInfo';
 
 export default function CoinDetails({ match }) {
     const [value, setValue] = useState('1');
@@ -82,7 +82,7 @@ export default function CoinDetails({ match }) {
                             >
                                 <div>
                                     <div>
-                                        <img alt={'Bitcoin image'} />
+                                        <img alt={'Bitcoin image'} src={coinDetail?.image.small}/>
                                     </div>
                                     <div>
                                         <p>

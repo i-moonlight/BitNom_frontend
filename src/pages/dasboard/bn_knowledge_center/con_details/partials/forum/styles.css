@@ -1,0 +1,14 @@
+/**
+* Created by PhpStorm.
+* User: don@donphelix.com
+* Date: 11/18/21
+* Time: 10:00 PM
+*/
+
+.content {
+    display: none;
+}
+
+.active-content {
+    display: inline;
+}

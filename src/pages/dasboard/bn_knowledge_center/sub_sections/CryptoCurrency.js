@@ -17,8 +17,9 @@ import {
     TableRow,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
+
 
 export default function CryptoCurrencyPage() {
     const [page, setPage] = React.useState(0);
@@ -37,8 +38,9 @@ export default function CryptoCurrencyPage() {
         setPage(0);
     };
 
+
     useEffect(() => {
-        fetch('https://api.coingecko.com/api/v3/coins')
+        fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 getCoins(data);
@@ -108,7 +110,7 @@ export default function CryptoCurrencyPage() {
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <img
-                                                    src={row.image.small}
+                                                    src={row.image}
                                                     alt={'coin image'}
                                                     height="25px"
                                                 />
@@ -129,35 +131,32 @@ export default function CryptoCurrencyPage() {
                                             <StyledTableCell>
                                                 $
                                                 {
-                                                    row.market_data
-                                                        .current_price.usd
+                                                    row.current_price
                                                 }
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 $
                                                 {
-                                                    row.market_data.total_volume
-                                                        .usd
+                                                    row.total_volume
                                                 }
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 $
-                                                {row.market_data.market_cap.usd}
+                                                {row.market_cap}
                                             </StyledTableCell>
                                             <StyledTableCell
                                                 className={'text-danger'}
                                             >
                                                 {
-                                                    row.market_data
-                                                        .price_change_24h_in_currency
-                                                        .usd
+                                                    row.price_change_percentage_24h
                                                 }
                                                 %
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                {/*<Sparklines*/}
-                                                {/*    data={[5, 10, 5, 20, 8, 15]} limit={5} width={100} height={20}>*/}
-                                                {/*</Sparklines>*/}
+                                                <Suspense fallback={<div>Loading...</div>}>
+                                                    <PriceGraph sparkline={row.sparkline_in_7d}/>
+                                                </Suspense>
+
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     );
@@ -200,6 +199,8 @@ export default function CryptoCurrencyPage() {
     );
 }
 
+const PriceGraph = React.lazy(() => import('../bn_charts/PriceGraph'));
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -219,3 +220,5 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
+
+const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true`;
