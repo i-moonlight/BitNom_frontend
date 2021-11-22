@@ -57,6 +57,9 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                     ref={anchorRef}
                     aria-label="split button"
                     size="small"
+                    style={{
+                        width: 'fit-content',
+                    }}
                     color="inherit"
                 >
                     <Button
@@ -74,6 +77,7 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
                         aria-controls={open ? 'split-button-menu' : undefined}
                         aria-expanded={open ? 'true' : undefined}

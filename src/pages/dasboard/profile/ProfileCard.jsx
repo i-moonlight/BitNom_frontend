@@ -249,7 +249,8 @@ export default function ProfileCard({ profile, profileView }) {
                                     justifyContent: 'center',
                                     cursor: !profileView && 'pointer',
                                     border:
-                                        !profilePreviewURL && 'dotted 1px #000',
+                                        !profilePreviewURL &&
+                                        'dotted 1px inherit',
                                 }}
                                 onClick={
                                     !profileView

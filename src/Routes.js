@@ -2,6 +2,9 @@ import { ApolloProvider } from '@apollo/client';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import ConnectProfile from './pages/dasboard/bn_connect/ConnectProfile';
+import TrendingPostsView from './pages/dasboard/bn_connect/TrendindPostsView';
+
 const CoinDetails = React.lazy(() =>
     import('./pages/dasboard/bn_knowledge_center/con_details/CoinDetails')
 );
@@ -204,6 +207,16 @@ export default function Routes({ apolloClient }) {
                                         // }
                                     }
                                     path="/connect"
+                                />
+                                <Route
+                                    exact
+                                    component={ConnectProfile}
+                                    path="/connect/profile"
+                                />
+                                <Route
+                                    exact
+                                    component={TrendingPostsView}
+                                    path="/connect/trending"
                                 />
                                 <Route exact component={BnChat} path="/chat" />
                                 <Route
