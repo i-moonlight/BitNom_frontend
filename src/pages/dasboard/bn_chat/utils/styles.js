@@ -191,4 +191,18 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius: '5px 2px 2px 5px',
         height: '60px',
     },
+    responseTo: {
+        backgroundColor: theme.palette.background.responseTo,
+        marginLeft: '8px',
+        marginRight: '8px',
+        borderWidth: '0px 0px 0px 7px ',
+        borderRadius: '5px 5px 5px 5px',
+    },
+    responseToOut: {
+        backgroundColor: theme.palette.background.responseOutGoing,
+        marginLeft: '8px',
+        marginRight: '8px',
+        borderWidth: '0px 0px 0px 7px ',
+        borderRadius: '5px 5px 5px 5px',
+    },
 }));

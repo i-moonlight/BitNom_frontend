@@ -33,7 +33,7 @@ export const addMessagesToCurrentChat = (data) => {
 export const updateMessage = (data) => {
     return (dispatch) => dispatch({ data, type: 'UPDATE_MESSAGE' });
 };
-export const setSearchOutput = (data = []) => {
+export const setSearchOutput = (data) => {
     return (dispatch) => dispatch({ data, type: 'SET_SEARCH_OUTPUT' });
 };
 export const clearSearchOutput = () => {
@@ -47,9 +47,11 @@ export const removeFromMessages = (data) => {
 };
 //pinned chats::chat actions to manipulate state around pinned messages
 export const addPinnedMessage = (data = []) => {
+    console.log('DATAP', data);
     return (dispatch) => dispatch({ data, type: 'ADD_PINNED_MESSAGES' });
 };
 export const addToPinnedMessage = (data) => {
+    console.log('PIN_MESSAGE', data);
     return (dispatch) =>
         dispatch({ data, type: 'ADD_MESSAGE_TO_PINNED_MESSAGES' });
 };
@@ -78,4 +80,18 @@ export const setArchivedChats = (data = []) => {
 };
 export const addToArchivedChats = (data) => {
     return (dispatch) => dispatch({ data, type: 'ADD_TO_ARCHIVED' });
+};
+export const deleteArchivedchat = (data) => {
+    return (dispatch) => dispatch({ data, type: 'DELETE_ARCHIVED_CHAT' });
+};
+//total count
+export const setTotalCount = (data) => {
+    return (dispatch) => dispatch({ data, type: 'SET_TOTAL_COUNT' });
+};
+//chat searches
+export const setChatSearchInput = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'SET_CHAT_SRCH_DATA' });
+};
+export const clearSearchChatData = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_CHAT_SRCH_DATA' });
 };

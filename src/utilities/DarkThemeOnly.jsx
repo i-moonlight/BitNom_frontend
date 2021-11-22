@@ -20,6 +20,8 @@ export default function DarkThemeOnly({ children }) {
                 chatTo: '#E5EFF4',
                 chatActive: '#bde0ff',
                 messagePrompt: '#93c7f5',
+                responseTo: '#93c7f5',
+                responseOutGoing: '#BDE0FF',
             },
         },
     });

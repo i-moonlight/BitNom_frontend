@@ -59,6 +59,7 @@ export default function NavBar() {
     const isTabOptionOpen = Boolean(tabOptionAnchorEl);
     const isNotificationOpen = Boolean(notificationAnchorEl);
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
+    const unreadCount = state.chats.unreadCount;
 
     // const { loading: profileLoading, data: profileData } = useQuery(
     //     QUERY_FETCH_PROFILE,
@@ -219,7 +220,7 @@ export default function NavBar() {
 
         const logo = document.getElementById('favicon');
 
-        if (_count > 0) {
+        if (_count > 0 || unreadCount > 0) {
             logo.href = `${window.location.origin}/logo_badge.svg`;
         } else {
             logo.href = `${window.location.origin}/logo.svg`;
@@ -230,6 +231,7 @@ export default function NavBar() {
         // }
     }, [
         _count,
+        unreadCount,
         dispatch,
         eventsData?.Events?.get,
         // isAuth,
@@ -250,6 +252,7 @@ export default function NavBar() {
             <StatusBar />
             <Divider />
             <ProfileBar
+                unreadCount={unreadCount}
                 notificationCount={_count}
                 menuId={menuId}
                 handleMenuOpen={handleMenuOpen}
