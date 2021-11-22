@@ -246,7 +246,7 @@ export default function NavBar() {
             <StatusBar />
             <Divider />
             <ProfileBar
-                notifications={_count}
+                notificationCount={_count}
                 menuId={menuId}
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}
@@ -281,7 +281,7 @@ export default function NavBar() {
                 handleMenuClose={handleMenuClose}
             />
             <NotificationsPopover
-                notifications={_count}
+                notifications={response}
                 notificationAnchorEl={notificationAnchorEl}
                 notificationId={notificationId}
                 isNotificationOpen={isNotificationOpen}

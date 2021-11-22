@@ -115,7 +115,11 @@ export default function SavedPost({ scroll }) {
                                 dangerouslySetInnerHTML={{
                                     __html: contentBodyFactory(scroll),
                                 }}
-                                style={{ zIndex: 2 }}
+                                style={{
+                                    zIndex: 2,
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
                             ></Typography>
                         </Typography>
                         <Grid container style={{ margin: '3px 0px' }}>
@@ -134,7 +138,7 @@ export default function SavedPost({ scroll }) {
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
                                         style={{
-                                            padding: '1px',
+                                            padding: '2px',
                                         }}
                                         key={imageURL}
                                         item

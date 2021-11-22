@@ -251,8 +251,7 @@ export default function SavedItems() {
                                             variant="body1"
                                             color="primary"
                                         >
-                                            No Saved items here yet..start
-                                            bookmarking!!
+                                            Nothing here yet.
                                         </Typography>
                                     </Grid>
                                 ) : (

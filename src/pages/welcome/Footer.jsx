@@ -1,16 +1,37 @@
+import { useMutation } from '@apollo/client';
 import { Container, Divider, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logo_light_full from '../../assets/logo_light_full.svg';
 import { Button } from '../../components/Button';
 import LazyImage from '../../components/LazyImage';
 import TextField from '../../components/TextField';
 import DarkThemeOnly from '../../utilities/DarkThemeOnly';
+import Alert from '@mui/lab/Alert';
+import {
+    MUTATION_CREATE_EMAIL_SUBSCRIBER,
+    MUTATION_REMOVE_EMAIL_SUBSCRIBER,
+} from '../auth/utilities/queries';
 import { footerLinks } from './utilities/welcome.data';
 
 export default function Footer() {
     const history = useHistory();
+    const [subscriberEmail, setSubscriberEmail] = useState('');
+    const [unsubscribe, setUnsubscribe] = useState(false);
+    const [subscribeErr, setSubscribeErr] = useState(null);
 
+    const [createEmailSubscriber, { data: subscribeData }] = useMutation(
+        MUTATION_CREATE_EMAIL_SUBSCRIBER,
+        {
+            context: { clientName: 'users' },
+        }
+    );
+    const [removeEmailSubscriber, { data: unSubscribeData }] = useMutation(
+        MUTATION_REMOVE_EMAIL_SUBSCRIBER,
+        {
+            context: { clientName: 'users' },
+        }
+    );
     return (
         <DarkThemeOnly>
             <Grid style={{ backgroundColor: '#18191a', color: '#fff' }}>
@@ -32,14 +53,139 @@ export default function Footer() {
                                     <TextField
                                         style={{ flex: 1 }}
                                         fullWidth={false}
-                                        placeholder="Enter Your Email"
+                                        onChange={(e) => {
+                                            setSubscriberEmail(e.target.value);
+                                        }}
+                                        label="Enter your email"
+                                        value={subscriberEmail}
                                     />
-                                    <Button className="mx-2" textCase>
-                                        <Typography noWrap>
+                                    <Button
+                                        className="mx-2"
+                                        onClick={() => {
+                                            if (subscriberEmail.length < 8)
+                                                return;
+                                            createEmailSubscriber({
+                                                variables: {
+                                                    email: subscriberEmail,
+                                                },
+                                                errorPolicy: 'all',
+                                            }).then(({ data, errors }) => {
+                                                if (
+                                                    data?.Users
+                                                        ?.createEmailSubscriber
+                                                ) {
+                                                    setSubscribeErr(null);
+                                                    setSubscriberEmail('');
+                                                    setUnsubscribe(false);
+                                                }
+
+                                                if (errors) {
+                                                    setUnsubscribe(false);
+                                                    setSubscribeErr(errors);
+                                                }
+                                            });
+                                        }}
+                                        textCase
+                                    >
+                                        <Typography variant="body2" noWrap>
                                             Subscribe
                                         </Typography>
                                     </Button>
                                 </div>
+                                {subscribeData?.Users?.createEmailSubscriber &&
+                                    !unsubscribe && (
+                                        <Typography
+                                            component="div"
+                                            className="center-horizontal"
+                                        >
+                                            <Typography component="div">
+                                                <Alert
+                                                    severity="success"
+                                                    className="mb-2"
+                                                >
+                                                    {
+                                                        subscribeData?.Users
+                                                            ?.createEmailSubscriber
+                                                            ?.message
+                                                    }
+                                                </Alert>
+                                            </Typography>
+                                            <Button
+                                                className="mx-2"
+                                                onClick={() => {
+                                                    const id =
+                                                        subscribeData?.Users
+                                                            ?.createEmailSubscriber
+                                                            ?.email;
+                                                    if (!id) return;
+                                                    removeEmailSubscriber({
+                                                        variables: {
+                                                            email: id,
+                                                        },
+                                                        errorPolicy: 'all',
+                                                    }).then(
+                                                        ({ data, errors }) => {
+                                                            if (
+                                                                data?.Users
+                                                                    ?.removeEmailSubscriber
+                                                            ) {
+                                                                setSubscribeErr(
+                                                                    null
+                                                                );
+                                                                setSubscriberEmail(
+                                                                    ''
+                                                                );
+                                                                setUnsubscribe(
+                                                                    true
+                                                                );
+                                                            }
+
+                                                            if (errors) {
+                                                                setUnsubscribe(
+                                                                    true
+                                                                );
+                                                                setSubscribeErr(
+                                                                    errors
+                                                                );
+                                                            }
+                                                        }
+                                                    );
+                                                }}
+                                                textCase
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    noWrap
+                                                >
+                                                    Unsubscribe
+                                                </Typography>
+                                            </Button>
+                                        </Typography>
+                                    )}
+                                {unsubscribe &&
+                                    unSubscribeData?.Users
+                                        ?.removeEmailSubscriber && (
+                                        <Alert
+                                            severity="success"
+                                            className="mb-2"
+                                        >
+                                            {
+                                                unSubscribeData?.Users
+                                                    ?.removeEmailSubscriber
+                                                    ?.message
+                                            }
+                                        </Alert>
+                                    )}
+                                {subscribeErr &&
+                                    subscribeErr?.map((err, index) => (
+                                        <Alert
+                                            key={index}
+                                            severity="error"
+                                            className="mb-2"
+                                        >
+                                            {err?.state?.email[0]}
+                                        </Alert>
+                                    ))}
                             </div>
                         </Grid>
                     </Grid>

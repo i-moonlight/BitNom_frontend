@@ -82,7 +82,11 @@ export default function ScrollPreview({ scroll }) {
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
                         ></Typography>
                         <br />
                         <Grid container style={{ margin: '3px 0px' }}>
@@ -105,7 +109,7 @@ export default function ScrollPreview({ scroll }) {
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        style={{ zIndex: 2, padding: '1px' }}
+                                        style={{ zIndex: 2, padding: '2px' }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}

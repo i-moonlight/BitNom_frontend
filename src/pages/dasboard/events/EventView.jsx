@@ -46,6 +46,7 @@ import {
     MUTATION_REMOVE_EVENT_ATTENDANCE,
     QUERY_EVENT_BY_ID,
     QUERY_FETCH_PROFILE,
+    GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 import AttendeeComponent from './AttendeeComponent';
 import CreateEvent from './CreateEvent';
@@ -163,6 +164,16 @@ export default function EventView() {
                     type: 'event',
                 },
             },
+            refetchQueries: [
+                {
+                    query: GET_BOOKMARKED_EVENTS,
+                    variables: {
+                        data: {
+                            sortAscending: true,
+                        },
+                    },
+                },
+            ],
         });
         toast.success('Added to saved items', {
             position: 'bottom-left',
@@ -172,7 +183,6 @@ export default function EventView() {
             pauseOnHover: true,
             draggable: true,
         });
-
         handleEventOptionsClose();
     };
 
@@ -892,6 +902,10 @@ export default function EventView() {
                                                             }
                                                             style={{
                                                                 zIndex: 2,
+                                                                overflowWrap:
+                                                                    'break-word',
+                                                                wordWrap:
+                                                                    'break-word',
                                                             }}
                                                             dangerouslySetInnerHTML={{
                                                                 __html: contentBodyFactory(

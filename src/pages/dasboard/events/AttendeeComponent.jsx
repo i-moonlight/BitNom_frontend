@@ -113,7 +113,17 @@ function AttendeeComponent({ item, getFollowStatus, profile }) {
                         </Typography>
                     </div>
                 }
-                secondary={item?.attendee?.bio}
+                secondary={
+                    <Typography
+                        style={{
+                            overflowWrap: 'break-word',
+                            wordWrap: 'break-word',
+                        }}
+                        variant="body2"
+                    >
+                        {item?.attendee?.bio}
+                    </Typography>
+                }
             />
             <ListItemIcon
                 aria-label="show more"

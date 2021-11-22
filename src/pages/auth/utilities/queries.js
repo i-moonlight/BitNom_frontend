@@ -123,6 +123,28 @@ export const MUTATION_VERIFY_EMAIL = gql`
     }
 `;
 
+export const MUTATION_CREATE_EMAIL_SUBSCRIBER = gql`
+    mutation ($email: String!) {
+        Users {
+            createEmailSubscriber(email: $email) {
+                email
+                message
+            }
+        }
+    }
+`;
+
+export const MUTATION_REMOVE_EMAIL_SUBSCRIBER = gql`
+    mutation ($email: String!) {
+        Users {
+            removeEmailSubscriber(email: $email) {
+                email
+                message
+            }
+        }
+    }
+`;
+
 export const MUTATION_UPDATE_PROFILE_INFO = gql`
     mutation ($displayName: String) {
         Users {
