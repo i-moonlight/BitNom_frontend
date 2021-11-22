@@ -1,4 +1,3 @@
-// import { useQuery } from '@apollo/client';
 import { Chat, MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -10,26 +9,22 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
-// import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
     const [values, setSearchString] = useState({ searchString: '' });
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
+
     const theme = useTheme();
     const classes = useStyles();
+
     const handleChatSearch = (e) => {
         setSearchString({
             ...values,
             [e.target.name]: e.target.values,
         });
     };
-    // const { loading, data } = useQuery(SEARCH_CHATS, {
-    //     variables: {
-    //         params: { searchString: values.searchString },
-    //     },
-    //     context: { clientName: 'chat' },
-    // });
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">

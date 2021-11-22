@@ -29,12 +29,6 @@ const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
 const TrendingPostsCard = React.lazy(() => import('./TrendingPostsCard'));
 const UserCard = React.lazy(() => import('./UserCard'));
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-}));
-
 export default function BnConnect() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -128,24 +122,6 @@ export default function BnConnect() {
         trendingError,
         trendingLoading,
     ]);
-
-    useEffect(() => {
-        const OneSignal = window.OneSignal || [];
-
-        OneSignal.push(() => {
-            OneSignal.init({
-                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
-            });
-            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-                if (isEnabled) {
-                    var externalUserId = user._id;
-                    OneSignal.setExternalUserId(externalUserId);
-                } else {
-                    // Push notifications not enabled
-                }
-            });
-        });
-    }, [user._id]);
 
     return (
         <Screen>
@@ -379,3 +355,9 @@ export default function BnConnect() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+}));

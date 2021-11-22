@@ -27,18 +27,6 @@ import { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';
 
-const useStyles = makeStyles(() => ({
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
 export default function ReactionsModal({
     openReactions,
     setOpenReactions,
@@ -260,3 +248,15 @@ const ReactionList = ({ reactions }) => {
         </List>
     );
 };
+
+const useStyles = makeStyles(() => ({
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));

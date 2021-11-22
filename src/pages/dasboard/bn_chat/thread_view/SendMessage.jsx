@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import {
     AttachFile,
+    Close,
     EmojiEmotions,
     Gif,
     Image,
     SendOutlined,
     VideoLibrary,
-    Close,
 } from '@mui/icons-material';
 import {
-    Divider,
-    IconButton,
-    Paper,
-    useTheme,
-    Typography,
-    TextField,
-    CardHeader,
     Card,
     CardContent,
+    CardHeader,
+    Divider,
+    IconButton,
+    InputBase,
+    Paper,
+    Typography,
+    useTheme,
 } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { DropzoneArea } from 'react-mui-dropzone';
+import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 import { CREATE_DIALOGUE_MESSAGE, UPDATE_MESSAGE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-
-import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -294,7 +293,6 @@ export default function SendMessage({
                 <Divider className={classes.divider} />{' '}
                 <div className="d-flex">
                     <div className={classes.inputTab} style={{ width: '33%' }}>
-                        {' '}
                         <IconButton
                             size="small"
                             className={'m-1 p-1' + classes.iconButton}
@@ -363,7 +361,6 @@ export default function SendMessage({
                             component="form"
                             className={classes.sendMessage}
                         >
-                            {' '}
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
@@ -376,7 +373,29 @@ export default function SendMessage({
                             >
                                 <EmojiEmotions />
                             </IconButton>
-                            <TextField
+                            {/* <TextField
+                                size="small"
+                                name="text"
+                                value={text}
+                                className={classes.inputField}
+                                placeholder="Type a message"
+                                fullWidth
+                                onChange={handleChange}
+                                multiline
+                                margin="dense"
+                                maxRows={3}
+                                onKeyDown={(e) =>
+                                    e.key === 'Enter' &&
+                                    e.shiftKey &&
+                                    editText?.text?.length > 0
+                                        ? handleUpdateMessage()
+                                        : e.key === 'Enter' && e.shiftKey
+                                        ? handleSendMessage()
+                                        : null
+                                }
+                                error={Object.keys(sendMessageErr)?.length > 0}
+                            /> */}
+                            <InputBase
                                 size="small"
                                 name="text"
                                 value={text}

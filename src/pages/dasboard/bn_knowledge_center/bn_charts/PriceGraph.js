@@ -1,9 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/4/21
- * Time: 4:46 PM
- */
 import React, { Component } from 'react';
 import ApexCharts from 'react-apexcharts';
 

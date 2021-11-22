@@ -11,17 +11,17 @@ import {
     InputBase,
     Modal,
     Paper,
-    TextField,
     Typography,
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,

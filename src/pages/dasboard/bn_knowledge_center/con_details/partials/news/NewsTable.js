@@ -24,13 +24,14 @@ export default function NewsTable() {
     const [isTrending, checkIsTrending] = useState(false);
 
     useEffect(() => {
-        fetch(url)
+        const abortCont = new AbortController();
+
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
                 setTrending(data.coins);
                 checkIsTrending(true);
-            })
-            .catch(() => {});
+            });
     }, []);
 
     return (

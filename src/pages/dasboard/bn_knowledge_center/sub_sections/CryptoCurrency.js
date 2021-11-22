@@ -1,10 +1,5 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/5/21
- * Time: 1:35 AM
- */
 import { StarOutline } from '@mui/icons-material';
+import TablePagination from '@mui/material/TablePagination';
 import {
     Skeleton,
     Table,
@@ -13,7 +8,6 @@ import {
     tableCellClasses,
     TableContainer,
     TableHead,
-    TablePagination,
     TableRow,
 } from '@mui/material';
 import { styled } from '@mui/system';
@@ -38,13 +32,14 @@ export default function CryptoCurrencyPage() {
     };
 
     useEffect(() => {
-        fetch(url)
+        const abortCont = new AbortController();
+
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
                 getCoins(data);
                 checkLoadedCoin(true);
-            })
-            .catch(() => {});
+            });
     }, []);
 
     return (

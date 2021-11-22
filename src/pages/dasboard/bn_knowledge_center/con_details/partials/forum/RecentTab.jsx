@@ -1,10 +1,5 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/18/21
- * Time: 9:59 PM
- */
-import { Fragment } from 'react';
+import { Announcement, EmojiPeople, Home, Message } from '@mui/icons-material';
+import { AvatarGroup } from '@mui/lab';
 import {
     Avatar,
     Button,
@@ -17,11 +12,10 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import { Announcement, EmojiPeople, Home, Message } from '@mui/icons-material';
-import * as React from 'react';
-import { useStyles } from '../utils/styles';
-import { AvatarGroup } from '@mui/lab';
 import { green } from '@mui/material/colors';
+import * as React from 'react';
+import { Fragment } from 'react';
+import { useStyles } from '../utils/styles';
 
 export default function RecentTab() {
     const btnColor = useStyles();

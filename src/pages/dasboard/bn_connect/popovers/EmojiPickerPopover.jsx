@@ -1,15 +1,15 @@
-import { Popover, useTheme } from '@mui/material';
-import { Picker } from 'emoji-mart/dist-modern/index.js';
+import { Popover } from '@mui/material';
+// import { Picker } from 'emoji-mart/dist-modern/index.js';
 import 'emoji-mart/css/emoji-mart.css';
 
 function EmojiPickerPopover({
-    handleSelectEmoji,
+    // handleSelectEmoji,
     emojiPickerAnchorEl,
     emojiPickerId,
     isEmojiPickerOpen,
     handleEmojiPickerClose,
 }) {
-    const theme = useTheme();
+    // const theme = useTheme();
     return (
         <Popover
             anchorEl={emojiPickerAnchorEl}
@@ -23,7 +23,7 @@ function EmojiPickerPopover({
             style={{ marginLeft: 16, width: '100%' }}
             disableScrollLock
         >
-            <Picker
+            {/* <Picker
                 onSelect={handleSelectEmoji}
                 showSkinTones={false}
                 emojiTooltip={false}
@@ -31,7 +31,7 @@ function EmojiPickerPopover({
                 sheetSize={32}
                 theme={theme.palette.mode === 'dark' ? 'dark' : 'light'}
                 set="apple"
-            />
+            /> */}
         </Popover>
     );
 }

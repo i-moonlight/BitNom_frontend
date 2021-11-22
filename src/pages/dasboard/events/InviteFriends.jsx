@@ -4,8 +4,10 @@ import {
     CheckBoxOutlineBlank,
     CloseRounded,
 } from '@mui/icons-material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
 import {
-    Button,
     Card,
     CardActions,
     CardContent,
@@ -15,9 +17,7 @@ import {
     Grid,
     IconButton,
     Modal,
-    TextField,
     Typography,
-    Autocomplete,
 } from '@mui/material';
 import { useState } from 'react';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';

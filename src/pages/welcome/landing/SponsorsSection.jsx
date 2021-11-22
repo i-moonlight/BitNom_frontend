@@ -9,15 +9,20 @@ export default function SponsorsSection() {
     const [error, setError] = useState();
 
     useEffect(() => {
+        const abortCont = new AbortController();
+
         fetch(
-            'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&per_page=50&page=1&sparkline=false'
+            'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&per_page=50&page=1&sparkline=false',
+            { signal: abortCont.signal }
         )
             .then((response) => response.json())
             .then((data) => {
                 setCoins(data);
             })
             .catch((err) => {
-                setError(err);
+                if (err.name !== 'AbortError') {
+                    setError(err);
+                }
             });
     }, []);
 

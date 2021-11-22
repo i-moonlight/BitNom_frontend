@@ -12,23 +12,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
-
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
 import NotificationsListCard from './NotificationsListCard';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    // sidebar: {
-    //     width: '100%',
-    //     maxWidth: 360,
-    //     background: 'transparent',
-    //     //color: theme.typography.textPrimary,
-    // },
-}));
 
 export default function Notifications() {
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -185,3 +172,15 @@ function SideBarMenu({ selectedIndex, setSelectedIndex }) {
         </Card>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    // sidebar: {
+    //     width: '100%',
+    //     maxWidth: 360,
+    //     background: 'transparent',
+    //     //color: theme.typography.textPrimary,
+    // },
+}));

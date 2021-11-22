@@ -4,7 +4,7 @@ import {
     HttpLink,
     InMemoryCache,
     split,
-} from '@apollo/client';
+} from '@apollo/client/';
 import { ApolloLink, Observable } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -184,15 +184,33 @@ const client = new ApolloClient({
 export default function AppContainers() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const palette = useSelector((st) => st.theme.palette);
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    const palette = state.theme.palette;
 
     useEffect(() => {
+        const OneSignal = window.OneSignal || [];
         dispatch(checkSessionTimeOut());
 
         palette == 'dark'
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
-    }, [dispatch, palette]);
+
+        OneSignal.push(() => {
+            OneSignal.init({
+                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+            });
+            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+                if (isEnabled) {
+                    var externalUserId = user._id;
+                    OneSignal.setExternalUserId(externalUserId);
+                } else {
+                    // Push notifications not enabled
+                }
+            });
+        });
+    }, [dispatch, palette, user._id]);
 
     return (
         <div className={classes.root}>

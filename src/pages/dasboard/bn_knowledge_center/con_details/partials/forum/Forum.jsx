@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/18/21
- * Time: 5:43 AM
- */
-
 import { Button, Card, Typography } from '@mui/material';
 import * as React from 'react';
 import { useStyles } from '../utils/styles';
