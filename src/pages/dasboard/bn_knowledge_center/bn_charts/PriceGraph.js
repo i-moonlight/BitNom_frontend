@@ -12,35 +12,37 @@ class PriceGraph extends Component {
         super(props);
 
         this.state = {
-            series: [{
-                data: this.props.sparkline.price
-            }],
+            series: [
+                {
+                    data: this.props.sparkline.price,
+                },
+            ],
             options: {
                 chart: {
                     type: 'line',
                     width: 100,
                     height: 35,
                     sparkline: {
-                        enabled: true
-                    }
+                        enabled: true,
+                    },
                 },
                 tooltip: {
                     fixed: {
-                        enabled: false
+                        enabled: false,
                     },
                     x: {
-                        show: false
+                        show: false,
                     },
                     y: {
                         title: {
                             formatter: function () {
                                 return '';
-                            }
-                        }
+                            },
+                        },
                     },
                     marker: {
-                        show: false
-                    }
+                        show: false,
+                    },
                 },
                 stroke: {
                     show: true,
@@ -50,8 +52,8 @@ class PriceGraph extends Component {
                     width: 1,
                     dashArray: 0,
                 },
-                colors:['#F44336', '#E91E63', '#9C27B0']
-            }
+                colors: ['#F44336', '#E91E63', '#9C27B0'],
+            },
         };
     }
 

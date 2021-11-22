@@ -1,13 +1,9 @@
-import { Button,
-    Card,
-    Typography,
-} from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 import * as React from 'react';
-import {Fragment} from 'react';
+import { Fragment } from 'react';
 import './style.css';
-import {useStyles} from '../utils/styles';
+import { useStyles } from '../utils/styles';
 import MarketTable from './MarketTable';
-
 
 export default function Market() {
     const [toggleState, setToggleState] = React.useState(1);
@@ -23,42 +19,73 @@ export default function Market() {
 
     return (
         <Fragment>
-            <Typography color={'textPrimary'} sx={{ width: '100%', typography: 'body1' }} component="div">
+            <Typography
+                color={'textPrimary'}
+                sx={{ width: '100%', typography: 'body1' }}
+                component="div"
+            >
                 <div className={'d-flex'}>
                     <div className={'d-flex'}>
                         <Card className={'m-1'}>
                             <Button
                                 color={'inherit'}
-                                className={getActiveClasses(1, btnColor.bGActive)}
+                                className={getActiveClasses(
+                                    1,
+                                    btnColor.bGActive
+                                )}
                                 onClick={() => toggleTab(1)}
-                                size={'small'}>
+                                size={'small'}
+                            >
                                 Spot
                             </Button>
                             <Button
                                 color={'inherit'}
-                                className={getActiveClasses(2, btnColor.bGActive)}
+                                className={getActiveClasses(
+                                    2,
+                                    btnColor.bGActive
+                                )}
                                 onClick={() => toggleTab(2)}
-                                size={'small'}>
+                                size={'small'}
+                            >
                                 Perpetual
                             </Button>
                             <Button
                                 color={'inherit'}
-                                className={getActiveClasses(3, btnColor.bGActive)}
+                                className={getActiveClasses(
+                                    3,
+                                    btnColor.bGActive
+                                )}
                                 onClick={() => toggleTab(3)}
-                                size={'small'}>
+                                size={'small'}
+                            >
                                 Futures
                             </Button>
                         </Card>
                     </div>
                 </div>
                 <div>
-                    <div className={`content ${getActiveClasses(1, 'active-content')}`}>
+                    <div
+                        className={`content ${getActiveClasses(
+                            1,
+                            'active-content'
+                        )}`}
+                    >
                         <MarketTable />
                     </div>
-                    <div className={`content ${getActiveClasses(2, 'active-content')}`}>
+                    <div
+                        className={`content ${getActiveClasses(
+                            2,
+                            'active-content'
+                        )}`}
+                    >
                         <h2>.</h2>
                     </div>
-                    <div className={`content ${getActiveClasses(3, 'active-content')}`}>
+                    <div
+                        className={`content ${getActiveClasses(
+                            3,
+                            'active-content'
+                        )}`}
+                    >
                         <h2>.</h2>
                     </div>
                 </div>

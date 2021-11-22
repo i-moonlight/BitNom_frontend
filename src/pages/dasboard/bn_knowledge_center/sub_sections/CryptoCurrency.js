@@ -17,9 +17,8 @@ import {
     TableRow,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import React, { Suspense, useEffect, useState} from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 
 export default function CryptoCurrencyPage() {
     const [page, setPage] = React.useState(0);
@@ -37,7 +36,6 @@ export default function CryptoCurrencyPage() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
 
     useEffect(() => {
         fetch(url)
@@ -129,20 +127,13 @@ export default function CryptoCurrencyPage() {
                                                 </span>
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                $
-                                                {
-                                                    row.current_price
-                                                }
+                                                ${row.current_price}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                $
-                                                {
-                                                    row.total_volume
-                                                }
+                                                ${row.total_volume}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                $
-                                                {row.market_cap}
+                                                ${row.market_cap}
                                             </StyledTableCell>
                                             <StyledTableCell
                                                 className={'text-danger'}
@@ -153,10 +144,17 @@ export default function CryptoCurrencyPage() {
                                                 %
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                <Suspense fallback={<div>Loading...</div>}>
-                                                    <PriceGraph sparkline={row.sparkline_in_7d}/>
+                                                <Suspense
+                                                    fallback={
+                                                        <div>Loading...</div>
+                                                    }
+                                                >
+                                                    <PriceGraph
+                                                        sparkline={
+                                                            row.sparkline_in_7d
+                                                        }
+                                                    />
                                                 </Suspense>
-
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     );

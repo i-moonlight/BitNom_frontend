@@ -82,7 +82,10 @@ export default function CoinDetails({ match }) {
                             >
                                 <div>
                                     <div>
-                                        <img alt={'Bitcoin image'} src={coinDetail?.image.small}/>
+                                        <img
+                                            alt={'Bitcoin image'}
+                                            src={coinDetail?.image.small}
+                                        />
                                     </div>
                                     <div>
                                         <p>

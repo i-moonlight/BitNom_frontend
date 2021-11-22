@@ -41,12 +41,12 @@ export const useStyles = makeStyles({
         textTransform: 'capitalize',
         color: '#0067ff',
         // width: '200px',
-        paddingLeft: 0
+        paddingLeft: 0,
     },
     categoryNormal: {
         textTransform: 'capitalize',
         // width: '200px',
-        paddingLeft: 0
+        paddingLeft: 0,
     },
     verticalActive: {
         textTransform: 'capitalize',
@@ -54,5 +54,5 @@ export const useStyles = makeStyles({
     },
     verticalNormal: {
         textTransform: 'capitalize',
-    }
+    },
 });
