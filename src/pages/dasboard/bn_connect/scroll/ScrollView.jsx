@@ -423,18 +423,11 @@ function PostView() {
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={state?.postCount?.postCount}
-                                    following={
-                                        profileData?.Users?.profile?.following
-                                            ?.length
-                                    }
-                                    followers={
-                                        profileData?.Users?.profile?.followers
-                                            ?.length
-                                    }
+                                    following={user?.following?.length}
+                                    followers={user?.followers?.length}
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={0}
                                 />
                             </Grid>
                         </Hidden>
@@ -462,7 +455,7 @@ function PostView() {
                                     </Alert>
                                 )}
                             </Grid>
-                            <Grid item>
+                            <Grid item className={classes.mainCard}>
                                 {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
