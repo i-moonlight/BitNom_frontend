@@ -21,7 +21,6 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -29,6 +28,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Alert,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -77,9 +77,7 @@ import FilterButton from './FilterButton';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
-
-const scrollOptionId = 'menu-scroll-option';
-const emojiPickerId = 'emoji-picker-popover';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 
 function PostView() {
     const classes = useStyles();
@@ -114,6 +112,8 @@ function PostView() {
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [getPostErr, setGetPostErr] = useState(null);
+
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -159,18 +159,34 @@ function PostView() {
         [classes.green, classes.primary, classes.red]
     );
 
-    const { loading: postLoading, data: postData } = useQuery(
-        QUERY_POST_BY_ID,
-        {
-            variables: { _id: postId },
-        }
-    );
+    const {
+        error: postError,
+        loading: postLoading,
+        data: postData,
+    } = useQuery(QUERY_POST_BY_ID, {
+        variables: { _id: postId },
+    });
 
     useEffect(() => {
         const reaction = getUserReaction(postData?.Posts?.getById);
         setUserReaction(reaction);
         setIcon(reaction);
     }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+
+    useEffect(() => {
+        postError &&
+            postError.graphQLErrors.length > 0 &&
+            postError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find a post with the ID you provided!'
+                ) {
+                    setGetPostErr(
+                        'This post might have been deleted by the author.'
+                    );
+                }
+            });
+    }, [postError]);
 
     const {
         //  loading,
@@ -440,15 +456,15 @@ function PostView() {
                                     }
                                 />
                             </Card>
-
-                            <Grid item align="center">
-                                {postLoading && (
-                                    <CircularProgress
-                                        color="primary"
-                                        size={60}
-                                        thickness={6}
-                                    />
+                            <Grid item>
+                                {getPostErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getPostErr}</Typography>
+                                    </Alert>
                                 )}
+                            </Grid>
+                            <Grid item>
+                                {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
                                 <Card
@@ -519,7 +535,10 @@ function PostView() {
                                             </div>
                                         }
                                         subheader={
-                                            <Typography variant="body2">
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                            >
                                                 {moment(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
@@ -530,10 +549,10 @@ function PostView() {
                                     <CardContent>
                                         <Typography
                                             variant="body2"
-                                            color="textSecondary"
-                                            component="p"
+                                            component="div"
                                         >
                                             <Typography
+                                                variant="body2"
                                                 onClick={(e) =>
                                                     contentClickHandler(e)
                                                 }
@@ -652,8 +671,13 @@ function PostView() {
                                             )}
                                         <br />
 
-                                        <Typography display="inline">
+                                        <Typography
+                                            display="inline"
+                                            component="div"
+                                            color="textSecondary"
+                                        >
                                             <Typography
+                                                variant="body2"
                                                 onClick={() => {
                                                     setOpenReactions(true);
                                                     setResourceReactions(
@@ -677,6 +701,7 @@ function PostView() {
                                             </Typography>
                                             {' . '}
                                             <Typography
+                                                variant="body2"
                                                 onClick={() =>
                                                     setOpenComments(true)
                                                 }
@@ -1023,16 +1048,15 @@ function PostView() {
                                                         size="small"
                                                         color="primary"
                                                         className="m-1 p-1"
-                                                    >
-                                                        <CloseRounded
-                                                            onClick={() => {
-                                                                setPreviewURL();
+                                                        onClick={() => {
+                                                            setPreviewURL();
 
-                                                                setCommentImage(
-                                                                    null
-                                                                );
-                                                            }}
-                                                        />
+                                                            setCommentImage(
+                                                                null
+                                                            );
+                                                        }}
+                                                    >
+                                                        <CloseRounded />
                                                     </IconButton>
                                                 </div>
                                             </Card>
@@ -1045,6 +1069,7 @@ function PostView() {
                                                     style={{
                                                         margin: '15px 0px',
                                                     }}
+                                                    component="div"
                                                 >
                                                     <FilterButton
                                                         setCommentFilter={
@@ -1329,5 +1354,8 @@ const useStyles = makeStyles((theme) => ({
         color: '#006097',
     },
 }));
+
+const scrollOptionId = 'menu-scroll-option';
+const emojiPickerId = 'emoji-picker-popover';
 
 export default PostView;

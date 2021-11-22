@@ -58,8 +58,16 @@ export default function People() {
         context: { clientName: 'users' },
     });
 
+    const following = [];
+    profileData?.Users?.profile?.following?.forEach((item) =>
+        following.push(item?.userId?._id)
+    );
     const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
     );
 
     const getFollowStatus = (usr) => {
@@ -130,6 +138,11 @@ export default function People() {
                                                 item={usr}
                                             />
                                         ))}
+                                        {suggestedUsers?.length < 1 && (
+                                            <Typography variant="body2">
+                                                No people to show yet.
+                                            </Typography>
+                                        )}
                                     </List>
                                 </CardContent>
                             </Card>

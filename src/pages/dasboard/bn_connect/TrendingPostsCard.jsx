@@ -109,6 +109,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                             <ListItemText
                                 primary={
                                     <Typography
+                                        variant="body2"
                                         onClick={(e) => contentClickHandler(e)}
                                         style={{ zIndex: 2 }}
                                         dangerouslySetInnerHTML={{
@@ -119,15 +120,22 @@ export default function TrendingPostsCard({ trending, loading }) {
                                         }}
                                     ></Typography>
                                 }
-                                secondary={`${getReactionsSum(post)} ${
-                                    getReactionsSum(post) === 1
-                                        ? 'Reaction'
-                                        : 'Reactions'
-                                } . ${post?.comments} ${
-                                    post?.comments === 1
-                                        ? 'Comment'
-                                        : 'Comments'
-                                }`}
+                                secondary={
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        {`${getReactionsSum(post)} ${
+                                            getReactionsSum(post) === 1
+                                                ? 'Reaction'
+                                                : 'Reactions'
+                                        } . ${post?.comments} ${
+                                            post?.comments === 1
+                                                ? 'Comment'
+                                                : 'Comments'
+                                        }`}
+                                    </Typography>
+                                }
                             />
                         </ListItem>
                     ))}

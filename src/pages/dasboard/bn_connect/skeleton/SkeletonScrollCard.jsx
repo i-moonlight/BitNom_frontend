@@ -45,7 +45,7 @@ export default function SkeletonScrollCard() {
                 }
             />
             <CardContent>
-                <Typography component="p">
+                <Typography component="div">
                     <Skeleton
                         variant="text"
                         height={40}
@@ -53,7 +53,7 @@ export default function SkeletonScrollCard() {
                         animation="wave"
                     />
                 </Typography>
-                <Typography display="inline">
+                <Typography display="inline" component="div">
                     <Skeleton
                         variant="rectangular"
                         width="20%"

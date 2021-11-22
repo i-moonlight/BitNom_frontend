@@ -23,7 +23,6 @@ import {
     Typography,
     useTheme,
     Hidden,
-    Skeleton,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -53,55 +52,7 @@ import {
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import Comment from './comment/Comment';
-// import LinkCard from './LinkCard';
-//import ScrollOptionsPopover from './ScrollOptionsPopover';
-
-const useStyles = makeStyles((theme) => ({
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    commentSection: {
-        padding: '5px 4px',
-        [theme.breakpoints.up('md')]: {
-            padding: '15px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
-const emojiPickerId = 'emoji-picker-popover';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 
 export default function ScrollImage({
     postId,
@@ -119,7 +70,7 @@ export default function ScrollImage({
     onClose,
 }) {
     const classes = useStyles();
-    //const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
+
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
     const [reactionIcon, setReactionIcon] = useState();
@@ -130,7 +81,6 @@ export default function ScrollImage({
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
 
-    //const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
@@ -362,74 +312,7 @@ export default function ScrollImage({
 
     return (
         <>
-            {loading && !scroll && (
-                <Card
-                    variant="outlined"
-                    elevation={0}
-                    style={{ overflowY: 'auto', width: '100%' }}
-                >
-                    <CardHeader
-                        avatar={
-                            <Skeleton
-                                animation="wave"
-                                variant="circular"
-                                width={30}
-                                height={30}
-                            />
-                        }
-                        title={
-                            <div
-                                className=" d-flex align-items-center"
-                                style={{ marginBottom: '5px' }}
-                            >
-                                <Skeleton
-                                    variant="rectangular"
-                                    animation="wave"
-                                    width="60%"
-                                />
-                            </div>
-                        }
-                        subheader={
-                            <Skeleton
-                                variant="rectangular"
-                                height={10}
-                                width="10%"
-                                animation="wave"
-                            />
-                        }
-                    />
-                    <CardContent>
-                        <Typography component="p">
-                            <Skeleton
-                                variant="text"
-                                height={40}
-                                width="40%"
-                                animation="wave"
-                            />
-                        </Typography>
-                        <Typography display="inline">
-                            <Skeleton
-                                variant="rectangular"
-                                width="20%"
-                                animation="wave"
-                            />
-                            <Skeleton
-                                variant="rectangular"
-                                width="20%"
-                                animation="wave"
-                            />
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Skeleton
-                            variant="rectangular"
-                            width="100%"
-                            height={30}
-                            animation="wave"
-                        />
-                    </CardActions>
-                </Card>
-            )}
+            {loading && !scroll && <SkeletonScrollCard />}
             {scroll && (
                 <Card
                     variant="outlined"
@@ -488,9 +371,10 @@ export default function ScrollImage({
                             <Typography
                                 variant="body2"
                                 color="textSecondary"
-                                component="p"
+                                component="div"
                             >
                                 <Typography
+                                    variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(scroll),
@@ -505,8 +389,13 @@ export default function ScrollImage({
 
                             <br />
 
-                            <Typography display="inline" style={{ zIndex: 2 }}>
+                            <Typography
+                                component="div"
+                                display="inline"
+                                style={{ zIndex: 2 }}
+                            >
                                 <Typography
+                                    variant="body2"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setOpenReactions(true);
@@ -523,6 +412,7 @@ export default function ScrollImage({
                                 </Typography>
                                 {' . '}
                                 <Typography
+                                    variant="body2"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setOpenComments(true);
@@ -657,6 +547,7 @@ export default function ScrollImage({
                             <Typography
                                 className="mx-3 my-2"
                                 color="textSecondary"
+                                variant="body2"
                             >
                                 Be the first to comment
                             </Typography>
@@ -795,14 +686,13 @@ export default function ScrollImage({
                                         size="small"
                                         color="primary"
                                         className="m-1 p-1"
-                                    >
-                                        <CloseRounded
-                                            onClick={() => {
-                                                setPreviewURL();
+                                        onClick={() => {
+                                            setPreviewURL();
 
-                                                setCommentImage(null);
-                                            }}
-                                        />
+                                            setCommentImage(null);
+                                        }}
+                                    >
+                                        <CloseRounded />
                                     </IconButton>
                                 </div>
                             </Card>
@@ -852,3 +742,50 @@ export default function ScrollImage({
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const emojiPickerId = 'emoji-picker-popover';
