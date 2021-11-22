@@ -248,9 +248,11 @@ export default function UpdateEvent({
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
-                console.error('Error', latitude, longitude);
             })
-            .catch((error) => console.error('Error', error));
+            .catch((error) => {
+                // eslint-disable-next-line no-console
+                console.error('Error', error);
+            });
     };
 
     const handleSelectImage = (files) => {

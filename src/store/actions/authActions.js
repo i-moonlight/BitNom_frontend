@@ -50,7 +50,7 @@ export const verifySuccess = () => {
         setBusy(true);
 
         dispatch({ type: 'USER_VERIFY_SUCCESS' });
-        setBusy(true);
+        setBusy(false);
     };
 };
 
@@ -93,7 +93,9 @@ export const checkSessionTimeOut = () => {
     };
 };
 
-export const userUpdate = (user) => {
+export const userUpdate = (userExt) => {
+    const user = userExt;
+
     return (dispatch) => {
         user && dispatch({ type: 'USER_UPDATE', user });
     };

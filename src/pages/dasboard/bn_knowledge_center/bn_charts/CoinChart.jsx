@@ -5,7 +5,9 @@ import ApexCharts from 'react-apexcharts';
 export default function PriceChart({ coinFeature, CoinChart }) {
     const theme = useTheme();
 
+    // eslint-disable-next-line no-console
     console.log(coinFeature);
+    // eslint-disable-next-line no-console
     console.log(CoinChart);
 
     return (

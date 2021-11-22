@@ -141,7 +141,7 @@ export default function BnConnect() {
                     var externalUserId = user._id;
                     OneSignal.setExternalUserId(externalUserId);
                 } else {
-                    console.log('Push notifications are not enabled yet.');
+                    // Push notifications not enabled
                 }
             });
         });

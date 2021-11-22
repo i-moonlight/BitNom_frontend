@@ -31,7 +31,6 @@ export const addMessagesToCurrentChat = (data) => {
         dispatch({ data, type: 'ADD_MESSAGES_TO_CURRENT_CHAT' });
 };
 export const updateMessage = (data) => {
-    console.log('DATA', data);
     return (dispatch) => dispatch({ data, type: 'UPDATE_MESSAGE' });
 };
 export const setSearchOutput = (data = []) => {

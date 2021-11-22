@@ -44,6 +44,7 @@ export default function MessagePopover({
     };
 
     const handleReportMessage = () => {
+        // eslint-disable-next-line no-console
         console.log('REPORT');
     };
 
