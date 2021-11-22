@@ -8,17 +8,15 @@
 import React, { Fragment } from 'react';
 import GazingCard from './GazingCard';
 
-
 const CardDeck = ({
-  coins = [],
-  coin_index,
-  onLike,
-  onDislike,
-  is_back = false,
-  undo = () => null,
-  show_back = false,
-}) =>
-{
+    coins = [],
+    coin_index,
+    onLike,
+    onDislike,
+    is_back = false,
+    undo = () => null,
+    show_back = false,
+}) => {
     return (
         <Fragment>
             <GazingCard
@@ -57,4 +55,3 @@ const CardDeck = ({
 };
 
 export default CardDeck;
-

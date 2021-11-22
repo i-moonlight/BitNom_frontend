@@ -6,26 +6,22 @@
  */
 import * as React from 'react';
 import CardContent from '@mui/material/CardContent';
-import {Fragment} from 'react';
-import {Close, Favorite, Forum,  Replay} from '@mui/icons-material';
-import {Grid, useTheme,  Paper, Fab, Link} from '@mui/material';
+import { Fragment } from 'react';
+import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
+import { Grid, useTheme, Paper, Fab, Link } from '@mui/material';
 
-
-const GazingCard = (
-    {
-        coin = {},
-        onLike,
-        onDislike,
-        coin_index,
-        undo,
-        show_back
-    }
-) =>
-{
+const GazingCard = ({
+    coin = {},
+    onLike,
+    onDislike,
+    coin_index,
+    undo,
+    show_back,
+}) => {
     const theme = useTheme();
     return (
         <Fragment>
-            {coin &&
+            {coin && (
                 <Grid
                     container
                     item
@@ -49,21 +45,21 @@ const GazingCard = (
                                 {/*<a className="text-primary text-decoration-underline">*/}
                                 {/*    Visit Coin*/}
                                 {/*</a>*/}
-                                   <Link
-                                       href={`/knowledge_center/cryptocurrency/${coin?.id}`}
-                                       style={{
-                                           color: 'blue',
-                                           textDecoration: 'none',
-                                       }}
-                                   >
-                                       Visit Coin
-                                   </Link>
+                                <Link
+                                    href={`/knowledge_center/cryptocurrency/${coin?.id}`}
+                                    style={{
+                                        color: 'blue',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    Visit Coin
+                                </Link>
                             </div>
                             <div className="row">
                                 <div className="col">
                                     <img
                                         height="100px"
-                                        src={coin.image?.large }
+                                        src={coin.image?.large}
                                         alt="Bitcoin Image"
                                     />
                                     <p className="mt-1">
@@ -82,7 +78,8 @@ const GazingCard = (
                                         <strong>
                                             $
                                             {
-                                                coin.market_data?.current_price.usd
+                                                coin.market_data?.current_price
+                                                    .usd
                                             }
                                         </strong>
                                     </a>
@@ -93,9 +90,7 @@ const GazingCard = (
                                     </p>
                                     <p className="text-danger">
                                         <strong>
-                                            {
-                                                coin.market_data?.price_change_24h
-                                            }
+                                            {coin.market_data?.price_change_24h}
                                             %
                                         </strong>
                                     </p>
@@ -109,17 +104,12 @@ const GazingCard = (
                                     </p>
                                     <p className="text-success">
                                         <strong>
-                                            $
-                                            {
-                                                coin.market_data?.market_cap.usd
-                                            }
+                                            ${coin.market_data?.market_cap.usd}
                                         </strong>
                                     </p>
                                     <br />
                                     <p>Total Supply</p>
-                                    <p>
-                                        {coin.market_data?.total_supply}
-                                    </p>
+                                    <p>{coin.market_data?.total_supply}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -145,7 +135,8 @@ const GazingCard = (
                             </Fab>
                         </div>
                     </Grid>
-                </Grid>}
+                </Grid>
+            )}
         </Fragment>
     );
 };

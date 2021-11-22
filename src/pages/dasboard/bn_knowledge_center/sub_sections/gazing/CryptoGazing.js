@@ -1,6 +1,6 @@
 import { Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import  {coinGecko} from './plug';
+import { coinGecko } from './plug';
 import GazingDeck from './GazingDeck';
 
 export function CryptoGazing() {
@@ -13,8 +13,7 @@ export function CryptoGazing() {
     const [show_back, setShowBack] = useState(false);
 
     //Get all coins
-    useEffect(() =>
-    {
+    useEffect(() => {
         fetch(`https://api.coingecko.com/api/v3/coins/list`)
             .then((response) => response.json())
             .then((data) => {
@@ -24,44 +23,42 @@ export function CryptoGazing() {
             .catch((err) => {
                 console.log(err);
             });
-
     }, []);
 
     // Set initial card coins
-    useEffect(() =>
-    {		async function selectCardCoins() {
-        if (!card_coins.length && coins.length) {
-
-            const random = Math.floor(Math.random() * coins.length);
-            const r_coins = [...Array(4)].map(
-                (coin, i) => coins[random + i].id
-            );
-
-            try {
-                const results0 = await coinGecko(
-                    `https://api.coingecko.com/api/v3/coins/${r_coins[0]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
-                );
-                const results1 = await coinGecko(
-                    `https://api.coingecko.com/api/v3/coins/${r_coins[1]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
-                );
-                const results2 = await coinGecko(
-                    `https://api.coingecko.com/api/v3/coins/${r_coins[2]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
-                );
-                const results3 = await coinGecko(
-                    `https://api.coingecko.com/api/v3/coins/${r_coins[3]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+    useEffect(() => {
+        async function selectCardCoins() {
+            if (!card_coins.length && coins.length) {
+                const random = Math.floor(Math.random() * coins.length);
+                const r_coins = [...Array(4)].map(
+                    (coin, i) => coins[random + i].id
                 );
 
-                setCardCoins([
-                    results0?.data,
-                    results1?.data,
-                    results2?.data,
-                    results3?.data,
-                ]);
-            } catch (e) {
-               console.log(e);
+                try {
+                    const results0 = await coinGecko(
+                        `https://api.coingecko.com/api/v3/coins/${r_coins[0]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+                    );
+                    const results1 = await coinGecko(
+                        `https://api.coingecko.com/api/v3/coins/${r_coins[1]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+                    );
+                    const results2 = await coinGecko(
+                        `https://api.coingecko.com/api/v3/coins/${r_coins[2]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+                    );
+                    const results3 = await coinGecko(
+                        `https://api.coingecko.com/api/v3/coins/${r_coins[3]}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+                    );
+
+                    setCardCoins([
+                        results0?.data,
+                        results1?.data,
+                        results2?.data,
+                        results3?.data,
+                    ]);
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
-    }
         selectCardCoins().then();
     }, [card_coins, coins]);
 
