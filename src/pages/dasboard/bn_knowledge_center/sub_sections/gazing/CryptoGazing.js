@@ -14,14 +14,15 @@ export function CryptoGazing() {
 
     //Get all coins
     useEffect(() => {
-        fetch(`https://api.coingecko.com/api/v3/coins/list`)
+        const abortCont = new AbortController();
+
+        fetch(`https://api.coingecko.com/api/v3/coins/list`, {
+            signal: abortCont.signal,
+        })
             .then((response) => response.json())
             .then((data) => {
                 setCoins(data);
                 checkLoadedCoin(true);
-            })
-            .catch((err) => {
-                console.log(err);
             });
     }, []);
 
@@ -55,7 +56,7 @@ export function CryptoGazing() {
                         results3?.data,
                     ]);
                 } catch (e) {
-                    console.log(e);
+                    //
                 }
             }
         }

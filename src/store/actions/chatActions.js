@@ -47,11 +47,9 @@ export const removeFromMessages = (data) => {
 };
 //pinned chats::chat actions to manipulate state around pinned messages
 export const addPinnedMessage = (data = []) => {
-    console.log('DATAP', data);
     return (dispatch) => dispatch({ data, type: 'ADD_PINNED_MESSAGES' });
 };
 export const addToPinnedMessage = (data) => {
-    console.log('PIN_MESSAGE', data);
     return (dispatch) =>
         dispatch({ data, type: 'ADD_MESSAGE_TO_PINNED_MESSAGES' });
 };
