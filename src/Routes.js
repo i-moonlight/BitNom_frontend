@@ -5,6 +5,7 @@ import BnChat from './pages/dasboard/bn_chat/BNChat';
 // import BnConnect from './pages/dasboard/bn_connect/BnConnect';
 import HashtagView from './pages/dasboard/bn_connect/HashtagView';
 import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
+import ConnectProfile from './pages/dasboard/bn_connect/ConnectProfile';
 import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
 import CoinDetails from './pages/dasboard/bn_knowledge_center/con_details/CoinDetails';
 import BnServices from './pages/dasboard/bn_services/BnServices';
@@ -18,6 +19,7 @@ import Profile from './pages/dasboard/profile/Profile';
 import ProfileView from './pages/dasboard/profile/ProfileView';
 import Posts from './pages/dasboard/profile/UserPosts';
 import Redirect from './utilities/Redirect';
+import TrendingPostsView from './pages/dasboard/bn_connect/TrendindPostsView';
 
 const FeatureRequest = React.lazy(() =>
     import('./pages/welcome/feature_request/FeatureRequest')
@@ -173,6 +175,16 @@ export default function Routes({ apolloClient }) {
                                     exact
                                     component={BnConnect}
                                     path="/connect"
+                                />
+                                <Route
+                                    exact
+                                    component={ConnectProfile}
+                                    path="/connect/profile"
+                                />
+                                <Route
+                                    exact
+                                    component={TrendingPostsView}
+                                    path="/connect/trending"
                                 />
                                 <Route exact component={BnChat} path="/chat" />
                                 <Route

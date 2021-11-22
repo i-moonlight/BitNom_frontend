@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
     },
+    mainCard: {
+        [theme.breakpoints.down('md')]: {
+            marginBottom: 16,
+            marginTop: 16,
+        },
+    },
 }));
 
 export default function BnConnect() {
@@ -181,8 +187,18 @@ export default function BnConnect() {
                                 </Suspense>
                             </Grid>
                         )}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Suspense fallback={<SkeletonCreateScrollCard />}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={8}
+                            lg={6}
+                            className={classes.mainCard}
+                        >
+                            <Suspense
+                                className={classes.createScrollCard}
+                                fallback={<SkeletonCreateScrollCard />}
+                            >
                                 <CreateScrollCard
                                     setOpenImage={setOpenImage}
                                     setImageDisabled={setImageDisabled}

@@ -12,6 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import { Button } from '../../../components/Button';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -143,11 +144,23 @@ export default function TrendingPostsCard({ trending, loading }) {
                     (!trending && (
                         <Grid className="p-2">
                             <Typography color="Primary" variant="body2">
-                                Trending posts will appear here ... start
-                                participating.
+                                Trending posts will appear here.
                             </Typography>
                         </Grid>
                     ))}
+                {trending?.length > 0 && (
+                    <Button
+                        textCase
+                        size="small"
+                        variant="text"
+                        className="my-1"
+                        onClick={() => {
+                            history.push('/connect/trending');
+                        }}
+                    >
+                        Show More
+                    </Button>
+                )}
             </List>
         </Paper>
     );
