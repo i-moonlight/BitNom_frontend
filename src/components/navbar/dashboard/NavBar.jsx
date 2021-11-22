@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
-    // QUERY_FETCH_PROFILE,
+    QUERY_FETCH_PROFILE,
     QUERY_LOAD_EVENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../../pages/dasboard/utilities/queries';
 import {
     checkSessionTimeOut,
-    // signout,
-    // userUpdate,
+    signout,
+    userUpdate,
 } from '../../../store/actions/authActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
@@ -63,13 +63,13 @@ export default function NavBar() {
     const isNotificationOptionOpen = Boolean(notificationOptionAnchorEl);
     const unreadCount = state.chats.unreadCount;
 
-    // const { loading: profileLoading, data: profileData } = useQuery(
-    //     QUERY_FETCH_PROFILE,
-    //     {
-    //         context: { clientName: 'users' },
-    //         fetchPolicy: 'network-only',
-    //     }
-    // );
+    const { loading: profileLoading, data: profileData } = useQuery(
+        QUERY_FETCH_PROFILE,
+        {
+            context: { clientName: 'users' },
+            fetchPolicy: 'network-only',
+        }
+    );
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
@@ -99,8 +99,8 @@ export default function NavBar() {
     );
 
     const response = data?.Notification?.get;
-    // const isAuth =
-    //     profileLoading || (!profileLoading && profileData?.Users?.profile);
+    const isAuth =
+        profileLoading || (!profileLoading && profileData?.Users?.profile);
 
     const handleMarkAsSeen = () => {
         markAsSeen({
@@ -155,9 +155,9 @@ export default function NavBar() {
         setTabValue(newValue);
     };
 
-    // useEffect(() => {
-    //     dispatch(userUpdate(profileData?.Users?.profile));
-    // }, [dispatch, profileData]);
+    useEffect(() => {
+        dispatch(userUpdate(profileData?.Users?.profile));
+    }, [dispatch, profileData]);
 
     useEffect(() => {
         user?.email &&
@@ -228,15 +228,15 @@ export default function NavBar() {
             logo.href = `${window.location.origin}/logo.svg`;
         }
 
-        // if (!isAuth) {
-        //     dispatch(signout());
-        // }
+        if (!isAuth) {
+            dispatch(signout());
+        }
     }, [
         _count,
         unreadCount,
         dispatch,
         eventsData?.Events?.get,
-        // isAuth,
+        isAuth,
         response,
         subscriptionData,
         user._id,
