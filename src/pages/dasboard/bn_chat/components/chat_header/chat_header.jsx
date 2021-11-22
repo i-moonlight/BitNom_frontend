@@ -72,10 +72,14 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
             dispatch(setSearchOutput(data?.Dialogue?.searchMessages));
         }
     }, [dispatch, data?.Dialogue?.searchMessages]);
+
     const handleDownIndex = () => {
+        // eslint-disable-next-line no-console
         console.log('Down SEARCH INDEX');
     };
+
     const handleUpIndex = () => {
+        // eslint-disable-next-line no-console
         console.log('Up search index');
     };
 

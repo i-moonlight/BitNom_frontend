@@ -20,6 +20,7 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
     //const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleClick = () => {
+        // eslint-disable-next-line no-console
         console.info(`You clicked ${options[commentFilter]}`);
     };
 

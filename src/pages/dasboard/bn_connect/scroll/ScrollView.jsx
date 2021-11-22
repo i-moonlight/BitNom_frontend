@@ -101,7 +101,6 @@ function PostView() {
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
     const [previewURL, setPreviewURL] = useState();
-
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -195,15 +194,15 @@ function PostView() {
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
-
     const profileData = profile?.Users?.profile;
+
     const [
         createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
+        // {
+        //     data: createCommentData,
+        //     // loading: createCommentLoading,
+        //     // error: createCommentError,
+        // },
     ] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
@@ -238,7 +237,8 @@ function PostView() {
                 },
             ],
         });
-        if (!createCommentData) console.log('');
+
+        // if (!createCommentData) console.log(createCommentData);
         setCommentFilter(1);
         setCommentText('');
         setCommentImage(null);
@@ -376,6 +376,7 @@ function PostView() {
     const authorInitials = getUserInitials(
         postData?.Posts?.getById?.author?.displayName
     );
+
     const currentUserInitials = getUserInitials(user?.displayName);
 
     const latestComments = commentsData?.Comments?.get.filter(
@@ -1301,8 +1302,6 @@ function PostView() {
     );
 }
 
-export default PostView;
-
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
@@ -1314,20 +1313,20 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     clickableTypography: {
+        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
-            color: 'inherit',
         },
         [theme.breakpoints.down('md')]: {
             textDecoration: 'underline',
         },
     },
     replies: {
+        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
-            color: 'inherit',
         },
     },
     inputHelper: {
@@ -1359,3 +1358,5 @@ const useStyles = makeStyles((theme) => ({
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
+
+export default PostView;

@@ -40,9 +40,8 @@ export default function RecentlyAdded() {
                 getCoinList(data);
                 coinLoaded(true);
             })
-            .catch((err) => {
+            .catch(() => {
                 coinLoaded(false);
-                console.log(err);
             });
     }, []);
     return (

@@ -31,6 +31,7 @@ export default function NotificationFilter({
     const anchorRef = useRef(null);
 
     const handleClick = () => {
+        // eslint-disable-next-line no-console
         console.info(`You clicked ${options[notificationFilter]}`);
     };
 

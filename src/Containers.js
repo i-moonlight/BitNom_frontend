@@ -23,13 +23,16 @@ import LightThemeStyles from './utilities/LightThemeStyles';
 const errorLink = onError(({ graphqlErrors, networkError }) => {
     if (graphqlErrors) {
         graphqlErrors.map(({ message, location, path }, index) => {
+            // eslint-disable-next-line no-console
             console.log(`Graphql error[${index}] ${message}`);
+            // eslint-disable-next-line no-console
             console.log(
                 `Above graphql error[${index}] ocurred at location ${location} and path ${path}`
             );
         });
     }
     if (networkError) {
+        // eslint-disable-next-line no-console
         console.log(`Graphql network error ${networkError}`);
     }
 });
@@ -66,8 +69,8 @@ class WebSocketLink extends ApolloLink {
                         }
                         return sink.error(
                             new Error(
-                                // err?.map(({ message }) => message).join(', ')
-                                console.log('sink error: ', err)
+                                // eslint-disable-next-line no-console
+                                console.log('sink.error: ', err)
                             )
                         );
                     },

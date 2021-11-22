@@ -64,7 +64,7 @@ function OrganizerSearch({
                 />
             )}
             renderOption={(props, option) => {
-                console.log(option);
+                // console.log(option);
                 /*  const matches = match(option?.displayName, inputValue);
         const parts = parse(option?.displayName, matches);
         ); */

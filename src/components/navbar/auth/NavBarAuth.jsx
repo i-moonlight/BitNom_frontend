@@ -1,9 +1,10 @@
-import { AppBar, Container, useTheme } from '@mui/material';
+import { AppBar, Container, Divider, useTheme } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
 import LazyImage from '../../LazyImage';
+import StatusBar from '../StatusBar';
 
 export default function NavBarAuth() {
     const history = useHistory();
@@ -17,6 +18,8 @@ export default function NavBarAuth() {
             }}
             elevation={0}
         >
+            <StatusBar />
+            <Divider />
             <Container>
                 <div className="space-between my-3">
                     <div

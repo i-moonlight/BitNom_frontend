@@ -5,40 +5,55 @@
  * Time: 4:46 PM
  */
 import React, { Component } from 'react';
-import Chart from 'react-apexcharts';
+import ApexCharts from 'react-apexcharts';
 
 class PriceGraph extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dataLabels: {
-                enabled: false,
-            },
-            chart: {
-                toolbar: {
-                    show: false,
-                },
-            },
-            legend: {
-                show: false,
-            },
-            options: {
-                chart: {
-                    id: 'basic-bar',
-                },
-                xaxis: {
-                    categories: [
-                        1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998,
-                    ],
-                },
-            },
             series: [
                 {
-                    name: 'series-1',
-                    data: [30, 40, 45, 50, 49, 60, 70, 91],
+                    data: this.props.sparkline.price,
                 },
             ],
+            options: {
+                chart: {
+                    type: 'line',
+                    width: 100,
+                    height: 35,
+                    sparkline: {
+                        enabled: true,
+                    },
+                },
+                tooltip: {
+                    fixed: {
+                        enabled: false,
+                    },
+                    x: {
+                        show: false,
+                    },
+                    y: {
+                        title: {
+                            formatter: function () {
+                                return '';
+                            },
+                        },
+                    },
+                    marker: {
+                        show: false,
+                    },
+                },
+                stroke: {
+                    show: true,
+                    curve: 'smooth',
+                    lineCap: 'butt',
+                    colors: 'red',
+                    width: 1,
+                    dashArray: 0,
+                },
+                colors: ['#F44336', '#E91E63', '#9C27B0'],
+            },
         };
     }
 
@@ -47,11 +62,12 @@ class PriceGraph extends Component {
             <div className="app">
                 <div className="row">
                     <div className="mixed-chart">
-                        <Chart
+                        <ApexCharts
                             options={this.state.options}
                             series={this.state.series}
                             type="line"
-                            width="100"
+                            height={35}
+                            width={100}
                         />
                     </div>
                 </div>
