@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Screen from '../../../components/Screen';
 import Categories from './sub_sections/Categories';
 import CryptoCurrency from './sub_sections/CryptoCurrency';
-import { CryptoGazing } from './sub_sections/CryptoGazing';
+import { CryptoGazing } from './sub_sections/gazing/CryptoGazing';
 import TopSection from './sub_sections/fragments/TopSection';
 import GainersAndLosers from './sub_sections/GainersAndLosers';
 import HeatMap from './sub_sections/HeatMap';
