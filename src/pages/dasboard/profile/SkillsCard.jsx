@@ -121,18 +121,23 @@ export default function SkillsCard({ profile, profileView }) {
                             label={name}
                             className="me-2 mb-2"
                             disabled={removeLoading}
-                            onDelete={() =>
-                                removeSkill({
-                                    variables: {
-                                        id: _id,
-                                    },
-                                    refetchQueries: [
-                                        {
-                                            query: QUERY_FETCH_PROFILE,
-                                            context: { clientName: 'users' },
-                                        },
-                                    ],
-                                })
+                            onDelete={
+                                !profileView
+                                    ? () =>
+                                          removeSkill({
+                                              variables: {
+                                                  id: _id,
+                                              },
+                                              refetchQueries: [
+                                                  {
+                                                      query: QUERY_FETCH_PROFILE,
+                                                      context: {
+                                                          clientName: 'users',
+                                                      },
+                                                  },
+                                              ],
+                                          })
+                                    : undefined
                             }
                         />
                     ))}

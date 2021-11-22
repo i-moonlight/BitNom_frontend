@@ -190,10 +190,11 @@ function PostView() {
 
     const {
         //  loading,
-        data: profileData,
+        data: profile,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+    const profileData = profile?.Users?.profile;
 
     const [
         createComment,
@@ -244,7 +245,6 @@ function PostView() {
         setCreateCommentErr(false);
         setPreviewURL();
     };
-
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
@@ -423,39 +423,31 @@ function PostView() {
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={state?.postCount?.postCount}
-                                    following={
-                                        profileData?.Users?.profile?.following
-                                            ?.length
-                                    }
-                                    followers={
-                                        profileData?.Users?.profile?.followers
-                                            ?.length
-                                    }
+                                    following={user?.following?.length}
+                                    followers={user?.followers?.length}
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={0}
                                 />
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <IconButton
-                                            size="small"
-                                            aria-label="back"
-                                            color="inherit"
-                                            onClick={() => history.goBack()}
-                                        >
-                                            <ArrowBack />
-                                        </IconButton>
-                                    }
-                                />
-                            </Card>
+                            <Hidden mdDown>
+                                <Card variant="outlined">
+                                    <CardHeader
+                                        avatar={
+                                            <IconButton
+                                                size="small"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
+                                        }
+                                    />
+                                </Card>
+                            </Hidden>
                             <Grid item>
                                 {getPostErr && (
                                     <Alert severity="error">
@@ -463,17 +455,13 @@ function PostView() {
                                     </Alert>
                                 )}
                             </Grid>
-                            <Grid item>
+                            <Grid item className={classes.mainCard}>
                                 {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
                                 <Card
-                                    style={{ marginBottom: 16, zIndex: 1 }}
-                                    /* onClick={() =>
-                                        history.push(
-                                            `/posts/${postData?.Posts?.getById?._id}`
-                                        )
-                                    } */
+                                    style={{ zIndex: 1 }}
+                                    className={classes.mainCard}
                                 >
                                     <CardHeader
                                         avatar={
@@ -1310,6 +1298,12 @@ function PostView() {
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: theme.spacing(2),
+    },
+    mainCard: {
+        marginTop: 16,
+        [theme.breakpoints.down('md')]: {
+            marginBottom: 16,
+        },
     },
     clickableTypography: {
         color: 'inherit',
