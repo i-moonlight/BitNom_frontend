@@ -296,8 +296,9 @@ export default function Scroll({
                                 backgroundColor: '#fed132',
                             }}
                             src={
+                                scroll?.author?.profile_pic &&
                                 process.env.REACT_APP_BACKEND_URL +
-                                scroll?.author?.profile_pic
+                                    scroll?.author?.profile_pic
                             }
                         >
                             {authorInitials}
@@ -609,8 +610,9 @@ export default function Scroll({
                                         marginRight: '3px',
                                     }}
                                     src={
+                                        user?.profile_pic &&
                                         process.env.REACT_APP_BACKEND_URL +
-                                        user?.profile_pic
+                                            user?.profile_pic
                                     }
                                     sx={{
                                         width: '30px',

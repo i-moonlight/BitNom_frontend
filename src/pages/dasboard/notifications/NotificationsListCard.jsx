@@ -6,7 +6,7 @@ import {
     Grid,
     IconButton,
     Typography,
-    Hidden,
+    useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -24,7 +24,7 @@ export default function NotificationsListCard({
     const history = useHistory();
     const [notificationSettingsAnchorEl, setNotificationSettingsAnchorEl] =
         useState(null);
-    //const [notificationFilter, setNotificationFilter] = useState(0);
+    const mdUp = useMediaQuery('(min-width:960px)');
 
     const isNotificationSettingsOpen = Boolean(notificationSettingsAnchorEl);
     const handleNotificationSettingsClose = () => {
@@ -70,54 +70,19 @@ export default function NotificationsListCard({
     return (
         <>
             <Card style={{ padding: '0 8px 10px 8px' }}>
-                <Hidden mdUp>
-                    <CardHeader
-                        action={
-                            <IconButton
-                                aria-label="notification settings"
-                                aria-controls={notificationSettingsId}
-                                aria-haspopup="true"
-                                onClick={handleNotificationSettingsOpen}
-                            >
-                                <MoreVert />
-                            </IconButton>
-                        }
-                        avatar={
-                            <>
-                                <IconButton
-                                    size="small"
-                                    className="m-1 p-1"
-                                    aria-label="back"
-                                    color="inherit"
-                                    onClick={() => history.goBack()}
-                                >
-                                    <ArrowBack />
-                                </IconButton>
-                            </>
-                        }
-                        title={
-                            <div className="center-horizontal">
-                                <NotificationFilter
-                                    notificationFilter={selectedIndex}
-                                    setNotificationFilter={setSelectedIndex}
-                                />
-                            </div>
-                        }
-                    />
-                </Hidden>
-                <Hidden smDown>
-                    <CardHeader
-                        action={
-                            <IconButton
-                                aria-label="notification settings"
-                                aria-controls={notificationSettingsId}
-                                aria-haspopup="true"
-                                onClick={handleNotificationSettingsOpen}
-                            >
-                                <MoreVert />
-                            </IconButton>
-                        }
-                        avatar={
+                <CardHeader
+                    action={
+                        <IconButton
+                            aria-label="notification settings"
+                            aria-controls={notificationSettingsId}
+                            aria-haspopup="true"
+                            onClick={handleNotificationSettingsOpen}
+                        >
+                            <MoreVert />
+                        </IconButton>
+                    }
+                    avatar={
+                        <>
                             <IconButton
                                 size="small"
                                 className="m-1 p-1"
@@ -127,56 +92,74 @@ export default function NotificationsListCard({
                             >
                                 <ArrowBack />
                             </IconButton>
-                        }
-                        title={
-                            <div className="center-horizontal">
+                        </>
+                    }
+                    title={
+                        <div className="center-horizontal">
+                            {!mdUp ? (
+                                <NotificationFilter
+                                    notificationFilter={selectedIndex}
+                                    setNotificationFilter={setSelectedIndex}
+                                />
+                            ) : (
                                 <Typography variant="body1">
                                     Notifications
                                 </Typography>
-                            </div>
-                        }
-                    />
-                </Hidden>
+                            )}
+                        </div>
+                    }
+                />
+
                 <Divider />
                 {selectedIndex === 0 &&
-                    notifications?.map((notification) => (
-                        <NotificationListItem
-                            key={notification._id}
-                            notification={notification}
-                        />
-                    ))}
+                    notifications
+                        ?.slice(0, 20)
+                        ?.map((notification) => (
+                            <NotificationListItem
+                                key={notification._id}
+                                notification={notification}
+                            />
+                        ))}
                 {selectedIndex === 1 &&
                     mentions?.length > 0 &&
-                    mentions?.map((notification) => (
-                        <NotificationListItem
-                            key={notification._id}
-                            notification={notification}
-                        />
-                    ))}
+                    mentions
+                        ?.slice(0, 20)
+                        ?.map((notification) => (
+                            <NotificationListItem
+                                key={notification._id}
+                                notification={notification}
+                            />
+                        ))}
                 {selectedIndex === 2 &&
                     reactions?.length > 0 &&
-                    reactions?.map((notification) => (
-                        <NotificationListItem
-                            key={notification._id}
-                            notification={notification}
-                        />
-                    ))}
+                    reactions
+                        ?.slice(0, 20)
+                        ?.map((notification) => (
+                            <NotificationListItem
+                                key={notification._id}
+                                notification={notification}
+                            />
+                        ))}
                 {selectedIndex === 3 &&
                     userContent?.length > 0 &&
-                    userContent?.map((notification) => (
-                        <NotificationListItem
-                            key={notification._id}
-                            notification={notification}
-                        />
-                    ))}
+                    userContent
+                        ?.slice(0, 20)
+                        ?.map((notification) => (
+                            <NotificationListItem
+                                key={notification._id}
+                                notification={notification}
+                            />
+                        ))}
                 {selectedIndex === 4 &&
                     userProfile?.length > 0 &&
-                    userProfile?.map((notification) => (
-                        <NotificationListItem
-                            key={notification._id}
-                            notification={notification}
-                        />
-                    ))}
+                    userProfile
+                        ?.slice(0, 20)
+                        ?.map((notification) => (
+                            <NotificationListItem
+                                key={notification._id}
+                                notification={notification}
+                            />
+                        ))}
                 {(selectedIndex === 0 && notifications?.length < 1) ||
                 (selectedIndex === 1 && mentions?.length < 1) ||
                 (selectedIndex === 2 && reactions?.length < 1) ||

@@ -36,7 +36,6 @@ export default function Notifications() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { loading, data } = useQuery(GET_USER_NOTIFICATIONS, {
-        variables: { limit: 20 },
         context: { clientName: 'notifications' },
     });
 

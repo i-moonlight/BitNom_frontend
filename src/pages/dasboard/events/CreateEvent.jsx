@@ -271,7 +271,7 @@ export default function CreateEvent({ open, setOpen }) {
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -322,7 +322,7 @@ export default function CreateEvent({ open, setOpen }) {
                         <Divider />
                         <CardContent
                             style={{
-                                maxHeight: '500px',
+                                maxHeight: '85vh',
                                 overflowY: 'auto',
                             }}
                         >

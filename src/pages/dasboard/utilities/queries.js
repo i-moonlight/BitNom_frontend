@@ -669,7 +669,7 @@ export const MUTATION_DELETE_COMMENT = gql`
 `;
 
 export const GET_USER_NOTIFICATIONS = gql`
-    query ($limit: Int!) {
+    query ($limit: Int) {
         Notification {
             get(limit: $limit) {
                 _id

@@ -304,7 +304,7 @@ export default function UpdatePost({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <ListItem className="p-0">
                                 <ListItemAvatar>
@@ -313,8 +313,9 @@ export default function UpdatePost({
                                             backgroundColor: '#fed132',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                     >
                                         {userInitials}

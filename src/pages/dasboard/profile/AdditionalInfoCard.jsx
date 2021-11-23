@@ -55,7 +55,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                                 variant="outlined"
                             >
                                 <MenuItem
-                                    button
+                                    //button
                                     onClick={() => {
                                         setFormType('course');
                                         setShowForm(true);
@@ -64,7 +64,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                                     Courses
                                 </MenuItem>
                                 <MenuItem
-                                    button
+                                    //button
                                     onClick={() => {
                                         setFormType('project');
                                         setShowForm(true);
@@ -73,7 +73,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                                     Projects
                                 </MenuItem>
                                 <MenuItem
-                                    button
+                                    //button
                                     onClick={() => {
                                         setFormType('language');
                                         setShowForm(true);
@@ -82,7 +82,7 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                                     Languages
                                 </MenuItem>
                                 <MenuItem
-                                    button
+                                    //button
                                     onClick={() => {
                                         setFormType('gender');
                                         setShowForm(true);

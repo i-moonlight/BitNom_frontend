@@ -58,8 +58,18 @@ export default function UserCard({ setOpen, followers, following }) {
             <Card style={{ marginBottom: 16 }} variant={'outlined'}>
                 <CardMedia
                     style={{ height: 100 }}
-                    src={process.env.REACT_APP_BACKEND_URL + user?.cover_pic}
-                    image={process.env.REACT_APP_BACKEND_URL + user?.cover_pic}
+                    src={
+                        user?.cover_pic
+                            ? process.env.REACT_APP_BACKEND_URL +
+                              user?.cover_pic
+                            : 'https://picsum.photos/200/300'
+                    }
+                    image={
+                        user?.cover_pic
+                            ? process.env.REACT_APP_BACKEND_URL +
+                              user?.cover_pic
+                            : 'https://picsum.photos/200/300'
+                    }
                 />
                 <CardContent
                     style={{
@@ -72,8 +82,9 @@ export default function UserCard({ setOpen, followers, following }) {
                         <div>
                             <Avatar
                                 src={
+                                    user?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
+                                        user?.profile_pic
                                 }
                                 variant="rounded"
                                 style={{

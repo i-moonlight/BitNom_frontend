@@ -263,7 +263,7 @@ export default function BnConnect() {
                             {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="body2" color="primary">
-                                        Connect. Share. Learn.
+                                        Connect.
                                     </Typography>
                                 </Grid>
                             )}

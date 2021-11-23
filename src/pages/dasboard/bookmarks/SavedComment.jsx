@@ -56,8 +56,9 @@ export default function SavedComment({
                                     backgroundColor: '#fed132',
                                 }}
                                 src={
+                                    comment?.author?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    comment?.author?.profile_pic
+                                        comment?.author?.profile_pic
                                 }
                             >
                                 {commentUserInitials}
@@ -79,7 +80,7 @@ export default function SavedComment({
                             </IconButton>
                         }
                         title={
-                            <Typography display="inline">
+                            <Typography component="div" display="inline">
                                 {comment?.author?.displayName}{' '}
                                 <Typography display="inline" variant="body2">
                                     . @{comment?.author?._id}
@@ -94,14 +95,19 @@ export default function SavedComment({
                         <Typography
                             variant="body2"
                             color="textSecondary"
-                            component="p"
+                            component="div"
                         >
                             <Typography
                                 onClick={(e) => contentClickHandler(e)}
                                 dangerouslySetInnerHTML={{
                                     __html: contentBodyFactory(comment),
                                 }}
-                                style={{ zIndex: 2 }}
+                                style={{
+                                    zIndex: 2,
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                variant="body2"
                             ></Typography>
 
                             {comment?.image.length > 0 && (
@@ -145,8 +151,8 @@ export default function SavedComment({
                             )}
                         </Typography>
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography component="div" display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(comment)} ${
                                     getReactionsSum(comment) === 1
                                         ? 'Reaction'
@@ -154,7 +160,7 @@ export default function SavedComment({
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${comment?.replies} ${
                                     comment?.replies === 1 ? 'Reply' : 'Replies'
                                 }`}

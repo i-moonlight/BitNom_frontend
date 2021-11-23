@@ -182,10 +182,15 @@ function PostView() {
                     'We did not find a post with the ID you provided!'
                 ) {
                     setGetPostErr(
-                        'This post might have been deleted by the author.'
+                        'Oops! We did not find this post. It might have been deleted by the author.'
                     );
                 }
             });
+        postError &&
+            postError.networkError &&
+            setGetPostErr(
+                'Something is wrong! Please check your connection and refresh the page.'
+            );
     }, [postError]);
 
     const {
@@ -470,10 +475,13 @@ function PostView() {
                                                     backgroundColor: '#fed132',
                                                 }}
                                                 src={
+                                                    postData?.Posts?.getById
+                                                        ?.author?.profile_pic &&
                                                     process.env
                                                         .REACT_APP_BACKEND_URL +
-                                                    postData?.Posts?.getById
-                                                        ?.author?.profile_pic
+                                                        postData?.Posts?.getById
+                                                            ?.author
+                                                            ?.profile_pic
                                                 }
                                             >
                                                 {authorInitials}
@@ -871,9 +879,10 @@ function PostView() {
                                                             marginRight: '3px',
                                                         }}
                                                         src={
+                                                            user?.profile_pic &&
                                                             process.env
                                                                 .REACT_APP_BACKEND_URL +
-                                                            user?.profile_pic
+                                                                user?.profile_pic
                                                         }
                                                         sx={{
                                                             width: '30px',

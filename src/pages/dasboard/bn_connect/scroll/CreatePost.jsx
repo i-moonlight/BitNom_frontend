@@ -271,7 +271,7 @@ export default function CreatePost({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <ListItem className="p-0">
                                 <ListItemAvatar>
@@ -280,8 +280,9 @@ export default function CreatePost({
                                             backgroundColor: '#fed132',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                     >
                                         {userInitials}
@@ -296,6 +297,7 @@ export default function CreatePost({
                                             style={{
                                                 //backgroundColor: theme.palette.background.default,
                                                 padding: '0px 10px',
+                                                textTransform: 'none',
                                             }}
                                             startIcon={<Public />}
                                             endIcon={
@@ -307,7 +309,9 @@ export default function CreatePost({
                                                 />
                                             }
                                         >
-                                            Public
+                                            <Typography variant="body1">
+                                                Public
+                                            </Typography>
                                         </Button>
                                     }
                                 />

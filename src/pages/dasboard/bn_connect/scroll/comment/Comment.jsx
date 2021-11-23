@@ -529,8 +529,9 @@ export default function Comment({
                                             marginRight: '3px',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                         sx={{ width: '30px', height: '30px' }}
                                     >

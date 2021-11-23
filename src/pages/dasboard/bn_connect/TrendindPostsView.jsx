@@ -36,7 +36,7 @@ export default function TrendingPostsView() {
 
     const user = state.auth.user;
 
-    const { data } = useQuery(QUERY_LOAD_SCROLLS, {
+    const { data, loading } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: {
                 ids: getFeed(user),
@@ -127,13 +127,14 @@ export default function TrendingPostsView() {
                                     }
                                 />
                             </Card>
+
+                            {loading &&
+                                !trends &&
+                                [1, 2, 3, 4].map((i) => (
+                                    <SkeletonScrollCard key={i} />
+                                ))}
                             {trends?.map((post) => (
-                                <Suspense
-                                    key={post?._id}
-                                    fallback={<SkeletonScrollCard />}
-                                >
-                                    <ScrollPreview scroll={post} />
-                                </Suspense>
+                                <ScrollPreview key={post?._id} scroll={post} />
                             ))}
                             {/* {loadingMore ? (
                                 ''
