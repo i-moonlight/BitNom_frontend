@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/21/21
- * Time: 7:31 PM
- */
-
 import { ArrowDropDown, Fullscreen } from '@mui/icons-material';
 
 export default function HeatMap() {

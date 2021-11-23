@@ -1,9 +1,18 @@
-import { ListItem, ListItemText, Typography } from '@mui/material';
+import { DeleteRounded } from '@mui/icons-material';
+import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import React from 'react';
 
 export default function PinnedMessages({ message }) {
     return (
-        <ListItem button alignItems="flex-start">
+        <ListItem
+            button
+            alignItems="flex-start"
+            secondaryAction={
+                <IconButton edge="end" aria-label="delete">
+                    <DeleteRounded />
+                </IconButton>
+            }
+        >
             <ListItemText
                 secondary={
                     <>

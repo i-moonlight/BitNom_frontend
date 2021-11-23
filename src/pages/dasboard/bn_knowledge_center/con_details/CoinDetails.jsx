@@ -41,16 +41,20 @@ export default function CoinDetails({ match }) {
     const classes = useStyles();
 
     useEffect(() => {
+        const abortCont = new AbortController();
         const coin_id = match.params.id;
+
         const url = `https://api.coingecko.com/api/v3/coins/${coin_id}`;
-        fetch(url)
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
                 setCoinDetail(data);
                 setCoinLoaded(true);
             })
-            .catch(() => {
-                setCoinLoaded(false);
+            .catch((err) => {
+                if (err.name !== 'AbortError') {
+                    setCoinLoaded(false);
+                }
             });
     }, [match.params.id]);
 

@@ -20,16 +20,15 @@ import { convertDate } from '../utils/utilities';
 export default function MarketTable() {
     const [market, getMarket] = useState({});
     const [isMarket, checkLoadedMarket] = useState(false);
+
     useEffect(() => {
-        fetch(url)
+        const abortCont = new AbortController();
+
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
-                // console.log(data);
                 getMarket(data);
                 checkLoadedMarket(true);
-            })
-            .catch(() => {
-                // console.log(err);
             });
     }, []);
     return (

@@ -32,6 +32,7 @@ import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
 import Pinned from './pinned';
+import SearchedChats from './SearchedChats';
 
 function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
@@ -150,6 +151,7 @@ function Chats({ onSetChatMobile }) {
     useEffect(() => {
         if (pinnedChatData?.pinChat) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
+            dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
     }, [dispatch, pinnedChatData?.pinChat]);
 
@@ -162,6 +164,7 @@ function Chats({ onSetChatMobile }) {
     const invites = state.chats.invites;
     const archived = state.chats.archived;
     const pinned = state.chats.pinnedChats;
+    const searchedChats = state.chats.searchedChats;
     const activeChatId = state.chats.current_chat._id;
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
@@ -173,47 +176,60 @@ function Chats({ onSetChatMobile }) {
     };
     return (
         <Fragment>
-            <div style={{ overflow: 'auto' }}>
-                {invites && invites?.length > 0 && (
-                    <Invites invites={invites} loading={invitesLoading} />
-                )}
+            {searchedChats?.length > 0 ? (
+                <div style={{ overflow: 'auto' }}>
+                    {searchedChats && searchedChats?.length > 0 && (
+                        <SearchedChats searchedChats={searchedChats} />
+                    )}
+                </div>
+            ) : (
+                <div style={{ overflow: 'auto' }}>
+                    {invites && invites?.length > 0 && (
+                        <Invites invites={invites} loading={invitesLoading} />
+                    )}
 
-                {pinned && pinned?.length > 0 && (
-                    <Pinned pinned={pinned} loading={pinnedLoading} />
-                )}
-                {chats && chats?.length > 0 && (
-                    <List
-                        component="nav"
-                        subheader={
-                            <ListSubheader component="div">Chats</ListSubheader>
-                        }
-                    >
-                        {chats?.map((chat) => (
-                            <ChatItem
-                                key={chat._id}
-                                onClick={() => openChat(chat)}
-                                chat={chat}
-                                activeChatId={activeChatId}
-                            />
-                        ))}
-                    </List>
-                )}
-                {archived && archived?.length > 0 && (
-                    <Archived archived={archived} loading={archivedLoading} />
-                )}
-                {loading && !chats?.length > 0 && (
-                    <Grid
-                        alignItems="center"
-                        justifyContent="center"
-                        container
-                        item
-                        direction="column"
-                        style={{ width: '100%' }}
-                    >
-                        <CircularProgress />
-                    </Grid>
-                )}
-            </div>
+                    {pinned && pinned?.length > 0 && (
+                        <Pinned pinned={pinned} loading={pinnedLoading} />
+                    )}
+                    {chats && chats?.length > 0 && (
+                        <List
+                            component="nav"
+                            subheader={
+                                <ListSubheader component="div">
+                                    Chats
+                                </ListSubheader>
+                            }
+                        >
+                            {chats?.map((chat) => (
+                                <ChatItem
+                                    key={chat._id}
+                                    onClick={() => openChat(chat)}
+                                    chat={chat}
+                                    activeChatId={activeChatId}
+                                />
+                            ))}
+                        </List>
+                    )}
+                    {archived && archived?.length > 0 && (
+                        <Archived
+                            archived={archived}
+                            loading={archivedLoading}
+                        />
+                    )}
+                    {loading && !chats?.length > 0 && (
+                        <Grid
+                            alignItems="center"
+                            justifyContent="center"
+                            container
+                            item
+                            direction="column"
+                            style={{ width: '100%' }}
+                        >
+                            <CircularProgress />
+                        </Grid>
+                    )}
+                </div>
+            )}
         </Fragment>
     );
 }

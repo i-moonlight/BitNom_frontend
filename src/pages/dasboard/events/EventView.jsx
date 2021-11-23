@@ -10,6 +10,7 @@ import {
     ShareRounded,
 } from '@mui/icons-material';
 import {
+    Alert,
     Avatar,
     Card,
     CardActions,
@@ -20,15 +21,14 @@ import {
     Container,
     Divider,
     Grid,
-    IconButton,
-    List,
     Tab,
     Tabs,
-    Tooltip,
     Typography,
     useMediaQuery,
-    Alert,
 } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
@@ -42,12 +42,12 @@ import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
 import {
+    GET_BOOKMARKED_EVENTS,
     MUTATION_ATTEND_EVENT,
     MUTATION_CREATE_BOOKMARK,
     MUTATION_REMOVE_EVENT_ATTENDANCE,
     QUERY_EVENT_BY_ID,
     QUERY_FETCH_PROFILE,
-    GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 import AttendeeComponent from './AttendeeComponent';
 import CreateEvent from './CreateEvent';

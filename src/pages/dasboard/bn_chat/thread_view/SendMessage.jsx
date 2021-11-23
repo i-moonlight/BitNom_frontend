@@ -1,30 +1,34 @@
-import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import {
     AttachFile,
+    Close,
     EmojiEmotions,
     Gif,
     Image,
     SendOutlined,
     VideoLibrary,
-    Close,
 } from '@mui/icons-material';
 import {
-    Divider,
-    IconButton,
-    Paper,
-    useTheme,
-    Typography,
-    TextField,
-    CardHeader,
     Card,
     CardContent,
+    CardHeader,
+    Divider,
+    IconButton,
+    InputBase,
+    Paper,
+    Typography,
+    useTheme,
 } from '@mui/material';
+import debounce from 'lodash/debounce';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DropzoneArea } from 'react-mui-dropzone';
-import { CREATE_DIALOGUE_MESSAGE, UPDATE_MESSAGE } from '../graphql/queries';
-import { useStyles } from '../utils/styles';
-
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
+import {
+    CREATE_DIALOGUE_MESSAGE,
+    UPDATE_MESSAGE,
+    USER_TYPING,
+} from '../graphql/queries';
+import { useStyles } from '../utils/styles';
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -38,9 +42,12 @@ export default function SendMessage({
     editText,
     setEditText,
     onCancelMessageUpdate,
+    currentUser,
+    otherUser,
 }) {
     const [text, setText] = useState('');
 
+    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -74,6 +81,7 @@ export default function SendMessage({
     });
 
     const [updateMessage] = useMutation(UPDATE_MESSAGE);
+    const [userTypingMutation] = useMutation(USER_TYPING);
 
     const onSendMessage = async (ICreateMessage) => {
         await sendMessage({
@@ -102,6 +110,14 @@ export default function SendMessage({
         setEditText();
     };
 
+    const onUserTyping = async (IUserTyping) => {
+        await userTypingMutation({
+            variables: {
+                data: IUserTyping,
+            },
+            context: { clientName: 'chat' },
+        });
+    };
     const handleChange = (e) => {
         setText(
             text?.length >= 250
@@ -130,6 +146,38 @@ export default function SendMessage({
     useEffect(() => {
         setText(editText?.text);
     }, [editText]);
+    useEffect(() => {
+        if (
+            text === '' ||
+            replyText?.text?.length > 0 ||
+            editText?.text?.length > 0
+        ) {
+            inputRef.current.focus();
+        }
+    }, [text, replyText, editText]);
+
+    const handleUserTyping = () => {
+        onUserTyping({
+            currentUser: currentUser?.info._id,
+            otherUser: otherUser?.info._id,
+            typing: true,
+            chat: chat,
+        });
+    };
+    const handleUserNotTyping = () => {
+        onUserTyping({
+            currentUser: currentUser?.info._id,
+            otherUser: otherUser?.info._id,
+            typing: false,
+            chat: chat,
+        });
+    };
+    // eslint-disable-next-line
+    const debouncedUserTyping = useCallback(
+        debounce(handleUserNotTyping, 1000),
+        []
+    );
+
     return (
         <>
             {' '}
@@ -294,7 +342,6 @@ export default function SendMessage({
                 <Divider className={classes.divider} />{' '}
                 <div className="d-flex">
                     <div className={classes.inputTab} style={{ width: '33%' }}>
-                        {' '}
                         <IconButton
                             size="small"
                             className={'m-1 p-1' + classes.iconButton}
@@ -363,7 +410,6 @@ export default function SendMessage({
                             component="form"
                             className={classes.sendMessage}
                         >
-                            {' '}
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
@@ -376,7 +422,7 @@ export default function SendMessage({
                             >
                                 <EmojiEmotions />
                             </IconButton>
-                            <TextField
+                            {/* <TextField
                                 size="small"
                                 name="text"
                                 value={text}
@@ -396,6 +442,31 @@ export default function SendMessage({
                                         ? handleSendMessage()
                                         : null
                                 }
+                                error={Object.keys(sendMessageErr)?.length > 0}
+                            /> */}
+                            <InputBase
+                                size="small"
+                                name="text"
+                                value={text}
+                                inputRef={inputRef}
+                                className={classes.inputField}
+                                placeholder="Type a message"
+                                fullWidth
+                                onKeyDownCapture={handleUserTyping}
+                                onKeyUp={debouncedUserTyping}
+                                onChange={handleChange}
+                                multiline
+                                margin="dense"
+                                maxRows={3}
+                                onKeyDown={(e) => {
+                                    e.key === 'Enter' &&
+                                    e.shiftKey &&
+                                    editText?.text?.length > 0
+                                        ? handleUpdateMessage()
+                                        : e.key === 'Enter' && e.shiftKey
+                                        ? handleSendMessage()
+                                        : null;
+                                }}
                                 error={Object.keys(sendMessageErr)?.length > 0}
                             />
                             <IconButton

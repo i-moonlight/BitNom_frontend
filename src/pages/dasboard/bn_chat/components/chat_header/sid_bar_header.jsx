@@ -1,4 +1,4 @@
-// import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Chat, MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -8,28 +8,44 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import debounce from 'lodash/debounce';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setChatSearchInput } from '../../../../../store/actions/chatActions';
+import { SEARCH_CHATS } from '../../graphql/queries';
 import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
-// import { SEARCH_CHATS } from '../../graphql/queries';
 import { useStyles } from '../../utils/styles';
 
 export default function SideBarHeader() {
-    const [values, setSearchString] = useState({ searchString: '' });
+    const [searchTerm, setSearchString] = useState('');
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
+
     const theme = useTheme();
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const { data } = useQuery(SEARCH_CHATS, {
+        variables: {
+            params: { searchString: searchTerm },
+        },
+        context: { clientName: 'chat' },
+    });
+
     const handleChatSearch = (e) => {
-        setSearchString({
-            ...values,
-            [e.target.name]: e.target.values,
-        });
+        setSearchString(e.target.value);
     };
-    // const { loading, data } = useQuery(SEARCH_CHATS, {
-    //     variables: {
-    //         params: { searchString: values.searchString },
-    //     },
-    //     context: { clientName: 'chat' },
-    // });
+
+    const handleDebouncedChatSearch = useMemo(
+        () => debounce(handleChatSearch, 500),
+        []
+    );
+
+    useEffect(() => {
+        if (data?.Dialogue?.search.length > 0) {
+            dispatch(setChatSearchInput(data?.Dialogue?.search));
+        }
+    }, [data?.Dialogue?.search, dispatch]);
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">
@@ -37,7 +53,6 @@ export default function SideBarHeader() {
                     Messaging
                 </Typography>
                 <div className="align-items-end">
-                    {' '}
                     <IconButton onClick={() => setCreateChatInviteOpen(true)}>
                         <Chat />
                     </IconButton>
@@ -55,7 +70,6 @@ export default function SideBarHeader() {
                 component="form"
                 className={classes.paperSearch}
             >
-                {' '}
                 <IconButton
                     size="small"
                     type="submit"
@@ -69,8 +83,7 @@ export default function SideBarHeader() {
                     placeholder="Search Chats"
                     inputProps={{ 'aria-label': 'search chats' }}
                     name="searchString"
-                    value={values.searchString}
-                    onChange={handleChatSearch}
+                    onChange={handleDebouncedChatSearch}
                 />
             </Paper>
             <CreateChatPrompt

@@ -1,34 +1,45 @@
 import { ApolloProvider } from '@apollo/client';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import BnChat from './pages/dasboard/bn_chat/BNChat';
-// import BnConnect from './pages/dasboard/bn_connect/BnConnect';
-import HashtagView from './pages/dasboard/bn_connect/HashtagView';
-import PostView from './pages/dasboard/bn_connect/scroll/ScrollView';
+
 import ConnectProfile from './pages/dasboard/bn_connect/ConnectProfile';
-import BnKnowledgeCenter from './pages/dasboard/bn_knowledge_center/BnKnowledgeCenter';
-import CoinDetails from './pages/dasboard/bn_knowledge_center/con_details/CoinDetails';
-import BnServices from './pages/dasboard/bn_services/BnServices';
-import SavedItems from './pages/dasboard/bookmarks/SavedItems';
-import Events from './pages/dasboard/events/Events';
-import EventView from './pages/dasboard/events/EventView';
-import Notifications from './pages/dasboard/notifications/Notifications';
-import Connections from './pages/dasboard/people/Connections';
-import People from './pages/dasboard/people/People';
-import Profile from './pages/dasboard/profile/Profile';
-import ProfileView from './pages/dasboard/profile/ProfileView';
-import Posts from './pages/dasboard/profile/UserPosts';
-import Redirect from './utilities/Redirect';
 import TrendingPostsView from './pages/dasboard/bn_connect/TrendindPostsView';
 
+const CoinDetails = React.lazy(() =>
+    import('./pages/dasboard/bn_knowledge_center/con_details/CoinDetails')
+);
+const BnKnowledgeCenter = React.lazy(() =>
+    import('./pages/dasboard/bn_knowledge_center/BnKnowledgeCenter')
+);
 const FeatureRequest = React.lazy(() =>
     import('./pages/welcome/feature_request/FeatureRequest')
+);
+const PostView = React.lazy(() =>
+    import('./pages/dasboard/bn_connect/scroll/ScrollView')
+);
+const Notifications = React.lazy(() =>
+    import('./pages/dasboard/notifications/Notifications')
+);
+const HashtagView = React.lazy(() =>
+    import('./pages/dasboard/bn_connect/HashtagView')
+);
+const BnServices = React.lazy(() =>
+    import('./pages/dasboard/bn_services/BnServices')
 );
 const Disclaimer = React.lazy(() =>
     import('./pages/welcome/disclaimer/Disclaimer')
 );
+const ProfileView = React.lazy(() =>
+    import('./pages/dasboard/profile/ProfileView')
+);
+const Connections = React.lazy(() =>
+    import('./pages/dasboard/people/Connections')
+);
 const Investors = React.lazy(() =>
     import('./pages/welcome/investor/Investors')
+);
+const SavedItems = React.lazy(() =>
+    import('./pages/dasboard/bookmarks/SavedItems')
 );
 const RequireVerification = React.lazy(() =>
     import('./pages/auth/RequireVerification')
@@ -36,17 +47,24 @@ const RequireVerification = React.lazy(() =>
 const TestComponent = React.lazy(() =>
     import('./test_component/TestComponent')
 );
+const EventView = React.lazy(() => import('./pages/dasboard/events/EventView'));
 const CreatePassword = React.lazy(() => import('./pages/auth/CreatePassword'));
 const ResetPassword = React.lazy(() => import('./pages/auth/ResetPassword'));
+const Profile = React.lazy(() => import('./pages/dasboard/profile/Profile'));
+const Posts = React.lazy(() => import('./pages/dasboard/profile/UserPosts'));
 const Support = React.lazy(() => import('./pages/welcome/investor/Support'));
 const Landing = React.lazy(() => import('./pages/welcome/landing/Landing'));
 const Privacy = React.lazy(() => import('./pages/welcome/privacy/Privacy'));
 const RoadMap = React.lazy(() => import('./pages/welcome/roadmap/RoadMap'));
+const BnChat = React.lazy(() => import('./pages/dasboard/bn_chat/BNChat'));
+const Events = React.lazy(() => import('./pages/dasboard/events/Events'));
+const People = React.lazy(() => import('./pages/dasboard/people/People'));
 const Cookie = React.lazy(() => import('./pages/welcome/cookie/Cookie'));
 const VerifyEmail = React.lazy(() => import('./pages/auth/VerifyEmail'));
 const UpdateInfo = React.lazy(() => import('./pages/auth/UpdateInfo'));
 const Terms = React.lazy(() => import('./pages/welcome/terms/Terms'));
 const Faqs = React.lazy(() => import('./pages/welcome/faqs/Faqs'));
+const Redirect = React.lazy(() => import('./utilities/Redirect'));
 const Signup = React.lazy(() => import('./pages/auth/Signup'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 
@@ -173,7 +191,21 @@ export default function Routes({ apolloClient }) {
                                 {/* Dashboard */}
                                 <Route
                                     exact
-                                    component={BnConnect}
+                                    component={
+                                        BnConnect
+                                        //     () => {
+                                        //     return (
+                                        //         <>
+                                        //             <div className=" text-white">
+                                        //                 Hello BN Connect
+                                        //             </div>
+                                        //             <Link to="/knowledge_center/cryptocurrency">
+                                        //                 Crypto
+                                        //             </Link>
+                                        //         </>
+                                        //     );
+                                        // }
+                                    }
                                     path="/connect"
                                 />
                                 <Route

@@ -32,6 +32,7 @@ import LazyImage from '../../LazyImage';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
+    unreadCount,
     notificationCount,
     menuId,
     handleMenuOpen,
@@ -44,7 +45,7 @@ export default function ProfileBar({
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
-    const unreadCount = state.chats.unreadCount;
+
     const userInitials = getUserInitials(
         user?.displayName || profile?.displayName
     );
