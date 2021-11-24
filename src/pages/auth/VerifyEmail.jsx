@@ -23,7 +23,9 @@ export default function VerifyEmail() {
     });
 
     useEffect(() => {
-        user?.email?.verified && history.push('/auth/update_info_register');
+        user?.email?.verified &&
+            !user?.displayName &&
+            history.push('/auth/update_info_register');
 
         verifyEmail({
             variables: {
@@ -47,6 +49,7 @@ export default function VerifyEmail() {
         dispatch,
         history,
         location.search,
+        user?.displayName,
         user?.email,
         user?.email?.verified,
         verifyEmail,
@@ -59,12 +62,10 @@ export default function VerifyEmail() {
                 <Grid
                     container
                     spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '100vh' }}
+                    style={{ minHeight: '100vh', marginTop: 80 }}
                 >
-                    <Grid item xs={11} sm={7} md={6} lg={4}>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                    <Grid item xs={10} sm={8} md={6} lg={4}>
                         <Card elevation={4}>
                             <CardContent>
                                 <div className="text-center my-3 mx-2">
@@ -120,6 +121,7 @@ export default function VerifyEmail() {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
                 </Grid>
             </div>
         </>
