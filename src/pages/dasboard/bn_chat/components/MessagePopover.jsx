@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { List, ListItem, ListItemText, Popover } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addToPinnedMessage,
@@ -22,22 +22,25 @@ export default function MessagePopover({
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+
     const [pinMessage, { data }] = useMutation(PIN_MESSAGE, {
         variables: {
             data: { chat: chat._id, message: message._id },
         },
         context: { clientName: 'chat' },
     });
+
     const [deleteMessage] = useMutation(DELETE_MESSAGE, {
         variables: {
             data: { chat: chat._id, message: message._id },
         },
         context: { clientName: 'chat' },
     });
+
     const handlePinMessage = () => {
         pinMessage();
-        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
     };
+
     const handleDeleteMessage = () => {
         deleteMessage();
         dispatch(removeFromMessages(message));
@@ -48,6 +51,9 @@ export default function MessagePopover({
         console.log('REPORT');
     };
 
+    useEffect(() => {
+        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+    }, [data?.Dialogue?.pinMessage, dispatch]);
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}

@@ -1,7 +1,7 @@
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Autocomplete, Grid, TextField, Typography } from '@mui/material';
+import { Autocomplete, Grid, Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-//import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import React from 'react';
 
@@ -50,7 +50,7 @@ export default function LocationInput({
         loaded.current = true;
     }
 
-    const fetch = React.useMemo(
+    const fetchP = React.useMemo(
         () =>
             throttle((request, callback) => {
                 autocompleteService.current.getPlacePredictions(
@@ -77,7 +77,7 @@ export default function LocationInput({
             return undefined;
         }
 
-        fetch({ input: inputValue }, (results) => {
+        fetchP({ input: inputValue }, (results) => {
             if (active) {
                 let newOptions = [];
 
@@ -96,7 +96,7 @@ export default function LocationInput({
         return () => {
             active = false;
         };
-    }, [selectedLocation, inputValue, fetch]);
+    }, [selectedLocation, inputValue, fetchP]);
 
     return (
         <Autocomplete

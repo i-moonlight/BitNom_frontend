@@ -30,7 +30,7 @@ Uncaught (in promise) f: OneSignal: The OneSignal web SDK can only be initialize
 -   [ ] Profile update validation
 -   [ ] Longest word validation on description field
 -   [x] Press enter during signup and login
--   [ ] Subscribe Input not functional
+-   [x] Subscribe Input not functional
 -   [ ] Live data on top status bar
 -   [ ] Live data on cryptocurrencies
 
@@ -38,6 +38,6 @@ Uncaught (in promise) f: OneSignal: The OneSignal web SDK can only be initialize
 
 ## Updates
 
--   [ ] Endpoint for subscribe input
+-   [x] Endpoint for subscribe input
 -   [ ] Add limit to number of login attempts
 -   [ ] DDOS attempts protection?

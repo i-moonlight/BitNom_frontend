@@ -1,8 +1,3 @@
-//import { useMutation } from '@apollo/client';
-/* import {
-   MUTATION_CREATE_BOOKMARK,
-} from '../utilities/queries'; */
-//import { useSelector } from 'react-redux';
 import {
     CheckBox,
     FileCopyOutlined,
@@ -17,8 +12,8 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-
 import { toast } from 'react-toastify';
+
 export default function EventOptionsPopover({
     eventOptionsAnchorEl,
     eventOptionsId,

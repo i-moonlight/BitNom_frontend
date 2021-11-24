@@ -23,6 +23,66 @@ export const SEARCH_CHATS = gql`
         Dialogue {
             search(params: $params) {
                 _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                otherUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                status
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -258,70 +318,71 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
 export const REJECT_DIALOGUE_INVITE = gql`
     mutation ($_id: ID!) {
         Dialogue {
-            reject(_id: $_id)
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+            reject(_id: $_id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                otherUser {
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    unreadCount
+                    blocked
+                    lastSeen
+                    archived
+                    pinned
                 }
-                unreadCount
-                blocked
-                lastSeen
-                archived
-                pinned
-            }
 
-            currentUser {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    archived
+                    pinned
                 }
-                lastSeen
-                archived
-                pinned
-            }
-            status
-            lastMessage {
-                text
-                video
-                images
-                documents
-                gif
+                status
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -329,70 +390,71 @@ export const REJECT_DIALOGUE_INVITE = gql`
 export const BLOCK_DIALOGUE = gql`
     mutation ($id: ID!) {
         Dialogue {
-            block(_id: $id)
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+            block(_id: $id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                otherUser {
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    unreadCount
+                    blocked
+                    lastSeen
+                    archived
+                    pinned
                 }
-                unreadCount
-                blocked
-                lastSeen
-                archived
-                pinned
-            }
 
-            currentUser {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    archived
+                    pinned
                 }
-                lastSeen
-                archived
-                pinned
-            }
-            status
-            lastMessage {
-                text
-                video
-                images
-                documents
-                gif
+                status
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -401,41 +463,42 @@ export const BLOCK_DIALOGUE = gql`
 export const UNBLOCK_DIALOGUE = gql`
     mutation ($id: ID!) {
         Dialogue {
-            unblock(_id: $id)
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+            unblock(_id: $id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
 
-                    bio
+                        bio
+                    }
+                    lastSeen
+                    pinned
                 }
-                lastSeen
-                pinned
-            }
-            status
-            lastMessage {
-                text
-                video
-                images
-                documents
-                gif
+                status
+                lastMessage {
+                    text
+                    video
+                    images
+                    documents
+                    gif
+                }
             }
         }
     }
@@ -1251,9 +1314,9 @@ export const UNPIN = gql`
     }
 `;
 export const UNPIN_MESSAGE = gql`
-    mutation unpinMessage($_id: ID!) {
+    mutation unpinMessage($data: OMessageInput!) {
         Dialogue {
-            unpinMessage(_id: $_id)
+            unpinMessage(data: $data)
         }
     }
 `;
@@ -1318,6 +1381,31 @@ export const MESSAGE_UPDATE_SUB = gql`
                 text
                 author
             }
+        }
+    }
+`;
+export const TOTAL_COUNT = gql`
+    subscription totalCount($_id: String!) {
+        totalCount(_id: $_id) {
+            _id
+            count
+        }
+    }
+`;
+export const USER_TYPING_SUBS = gql`
+    subscription userTyping($data: IUserTypingSUBS!) {
+        userTyping(data: $data) {
+            typing
+            otherUser
+            currentUser
+            chat
+        }
+    }
+`;
+export const USER_TYPING = gql`
+    mutation userTypingStatus($data: IUserTyping!) {
+        Dialogue {
+            userTypingStatus(data: $data)
         }
     }
 `;

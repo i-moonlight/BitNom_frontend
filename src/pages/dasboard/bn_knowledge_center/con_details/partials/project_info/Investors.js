@@ -1,9 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/19/21
- * Time: 3:45 PM
- */
 import { Fragment } from 'react';
 import * as React from 'react';
 

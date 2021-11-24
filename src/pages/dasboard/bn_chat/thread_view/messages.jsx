@@ -4,8 +4,10 @@ import {
     CardContent,
     CircularProgress,
     Divider,
+    IconButton,
     List,
     ListSubheader,
+    Tooltip,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +15,7 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
+    setTotalCount,
     updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -20,6 +23,7 @@ import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
+    TOTAL_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
@@ -29,10 +33,12 @@ import Message from './message';
 import NoChatSelected from './NoChatSelected';
 import EmptyMessages from './NoMessages';
 import PinnedMessages from './PinnedMessages';
+import { CloseRounded } from '@mui/icons-material';
 import SendMessage from './SendMessage';
 
 export default function Messages({ onExitChatMobile }) {
     const [open, setOpen] = useState(false);
+    const [pinOpen, setPinOpen] = useState(false);
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
     const state = useSelector((st) => st);
@@ -75,11 +81,21 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue._id,
         },
     });
+    const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
+        variables: {
+            _id: user._id,
+        },
+    });
+
+    useEffect(() => {
+        if (totalCountData?.totalCount?.count) {
+            dispatch(setTotalCount(totalCountData?.totalCount?.count));
+        }
+    }, [totalCountData?.totalCount?.count, dispatch]);
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
-            endRef.current.scrollIntoView();
         }
     }, [dispatch, subscriptionData?.newMessage]);
 
@@ -90,15 +106,18 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
-        dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+        if (pinnedMessages?.Dialogue?.getMessages !== undefined) {
+            dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
+            setPinOpen(true);
+        }
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
-        if (data?.Dialogue?.getMessages?.length > 0) {
-            endRef.current.scrollIntoView();
-        }
     }, [data?.Dialogue?.getMessages, dispatch]);
+    useEffect(() => {
+        endRef.current.scrollIntoView();
+    });
 
     return (
         <div>
@@ -121,14 +140,28 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins && messagePins?.length > 0 && (
+                    {messagePins &&
+                    messagePins?.length > 0 &&
+                    pinOpen === true ? (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
                                     component="nav"
                                     subheader={
-                                        <ListSubheader>
+                                        <ListSubheader
+                                            component="div"
+                                            id="nested-list-subheader"
+                                        >
                                             Pinned Messages
+                                            <Tooltip title="Hide pinned messages">
+                                                <IconButton
+                                                    onClick={() =>
+                                                        setPinOpen(false)
+                                                    }
+                                                >
+                                                    <CloseRounded />
+                                                </IconButton>
+                                            </Tooltip>
                                         </ListSubheader>
                                     }
                                     style={{
@@ -147,22 +180,20 @@ export default function Messages({ onExitChatMobile }) {
                                 </List>
                             </CardContent>
                         </Card>
+                    ) : (
+                        ''
                     )}
                 </div>
             )}
-            {dialogue.status === 'new' &&
-                dialogue?.initiator?.info?._id === user?._id &&
-                !loading &&
-                !messages?.length > 0 && <AwaitResponse dialogue={dialogue} />}
             <div
                 style={{
                     overflowY: 'auto',
                     minHeight:
                         open === true
-                            ? '37vh'
-                            : open === true && messagePins?.length > 0
-                            ? '30vh'
-                            : messagePins?.length > 0
+                            ? '50vh'
+                            : open === true && pinOpen === true
+                            ? '45vh'
+                            : pinOpen === true
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
@@ -171,9 +202,9 @@ export default function Messages({ onExitChatMobile }) {
                     height:
                         open === true
                             ? window.innerHeight - 750
-                            : open === true && messagePins?.length > 0
+                            : open === true && pinOpen === true
                             ? window.innerHeight - 750
-                            : messagePins?.length > 0
+                            : pinOpen === true
                             ? window.innerHeight - 500
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
@@ -182,6 +213,12 @@ export default function Messages({ onExitChatMobile }) {
                 }}
             >
                 {' '}
+                {dialogue.status === 'new' &&
+                    dialogue?.initiator?.info?._id === user?._id &&
+                    !loading &&
+                    !messages?.length > 0 && (
+                        <AwaitResponse dialogue={dialogue} />
+                    )}
                 {dialogue.status === 'new' &&
                     dialogue.recipient?.info._id === user?._id && (
                         <InviteView dialogue={dialogue} />
@@ -249,6 +286,8 @@ export default function Messages({ onExitChatMobile }) {
                             replyText={replyText}
                             open={open}
                             setOpen={setOpen}
+                            currentUser={dialogue.currentUser}
+                            otherUser={dialogue.otherUser}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
                             editText={editText}
@@ -267,6 +306,8 @@ export default function Messages({ onExitChatMobile }) {
                             open={open}
                             setOpen={setOpen}
                             chat={dialogue._id}
+                            currentUser={dialogue.currentUser}
+                            otherUser={dialogue.otherUser}
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}

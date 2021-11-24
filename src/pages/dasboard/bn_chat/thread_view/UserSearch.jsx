@@ -1,42 +1,39 @@
-import { Avatar, Grid, Typography } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
-import { getUserInitials } from '../../../utilities/Helpers';
-
-function OrganizerSearch({
+import {
+    Autocomplete,
+    TextField,
+    Grid,
+    Avatar,
+    Typography,
+} from '@mui/material';
+import { generateRandomColor } from '../../utilities/functions';
+import { getUserInitials } from '../../../../utilities/Helpers';
+export default function UserSearch({
     searchResults,
-    searchedValues,
-    setSearchedValues,
     loading,
-    initialTerm,
+    setSearchedValues,
+    searchTerm,
     updateSearchTerm,
-    setEventOrganizers,
-    eventOrganizers,
-    setOrganizerErr,
+    setChatRecipients,
+    chatRecipients,
     setErrorText,
-    organizersErr,
 }) {
-    const [term, setTerm] = useState(initialTerm);
-    const [inputValue, setInputValue] = React.useState('');
-
+    const [term, setTerm] = useState(searchTerm);
+    const [inputValue, setInputValue] = useState('');
     return (
         <Autocomplete
             disablePortal
             options={searchResults || []}
             loading={loading}
-            value={searchedValues}
-            onChange={(event, newValue) => {
-                setErrorText('');
-                setOrganizerErr(false);
-                setSearchedValues(newValue);
-                setEventOrganizers([...newValue]);
-            }}
+            value={chatRecipients}
             inputValue={inputValue}
+            onChange={(e, values) => {
+                setSearchedValues(values);
+                setChatRecipients([...values]);
+            }}
             onInputChange={(event, newInputValue) => {
-                if (eventOrganizers?.length === 3) {
-                    setErrorText('You can only add up to 3 friends');
-                    return setOrganizerErr(true);
+                if (chatRecipients?.length === 3) {
+                    setErrorText('You can only send upto one chat invite');
                 } else {
                     setInputValue(newInputValue);
                 }
@@ -47,23 +44,18 @@ function OrganizerSearch({
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Organizers"
+                    label="users"
                     value={term}
                     variant="outlined"
-                    error={organizersErr}
                     onChange={(e) => {
                         updateSearchTerm(e.target.value);
                         setTerm(e.target.value);
                     }}
                 />
             )}
-            renderOption={(props, option) => {
-                // console.log(option);
-                /*  const matches = match(option?.displayName, inputValue);
-        const parts = parse(option?.displayName, matches);
-        ); */
+            renderOption={(option) => {
                 return (
-                    <Grid {...props} container alignItems="center">
+                    <Grid container alignItems="center">
                         <Avatar
                             src={
                                 option?.profile_pic
@@ -72,7 +64,7 @@ function OrganizerSearch({
                                     : ''
                             }
                             style={{
-                                backgroundColor: '#fed132',
+                                backgroundColor: generateRandomColor(),
                                 marginRight: '5px',
                             }}
                         >
@@ -98,5 +90,3 @@ function OrganizerSearch({
         />
     );
 }
-
-export default OrganizerSearch;

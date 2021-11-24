@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/4/21
- * Time: 9:06 PM
- */
-
 import { Skeleton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -36,18 +29,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function Categories() {
-    const [categories, getCategories] = React.useState([]);
-    const [categoryLoaded, loadCategories] = React.useState(false);
+    const [categories, setCategories] = React.useState([]);
+    const [categoryLoaded, setCategoriesLoaded] = React.useState(false);
 
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/categories`;
-        fetch(url)
+        const abortCont = new AbortController();
+
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
-                getCategories(data);
-                loadCategories(true);
+                setCategories(data);
+                setCategoriesLoaded(true);
             })
-            .catch(loadCategories(false));
+            .catch((err) => {
+                if (err.name !== 'AbortError') {
+                    setCategoriesLoaded(false);
+                }
+            });
     }, []);
 
     return (

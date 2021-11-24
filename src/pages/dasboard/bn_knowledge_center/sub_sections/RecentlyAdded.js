@@ -30,18 +30,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function RecentlyAdded() {
     const [coins, getCoinList] = React.useState([]);
-    const [coinsLoaded, coinLoaded] = React.useState(false);
+    const [coinsLoaded, setCoinLoaded] = React.useState(false);
 
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&sparkline=false`;
-        fetch(url)
+        const abortCont = new AbortController();
+
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
                 getCoinList(data);
-                coinLoaded(true);
+                setCoinLoaded(true);
             })
-            .catch(() => {
-                coinLoaded(false);
+            .catch((err) => {
+                if (err.name !== 'AbortError') {
+                    setCoinLoaded(false);
+                }
             });
     }, []);
     return (
