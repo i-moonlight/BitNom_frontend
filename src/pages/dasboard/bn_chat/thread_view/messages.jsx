@@ -153,7 +153,7 @@ export default function Messages({ onExitChatMobile }) {
                                             id="nested-list-subheader"
                                         >
                                             Pinned Messages
-                                            <Tooltip>
+                                            <Tooltip title="Hide pinned messages">
                                                 <IconButton
                                                     onClick={() =>
                                                         setPinOpen(false)
@@ -190,9 +190,9 @@ export default function Messages({ onExitChatMobile }) {
                     overflowY: 'auto',
                     minHeight:
                         open === true
-                            ? '37vh'
+                            ? '50vh'
                             : open === true && pinOpen === true
-                            ? '30vh'
+                            ? '45vh'
                             : pinOpen === true
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
