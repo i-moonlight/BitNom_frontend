@@ -1314,9 +1314,9 @@ export const UNPIN = gql`
     }
 `;
 export const UNPIN_MESSAGE = gql`
-    mutation unpinMessage($_id: ID!) {
+    mutation unpinMessage($data: OMessageInput!) {
         Dialogue {
-            unpinMessage(_id: $_id)
+            unpinMessage(data: $data)
         }
     }
 `;

@@ -48,7 +48,6 @@ export default function MessagePopover({
     useEffect(() => {
         dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
     }, [data?.Dialogue?.pinMessage, dispatch]);
-    console.log('data', data);
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}

@@ -31,7 +31,6 @@ export const addMessagesToCurrentChat = (data) => {
         dispatch({ data, type: 'ADD_MESSAGES_TO_CURRENT_CHAT' });
 };
 export const updateMessage = (data) => {
-    console.log('DATA', data);
     return (dispatch) => dispatch({ data, type: 'UPDATE_MESSAGE' });
 };
 export const setSearchOutput = (data) => {
@@ -48,11 +47,9 @@ export const removeFromMessages = (data) => {
 };
 //pinned chats::chat actions to manipulate state around pinned messages
 export const addPinnedMessage = (data = []) => {
-    console.log('DATAP', data);
     return (dispatch) => dispatch({ data, type: 'ADD_PINNED_MESSAGES' });
 };
 export const addToPinnedMessage = (data) => {
-    console.log('PIN_MESSAGE', data);
     return (dispatch) =>
         dispatch({ data, type: 'ADD_MESSAGE_TO_PINNED_MESSAGES' });
 };

@@ -40,7 +40,7 @@ export default function SideBarHeader() {
             dispatch(setChatSearchInput(data?.Dialogue?.search));
         }
     }, [data?.Dialogue?.search, dispatch]);
-    console.log('DATA', data);
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">

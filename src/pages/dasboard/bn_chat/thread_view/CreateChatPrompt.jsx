@@ -60,7 +60,7 @@ export default function CreateChatPrompt({
 
     const users =
         userData && userData?.Users?.search ? userData?.Users?.search : null;
-    console.log('USERS', users);
+
     return (
         <Modal
             data={data}
