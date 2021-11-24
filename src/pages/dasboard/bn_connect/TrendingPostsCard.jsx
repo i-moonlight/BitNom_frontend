@@ -12,6 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import { Button } from '../../../components/Button';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -109,6 +110,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                             <ListItemText
                                 primary={
                                     <Typography
+                                        variant="body2"
                                         onClick={(e) => contentClickHandler(e)}
                                         style={{ zIndex: 2 }}
                                         dangerouslySetInnerHTML={{
@@ -119,15 +121,22 @@ export default function TrendingPostsCard({ trending, loading }) {
                                         }}
                                     ></Typography>
                                 }
-                                secondary={`${getReactionsSum(post)} ${
-                                    getReactionsSum(post) === 1
-                                        ? 'Reaction'
-                                        : 'Reactions'
-                                } . ${post?.comments} ${
-                                    post?.comments === 1
-                                        ? 'Comment'
-                                        : 'Comments'
-                                }`}
+                                secondary={
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        {`${getReactionsSum(post)} ${
+                                            getReactionsSum(post) === 1
+                                                ? 'Reaction'
+                                                : 'Reactions'
+                                        } . ${post?.comments} ${
+                                            post?.comments === 1
+                                                ? 'Comment'
+                                                : 'Comments'
+                                        }`}
+                                    </Typography>
+                                }
                             />
                         </ListItem>
                     ))}
@@ -135,11 +144,23 @@ export default function TrendingPostsCard({ trending, loading }) {
                     (!trending && (
                         <Grid className="p-2">
                             <Typography color="Primary" variant="body2">
-                                Trending posts will appear here ... start
-                                participating.
+                                Trending posts will appear here.
                             </Typography>
                         </Grid>
                     ))}
+                {trending?.length > 0 && (
+                    <Button
+                        textCase
+                        size="small"
+                        variant="text"
+                        className="my-1"
+                        onClick={() => {
+                            history.push('/connect/trending');
+                        }}
+                    >
+                        Show More
+                    </Button>
+                )}
             </List>
         </Paper>
     );

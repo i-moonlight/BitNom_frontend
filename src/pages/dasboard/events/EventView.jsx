@@ -10,6 +10,7 @@ import {
     ShareRounded,
 } from '@mui/icons-material';
 import {
+    Alert,
     Avatar,
     Card,
     CardActions,
@@ -20,14 +21,14 @@ import {
     Container,
     Divider,
     Grid,
-    IconButton,
-    List,
     Tab,
     Tabs,
-    Tooltip,
     Typography,
     useMediaQuery,
 } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
@@ -41,12 +42,12 @@ import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
 import {
+    GET_BOOKMARKED_EVENTS,
     MUTATION_ATTEND_EVENT,
     MUTATION_CREATE_BOOKMARK,
     MUTATION_REMOVE_EVENT_ATTENDANCE,
     QUERY_EVENT_BY_ID,
     QUERY_FETCH_PROFILE,
-    GET_BOOKMARKED_EVENTS,
 } from '../utilities/queries';
 import AttendeeComponent from './AttendeeComponent';
 import CreateEvent from './CreateEvent';
@@ -75,6 +76,7 @@ export default function EventView() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [createFlagOpen, setCreateFlagOpen] = useState(false);
     const [openShareModal, setOpenShareModal] = useState(false);
+    const [getEventErr, setGetEventErr] = useState(null);
 
     const classes = useStyles();
     const history = useHistory();
@@ -86,12 +88,28 @@ export default function EventView() {
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
 
-    const { loading: eventLoading, data: eventData } = useQuery(
-        QUERY_EVENT_BY_ID,
-        {
-            variables: { _id: eventId },
-        }
-    );
+    const {
+        loading: eventLoading,
+        data: eventData,
+        error: eventError,
+    } = useQuery(QUERY_EVENT_BY_ID, {
+        variables: { _id: eventId },
+    });
+
+    useEffect(() => {
+        eventError &&
+            eventError.graphQLErrors.length > 0 &&
+            eventError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find an event with the ID you provided!'
+                ) {
+                    setGetEventErr(
+                        'This event might have been deleted by the host.'
+                    );
+                }
+            });
+    }, [eventError]);
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -293,6 +311,13 @@ export default function EventView() {
                                         size={60}
                                         thickness={6}
                                     />
+                                )}
+                            </Grid>
+                            <Grid item>
+                                {getEventErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getEventErr}</Typography>
+                                    </Alert>
                                 )}
                             </Grid>
                             {eventData?.Events?.getById && (

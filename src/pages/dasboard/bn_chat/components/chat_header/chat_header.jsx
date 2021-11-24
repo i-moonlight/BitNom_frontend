@@ -19,9 +19,9 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash/debounce';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     clearSearchOutput,
     setSearchOutput,
@@ -29,8 +29,8 @@ import {
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
     SEARCH_MESSAGES,
-    USER_TYPING_SUBS,
     USER_IS_ONLINE,
+    USER_TYPING_SUBS,
 } from '../../graphql/queries';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
@@ -45,13 +45,13 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const xsDown = useMediaQuery('(max-width:599px)');
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
-
     const [debouncedSearchTerm, setDebouncedValues] = useState('');
     const [online, setIsOnline] = useState(false);
-
     const [searchOpen, setSearchOpen] = useState(false);
     const isChatSettingsOpen = Boolean(chatSettingsAnchorEl);
+
     const user = state.auth.user;
+
     const otherUser =
         chat?.otherUser?.info?._id === user?._id
             ? chat?.currentUser
@@ -67,10 +67,12 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const handleSearchMessage = (e) => {
         setDebouncedValues(e.target.value);
     };
+
     const handleDebouncedSearch = useMemo(
         () => debounce(handleSearchMessage, 500),
         []
     );
+
     const { data } = useQuery(SEARCH_MESSAGES, {
         variables: {
             data: {
@@ -80,6 +82,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         },
         context: { clientName: 'chat' },
     });
+
     const { data: userTypingData } = useSubscription(USER_TYPING_SUBS, {
         variables: { data: { _id: otherUser?.info?._id, chat: chat._id } },
     });
@@ -89,6 +92,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
             _id: chat?.otherUser?.info?._id,
         },
     });
+
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
             dispatch(setSearchOutput(data?.Dialogue?.searchMessages));
@@ -100,6 +104,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
             setIsOnline(true);
         }
     }, [UserOnlineData?.userIsOnline?.online]);
+
     useEffect(() => {
         if (UserOnlineData?.userIsOnline?.online === undefined) {
             setIsOnline(false);
@@ -107,9 +112,12 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     }, [UserOnlineData?.userIsOnline?.online]);
 
     const handleDownIndex = () => {
+        // eslint-disable-next-line no-console
         console.log('Down SEARCH INDEX');
     };
+
     const handleUpIndex = () => {
+        // eslint-disable-next-line no-console
         console.log('Up search index');
     };
 

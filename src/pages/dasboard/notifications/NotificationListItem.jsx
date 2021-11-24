@@ -40,7 +40,7 @@ export default function NotificationListItem({ notification }) {
     } else if (notification?.link_to_resource?.type === 'comment') {
         link = `/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'user') {
-        link = `/users/${notification?.link_to_resource?._id}`;
+        link = `/users/${notification?.content_entities[0]?.url?._id}`;
     }
     const getReadStatus = (ntfn) => {
         let read;

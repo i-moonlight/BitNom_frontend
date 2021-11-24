@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
-
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
@@ -27,19 +26,12 @@ import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { getUserInitials } from '../../../utilities/Helpers';
 import UserCard from '../bn_connect/UserCard';
-import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
     QUERY_GET_USERS,
 } from '../utilities/queries';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-}));
 
 export default function People() {
     const classes = useStyles();
@@ -58,8 +50,16 @@ export default function People() {
         context: { clientName: 'users' },
     });
 
+    const following = [];
+    profileData?.Users?.profile?.following?.forEach((item) =>
+        following.push(item?.userId?._id)
+    );
     const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
     );
 
     const getFollowStatus = (usr) => {
@@ -130,6 +130,11 @@ export default function People() {
                                                 item={usr}
                                             />
                                         ))}
+                                        {suggestedUsers?.length < 1 && (
+                                            <Typography variant="body2">
+                                                No people to show yet.
+                                            </Typography>
+                                        )}
                                     </List>
                                 </CardContent>
                             </Card>
@@ -268,3 +273,9 @@ function ListItemComponent({ item, getFollowStatus }) {
         </ListItem>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+}));

@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
-import Alert from '@mui/lab/Alert';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Alert, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';

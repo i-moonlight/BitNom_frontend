@@ -14,7 +14,6 @@ export default function TextField({
     labelTop,
     placeholder,
     errorText,
-    defaultValue,
     adornment,
     adornmentType,
     type,
@@ -69,7 +68,6 @@ export default function TextField({
                     fullWidth
                     label={label}
                     error={name && touched[name] && errors[name] && true}
-                    defaultValue={defaultValue ? defaultValue : null}
                     placeholder={placeholder}
                     onChange={name && handleChange(name)}
                     onBlur={() => name && setFieldTouched(name)}

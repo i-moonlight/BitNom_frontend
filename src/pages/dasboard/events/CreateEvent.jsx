@@ -11,17 +11,17 @@ import {
     InputBase,
     Modal,
     Paper,
-    TextField,
     Typography,
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,
@@ -30,67 +30,6 @@ import {
 } from '../utilities/queries';
 import LocationInput from './LocationInput';
 import OrganizerSearch from './OrganizerSearch';
-
-const useStyles = makeStyles((theme) => ({
-    paperSearch: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.profileCard,
-    },
-    locationButtons: {
-        display: 'flex',
-        marginTop: theme.spacing(2),
-        alignItems: 'center',
-    },
-    physicalEvent: {
-        width: '25%',
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            marginRight: '5px',
-        },
-        marginRight: '10px',
-    },
-    virtualEvent: {
-        width: '25%',
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-        },
-        textTransform: 'none',
-    },
-    paperSearchAlt: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.paper,
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    timeField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-    datePicker: {
-        border: '1px solid',
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-        padding: '0px 4px',
-        borderColor: 'rgba(0, 96, 151, 0.5)',
-        borderRadius: '4px',
-        width: '80%',
-        backgroundColor: theme.palette.background.paper,
-        '&:hover, &:focus': {
-            borderColor: theme.palette.primary.main,
-        },
-        height: '2rem',
-    },
-}));
 
 export default function CreateEvent({ open, setOpen }) {
     const classes = useStyles();
@@ -163,7 +102,7 @@ export default function CreateEvent({ open, setOpen }) {
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
             })
-            .catch((error) => console.error('Error', error));
+            .catch(() => {});
     };
 
     const handleSetTags = () => {
@@ -953,3 +892,64 @@ export default function CreateEvent({ open, setOpen }) {
         </Modal>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    paperSearch: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.profileCard,
+    },
+    locationButtons: {
+        display: 'flex',
+        marginTop: theme.spacing(2),
+        alignItems: 'center',
+    },
+    physicalEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            marginRight: '5px',
+        },
+        marginRight: '10px',
+    },
+    virtualEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+        },
+        textTransform: 'none',
+    },
+    paperSearchAlt: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    timeField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+    datePicker: {
+        border: '1px solid',
+        color: theme.palette.getContrastText(theme.palette.background.paper),
+        padding: '0px 4px',
+        borderColor: 'rgba(0, 96, 151, 0.5)',
+        borderRadius: '4px',
+        width: '80%',
+        backgroundColor: theme.palette.background.paper,
+        '&:hover, &:focus': {
+            borderColor: theme.palette.primary.main,
+        },
+        height: '2rem',
+    },
+}));

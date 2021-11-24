@@ -36,4 +36,23 @@ export const useStyles = makeStyles({
     bGNormal: {
         textTransform: 'capitalize',
     },
+    categoryActive: {
+        backgroundColor: 'rgb(24 14 44)',
+        textTransform: 'capitalize',
+        color: '#0067ff',
+        // width: '200px',
+        paddingLeft: 0,
+    },
+    categoryNormal: {
+        textTransform: 'capitalize',
+        // width: '200px',
+        paddingLeft: 0,
+    },
+    verticalActive: {
+        textTransform: 'capitalize',
+        color: '#0067ff',
+    },
+    verticalNormal: {
+        textTransform: 'capitalize',
+    },
 });

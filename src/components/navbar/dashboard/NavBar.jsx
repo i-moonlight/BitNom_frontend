@@ -22,6 +22,7 @@ import {
     QUERY_GET_USER_NOTIFICATIONS,
 } from '../../utilities/queries.components';
 import StatusBar from '../StatusBar';
+import ConnectBar from './ConnectBar';
 import MenuPopover from './popovers/MenuPopover';
 import MobileMenuModal from './popovers/MobileMenuModal';
 import NotificationOptionPopover from './popovers/NotificationOptionPopover';
@@ -54,6 +55,7 @@ export default function NavBar() {
     const _count = state.count.count;
 
     const smUp = useMediaQuery('(min-width:600px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     const isMenuOpen = Boolean(menuAnchorEl);
     const isTabOptionOpen = Boolean(tabOptionAnchorEl);
@@ -65,6 +67,7 @@ export default function NavBar() {
         QUERY_FETCH_PROFILE,
         {
             context: { clientName: 'users' },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -199,10 +202,14 @@ export default function NavBar() {
         const userEvents = eventsData?.Events?.get?.filter(
             (event) => new Date(event?.endDate).getTime() > new Date().getTime()
         );
+
         const upcomingEvents = userEvents?.length > 0 ? userEvents?.length : 0;
+
         dispatch(setEventCount(upcomingEvents));
         dispatch(checkSessionTimeOut());
+
         const notSeenArray = [];
+
         response?.forEach((notification) => {
             notification.to_notify.forEach((item) => {
                 if (item?.user_id === user._id && item?.seen === 'false') {
@@ -263,6 +270,17 @@ export default function NavBar() {
                 handleTabOptionsOpen={handleTabOptionsOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
             />
+            {/* <TabsBar2
+                value={tabValue}
+                handleChange={handleChange}
+                tabOptionsId={tabOptionsId}
+                setTabOptions={setTabOptions}
+                handleTabOptionsOpen={handleTabOptionsOpen}
+                handleTabOptionsClose={handleTabOptionsClose}
+            /> */}
+            {smDown &&
+                (location.pathname.includes('/connect') ||
+                    location.pathname.includes('/posts')) && <ConnectBar />}
             <Divider />
             <TabOptionsPopover
                 value={tabValue}

@@ -9,15 +9,13 @@ export function CryptoGazing() {
     useEffect(() => {
         // const coin_list = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
         const url = `https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true`;
+        const abortCont = new AbortController();
 
-        fetch(url)
+        fetch(url, { signal: abortCont.signal })
             .then((response) => response.json())
             .then((data) => {
                 getCoin(data);
                 checkLoadedCoin(true);
-            })
-            .catch((err) => {
-                console.log(err);
             });
     }, []);
 

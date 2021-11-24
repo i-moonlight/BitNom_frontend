@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { MoreVert, Search, Chat } from '@mui/icons-material';
+import { Chat, MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
     IconButton,
@@ -8,16 +8,18 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { useMemo, useState, useEffect } from 'react';
-import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
-import { SEARCH_CHATS } from '../../graphql/queries';
-import { useStyles } from '../../utils/styles';
-import { useDispatch } from 'react-redux';
 import debounce from 'lodash/debounce';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { setChatSearchInput } from '../../../../../store/actions/chatActions';
+import { SEARCH_CHATS } from '../../graphql/queries';
+import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
+import { useStyles } from '../../utils/styles';
+
 export default function SideBarHeader() {
     const [searchTerm, setSearchString] = useState('');
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
+
     const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -28,13 +30,16 @@ export default function SideBarHeader() {
         },
         context: { clientName: 'chat' },
     });
+
     const handleChatSearch = (e) => {
         setSearchString(e.target.value);
     };
+
     const handleDebouncedChatSearch = useMemo(
         () => debounce(handleChatSearch, 500),
         []
     );
+
     useEffect(() => {
         if (data?.Dialogue?.search.length > 0) {
             dispatch(setChatSearchInput(data?.Dialogue?.search));
@@ -48,7 +53,6 @@ export default function SideBarHeader() {
                     Messaging
                 </Typography>
                 <div className="align-items-end">
-                    {' '}
                     <IconButton onClick={() => setCreateChatInviteOpen(true)}>
                         <Chat />
                     </IconButton>
@@ -66,7 +70,6 @@ export default function SideBarHeader() {
                 component="form"
                 className={classes.paperSearch}
             >
-                {' '}
                 <IconButton
                     size="small"
                     type="submit"

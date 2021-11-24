@@ -108,17 +108,24 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                     />
                 ))}
                 <Divider />
-                <Button
-                    textCase
-                    size="small"
-                    variant="text"
-                    className="my-1"
-                    onClick={() => {
-                        history.push('/people');
-                    }}
-                >
-                    Show More
-                </Button>
+                {notFollowed?.length > 0 && (
+                    <Button
+                        textCase
+                        size="small"
+                        variant="text"
+                        className="my-1"
+                        onClick={() => {
+                            history.push('/people');
+                        }}
+                    >
+                        Show More
+                    </Button>
+                )}
+                {notFollowed && notFollowed?.length === 0 && (
+                    <Typography variant="body2">
+                        No people to show yet.
+                    </Typography>
+                )}
             </List>
         </Paper>
     );

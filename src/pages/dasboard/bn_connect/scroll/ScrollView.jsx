@@ -21,7 +21,6 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -29,6 +28,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    Alert,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -77,57 +77,8 @@ import FilterButton from './FilterButton';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    commentSection: {
-        padding: '5px 4px',
-        [theme.breakpoints.up('md')]: {
-            padding: '15px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
-
-const scrollOptionId = 'menu-scroll-option';
-const emojiPickerId = 'emoji-picker-popover';
 function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -150,7 +101,6 @@ function PostView() {
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
     const [previewURL, setPreviewURL] = useState();
-
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -162,6 +112,7 @@ function PostView() {
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [getPostErr, setGetPostErr] = useState(null);
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -208,12 +159,13 @@ function PostView() {
         [classes.green, classes.primary, classes.red]
     );
 
-    const { loading: postLoading, data: postData } = useQuery(
-        QUERY_POST_BY_ID,
-        {
-            variables: { _id: postId },
-        }
-    );
+    const {
+        error: postError,
+        loading: postLoading,
+        data: postData,
+    } = useQuery(QUERY_POST_BY_ID, {
+        variables: { _id: postId },
+    });
 
     useEffect(() => {
         const reaction = getUserReaction(postData?.Posts?.getById);
@@ -221,19 +173,36 @@ function PostView() {
         setIcon(reaction);
     }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
 
+    useEffect(() => {
+        postError &&
+            postError.graphQLErrors.length > 0 &&
+            postError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find a post with the ID you provided!'
+                ) {
+                    setGetPostErr(
+                        'This post might have been deleted by the author.'
+                    );
+                }
+            });
+    }, [postError]);
+
     const {
         //  loading,
-        data: profileData,
+        data: profile,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+    const profileData = profile?.Users?.profile;
+
     const [
         createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
+        // {
+        //     data: createCommentData,
+        //     // loading: createCommentLoading,
+        //     // error: createCommentError,
+        // },
     ] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
@@ -268,14 +237,14 @@ function PostView() {
                 },
             ],
         });
-        if (!createCommentData) console.log(createCommentData);
+
+        // if (!createCommentData) console.log(createCommentData);
         setCommentFilter(1);
         setCommentText('');
         setCommentImage(null);
         setCreateCommentErr(false);
         setPreviewURL();
     };
-
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
@@ -407,6 +376,7 @@ function PostView() {
     const authorInitials = getUserInitials(
         postData?.Posts?.getById?.author?.displayName
     );
+
     const currentUserInitials = getUserInitials(user?.displayName);
 
     const latestComments = commentsData?.Comments?.get.filter(
@@ -453,57 +423,45 @@ function PostView() {
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={state?.postCount?.postCount}
-                                    following={
-                                        profileData?.Users?.profile?.following
-                                            ?.length
-                                    }
-                                    followers={
-                                        profileData?.Users?.profile?.followers
-                                            ?.length
-                                    }
+                                    following={user?.following?.length}
+                                    followers={user?.followers?.length}
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={0}
                                 />
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <IconButton
-                                            size="small"
-                                            aria-label="back"
-                                            color="inherit"
-                                            onClick={() => history.goBack()}
-                                        >
-                                            <ArrowBack />
-                                        </IconButton>
-                                    }
-                                />
-                            </Card>
-
-                            <Grid item align="center">
-                                {postLoading && (
-                                    <CircularProgress
-                                        color="primary"
-                                        size={60}
-                                        thickness={6}
+                            <Hidden mdDown>
+                                <Card variant="outlined">
+                                    <CardHeader
+                                        avatar={
+                                            <IconButton
+                                                size="small"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
+                                        }
                                     />
+                                </Card>
+                            </Hidden>
+                            <Grid item>
+                                {getPostErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getPostErr}</Typography>
+                                    </Alert>
                                 )}
+                            </Grid>
+                            <Grid item className={classes.mainCard}>
+                                {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
                                 <Card
-                                    style={{ marginBottom: 16, zIndex: 1 }}
-                                    /* onClick={() =>
-                                        history.push(
-                                            `/posts/${postData?.Posts?.getById?._id}`
-                                        )
-                                    } */
+                                    style={{ zIndex: 1 }}
+                                    className={classes.mainCard}
                                 >
                                     <CardHeader
                                         avatar={
@@ -565,7 +523,10 @@ function PostView() {
                                             </div>
                                         }
                                         subheader={
-                                            <Typography variant="body2">
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                            >
                                                 {moment(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
@@ -576,10 +537,10 @@ function PostView() {
                                     <CardContent>
                                         <Typography
                                             variant="body2"
-                                            color="textSecondary"
-                                            component="p"
+                                            component="div"
                                         >
                                             <Typography
+                                                variant="body2"
                                                 onClick={(e) =>
                                                     contentClickHandler(e)
                                                 }
@@ -698,8 +659,13 @@ function PostView() {
                                             )}
                                         <br />
 
-                                        <Typography display="inline">
+                                        <Typography
+                                            display="inline"
+                                            component="div"
+                                            color="textSecondary"
+                                        >
                                             <Typography
+                                                variant="body2"
                                                 onClick={() => {
                                                     setOpenReactions(true);
                                                     setResourceReactions(
@@ -723,6 +689,7 @@ function PostView() {
                                             </Typography>
                                             {' . '}
                                             <Typography
+                                                variant="body2"
                                                 onClick={() =>
                                                     setOpenComments(true)
                                                 }
@@ -1069,16 +1036,15 @@ function PostView() {
                                                         size="small"
                                                         color="primary"
                                                         className="m-1 p-1"
-                                                    >
-                                                        <CloseRounded
-                                                            onClick={() => {
-                                                                setPreviewURL();
+                                                        onClick={() => {
+                                                            setPreviewURL();
 
-                                                                setCommentImage(
-                                                                    null
-                                                                );
-                                                            }}
-                                                        />
+                                                            setCommentImage(
+                                                                null
+                                                            );
+                                                        }}
+                                                    >
+                                                        <CloseRounded />
                                                     </IconButton>
                                                 </div>
                                             </Card>
@@ -1091,6 +1057,7 @@ function PostView() {
                                                     style={{
                                                         margin: '15px 0px',
                                                     }}
+                                                    component="div"
                                                 >
                                                     <FilterButton
                                                         setCommentFilter={
@@ -1327,5 +1294,62 @@ function PostView() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    mainCard: {
+        marginTop: 16,
+        [theme.breakpoints.down('md')]: {
+            marginBottom: 16,
+        },
+    },
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const scrollOptionId = 'menu-scroll-option';
+const emojiPickerId = 'emoji-picker-popover';
 
 export default PostView;

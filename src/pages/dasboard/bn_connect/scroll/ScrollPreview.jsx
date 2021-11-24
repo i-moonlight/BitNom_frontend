@@ -56,7 +56,17 @@ export default function ScrollPreview({ scroll }) {
                     }
                     title={
                         <div className="d-flex align-items-center">
-                            <Typography variant="body2">
+                            <Typography
+                                component="a"
+                                style={{ marginRight: 8, zIndex: 3 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    history.push(
+                                        `/users/${scroll?.author?._id}`
+                                    );
+                                }}
+                                variant="body2"
+                            >
                                 {scroll?.author?.displayName}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
@@ -65,7 +75,11 @@ export default function ScrollPreview({ scroll }) {
                         </div>
                     }
                     subheader={
-                        <Typography variant="body2">
+                        <Typography
+                            component="span"
+                            color="textSecondary"
+                            variant="body2"
+                        >
                             {moment(scroll?.createdAt).fromNow()}
                         </Typography>
                     }
@@ -74,11 +88,12 @@ export default function ScrollPreview({ scroll }) {
                     <Typography
                         variant="body2"
                         color="textSecondary"
-                        component="p"
+                        component="div"
                     >
                         <Typography
                             variant="body2"
                             onClick={(e) => contentClickHandler(e)}
+                            component="div"
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
@@ -137,7 +152,11 @@ export default function ScrollPreview({ scroll }) {
                                 ))}
                         </Grid>
                         <br />
-                        <Typography variant="body2" display="inline">
+                        <Typography
+                            component="div"
+                            variant="body2"
+                            display="inline"
+                        >
                             <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1

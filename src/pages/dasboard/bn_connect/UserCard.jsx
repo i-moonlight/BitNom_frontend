@@ -196,8 +196,9 @@ export default function UserCard({ setOpen, followers, following }) {
                     </Button>
                 </CardActions>
             </Card>
-            {(location.pathname.includes('connect') ||
-                location.pathname.includes('posts/')) && (
+            {((location.pathname.includes('/connect') &&
+                !location.pathname.includes('/connect/')) ||
+                location.pathname.includes('/posts/')) && (
                 <Button onClick={setOpen} color="primary" fullWidth textCase>
                     Create Post
                 </Button>

@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Alert } from '@mui/lab';
-import { Card, CardContent } from '@mui/material';
+import { Alert, Card, CardContent } from '@mui/material';
 import { useState } from 'react';
 import { Button, FormikButton } from '../../../../components/Button';
 import Form from '../../../../components/Form';

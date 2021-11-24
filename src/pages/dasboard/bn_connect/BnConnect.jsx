@@ -29,12 +29,6 @@ const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
 const TrendingPostsCard = React.lazy(() => import('./TrendingPostsCard'));
 const UserCard = React.lazy(() => import('./UserCard'));
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-}));
-
 export default function BnConnect() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -77,8 +71,15 @@ export default function BnConnect() {
         context: { clientName: 'users' },
     });
 
+    const following = [];
+    user?.following?.forEach((item) => following.push(item?.userId?._id));
+
     const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
     );
 
     const {
@@ -122,24 +123,6 @@ export default function BnConnect() {
         trendingLoading,
     ]);
 
-    useEffect(() => {
-        const OneSignal = window.OneSignal || [];
-
-        OneSignal.push(() => {
-            OneSignal.init({
-                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
-            });
-            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-                if (isEnabled) {
-                    var externalUserId = user._id;
-                    OneSignal.setExternalUserId(externalUserId);
-                } else {
-                    console.log('Push notifications are not enabled yet.');
-                }
-            });
-        });
-    }, [user._id]);
-
     return (
         <Screen>
             <SEO
@@ -174,8 +157,18 @@ export default function BnConnect() {
                                 </Suspense>
                             </Grid>
                         )}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Suspense fallback={<SkeletonCreateScrollCard />}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={8}
+                            lg={6}
+                            className={classes.mainCard}
+                        >
+                            <Suspense
+                                className={classes.createScrollCard}
+                                fallback={<SkeletonCreateScrollCard />}
+                            >
                                 <CreateScrollCard
                                     setOpenImage={setOpenImage}
                                     setImageDisabled={setImageDisabled}
@@ -239,8 +232,8 @@ export default function BnConnect() {
 
                             {posts?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography variant="h5" color="primary">
-                                        .
+                                    <Typography variant="body2" color="primary">
+                                        Connect. Share. Learn.
                                     </Typography>
                                 </Grid>
                             )}
@@ -372,3 +365,9 @@ export default function BnConnect() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+}));
