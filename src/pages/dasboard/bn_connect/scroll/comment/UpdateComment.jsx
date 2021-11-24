@@ -135,8 +135,8 @@ export default function UpdateComment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     useEffect(() => {
@@ -258,7 +258,7 @@ export default function UpdateComment({
                             <Divider />
                             <CardContent
                                 style={{
-                                    maxHeight: '500px',
+                                    maxHeight: '85vh',
                                     overflowY: 'auto',
                                 }}
                             >
@@ -269,9 +269,10 @@ export default function UpdateComment({
                                                 backgroundColor: '#fed132',
                                             }}
                                             src={
+                                                user?.profile_pic &&
                                                 process.env
                                                     .REACT_APP_BACKEND_URL +
-                                                user?.profile_pic
+                                                    user?.profile_pic
                                             }
                                         >
                                             {userInitials}

@@ -1,14 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
     CloseRounded,
-    FavoriteRounded,
     ImageRounded,
     InsertEmoticon,
     MoreHorizRounded,
-    PanToolRounded,
     Send,
-    ThumbDownRounded,
-    ThumbUpRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -44,6 +40,7 @@ import {
 } from '../../../utilities/queries';
 import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
+import ReactionHover from '../../../../../components/ReactionHover';
 
 export default function Comment({
     comment,
@@ -114,8 +111,7 @@ export default function Comment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setReply(`${reply} ${emoji.native}`);
+        setReply(`${reply} ${emoji}`);
     };
 
     const handleCreateReaction = (reaction) => {
@@ -400,58 +396,12 @@ export default function Comment({
                         onMouseEnter={() => setLikeHovered(true)}
                         onMouseLeave={() => setLikeHovered(false)}
                     >
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('like');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbUpRounded className={classes.primary} />
-                            }
-                        >
-                            Like
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('love');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <FavoriteRounded className={classes.red} />
-                            }
-                        >
-                            Love
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('dislike');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbDownRounded className={classes.primary} />
-                            }
-                        >
-                            Dislike
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('celebrate');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <PanToolRounded className={classes.green} />
-                            }
-                        >
-                            Celebrate
-                        </Button>
+                        <ReactionHover
+                            setLikeHovered={setLikeHovered}
+                            handleCreateReaction={handleCreateReaction}
+                            likeHovered={likeHovered}
+                            reaction={userReaction}
+                        />
                     </Card>
                     <div className="center-horizontal">
                         <ReactionButton
@@ -529,8 +479,9 @@ export default function Comment({
                                             marginRight: '3px',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                         sx={{ width: '30px', height: '30px' }}
                                     >

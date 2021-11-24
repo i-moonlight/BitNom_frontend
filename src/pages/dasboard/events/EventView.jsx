@@ -955,7 +955,11 @@ export default function EventView() {
                                                         <div className="center-horizontal">
                                                             <Avatar
                                                                 variant="rounded"
-                                                                src={
+                                                                src={  eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                        ?.host
+                                                                        ?.profile_pic &&
                                                                     process.env
                                                                         .REACT_APP_BACKEND_URL +
                                                                     eventData
@@ -978,17 +982,18 @@ export default function EventView() {
                                                                 }
                                                             </Typography>
                                                         </div>
-
-                                                        <Button variant="outlined">
-                                                            Subscribe
-                                                        </Button>
+                                                        <div>
+                                                            <Button variant="outlined">
+                                                                Subscribe
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                     <Typography
                                                         style={{
                                                             marginTop: '8px',
                                                         }}
                                                         variant="body1"
-                                                        component="p"
+                                                        
                                                     >
                                                         {
                                                             eventData?.Events

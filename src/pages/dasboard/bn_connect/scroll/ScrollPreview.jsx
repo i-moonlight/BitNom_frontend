@@ -44,8 +44,9 @@ export default function ScrollPreview({ scroll }) {
                                 backgroundColor: '#fed132',
                             }}
                             src={
+                                scroll?.author?.profile_pic &&
                                 process.env.REACT_APP_BACKEND_URL +
-                                scroll?.author?.profile_pic
+                                    scroll?.author?.profile_pic
                             }
                             sx={{ width: '28px', height: '28px' }}
                         >

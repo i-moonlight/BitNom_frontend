@@ -67,6 +67,7 @@ export default function NotificationListItem({ notification }) {
                 profile = item?.url?.profile_pic;
             }
         });
+
         return profile;
     };
     const contentClickHandler = (e) => {
@@ -77,6 +78,24 @@ export default function NotificationListItem({ notification }) {
         history.push(targetLink.href.substring(location.origin.length));
     };
     const userInitials = getUserInitials(getNotifyingUser(notification));
+
+    moment.updateLocale('en', {
+        relativeTime: {
+            future: 'in %s',
+            past: '%s',
+            s: 'now',
+            m: '1 min',
+            mm: '%d min',
+            h: '1 h',
+            hh: '%d h',
+            d: '1 d',
+            dd: '%d d',
+            M: '1 month',
+            MM: '%d m',
+            y: '1 y',
+            yy: '%d y',
+        },
+    });
     return (
         <>
             <Card elevation={0} style={{ margin: '5px 0px' }}>
@@ -111,11 +130,16 @@ export default function NotificationListItem({ notification }) {
                                 }}
                                 aria-label="recipe"
                                 src={
-                                    process.env.REACT_APP_BACKEND_URL +
                                     getNotifyingUserProfile(notification)
+                                        ? process.env.REACT_APP_BACKEND_URL +
+                                          getNotifyingUserProfile(notification)
+                                        : undefined
                                 }
+                                sx={{ width: '30px', height: '30px' }}
                             >
-                                {userInitials}
+                                <Typography variant="body2">
+                                    {userInitials}
+                                </Typography>
                             </Avatar>
                         }
                         action={
@@ -144,13 +168,14 @@ export default function NotificationListItem({ notification }) {
                                     }}
                                     className="mx-1"
                                     style={{ zIndex: 2 }}
+                                    variant="body2"
                                 ></Typography>
                             </div>
                         }
                     />
                 </div>
                 <Grid align="right">
-                    <Typography>
+                    <Typography variant="body2" style={{ marginRight: '8px' }}>
                         {moment(Number(notification?.date)).fromNow()}
                     </Typography>
                 </Grid>

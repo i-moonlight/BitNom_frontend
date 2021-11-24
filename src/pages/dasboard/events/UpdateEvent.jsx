@@ -411,7 +411,7 @@ export default function UpdateEvent({
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -462,7 +462,7 @@ export default function UpdateEvent({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <Card elevation={0}>
                                 <div

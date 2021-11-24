@@ -66,6 +66,7 @@ export default function NotificationFilter({
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
                         onClick={handleClick}
                     >
@@ -76,6 +77,7 @@ export default function NotificationFilter({
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
                         aria-controls={open ? 'split-button-menu' : undefined}
                         aria-expanded={open ? 'true' : undefined}

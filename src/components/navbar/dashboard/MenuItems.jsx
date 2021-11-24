@@ -36,6 +36,7 @@ export default function ListItems({ handleMenuClose }) {
     const theme = useTheme();
     const history = useHistory();
     const smUp = useMediaQuery('(min-width:600px)');
+    const mdUp = useMediaQuery('(min-width:960px)');
     const state = useSelector((st) => st);
     const notificationsCount = state.count.count;
     const messagesCount = state.chats.unreadCount;
@@ -174,7 +175,7 @@ export default function ListItems({ handleMenuClose }) {
                     <AccountBalanceWalletOutlined />
                 </ListItemIcon>
             </ListItem>
-            {!smUp && (
+            {!mdUp && (
                 <>
                     <ListItem disablePadding>
                         <ListItemButton

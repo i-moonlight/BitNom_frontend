@@ -13,11 +13,9 @@ import {
     Typography,
 } from '@mui/material';
 import { Link, useHistory } from 'react-router-dom';
-import {
-    getCreationTime,
-    notificationBodyFactory,
-} from '../../../../pages/dasboard/utilities/functions';
+import { notificationBodyFactory } from '../../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import moment from 'moment';
 
 export default function NotificationsPopover({
     notificationAnchorEl,
@@ -130,6 +128,24 @@ function ListItemComponent({ item }) {
         return profile;
     };
 
+    moment.updateLocale('en', {
+        relativeTime: {
+            future: 'in %s',
+            past: '%s',
+            s: 'now',
+            m: '1 min',
+            mm: '%d min',
+            h: '1 h',
+            hh: '%d h',
+            d: '1 d',
+            dd: '%d d',
+            M: '1 month',
+            MM: '%d m',
+            y: '1 y',
+            yy: '%d y',
+        },
+    });
+
     return (
         <ListItem
             button
@@ -144,8 +160,9 @@ function ListItemComponent({ item }) {
                         backgroundColor: '#fed132',
                     }}
                     src={
+                        getNotifyingUserProfile(item) &&
                         process.env.REACT_APP_BACKEND_URL +
-                        getNotifyingUserProfile(item)
+                            getNotifyingUserProfile(item)
                     }
                 >
                     {getUserInitials(getNotifyingUser(item))}
@@ -165,7 +182,11 @@ function ListItemComponent({ item }) {
                         ></Typography>
                     </div>
                 }
-                secondary={getCreationTime(item?.date)}
+                secondary={
+                    <Typography variant="body2" style={{ marginRight: '8px' }}>
+                        {moment(Number(item?.date)).fromNow()}
+                    </Typography>
+                }
             />
         </ListItem>
     );

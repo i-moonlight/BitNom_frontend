@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_USER_NOTIFICATIONS = gql`
-    query {
+    query ($limit: Int) {
         Notification {
-            get(limit: 5) {
+            get(limit: $limit) {
                 _id
                 content
                 tag

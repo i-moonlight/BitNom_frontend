@@ -58,8 +58,9 @@ export default function SavedPost({ scroll }) {
                                     backgroundColor: '#fed132',
                                 }}
                                 src={
+                                    scroll?.author?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    scroll?.author?.profile_pic
+                                        scroll?.author?.profile_pic
                                 }
                                 aria-label="recipe"
                             >
@@ -91,7 +92,16 @@ export default function SavedPost({ scroll }) {
                         }
                         title={
                             <div className="center-horizontal">
-                                <Typography style={{ marginRight: 8 }}>
+                                <Typography
+                                    component="a"
+                                    style={{ marginRight: 8, zIndex: 2 }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        history.push(
+                                            `/users/${scroll?.author?._id}`
+                                        );
+                                    }}
+                                >
                                     {scroll?.author?.displayName}
                                 </Typography>
                                 <Typography

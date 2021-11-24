@@ -53,6 +53,7 @@ import {
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import Comment from './comment/Comment';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
+import ReactionHover from '../../../../components/ReactionHover';
 
 export default function ScrollImage({
     postId,
@@ -254,8 +255,7 @@ export default function ScrollImage({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     const getUserReaction = useCallback(
@@ -328,8 +328,9 @@ export default function ScrollImage({
                                         marginRight: '3px',
                                     }}
                                     src={
+                                        scroll?.author?.profile_pic &&
                                         process.env.REACT_APP_BACKEND_URL +
-                                        scroll?.author?.profile_pic
+                                            scroll?.author?.profile_pic
                                     }
                                     sx={{ width: '30px', height: '30px' }}
                                 >
@@ -446,58 +447,12 @@ export default function ScrollImage({
                         onMouseEnter={() => setLikeHovered(true)}
                         onMouseLeave={() => setLikeHovered(false)}
                     >
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('like');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbUpRounded className={classes.primary} />
-                            }
-                        >
-                            Like
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('love');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <FavoriteRounded className={classes.red} />
-                            }
-                        >
-                            Love
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('dislike');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbDownRounded className={classes.primary} />
-                            }
-                        >
-                            Dislike
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('celebrate');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <PanToolRounded className={classes.green} />
-                            }
-                        >
-                            Celebrate
-                        </Button>
+                        <ReactionHover
+                            setLikeHovered={setLikeHovered}
+                            handleCreateReaction={handleCreateReaction}
+                            likeHovered={likeHovered}
+                            reaction={userReaction}
+                        />
                     </Card>
                     <CardActions
                         className="space-around"
@@ -563,8 +518,9 @@ export default function ScrollImage({
                                             marginRight: '3px',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                         sx={{ width: '30px', height: '30px' }}
                                     >
