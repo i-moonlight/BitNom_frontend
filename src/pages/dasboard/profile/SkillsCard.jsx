@@ -20,6 +20,7 @@ import { useStyles } from './utilities/profile.styles';
 
 export default function SkillsCard({ profile, profileView }) {
     const [text, setText] = useState('');
+    const [skillErr, setSkillErr] = useState(null);
     const theme = useTheme();
     const classes = useStyles();
     const skills = profile?.skills;
@@ -27,7 +28,7 @@ export default function SkillsCard({ profile, profileView }) {
     const [
         addSkill,
         {
-            // addError,
+            //addError,
             // data,
             addLoading,
         },
@@ -75,10 +76,12 @@ export default function SkillsCard({ profile, profileView }) {
                                 endAdornment={
                                     <Button
                                         onClick={() => {
+                                            //  if (text.length < 5) return;
                                             addSkill({
                                                 variables: {
                                                     data: { name: text },
                                                 },
+                                                errorPolicy: 'all',
                                                 refetchQueries: [
                                                     {
                                                         query: QUERY_FETCH_PROFILE,
@@ -87,8 +90,17 @@ export default function SkillsCard({ profile, profileView }) {
                                                         },
                                                     },
                                                 ],
-                                            }).then(() => {
-                                                setText('');
+                                            }).then(({ data, errors }) => {
+                                                if (data) {
+                                                    setText('');
+                                                    setSkillErr(null);
+                                                }
+                                                if (errors) {
+                                                    setSkillErr(
+                                                        errors[0]?.state
+                                                            ?.skill[0]
+                                                    );
+                                                }
                                             });
                                         }}
                                         color="primary"
@@ -102,7 +114,15 @@ export default function SkillsCard({ profile, profileView }) {
                                 }
                             />
                         </Paper>
-
+                        {skillErr && (
+                            <Typography
+                                variant="body2"
+                                className="mt-2 mb-2"
+                                color="error"
+                            >
+                                {skillErr}
+                            </Typography>
+                        )}
                         <Typography
                             variant="body2"
                             className="mt-2 mb-2"

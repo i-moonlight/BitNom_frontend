@@ -52,6 +52,7 @@ import {
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+import ReactionHover from '../../../../components/ReactionHover';
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
@@ -180,8 +181,7 @@ export default function Scroll({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     const handleSelectImage = (files) => {
@@ -499,57 +499,12 @@ export default function Scroll({
                     onMouseEnter={() => setLikeHovered(true)}
                     onMouseLeave={() => setLikeHovered(false)}
                 >
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('like');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbUpRounded className={classes.primary} />
-                        }
-                    >
-                        Like
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('love');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<FavoriteRounded className={classes.red} />}
-                    >
-                        Love
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('dislike');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbDownRounded className={classes.primary} />
-                        }
-                    >
-                        Dislike
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('celebrate');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<PanToolRounded className={classes.green} />}
-                    >
-                        Celebrate
-                    </Button>
+                    <ReactionHover
+                        setLikeHovered={setLikeHovered}
+                        handleCreateReaction={handleCreateReaction}
+                        likeHovered={likeHovered}
+                        reaction={userReaction}
+                    />
                 </Card>
                 <CardActions
                     className="space-around"

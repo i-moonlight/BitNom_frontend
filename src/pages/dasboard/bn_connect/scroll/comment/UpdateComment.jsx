@@ -135,8 +135,8 @@ export default function UpdateComment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     useEffect(() => {

@@ -79,15 +79,15 @@ export const QUERY_FETCH_PROFILE = gql`
                     current
                     description
                 }
-                #honors {
-                #  _id
-                # organization
-                #  name
-                # start_date
-                # end_date
-                # expires
-                # url
-                #}
+                honors {
+                    _id
+                    organization
+                    name
+                    start_date
+                    end_date
+                    expires
+                    url
+                }
                 courses {
                     _id
                     name

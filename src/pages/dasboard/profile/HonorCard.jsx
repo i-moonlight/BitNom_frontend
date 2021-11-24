@@ -9,8 +9,8 @@ import HonorFragment from './fragments/HonorFragment';
 export default function HonorCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
     // TODO: Rename Honors
-    // const honors = profile?.honors || [];
-    const honors = [];
+    const honors = profile?.honors || [];
+    //const honors = [];
 
     const onClose = () => {
         setShowForm(false);

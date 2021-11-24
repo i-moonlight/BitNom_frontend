@@ -136,8 +136,8 @@ export default function CreatePost({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setScrollText(`${scroll_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji}`);
     };
 
     const handleSelectImages = (files) => {
@@ -293,7 +293,6 @@ export default function CreatePost({
                                     secondary={
                                         <Button
                                             textCase
-                                            variant="text"
                                             style={{
                                                 //backgroundColor: theme.palette.background.default,
                                                 padding: '0px 10px',
@@ -309,9 +308,7 @@ export default function CreatePost({
                                                 />
                                             }
                                         >
-                                            <Typography variant="body1">
-                                                Public
-                                            </Typography>
+                                            Public
                                         </Button>
                                     }
                                 />
@@ -456,6 +453,9 @@ export default function CreatePost({
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
+                                        style={{
+                                            display: imageDisabled && 'none',
+                                        }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
@@ -472,6 +472,9 @@ export default function CreatePost({
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
+                                        style={{
+                                            display: videoDisabled && 'none',
+                                        }}
                                     >
                                         <VideocamRounded />
                                     </IconButton>

@@ -78,6 +78,8 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
+import ExternalShareModal from '../popovers/ExternalShareModal';
+import ReactionHover from '../../../../components/ReactionHover';
 
 function PostView() {
     const classes = useStyles();
@@ -113,6 +115,7 @@ function PostView() {
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [getPostErr, setGetPostErr] = useState(null);
+    const [openShareModal, setOpenShareModal] = useState(false);
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -362,8 +365,8 @@ function PostView() {
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
+        //handleEmojiPickerClose();
     };
 
     const contentClickHandler = (e) => {
@@ -737,72 +740,14 @@ function PostView() {
                                             setLikeHovered(false)
                                         }
                                     >
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('like');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbUpRounded
-                                                    className={classes.primary}
-                                                />
+                                        <ReactionHover
+                                            setLikeHovered={setLikeHovered}
+                                            handleCreateReaction={
+                                                handleCreateReaction
                                             }
-                                        >
-                                            Like
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('love');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <FavoriteRounded
-                                                    className={classes.red}
-                                                />
-                                            }
-                                        >
-                                            Love
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('dislike');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbDownRounded
-                                                    className={classes.primary}
-                                                />
-                                            }
-                                        >
-                                            Dislike
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction(
-                                                    'celebrate'
-                                                );
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <PanToolRounded
-                                                    className={classes.green}
-                                                />
-                                            }
-                                        >
-                                            Celebrate
-                                        </Button>
+                                            likeHovered={likeHovered}
+                                            reaction={userReaction}
+                                        />
                                     </Card>
                                     <CardActions className="space-around">
                                         <ReactionButton
@@ -1292,6 +1237,8 @@ function PostView() {
                 setPostToEdit={setPostToEdit}
                 setOpenFlag={setOpenFlag}
                 setUpdateOpen={setUpdateScrollOpen}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
@@ -1299,6 +1246,12 @@ function PostView() {
                 isEmojiPickerOpen={isEmojiPickerOpen}
                 handleEmojiPickerClose={handleEmojiPickerClose}
                 handleSelectEmoji={handleSelectEmoji}
+            />
+            <ExternalShareModal
+                openShareModal={openShareModal}
+                sharedResource={sharedResource}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
         </Screen>
     );
