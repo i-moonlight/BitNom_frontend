@@ -14,19 +14,14 @@ import {
     CardHeader,
     Divider,
     IconButton,
-    InputBase,
     Paper,
     Typography,
     TextField,
-    CardHeader,
-    Card,
-    CardContent,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { DropzoneArea } from 'react-mui-dropzone';
 import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 import {
     CREATE_DIALOGUE_MESSAGE,
@@ -450,29 +445,8 @@ export default function SendMessage({
                             >
                                 <EmojiEmotions />
                             </IconButton>
-                            {/* <TextField
-                                size="small"
-                                name="text"
-                                value={text}
-                                className={classes.inputField}
-                                placeholder="Type a message"
-                                fullWidth
-                                onChange={handleChange}
-                                multiline
-                                margin="dense"
-                                maxRows={3}
-                                onKeyDown={(e) =>
-                                    e.key === 'Enter' &&
-                                    e.shiftKey &&
-                                    editText?.text?.length > 0
-                                        ? handleUpdateMessage()
-                                        : e.key === 'Enter' && e.shiftKey
-                                        ? handleSendMessage()
-                                        : null
-                                }
-                                error={Object.keys(sendMessageErr)?.length > 0}
-                            /> */}
-                            <InputBase
+
+                            <TextField
                                 size="small"
                                 name="text"
                                 value={text}
