@@ -107,6 +107,20 @@ export default function BnConnect() {
     });
 
     useEffect(() => {
+        const OneSignal = window.OneSignal || [];
+
+        OneSignal.push(() => {
+            OneSignal.init({
+                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+            });
+            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+                if (isEnabled) {
+                    var externalUserId = user._id;
+                    OneSignal.setExternalUserId(externalUserId);
+                }
+            });
+        });
+
         !trendingError &&
             !trendingLoading &&
             dispatch(loadTrending(trendingData?.Posts?.get));
@@ -121,6 +135,7 @@ export default function BnConnect() {
         trendingData?.Posts?.get,
         trendingError,
         trendingLoading,
+        user,
     ]);
 
     return (
@@ -233,7 +248,7 @@ export default function BnConnect() {
                             {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="body2" color="primary">
-                                        Connect. Share. Learn.
+                                        Connect.
                                     </Typography>
                                 </Grid>
                             )}

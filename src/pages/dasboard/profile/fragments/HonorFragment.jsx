@@ -61,7 +61,8 @@ export default function HonorFragment({
                                 {organization}
                             </Typography>
                             <Typography variant="body2">
-                                {dateFrom} to {dateTo}
+                                {dateFrom}
+                                {dateTo && ` to ${dateTo}`}
                             </Typography>
                         </div>
                     </div>

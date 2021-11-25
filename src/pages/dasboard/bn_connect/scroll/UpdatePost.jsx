@@ -43,6 +43,7 @@ import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
     QUERY_LOAD_SCROLLS,
+    QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import { useHistory } from 'react-router';
@@ -125,6 +126,10 @@ export default function UpdatePost({
                         data: { ids: getFeed(profileData), limit: 220 },
                     },
                 },
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: postToEdit._id },
+                },
             ],
         });
         setScrollText('');
@@ -180,8 +185,8 @@ export default function UpdatePost({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setScrollText(`${scroll_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji}`);
     };
 
     const handleSelectImages = (files) => {
@@ -304,7 +309,7 @@ export default function UpdatePost({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <ListItem className="p-0">
                                 <ListItemAvatar>
@@ -313,8 +318,9 @@ export default function UpdatePost({
                                             backgroundColor: '#fed132',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                     >
                                         {userInitials}
@@ -345,7 +351,7 @@ export default function UpdatePost({
                                 />
                             </ListItem>
                             <MentionsInput
-                                spellcheck="false"
+                                spellCheck="false"
                                 className="mentions-textarea"
                                 id="content-field"
                                 placeholder="What's happening"
@@ -458,49 +464,6 @@ export default function UpdatePost({
                                     }}
                                     accept="video/mp4"
                                 />
-                                {/*  <DropzoneArea
-                                    clearOnUnmount
-                                    dropzoneClass="update-post-dropzone"
-                                    clickable={true}
-                                    onChange={(files) => {
-                                        openVideo
-                                            ? handleSelectVideo(files[0])
-                                            : handleSelectImages(files);
-                                    }}
-                                    dropzoneText={
-                                        openImage
-                                            ? 'Drag n drop images here or click'
-                                            : 'Drag n drop a video here or click'
-                                    }
-                                    acceptedFiles={
-                                        openImage
-                                            ? ['image/jpeg', 'image/png']
-                                            : ['video/*']
-                                    }
-                                    maxFileSize={openImage ? 2500000 : 4500000}
-                                    filesLimit={openImage ? 4 : 1}
-                                    showAlerts={false}
-                                    showPreviews={false}
-                                    showPreviewsInDropzone
-                                    previewGridProps={{
-                                        container: {
-                                            spacing: 1,
-                                            direction: 'row',
-                                        },
-                                    }}
-                                    onAlert={(message, variant) => {
-                                        if (variant == 'error') {
-                                            toast.error(message, {
-                                                position: 'bottom-left',
-                                                autoClose: 5000,
-                                                hideProgressBar: true,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                            });
-                                        }
-                                    }}
-                                /> */}
                             </Card>
                             {(postToEdit?.video?.path ||
                                 postToEdit?.images?.length > 0) &&
@@ -614,7 +577,7 @@ export default function UpdatePost({
                                     </Button>
                                 </DialogActions>
                             </Dialog>
-                            <div className="center-horizontal mt-1">
+                            <div className="space-between mt-1">
                                 <div className="center-horizontal">
                                     <IconButton
                                         size="small"
@@ -633,6 +596,9 @@ export default function UpdatePost({
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
+                                        style={{
+                                            display: imageDisabled && 'none',
+                                        }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
@@ -653,6 +619,9 @@ export default function UpdatePost({
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
+                                        style={{
+                                            display: videoDisabled && 'none',
+                                        }}
                                     >
                                         <VideocamRounded />
                                     </IconButton>

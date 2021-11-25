@@ -17,11 +17,12 @@ import {
     Tabs,
     Typography,
     useMediaQuery,
+    Button,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -191,7 +192,7 @@ export default function Connections() {
 
 function ListItemComponent({ item, getFollowStatus }) {
     const [status, setStatus] = React.useState();
-
+    const history = useHistory();
     React.useEffect(() => {
         if (getFollowStatus(item)) {
             setStatus(true);
@@ -263,7 +264,14 @@ function ListItemComponent({ item, getFollowStatus }) {
             <ListItemText
                 primary={
                     <div className="center-horizontal">
-                        <Typography variant="body2" className="mx-1">
+                        <Typography
+                            component="a"
+                            onClick={() =>
+                                history.push(`/users/${item?.userId?._id}`)
+                            }
+                            variant="body2"
+                            className="mx-1"
+                        >
                             {item?.userId?.displayName}{' '}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
@@ -297,20 +305,30 @@ function ListItemComponent({ item, getFollowStatus }) {
                 }}
             >
                 {status !== undefined && (
-                    <Button
-                        onClick={() =>
-                            status
-                                ? handleUnFollowUser(item?.userId?._id)
-                                : handleFollowUser(item?.userId?._id)
-                        }
-                        className="mx-2"
-                        size="small"
-                        variant="outlined"
-                        color="primary"
+                    <div
+                        style={{
+                            color: status ? red[300] : '#006097',
+                        }}
                     >
-                        {status === true && 'Unfollow'}
-                        {status === false && 'Follow'}
-                    </Button>
+                        <Button
+                            onClick={() =>
+                                status
+                                    ? handleUnFollowUser(item?.userId?._id)
+                                    : handleFollowUser(item?.userId?._id)
+                            }
+                            className="mx-2"
+                            size="small"
+                            variant="outlined"
+                            disableRipple
+                            color="inherit"
+                            style={{
+                                textTransform: 'none',
+                            }}
+                        >
+                            {status === true && 'Unfollow'}
+                            {status === false && 'Follow'}
+                        </Button>
+                    </div>
                 )}
             </ListItemIcon>
         </ListItem>

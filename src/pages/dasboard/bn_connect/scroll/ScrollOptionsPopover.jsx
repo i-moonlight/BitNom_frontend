@@ -5,6 +5,7 @@ import {
     FileCopyOutlined,
     FlagOutlined,
     PersonAddDisabledOutlined,
+    PersonAddOutlined,
 } from '@mui/icons-material';
 import {
     Card,
@@ -19,11 +20,12 @@ import {
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Button } from '../../../../components/Button';
+//import { Button } from '../../../../components/Button';
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
     MUTATION_UNFOLLOW_USER,
+    MUTATION_FOLLOW_USER,
     QUERY_FETCH_PROFILE,
 } from '../../utilities/queries';
 
@@ -42,9 +44,34 @@ export default function ScrollOptionsPopover({
 }) {
     const [createBookmark] = useMutation(MUTATION_CREATE_BOOKMARK);
     const [unFollowUser] = useMutation(MUTATION_UNFOLLOW_USER);
+    const [followUser] = useMutation(MUTATION_FOLLOW_USER);
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
+    const handleFollowUser = (user_id) => {
+        followUser({
+            variables: {
+                data: {
+                    user_id: user_id,
+                },
+            },
+            context: { clientName: 'users' },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                },
+            ],
+        });
+        toast.success(`You followed @${user_id}`, {
+            position: 'bottom-center',
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            draggable: true,
+        });
+        handleScrollOptionClose();
+    };
     const handleUnFollowUser = (user_id) => {
         unFollowUser({
             variables: {
@@ -60,6 +87,24 @@ export default function ScrollOptionsPopover({
                 },
             ],
         });
+        toast.success(`You unfollowed @${user_id}`, {
+            position: 'bottom-center',
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            draggable: true,
+        });
+        handleScrollOptionClose();
+    };
+
+    const getFollowStatus = (author) => {
+        let followStatus;
+        user.following?.forEach((item) => {
+            if (item?.userId?._id === author?._id) {
+                followStatus = true;
+            }
+        });
+        return followStatus;
     };
 
     const handleCreateBookmark = () => {
@@ -167,26 +212,46 @@ export default function ScrollOptionsPopover({
                         secondary="Share this post on other platforms"
                     />
                 </ListItem>
-                {user?._id !== scroll?.author?._id && (
-                    <ListItem
-                        button
-                        divider
-                        onClick={() => handleUnFollowUser(scroll?.author?._id)}
-                    >
-                        <ListItemIcon>
-                            <PersonAddDisabledOutlined />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={`Unfollow @${scroll?.author?._id}`}
-                        />
-                    </ListItem>
-                )}
+                {getFollowStatus(scroll?.author) &&
+                    user?._id !== scroll?.author?._id && (
+                        <ListItem
+                            button
+                            divider
+                            onClick={() =>
+                                handleUnFollowUser(scroll?.author?._id)
+                            }
+                        >
+                            <ListItemIcon>
+                                <PersonAddDisabledOutlined />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={`Unfollow @${scroll?.author?._id}`}
+                            />
+                        </ListItem>
+                    )}
+                {!getFollowStatus(scroll?.author) &&
+                    user?._id !== scroll?.author?._id && (
+                        <ListItem
+                            button
+                            divider
+                            onClick={() =>
+                                handleFollowUser(scroll?.author?._id)
+                            }
+                        >
+                            <ListItemIcon>
+                                <PersonAddOutlined />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={`Follow @${scroll?.author?._id}`}
+                            />
+                        </ListItem>
+                    )}
                 <Divider />
-                <div className="m-2">
-                    <Button fullWidth textCase>
+                {/*  <div className="m-2">
+                    <Button fullWidth textCase disabled>
                         Support by tipping
                     </Button>
-                </div>
+                </div> */}
             </List>
         </Popover>
     );
