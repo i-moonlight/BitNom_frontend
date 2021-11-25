@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import NavBarLanding from '../../components/navbar/landing/NavBarLanding';
 import Footer from './Footer';
 
-export default function Wrapper({ children, authPage }) {
+export default function Wrapper({ children, authPage, noFooter }) {
     const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -38,7 +38,7 @@ export default function Wrapper({ children, authPage }) {
         >
             <NavBarLanding />
             {children}
-            <Footer />
+            {!noFooter && <Footer />}
         </div>
     );
 }

@@ -1,27 +1,31 @@
 import { Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import LazyImage from '../../components/LazyImage';
+import tempImg from '../../assets/temp.png';
 
 import Wrapper from '../welcome/Wrapper';
 
-export default function NotFound() {
+export default function TempPageLanding() {
     const classes = useStyles();
     return (
         <Wrapper noFooter>
             <Container className={classes.root} maxWidth="lg">
                 <div className="my-5 py-5 text-center">
-                    <Typography
-                        className="mt-5 mb-2"
-                        color="textSecondary"
-                        variant="h2"
-                    >
-                        404: Not Found
+                    <LazyImage
+                        image={{
+                            src: tempImg,
+                            width: 300,
+                        }}
+                    />
+                    <Typography className="mt-5 mb-2" variant="h4">
+                        Sorry, we are doing some work here
                     </Typography>
                     <Typography
                         className="mb-5"
                         color="textSecondary"
-                        variant="h4"
+                        variant="h5"
                     >
-                        Sorry ... We cannot find what youre looking for
+                        Thank you for being patient. We will be back shortly.
                     </Typography>
                 </div>
             </Container>

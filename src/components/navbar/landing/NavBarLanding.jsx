@@ -169,6 +169,9 @@ export default function NavBarLanding() {
                                     color={theme.palette.text.primary}
                                     variant="text"
                                     textCase
+                                    onClick={() => {
+                                        history.push('/business');
+                                    }}
                                 >
                                     <Typography className="fw-bold">
                                         BN for Business
@@ -179,6 +182,9 @@ export default function NavBarLanding() {
                                     color={theme.palette.text.primary}
                                     variant="text"
                                     textCase
+                                    onClick={() => {
+                                        history.push('/learn');
+                                    }}
                                 >
                                     <Typography className="fw-bold">
                                         Learn

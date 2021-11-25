@@ -9,17 +9,17 @@ import popup6 from '../../assets/landing/popup6.svg';
 import popup8 from '../../assets/landing/popup8.svg';
 
 export const menuEcosystem = [
-    { icon: popup1, text: 'AI Engine' },
-    { icon: popup2, text: 'Services' },
+    { icon: popup1, text: 'AI Engine', link: '/engine' },
+    { icon: popup2, text: 'Services', link: '/services' },
     // { icon: popup3, text: 'BN Social Center' },
     // { icon: popup4, text: 'BN Marketplace' },
-    { icon: popup5, text: 'Knowledge Center' },
+    { icon: popup5, text: 'Knowledge Center', link: '/knowledge_center' },
 ];
 
 export const menuProduct = [
     { icon: popup6, text: 'Investor Page', link: '/investors' },
     // { icon: popup7, text: 'Crypto API' },
-    { icon: popup8, text: 'Widgets and Bots' },
+    { icon: popup8, text: 'Widgets and Bots', link: '/widgets' },
     // { icon: popup9, text: 'Mobile App' },
 ];
 

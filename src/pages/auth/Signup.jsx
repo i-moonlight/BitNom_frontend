@@ -156,7 +156,7 @@ export default function Signup() {
 
                                     createUser({
                                         variables: {
-                                            id: username,
+                                            id: username.replace(/\s+/g, ''),
                                             email: email,
                                             password: password,
                                             invitationCode: null,
