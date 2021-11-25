@@ -1,9 +1,5 @@
-import {
-    ArrowBackIos,
-    ArrowForwardIos,
-    CloseRounded,
-} from '@mui/icons-material';
-import { Dialog, Grid, IconButton, Slide, Typography } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { Dialog, Grid, IconButton, Slide } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useState } from 'react';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
@@ -71,19 +67,6 @@ export default function ImageModal({
 
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
-            <div className="space-between center-horizontal">
-                <Typography variant="body2"></Typography>
-                <Typography variant="body1"></Typography>
-                <IconButton
-                    onClick={() => {
-                        onClose();
-                    }}
-                    size="small"
-                    style={{ margin: '2px' }}
-                >
-                    <CloseRounded />
-                </IconButton>
-            </div>
             <Grid container className={classes.Container}>
                 <Grid item xs={12} md={6} lg={6}>
                     <div className={classes.Carousel}>
@@ -168,7 +151,7 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
     Container: {
-        height: '650px',
+        height: '600px',
         overflowX: 'hidden',
         overflowY: 'auto',
     },
@@ -190,6 +173,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             padding: '5px',
             alignItems: 'center',
+            height: 'fit-content',
         },
     },
     Arrow: {

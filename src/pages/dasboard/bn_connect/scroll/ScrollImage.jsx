@@ -110,6 +110,7 @@ export default function ScrollImage({
             variables: {
                 data: ICreateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -128,11 +129,29 @@ export default function ScrollImage({
                     variables: { data: { scroll_id: postId } },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.create) {
+                setCommentText('');
+                setCommentImage(null);
+                setCreateCommentErr(false);
+                setPreviewURL();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setPreviewURL();
     };
 
     const mentions = profileData?.followers?.map?.((item) => {

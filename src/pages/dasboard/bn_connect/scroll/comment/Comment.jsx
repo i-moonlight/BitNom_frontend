@@ -168,12 +168,7 @@ export default function Comment({
                     return toast.error(
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
-                            position: 'bottom-left',
                             autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }
