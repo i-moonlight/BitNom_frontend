@@ -114,6 +114,7 @@ export default function Scroll({
             variables: {
                 data: ICreateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -123,11 +124,29 @@ export default function Scroll({
                     variables: { data: { scroll_id: scroll?._id } },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.create) {
+                setCommentText('');
+                setCommentImage(null);
+                setCreateCommentErr(false);
+                setPreviewURL();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setPreviewURL();
     };
 
     const mentions = profileData?.followers?.map?.((item) => {
@@ -201,12 +220,7 @@ export default function Scroll({
                     return toast.error(
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
-                            position: 'bottom-left',
                             autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }

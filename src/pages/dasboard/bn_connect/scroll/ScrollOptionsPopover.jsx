@@ -64,7 +64,7 @@ export default function ScrollOptionsPopover({
             ],
         });
         toast.success(`You followed @${user_id}`, {
-            position: 'bottom-center',
+            position: 'bottom-left',
             autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
@@ -88,7 +88,7 @@ export default function ScrollOptionsPopover({
             ],
         });
         toast.success(`You unfollowed @${user_id}`, {
-            position: 'bottom-center',
+            position: 'bottom-left',
             autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,

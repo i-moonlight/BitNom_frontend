@@ -59,7 +59,7 @@ export default function Profile() {
             <ToastContainer
                 position="bottom-left"
                 autoClose={3000}
-                hideProgressBar={false}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}

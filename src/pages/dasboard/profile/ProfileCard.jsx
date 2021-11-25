@@ -12,7 +12,7 @@ import {
 import {
     Card,
     CardContent,
-    Snackbar,
+    //Snackbar,
     Typography,
     Avatar,
     Button as MUIButton,
@@ -22,6 +22,7 @@ import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { red } from '@mui/material/colors';
 import { Button } from '../../../components/Button';
+
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -126,7 +127,9 @@ export default function ProfileCard({ profile, profileView }) {
             );
         }
     }, [profile?.profile_pic, profile?.cover_pic]);
+
     const userInitials = getUserInitials(profile?.displayName);
+
     const handleSelectProfile = (files) => {
         if (files.length < 1) return;
         let counter = 0;
@@ -143,15 +146,7 @@ export default function ProfileCard({ profile, profileView }) {
                     counter += 1;
                 } else {
                     toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
+                        'Image should be less than 1200px by 1350px & below 2mb.'
                     );
                 }
                 if (counter === 1) {
@@ -179,15 +174,7 @@ export default function ProfileCard({ profile, profileView }) {
                     counter += 1;
                 } else {
                     toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
+                        'Image should be less than 1200px by 1350px & below 2mb.'
                     );
                 }
                 if (counter === 1) {
@@ -207,6 +194,7 @@ export default function ProfileCard({ profile, profileView }) {
                     profile_pic: pic,
                 },
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_FETCH_PROFILE,
@@ -215,9 +203,28 @@ export default function ProfileCard({ profile, profileView }) {
                     },
                 },
             ],
-        }).then(({ data }) => {
-            const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(userUpdate(userData));
+        }).then(({ data, errors }) => {
+            if (data) {
+                const userData = data?.Users?.update;
+                data?.Users?.update && dispatch(userUpdate(userData));
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const preview =
+                        process.env.REACT_APP_BACKEND_URL +
+                            profile?.profile_pic || null;
+                    setProfilePreviewURL(preview);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
     };
 
@@ -229,6 +236,7 @@ export default function ProfileCard({ profile, profileView }) {
                     cover_pic: cover,
                 },
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_FETCH_PROFILE,
@@ -237,9 +245,28 @@ export default function ProfileCard({ profile, profileView }) {
                     },
                 },
             ],
-        }).then(({ data }) => {
-            const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(userUpdate(userData));
+        }).then(({ data, errors }) => {
+            if (data) {
+                const userData = data?.Users?.update;
+                data?.Users?.update && dispatch(userUpdate(userData));
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const preview =
+                        process.env.REACT_APP_BACKEND_URL +
+                            profile?.cover_pic || null;
+                    setCoverPreviewURL(preview);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
     };
 
@@ -528,7 +555,7 @@ export default function ProfileCard({ profile, profileView }) {
                     </div>
                 </CardContent>
             </Card>
-            <Snackbar>Uploaded</Snackbar>
+            {/*  <Snackbar>Uploaded</Snackbar> */}
         </div>
     );
 }

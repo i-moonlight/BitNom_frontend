@@ -147,8 +147,8 @@ export default function BnConnect() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}

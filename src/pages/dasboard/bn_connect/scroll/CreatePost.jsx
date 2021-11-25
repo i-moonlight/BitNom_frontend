@@ -83,6 +83,7 @@ export default function CreatePost({
             variables: {
                 data: ICreatePost,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -95,18 +96,41 @@ export default function CreatePost({
                     variables: { data: { author: user?._id, limit: 220 } },
                 },
             ],
+        }).then(({ data: createPostData, errors }) => {
+            if (createPostData?.Posts?.create) {
+                setScrollText('');
+                setScrollImages([]);
+                setScrollVideo(null);
+                setSharedResource(null);
+                setCreatePostErr(false);
+                setImageDisabled(false);
+                setVideoDisabled(false);
+                setOpenImage(false);
+                setOpenVideo(false);
+                setImagePreviewURLS([]);
+                setVideoPreviewURL(null);
+                setOpen(false);
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const errorMsg = errors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
+
+                    toast.error(
+                        `Your image(s) have an unsupported file type (${mime})`
+                    );
+                    setImagePreviewURLS([]);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection and refresh the page.`
+                    );
+                }
+            }
         });
-        setScrollText('');
-        setScrollImages([]);
-        setScrollVideo(null);
-        setSharedResource(null);
-        setCreatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setOpenVideo(false);
-        setImagePreviewURLS([]);
-        setVideoPreviewURL(null);
     };
 
     useEffect(() => {
@@ -155,7 +179,7 @@ export default function CreatePost({
         const previews = [];
         const allowedFiles = [];
         files.forEach((file) => {
-            if (file.size > 2500000) {
+            if (file.size > 2000000) {
                 previews.splice(0, previews.length);
                 allowedFiles.splice(0, allowedFiles.length);
                 return toast.error('Each image should be less than 2MB', {
@@ -217,7 +241,6 @@ export default function CreatePost({
             shared_resource: shared,
             is_flag: flag,
         });
-        setOpen(false);
     };
 
     return (

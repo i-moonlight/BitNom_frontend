@@ -204,14 +204,7 @@ function PostView() {
     });
     const profileData = profile?.Users?.profile;
 
-    const [
-        createComment,
-        // {
-        //     data: createCommentData,
-        //     // loading: createCommentLoading,
-        //     // error: createCommentError,
-        // },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
         data: commentsData,
@@ -226,6 +219,7 @@ function PostView() {
             variables: {
                 data: ICreateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_GET_COMMENTS,
@@ -244,14 +238,32 @@ function PostView() {
                     variables: { _id: postId },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.create) {
+                setCommentFilter(1);
+                setCommentText('');
+                setCommentImage(null);
+                setCreateCommentErr(false);
+                setPreviewURL();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
 
         // if (!createCommentData) console.log(createCommentData);
-        setCommentFilter(1);
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setPreviewURL();
     };
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -277,12 +289,8 @@ function PostView() {
                     return toast.error(
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
-                            position: 'bottom-left',
                             autoClose: 5000,
                             hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }
@@ -415,8 +423,8 @@ function PostView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -1069,6 +1077,9 @@ function PostView() {
                                                         comment_image={
                                                             comment_image
                                                         }
+                                                        setCommentImage={
+                                                            setCommentImage
+                                                        }
                                                     />
                                                 ))}
                                             {commentFilter === 1 &&
@@ -1116,6 +1127,9 @@ function PostView() {
                                                             }
                                                             comment_image={
                                                                 comment_image
+                                                            }
+                                                            setCommentImage={
+                                                                setCommentImage
                                                             }
                                                         />
                                                     )

@@ -119,6 +119,7 @@ export default function UpdatePost({
             variables: {
                 data: IUpdatePost,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -131,19 +132,42 @@ export default function UpdatePost({
                     variables: { _id: postToEdit._id },
                 },
             ],
+        }).then(({ data: updatePostData, errors }) => {
+            if (updatePostData?.Posts?.create) {
+                setScrollText('');
+                setScrollImages(null);
+                setScrollVideo(undefined);
+                setUpdatePostErr(false);
+                setImageDisabled(false);
+                setVideoDisabled(false);
+                setOpenImage(false);
+                setFileType(null);
+                setOpenVideo(false);
+                setPostToEdit(null);
+                setImagePreviewURLS([]);
+                setVideoPreviewURL(null);
+                setUpdateScrollOpen(false);
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const errorMsg = errors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
+
+                    toast.error(
+                        `Your image(s) have an unsupported file type (${mime})`
+                    );
+                    setImagePreviewURLS([]);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection and refresh the page.`
+                    );
+                }
+            }
         });
-        setScrollText('');
-        setScrollImages(null);
-        setScrollVideo(undefined);
-        setUpdatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setFileType(null);
-        setOpenVideo(false);
-        setPostToEdit(null);
-        setImagePreviewURLS([]);
-        setVideoPreviewURL(null);
     };
 
     useEffect(() => {
@@ -253,8 +277,6 @@ export default function UpdatePost({
             images: scroll_images,
             video: scroll_video,
         });
-
-        setUpdateScrollOpen(false);
     };
 
     const handleDeletePost = (e) => {
