@@ -92,7 +92,7 @@ export default function HonorForm({ onClose, updateData }) {
                               name,
                               start_date,
                               end_date,
-                              expire: false,
+                              expires: false,
                               url,
                           };
 
