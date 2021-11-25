@@ -36,9 +36,8 @@ export default function General({ coinDetail }) {
     const [rowLoaded, setRowLoaded] = useState(false);
     const [error, setError] = useState(false);
     const [activeButton, setActiveButton] = useState(0);
-    const [, setActiveCoinFeature] = useState('price');
+    const [coinFeature, setCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
-    // const [coinFeature, setActiveCoinFeature] = useState('price');
 
     useEffect(() => {
         const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=10&sparkline=true`;
@@ -58,17 +57,17 @@ export default function General({ coinDetail }) {
             });
     }, []);
 
-    // const CoinDescription = () => {
-    //     const description = coinDetail?.description?.en;
+    const CoinDescription = () => {
+        const description = coinDetail?.description?.en;
 
-    //     return (
-    //         <>
-    //             {description?.split('\n')?.map((c, idx) => (
-    //                 <p key={idx} dangerouslySetInnerHTML={{ __html: c }} />
-    //             ))}
-    //         </>
-    //     );
-    // };
+        return (
+            <>
+                {description?.split('\n')?.map((c, idx) => (
+                    <p key={idx} dangerouslySetInnerHTML={{ __html: c }} />
+                ))}
+            </>
+        );
+    };
 
     const handleClick = () => {
         // eslint-disable-next-line no-console
@@ -107,11 +106,17 @@ export default function General({ coinDetail }) {
                                                 id={index}
                                                 value={item.value}
                                                 name={item.name}
-                                                setActiveButton={
-                                                    setActiveButton
+                                                // setActiveButton={
+                                                //     setActiveButton
+                                                // }
+                                                // setActiveCoinFeature={
+                                                //     setCoinFeature
+                                                // }
+                                                setActiveButton={(val) =>
+                                                    setActiveButton(val)
                                                 }
-                                                setActiveCoinFeature={
-                                                    setActiveCoinFeature
+                                                setActiveCoinFeature={(val) =>
+                                                    setCoinFeature(val)
                                                 }
                                                 active={activeButton === index}
                                             />
@@ -246,10 +251,10 @@ export default function General({ coinDetail }) {
                         </div>
                         <div className={'mt-2'}>
                             <Card>
-                                {/* <CoinChart
+                                <CoinChart
                                     coinFeature={coinFeature}
                                     coinDetail={coinDetail}
-                                /> */}
+                                />
                             </Card>
                             <div className={'d-flex justify-content-start'}>
                                 <FormControlLabel
@@ -274,11 +279,12 @@ export default function General({ coinDetail }) {
                             ({coinDetail?.symbol})
                         </span>
                     </h5>
-                    {/* <CoinDescription /> */}
+                    <CoinDescription />
                     <a
                         href={'#'}
                         className={'text-primary'}
-                        onClick={setShowLess(!showLess)}
+                        // onClick={setShowLess(!showLess)}
+                        onClick={() => setShowLess(!showLess)}
                     >
                         Read More <KeyboardArrowDown />
                     </a>

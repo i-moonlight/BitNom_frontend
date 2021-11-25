@@ -955,18 +955,19 @@ export default function EventView() {
                                                         <div className="center-horizontal">
                                                             <Avatar
                                                                 variant="rounded"
-                                                                src={  eventData
+                                                                src={
+                                                                    eventData
                                                                         ?.Events
                                                                         ?.getById
                                                                         ?.host
                                                                         ?.profile_pic &&
                                                                     process.env
                                                                         .REACT_APP_BACKEND_URL +
-                                                                    eventData
-                                                                        ?.Events
-                                                                        ?.getById
-                                                                        ?.host
-                                                                        ?.profile_pic
+                                                                        eventData
+                                                                            ?.Events
+                                                                            ?.getById
+                                                                            ?.host
+                                                                            ?.profile_pic
                                                                 }
                                                                 className={
                                                                     classes.avatar
@@ -993,7 +994,6 @@ export default function EventView() {
                                                             marginTop: '8px',
                                                         }}
                                                         variant="body1"
-                                                        
                                                     >
                                                         {
                                                             eventData?.Events

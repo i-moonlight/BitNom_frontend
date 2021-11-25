@@ -2,43 +2,49 @@ import React from 'react';
 import { Button, Chip } from '@mui/material';
 import { useStyles } from './styles';
 
-export const GeneralButtons = (props) => {
+export const GeneralButtons = ({
+    setActiveButton,
+    setActiveCoinFeature,
+    active,
+    id,
+    value,
+}) => {
     const btnColor = useStyles();
+
     const clickButtonHandler = () => {
-        props.setActiveButton(props.id);
-        props.setActiveCoinFeature(props.name);
+        setActiveButton(id);
+        setActiveCoinFeature(name);
     };
+
     return (
         <Button
             color={'inherit'}
-            className={`${
-                props.active ? btnColor.bGActive : btnColor.bGNormal
-            }`}
+            className={`${active ? btnColor.bGActive : btnColor.bGNormal}`}
             size={'small'}
-            value={props.value}
-            name={props.name}
+            value={value}
+            name={name}
             onClick={clickButtonHandler}
         >
-            {props.value}
+            {value}
         </Button>
     );
 };
 
-export const GeneralChips = (props) => {
+export const GeneralChips = ({ setActiveChip, id, active, value }) => {
     const btnColor = useStyles();
+
     const clickChipHandler = () => {
-        props.setActiveChip(props.id);
+        setActiveChip(id);
     };
+
     return (
         <>
             <Chip
                 color={'inherit'}
-                className={`${
-                    props.active ? btnColor.bGActive : btnColor.bGNormal
-                }`}
+                className={`${active ? btnColor.bGActive : btnColor.bGNormal}`}
                 size={'small'}
-                label={props.value}
-                value={props.value}
+                label={value}
+                value={value}
                 onClick={clickChipHandler}
             />
         </>

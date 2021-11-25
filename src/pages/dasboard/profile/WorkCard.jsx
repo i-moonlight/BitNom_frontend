@@ -49,7 +49,7 @@ export default function WorkCard({ profile, profileView }) {
                                 dateFrom={start_date}
                                 dateTo={end_date}
                                 description={description}
-                                photoURL="https://picsum.photos/200"
+                                photoURL=""
                                 current={current}
                                 profileView={profileView}
                             />

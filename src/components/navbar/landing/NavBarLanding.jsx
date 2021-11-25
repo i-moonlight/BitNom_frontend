@@ -220,8 +220,7 @@ export default function NavBarLanding() {
                                     }}
                                 >
                                     <Typography className="fw-bold">
-                                        Explore
-                                        {!smDown && 'BN'}
+                                        Sign Up
                                     </Typography>
                                 </Button>
                             </>
