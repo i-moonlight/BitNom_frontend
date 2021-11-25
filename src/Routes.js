@@ -308,7 +308,7 @@ export default function Routes({ apolloClient }) {
                                     component={ProfileView}
                                     path="/users/:id"
                                 />
-                                {/* <Route component={NotFound} path='*' /> */}
+                                {/* <Route exact component={NotFound} path="*" /> */}
                             </>
                         </Suspense>
                     </Switch>
