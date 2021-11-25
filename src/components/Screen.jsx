@@ -11,7 +11,9 @@ export default function Screen({ auth, children }) {
 
     useEffect(() => {
         JSON.stringify(user) === '{}' && !auth && history.push('/auth/login');
-        !user.displayName && history.push('/auth/update_info_register');
+        user?.email?.verified &&
+            !user.displayName &&
+            history.push('/auth/update_info_register');
     }, [auth, history, user]);
 
     return (

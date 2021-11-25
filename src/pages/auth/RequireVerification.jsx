@@ -33,12 +33,10 @@ export default function RequireVerification() {
                 <Grid
                     container
                     spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '100vh' }}
+                    style={{ minHeight: '100vh', marginTop: 80 }}
                 >
-                    <Grid item xs={11} sm={7} md={6} lg={4}>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                    <Grid item xs={10} sm={8} md={6} lg={4}>
                         <div className="text-center my-3 px-sm-5">
                             <Typography color="textPrimary" variant="h5">
                                 Hi! WELCOME TO BITNORM
@@ -120,6 +118,7 @@ export default function RequireVerification() {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
                 </Grid>
             </div>
         </>
