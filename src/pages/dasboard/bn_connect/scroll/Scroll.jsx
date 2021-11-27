@@ -29,14 +29,13 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
-import { getDistanceToNow } from '../../../../components/utilities/date.components.js';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components.js';
 import ReactionButton from '../../../../components/ReactionButton';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
@@ -360,7 +359,7 @@ export default function Scroll({
                         </div>
                     }
                     // subheader={moment(scroll?.createdAt).fromNow()}
-                    subheader={getDistanceToNow(scroll?.createdAt)}
+                    subheader={getDistanceToNowWithSuffix(scroll?.createdAt)}
                 />
 
                 <CardContent
