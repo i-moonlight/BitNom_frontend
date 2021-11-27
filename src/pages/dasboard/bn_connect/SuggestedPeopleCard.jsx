@@ -115,7 +115,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                         variant="text"
                         className="my-1"
                         onClick={() => {
-                            history.push('/people');
+                            history.push('/connect/people');
                         }}
                     >
                         Show More

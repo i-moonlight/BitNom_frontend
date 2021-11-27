@@ -72,7 +72,7 @@ import UserCard from '../UserCard';
 import Comment from './comment/Comment';
 import UpdateComment from './comment/UpdateComment';
 import CreatePost from './CreatePost';
-import FilterButton from './FilterButton';
+import CommentsFilter from './comment/CommentsFilter';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
@@ -1021,7 +1021,7 @@ function PostView() {
                                                     }}
                                                     component="div"
                                                 >
-                                                    <FilterButton
+                                                    <CommentsFilter
                                                         setCommentFilter={
                                                             setCommentFilter
                                                         }

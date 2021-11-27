@@ -32,6 +32,7 @@ import {
     QUERY_LOAD_EVENTS,
 } from '../utilities/queries';
 import CreateEvent from './CreateEvent';
+import EventsFilter from './EventsFilter';
 import CreateEventCard from './CreateEventCard';
 import SEO from '../../../components/SEO';
 
@@ -144,6 +145,7 @@ export default function Events() {
                                 </Card>
                             )}
                             <EventListCard
+                                setSelectedIndex={setSelectedIndex}
                                 selectedIndex={selectedIndex}
                                 loading={eventsLoading}
                                 events={eventsData?.Events?.get}
@@ -172,9 +174,11 @@ function EventListCard({
     events,
     loading,
     selectedIndex,
+    setSelectedIndex,
     savedEvents,
     bookmarksLoading,
 }) {
+    const mdDown = useMediaQuery('(max-width:1279px)');
     const upcomingEvents = events?.filter(
         (event) => new Date(event?.endDate).getTime() > new Date().getTime()
     );
@@ -199,7 +203,14 @@ function EventListCard({
                 }
                 title={
                     <div className="center-horizontal">
-                        <Typography>Your Events</Typography>
+                        {mdDown ? (
+                            <EventsFilter
+                                eventsFilter={selectedIndex}
+                                setEventsFilter={setSelectedIndex}
+                            />
+                        ) : (
+                            <Typography variant="body1">Events</Typography>
+                        )}
                     </div>
                 }
             />
