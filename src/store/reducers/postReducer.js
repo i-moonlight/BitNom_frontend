@@ -1,6 +1,9 @@
+/* eslint-disable no-case-declarations */
 const initialState = {
     list: [],
     trending: [],
+    users: [],
+    comments: {},
 };
 
 export default function postReducer(state = initialState, action) {
@@ -9,6 +12,17 @@ export default function postReducer(state = initialState, action) {
             return { ...state, list: action.scrolls };
         case 'LOAD_TRENDING':
             return { ...state, trending: action.trending };
+        case 'LOAD_USERS':
+            return { ...state, users: action.users };
+        case 'LOAD_COMMENTS':
+            return {
+                ...state,
+                comments: {
+                    ...state['comments'],
+                    [action.commentsData.scrollId]:
+                        action.commentsData.comments,
+                },
+            };
         default:
             return { ...state };
     }

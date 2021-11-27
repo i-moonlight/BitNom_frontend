@@ -8,7 +8,11 @@ import ImageModal from '../../../components/ImageModal';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
-import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
+import {
+    loadScrolls,
+    loadTrending,
+    loadUsers,
+} from '../../../store/actions/postActions';
 import { getFeed } from '../utilities/functions';
 import { QUERY_GET_USERS, QUERY_LOAD_SCROLLS } from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
@@ -57,30 +61,23 @@ export default function BnConnect() {
 
     const user = state.auth.user;
     const posts = state.posts.list;
+    // const comments = state.posts.comments;
     const trending = state.posts.trending;
+    const users = state.posts.users;
+
+    // console.log(comments);
 
     const mdDown = useMediaQuery('(max-width:1279px)');
     const smDown = useMediaQuery('(max-width:959px)');
 
-    // const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
-    //     context: { clientName: 'users' },
-    // });
-
-    const { data: usersData } = useQuery(QUERY_GET_USERS, {
+    const {
+        loading: usersLoading,
+        data: usersData,
+        error: usersError,
+    } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
         context: { clientName: 'users' },
     });
-
-    const following = [];
-    user?.following?.forEach((item) => following.push(item?.userId?._id));
-
-    const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) =>
-            item?._id !== 'bn-ai' &&
-            item?._id !== user?._id &&
-            !following.includes(item?._id) &&
-            item?.displayName
-    );
 
     const {
         loading: scrollLoading,
@@ -106,21 +103,21 @@ export default function BnConnect() {
         },
     });
 
+    const following = [];
+    user?.following?.forEach((item) => following.push(item?.userId?._id));
+
+    const suggestedUsers = users?.filter(
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
+    );
+
     useEffect(() => {
-        const OneSignal = window.OneSignal || [];
-
-        OneSignal.push(() => {
-            OneSignal.init({
-                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
-            });
-            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-                if (isEnabled) {
-                    var externalUserId = user._id;
-                    OneSignal.setExternalUserId(externalUserId);
-                }
-            });
-        });
-
+        !usersError &&
+            !usersLoading &&
+            dispatch(loadUsers(usersData?.Users?.get));
         !trendingError &&
             !trendingLoading &&
             dispatch(loadTrending(trendingData?.Posts?.get));
@@ -135,7 +132,9 @@ export default function BnConnect() {
         trendingData?.Posts?.get,
         trendingError,
         trendingLoading,
-        user,
+        usersData?.Users?.get,
+        usersError,
+        usersLoading,
     ]);
 
     return (
@@ -211,6 +210,7 @@ export default function BnConnect() {
                                     fallback={<SkeletonScrollCard />}
                                 >
                                     <Scroll
+                                        id={scroll?._id}
                                         setOpen={() =>
                                             setCreateScrollOpen(true)
                                         }

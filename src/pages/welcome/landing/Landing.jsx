@@ -8,7 +8,7 @@ import InvestorSection from './InvestorSection';
 import LayersSection from './LayersSection';
 import ProjectSection from './ProjectSection';
 import ServicesSection from './ServicesSection';
-import SponsorsSection from './SponsorsSection';
+import CoinMarquee from '../CoinMarquee';
 import TransitionSection from './TransitionSection';
 
 export const INVESTOR_CARD_DISPLACEMENT = 200;
@@ -17,7 +17,7 @@ export default function Landing() {
     return (
         <Wrapper>
             <HeaderSection />
-            <SponsorsSection />
+            <CoinMarquee />
             <ProjectSection />
             <InfrastructureSection />
             <TransitionSection />

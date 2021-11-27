@@ -2,9 +2,9 @@ import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 import { Avatar, Container, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
-import '../../../css/marquee.css';
+import '../../css/marquee.css';
 
-export default function SponsorsSection() {
+export default function CoinMarquee() {
     const [coins, setCoins] = useState([]);
     const [error, setError] = useState();
 
@@ -31,40 +31,34 @@ export default function SponsorsSection() {
             <Grid
                 style={{ maxHeight: '100%' }}
                 container
-                item
                 direction="row"
                 justify="center"
                 alignItems="flex-start"
             >
-                {!coins.length && !error && (
-                    <Grid item xs={1}>
-                        <div className="my-5">Loading</div>
-                    </Grid>
-                )}
-                {!coins.length && error && (
-                    <div className="my-5">Nothing Here</div>
-                )}
-                <div className="marquee my-2">
-                    <Grid
-                        container
-                        direction="row"
-                        wrap="nowrap"
-                        className={' marquee_widget'}
-                    >
-                        <Grid
-                            container
-                            item
-                            className={' marquee_widget_content'}
-                            wrap="nowrap"
-                            direction="row"
-                        >
+                <div className="marquee my-2 ">
+                    <div className="d-flex align-items-center marquee_widget">
+                        <div className="my-1 mx-3 d-flex align-items-center marquee_widget_content">
+                            {!coins.length && !error && (
+                                <div className="my-1 mx-3 d-flex flex-column align-items-center">
+                                    <Typography className="p-4">
+                                        Loading ...{' '}
+                                    </Typography>
+                                </div>
+                            )}
+                            {!coins.length && error && (
+                                <div className="my-2 mx-3 d-flex flex-column align-items-center">
+                                    <Typography className="p-4">
+                                        Err Loading ...{' '}
+                                    </Typography>
+                                </div>
+                            )}
                             {!!coins.length &&
                                 !error &&
                                 coins.map((coin) => (
                                     <Coin key={coin.id} coin={coin} />
                                 ))}
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </div>
                 </div>
             </Grid>
         </Container>
@@ -79,15 +73,7 @@ function Coin({ coin }) {
         price_change_class = classes.negative_price;
     }
     return (
-        <Grid
-            container
-            xs={5}
-            style={{ margin: '0 15px' }}
-            item
-            alignItems="center"
-            justify="center"
-            direction="column"
-        >
+        <div className="my-1 mx-3 d-flex flex-column align-items-center">
             <Avatar
                 style={{ width: '30px', height: '30px' }}
                 alt={coin.id}
@@ -115,7 +101,7 @@ function Coin({ coin }) {
                     <ArrowDownward />
                 )}
             </Typography>
-        </Grid>
+        </div>
     );
 }
 

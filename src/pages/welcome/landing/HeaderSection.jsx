@@ -22,17 +22,19 @@ export default function HeaderSection() {
     return (
         <>
             <Grid
+                className="py-5"
                 style={{
                     backgroundColor: theme.palette.background.landing,
                 }}
             >
                 <Container container component={Grid} maxWidth="md">
                     <Grid
+                        className="py-5 px-3"
                         style={{
                             backgroundImage: `url('${headerBgImg}')`,
                             backgroundSize: 'cover',
                             borderRadius: 30,
-                            padding: '5%',
+                            // padding: '5%',
                             backgroundColor:
                                 theme.palette.mode == 'light'
                                     ? '#ddd'
@@ -40,7 +42,6 @@ export default function HeaderSection() {
                         }}
                         item
                         lg={12}
-                        className="mt-5 mb-5"
                     >
                         <DarkThemeOnly>
                             <Typography
