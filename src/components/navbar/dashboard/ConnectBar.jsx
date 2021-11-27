@@ -78,6 +78,25 @@ export default function ConnectBar() {
                                 >
                                     Profile
                                 </Button>
+                                <Button
+                                    className="py-0 mx-1 my-1 fw-bold"
+                                    color={
+                                        location.pathname.includes(
+                                            '/connect/people'
+                                        )
+                                            ? 'primary'
+                                            : 'inherit'
+                                    }
+                                    style={{
+                                        textTransform: 'none',
+                                    }}
+                                    onClick={() =>
+                                        history.push('/connect/people')
+                                    }
+                                    variant="text"
+                                >
+                                    People
+                                </Button>
                             </div>
                         </>
                     )}

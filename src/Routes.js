@@ -266,7 +266,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={People}
-                                    path="/people"
+                                    path="/connect/people"
                                 />
                                 <Route
                                     exact

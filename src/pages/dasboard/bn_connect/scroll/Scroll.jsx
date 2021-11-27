@@ -37,6 +37,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
+import { getDistanceToNow } from '../../../../components/utilities/date.components.js';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
 import { loadComments } from '../../../../store/actions/postActions';
@@ -386,8 +387,10 @@ export default function Scroll({
                             </Typography>
                         </div>
                     }
-                    subheader={moment(scroll?.createdAt).fromNow()}
+                    // subheader={moment(scroll?.createdAt).fromNow()}
+                    subheader={getDistanceToNow(scroll?.createdAt)}
                 />
+
                 <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
