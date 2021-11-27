@@ -82,16 +82,33 @@ export default function CreateEvent({ open, setOpen }) {
             variables: {
                 data: ICreateEvent,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_EVENTS,
                     variables: { data: { host: user?._id, limit: 50 } },
                 },
             ],
+        }).then(({ data: createEventData, errors }) => {
+            if (createEventData?.Events?.create) {
+                handleCloseEventModal();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setEventImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
-        /*  .then(({ data, errors }) => {
-           
-        }) */
     };
 
     const handleSelectLocation = (location) => {
@@ -152,6 +169,32 @@ export default function CreateEvent({ open, setOpen }) {
             });
             image.src = URL.createObjectURL(file);
         });
+    };
+
+    const handleCloseEventModal = () => {
+        setDateErr(false);
+        setEventLink('');
+        setEventImage(null);
+        setEventTitle('');
+        setEventDescription('');
+        setDescriptionErr(false);
+        setOrganizerErr(false);
+        setTagsErr(false);
+        setTitleErr(false);
+        setLinkErr(false);
+        setDateErr(false);
+        setLocationErr(false);
+        setEventOrganizers([]);
+        setEventStartDate('');
+        setEventEndDate('');
+        setLocationType('');
+        setLatitude('');
+        setAddress('');
+        setLongitude('');
+        setEventTags([]);
+        setTagText('');
+        setPreviewURL();
+        setOpen(false);
     };
 
     const handleCreateEvent = (e) => {
@@ -240,29 +283,6 @@ export default function CreateEvent({ open, setOpen }) {
                 address: String(address),
             },
         });
-        setDateErr(false);
-        setEventLink('');
-        setEventImage(null);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setOrganizerErr(false);
-        setTagsErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setEventOrganizers([]);
-        setEventStartDate('');
-        setEventEndDate('');
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
-        setEventTags([]);
-        setTagText('');
-        setPreviewURL();
-        setOpen(false);
     };
 
     return (
@@ -291,28 +311,7 @@ export default function CreateEvent({ open, setOpen }) {
                                 size="small"
                                 className="m-1 p-1"
                                 onClick={() => {
-                                    setOpen(!open);
-                                    setEventLink('');
-                                    setEventImage(null);
-                                    setEventTitle('');
-                                    setEventDescription('');
-                                    setDescriptionErr(false);
-                                    setOrganizerErr(false);
-                                    setTagsErr(false);
-                                    setTitleErr(false);
-                                    setLinkErr(false);
-                                    setDateErr(false);
-                                    setLocationErr(false);
-                                    setEventStartDate('');
-                                    setEventEndDate('');
-                                    setLocationType('');
-                                    setLatitude('');
-                                    setAddress('');
-                                    setLongitude('');
-                                    setEventTags([]);
-                                    setTagText('');
-                                    setPreviewURL();
-                                    setEventOrganizers([]);
+                                    handleCloseEventModal();
                                 }}
                             >
                                 <CloseRounded />

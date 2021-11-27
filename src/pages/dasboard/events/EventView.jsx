@@ -194,12 +194,7 @@ export default function EventView() {
             ],
         });
         toast.success('Added to saved items', {
-            position: 'bottom-left',
             autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
         });
         handleEventOptionsClose();
     };
@@ -267,8 +262,8 @@ export default function EventView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}

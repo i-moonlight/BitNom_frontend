@@ -3,6 +3,7 @@ import { Container, Grid, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
 import Screen from '../../../components/Screen';
+import { ToastContainer } from 'react-toastify';
 import SEO from '../../../components/SEO';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -57,6 +58,17 @@ export default function ProfileView({ match }) {
                           profile?.profile_pic
                         : null
                 }
+            />
+            <ToastContainer
+                position="bottom-left"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
             <div className={classes.root}>
                 <Container maxWidth="lg">

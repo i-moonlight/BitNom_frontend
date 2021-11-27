@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import { Button } from '../../../components/Button';
+import { ToastContainer } from 'react-toastify';
 import {
     GET_BOOKMARKED_EVENTS,
     QUERY_FETCH_PROFILE,
@@ -83,6 +84,17 @@ export default function Events() {
                 title="Your Events | Bitnorm"
                 url={`${window.location.origin}/events`}
                 description={`All Events`}
+            />
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
             <div className={classes.root}>
                 <Container maxWidth="lg">
