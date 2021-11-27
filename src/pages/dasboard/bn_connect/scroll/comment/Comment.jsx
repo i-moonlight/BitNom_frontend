@@ -22,7 +22,7 @@ import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../../components/Button';
@@ -41,8 +41,10 @@ import {
 import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
 import ReactionHover from '../../../../../components/ReactionHover';
+import { loadComments } from '../../../../../store/actions/postActions';
 
 export default function Comment({
+    id,
     comment,
     style,
     onCreateComment,
@@ -59,8 +61,6 @@ export default function Comment({
     setImagePreviewOpen,
     profileData,
 }) {
-    const classes = useStyles();
-    const theme = useTheme();
     const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
     const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
@@ -73,16 +73,23 @@ export default function Comment({
     const [replyErr, setReplyErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
+
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const theme = useTheme();
     const history = useHistory();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    // const commentList = state.posts.comments;
+    // const comments = commentList[id];
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const {
         data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
+        loading: commentsLoading,
+        error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: comment?.scroll } },
     });
@@ -223,11 +230,6 @@ export default function Comment({
         }
     };
 
-    useEffect(() => {
-        const reaction = getUserReaction(comment);
-        setUserReaction(reaction);
-    }, [comment, getUserReaction]);
-
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
     //moment js single letter formatting for comments
@@ -248,6 +250,25 @@ export default function Comment({
             yy: '%d y',
         },
     });
+
+    const comments = commentsData?.Comments?.get;
+
+    useEffect(() => {
+        const reaction = getUserReaction(comment);
+        setUserReaction(reaction);
+    }, [comment, getUserReaction]);
+
+    useEffect(() => {
+        !commentsError &&
+            !commentsLoading &&
+            dispatch(loadComments(commentsData?.Comments?.get, id));
+    }, [
+        commentsData?.Comments?.get,
+        commentsError,
+        commentsLoading,
+        dispatch,
+        id,
+    ]);
 
     return (
         <>
@@ -496,8 +517,7 @@ export default function Comment({
                                             }
                                         }}
                                         placeholder={
-                                            commentsData?.Comments?.get
-                                                ?.length > 0
+                                            comments?.length > 0
                                                 ? ''
                                                 : 'Be the first to comment..'
                                         }
@@ -519,7 +539,7 @@ export default function Comment({
                                     >
                                         <Mention
                                             markup="/*@__id__-__display__*/"
-                                            displayTransform={(id, display) =>
+                                            displayTransform={(_id, display) =>
                                                 display
                                             }
                                             trigger="@"
@@ -614,28 +634,26 @@ export default function Comment({
                             </div>
                         </>
                     )}
-                    {commentsData &&
-                        commentsData?.Comments?.get
-                            .filter(
-                                (commentInner) =>
-                                    commentInner?.response_to?._id ===
-                                    comment?._id
-                            )
-                            .map((commentInner) => (
-                                <Comment
-                                    key={commentInner._id}
-                                    comment={commentInner}
-                                    setCommentImage={setCommentImage}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setImagePreviewURL={setImagePreviewURL}
-                                    setImagePreviewOpen={setImagePreviewOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenFlag={setOpenFlag}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                />
-                            ))}
+                    {comments
+                        ?.filter(
+                            (commentInner) =>
+                                commentInner?.response_to?._id === comment?._id
+                        )
+                        ?.map((commentInner) => (
+                            <Comment
+                                key={commentInner._id}
+                                comment={commentInner}
+                                setCommentImage={setCommentImage}
+                                setUpdateCommentOpen={setUpdateCommentOpen}
+                                setCommentToEdit={setCommentToEdit}
+                                setImagePreviewURL={setImagePreviewURL}
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setFlaggedResource={setFlaggedResource}
+                                setOpenFlag={setOpenFlag}
+                                setOpenReactions={setOpenReactions}
+                                setResourceReactions={setResourceReactions}
+                            />
+                        ))}
                 </div>
             </div>
             <EmojiPickerPopover

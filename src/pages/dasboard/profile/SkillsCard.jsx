@@ -9,7 +9,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_ADD_SKILL,
@@ -46,6 +46,12 @@ export default function SkillsCard({ profile, profileView }) {
     ] = useMutation(MUTATION_REMOVE_SKILL, {
         context: { clientName: 'users' },
     });
+
+    useEffect(() => {
+        text.length > 20
+            ? setSkillErr('Skill should be 20 chars max')
+            : setSkillErr(null);
+    }, [text.length]);
 
     return (
         <Card className="mb-3">
@@ -103,11 +109,10 @@ export default function SkillsCard({ profile, profileView }) {
                                                 }
                                             });
                                         }}
-                                        color="primary"
+                                        disabled={addLoading}
                                         size="small"
                                         className="my-1"
                                         textCase
-                                        disabled={addLoading}
                                     >
                                         Add
                                     </Button>

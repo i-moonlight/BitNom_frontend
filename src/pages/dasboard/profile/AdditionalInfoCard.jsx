@@ -46,11 +46,12 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                             <Card
                                 style={{
                                     position: 'absolute',
-                                    top: 33,
+                                    top: 36,
                                     right: 0,
                                     visibility: showFormMenu
                                         ? 'visible'
                                         : 'hidden',
+                                    zIndex: 12,
                                 }}
                                 variant="outlined"
                             >
@@ -100,13 +101,15 @@ export default function AdditionalInfoCard({ profile, profileView }) {
                 {showForm && formType == 'language' && (
                     <LanguagesForm onClose={onClose} profile={profile} />
                 )}
-                {showForm && formType !== ('gender' && 'language') && (
-                    <AditionalInfoForm
-                        onClose={onClose}
-                        formType={formType}
-                        profile={profile}
-                    />
-                )}
+                {showForm &&
+                    formType !== 'gender' &&
+                    formType !== 'language' && (
+                        <AditionalInfoForm
+                            onClose={onClose}
+                            formType={formType}
+                            profile={profile}
+                        />
+                    )}
                 {!showForm && <Divider />}
                 <div className="mt-3">
                     <SectionCard title="Courses" values={courses} />

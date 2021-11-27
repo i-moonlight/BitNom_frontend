@@ -1,6 +1,7 @@
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Button } from '../../../../components/Button';
+import { getUserInitials } from '../../../../utilities/Helpers';
 import HonorForm from '../forms/HonorForm';
 import { useStyles } from '../utilities/profile.styles';
 
@@ -40,7 +41,7 @@ export default function HonorFragment({
                 <CardContent>
                     <div className="d-flex flex-row">
                         <Avatar src={photoURL} variant="rounded">
-                            HO
+                            {getUserInitials(name)}
                         </Avatar>
                         <div className="mx-3 w-100">
                             <div className="center-horizontal space-between ">
