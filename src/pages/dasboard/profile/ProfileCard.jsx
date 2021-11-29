@@ -295,11 +295,11 @@ export default function ProfileCard({ profile, profileView }) {
                 <div
                     style={{
                         height: 120,
-                        //backgroundImage:
-                        //    coverPreviewURL && `url('${coverPreviewURL}')`,
-                        backgroundImage: coverPreviewURL
-                            ? `url('${coverPreviewURL}')`
-                            : `url(${'https://picsum.photos/300/500'})`,
+                        backgroundImage:
+                            coverPreviewURL && `url('${coverPreviewURL}')`,
+                        // backgroundImage: coverPreviewURL
+                        //     ? `url('${coverPreviewURL}')`
+                        //     : `url(${'https://picsum.photos/300/500'})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundColor: '#aaa',

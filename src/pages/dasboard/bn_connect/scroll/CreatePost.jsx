@@ -22,7 +22,7 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -35,8 +35,11 @@ import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollPreview from './ScrollPreview';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 

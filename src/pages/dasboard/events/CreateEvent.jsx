@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
@@ -17,7 +17,7 @@ import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
@@ -65,15 +65,8 @@ export default function CreateEvent({ open, setOpen }) {
 
     const setSearchTermDebounced = debounce(setSearchTerm, 500);
 
-    const { data: usersData, loading: usersLoading } = useQuery(
-        QUERY_SEARCH_USERS,
-        {
-            variables: {
-                params: { searchString: searchTerm },
-            },
-            context: { clientName: 'users' },
-        }
-    );
+    const [searchUsers, { data: usersData, loading: usersLoading }] =
+        useLazyQuery(QUERY_SEARCH_USERS);
 
     const [createEvent, { loading, data }] = useMutation(MUTATION_CREATE_EVENT);
 
@@ -284,6 +277,16 @@ export default function CreateEvent({ open, setOpen }) {
             },
         });
     };
+
+    useEffect(() => {
+        searchTerm.length > 0 &&
+            searchUsers({
+                variables: {
+                    params: { searchString: searchTerm },
+                },
+                context: { clientName: 'users' },
+            });
+    }, [searchTerm, searchUsers]);
 
     return (
         <Modal

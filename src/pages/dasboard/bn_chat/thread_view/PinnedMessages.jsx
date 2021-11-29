@@ -16,11 +16,13 @@ import { UNPIN_MESSAGE } from '../graphql/queries';
 export default function PinnedMessages({ message }) {
     const [error, setError] = useState({});
     const dispatch = useDispatch();
+
     const [unpin] = useMutation(UNPIN_MESSAGE, {
         onError(e) {
             setError(e.graphQLErrors[0].state);
         },
     });
+
     const unpinMessage = async (OMessageInput) => {
         await unpin({
             variables: {
@@ -29,10 +31,12 @@ export default function PinnedMessages({ message }) {
             context: { clientName: 'chat' },
         });
     };
+
     const handleUnpinMessage = (_id) => {
         unpinMessage({ chat: message.chat._id, message: message._id });
         dispatch(deletePinnedMessage(_id));
     };
+
     return (
         <ListItem
             button
