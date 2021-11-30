@@ -79,21 +79,14 @@ export default function EducationForm({ onClose, updateData }) {
                         return;
                     }
 
-                    const IEducation = current
-                        ? {
-                              institution,
-                              major,
-                              start_date,
-                              current,
-                              description,
-                          }
-                        : {
-                              institution,
-                              major,
-                              start_date,
-                              end_date,
-                              description,
-                          };
+                    const IEducation = {
+                        institution,
+                        major,
+                        start_date,
+                        end_date,
+                        current,
+                        description,
+                    };
 
                     updateData
                         ? updateEducation({

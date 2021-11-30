@@ -4,7 +4,6 @@ import {
     Card,
     CardContent,
     Chip,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -372,7 +371,6 @@ export default function CreateEvent({ open, setOpen }) {
                                         variant="outlined"
                                         name="title"
                                         error={titleErr}
-                                        errorText={errorText}
                                         className="mb-2"
                                         label="Title"
                                         value={eventTitle}
@@ -419,6 +417,7 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {descriptionErr &&
@@ -472,6 +471,7 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {linkErr && errorText}
@@ -537,6 +537,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
@@ -651,6 +652,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventTags?.length}/5 tags`}</span>
                                                     <span>{`${tagText?.length}/20`}</span>
@@ -870,22 +872,13 @@ export default function CreateEvent({ open, setOpen }) {
                             {/* <Divider /> */}
                             <div className="space-between mt-1">
                                 <div className="center-horizontal"></div>
-                                {!loading && (
-                                    <Button onClick={handleCreateEvent}>
-                                        Save
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    disabled={loading}
+                                    onClick={handleCreateEvent}
+                                >
+                                    Save
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>

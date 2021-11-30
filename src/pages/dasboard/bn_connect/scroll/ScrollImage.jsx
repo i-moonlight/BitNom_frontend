@@ -26,12 +26,12 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { toast } from 'react-toastify';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
@@ -385,7 +385,9 @@ export default function ScrollImage({
                             }
                             subheader={
                                 <Typography variant="body2">
-                                    {moment(scroll?.createdAt).fromNow()}
+                                    {getDistanceToNowWithSuffix(
+                                        scroll?.createdAt
+                                    )}
                                 </Typography>
                             }
                         />

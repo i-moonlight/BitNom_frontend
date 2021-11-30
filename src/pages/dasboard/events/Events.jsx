@@ -19,7 +19,7 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -316,8 +316,9 @@ function EventPreview({ event }) {
                     >
                         {!smDown && (
                             <Typography color="textSecondary" variant="body2">
-                                {moment(event?.startDate).format(
-                                    'ddd, MMMM Do YYYY, h:mm a'
+                                {format(
+                                    new Date(event?.startDate),
+                                    'E, MMMM do y, h:mm aaa'
                                 )}
                             </Typography>
                         )}

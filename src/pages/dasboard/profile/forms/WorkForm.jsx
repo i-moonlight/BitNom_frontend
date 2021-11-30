@@ -28,7 +28,6 @@ export default function WorkForm({ onClose, updateData }) {
     const [localError, setLocalError] = useState(false);
 
     const classes = useStyles();
-
     const [
         addWork,
         {

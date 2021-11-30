@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { getDistanceToNow } from '../../../../../components/utilities/date.components';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -236,24 +236,6 @@ export default function Comment({
 
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
-    //moment js single letter formatting for comments
-    moment.updateLocale('en', {
-        relativeTime: {
-            future: 'in %s',
-            past: '%s',
-            s: 'now',
-            m: '1 min',
-            mm: '%d min',
-            h: '1 h',
-            hh: '%d h',
-            d: '1 d',
-            dd: '%d d',
-            M: '1 month',
-            MM: '%d m',
-            y: '1 y',
-            yy: '%d y',
-        },
-    });
 
     const comments = commentsData?.Comments?.get;
 
@@ -332,9 +314,9 @@ export default function Comment({
                                         color="textSecondary"
                                     >
                                         .{' '}
-                                        {moment(
-                                            comment.creation_date
-                                        ).fromNow()}
+                                        {getDistanceToNow(
+                                            comment?.creation_date
+                                        )}
                                     </Typography>
                                 </Typography>
                                 <IconButton
@@ -373,7 +355,7 @@ export default function Comment({
                                                     setImagePreviewURL(
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                            comment.image
+                                                            comment?.image
                                                     );
                                                 setImagePreviewOpen(true);
                                             }}
@@ -387,7 +369,7 @@ export default function Comment({
                                                         'url(' +
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                        comment.image +
+                                                        comment?.image +
                                                         ')',
                                                     backgroundSize: 'cover',
                                                     backgroundColor:

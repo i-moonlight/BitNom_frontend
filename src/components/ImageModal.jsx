@@ -1,5 +1,5 @@
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-import { Dialog, Grid, IconButton, Slide } from '@mui/material';
+import { Dialog, Grid, IconButton, Slide, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useState } from 'react';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
@@ -29,6 +29,8 @@ export default function ImageModal({
     const numSlides = post?.images?.length;
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
+
+    const mdDown = useMediaQuery('(max-width:1279px)');
 
     const onArrowClick = useCallback(
         (direction) => {
@@ -94,7 +96,7 @@ export default function ImageModal({
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
-                    {post && (
+                    {post && !mdDown && (
                         <div className={classes.Content}>
                             <ScrollImage
                                 postId={post?._id}
@@ -154,6 +156,10 @@ const useStyles = makeStyles((theme) => ({
         height: '600px',
         overflowX: 'hidden',
         overflowY: 'auto',
+        [theme.breakpoints.down('md')]: {
+            height: 'fit-content',
+            padding: '5px',
+        },
     },
     Carousel: {
         display: 'flex',
@@ -164,17 +170,18 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         [theme.breakpoints.down('sm')]: {
             padding: '5px',
+            height: 'fit-content',
         },
     },
     Content: {
         display: 'flex',
         height: '540px',
         padding: '10px',
-        [theme.breakpoints.down('sm')]: {
+        /* [theme.breakpoints.down('sm')]: {
             padding: '5px',
             alignItems: 'center',
             height: 'fit-content',
-        },
+        }, */
     },
     Arrow: {
         height: '30px',
@@ -185,5 +192,6 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'scroll',
         maxWidth: '90%',
         maxHeight: '500px',
+        // minHeight: '100px',
     },
 }));

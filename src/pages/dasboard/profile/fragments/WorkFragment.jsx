@@ -4,6 +4,7 @@ import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import WorkForm from '../forms/WorkForm';
 import { useStyles } from '../utilities/profile.styles';
+import { format } from 'date-fns';
 
 export default function WorkFragment({
     id,
@@ -61,13 +62,29 @@ export default function WorkFragment({
                                     </Button>
                                 )}
                             </div>
-                            <Typography color="primary" variant="body2">
+                            <Typography
+                                style={{
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                color="primary"
+                                variant="body2"
+                            >
                                 {company}
                             </Typography>
                             <Typography gutterBottom variant="body2">
-                                {dateFrom} to {current ? 'Now' : dateTo}
+                                {format(new Date(dateFrom), 'MMMM do, y')} to{' '}
+                                {current
+                                    ? 'Now'
+                                    : format(new Date(dateTo), 'MMMM do, y')}
                             </Typography>
-                            <Typography variant="body2">
+                            <Typography
+                                style={{
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                variant="body2"
+                            >
                                 {description}
                             </Typography>
                         </div>

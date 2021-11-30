@@ -101,7 +101,6 @@ export default function SendMessage({
 
     const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
         onError(error) {
-            console.warn(error);
             setSendMessageError(error?.graphQLErrors[0]?.state);
         },
     });

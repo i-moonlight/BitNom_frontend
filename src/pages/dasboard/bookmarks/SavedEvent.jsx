@@ -4,7 +4,7 @@ import {
     VideocamRounded,
 } from '@mui/icons-material';
 import { Card, IconButton, Typography, useMediaQuery } from '@mui/material';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
@@ -82,8 +82,9 @@ function SavedEvent({ event }) {
                 >
                     {!smDown && (
                         <Typography color="textSecondary" variant="body2">
-                            {moment(event?.startDate).format(
-                                'ddd, MMMM Do YYYY, h:mm a'
+                            {format(
+                                new Date(event?.startDate),
+                                'E, MMMM do y, h:mm aaa'
                             )}
                         </Typography>
                     )}

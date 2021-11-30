@@ -60,11 +60,8 @@ export default function CommentOptionsPopover({
             ],
         });
         toast.success(`You followed @${user_id}`, {
-            position: 'bottom-center',
+            position: 'bottom-left',
             autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            draggable: true,
         });
         handleCommentOptionClose();
     };
@@ -84,11 +81,8 @@ export default function CommentOptionsPopover({
             ],
         });
         toast.success(`You unfollowed @${user_id}`, {
-            position: 'bottom-center',
+            position: 'bottom-left',
             autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            draggable: true,
         });
         handleCommentOptionClose();
     };
@@ -115,10 +109,6 @@ export default function CommentOptionsPopover({
         toast.success('Added to saved items', {
             position: 'bottom-left',
             autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
         });
 
         handleCommentOptionClose();
