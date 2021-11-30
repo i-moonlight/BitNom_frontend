@@ -53,8 +53,12 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
@@ -475,16 +479,20 @@ export default function Scroll({
 
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'post' && (
-                            <ScrollPreview
-                                scroll={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <ScrollPreview
+                                    scroll={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
 
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'event' && (
-                            <EventPreview
-                                event={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <EventPreview
+                                    event={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
 
                     <br />
@@ -748,8 +756,9 @@ export default function Scroll({
                                 <Suspense
                                     key={comment?._id}
                                     fallback={
-                                        <div className="d-flex justify-content-center my-1">
+                                        <div className="ms-4 d-flex align-items-center justify-content-start my-2 ">
                                             <Skeleton
+                                                className="me-2"
                                                 animation="wave"
                                                 variant="circular"
                                                 width={40}
@@ -759,12 +768,12 @@ export default function Scroll({
                                                 <Skeleton
                                                     animation="wave"
                                                     variant="text"
-                                                    width="100%"
+                                                    width={200}
                                                 />
                                                 <Skeleton
                                                     animation="wave"
                                                     variant="text"
-                                                    width="60%"
+                                                    width={80}
                                                 />
                                             </div>
                                         </div>

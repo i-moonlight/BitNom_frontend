@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useLazyQuery, useSubscription } from '@apollo/client';
 import {
     ArrowBackRounded,
     ArrowDropDown,
@@ -56,6 +56,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         chat?.otherUser?.info?._id === user?._id
             ? chat?.currentUser
             : chat?.otherUser;
+
     const handleChatSettingsClose = () => {
         setChatSettingsAnchorEl(null);
     };
@@ -73,15 +74,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         []
     );
 
-    const { data } = useQuery(SEARCH_MESSAGES, {
-        variables: {
-            data: {
-                chat: chat._id,
-                params: { searchString: debouncedSearchTerm },
-            },
-        },
-        context: { clientName: 'chat' },
-    });
+    const [searchMessages, { data }] = useLazyQuery(SEARCH_MESSAGES);
 
     const { data: userTypingData } = useSubscription(USER_TYPING_SUBS, {
         variables: { data: { _id: otherUser?.info?._id, chat: chat._id } },
@@ -92,6 +85,23 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
             _id: chat?.otherUser?.info?._id,
         },
     });
+
+    const handleDownIndex = () => {
+        // eslint-disable-next-line no-console
+        console.log('Down SEARCH INDEX');
+    };
+
+    const handleUpIndex = () => {
+        // eslint-disable-next-line no-console
+        console.log('Up search index');
+    };
+
+    const handleSearchClearNClose = () => {
+        setSearchOpen(false);
+        dispatch(clearSearchOutput());
+    };
+
+    const onlineUser = UserOnlineData?.userIsOnline?.user;
 
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
@@ -111,21 +121,19 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         }
     }, [UserOnlineData?.userIsOnline?.online]);
 
-    const handleDownIndex = () => {
-        // eslint-disable-next-line no-console
-        console.log('Down SEARCH INDEX');
-    };
-
-    const handleUpIndex = () => {
-        // eslint-disable-next-line no-console
-        console.log('Up search index');
-    };
-
-    const handleSearchClearNClose = () => {
-        setSearchOpen(false);
-        dispatch(clearSearchOutput());
-    };
-    const onlineUser = UserOnlineData?.userIsOnline?.user;
+    useEffect(() => {
+        if (debouncedSearchTerm.length > 0 && chat._id) {
+            searchMessages({
+                variables: {
+                    data: {
+                        chat: chat._id,
+                        params: { searchString: debouncedSearchTerm },
+                    },
+                },
+                context: { clientName: 'chat' },
+            });
+        }
+    }, [chat._id, debouncedSearchTerm, searchMessages]);
 
     return (
         <>

@@ -15,20 +15,23 @@ import {
     Divider,
     IconButton,
     Paper,
-    Typography,
     TextField,
+    Typography,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
 import {
     CREATE_DIALOGUE_MESSAGE,
     UPDATE_MESSAGE,
     USER_TYPING,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../bn_connect/popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -46,8 +49,6 @@ export default function SendMessage({
     otherUser,
 }) {
     const [text, setText] = useState('');
-
-    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -57,12 +58,15 @@ export default function SendMessage({
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
-    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [sendMessageErr, setSendMessageError] = useState({});
+    const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
+
+    const inputRef = useRef();
+    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const theme = useTheme();
     const classes = useStyles();
     const xsDown = useMediaQuery('(max-width:599px)');
-    const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
 
     const isMediaUploadOpen = Boolean(mediaUploadAnchorEl);
 
@@ -77,6 +81,7 @@ export default function SendMessage({
     const handleEmojiPickerClose = () => {
         setEmojiPickerAnchorEl(null);
     };
+
     const handleSelectEmoji = (emoji) => {
         handleEmojiPickerClose();
         setText(`${text} ${emoji.native}`);
@@ -107,6 +112,7 @@ export default function SendMessage({
         setOpen(false);
         setReplyText();
     };
+
     const onUpdateMessage = async (IUpdateMessage) => {
         await updateMessage({
             variables: {
@@ -126,6 +132,7 @@ export default function SendMessage({
             context: { clientName: 'chat' },
         });
     };
+
     const handleChange = (e) => {
         setText(
             text?.length >= 250
@@ -151,9 +158,11 @@ export default function SendMessage({
         e.preventDefault();
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
     };
+
     useEffect(() => {
         setText(editText?.text);
     }, [editText]);
+
     useEffect(() => {
         if (
             text === '' ||
@@ -172,6 +181,7 @@ export default function SendMessage({
             chat: chat,
         });
     };
+
     const handleUserNotTyping = () => {
         onUserTyping({
             currentUser: currentUser?.info._id,
@@ -180,6 +190,7 @@ export default function SendMessage({
             chat: chat,
         });
     };
+
     // eslint-disable-next-line
     const debouncedUserTyping = useCallback(
         debounce(handleUserNotTyping, 1000),

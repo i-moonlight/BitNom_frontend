@@ -2,13 +2,13 @@ import { useMutation } from '@apollo/client';
 import {
     Avatar,
     Card,
-    Divider,
+    CardActions,
+    CardHeader,
     List,
     ListItem,
     ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    Paper,
     Skeleton,
     Typography,
 } from '@mui/material';
@@ -21,7 +21,6 @@ import {} from '../utilities/functions';
 import {
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
-    //QUERY_LOAD_SCROLLS,
     QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
 
@@ -60,25 +59,20 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
   }); */
 
     return (
-        <Paper>
-            <List
-                style={{ padding: 8, paddingBottom: 0 }}
-                component={Card}
-                variant="outlined"
-            >
-                <Typography style={{ marginLeft: 8 }} variant="body1">
-                    People you may know
-                </Typography>
+        <Card variant="outlined">
+            <CardHeader subheader="People you may know" />
+            <List>
                 {!notFollowed &&
                     [1, 2, 3]?.map((user) => (
                         <ListItem key={user} divider>
                             <ListItemAvatar>
-                                <Skeleton animation="wave">
-                                    <Avatar
-                                        variant="square"
-                                        style={{ height: 50 }}
-                                    />
-                                </Skeleton>
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rectangular"
+                                    height={50}
+                                    width={50}
+                                    className="br-2"
+                                />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
@@ -99,6 +93,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                             </ListItemIcon>
                         </ListItem>
                     ))}
+
                 {notFollowed?.slice(0, 3)?.map((user) => (
                     <ListItemComponent
                         key={user?._id}
@@ -107,7 +102,18 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                         profileData={profileData}
                     />
                 ))}
-                <Divider />
+
+                {notFollowed && notFollowed?.length === 0 && (
+                    <ListItem>
+                        <ListItemText
+                            primary="No people to show yet"
+                            secondary="Start to interact to show content here"
+                        />
+                    </ListItem>
+                )}
+            </List>
+
+            <CardActions>
                 {notFollowed?.length > 0 && (
                     <Button
                         textCase
@@ -121,11 +127,8 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                         Show More
                     </Button>
                 )}
-                {notFollowed && notFollowed?.length === 0 && (
-                    <Typography variant="body2">0 Suggestions.</Typography>
-                )}
-            </List>
-        </Paper>
+            </CardActions>
+        </Card>
     );
 }
 
@@ -156,14 +159,9 @@ function ListItemComponent({ user, getFollowStatus }) {
                     query: QUERY_FETCH_PROFILE,
                     context: { clientName: 'users' },
                 },
-                /*  {
-          query: QUERY_LOAD_SCROLLS,
-          variables: { data: { ids: getFeed(profileData), limit: 220 } },
-        }, */
             ],
         });
         if (followData?.Users?.follow == true) setStatus(true);
-        //setFollowing(following + 1);
     };
 
     const handleUnFollowUser = (user_id) => {
@@ -179,15 +177,10 @@ function ListItemComponent({ user, getFollowStatus }) {
                     query: QUERY_FETCH_PROFILE,
                     context: { clientName: 'users' },
                 },
-                /*  {
-          query: QUERY_LOAD_SCROLLS,
-          variables: { data: { ids: getFeed(profileData), limit: 220 } },
-        }, */
             ],
         });
 
         setStatus();
-        //setFollowing(following - 1);
     };
 
     useEffect(() => {
@@ -221,7 +214,6 @@ function ListItemComponent({ user, getFollowStatus }) {
                 secondary={'@' + user?._id}
             />
             <ListItemIcon>
-                {/* <SendRounded /> */}
                 <Button
                     onClick={() =>
                         status

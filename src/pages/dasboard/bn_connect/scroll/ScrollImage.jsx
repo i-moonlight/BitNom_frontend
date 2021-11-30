@@ -19,10 +19,10 @@ import {
     CardContent,
     CardHeader,
     Divider,
+    Hidden,
     IconButton,
     Typography,
     useTheme,
-    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -30,30 +30,32 @@ import { toast } from 'react-toastify';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
+import ReactionHover from '../../../../components/ReactionHover';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
+    getFeed,
     getReactionsSum,
     mentionsFinder,
-    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
-    QUERY_POST_BY_ID,
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
+    QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import Comment from './comment/Comment';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
-import ReactionHover from '../../../../components/ReactionHover';
+import Comment from './comment/Comment';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 export default function ScrollImage({
     postId,

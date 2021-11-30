@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import {
     CloseRounded,
     ImageRounded,
@@ -12,21 +13,23 @@ import {
     CardContent,
     Divider,
     Grid,
+    Hidden,
     IconButton,
     Typography,
     useTheme,
-    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import { getDistanceToNow } from '../../../../../components/utilities/date.components';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
+import ReactionHover from '../../../../../components/ReactionHover';
+import { loadComments } from '../../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -38,10 +41,11 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
-import ReactionHover from '../../../../../components/ReactionHover';
-import { loadComments } from '../../../../../store/actions/postActions';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 export default function Comment({
     id,
@@ -638,13 +642,21 @@ export default function Comment({
                         ))}
                 </div>
             </div>
-            <EmojiPickerPopover
-                emojiPickerId={emojiPickerId}
-                emojiPickerAnchorEl={emojiPickerAnchorEl}
-                isEmojiPickerOpen={isEmojiPickerOpen}
-                handleEmojiPickerClose={handleEmojiPickerClose}
-                handleSelectEmoji={handleSelectEmoji}
-            />
+            <Suspense
+                fallback={() => (
+                    <div>
+                        <CircularProgress />
+                    </div>
+                )}
+            >
+                <EmojiPickerPopover
+                    emojiPickerId={emojiPickerId}
+                    emojiPickerAnchorEl={emojiPickerAnchorEl}
+                    isEmojiPickerOpen={isEmojiPickerOpen}
+                    handleEmojiPickerClose={handleEmojiPickerClose}
+                    handleSelectEmoji={handleSelectEmoji}
+                />
+            </Suspense>
             <CommentOptionsPopover
                 setFlaggedResource={setFlaggedResource}
                 setOpenFlag={setOpenFlag}

@@ -28,10 +28,11 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
@@ -45,8 +46,10 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import { useHistory } from 'react-router';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({

@@ -26,11 +26,8 @@ import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import { Button } from '../../../components/Button';
 import { ToastContainer } from 'react-toastify';
-import {
-    GET_BOOKMARKED_EVENTS,
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
+import { GET_BOOKMARKED_EVENTS, QUERY_LOAD_EVENTS } from '../utilities/queries';
+
 import CreateEvent from './CreateEvent';
 import EventsFilter from './EventsFilter';
 import CreateEventCard from './CreateEventCard';
@@ -51,13 +48,6 @@ export default function Events() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const user = state.auth.user;
-
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
 
     const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
         GET_BOOKMARKED_EVENTS,
@@ -162,7 +152,7 @@ export default function Events() {
                 </Container>
             </div>
             <CreateEvent
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 open={createEventOpen}
                 setOpen={(open) => setCreateEventOpen(open)}
             />

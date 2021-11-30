@@ -44,7 +44,6 @@ function EmojiPickerPopover({
             disableScrollLock
         >
             <Picker onEmojiClick={onEmojiClick} />
-            {/*  <Picker /> */}
         </Popover>
     );
 }

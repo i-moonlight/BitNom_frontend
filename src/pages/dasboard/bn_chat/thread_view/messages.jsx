@@ -1,4 +1,5 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useLazyQuery, useSubscription } from '@apollo/client';
+import { CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
@@ -33,7 +34,6 @@ import Message from './message';
 import NoChatSelected from './NoChatSelected';
 import EmptyMessages from './NoMessages';
 import PinnedMessages from './PinnedMessages';
-import { CloseRounded } from '@mui/icons-material';
 import SendMessage from './SendMessage';
 
 export default function Messages({ onExitChatMobile }) {
@@ -41,6 +41,7 @@ export default function Messages({ onExitChatMobile }) {
     const [pinOpen, setPinOpen] = useState(false);
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
+
     const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -53,19 +54,13 @@ export default function Messages({ onExitChatMobile }) {
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
 
-    const { loading, data } = useQuery(GET_DIALOGUE_MESSAGES, {
-        variables: {
-            chat: dialogue._id,
-        },
-        context: { clientName: 'chat' },
-    });
-    const { data: pinnedMessages } = useQuery(GET_DIALOGUE_MESSAGES, {
-        variables: {
-            chat: dialogue._id,
-            pinned: true,
-        },
-        context: { clientName: 'chat' },
-    });
+    const [getDialogueMessages, { loading, data }] = useLazyQuery(
+        GET_DIALOGUE_MESSAGES
+    );
+
+    const [getPinnedDialogueMessages, { data: pinnedMessages }] = useLazyQuery(
+        GET_DIALOGUE_MESSAGES
+    );
 
     const { data: subscriptionData } = useSubscription(
         NEW_MESSAGE_SUBSCRIPTION,
@@ -81,6 +76,7 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue._id,
         },
     });
+
     const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
         variables: {
             _id: user._id,
@@ -115,9 +111,29 @@ export default function Messages({ onExitChatMobile }) {
     useEffect(() => {
         dispatch(setDialogueMessages(data?.Dialogue?.getMessages));
     }, [data?.Dialogue?.getMessages, dispatch]);
+
     useEffect(() => {
         endRef.current.scrollIntoView();
     });
+
+    useEffect(() => {
+        if (dialogue._id) {
+            getDialogueMessages({
+                variables: {
+                    chat: dialogue._id || 'control',
+                },
+                context: { clientName: 'chat' },
+            });
+
+            getPinnedDialogueMessages({
+                variables: {
+                    chat: dialogue._id || 'control',
+                    pinned: true,
+                },
+                context: { clientName: 'chat' },
+            });
+        }
+    }, [dialogue._id, getDialogueMessages, getPinnedDialogueMessages]);
 
     return (
         <div>

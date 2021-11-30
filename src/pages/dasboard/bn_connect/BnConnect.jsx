@@ -204,7 +204,7 @@ export default function BnConnect() {
                                 )}
                             </Grid>
 
-                            {posts?.map((scroll) => (
+                            {posts?.slice(0, 2).map((scroll) => (
                                 <Suspense
                                     key={scroll?._id}
                                     fallback={<SkeletonScrollCard />}

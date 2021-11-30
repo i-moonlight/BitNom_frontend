@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { Chat, MoreVert, Search } from '@mui/icons-material';
 import {
     Divider,
@@ -24,12 +24,7 @@ export default function SideBarHeader() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const { data } = useQuery(SEARCH_CHATS, {
-        variables: {
-            params: { searchString: searchTerm },
-        },
-        context: { clientName: 'chat' },
-    });
+    const [searchChats, { data }] = useLazyQuery(SEARCH_CHATS);
 
     const handleChatSearch = (e) => {
         setSearchString(e.target.value);
@@ -45,6 +40,17 @@ export default function SideBarHeader() {
             dispatch(setChatSearchInput(data?.Dialogue?.search));
         }
     }, [data?.Dialogue?.search, dispatch]);
+
+    useEffect(() => {
+        if (searchTerm.length > 0) {
+            searchChats({
+                variables: {
+                    params: { searchString: searchTerm },
+                },
+                context: { clientName: 'chat' },
+            });
+        }
+    }, [searchChats, searchTerm]);
 
     return (
         <>
