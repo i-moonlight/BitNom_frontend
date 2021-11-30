@@ -18,7 +18,7 @@ import {
     Button as MUIButton,
     useMediaQuery,
 } from '@mui/material';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import { red } from '@mui/material/colors';
 import { Button } from '../../../components/Button';
@@ -509,8 +509,16 @@ export default function ProfileCard({ profile, profileView }) {
                         >
                             Joined{' '}
                             {smDown
-                                ? moment(profile?.date).format('ll')
-                                : moment(profile?.date).format('LL')}
+                                ? profile?.date &&
+                                  format(
+                                      new Date(profile?.date).getTime(),
+                                      'MMM do, y'
+                                  )
+                                : profile?.date &&
+                                  format(
+                                      new Date(profile?.date).getTime(),
+                                      'MMMM do, y'
+                                  )}
                         </Button>
                         <Button
                             className="me-2"

@@ -27,7 +27,7 @@ import {
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import { toast } from 'react-toastify';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
@@ -383,7 +383,9 @@ export default function ScrollImage({
                             }
                             subheader={
                                 <Typography variant="body2">
-                                    {moment(scroll?.createdAt).fromNow()}
+                                    {getDistanceToNowWithSuffix(
+                                        scroll?.createdAt
+                                    )}
                                 </Typography>
                             }
                         />

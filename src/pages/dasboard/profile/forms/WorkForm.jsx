@@ -27,7 +27,6 @@ export default function WorkForm({ onClose, updateData }) {
     const [current, setCurrent] = useState(updateData?.current);
     const [localError, setLocalError] = useState(false);
     const classes = useStyles();
-
     const [
         addWork,
         {
@@ -86,6 +85,7 @@ export default function WorkForm({ onClose, updateData }) {
                               start_date,
                               current,
                               description,
+                              end_date: '',
                           }
                         : {
                               company,
@@ -93,6 +93,7 @@ export default function WorkForm({ onClose, updateData }) {
                               start_date,
                               end_date,
                               description,
+                              current: false,
                           };
 
                     updateData

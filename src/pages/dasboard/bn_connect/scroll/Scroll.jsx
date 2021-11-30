@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components.js';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
 import { loadComments } from '../../../../store/actions/postActions';

@@ -10,7 +10,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -112,14 +112,18 @@ export default function SavedPost({ scroll }) {
                                 </Typography>
                             </div>
                         }
-                        subheader={moment(scroll?.createdAt).fromNow()}
+                        subheader={
+                            <Typography
+                                component="span"
+                                color="textSecondary"
+                                variant="body2"
+                            >
+                                {getDistanceToNowWithSuffix(scroll?.createdAt)}
+                            </Typography>
+                        }
                     />
                     <CardContent>
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="div"
-                        >
+                        <Typography variant="body2" component="div">
                             <Typography
                                 variant="body2"
                                 onClick={(e) => contentClickHandler(e)}
@@ -191,7 +195,11 @@ export default function SavedPost({ scroll }) {
                             )}
 
                         <br />
-                        <Typography component="div" display="inline">
+                        <Typography
+                            color="textSecondary"
+                            component="div"
+                            display="inline"
+                        >
                             <Typography display="inline" variant="body2">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1

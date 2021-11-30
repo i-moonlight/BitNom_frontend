@@ -248,7 +248,7 @@ export default function BnConnect() {
                             {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="body2" color="primary">
-                                        Connect.
+                                        .
                                     </Typography>
                                 </Grid>
                             )}

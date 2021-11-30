@@ -122,9 +122,7 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                     </Button>
                 )}
                 {notFollowed && notFollowed?.length === 0 && (
-                    <Typography variant="body2">
-                        No people to show yet.
-                    </Typography>
+                    <Typography variant="body2">0 Suggestions.</Typography>
                 )}
             </List>
         </Paper>

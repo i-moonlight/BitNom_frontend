@@ -32,7 +32,7 @@ import {
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
@@ -546,10 +546,10 @@ function PostView() {
                                                 color="textSecondary"
                                                 variant="body2"
                                             >
-                                                {moment(
+                                                {getDistanceToNowWithSuffix(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
-                                                ).fromNow()}
+                                                )}
                                             </Typography>
                                         }
                                     />

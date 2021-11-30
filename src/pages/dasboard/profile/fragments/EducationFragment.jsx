@@ -4,6 +4,7 @@ import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EducationForm from '../forms/EducationForm';
 import { useStyles } from '../utilities/profile.styles';
+import { format } from 'date-fns';
 
 export default function EducationFragment({
     id,
@@ -47,7 +48,14 @@ export default function EducationFragment({
                         </Avatar>
                         <div className="mx-3 w-100">
                             <div className="center-horizontal space-between ">
-                                <Typography variant="body2" className="flex-1">
+                                <Typography
+                                    style={{
+                                        overflowWrap: 'break-word',
+                                        wordWrap: 'break-word',
+                                    }}
+                                    variant="body2"
+                                    className="flex-1"
+                                >
                                     {institution}
                                 </Typography>
                                 {!profileView && (
@@ -63,9 +71,22 @@ export default function EducationFragment({
                                     </Button>
                                 )}
                             </div>
-                            <Typography variant="body2">{major}</Typography>
+                            <Typography
+                                style={{
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                variant="body2"
+                            >
+                                {major}
+                            </Typography>
                             <Typography variant="body2">
-                                {dateFrom} to {dateTo}
+                                {format(new Date(dateFrom), 'MMMM do, y')}{' '}
+                                {dateTo &&
+                                    ` to ${format(
+                                        new Date(dateTo),
+                                        'MMMM do, y'
+                                    )}`}
                             </Typography>
                         </div>
                     </div>
