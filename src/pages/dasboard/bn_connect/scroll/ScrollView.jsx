@@ -14,6 +14,7 @@ import {
     ThumbUpRounded,
 } from '@mui/icons-material';
 import {
+    Alert,
     Avatar,
     Card,
     CardActionArea,
@@ -28,33 +29,32 @@ import {
     IconButton,
     Typography,
     useTheme,
-    Alert,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '../../../../components/Button';
-import ImagePreview from '../../../../components/ImagePreview';
 import ImageModal from '../../../../components/ImageModal';
+import ImagePreview from '../../../../components/ImagePreview';
 import ReactionButton from '../../../../components/ReactionButton';
+import ReactionHover from '../../../../components/ReactionHover';
 import Screen from '../../../../components/Screen';
 import SEO from '../../../../components/SEO';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import {
     contentBodyFactory,
+    getFeed,
     getReactionsSum,
     getTopComments,
     mentionsFinder,
-    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -65,21 +65,23 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import ExternalShareModal from '../popovers/ExternalShareModal';
 import FlagResourceModal from '../popovers/FlagResourceModal';
 import ReactionsModal from '../popovers/ReactionsModal';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import UserCard from '../UserCard';
 import Comment from './comment/Comment';
+import CommentsFilter from './comment/CommentsFilter';
 import UpdateComment from './comment/UpdateComment';
 import CreatePost from './CreatePost';
-import FilterButton from './FilterButton';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
-import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
-import ExternalShareModal from '../popovers/ExternalShareModal';
-import ReactionHover from '../../../../components/ReactionHover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 function PostView() {
     const classes = useStyles();
@@ -546,10 +548,10 @@ function PostView() {
                                                 color="textSecondary"
                                                 variant="body2"
                                             >
-                                                {moment(
+                                                {getDistanceToNowWithSuffix(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
-                                                ).fromNow()}
+                                                )}
                                             </Typography>
                                         }
                                     />
@@ -1021,7 +1023,7 @@ function PostView() {
                                                     }}
                                                     component="div"
                                                 >
-                                                    <FilterButton
+                                                    <CommentsFilter
                                                         setCommentFilter={
                                                             setCommentFilter
                                                         }

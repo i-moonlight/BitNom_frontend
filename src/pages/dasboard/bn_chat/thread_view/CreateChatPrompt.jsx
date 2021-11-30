@@ -18,13 +18,13 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
+import debounce from 'lodash/debounce';
 import React, { Fragment, useCallback } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import debounce from 'lodash/debounce';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -35,10 +35,13 @@ export default function CreateChatPrompt({
 
     const [searchUsers, { loading: userLoading, data: userData }] =
         useLazyQuery(QUERY_SEARCH_USERS);
-    // eslint-disable-next-line
-    const debouncer = useCallback(debounce(searchUsers, 500), []);
+
+    const debouncer = useCallback(() => {
+        debounce(searchUsers, 500);
+    }, [searchUsers]);
 
     const [sendChatInvite, { data }] = useMutation(CREATE_DIALOGUE);
+
     const onSendInvite = async (IUserSmall) => {
         await sendChatInvite({
             variables: {

@@ -132,7 +132,7 @@ export default function People() {
                                         ))}
                                         {suggestedUsers?.length < 1 && (
                                             <Typography variant="body2">
-                                                No people to show yet.
+                                                0 Suggestions.
                                             </Typography>
                                         )}
                                     </List>

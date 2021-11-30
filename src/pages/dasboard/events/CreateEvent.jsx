@@ -1,10 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
     Chip,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -17,7 +16,7 @@ import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
@@ -65,15 +64,8 @@ export default function CreateEvent({ open, setOpen }) {
 
     const setSearchTermDebounced = debounce(setSearchTerm, 500);
 
-    const { data: usersData, loading: usersLoading } = useQuery(
-        QUERY_SEARCH_USERS,
-        {
-            variables: {
-                params: { searchString: searchTerm },
-            },
-            context: { clientName: 'users' },
-        }
-    );
+    const [searchUsers, { data: usersData, loading: usersLoading }] =
+        useLazyQuery(QUERY_SEARCH_USERS);
 
     const [createEvent, { loading, data }] = useMutation(MUTATION_CREATE_EVENT);
 
@@ -285,6 +277,16 @@ export default function CreateEvent({ open, setOpen }) {
         });
     };
 
+    useEffect(() => {
+        searchTerm.length > 0 &&
+            searchUsers({
+                variables: {
+                    params: { searchString: searchTerm },
+                },
+                context: { clientName: 'users' },
+            });
+    }, [searchTerm, searchUsers]);
+
     return (
         <Modal
             data={data}
@@ -369,7 +371,6 @@ export default function CreateEvent({ open, setOpen }) {
                                         variant="outlined"
                                         name="title"
                                         error={titleErr}
-                                        errorText={errorText}
                                         className="mb-2"
                                         label="Title"
                                         value={eventTitle}
@@ -416,6 +417,7 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {descriptionErr &&
@@ -469,6 +471,7 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {linkErr && errorText}
@@ -534,6 +537,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
@@ -648,6 +652,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventTags?.length}/5 tags`}</span>
                                                     <span>{`${tagText?.length}/20`}</span>
@@ -867,22 +872,13 @@ export default function CreateEvent({ open, setOpen }) {
                             {/* <Divider /> */}
                             <div className="space-between mt-1">
                                 <div className="center-horizontal"></div>
-                                {!loading && (
-                                    <Button onClick={handleCreateEvent}>
-                                        Save
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    disabled={loading}
+                                    onClick={handleCreateEvent}
+                                >
+                                    Save
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>

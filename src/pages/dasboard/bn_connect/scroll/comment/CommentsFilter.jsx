@@ -14,7 +14,7 @@ import { useRef, useState } from 'react';
 
 const options = ['Top Comments', 'Latest Comments'];
 
-export default function FilterButton({ setCommentFilter, commentFilter }) {
+export default function CommentsFilter({ setCommentFilter, commentFilter }) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
     //const [selectedIndex, setSelectedIndex] = useState(0);
@@ -46,9 +46,9 @@ export default function FilterButton({ setCommentFilter, commentFilter }) {
         <Grid
             container
             direction="column"
-            alignItems="flex-start"
+            alignItems="flex-end"
             style={{
-                margin: '15px 0px',
+                margin: '5px 0px',
             }}
         >
             <Grid item xs={12}>

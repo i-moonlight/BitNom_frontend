@@ -22,21 +22,24 @@ import {
     CardMedia,
     Divider,
     Grid,
+    Hidden,
     IconButton,
+    Skeleton,
     Typography,
     useTheme,
-    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
+import ReactionHover from '../../../../components/ReactionHover';
+import { loadComments } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -50,9 +53,12 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-import ReactionHover from '../../../../components/ReactionHover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
@@ -62,6 +68,7 @@ const ScrollPreview = React.lazy(() => import('./ScrollPreview'));
 const Comment = React.lazy(() => import('./comment/Comment'));
 
 export default function Scroll({
+    id,
     scroll,
     profileData,
     setSharedResource,
@@ -82,7 +89,6 @@ export default function Scroll({
     style,
     setOpenShareModal,
 }) {
-    const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -94,20 +100,31 @@ export default function Scroll({
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
 
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const history = useHistory();
+    const theme = useTheme();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    // const commentList = state.posts.comments;
+    // const comments = commentList[id];
+
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-    const { data: commentsData } = useQuery(QUERY_GET_COMMENTS, {
+
+    //TODO
+    const {
+        data: commentsData,
+        loading: commentsLoading,
+        error: commentsError,
+    } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: scroll?._id } },
     });
-
-    const history = useHistory();
-    const theme = useTheme();
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -232,6 +249,7 @@ export default function Scroll({
             image.src = URL.createObjectURL(file);
         });
     };
+
     const getUserReaction = useCallback(
         (resource) => {
             let reaction;
@@ -294,11 +312,25 @@ export default function Scroll({
         setEmojiPickerAnchorEl(null);
     };
 
+    const comments = commentsData?.Comments?.get;
+
     useEffect(() => {
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);
         setIcon(reaction);
     }, [getUserReaction, scroll, setIcon]);
+
+    useEffect(() => {
+        !commentsError &&
+            !commentsLoading &&
+            dispatch(loadComments(commentsData?.Comments?.get, id));
+    }, [
+        commentsData?.Comments?.get,
+        commentsError,
+        commentsLoading,
+        dispatch,
+        id,
+    ]);
 
     return (
         <>
@@ -358,8 +390,10 @@ export default function Scroll({
                             </Typography>
                         </div>
                     }
-                    subheader={moment(scroll?.createdAt).fromNow()}
+                    // subheader={moment(scroll?.createdAt).fromNow()}
+                    subheader={getDistanceToNowWithSuffix(scroll?.createdAt)}
                 />
+
                 <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
@@ -445,16 +479,20 @@ export default function Scroll({
 
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'post' && (
-                            <ScrollPreview
-                                scroll={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <ScrollPreview
+                                    scroll={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
 
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'event' && (
-                            <EventPreview
-                                event={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <EventPreview
+                                    event={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
 
                     <br />
@@ -604,7 +642,7 @@ export default function Scroll({
                                         }
                                     }}
                                     placeholder={
-                                        commentsData?.Comments?.get?.length > 0
+                                        comments?.length > 0
                                             ? ''
                                             : 'Be the first to comment..'
                                     }
@@ -625,7 +663,7 @@ export default function Scroll({
                                 >
                                     <Mention
                                         markup="/*@__id__-__display__*/"
-                                        displayTransform={(id, display) =>
+                                        displayTransform={(_id, display) =>
                                             display
                                         }
                                         trigger="@"
@@ -712,15 +750,39 @@ export default function Scroll({
                             </div>
                         </Card>
 
-                        {
-                            // commentsData?.Comments?.get
-                            []
-                                .filter((comment) => !comment.response_to)
-                                .map((comment) => (
+                        {comments
+                            ?.filter((comment) => !comment.response_to)
+                            .map((comment) => (
+                                <Suspense
+                                    key={comment?._id}
+                                    fallback={
+                                        <div className="ms-4 d-flex align-items-center justify-content-start my-2 ">
+                                            <Skeleton
+                                                className="me-2"
+                                                animation="wave"
+                                                variant="circular"
+                                                width={40}
+                                                height={40}
+                                            />
+                                            <div>
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="text"
+                                                    width={200}
+                                                />
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="text"
+                                                    width={80}
+                                                />
+                                            </div>
+                                        </div>
+                                    }
+                                >
                                     <Comment
                                         profileData={profileData}
                                         scroll={scroll}
-                                        key={comment._id}
+                                        id={comment._id}
                                         setUpdateCommentOpen={
                                             setUpdateCommentOpen
                                         }
@@ -740,8 +802,8 @@ export default function Scroll({
                                         }
                                         comment_image={comment_image}
                                     />
-                                ))
-                        }
+                                </Suspense>
+                            ))}
                     </div>
                 )}
             </Card>

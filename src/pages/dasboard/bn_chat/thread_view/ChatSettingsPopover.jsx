@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     deleteArchivedchat,
     deletePinnedChat,
 } from '../../../../store/actions/chatActions';
-import React, { useEffect } from 'react';
 import {
     ARCHIVE_CHAT,
     BLOCK_CHAT,
@@ -25,48 +25,56 @@ export default function ChatSettingPopover({
     chat,
 }) {
     const dispatch = useDispatch();
+
     const [ArchiveChat] = useMutation(ARCHIVE_CHAT, {
         variables: {
             _id: chat._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [UnarchiveChat, { data: unarchiveData }] = useMutation(UNARCHIVE, {
         variables: {
             _id: chat._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [MarkAsSeen] = useMutation(MARK_CHAT_AS_READ, {
         variables: {
             chat: chat?._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [MuteConversation] = useMutation(MUTE_CONVERSATION, {
         variables: {
             chat: chat?._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [BlockUser] = useMutation(BLOCK_CHAT, {
         variables: {
             _id: chat._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [ReportUser] = useMutation(REPORT_USER, {
         variables: {
             chat: chat?.otherUser?.info,
         },
         context: { clientName: 'chat' },
     });
+
     const [PinChat] = useMutation(PIN_CHAT, {
         variables: {
             _id: chat?._id,
         },
         context: { clientName: 'chat' },
     });
+
     const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
         variables: {
             _id: chat._id,
@@ -77,18 +85,23 @@ export default function ChatSettingPopover({
     const handleArchiveChat = () => {
         ArchiveChat();
     };
+
     const handleMarkAsRead = () => {
         MarkAsSeen();
     };
+
     const handleMuteConversation = () => {
         MuteConversation();
     };
+
     const handleBlockUser = () => {
         BlockUser();
     };
+
     const handleReport = () => {
         ReportUser();
     };
+
     const handlePinChat = () => {
         PinChat();
     };
@@ -96,19 +109,23 @@ export default function ChatSettingPopover({
     const handleUnpinChat = () => {
         UnpinChat();
     };
+
     const handleUnArchiveChat = () => {
         UnarchiveChat();
     };
+
     useEffect(() => {
         if (unpinData === true) {
             dispatch(deletePinnedChat(chat));
         }
     }, [dispatch, unpinData, chat]);
+
     useEffect(() => {
         if (unarchiveData === true) {
             dispatch(deleteArchivedchat(chat));
         }
     }, [dispatch, unarchiveData, chat]);
+
     return (
         <Popover
             anchorEl={chatSettingsAnchorEl}

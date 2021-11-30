@@ -2,20 +2,21 @@ import { ExpandMoreRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
+    Card,
     CardMedia,
     Grid,
     IconButton,
     Paper,
     Typography,
-    Card,
 } from '@mui/material';
 import moment from 'moment';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Link } from 'react-router-dom';
+import { Code, LinkTag } from '../../../../components/markdown_renders';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
-import ReactMarkdown from 'react-markdown';
-import { Code, LinkTag } from '../../../../components/markdown_renders';
-import { Link } from 'react-router-dom';
+
 export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);

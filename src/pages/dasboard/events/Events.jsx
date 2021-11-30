@@ -19,19 +19,17 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import { Button } from '../../../components/Button';
 import { ToastContainer } from 'react-toastify';
-import {
-    GET_BOOKMARKED_EVENTS,
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
+import { GET_BOOKMARKED_EVENTS, QUERY_LOAD_EVENTS } from '../utilities/queries';
+
 import CreateEvent from './CreateEvent';
+import EventsFilter from './EventsFilter';
 import CreateEventCard from './CreateEventCard';
 import SEO from '../../../components/SEO';
 
@@ -50,13 +48,6 @@ export default function Events() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const user = state.auth.user;
-
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
 
     const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
         GET_BOOKMARKED_EVENTS,
@@ -144,6 +135,7 @@ export default function Events() {
                                 </Card>
                             )}
                             <EventListCard
+                                setSelectedIndex={setSelectedIndex}
                                 selectedIndex={selectedIndex}
                                 loading={eventsLoading}
                                 events={eventsData?.Events?.get}
@@ -160,7 +152,7 @@ export default function Events() {
                 </Container>
             </div>
             <CreateEvent
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 open={createEventOpen}
                 setOpen={(open) => setCreateEventOpen(open)}
             />
@@ -172,9 +164,11 @@ function EventListCard({
     events,
     loading,
     selectedIndex,
+    setSelectedIndex,
     savedEvents,
     bookmarksLoading,
 }) {
+    const mdDown = useMediaQuery('(max-width:1279px)');
     const upcomingEvents = events?.filter(
         (event) => new Date(event?.endDate).getTime() > new Date().getTime()
     );
@@ -199,7 +193,14 @@ function EventListCard({
                 }
                 title={
                     <div className="center-horizontal">
-                        <Typography>Your Events</Typography>
+                        {mdDown ? (
+                            <EventsFilter
+                                eventsFilter={selectedIndex}
+                                setEventsFilter={setSelectedIndex}
+                            />
+                        ) : (
+                            <Typography variant="body1">Events</Typography>
+                        )}
                     </div>
                 }
             />
@@ -315,8 +316,9 @@ function EventPreview({ event }) {
                     >
                         {!smDown && (
                             <Typography color="textSecondary" variant="body2">
-                                {moment(event?.startDate).format(
-                                    'ddd, MMMM Do YYYY, h:mm a'
+                                {format(
+                                    new Date(event?.startDate),
+                                    'E, MMMM do y, h:mm aaa'
                                 )}
                             </Typography>
                         )}

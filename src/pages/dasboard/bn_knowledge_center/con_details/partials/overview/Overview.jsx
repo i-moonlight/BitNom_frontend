@@ -2,7 +2,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-// import General from './General';
+import General from './General';
 import Developer from './Developer';
 import Analysis from './Analysis';
 
@@ -59,7 +59,7 @@ export default function Overview() {
                 </div>
 
                 <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                    {/* <General coinDetail={coinDetail} /> */}
+                    <General />
                 </TabPanel>
                 <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
                     <Developer />

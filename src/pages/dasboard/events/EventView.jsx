@@ -30,7 +30,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -406,14 +406,12 @@ export default function EventView() {
                                                         }}
                                                     >
                                                         {getDateOrdinal(
-                                                            moment
-                                                                .utc(
-                                                                    eventData
-                                                                        ?.Events
-                                                                        ?.getById
-                                                                        ?.startDate
-                                                                )
-                                                                ._d.getDate()
+                                                            format(
+                                                                new Date(
+                                                                    eventData?.Events?.getById?.startDate
+                                                                ),
+                                                                'd'
+                                                            )
                                                         )}
                                                     </Avatar>
                                                     <Typography
@@ -422,12 +420,11 @@ export default function EventView() {
                                                         color="primary"
                                                         gutterBottom
                                                     >
-                                                        {moment(
-                                                            eventData?.Events
-                                                                ?.getById
-                                                                ?.startDate
-                                                        ).format(
-                                                            'ddd, MMMM Do YYYY, h:mm a'
+                                                        {format(
+                                                            new Date(
+                                                                eventData?.Events?.getById?.startDate
+                                                            ),
+                                                            'E, MMMM do y, h:mm aaa'
                                                         )}
                                                     </Typography>
                                                     <Typography
@@ -688,13 +685,11 @@ export default function EventView() {
                                                                             classes.endTime
                                                                         }
                                                                     >
-                                                                        {moment(
-                                                                            eventData
-                                                                                ?.Events
-                                                                                ?.getById
-                                                                                ?.endDate
-                                                                        ).format(
-                                                                            'ddd, MMMM Do YYYY, h:mm a'
+                                                                        {format(
+                                                                            new Date(
+                                                                                eventData?.Events?.getById?.endDate
+                                                                            ),
+                                                                            'E, MMMM do y, h:mm aaa'
                                                                         )}
                                                                     </span>
                                                                 </span>
