@@ -79,22 +79,14 @@ export default function HonorForm({ onClose, updateData }) {
                         return;
                     }
 
-                    const IHonors = expires
-                        ? {
-                              organization,
-                              name,
-                              start_date,
-                              expires,
-                              url,
-                          }
-                        : {
-                              organization,
-                              name,
-                              start_date,
-                              end_date,
-                              expires: false,
-                              url,
-                          };
+                    const IHonors = {
+                        organization,
+                        name,
+                        start_date,
+                        end_date,
+                        expires,
+                        url,
+                    };
 
                     updateData
                         ? updateHonor({

@@ -24,8 +24,9 @@ import { useStyles } from '../utilities/profile.styles';
 import { workValidation } from '../utilities/profile.validationSchemas';
 
 export default function WorkForm({ onClose, updateData }) {
-    const [current, setCurrent] = useState(updateData?.current);
+    const [current, setCurrent] = useState(updateData?.current || false);
     const [localError, setLocalError] = useState(false);
+
     const classes = useStyles();
     const [
         addWork,
@@ -78,23 +79,13 @@ export default function WorkForm({ onClose, updateData }) {
                         return;
                     }
 
-                    const Iwork = current
-                        ? {
-                              company,
-                              title,
-                              start_date,
-                              current,
-                              description,
-                              end_date: '',
-                          }
-                        : {
-                              company,
-                              title,
-                              start_date,
-                              end_date,
-                              description,
-                              current: false,
-                          };
+                    const Iwork = {
+                        company,
+                        title,
+                        start_date,
+                        current,
+                        description,
+                    };
 
                     updateData
                         ? updateWork({

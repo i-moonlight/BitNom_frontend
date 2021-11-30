@@ -5,7 +5,6 @@ import { Button } from '../../../components/Button';
 import HonorForm from './forms/HonorForm';
 import HonorFragment from './fragments/HonorFragment';
 
-// eslint-disable-next-line no-unused-vars
 export default function HonorCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
     // TODO: Rename Honors

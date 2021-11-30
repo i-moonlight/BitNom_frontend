@@ -247,8 +247,15 @@ export default function BnConnect() {
 
                             {posts?.length < 1 && (
                                 <Grid align="center">
-                                    <Typography variant="body2" color="primary">
-                                        .
+                                    <Typography variant="body1">
+                                        Nothing here yet!
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="GrayText"
+                                    >
+                                        Follow other users to show their posts
+                                        here.
                                     </Typography>
                                 </Grid>
                             )}

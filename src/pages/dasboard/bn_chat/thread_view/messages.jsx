@@ -16,7 +16,6 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
-    setTotalCount,
     updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -24,7 +23,6 @@ import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
-    TOTAL_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
@@ -42,17 +40,17 @@ export default function Messages({ onExitChatMobile }) {
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
 
-    const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
     const endRef = useRef(null);
+    const state = useSelector((st) => st);
 
     const dialogue = state.chats.current_chat;
     const user = state.auth.user;
     const unOrderedMessages = state?.chats?.dialogue_messages;
-    const messages = [...unOrderedMessages]?.reverse();
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
+    const messages = [...unOrderedMessages]?.reverse();
 
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
         GET_DIALOGUE_MESSAGES
@@ -77,18 +75,6 @@ export default function Messages({ onExitChatMobile }) {
         },
     });
 
-    const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
-        variables: {
-            _id: user._id,
-        },
-    });
-
-    useEffect(() => {
-        if (totalCountData?.totalCount?.count) {
-            dispatch(setTotalCount(totalCountData?.totalCount?.count));
-        }
-    }, [totalCountData?.totalCount?.count, dispatch]);
-
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
@@ -102,9 +88,11 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
-        if (pinnedMessages?.Dialogue?.getMessages !== undefined) {
+        if (pinnedMessages?.Dialogue?.getMessages) {
+            // console.log('Pinning ...', pinnedMessages?.Dialogue?.getMessages);
             dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
-            setPinOpen(true);
+            pinnedMessages?.Dialogue?.getMessages?.length > 0 &&
+                setPinOpen(true);
         }
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
@@ -137,9 +125,6 @@ export default function Messages({ onExitChatMobile }) {
 
     return (
         <div>
-            {dialogue.status === undefined &&
-                dialogue._id === undefined &&
-                !loading && <NoChatSelected />}
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -156,9 +141,7 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins &&
-                    messagePins?.length > 0 &&
-                    pinOpen === true ? (
+                    {messagePins?.length > 0 && pinOpen === true && (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
@@ -186,18 +169,15 @@ export default function Messages({ onExitChatMobile }) {
                                     }}
                                     dense
                                 >
-                                    {' '}
                                     {messagePins?.map((message, id) => (
                                         <PinnedMessages
                                             key={id}
                                             message={message}
                                         />
-                                    ))}{' '}
+                                    ))}
                                 </List>
                             </CardContent>
                         </Card>
-                    ) : (
-                        ''
                     )}
                 </div>
             )}
@@ -205,10 +185,10 @@ export default function Messages({ onExitChatMobile }) {
                 style={{
                     overflowY: 'auto',
                     minHeight:
-                        open === true
-                            ? '50vh'
+                        open === true && pinOpen === false
+                            ? '36vh'
                             : open === true && pinOpen === true
-                            ? '45vh'
+                            ? '40vh'
                             : pinOpen === true
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
@@ -217,11 +197,11 @@ export default function Messages({ onExitChatMobile }) {
                             : '50vh',
                     height:
                         open === true
-                            ? window.innerHeight - 750
+                            ? window.innerHeight - 490 //
                             : open === true && pinOpen === true
                             ? window.innerHeight - 750
                             : pinOpen === true
-                            ? window.innerHeight - 500
+                            ? window.innerHeight - 350 //
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
                             ? window.innerHeight - 450
@@ -229,6 +209,9 @@ export default function Messages({ onExitChatMobile }) {
                 }}
             >
                 {' '}
+                {dialogue.status === undefined &&
+                    dialogue._id === undefined &&
+                    !loading && <NoChatSelected />}
                 {dialogue.status === 'new' &&
                     dialogue?.initiator?.info?._id === user?._id &&
                     !loading &&
@@ -311,8 +294,7 @@ export default function Messages({ onExitChatMobile }) {
                             onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
-            </div>
-            <div>
+
                 {dialogue.status === 'accepted' &&
                     !loading &&
                     !messages?.length > 0 &&
