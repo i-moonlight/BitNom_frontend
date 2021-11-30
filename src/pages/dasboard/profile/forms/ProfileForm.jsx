@@ -77,7 +77,6 @@ export default function ProfileForm({ onClose, updateData }) {
                             }
                         />
                         <TextField
-                            required
                             fullWidth
                             name="website"
                             labelTop="Website URL"
@@ -86,7 +85,6 @@ export default function ProfileForm({ onClose, updateData }) {
                             }
                         />
                         <TextField
-                            required
                             fullWidth
                             name="portfolio"
                             labelTop="PortFolio URL"

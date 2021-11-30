@@ -666,11 +666,11 @@ export default function UpdatePost({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '3px',
+                                            display: loading && 'none',
                                         }}
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
                                         size="small"
-                                        disabled={loading}
                                     >
                                         Delete
                                     </Button>
