@@ -12,7 +12,6 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -81,8 +80,8 @@ export default function CreatePost({
 
     const userInitials = getUserInitials(user?.displayName);
 
-    const onCreatePost = async (ICreatePost) => {
-        await createPost({
+    const onCreatePost = (ICreatePost) => {
+        createPost({
             variables: {
                 data: ICreatePost,
             },
@@ -526,25 +525,14 @@ export default function CreatePost({
                                         );
                                     })} */}
                                 </div>
-                                {!loading && (
-                                    <Button
-                                        size="small"
-                                        onClick={handleCreatePost}
-                                    >
-                                        Post
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    size="small"
+                                    onClick={handleCreatePost}
+                                    disabled={loading}
+                                >
+                                    Post
+                                </Button>
                             </div>
                         </CardContent>
                         <EmojiPickerPopover
