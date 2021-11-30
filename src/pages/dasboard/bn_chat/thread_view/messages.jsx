@@ -15,7 +15,6 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
-    setTotalCount,
     updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -23,7 +22,6 @@ import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
-    TOTAL_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
@@ -81,17 +79,6 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue._id,
         },
     });
-    const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
-        variables: {
-            _id: user._id,
-        },
-    });
-
-    useEffect(() => {
-        if (totalCountData?.totalCount?.count) {
-            dispatch(setTotalCount(totalCountData?.totalCount?.count));
-        }
-    }, [totalCountData?.totalCount?.count, dispatch]);
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
@@ -106,7 +93,7 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
-        if (pinnedMessages?.Dialogue?.getMessages !== undefined) {
+        if (pinnedMessages?.Dialogue?.getMessages !== null) {
             dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
             setPinOpen(true);
         }
@@ -121,9 +108,6 @@ export default function Messages({ onExitChatMobile }) {
 
     return (
         <div>
-            {dialogue.status === undefined &&
-                dialogue._id === undefined &&
-                !loading && <NoChatSelected />}
             {dialogue.status === 'new' && (
                 <div className={classes.chatHeader}>
                     <ChatHeader
@@ -189,10 +173,10 @@ export default function Messages({ onExitChatMobile }) {
                 style={{
                     overflowY: 'auto',
                     minHeight:
-                        open === true
-                            ? '50vh'
+                        open === true && pinOpen === false
+                            ? '53vh'
                             : open === true && pinOpen === true
-                            ? '45vh'
+                            ? '40vh'
                             : pinOpen === true
                             ? '37vh'
                             : typeof replyText !== 'undefined' ||
@@ -213,6 +197,9 @@ export default function Messages({ onExitChatMobile }) {
                 }}
             >
                 {' '}
+                {dialogue.status === undefined &&
+                    dialogue._id === undefined &&
+                    !loading && <NoChatSelected />}
                 {dialogue.status === 'new' &&
                     dialogue?.initiator?.info?._id === user?._id &&
                     !loading &&

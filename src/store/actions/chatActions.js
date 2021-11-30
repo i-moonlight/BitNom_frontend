@@ -86,6 +86,9 @@ export const deleteArchivedchat = (data) => {
 export const setTotalCount = (data) => {
     return (dispatch) => dispatch({ data, type: 'SET_TOTAL_COUNT' });
 };
+export const resetTotalCount = () => {
+    return (dispatch) => dispatch({ type: 'RESET_TOTAL_COUNT' });
+};
 //chat searches
 export const setChatSearchInput = (data = []) => {
     return (dispatch) => dispatch({ data, type: 'SET_CHAT_SRCH_DATA' });

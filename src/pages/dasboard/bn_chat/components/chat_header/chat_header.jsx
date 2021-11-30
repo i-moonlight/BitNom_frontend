@@ -34,7 +34,7 @@ import {
 } from '../../graphql/queries';
 import ChatSettingPopover from '../../thread_view/ChatSettingsPopover';
 import { useStyles } from '../../utils/styles';
-
+import moment from 'moment';
 const chatSettingsId = 'chat-settings-menu';
 
 export default function ChatHeader({ chat, onExitChatMobile }) {
@@ -126,7 +126,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         dispatch(clearSearchOutput());
     };
     const onlineUser = UserOnlineData?.userIsOnline?.user;
-
+    const userInitials = getUserInitials(otherUser?.info?.displayName);
     return (
         <>
             <CardHeader
@@ -163,21 +163,15 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             }
                         >
                             <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
                                 src={
                                     otherUser?.info?.profile_pic
                                         ? process.env.REACT_APP_BACKEND_URL +
                                           chat?.otherUser?.info?.profile_pic
-                                        : ''
+                                        : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
+                                alt={'avatar'}
                             >
-                                {otherUser?.info?.profile_pic
-                                    ? ''
-                                    : getUserInitials(
-                                          otherUser?.info?.displayName
-                                      )}
+                                {userInitials}
                             </Avatar>
                         </Badge>
                     </>
@@ -204,9 +198,29 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                     <div>
                         <div className="d-flex ">
                             <div className="d-flex align-items-center">
-                                <Typography variant="body1">
-                                    Software Dev
-                                </Typography>
+                                {onlineUser === chat?.otherUser?.info?._id &&
+                                online === true ? (
+                                    <Typography variant="subtitle2">
+                                        online
+                                    </Typography>
+                                ) : onlineUser === chat?.otherUser?.info?._id &&
+                                  online === true &&
+                                  userTypingData?.userTyping?.typing ===
+                                      true ? (
+                                    <Typography
+                                        variant="subtitle2"
+                                        style={{ fontStyle: 'italic' }}
+                                    >
+                                        Typing...
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="subtitle2">
+                                        Last seen{' '}
+                                        {moment(otherUser.lastSeen).format(
+                                            'dddd h:mm'
+                                        )}
+                                    </Typography>
+                                )}
                             </div>
                             {userTypingData?.userTyping?.typing === true ? (
                                 <div

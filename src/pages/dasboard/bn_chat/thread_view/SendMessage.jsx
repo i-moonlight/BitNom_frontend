@@ -29,6 +29,7 @@ import {
     USER_TYPING,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
+import MediaUploadPanel from './MediaUploadPanel';
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -68,6 +69,9 @@ export default function SendMessage({
 
     const handleMediaUploadOpen = (e) => {
         setMediaUploadAnchorEl(e.currentTarget);
+    };
+    const handleMediaUploadClose = () => {
+        setMediaUploadAnchorEl(null);
     };
 
     const handleEmojiPickerOpen = (e) => {
@@ -182,10 +186,42 @@ export default function SendMessage({
     };
     // eslint-disable-next-line
     const debouncedUserTyping = useCallback(
-        debounce(handleUserNotTyping, 1000),
+        debounce(handleUserNotTyping, 700),
         []
     );
 
+    const handleAttachFileOpen = () => {
+        setOpen(true);
+        setFileOpen(true);
+        setVideoOpen(false);
+        setImageOpen(false);
+        setGifOpen(false);
+        setMediaUploadAnchorEl(null);
+    };
+    const handleGifOpen = () => {
+        setOpen(true);
+        setGifOpen(true);
+        setVideoOpen(false);
+        setImageOpen(false);
+        setFileOpen(false);
+        setMediaUploadAnchorEl(null);
+    };
+    const handleImageOpen = () => {
+        setOpen(true);
+        setImageOpen(true);
+        setVideoOpen(false);
+        setFileOpen(false);
+        setGifOpen(false);
+        setMediaUploadAnchorEl(null);
+    };
+    const handleVideoLibrary = () => {
+        setOpen(true);
+        setVideoOpen(true);
+        setImageOpen(false);
+        setFileOpen(false);
+        setGifOpen(false);
+        setMediaUploadAnchorEl(null);
+    };
     return (
         <>
             {' '}
@@ -224,38 +260,12 @@ export default function SendMessage({
                 </Card>
             )}
             {isMediaUploadOpen && (
-                <Card variant="outlined" className={classes.promptCard}>
-                    <CardHeader
-                        style={{ marginTop: '-15px' }}
-                        action={
-                            <IconButton onClick={onCancelReply} size="small">
-                                <Close />
-                            </IconButton>
-                        }
-                        subheader={
-                            <Typography
-                                variant="body2"
-                                component="span"
-                                style={{ margin: '1px 5px' }}
-                            >
-                                <strong>{replyText.author}</strong>
-                            </Typography>
-                        }
-                    />
-
-                    <CardContent style={{ marginTop: '-35px' }}>
-                        {' '}
-                        <Typography
-                            variant="body2"
-                            component="span"
-                            style={{ margin: '1px 5px' }}
-                        >
-                            {replyText.text?.length > 80
-                                ? replyText?.text.substring(0, 80) + '...'
-                                : replyText?.text}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                <MediaUploadPanel
+                    handleAttachFileOpen={() => handleAttachFileOpen()}
+                    handleGifOpen={() => handleGifOpen()}
+                    handleImageOpen={() => handleImageOpen()}
+                    handleVideoLibrary={() => handleVideoLibrary()}
+                />
             )}
             {editText?.text && (
                 <Card variant="outlined" className={classes.promptCard}>
@@ -305,57 +315,79 @@ export default function SendMessage({
                             </IconButton>
                         }
                     />
-                    {openImage ? (
-                        <input
-                            id="create-post-images"
-                            type="file"
-                            onChange={(e) => {
-                                setMessageImages(Array.from(e.target.files));
-                            }}
-                            accept="image/*"
-                            multiple
-                        />
-                    ) : openVideo ? (
-                        <input
-                            id="create-post-video"
-                            type="file"
-                            onChange={(e) => {
-                                setMessageVideo(Array.from(e.target.files));
-                            }}
-                            accept="video/*"
-                        />
-                    ) : openFile ? (
-                        <input
-                            id="create-post-video"
-                            type="file"
-                            onChange={(e) => {
-                                setMessageDoc(Array.from(e.target.files));
-                            }}
-                            accept="video/*"
-                        />
-                    ) : openGif ? (
-                        <input
-                            id="create-post-video"
-                            type="file"
-                            onChange={(e) => {
-                                setMessageGif(Array.from(e.target.files));
-                            }}
-                            accept="video/*"
-                        />
-                    ) : null}
+                    <CardContent
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'centre',
+                            alignItems: 'centre',
+                            direction: 'column',
+                        }}
+                    >
+                        {' '}
+                        {openImage ? (
+                            <input
+                                id="send-message-images"
+                                type="file"
+                                onChange={(e) => {
+                                    setMessageImages(
+                                        Array.from(e.target.files)
+                                    );
+                                }}
+                                accept="image/*"
+                                multiple
+                            />
+                        ) : openVideo ? (
+                            <input
+                                id="send-message-video"
+                                type="file"
+                                onChange={(e) => {
+                                    setMessageVideo(Array.from(e.target.files));
+                                }}
+                                accept="video/*"
+                            />
+                        ) : openFile ? (
+                            <input
+                                id="send-message-docs"
+                                type="file"
+                                onChange={(e) => {
+                                    setMessageDoc(Array.from(e.target.files));
+                                }}
+                                accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                text/plain, application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document "
+                            />
+                        ) : openGif ? (
+                            <input
+                                id="send-message-gif"
+                                type="file"
+                                onChange={(e) => {
+                                    setMessageGif(Array.from(e.target.files));
+                                }}
+                                accept="image/gif"
+                            />
+                        ) : null}
+                    </CardContent>
                 </Card>
             ) : null}
             <div className={classes.inputRoot}>
                 <Divider className={classes.divider} />{' '}
                 <div className="d-flex">
-                    {xsDown ? (
+                    {xsDown && !isMediaUploadOpen ? (
                         <IconButton
                             size="small"
                             className={'m-1 p-1' + classes.iconButton}
                             aria-label="search"
-                            onClick={handleMediaUploadOpen}
+                            onClick={(e) => handleMediaUploadOpen(e)}
                         >
                             <AttachFile />
+                        </IconButton>
+                    ) : xsDown && isMediaUploadOpen ? (
+                        <IconButton
+                            size="small"
+                            className={'m-1 p-1' + classes.iconButton}
+                            aria-label="search"
+                            onClick={handleMediaUploadClose}
+                        >
+                            <Close />
                         </IconButton>
                     ) : (
                         <div
@@ -367,13 +399,7 @@ export default function SendMessage({
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => {
-                                    setOpen(true);
-                                    setFileOpen(true);
-                                    setVideoOpen(false);
-                                    setImageOpen(false);
-                                    setGifOpen(false);
-                                }}
+                                onClick={() => handleAttachFileOpen()}
                             >
                                 <AttachFile />
                             </IconButton>
@@ -381,13 +407,7 @@ export default function SendMessage({
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => {
-                                    setOpen(true);
-                                    setImageOpen(true);
-                                    setVideoOpen(false);
-                                    setFileOpen(false);
-                                    setGifOpen(false);
-                                }}
+                                onClick={() => handleImageOpen()}
                             >
                                 <Image />
                             </IconButton>
@@ -395,13 +415,7 @@ export default function SendMessage({
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => {
-                                    setOpen(true);
-                                    setVideoOpen(true);
-                                    setImageOpen(false);
-                                    setFileOpen(false);
-                                    setGifOpen(false);
-                                }}
+                                onClick={() => handleVideoLibrary()}
                             >
                                 <VideoLibrary />
                             </IconButton>
@@ -409,13 +423,7 @@ export default function SendMessage({
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => {
-                                    setOpen(true);
-                                    setGifOpen(true);
-                                    setVideoOpen(false);
-                                    setImageOpen(false);
-                                    setFileOpen(false);
-                                }}
+                                onClick={() => handleGifOpen()}
                             >
                                 <Gif />
                             </IconButton>

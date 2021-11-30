@@ -20,6 +20,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
     const author = message.author || {};
+    const userInitials = getUserInitials(chat?.currentUser?.info.displayName);
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -179,18 +180,15 @@ export default function OutgoingMessage({ chat, message, onClick }) {
             </Paper>
             <ButtonBase>
                 <Avatar
-                    alt={chat.currentUser.info.displayName}
                     src={
                         chat?.currentUser?.info.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
                               chat?.currentUser?.info.profile_pic
-                            : ''
+                            : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                     }
-                    style={{ backgroundColor: '#1C0C5B' }}
+                    alt={'avatar'}
                 >
-                    {chat?.currentUser?.info.profile_pic
-                        ? ''
-                        : getUserInitials(chat?.currentUser?.info.displayName)}
+                    {userInitials}
                 </Avatar>
             </ButtonBase>
         </div>

@@ -22,7 +22,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
     const classes = useStyles();
 
     const author = message.author || {};
-
+    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
@@ -31,20 +31,15 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     style={{ textDecoration: 'none' }}
                 >
                     <Avatar
-                        alt={chat?.otherUser?.info?.displayName}
                         src={
                             chat?.otherUser?.info?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
                                   chat?.otherUser?.info.profile_pic
-                                : ''
+                                : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
-                        style={{ backgroundColor: '#1C0C5B' }}
+                        alt={'avatar'}
                     >
-                        {chat?.otherUser?.info?.profile_pic
-                            ? ''
-                            : getUserInitials(
-                                  chat?.otherUser?.info?.displayName
-                              )}
+                        {userInitials}
                     </Avatar>
                 </Link>
             </ButtonBase>
