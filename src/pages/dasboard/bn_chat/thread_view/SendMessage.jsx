@@ -59,7 +59,7 @@ export default function SendMessage({
     const [openGif, setGifOpen] = useState(false);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-    const [sendMessageErr, setSendMessageError] = useState({});
+    const [sendMessageErr, setSendMessageError] = useState();
     const theme = useTheme();
     const classes = useStyles();
     const xsDown = useMediaQuery('(max-width:599px)');
@@ -140,6 +140,14 @@ export default function SendMessage({
 
     const handleSendMessage = (e) => {
         e.preventDefault();
+        if (
+            !text &&
+            message_docs?.length < 1 &&
+            message_images?.length < 1 &&
+            message_video === null &&
+            message_gif === null
+        )
+            return setSendMessageError(true);
         onSendMessage({
             chat: chat,
             text: text,
@@ -477,7 +485,7 @@ export default function SendMessage({
                                         ? handleSendMessage()
                                         : null;
                                 }}
-                                error={Object.keys(sendMessageErr)?.length > 0}
+                                error={sendMessageErr ? true : false}
                             />
                             <IconButton
                                 size="small"
@@ -492,20 +500,11 @@ export default function SendMessage({
                                 <SendOutlined />
                             </IconButton>
                         </Paper>
-                        {Object.keys(sendMessageErr)?.length > 0 && (
-                            <div>
+                        {sendMessageErr && (
+                            <Typography color="error" variant="body2">
                                 {' '}
-                                {Object.values(sendMessageErr)?.map((value) => (
-                                    <Typography
-                                        color="error"
-                                        variant="body2"
-                                        key={value}
-                                    >
-                                        {' '}
-                                        {value}
-                                    </Typography>
-                                ))}
-                            </div>
+                                This field cannot be empty!
+                            </Typography>
                         )}
                     </div>
                 </div>
