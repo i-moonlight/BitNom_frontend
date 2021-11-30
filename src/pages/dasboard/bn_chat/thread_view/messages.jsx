@@ -40,17 +40,17 @@ export default function Messages({ onExitChatMobile }) {
     const [replyText, setReplyText] = useState(undefined);
     const [editText, setEditText] = useState(undefined);
 
-    const state = useSelector((st) => st);
     const classes = useStyles();
     const dispatch = useDispatch();
     const endRef = useRef(null);
+    const state = useSelector((st) => st);
 
     const dialogue = state.chats.current_chat;
     const user = state.auth.user;
     const unOrderedMessages = state?.chats?.dialogue_messages;
-    const messages = [...unOrderedMessages]?.reverse();
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
+    const messages = [...unOrderedMessages]?.reverse();
 
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
         GET_DIALOGUE_MESSAGES
@@ -88,9 +88,11 @@ export default function Messages({ onExitChatMobile }) {
     }, [dispatch, messageUpdateData?.messageUpdate]);
 
     useEffect(() => {
-        if (pinnedMessages?.Dialogue?.getMessages !== null) {
+        if (pinnedMessages?.Dialogue?.getMessages) {
+            // console.log('Pinning ...', pinnedMessages?.Dialogue?.getMessages);
             dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
-            setPinOpen(true);
+            pinnedMessages?.Dialogue?.getMessages?.length > 0 &&
+                setPinOpen(true);
         }
     }, [dispatch, pinnedMessages?.Dialogue?.getMessages]);
 
@@ -139,9 +141,7 @@ export default function Messages({ onExitChatMobile }) {
                         onExitChatMobile={onExitChatMobile}
                     />
                     <Divider />
-                    {messagePins &&
-                    messagePins?.length > 0 &&
-                    pinOpen === true ? (
+                    {messagePins?.length > 0 && pinOpen === true && (
                         <Card className={classes.pinnedList}>
                             <CardContent>
                                 <List
@@ -169,18 +169,15 @@ export default function Messages({ onExitChatMobile }) {
                                     }}
                                     dense
                                 >
-                                    {' '}
                                     {messagePins?.map((message, id) => (
                                         <PinnedMessages
                                             key={id}
                                             message={message}
                                         />
-                                    ))}{' '}
+                                    ))}
                                 </List>
                             </CardContent>
                         </Card>
-                    ) : (
-                        ''
                     )}
                 </div>
             )}
@@ -189,7 +186,7 @@ export default function Messages({ onExitChatMobile }) {
                     overflowY: 'auto',
                     minHeight:
                         open === true && pinOpen === false
-                            ? '53vh'
+                            ? '36vh'
                             : open === true && pinOpen === true
                             ? '40vh'
                             : pinOpen === true
@@ -200,11 +197,11 @@ export default function Messages({ onExitChatMobile }) {
                             : '50vh',
                     height:
                         open === true
-                            ? window.innerHeight - 750
+                            ? window.innerHeight - 490 //
                             : open === true && pinOpen === true
                             ? window.innerHeight - 750
                             : pinOpen === true
-                            ? window.innerHeight - 500
+                            ? window.innerHeight - 350 //
                             : typeof replyText !== 'undefined' ||
                               typeof editText !== 'undefined'
                             ? window.innerHeight - 450
@@ -297,8 +294,7 @@ export default function Messages({ onExitChatMobile }) {
                             onCancelMessageUpdate={() => setEditText(undefined)}
                         />
                     )}
-            </div>
-            <div>
+
                 {dialogue.status === 'accepted' &&
                     !loading &&
                     !messages?.length > 0 &&

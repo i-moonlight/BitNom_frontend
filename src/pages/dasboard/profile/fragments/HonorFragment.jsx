@@ -53,6 +53,9 @@ export default function HonorFragment({
                                         textCase
                                         variant="text"
                                         size="small"
+                                        onClick={() => {
+                                            setFormOpen(true);
+                                        }}
                                     >
                                         Edit
                                     </Button>

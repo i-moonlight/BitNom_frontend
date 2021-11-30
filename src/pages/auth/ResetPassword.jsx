@@ -93,7 +93,9 @@ export default function ResetPassword() {
                                                 className="mb-2"
                                                 severity="success"
                                             >
-                                                Request sent! Check your email.
+                                                Request sent if you provided the
+                                                correct email address! Check
+                                                your email.
                                             </Alert>
                                         )}
 
@@ -103,6 +105,7 @@ export default function ResetPassword() {
                                         >
                                             Reset Password
                                         </FormikButton>
+
                                         <div>
                                             <Typography className="center-vertical mt-4">
                                                 <Link

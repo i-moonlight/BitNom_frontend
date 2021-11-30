@@ -188,8 +188,9 @@ function ListItemComponent({ user, getFollowStatus }) {
             setStatus(true);
         }
     }, [getFollowStatus, user]);
+
     return (
-        <ListItem divider>
+        <ListItem>
             <ListItemAvatar>
                 <Avatar
                     src={
