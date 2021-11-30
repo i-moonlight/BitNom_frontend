@@ -20,6 +20,7 @@ import {
     useTheme,
 } from '@mui/material';
 import debounce from 'lodash/debounce';
+import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -102,6 +103,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     };
 
     const onlineUser = UserOnlineData?.userIsOnline?.user;
+    const userInitials = getUserInitials(otherUser?.info?.displayName);
 
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
@@ -171,21 +173,15 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             }
                         >
                             <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
                                 src={
                                     otherUser?.info?.profile_pic
                                         ? process.env.REACT_APP_BACKEND_URL +
                                           chat?.otherUser?.info?.profile_pic
-                                        : ''
+                                        : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
+                                alt={'avatar'}
                             >
-                                {otherUser?.info?.profile_pic
-                                    ? ''
-                                    : getUserInitials(
-                                          otherUser?.info?.displayName
-                                      )}
+                                {userInitials}
                             </Avatar>
                         </Badge>
                     </>
@@ -212,9 +208,29 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                     <div>
                         <div className="d-flex ">
                             <div className="d-flex align-items-center">
-                                <Typography variant="body1">
-                                    Software Dev
-                                </Typography>
+                                {onlineUser === chat?.otherUser?.info?._id &&
+                                online === true ? (
+                                    <Typography variant="subtitle2">
+                                        online
+                                    </Typography>
+                                ) : onlineUser === chat?.otherUser?.info?._id &&
+                                  online === true &&
+                                  userTypingData?.userTyping?.typing ===
+                                      true ? (
+                                    <Typography
+                                        variant="subtitle2"
+                                        style={{ fontStyle: 'italic' }}
+                                    >
+                                        Typing...
+                                    </Typography>
+                                ) : (
+                                    <Typography variant="subtitle2">
+                                        Last seen{' '}
+                                        {moment(otherUser.lastSeen).format(
+                                            'dddd h:mm'
+                                        )}
+                                    </Typography>
+                                )}
                             </div>
                             {userTypingData?.userTyping?.typing === true ? (
                                 <div

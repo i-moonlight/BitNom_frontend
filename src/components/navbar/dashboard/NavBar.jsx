@@ -3,6 +3,7 @@ import { AppBar, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { TOTAL_COUNT } from '../../../pages/dasboard/bn_chat/graphql/queries';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
@@ -17,6 +18,10 @@ import {
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
 import { setPostCount } from '../../../store/actions/postCountActions';
+import {
+    setTotalCount,
+    resetTotalCount,
+} from '../../../store/actions/chatActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
     QUERY_GET_USER_NOTIFICATIONS,
@@ -97,6 +102,11 @@ export default function NavBar() {
             context: { clientName: 'notifications' },
         }
     );
+    const { data: totalCountData } = useSubscription(TOTAL_COUNT, {
+        variables: {
+            _id: user._id,
+        },
+    });
 
     const response = data?.Notification?.get;
     const isAuth =
@@ -115,6 +125,10 @@ export default function NavBar() {
             ],
         });
         dispatch(resetCount());
+    };
+
+    const handleResetCount = () => {
+        dispatch(resetTotalCount());
     };
 
     const handleMenuOpen = (event) => {
@@ -154,6 +168,12 @@ export default function NavBar() {
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
     };
+
+    useEffect(() => {
+        if (totalCountData?.totalCount?.count) {
+            dispatch(setTotalCount(totalCountData?.totalCount?.count));
+        }
+    }, [totalCountData?.totalCount?.count, dispatch]);
 
     useEffect(() => {
         dispatch(userUpdate(profileData?.Users?.profile));
@@ -260,6 +280,7 @@ export default function NavBar() {
                 handleMenuOpen={handleMenuOpen}
                 notificationId={notificationId}
                 handleNotificationsOpen={handleNotificationsOpen}
+                handleTotalCountReset={handleResetCount}
                 profile={user}
             />
             <TabsBar

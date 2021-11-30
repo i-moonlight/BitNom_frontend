@@ -153,6 +153,12 @@ export default function chatReducer(state = initialState, action) {
                 unreadCount: action.data,
             };
 
+        case 'RESET_TOTAL_COUNT':
+            return {
+                ...state,
+                unreadCount: null,
+            };
+
         case 'SET_CHAT_SRCH_DATA':
             return {
                 ...state,

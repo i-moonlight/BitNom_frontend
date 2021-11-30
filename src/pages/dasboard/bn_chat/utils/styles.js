@@ -205,4 +205,13 @@ export const useStyles = makeStyles((theme) => ({
         borderWidth: '0px 0px 0px 7px ',
         borderRadius: '5px 5px 5px 5px',
     },
+    uploadPanel: {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 0,
+        listStyleType: 'none',
+        '& .before': {
+            content: '',
+        },
+    },
 }));

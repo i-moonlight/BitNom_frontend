@@ -37,6 +37,7 @@ export default function ProfileBar({
     notificationId,
     handleNotificationsOpen,
     profile,
+    handleTotalCountReset,
 }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -168,6 +169,7 @@ export default function ProfileBar({
                             className={classes.iconButton}
                             color="inherit"
                             onClick={(e) => {
+                                handleTotalCountReset();
                                 e.stopPropagation();
                                 history.push('/chat');
                             }}

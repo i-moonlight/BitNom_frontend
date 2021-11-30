@@ -76,7 +76,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             : chat.otherUser;
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
-
+    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
     return (
         <>
             <ListItem
@@ -90,20 +90,15 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             >
                 <ListItemAvatar>
                     <Avatar
-                        style={{
-                            backgroundColor: '#1C0C5B',
-                        }}
                         src={
-                            otherUser?.profile_pic
+                            otherUser?.info?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  chat?.otherUser?.profile_pic
-                                : ''
+                                  otherUser?.info?.profile_pic
+                                : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
                     >
-                        {otherUser?.profile_pic
-                            ? ''
-                            : getUserInitials(otherUser?.info.displayName)}
+                        {userInitials}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}

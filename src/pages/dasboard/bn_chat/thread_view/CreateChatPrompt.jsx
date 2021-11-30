@@ -54,9 +54,6 @@ export default function CreateChatPrompt({
     const handleSendInvite = (user) => {
         onSendInvite({
             _id: user?._id,
-            displayName: user?.displayName,
-            profile_pic: user?.profile_pic,
-            bio: user?.bio,
         });
         setChatInviteOpen(false);
     };
