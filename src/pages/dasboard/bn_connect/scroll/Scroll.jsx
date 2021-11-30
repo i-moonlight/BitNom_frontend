@@ -38,7 +38,7 @@ import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
-import { getDistanceToNow } from '../../../../components/utilities/date.components.js';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components.js';
 import { loadComments } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
@@ -55,7 +55,6 @@ import {
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')
 );
@@ -391,7 +390,7 @@ export default function Scroll({
                         </div>
                     }
                     // subheader={moment(scroll?.createdAt).fromNow()}
-                    subheader={getDistanceToNow(scroll?.createdAt)}
+                    subheader={getDistanceToNowWithSuffix(scroll?.createdAt)}
                 />
 
                 <CardContent
