@@ -147,8 +147,8 @@ export default function BnConnect() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -248,7 +248,7 @@ export default function BnConnect() {
                             {posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="body2" color="primary">
-                                        Connect. Share. Learn.
+                                        Connect.
                                     </Typography>
                                 </Grid>
                             )}

@@ -115,6 +115,8 @@ export default function Login() {
                                                 });
 
                                             data?.Users?.login &&
+                                                data?.Users?.login?.email
+                                                    ?.verified &&
                                                 dispatch(userUpdate(userData));
                                         });
                                     }}

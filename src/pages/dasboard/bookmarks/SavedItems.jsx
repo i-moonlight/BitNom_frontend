@@ -182,12 +182,6 @@ export default function SavedItems() {
                                             disableRipple
                                             style={{ textTransform: 'none' }}
                                         />
-                                        <Tab
-                                            key={'Articles'}
-                                            label={'Articles'}
-                                            disableRipple
-                                            style={{ textTransform: 'none' }}
-                                        />
                                     </Tabs>
                                 </Card>
                                 {value === 0 && scrollsLoading && (

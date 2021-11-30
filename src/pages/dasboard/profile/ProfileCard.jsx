@@ -9,13 +9,28 @@ import {
     StorageRounded,
     TimelineRounded,
 } from '@mui/icons-material';
-import { Card, CardContent, Snackbar, Typography } from '@mui/material';
+import {
+    Card,
+    CardContent,
+    //Snackbar,
+    Typography,
+    Avatar,
+    Button as MUIButton,
+    useMediaQuery,
+} from '@mui/material';
 import moment from 'moment';
 import { useState, useEffect } from 'react';
+import { red } from '@mui/material/colors';
 import { Button } from '../../../components/Button';
+
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { QUERY_FETCH_PROFILE } from '../utilities/queries';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    QUERY_FETCH_PROFILE,
+    MUTATION_FOLLOW_USER,
+    MUTATION_UNFOLLOW_USER,
+} from '../utilities/queries';
+import { getUserInitials } from '../../../utilities/Helpers';
 import ProfileForm from './forms/ProfileForm';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
 import { userUpdate } from '../../../store/actions/authActions';
@@ -24,7 +39,14 @@ export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);
     const [profilePreviewURL, setProfilePreviewURL] = useState(null);
     const [coverPreviewURL, setCoverPreviewURL] = useState(null);
+    const [status, setStatus] = useState();
+
     const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const onClose = () => {
         setShowForm(false);
     };
@@ -32,6 +54,66 @@ export default function ProfileCard({ profile, profileView }) {
     const [updateUser] = useMutation(MUTATION_UPDATE_PROFILE, {
         context: { clientName: 'users' },
     });
+
+    const [followUser, { data: followData }] =
+        useMutation(MUTATION_FOLLOW_USER);
+    const [unFollowUser, { data: unFollowData }] = useMutation(
+        MUTATION_UNFOLLOW_USER
+    );
+
+    const handleFollowUser = (user_id) => {
+        followUser({
+            variables: {
+                data: {
+                    user_id: user_id,
+                },
+            },
+            context: { clientName: 'users' },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                },
+            ],
+        });
+        if (followData?.Users?.follow == true) setStatus(true);
+        //setFollowing(following + 1);
+    };
+    const handleUnFollowUser = (user_id) => {
+        unFollowUser({
+            variables: {
+                data: {
+                    user_id: user_id,
+                },
+            },
+            context: { clientName: 'users' },
+            refetchQueries: [
+                {
+                    query: QUERY_FETCH_PROFILE,
+                    context: { clientName: 'users' },
+                },
+            ],
+        });
+        if (unFollowData?.Users?.unFollow == true) setStatus(false);
+        //setFollowing(following - 1);
+    };
+
+    useEffect(() => {
+        const getFollowStatus = (usr) => {
+            let followStatus;
+            user.following?.forEach((item) => {
+                if (item?.userId?._id === usr?._id) {
+                    followStatus = true;
+                }
+            });
+            return followStatus;
+        };
+        if (getFollowStatus(profile)) {
+            setStatus(true);
+        } else {
+            setStatus(false);
+        }
+    }, [user, profile]);
 
     useEffect(() => {
         if (profile?.profile_pic) {
@@ -45,6 +127,8 @@ export default function ProfileCard({ profile, profileView }) {
             );
         }
     }, [profile?.profile_pic, profile?.cover_pic]);
+
+    const userInitials = getUserInitials(profile?.displayName);
 
     const handleSelectProfile = (files) => {
         if (files.length < 1) return;
@@ -62,15 +146,7 @@ export default function ProfileCard({ profile, profileView }) {
                     counter += 1;
                 } else {
                     toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
+                        'Image should be less than 1200px by 1350px & below 2mb.'
                     );
                 }
                 if (counter === 1) {
@@ -98,15 +174,7 @@ export default function ProfileCard({ profile, profileView }) {
                     counter += 1;
                 } else {
                     toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 3000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
+                        'Image should be less than 1200px by 1350px & below 2mb.'
                     );
                 }
                 if (counter === 1) {
@@ -126,6 +194,7 @@ export default function ProfileCard({ profile, profileView }) {
                     profile_pic: pic,
                 },
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_FETCH_PROFILE,
@@ -134,9 +203,28 @@ export default function ProfileCard({ profile, profileView }) {
                     },
                 },
             ],
-        }).then(({ data }) => {
-            const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(userUpdate(userData));
+        }).then(({ data, errors }) => {
+            if (data) {
+                const userData = data?.Users?.update;
+                data?.Users?.update && dispatch(userUpdate(userData));
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const preview =
+                        process.env.REACT_APP_BACKEND_URL +
+                            profile?.profile_pic || null;
+                    setProfilePreviewURL(preview);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
     };
 
@@ -148,6 +236,7 @@ export default function ProfileCard({ profile, profileView }) {
                     cover_pic: cover,
                 },
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_FETCH_PROFILE,
@@ -156,9 +245,28 @@ export default function ProfileCard({ profile, profileView }) {
                     },
                 },
             ],
-        }).then(({ data }) => {
-            const userData = data?.Users?.update;
-            data?.Users?.update && dispatch(userUpdate(userData));
+        }).then(({ data, errors }) => {
+            if (data) {
+                const userData = data?.Users?.update;
+                data?.Users?.update && dispatch(userUpdate(userData));
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    const preview =
+                        process.env.REACT_APP_BACKEND_URL +
+                            profile?.cover_pic || null;
+                    setCoverPreviewURL(preview);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
     };
 
@@ -187,8 +295,11 @@ export default function ProfileCard({ profile, profileView }) {
                 <div
                     style={{
                         height: 120,
-                        backgroundImage:
-                            coverPreviewURL && `url('${coverPreviewURL}')`,
+                        //backgroundImage:
+                        //    coverPreviewURL && `url('${coverPreviewURL}')`,
+                        backgroundImage: coverPreviewURL
+                            ? `url('${coverPreviewURL}')`
+                            : `url(${'https://picsum.photos/300/500'})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundColor: '#aaa',
@@ -250,7 +361,8 @@ export default function ProfileCard({ profile, profileView }) {
                                     cursor: !profileView && 'pointer',
                                     border:
                                         !profilePreviewURL &&
-                                        'dotted 1px inherit',
+                                        !profileView &&
+                                        '1px dotted gray',
                                 }}
                                 onClick={
                                     !profileView
@@ -278,6 +390,19 @@ export default function ProfileCard({ profile, profileView }) {
                                                 : undefined
                                         }
                                     />
+                                )}
+                                {profileView && !profilePreviewURL && (
+                                    <Avatar
+                                        variant="rounded"
+                                        style={{
+                                            backgroundColor: '#fed132',
+                                            marginRight: 12,
+                                            width: 80,
+                                            height: 80,
+                                        }}
+                                    >
+                                        {profile && userInitials}
+                                    </Avatar>
                                 )}
                                 <div style={{ display: 'none' }}>
                                     <input
@@ -329,6 +454,33 @@ export default function ProfileCard({ profile, profileView }) {
                                     </Button>
                                 </div>
                             )}
+                            {profileView && profile?._id != user?._id && (
+                                <div
+                                    style={{
+                                        color: status ? red[300] : '#006097',
+                                    }}
+                                >
+                                    <MUIButton
+                                        onClick={() =>
+                                            status
+                                                ? handleUnFollowUser(
+                                                      profile?._id
+                                                  )
+                                                : handleFollowUser(profile?._id)
+                                        }
+                                        size="small"
+                                        variant="outlined"
+                                        disableRipple
+                                        color="inherit"
+                                        style={{
+                                            textTransform: 'none',
+                                        }}
+                                    >
+                                        {status === true && 'Unfollow'}
+                                        {status === false && 'Follow'}
+                                    </MUIButton>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div>
@@ -345,13 +497,20 @@ export default function ProfileCard({ profile, profileView }) {
                     </div>
                     <div className="my-4 center-horizontal">
                         <Button
-                            className="me-2"
-                            startIcon={<CalendarTodayOutlined />}
+                            className={smDown ? 'me-1' : 'me-2'}
+                            startIcon={
+                                !smDown ? (
+                                    <CalendarTodayOutlined fontSize="small" />
+                                ) : undefined
+                            }
                             textCase
                             variant="text"
                             color="inherit"
                         >
-                            Joined {moment(profile?.date).format('LL')}
+                            Joined{' '}
+                            {smDown
+                                ? moment(profile?.date).format('ll')
+                                : moment(profile?.date).format('LL')}
                         </Button>
                         <Button
                             className="me-2"
@@ -396,7 +555,7 @@ export default function ProfileCard({ profile, profileView }) {
                     </div>
                 </CardContent>
             </Card>
-            <Snackbar>Uploaded</Snackbar>
+            {/*  <Snackbar>Uploaded</Snackbar> */}
         </div>
     );
 }

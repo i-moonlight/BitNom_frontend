@@ -78,6 +78,8 @@ import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
+import ExternalShareModal from '../popovers/ExternalShareModal';
+import ReactionHover from '../../../../components/ReactionHover';
 
 function PostView() {
     const classes = useStyles();
@@ -113,6 +115,7 @@ function PostView() {
     const [likeHovered, setLikeHovered] = useState(false);
     const [createCommentErr, setCreateCommentErr] = useState(false);
     const [getPostErr, setGetPostErr] = useState(null);
+    const [openShareModal, setOpenShareModal] = useState(false);
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -182,10 +185,15 @@ function PostView() {
                     'We did not find a post with the ID you provided!'
                 ) {
                     setGetPostErr(
-                        'This post might have been deleted by the author.'
+                        'Oops! We did not find this post. It might have been deleted by the author.'
                     );
                 }
             });
+        postError &&
+            postError.networkError &&
+            setGetPostErr(
+                'Something is wrong! Please check your connection and refresh the page.'
+            );
     }, [postError]);
 
     const {
@@ -196,14 +204,7 @@ function PostView() {
     });
     const profileData = profile?.Users?.profile;
 
-    const [
-        createComment,
-        // {
-        //     data: createCommentData,
-        //     // loading: createCommentLoading,
-        //     // error: createCommentError,
-        // },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
     const {
         data: commentsData,
@@ -218,6 +219,7 @@ function PostView() {
             variables: {
                 data: ICreateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_GET_COMMENTS,
@@ -236,14 +238,32 @@ function PostView() {
                     variables: { _id: postId },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.create) {
+                setCommentFilter(1);
+                setCommentText('');
+                setCommentImage(null);
+                setCreateCommentErr(false);
+                setPreviewURL();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
 
         // if (!createCommentData) console.log(createCommentData);
-        setCommentFilter(1);
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setPreviewURL();
     };
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -269,12 +289,8 @@ function PostView() {
                     return toast.error(
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
-                            position: 'bottom-left',
                             autoClose: 5000,
                             hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }
@@ -357,8 +373,8 @@ function PostView() {
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
+        //handleEmojiPickerClose();
     };
 
     const contentClickHandler = (e) => {
@@ -407,8 +423,8 @@ function PostView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -470,10 +486,13 @@ function PostView() {
                                                     backgroundColor: '#fed132',
                                                 }}
                                                 src={
+                                                    postData?.Posts?.getById
+                                                        ?.author?.profile_pic &&
                                                     process.env
                                                         .REACT_APP_BACKEND_URL +
-                                                    postData?.Posts?.getById
-                                                        ?.author?.profile_pic
+                                                        postData?.Posts?.getById
+                                                            ?.author
+                                                            ?.profile_pic
                                                 }
                                             >
                                                 {authorInitials}
@@ -729,72 +748,14 @@ function PostView() {
                                             setLikeHovered(false)
                                         }
                                     >
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('like');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbUpRounded
-                                                    className={classes.primary}
-                                                />
+                                        <ReactionHover
+                                            setLikeHovered={setLikeHovered}
+                                            handleCreateReaction={
+                                                handleCreateReaction
                                             }
-                                        >
-                                            Like
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('love');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <FavoriteRounded
-                                                    className={classes.red}
-                                                />
-                                            }
-                                        >
-                                            Love
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('dislike');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbDownRounded
-                                                    className={classes.primary}
-                                                />
-                                            }
-                                        >
-                                            Dislike
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction(
-                                                    'celebrate'
-                                                );
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <PanToolRounded
-                                                    className={classes.green}
-                                                />
-                                            }
-                                        >
-                                            Celebrate
-                                        </Button>
+                                            likeHovered={likeHovered}
+                                            reaction={userReaction}
+                                        />
                                     </Card>
                                     <CardActions className="space-around">
                                         <ReactionButton
@@ -871,9 +832,10 @@ function PostView() {
                                                             marginRight: '3px',
                                                         }}
                                                         src={
+                                                            user?.profile_pic &&
                                                             process.env
                                                                 .REACT_APP_BACKEND_URL +
-                                                            user?.profile_pic
+                                                                user?.profile_pic
                                                         }
                                                         sx={{
                                                             width: '30px',
@@ -1115,6 +1077,9 @@ function PostView() {
                                                         comment_image={
                                                             comment_image
                                                         }
+                                                        setCommentImage={
+                                                            setCommentImage
+                                                        }
                                                     />
                                                 ))}
                                             {commentFilter === 1 &&
@@ -1162,6 +1127,9 @@ function PostView() {
                                                             }
                                                             comment_image={
                                                                 comment_image
+                                                            }
+                                                            setCommentImage={
+                                                                setCommentImage
                                                             }
                                                         />
                                                     )
@@ -1283,6 +1251,8 @@ function PostView() {
                 setPostToEdit={setPostToEdit}
                 setOpenFlag={setOpenFlag}
                 setUpdateOpen={setUpdateScrollOpen}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
@@ -1290,6 +1260,12 @@ function PostView() {
                 isEmojiPickerOpen={isEmojiPickerOpen}
                 handleEmojiPickerClose={handleEmojiPickerClose}
                 handleSelectEmoji={handleSelectEmoji}
+            />
+            <ExternalShareModal
+                openShareModal={openShareModal}
+                sharedResource={sharedResource}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
         </Screen>
     );

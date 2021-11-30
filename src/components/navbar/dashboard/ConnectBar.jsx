@@ -4,7 +4,6 @@
     ChevronRight,
 } from '@mui/icons-material'; */
 import { Box, Container, useMediaQuery, Button } from '@mui/material';
-import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 
 import { useStyles } from '../../utilities/styles.components';
@@ -13,20 +12,7 @@ export default function ConnectBar() {
     const classes = useStyles();
     const smDown = useMediaQuery('(max-width:959px)');
 
-    const [selected, setSelected] = useState();
     const history = useHistory();
-    useEffect(() => {
-        if (
-            location.pathname.includes('/connect') &&
-            !location.pathname.includes('/connect/')
-        ) {
-            setSelected(0);
-        } else if (location.pathname.includes('/connect/trending')) {
-            setSelected(1);
-        } else if (location.pathname.includes('/connect/profile')) {
-            setSelected(2);
-        }
-    }, [setSelected]);
 
     return (
         <Box className={classes.root}>
@@ -39,7 +25,12 @@ export default function ConnectBar() {
                                     className="py-0 mx-1 my-1 fw-bold"
                                     variant="text"
                                     color={
-                                        selected === 0 ? 'primary' : 'inherit'
+                                        location.pathname.includes(
+                                            '/connect'
+                                        ) &&
+                                        !location.pathname.includes('/connect/')
+                                            ? 'primary'
+                                            : 'inherit'
                                     }
                                     style={{
                                         textTransform: 'none',
@@ -51,7 +42,11 @@ export default function ConnectBar() {
                                 <Button
                                     className="py-0 mx-1 my-1 fw-bold"
                                     color={
-                                        selected === 1 ? 'primary' : 'inherit'
+                                        location.pathname.includes(
+                                            '/connect/trending'
+                                        )
+                                            ? 'primary'
+                                            : 'inherit'
                                     }
                                     style={{
                                         textTransform: 'none',
@@ -67,7 +62,11 @@ export default function ConnectBar() {
                                 <Button
                                     className="py-0 mx-1 my-1 fw-bold"
                                     color={
-                                        selected === 2 ? 'primary' : 'inherit'
+                                        location.pathname.includes(
+                                            '/connect/profile'
+                                        )
+                                            ? 'primary'
+                                            : 'inherit'
                                     }
                                     style={{
                                         textTransform: 'none',

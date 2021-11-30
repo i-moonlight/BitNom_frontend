@@ -75,12 +75,18 @@ export default function ConnectProfile() {
                                     <CardMedia
                                         style={{ height: 200 }}
                                         src={
-                                            process.env.REACT_APP_BACKEND_URL +
                                             user?.cover_pic
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  user?.cover_pic
+                                                : 'https://picsum.photos/200/300'
                                         }
                                         image={
-                                            process.env.REACT_APP_BACKEND_URL +
                                             user?.cover_pic
+                                                ? process.env
+                                                      .REACT_APP_BACKEND_URL +
+                                                  user?.cover_pic
+                                                : 'https://picsum.photos/300'
                                         }
                                     />
                                     <CardContent
@@ -94,9 +100,10 @@ export default function ConnectProfile() {
                                             <div>
                                                 <Avatar
                                                     src={
+                                                        user?.profile_pic &&
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                        user?.profile_pic
+                                                            user?.profile_pic
                                                     }
                                                     variant="rounded"
                                                     style={{

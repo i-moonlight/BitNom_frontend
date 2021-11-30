@@ -3,7 +3,6 @@ import {
     ForumRounded,
     MenuRounded,
     Notifications,
-    Search,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -11,9 +10,7 @@ import {
     Box,
     Card,
     Container,
-    Divider,
     IconButton,
-    InputBase,
     Paper,
     Typography,
     useMediaQuery,
@@ -52,7 +49,7 @@ export default function ProfileBar({
     );
     const smDown = useMediaQuery('(max-width:959px)');
     const mdUp = useMediaQuery('(min-width:960px)');
-    const xsDown = useMediaQuery('(max-width:599px)');
+    // const xsDown = useMediaQuery('(max-width:599px)');
 
     return (
         <Box className={classes.root}>
@@ -110,7 +107,7 @@ export default function ProfileBar({
                         component="form"
                         className={classes.paperSearch}
                     >
-                        {!xsDown && (
+                        {/* {!xsDown && (
                             <>
                                 <Button textCase variant="text">
                                     <Typography
@@ -143,7 +140,7 @@ export default function ProfileBar({
                             aria-label="search"
                         >
                             <Search />
-                        </IconButton>
+                        </IconButton> */}
                     </Paper>
                     <div className={classes.sectionDesktop}>
                         <IconButton

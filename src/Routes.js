@@ -2,9 +2,6 @@ import { ApolloProvider } from '@apollo/client';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import ConnectProfile from './pages/dasboard/bn_connect/ConnectProfile';
-import TrendingPostsView from './pages/dasboard/bn_connect/TrendindPostsView';
-
 const CoinDetails = React.lazy(() =>
     import('./pages/dasboard/bn_knowledge_center/con_details/CoinDetails')
 );
@@ -14,20 +11,29 @@ const BnKnowledgeCenter = React.lazy(() =>
 const FeatureRequest = React.lazy(() =>
     import('./pages/welcome/feature_request/FeatureRequest')
 );
+const TrendingPostsView = React.lazy(() =>
+    import('./pages/dasboard/bn_connect/TrendindPostsView')
+);
 const PostView = React.lazy(() =>
     import('./pages/dasboard/bn_connect/scroll/ScrollView')
 );
 const Notifications = React.lazy(() =>
     import('./pages/dasboard/notifications/Notifications')
 );
+const ConnectProfile = React.lazy(() =>
+    import('./pages/dasboard/bn_connect/ConnectProfile')
+);
 const HashtagView = React.lazy(() =>
     import('./pages/dasboard/bn_connect/HashtagView')
 );
-const BnServices = React.lazy(() =>
-    import('./pages/dasboard/bn_services/BnServices')
-);
+// const BnServices = React.lazy(() =>
+//     import('./pages/dasboard/bn_services/BnServices')
+// );
 const Disclaimer = React.lazy(() =>
     import('./pages/welcome/disclaimer/Disclaimer')
+);
+const SavedItems = React.lazy(() =>
+    import('./pages/dasboard/bookmarks/SavedItems')
 );
 const ProfileView = React.lazy(() =>
     import('./pages/dasboard/profile/ProfileView')
@@ -38,8 +44,8 @@ const Connections = React.lazy(() =>
 const Investors = React.lazy(() =>
     import('./pages/welcome/investor/Investors')
 );
-const SavedItems = React.lazy(() =>
-    import('./pages/dasboard/bookmarks/SavedItems')
+const TempPageLanding = React.lazy(() =>
+    import('./pages/not_found/TempPageLanding')
 );
 const RequireVerification = React.lazy(() =>
     import('./pages/auth/RequireVerification')
@@ -130,6 +136,26 @@ export default function Routes({ apolloClient }) {
                                 />
                                 <Route
                                     exact
+                                    component={TempPageLanding}
+                                    path="/engine"
+                                />
+                                <Route
+                                    exact
+                                    component={TempPageLanding}
+                                    path="/widgets"
+                                />
+                                <Route
+                                    exact
+                                    component={TempPageLanding}
+                                    path="/business"
+                                />
+                                <Route
+                                    exact
+                                    component={TempPageLanding}
+                                    path="/learn"
+                                />
+                                <Route
+                                    exact
                                     component={Redirect}
                                     path="/redirect"
                                 />
@@ -191,21 +217,7 @@ export default function Routes({ apolloClient }) {
                                 {/* Dashboard */}
                                 <Route
                                     exact
-                                    component={
-                                        BnConnect
-                                        //     () => {
-                                        //     return (
-                                        //         <>
-                                        //             <div className=" text-white">
-                                        //                 Hello BN Connect
-                                        //             </div>
-                                        //             <Link to="/knowledge_center/cryptocurrency">
-                                        //                 Crypto
-                                        //             </Link>
-                                        //         </>
-                                        //     );
-                                        // }
-                                    }
+                                    component={BnConnect}
                                     path="/connect"
                                 />
                                 <Route
@@ -221,8 +233,14 @@ export default function Routes({ apolloClient }) {
                                 <Route exact component={BnChat} path="/chat" />
                                 <Route
                                     exact
-                                    component={BnServices}
+                                    // component={BnServices}
+                                    component={TempPageLanding}
                                     path="/services"
+                                />
+                                <Route
+                                    exact
+                                    component={TempPageLanding}
+                                    path="/knowledge_center"
                                 />
                                 <Route
                                     exact
@@ -290,7 +308,7 @@ export default function Routes({ apolloClient }) {
                                     component={ProfileView}
                                     path="/users/:id"
                                 />
-                                {/* <Route component={NotFound} path='*' /> */}
+                                {/* <Route exact component={NotFound} path="*" /> */}
                             </>
                         </Suspense>
                     </Switch>

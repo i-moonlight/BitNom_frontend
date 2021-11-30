@@ -194,12 +194,7 @@ export default function EventView() {
             ],
         });
         toast.success('Added to saved items', {
-            position: 'bottom-left',
             autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
         });
         handleEventOptionsClose();
     };
@@ -267,8 +262,8 @@ export default function EventView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -956,13 +951,18 @@ export default function EventView() {
                                                             <Avatar
                                                                 variant="rounded"
                                                                 src={
-                                                                    process.env
-                                                                        .REACT_APP_BACKEND_URL +
                                                                     eventData
                                                                         ?.Events
                                                                         ?.getById
                                                                         ?.host
-                                                                        ?.profile_pic
+                                                                        ?.profile_pic &&
+                                                                    process.env
+                                                                        .REACT_APP_BACKEND_URL +
+                                                                        eventData
+                                                                            ?.Events
+                                                                            ?.getById
+                                                                            ?.host
+                                                                            ?.profile_pic
                                                                 }
                                                                 className={
                                                                     classes.avatar
@@ -978,17 +978,17 @@ export default function EventView() {
                                                                 }
                                                             </Typography>
                                                         </div>
-
-                                                        <Button variant="outlined">
-                                                            Subscribe
-                                                        </Button>
+                                                        <div>
+                                                            <Button variant="outlined">
+                                                                Subscribe
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                     <Typography
                                                         style={{
                                                             marginTop: '8px',
                                                         }}
                                                         variant="body1"
-                                                        component="p"
                                                     >
                                                         {
                                                             eventData?.Events

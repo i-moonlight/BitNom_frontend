@@ -52,6 +52,7 @@ import {
 } from '../../utilities/queries';
 import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+import ReactionHover from '../../../../components/ReactionHover';
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
@@ -113,6 +114,7 @@ export default function Scroll({
             variables: {
                 data: ICreateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -122,11 +124,29 @@ export default function Scroll({
                     variables: { data: { scroll_id: scroll?._id } },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.create) {
+                setCommentText('');
+                setCommentImage(null);
+                setCreateCommentErr(false);
+                setPreviewURL();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setPreviewURL();
     };
 
     const mentions = profileData?.followers?.map?.((item) => {
@@ -180,8 +200,7 @@ export default function Scroll({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     const handleSelectImage = (files) => {
@@ -201,12 +220,7 @@ export default function Scroll({
                     return toast.error(
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
-                            position: 'bottom-left',
                             autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }
@@ -296,8 +310,9 @@ export default function Scroll({
                                 backgroundColor: '#fed132',
                             }}
                             src={
+                                scroll?.author?.profile_pic &&
                                 process.env.REACT_APP_BACKEND_URL +
-                                scroll?.author?.profile_pic
+                                    scroll?.author?.profile_pic
                             }
                         >
                             {authorInitials}
@@ -498,57 +513,12 @@ export default function Scroll({
                     onMouseEnter={() => setLikeHovered(true)}
                     onMouseLeave={() => setLikeHovered(false)}
                 >
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('like');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbUpRounded className={classes.primary} />
-                        }
-                    >
-                        Like
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('love');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<FavoriteRounded className={classes.red} />}
-                    >
-                        Love
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('dislike');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbDownRounded className={classes.primary} />
-                        }
-                    >
-                        Dislike
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('celebrate');
-
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<PanToolRounded className={classes.green} />}
-                    >
-                        Celebrate
-                    </Button>
+                    <ReactionHover
+                        setLikeHovered={setLikeHovered}
+                        handleCreateReaction={handleCreateReaction}
+                        likeHovered={likeHovered}
+                        reaction={userReaction}
+                    />
                 </Card>
                 <CardActions
                     className="space-around"
@@ -609,8 +579,9 @@ export default function Scroll({
                                         marginRight: '3px',
                                     }}
                                     src={
+                                        user?.profile_pic &&
                                         process.env.REACT_APP_BACKEND_URL +
-                                        user?.profile_pic
+                                            user?.profile_pic
                                     }
                                     sx={{
                                         width: '30px',

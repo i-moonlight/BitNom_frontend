@@ -103,6 +103,7 @@ export default function UpdateComment({
             variables: {
                 data: IUpdateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_SCROLLS,
@@ -115,15 +116,34 @@ export default function UpdateComment({
                     variables: { data: { scroll_id: commentToEdit?.scroll } },
                 },
             ],
+        }).then(({ data, errors }) => {
+            if (data?.Comments?.update) {
+                setCommentText('');
+                setCommentImage(undefined);
+                setUpdateCommentErr(false);
+                setOpenImage(false);
+                setFileType(null);
+                setCommentToEdit(null);
+                setPreviewURL();
+                setFileErrors([]);
+                setUpdateCommentOpen(false);
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
-        setCommentText('');
-        setCommentImage(undefined);
-        setUpdateCommentErr(false);
-        setOpenImage(false);
-        setFileType(null);
-        setCommentToEdit(null);
-        setPreviewURL();
-        setFileErrors([]);
     };
 
     const handleEmojiPickerOpen = (event) => {
@@ -135,8 +155,8 @@ export default function UpdateComment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     useEffect(() => {
@@ -201,7 +221,6 @@ export default function UpdateComment({
             content_entities: mentionsData.contentEntities,
             image: comment_image,
         });
-        setUpdateCommentOpen(false);
     };
 
     const handleDeleteComment = (e) => {
@@ -258,7 +277,7 @@ export default function UpdateComment({
                             <Divider />
                             <CardContent
                                 style={{
-                                    maxHeight: '500px',
+                                    maxHeight: '85vh',
                                     overflowY: 'auto',
                                 }}
                             >
@@ -269,9 +288,10 @@ export default function UpdateComment({
                                                 backgroundColor: '#fed132',
                                             }}
                                             src={
+                                                user?.profile_pic &&
                                                 process.env
                                                     .REACT_APP_BACKEND_URL +
-                                                user?.profile_pic
+                                                    user?.profile_pic
                                             }
                                         >
                                             {userInitials}
@@ -359,7 +379,7 @@ export default function UpdateComment({
                                         <div>
                                             <div style={{ display: 'none' }}>
                                                 <input
-                                                    id="updating-comment-image"
+                                                    id="update-comment-image"
                                                     type="file"
                                                     onChange={(e) => {
                                                         handleSelectImage(

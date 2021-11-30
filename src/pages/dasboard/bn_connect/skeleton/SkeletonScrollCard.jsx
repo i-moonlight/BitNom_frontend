@@ -53,6 +53,13 @@ export default function SkeletonScrollCard() {
                         animation="wave"
                     />
                 </Typography>
+                <Skeleton
+                    variant="rectangular"
+                    height={60}
+                    width="100%"
+                    animation="wave"
+                    style={{ margin: '5px 0' }}
+                />
                 <Typography display="inline" component="div">
                     <Skeleton
                         variant="rectangular"

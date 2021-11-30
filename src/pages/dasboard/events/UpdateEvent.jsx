@@ -150,17 +150,37 @@ export default function UpdateEvent({
 
     const [deleteEvent] = useMutation(MUTATION_DELETE_EVENT);
 
-    const onUpdateEvent = async (IUpdateEvent) => {
-        await updateEvent({
+    const onUpdateEvent = (IUpdateEvent) => {
+        updateEvent({
             variables: {
                 data: IUpdateEvent,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_EVENT_BY_ID,
                     variables: { _id: eventToEdit?._id },
                 },
             ],
+        }).then(({ data: updateEventData, errors }) => {
+            if (updateEventData?.Events?.update) {
+                handleCloseEventModal();
+            }
+            if (errors) {
+                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+                    setPreviewURL();
+                    setEventImage(null);
+                    const message = errors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    toast.error(
+                        `Unsupported file type! The original type of your image is ${mime}`
+                    );
+                } else {
+                    toast.error(
+                        `Something is wrong! Check your connection or use another image.`
+                    );
+                }
+            }
         });
     };
 
@@ -202,20 +222,7 @@ export default function UpdateEvent({
             ],
         });
 
-        setEventLink('');
-        setPreviewURL();
-        setEventImage(undefined);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
+        handleCloseEventModal();
         history.push(`/dashboard/events`);
     };
 
@@ -224,6 +231,33 @@ export default function UpdateEvent({
         onDeleteEvent(eventToEdit?._id);
         setOpenDelete(false);
         setOpenUpdate(false);
+    };
+
+    const handleCloseEventModal = () => {
+        setDateErr(false);
+        setEventLink('');
+        setEventImage(undefined);
+        setEventTitle('');
+        setEventDescription('');
+        setDescriptionErr(false);
+        setOrganizerErr(false);
+        setTagsErr(false);
+        setTitleErr(false);
+        setLinkErr(false);
+        setDateErr(false);
+        setLocationErr(false);
+        setEventOrganizers([]);
+        setEventStartDate('');
+        setEventEndDate('');
+        setLocationType('');
+        setLatitude('');
+        setAddress('');
+        setLongitude('');
+        setEventTags([]);
+        setTagText('');
+        setPreviewURL();
+        setOpenUpdate(false);
+        setEventToEdit(null);
     };
 
     const handleSetTags = () => {
@@ -379,30 +413,6 @@ export default function UpdateEvent({
                 address: String(address),
             },
         });
-        setDateErr(false);
-        setEventLink('');
-        setEventImage(undefined);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setOrganizerErr(false);
-        setTagsErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setEventOrganizers([]);
-        setEventStartDate('');
-        setEventEndDate('');
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
-        setEventTags([]);
-        setTagText('');
-        setPreviewURL();
-        setOpenUpdate(false);
-        setEventToEdit(null);
     };
 
     return (
@@ -411,7 +421,7 @@ export default function UpdateEvent({
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -429,29 +439,7 @@ export default function UpdateEvent({
                             </Typography>
                             <IconButton
                                 onClick={() => {
-                                    setOpenUpdate(!openUpdate);
-                                    setEventLink('');
-                                    setEventImage(undefined);
-                                    setEventTitle('');
-                                    setEventDescription('');
-                                    setDescriptionErr(false);
-                                    setOrganizerErr(false);
-                                    setTagsErr(false);
-                                    setTitleErr(false);
-                                    setLinkErr(false);
-                                    setDateErr(false);
-                                    setLocationErr(false);
-                                    setEventStartDate('');
-                                    setEventEndDate('');
-                                    setLocationType('');
-                                    setLatitude('');
-                                    setAddress('');
-                                    setLongitude('');
-                                    setEventTags([]);
-                                    setTagText('');
-                                    setPreviewURL();
-                                    setEventOrganizers([]);
-                                    setEventToEdit(null);
+                                    handleCloseEventModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -462,7 +450,7 @@ export default function UpdateEvent({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <Card elevation={0}>
                                 <div
@@ -1066,13 +1054,17 @@ export default function UpdateEvent({
                                             color: '#FFFFFF',
                                             marginRight: '12px',
                                         }}
+                                        size="small"
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
                                     >
                                         Delete
                                     </Button>
                                     {!loading && (
-                                        <Button onClick={handleUpdateEvent}>
+                                        <Button
+                                            size="small"
+                                            onClick={handleUpdateEvent}
+                                        >
                                             Update
                                         </Button>
                                     )}
