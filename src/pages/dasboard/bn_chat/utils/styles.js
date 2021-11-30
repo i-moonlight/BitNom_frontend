@@ -178,6 +178,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     cardDropzone: {
         backgroundColor: theme.palette.background.default,
+        marginLeft: 8,
+        marginRight: 8,
     },
     pinnedList: {
         backgroundColor: theme.palette.background.default,

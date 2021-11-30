@@ -12,7 +12,6 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -22,7 +21,7 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -35,8 +34,11 @@ import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollPreview from './ScrollPreview';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -78,8 +80,8 @@ export default function CreatePost({
 
     const userInitials = getUserInitials(user?.displayName);
 
-    const onCreatePost = async (ICreatePost) => {
-        await createPost({
+    const onCreatePost = (ICreatePost) => {
+        createPost({
             variables: {
                 data: ICreatePost,
             },
@@ -523,25 +525,14 @@ export default function CreatePost({
                                         );
                                     })} */}
                                 </div>
-                                {!loading && (
-                                    <Button
-                                        size="small"
-                                        onClick={handleCreatePost}
-                                    >
-                                        Post
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    size="small"
+                                    onClick={handleCreatePost}
+                                    disabled={loading}
+                                >
+                                    Post
+                                </Button>
                             </div>
                         </CardContent>
                         <EmojiPickerPopover

@@ -28,14 +28,14 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
+    getFeed,
     mentionsFinder,
     mentionsUpdate,
-    getFeed,
 } from '../../../utilities/functions';
 import {
     MUTATION_DELETE_COMMENT,
@@ -43,7 +43,10 @@ import {
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 export default function UpdateComment({
     updateCommentOpen,

@@ -12,27 +12,15 @@ import {
 } from '@mui/material';
 import { useRef, useState } from 'react';
 
-const options = [
-    'All notifications',
-    'Comments & mentions',
-    'Reactions',
-    'Your content',
-    'Your profile',
-    'Job board',
-    'Forum',
-    'Announcements',
-];
+const options = ['Upcoming events', 'Past events', 'Saved events'];
 
-export default function NotificationFilter({
-    setNotificationFilter,
-    notificationFilter,
-}) {
+export default function EventsFilter({ setEventsFilter, eventsFilter }) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
 
     const handleMenuItemClick = (event, index) => {
         setOpen(false);
-        setNotificationFilter(index);
+        setEventsFilter(index);
     };
 
     const handleToggle = () => {
@@ -48,13 +36,23 @@ export default function NotificationFilter({
     };
 
     return (
-        <Grid container direction="column" alignItems="flex-start">
+        <Grid
+            container
+            direction="column"
+            alignItems="flex-start"
+            style={{
+                margin: '15px 0px',
+            }}
+        >
             <Grid item xs={12}>
                 <ButtonGroup
                     variant="text"
                     ref={anchorRef}
-                    aria-label="notification filter"
+                    aria-label="split button"
                     size="small"
+                    style={{
+                        width: 'fit-content',
+                    }}
                     color="inherit"
                 >
                     <Button
@@ -64,7 +62,7 @@ export default function NotificationFilter({
                             width: 'fit-content',
                         }}
                     >
-                        {options[notificationFilter]}
+                        {options[eventsFilter]}
                     </Button>
                     <Button
                         size="small"
@@ -75,7 +73,7 @@ export default function NotificationFilter({
                         }}
                         aria-controls={open ? 'split-button-menu' : undefined}
                         aria-expanded={open ? 'true' : undefined}
-                        aria-label="select notifications filter"
+                        aria-label="select events filter"
                         aria-haspopup="menu"
                         onClick={handleToggle}
                     >
@@ -87,7 +85,6 @@ export default function NotificationFilter({
                     anchorEl={anchorRef.current}
                     role={undefined}
                     transition
-                    style={{ zIndex: 3 }}
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow
@@ -109,10 +106,9 @@ export default function NotificationFilter({
                                             <MenuItem
                                                 key={option}
                                                 selected={
-                                                    index === notificationFilter
+                                                    index === eventsFilter
                                                 }
                                                 onClick={(event) => {
-                                                    event.stopPropagation();
                                                     handleMenuItemClick(
                                                         event,
                                                         index

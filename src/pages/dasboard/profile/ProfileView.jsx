@@ -1,5 +1,10 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, useMediaQuery } from '@mui/material';
+import {
+    Container,
+    Grid,
+    useMediaQuery,
+    CircularProgress,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
 import Screen from '../../../components/Screen';
@@ -29,7 +34,7 @@ export default function ProfileView({ match }) {
 
     const {
         // error,
-        //  loading,
+        loading,
         data,
     } = useQuery(QUERY_FETCH_PROFILE_BY_ID, {
         variables: {
@@ -74,16 +79,33 @@ export default function ProfileView({ match }) {
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         {!mdDown && <Grid item lg={3}></Grid>}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <ProfileCard profile={profile} profileView />
-                            <InsightCard profile={profile} profileView />
-                            <AboutCard profile={profile} profileView />
-                            <WorkCard profile={profile} profileView />
-                            <EducationCard profile={profile} profileView />
-                            <HonorCard profile={profile} profileView />
-                            <SkillsCard profile={profile} profileView />
-                            <AdditionalInfoCard profile={profile} profileView />
-                        </Grid>
+                        {loading && (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={8}
+                                lg={6}
+                                align="center"
+                            >
+                                <CircularProgress color="primary" />
+                            </Grid>
+                        )}
+                        {!loading && data && (
+                            <Grid item xs={12} sm={12} md={8} lg={6}>
+                                <ProfileCard profile={profile} profileView />
+                                <InsightCard profile={profile} profileView />
+                                <AboutCard profile={profile} profileView />
+                                <WorkCard profile={profile} profileView />
+                                <EducationCard profile={profile} profileView />
+                                <HonorCard profile={profile} profileView />
+                                <SkillsCard profile={profile} profileView />
+                                <AdditionalInfoCard
+                                    profile={profile}
+                                    profileView
+                                />
+                            </Grid>
+                        )}
                         <Grid item md={4} lg={3}></Grid>
                     </Grid>
                 </Container>

@@ -14,15 +14,18 @@ import {
     CardHeader,
     Divider,
     IconButton,
+    InputBase,
     Paper,
+    Stack,
     Typography,
-    TextField,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
+import { styled } from '@mui/styles';
+
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import EmojiPickerPopover from '../../bn_connect/popovers/EmojiPickerPopover';
+import { Button } from '../../../../components/Button';
 import {
     CREATE_DIALOGUE_MESSAGE,
     UPDATE_MESSAGE,
@@ -30,6 +33,14 @@ import {
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import MediaUploadPanel from './MediaUploadPanel';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../bn_connect/popovers/EmojiPickerPopover')
+);
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 const emojiPickerId = 'emoji-picker-popover';
 
@@ -47,8 +58,6 @@ export default function SendMessage({
     otherUser,
 }) {
     const [text, setText] = useState('');
-
-    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -57,13 +66,12 @@ export default function SendMessage({
     const [openFile, setFileOpen] = useState(false);
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
+    const [sendMessageErr, setSendMessageError] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-    const [sendMessageErr, setSendMessageError] = useState();
     const theme = useTheme();
     const classes = useStyles();
     const xsDown = useMediaQuery('(max-width:599px)');
-    const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
 
     const isMediaUploadOpen = Boolean(mediaUploadAnchorEl);
 
@@ -81,6 +89,7 @@ export default function SendMessage({
     const handleEmojiPickerClose = () => {
         setEmojiPickerAnchorEl(null);
     };
+
     const handleSelectEmoji = (emoji) => {
         handleEmojiPickerClose();
         setText(`${text} ${emoji.native}`);
@@ -88,7 +97,7 @@ export default function SendMessage({
 
     const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
         onError(error) {
-            setSendMessageError(error.graphQLErrors[0].state);
+            setSendMessageError(error?.graphQLErrors[0]?.state);
         },
     });
 
@@ -111,6 +120,7 @@ export default function SendMessage({
         setOpen(false);
         setReplyText();
     };
+
     const onUpdateMessage = async (IUpdateMessage) => {
         await updateMessage({
             variables: {
@@ -130,6 +140,7 @@ export default function SendMessage({
             context: { clientName: 'chat' },
         });
     };
+
     const handleChange = (e) => {
         setText(
             text?.length >= 250
@@ -163,9 +174,11 @@ export default function SendMessage({
         e.preventDefault();
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
     };
+
     useEffect(() => {
         setText(editText?.text);
     }, [editText]);
+
     useEffect(() => {
         if (
             text === '' ||
@@ -184,6 +197,7 @@ export default function SendMessage({
             chat: chat,
         });
     };
+
     const handleUserNotTyping = () => {
         onUserTyping({
             currentUser: currentUser?.info._id,
@@ -192,6 +206,7 @@ export default function SendMessage({
             chat: chat,
         });
     };
+
     // eslint-disable-next-line
     const debouncedUserTyping = useCallback(
         debounce(handleUserNotTyping, 700),
@@ -206,6 +221,7 @@ export default function SendMessage({
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
     };
+
     const handleGifOpen = () => {
         setOpen(true);
         setGifOpen(true);
@@ -214,6 +230,7 @@ export default function SendMessage({
         setFileOpen(false);
         setMediaUploadAnchorEl(null);
     };
+
     const handleImageOpen = () => {
         setOpen(true);
         setImageOpen(true);
@@ -222,6 +239,7 @@ export default function SendMessage({
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
     };
+
     const handleVideoLibrary = () => {
         setOpen(true);
         setVideoOpen(true);
@@ -230,12 +248,13 @@ export default function SendMessage({
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
     };
+
     return (
-        <>
-            {' '}
+        <div>
             {replyText && (
                 <Card variant="outlined" className={classes.promptCard}>
                     <CardHeader
+                        className="bg-primary"
                         style={{ marginTop: '-15px' }}
                         action={
                             <IconButton onClick={onCancelReply} size="small">
@@ -252,9 +271,7 @@ export default function SendMessage({
                             </Typography>
                         }
                     />
-
                     <CardContent style={{ marginTop: '-35px' }}>
-                        {' '}
                         <Typography
                             variant="body2"
                             component="span"
@@ -267,6 +284,7 @@ export default function SendMessage({
                     </CardContent>
                 </Card>
             )}
+
             {isMediaUploadOpen && (
                 <MediaUploadPanel
                     handleAttachFileOpen={() => handleAttachFileOpen()}
@@ -275,9 +293,11 @@ export default function SendMessage({
                     handleVideoLibrary={() => handleVideoLibrary()}
                 />
             )}
+
             {editText?.text && (
                 <Card variant="outlined" className={classes.promptCard}>
                     <CardHeader
+                        className="bg-primary"
                         style={{ marginTop: '-15px' }}
                         action={
                             <IconButton
@@ -299,9 +319,7 @@ export default function SendMessage({
                             </Typography>
                         }
                     />
-
                     <CardContent style={{ marginTop: '-35px' }}>
-                        {' '}
                         <Typography
                             variant="body2"
                             component="span"
@@ -314,7 +332,8 @@ export default function SendMessage({
                     </CardContent>
                 </Card>
             )}
-            {open ? (
+
+            {open && (
                 <Card className={classes.cardDropzone}>
                     <CardHeader
                         action={
@@ -323,61 +342,98 @@ export default function SendMessage({
                             </IconButton>
                         }
                     />
-                    <CardContent
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'centre',
-                            alignItems: 'centre',
-                            direction: 'column',
-                        }}
-                    >
-                        {' '}
-                        {openImage ? (
-                            <input
-                                id="send-message-images"
-                                type="file"
-                                onChange={(e) => {
-                                    setMessageImages(
-                                        Array.from(e.target.files)
-                                    );
-                                }}
-                                accept="image/*"
-                                multiple
-                            />
-                        ) : openVideo ? (
-                            <input
-                                id="send-message-video"
-                                type="file"
-                                onChange={(e) => {
-                                    setMessageVideo(Array.from(e.target.files));
-                                }}
-                                accept="video/*"
-                            />
-                        ) : openFile ? (
-                            <input
-                                id="send-message-docs"
-                                type="file"
-                                onChange={(e) => {
-                                    setMessageDoc(Array.from(e.target.files));
-                                }}
-                                accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-                                text/plain, application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document "
-                            />
-                        ) : openGif ? (
-                            <input
-                                id="send-message-gif"
-                                type="file"
-                                onChange={(e) => {
-                                    setMessageGif(Array.from(e.target.files));
-                                }}
-                                accept="image/gif"
-                            />
-                        ) : null}
+                    <CardContent>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            {openImage ? (
+                                <label htmlFor="send-message-images">
+                                    <Input
+                                        accept="image/*"
+                                        id="send-message-images"
+                                        multiple
+                                        type="file"
+                                        onChange={(e) => {
+                                            setMessageImages(
+                                                Array.from(e.target.files)
+                                            );
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        component="span"
+                                    >
+                                        Upload Image
+                                    </Button>
+                                </label>
+                            ) : openVideo ? (
+                                <label htmlFor="send-message-video">
+                                    <Input
+                                        accept="video/*"
+                                        id="send-message-video"
+                                        multiple
+                                        type="file"
+                                        onChange={(e) => {
+                                            setMessageVideo(
+                                                Array.from(e.target.files)
+                                            );
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        component="span"
+                                    >
+                                        Upload Video
+                                    </Button>
+                                </label>
+                            ) : openFile ? (
+                                <label htmlFor="send-message-docs">
+                                    <Input
+                                        id="send-message-docs"
+                                        type="file"
+                                        onChange={(e) => {
+                                            setMessageDoc(
+                                                Array.from(e.target.files)
+                                            );
+                                        }}
+                                        accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                              text/plain, application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document "
+                                        multiple
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        component="span"
+                                    >
+                                        Upload File
+                                    </Button>
+                                </label>
+                            ) : openGif ? (
+                                <label htmlFor="send-message-gif">
+                                    <Input
+                                        id="send-message-gif"
+                                        type="file"
+                                        onChange={(e) => {
+                                            setMessageGif(
+                                                Array.from(e.target.files)
+                                            );
+                                        }}
+                                        accept="image/gif"
+                                        multiple
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        component="span"
+                                    >
+                                        Upload GIF
+                                    </Button>
+                                </label>
+                            ) : null}
+                        </Stack>
                     </CardContent>
                 </Card>
-            ) : null}
+            )}
+
+            <Divider className="my-2" />
+
             <div className={classes.inputRoot}>
-                <Divider className={classes.divider} />{' '}
                 <div className="d-flex">
                     {xsDown && !isMediaUploadOpen ? (
                         <IconButton
@@ -402,7 +458,6 @@ export default function SendMessage({
                             className={classes.inputTab}
                             style={{ width: '33%' }}
                         >
-                            {' '}
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
@@ -461,8 +516,7 @@ export default function SendMessage({
                             >
                                 <EmojiEmotions />
                             </IconButton>
-
-                            <TextField
+                            <InputBase
                                 size="small"
                                 name="text"
                                 value={text}
@@ -509,6 +563,7 @@ export default function SendMessage({
                     </div>
                 </div>
             </div>
+
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
                 emojiPickerAnchorEl={emojiPickerAnchorEl}
@@ -516,6 +571,6 @@ export default function SendMessage({
                 handleEmojiPickerClose={handleEmojiPickerClose}
                 handleSelectEmoji={handleSelectEmoji}
             />
-        </>
+        </div>
     );
 }

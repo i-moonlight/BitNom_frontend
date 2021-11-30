@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import {
     CloseRounded,
     ImageRounded,
@@ -12,21 +13,23 @@ import {
     CardContent,
     Divider,
     Grid,
+    Hidden,
     IconButton,
     Typography,
     useTheme,
-    Hidden,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import { getDistanceToNow } from '../../../../../components/utilities/date.components';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
+import ReactionHover from '../../../../../components/ReactionHover';
+import { loadComments } from '../../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
     contentBodyFactory,
@@ -38,11 +41,14 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
-import ReactionHover from '../../../../../components/ReactionHover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 export default function Comment({
+    id,
     comment,
     style,
     onCreateComment,
@@ -59,8 +65,6 @@ export default function Comment({
     setImagePreviewOpen,
     profileData,
 }) {
-    const classes = useStyles();
-    const theme = useTheme();
     const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
     const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
@@ -73,16 +77,23 @@ export default function Comment({
     const [replyErr, setReplyErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
+
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const theme = useTheme();
     const history = useHistory();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    // const commentList = state.posts.comments;
+    // const comments = commentList[id];
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const {
         data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
+        loading: commentsLoading,
+        error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: comment?.scroll } },
     });
@@ -223,31 +234,27 @@ export default function Comment({
         }
     };
 
+    const commentUserInitials = getUserInitials(comment?.author?.displayName);
+    const currentUserInitials = getUserInitials(user?.displayName);
+
+    const comments = commentsData?.Comments?.get;
+
     useEffect(() => {
         const reaction = getUserReaction(comment);
         setUserReaction(reaction);
     }, [comment, getUserReaction]);
 
-    const commentUserInitials = getUserInitials(comment?.author?.displayName);
-    const currentUserInitials = getUserInitials(user?.displayName);
-    //moment js single letter formatting for comments
-    moment.updateLocale('en', {
-        relativeTime: {
-            future: 'in %s',
-            past: '%s',
-            s: 'now',
-            m: '1 min',
-            mm: '%d min',
-            h: '1 h',
-            hh: '%d h',
-            d: '1 d',
-            dd: '%d d',
-            M: '1 month',
-            MM: '%d m',
-            y: '1 y',
-            yy: '%d y',
-        },
-    });
+    useEffect(() => {
+        !commentsError &&
+            !commentsLoading &&
+            dispatch(loadComments(commentsData?.Comments?.get, id));
+    }, [
+        commentsData?.Comments?.get,
+        commentsError,
+        commentsLoading,
+        dispatch,
+        id,
+    ]);
 
     return (
         <>
@@ -307,9 +314,9 @@ export default function Comment({
                                         color="textSecondary"
                                     >
                                         .{' '}
-                                        {moment(
-                                            comment.creation_date
-                                        ).fromNow()}
+                                        {getDistanceToNow(
+                                            comment?.creation_date
+                                        )}
                                     </Typography>
                                 </Typography>
                                 <IconButton
@@ -348,7 +355,7 @@ export default function Comment({
                                                     setImagePreviewURL(
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                            comment.image
+                                                            comment?.image
                                                     );
                                                 setImagePreviewOpen(true);
                                             }}
@@ -362,7 +369,7 @@ export default function Comment({
                                                         'url(' +
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                        comment.image +
+                                                        comment?.image +
                                                         ')',
                                                     backgroundSize: 'cover',
                                                     backgroundColor:
@@ -496,8 +503,7 @@ export default function Comment({
                                             }
                                         }}
                                         placeholder={
-                                            commentsData?.Comments?.get
-                                                ?.length > 0
+                                            comments?.length > 0
                                                 ? ''
                                                 : 'Be the first to comment..'
                                         }
@@ -519,7 +525,7 @@ export default function Comment({
                                     >
                                         <Mention
                                             markup="/*@__id__-__display__*/"
-                                            displayTransform={(id, display) =>
+                                            displayTransform={(_id, display) =>
                                                 display
                                             }
                                             trigger="@"
@@ -614,37 +620,43 @@ export default function Comment({
                             </div>
                         </>
                     )}
-                    {commentsData &&
-                        commentsData?.Comments?.get
-                            .filter(
-                                (commentInner) =>
-                                    commentInner?.response_to?._id ===
-                                    comment?._id
-                            )
-                            .map((commentInner) => (
-                                <Comment
-                                    key={commentInner._id}
-                                    comment={commentInner}
-                                    setCommentImage={setCommentImage}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setImagePreviewURL={setImagePreviewURL}
-                                    setImagePreviewOpen={setImagePreviewOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenFlag={setOpenFlag}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                />
-                            ))}
+                    {comments
+                        ?.filter(
+                            (commentInner) =>
+                                commentInner?.response_to?._id === comment?._id
+                        )
+                        ?.map((commentInner) => (
+                            <Comment
+                                key={commentInner._id}
+                                comment={commentInner}
+                                setCommentImage={setCommentImage}
+                                setUpdateCommentOpen={setUpdateCommentOpen}
+                                setCommentToEdit={setCommentToEdit}
+                                setImagePreviewURL={setImagePreviewURL}
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setFlaggedResource={setFlaggedResource}
+                                setOpenFlag={setOpenFlag}
+                                setOpenReactions={setOpenReactions}
+                                setResourceReactions={setResourceReactions}
+                            />
+                        ))}
                 </div>
             </div>
-            <EmojiPickerPopover
-                emojiPickerId={emojiPickerId}
-                emojiPickerAnchorEl={emojiPickerAnchorEl}
-                isEmojiPickerOpen={isEmojiPickerOpen}
-                handleEmojiPickerClose={handleEmojiPickerClose}
-                handleSelectEmoji={handleSelectEmoji}
-            />
+            <Suspense
+                fallback={() => (
+                    <div>
+                        <CircularProgress />
+                    </div>
+                )}
+            >
+                <EmojiPickerPopover
+                    emojiPickerId={emojiPickerId}
+                    emojiPickerAnchorEl={emojiPickerAnchorEl}
+                    isEmojiPickerOpen={isEmojiPickerOpen}
+                    handleEmojiPickerClose={handleEmojiPickerClose}
+                    handleSelectEmoji={handleSelectEmoji}
+                />
+            </Suspense>
             <CommentOptionsPopover
                 setFlaggedResource={setFlaggedResource}
                 setOpenFlag={setOpenFlag}

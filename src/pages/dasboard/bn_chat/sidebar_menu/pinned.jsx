@@ -15,12 +15,14 @@ import Chat from './chat';
 export default function Pinned({ pinned, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
+
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
         if (current_chat._id !== chat._id) {
             dispatch(setCurrentChat(chat));
         }
     };
+
     return (
         <>
             {pinned && pinned?.length > 0 && (

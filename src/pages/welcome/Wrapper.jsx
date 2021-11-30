@@ -31,7 +31,7 @@ export default function Wrapper({ children, authPage, noFooter }) {
             ref={toTop}
             style={{
                 width: '100%',
-                paddingTop: 116,
+                paddingTop: 108,
                 minHeight: '100vh',
                 overflowY: 'hidden',
             }}

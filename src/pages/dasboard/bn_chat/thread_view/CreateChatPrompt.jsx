@@ -18,13 +18,12 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { Fragment, useCallback } from 'react';
+import React from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import debounce from 'lodash/debounce';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -35,10 +34,9 @@ export default function CreateChatPrompt({
 
     const [searchUsers, { loading: userLoading, data: userData }] =
         useLazyQuery(QUERY_SEARCH_USERS);
-    // eslint-disable-next-line
-    const debouncer = useCallback(debounce(searchUsers, 500), []);
 
     const [sendChatInvite, { data }] = useMutation(CREATE_DIALOGUE);
+
     const onSendInvite = async (IUserSmall) => {
         await sendChatInvite({
             variables: {
@@ -55,8 +53,9 @@ export default function CreateChatPrompt({
         setChatInviteOpen(false);
     };
 
-    const users =
-        userData && userData?.Users?.search ? userData?.Users?.search : null;
+    const users = userData?.Users?.search?.filter(
+        (user) => user?._id !== 'bn-ai'
+    );
 
     return (
         <Modal
@@ -72,9 +71,8 @@ export default function CreateChatPrompt({
             open={openChatInvite}
         >
             <Grid container>
-                {' '}
-                <Grid item lg={5} md={2} sm={1} xs={1}></Grid>
-                <Grid item lg={3} md={8} sm={10} xs={10}>
+                <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                <Grid item xs={10} sm={8} md={6} lg={4}>
                     <Card>
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body1">
@@ -118,78 +116,69 @@ export default function CreateChatPrompt({
                                     }}
                                     name="searchString"
                                     type="text"
-                                    onChange={(e) =>
-                                        debouncer({
-                                            variables: {
-                                                params: {
-                                                    searchString:
-                                                        e.target.value,
+                                    onChange={(e) => {
+                                        if (e.target.value.length > 0) {
+                                            searchUsers({
+                                                variables: {
+                                                    params: {
+                                                        searchString:
+                                                            e.target.value,
+                                                    },
                                                 },
-                                            },
-                                            context: { clientName: 'users' },
-                                        })
-                                    }
+                                                context: {
+                                                    clientName: 'users',
+                                                },
+                                            });
+                                        }
+                                    }}
                                 />
                             </Paper>
                         </div>
                         <CardContent>
                             {users && (
                                 <List>
-                                    {users &&
-                                        users?.map((user, index) => (
-                                            <ListItem
-                                                button
-                                                key={index}
-                                                onClick={() =>
-                                                    handleSendInvite(user)
-                                                }
-                                            >
-                                                <ListItemAvatar>
-                                                    <Avatar
-                                                        alt={user._id}
-                                                        src={
-                                                            user?.profile_pic
-                                                                ? process.env
-                                                                      .REACT_APP_BACKEND_URL +
-                                                                  user?.profile_pic
-                                                                : ''
-                                                        }
-                                                        style={{
-                                                            backgroundColor:
-                                                                generateRandomColor(),
-                                                            marginRight: '5px',
-                                                        }}
-                                                    >
-                                                        {user?.profile_pic
-                                                            ? ''
-                                                            : getUserInitials(
-                                                                  user?.displayName
-                                                              )}
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    secondary={
-                                                        <Fragment>
-                                                            <Typography
-                                                                sx={{
-                                                                    display:
-                                                                        'inline',
-                                                                }}
-                                                            >
-                                                                {
-                                                                    user.displayName
-                                                                }
-                                                            </Typography>
-                                                            <Typography>
-                                                                {user.bio}
-                                                            </Typography>
-                                                        </Fragment>
+                                    {users?.map((user, index) => (
+                                        <ListItem
+                                            button
+                                            key={index}
+                                            onClick={() =>
+                                                handleSendInvite(user)
+                                            }
+                                        >
+                                            <ListItemAvatar>
+                                                <Avatar
+                                                    alt={user._id}
+                                                    src={
+                                                        user?.profile_pic
+                                                            ? process.env
+                                                                  .REACT_APP_BACKEND_URL +
+                                                              user?.profile_pic
+                                                            : ''
                                                     }
-                                                ></ListItemText>
-                                            </ListItem>
-                                        ))}
+                                                    style={{
+                                                        backgroundColor:
+                                                            generateRandomColor(),
+                                                        marginRight: '5px',
+                                                    }}
+                                                >
+                                                    {user?.profile_pic
+                                                        ? ''
+                                                        : getUserInitials(
+                                                              user?.displayName
+                                                          )}
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={user?.displayName}
+                                                secondary={
+                                                    user?.bio || `@${user?._id}`
+                                                }
+                                            ></ListItemText>
+                                        </ListItem>
+                                    ))}
                                 </List>
                             )}
+
                             {userLoading && (
                                 <Grid
                                     alignContent="center"
@@ -202,6 +191,7 @@ export default function CreateChatPrompt({
                                     <CircularProgress />
                                 </Grid>
                             )}
+
                             {!userLoading && !users && (
                                 <Grid
                                     alignContent="center"
@@ -217,6 +207,7 @@ export default function CreateChatPrompt({
                         </CardContent>
                     </Card>
                 </Grid>
+                <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
             </Grid>
         </Modal>
     );

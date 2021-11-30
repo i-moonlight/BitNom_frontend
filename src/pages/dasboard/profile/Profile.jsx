@@ -1,5 +1,10 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, useMediaQuery } from '@mui/material';
+import {
+    CircularProgress,
+    Container,
+    Grid,
+    useMediaQuery,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -29,7 +34,7 @@ export default function Profile() {
 
     const {
         // error,
-        //  loading,
+        loading,
         data,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -71,16 +76,30 @@ export default function Profile() {
                 <Container maxWidth="lg">
                     <Grid container spacing={2}>
                         {!mdDown && <Grid item lg={3}></Grid>}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <ProfileCard profile={profile} />
-                            <InsightCard profile={profile} />
-                            <AboutCard profile={profile} />
-                            <WorkCard profile={profile} />
-                            <EducationCard profile={profile} />
-                            <HonorCard profile={profile} />
-                            <SkillsCard profile={profile} />
-                            <AdditionalInfoCard profile={profile} />
-                        </Grid>
+                        {loading && (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={8}
+                                lg={6}
+                                align="center"
+                            >
+                                <CircularProgress color="primary" />
+                            </Grid>
+                        )}
+                        {!loading && data && (
+                            <Grid item xs={12} sm={12} md={8} lg={6}>
+                                <ProfileCard profile={profile} />
+                                <InsightCard profile={profile} />
+                                <AboutCard profile={profile} />
+                                <WorkCard profile={profile} />
+                                <EducationCard profile={profile} />
+                                <HonorCard profile={profile} />
+                                <SkillsCard profile={profile} />
+                                <AdditionalInfoCard profile={profile} />
+                            </Grid>
+                        )}
                         <Grid item md={4} lg={3}></Grid>
                     </Grid>
                 </Container>

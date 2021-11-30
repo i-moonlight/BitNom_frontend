@@ -13,7 +13,6 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -28,10 +27,11 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
@@ -45,8 +45,10 @@ import {
     QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
-import { useHistory } from 'react-router';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({
@@ -133,7 +135,7 @@ export default function UpdatePost({
                 },
             ],
         }).then(({ data: updatePostData, errors }) => {
-            if (updatePostData?.Posts?.create) {
+            if (updatePostData?.Posts?.update) {
                 setScrollText('');
                 setScrollImages(null);
                 setScrollVideo(undefined);
@@ -497,14 +499,13 @@ export default function UpdatePost({
                                             <IconButton
                                                 size="small"
                                                 className="m-1 p-1"
+                                                onClick={() => {
+                                                    setFileType(null);
+                                                    setScrollImages([]);
+                                                    setScrollVideo(null);
+                                                }}
                                             >
-                                                <CloseRounded
-                                                    onClick={() => {
-                                                        setFileType(null);
-                                                        setScrollImages([]);
-                                                        setScrollVideo(null);
-                                                    }}
-                                                />
+                                                <CloseRounded />
                                             </IconButton>
                                         </div>
                                         <Grid
@@ -606,7 +607,7 @@ export default function UpdatePost({
                                         onClick={() => {
                                             setOpenVideo(false);
                                             setOpenImage(true);
-
+                                            setImagePreviewURLS([]);
                                             setFileType(null);
                                             setScrollImages([]);
                                             setScrollVideo(null);
@@ -629,7 +630,7 @@ export default function UpdatePost({
                                         onClick={() => {
                                             setOpenImage(false);
                                             setOpenVideo(true);
-
+                                            setVideoPreviewURL(null);
                                             setFileType(null);
                                             setScrollImages([]);
                                             setScrollVideo(null);
@@ -665,6 +666,7 @@ export default function UpdatePost({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '3px',
+                                            display: loading && 'none',
                                         }}
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
@@ -672,25 +674,14 @@ export default function UpdatePost({
                                     >
                                         Delete
                                     </Button>
-                                    {!loading && (
-                                        <Button
-                                            size="small"
-                                            onClick={handleUpdatePost}
-                                        >
-                                            Update
-                                        </Button>
-                                    )}
-                                    {loading && (
-                                        <Button
-                                            size="small"
-                                            style={{ margin: '0' }}
-                                        >
-                                            <CircularProgress
-                                                size={24}
-                                                thickness={4}
-                                            />
-                                        </Button>
-                                    )}
+
+                                    <Button
+                                        size="small"
+                                        onClick={handleUpdatePost}
+                                        disabled={loading}
+                                    >
+                                        Update
+                                    </Button>
                                 </div>
                             </div>
                         </CardContent>

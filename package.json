@@ -23,8 +23,7 @@
         "apollo-upload-client": "^16.0.0",
         "autosuggest-highlight": "^3.1.1",
         "axios": "^0.24.0",
-        "emoji-mart": "^3.0.1",
-        "emoji-picker-element": "^1.8.2",
+        "date-fns": "^2.26.0",
         "emoji-picker-react": "^3.4.8",
         "formik": "^2.2.9",
         "graphql": "^15.6.1",
@@ -80,7 +79,7 @@
         "eject": "react-scripts eject",
         "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
         "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"Bug fixes . working progress\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"fixes . progress\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
     },
     "browserslist": {
         "production": [

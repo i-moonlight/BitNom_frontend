@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 //import { MoreVert } from '@mui/icons-material';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 
 import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -81,7 +81,7 @@ export default function ScrollPreview({ scroll }) {
                             color="textSecondary"
                             variant="body2"
                         >
-                            {moment(scroll?.createdAt).fromNow()}
+                            {getDistanceToNowWithSuffix(scroll?.createdAt)}
                         </Typography>
                     }
                 />

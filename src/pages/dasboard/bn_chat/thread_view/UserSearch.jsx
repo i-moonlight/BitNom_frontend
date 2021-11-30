@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
 import {
     Autocomplete,
-    TextField,
-    Grid,
     Avatar,
+    Grid,
+    TextField,
     Typography,
 } from '@mui/material';
-import { generateRandomColor } from '../../utilities/functions';
+import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { generateRandomColor } from '../../utilities/functions';
+
 export default function UserSearch({
     searchResults,
     loading,

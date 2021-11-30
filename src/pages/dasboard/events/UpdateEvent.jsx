@@ -4,7 +4,6 @@ import {
     Card,
     CardContent,
     Chip,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -38,52 +37,6 @@ import {
 } from '../utilities/queries';
 import LocationInput from './LocationInput';
 import OrganizerSearch from './OrganizerSearch';
-
-const useStyles = makeStyles((theme) => ({
-    paperSearch: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.profileCard,
-    },
-    locationButtons: {
-        display: 'flex',
-        marginTop: theme.spacing(2),
-        alignItems: 'center',
-    },
-    paperSearchAlt: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.paper,
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    timeField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-    datePicker: {
-        border: '1px solid',
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-        padding: '0px 4px',
-        borderColor: 'rgba(0, 96, 151, 0.5)',
-        borderRadius: '4px',
-        width: '80%',
-        backgroundColor: theme.palette.background.paper,
-        '&:hover, &:focus': {
-            borderColor: theme.palette.primary.main,
-        },
-        height: '2rem',
-    },
-}));
 
 export default function UpdateEvent({
     openUpdate,
@@ -499,7 +452,6 @@ export default function UpdateEvent({
                                         variant="outlined"
                                         name="title"
                                         error={titleErr}
-                                        errorText={errorText}
                                         className="mb-2"
                                         label="Title"
                                         value={eventTitle}
@@ -507,6 +459,7 @@ export default function UpdateEvent({
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {titleErr && errorText}
@@ -546,6 +499,7 @@ export default function UpdateEvent({
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {descriptionErr &&
@@ -599,6 +553,7 @@ export default function UpdateEvent({
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
                                                 <span>
                                                     {linkErr && errorText}
@@ -662,6 +617,7 @@ export default function UpdateEvent({
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
@@ -793,6 +749,7 @@ export default function UpdateEvent({
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventTags?.length}/5 tags`}</span>
                                                     <span>{`${tagText?.length}/20`}</span>
@@ -1053,6 +1010,7 @@ export default function UpdateEvent({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '12px',
+                                            display: loading && 'none',
                                         }}
                                         size="small"
                                         variant="contained"
@@ -1060,25 +1018,14 @@ export default function UpdateEvent({
                                     >
                                         Delete
                                     </Button>
-                                    {!loading && (
-                                        <Button
-                                            size="small"
-                                            onClick={handleUpdateEvent}
-                                        >
-                                            Update
-                                        </Button>
-                                    )}
-                                    {loading && (
-                                        <Button
-                                            size="small"
-                                            style={{ margin: '0' }}
-                                        >
-                                            <CircularProgress
-                                                size={24}
-                                                thickness={4}
-                                            />
-                                        </Button>
-                                    )}
+
+                                    <Button
+                                        size="small"
+                                        onClick={handleUpdateEvent}
+                                        disabled={loading}
+                                    >
+                                        Update
+                                    </Button>
                                 </div>
                             </div>
                         </CardContent>
@@ -1088,3 +1035,49 @@ export default function UpdateEvent({
         </Modal>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    paperSearch: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.profileCard,
+    },
+    locationButtons: {
+        display: 'flex',
+        marginTop: theme.spacing(2),
+        alignItems: 'center',
+    },
+    paperSearchAlt: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    timeField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+    datePicker: {
+        border: '1px solid',
+        color: theme.palette.getContrastText(theme.palette.background.paper),
+        padding: '0px 4px',
+        borderColor: 'rgba(0, 96, 151, 0.5)',
+        borderRadius: '4px',
+        width: '80%',
+        backgroundColor: theme.palette.background.paper,
+        '&:hover, &:focus': {
+            borderColor: theme.palette.primary.main,
+        },
+        height: '2rem',
+    },
+}));

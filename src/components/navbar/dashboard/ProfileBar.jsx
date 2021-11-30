@@ -23,6 +23,7 @@ import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
+
 import { getUserInitials } from '../../../utilities/Helpers';
 import { Button } from '../../Button';
 import LazyImage from '../../LazyImage';
@@ -106,7 +107,11 @@ export default function ProfileBar({
                         elevation={0}
                         component="form"
                         className={classes.paperSearch}
+                        sx={{
+                            height: 36,
+                        }}
                     >
+                        <div className="flex-1 p-1 m-1"></div>
                         {/* {!xsDown && (
                             <>
                                 <Button textCase variant="text">
