@@ -106,7 +106,11 @@ export default function SuggestedPeopleCard({ suggestedUsers, profileData }) {
                 {notFollowed && notFollowed?.length === 0 && (
                     <ListItem>
                         <ListItemText
-                            primary="No people to show yet"
+                            primary={
+                                <Typography variant="body2">
+                                    0 Suggestions
+                                </Typography>
+                            }
                             secondary="Start to interact to show content here"
                         />
                     </ListItem>
