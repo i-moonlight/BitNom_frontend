@@ -10,7 +10,7 @@ import { useFormikContext } from 'formik';
 
 export default function TextField({
     name,
-    label = '',
+    label,
     labelTop,
     placeholder,
     errorText,

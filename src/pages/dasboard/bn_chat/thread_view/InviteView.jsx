@@ -42,8 +42,8 @@ export default function InviteView({ dialogue }) {
 
     return (
         <div
-            style={{ minHeight: '64vh' }}
-            className="d-flex justify-content-center align-items-end mx-auto w-100"
+            // style={{ minHeight: '64vh' }}
+            className="d-flex justify-content-center align-items-end mx-auto w-100 mt-3"
         >
             <Card className={classes.cardDefault}>
                 <CardContent>
@@ -62,6 +62,7 @@ export default function InviteView({ dialogue }) {
                         color="primary"
                         onClick={handleAccept}
                         className="me-1"
+                        textCase
                     >
                         Accept
                     </Button>
@@ -69,6 +70,7 @@ export default function InviteView({ dialogue }) {
                         variant="contained"
                         color="primary"
                         onClick={handleReject}
+                        textCase
                     >
                         Reject
                     </Button>

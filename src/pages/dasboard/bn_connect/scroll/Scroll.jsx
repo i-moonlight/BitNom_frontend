@@ -57,7 +57,6 @@ import {
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
-
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')
 );

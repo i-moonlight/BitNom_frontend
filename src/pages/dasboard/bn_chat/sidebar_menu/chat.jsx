@@ -34,48 +34,59 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             _id: chat._id,
         },
     });
+
     //unread count
     const { data: countData } = useSubscription(UNREAD_COUNT, {
         variables: {
             _id: chat._id,
         },
     });
+
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
             _id: chat.otherUser.info._id,
         },
     });
+
     useEffect(() => {
         updateLastSeen();
         setIsOnline(setInterval(() => updateLastSeen(), 20000));
+
         return () => {
             clearInterval(isOnline);
         };
         // eslint-disable-next-line
     }, []);
+
     useEffect(() => {
         if (OnlineData?.userIsOnline?.online === true) {
             setOnline(true);
         }
     }, [OnlineData?.userIsOnline?.online]);
+
     useEffect(() => {
         if (typeof OnlineData?.userIsOnline?.online === 'undefined') {
             setOnline(false);
         }
     }, [OnlineData?.userIsOnline?.online]);
+
     const updateLastSeen = () => {
         UpdateLastSeenMutation({
             variables: { _id: user._id },
             context: { clientName: 'chat' },
         });
     };
+
     const otherUser =
         chat.otherUser.info._id === user._id
             ? chat.currentUser
             : chat.otherUser;
+
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
+
+    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
 
     return (
         <>
@@ -90,20 +101,15 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
             >
                 <ListItemAvatar>
                     <Avatar
-                        style={{
-                            backgroundColor: '#1C0C5B',
-                        }}
                         src={
-                            otherUser?.profile_pic
+                            otherUser?.info?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  chat?.otherUser?.profile_pic
-                                : ''
+                                  otherUser?.info?.profile_pic
+                                : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
                     >
-                        {otherUser?.profile_pic
-                            ? ''
-                            : getUserInitials(otherUser?.info.displayName)}
+                        {userInitials}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
@@ -125,7 +131,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     //             style={{ marginLeft: '120px' }}
                     //         />
                     primary={
-                        <Typography color="textPrimary">
+                        <Typography color="textPrimary" component="span">
                             {otherUser?.info?.displayName}{' '}
                             <Badge
                                 badgeContent={
@@ -142,7 +148,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     }
                     secondary={
                         <React.Fragment>
-                            {chat.status === 'accepted' && (
+                            {chat.status === 'accepted' ? (
                                 <span>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
@@ -168,10 +174,14 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : chat?.lastMessage?.documents?.length >
                                       0 ? (
                                         <AttachFile />
-                                    ) : (
+                                    ) : chat?.lastMessage?.text ? (
                                         truncateString(chat?.lastMessage?.text)
+                                    ) : (
+                                        `@${otherUser?.info?._id}`
                                     )}
                                 </span>
+                            ) : (
+                                `@${otherUser?.info?._id}`
                             )}
                         </React.Fragment>
                     }

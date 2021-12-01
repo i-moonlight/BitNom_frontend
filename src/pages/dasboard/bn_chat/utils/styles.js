@@ -178,6 +178,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     cardDropzone: {
         backgroundColor: theme.palette.background.default,
+        marginLeft: 8,
+        marginRight: 8,
     },
     pinnedList: {
         backgroundColor: theme.palette.background.default,
@@ -204,5 +206,14 @@ export const useStyles = makeStyles((theme) => ({
         marginRight: '8px',
         borderWidth: '0px 0px 0px 7px ',
         borderRadius: '5px 5px 5px 5px',
+    },
+    uploadPanel: {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 0,
+        listStyleType: 'none',
+        '& .before': {
+            content: '',
+        },
     },
 }));

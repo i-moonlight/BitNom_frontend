@@ -20,6 +20,7 @@ import {
     useTheme,
 } from '@mui/material';
 import debounce from 'lodash/debounce';
+import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -102,6 +103,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     };
 
     const onlineUser = UserOnlineData?.userIsOnline?.user;
+    const userInitials = getUserInitials(otherUser?.info?.displayName);
 
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
@@ -171,37 +173,95 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             }
                         >
                             <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
                                 src={
-                                    otherUser?.info?.profile_pic
-                                        ? process.env.REACT_APP_BACKEND_URL +
-                                          chat?.otherUser?.info?.profile_pic
-                                        : ''
+                                    process.env.REACT_APP_BACKEND_URL +
+                                        chat?.otherUser?.info?.profile_pic ||
+                                    `https://ui-avatars.com/api/?name=${userInitials}&background=fed132`
                                 }
+                                alt={'avatar'}
                             >
-                                {otherUser?.info?.profile_pic
-                                    ? ''
-                                    : getUserInitials(
-                                          otherUser?.info?.displayName
-                                      )}
+                                {userInitials}
                             </Avatar>
                         </Badge>
                     </>
                 }
                 action={
-                    <IconButton
-                        size="small"
-                        className={'m-1 p-1' + classes.iconButton}
-                        aria-label="chat settings"
-                        aria-haspopup="true"
-                        aria-controls={chatSettingsId}
-                        color="primary"
-                        onClick={handleChatSettingOpen}
-                    >
-                        <SettingsRounded />
-                    </IconButton>
+                    <div className="d-flex align-items-center">
+                        {searchOpen && (
+                            <Paper
+                                variant={
+                                    theme.palette.mode == 'light'
+                                        ? 'outlined'
+                                        : 'elevation'
+                                }
+                                elevation={0}
+                                component="form"
+                                className={classes.paperSearch}
+                            >
+                                {' '}
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="search"
+                                >
+                                    <Search />
+                                </IconButton>{' '}
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Search Messages"
+                                    inputProps={{
+                                        'aria-label': 'search Messages',
+                                    }}
+                                    name="searchString"
+                                    onChange={handleDebouncedSearch}
+                                />
+                                <Divider orientation="vertical" flexItem />
+                                <Typography variant="body2">0/0</Typography>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    onClick={handleDownIndex}
+                                >
+                                    <ArrowDropDown />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    onClick={handleUpIndex}
+                                >
+                                    <ArrowDropUp />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    onClick={handleSearchClearNClose}
+                                >
+                                    <CloseRounded />
+                                </IconButton>
+                            </Paper>
+                        )}
+                        <IconButton
+                            size="small"
+                            className={'m-1 p-1' + classes.iconButton}
+                            aria-label="chat settings"
+                            aria-haspopup="true"
+                            aria-controls={chatSettingsId}
+                            onClick={() => setSearchOpen(true)}
+                        >
+                            <Search />
+                        </IconButton>
+                        <IconButton
+                            size="small"
+                            className={'m-1 p-1' + classes.iconButton}
+                            aria-label="chat settings"
+                            aria-haspopup="true"
+                            aria-controls={chatSettingsId}
+                            color="primary"
+                            onClick={handleChatSettingOpen}
+                        >
+                            <SettingsRounded />
+                        </IconButton>
+                    </div>
                 }
                 title={
                     <Typography style={{ marginRight: 8 }}>
@@ -209,109 +269,44 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                     </Typography>
                 }
                 subheader={
-                    <div>
-                        <div className="d-flex ">
-                            <div className="d-flex align-items-center">
-                                <Typography variant="body1">
-                                    Software Dev
+                    <div className="d-flex">
+                        <div className="d-flex align-items-center">
+                            {onlineUser === chat?.otherUser?.info?._id &&
+                            online === true ? (
+                                <Typography variant="subtitle2">
+                                    online
                                 </Typography>
-                            </div>
-                            {userTypingData?.userTyping?.typing === true ? (
-                                <div
-                                    className="d-flex align-items-center"
-                                    style={{ marginLeft: '10px' }}
+                            ) : onlineUser === chat?.otherUser?.info?._id &&
+                              online === true &&
+                              userTypingData?.userTyping?.typing === true ? (
+                                <Typography
+                                    variant="subtitle2"
+                                    style={{ fontStyle: 'italic' }}
                                 >
-                                    <Typography
-                                        variant="subtitle2"
-                                        style={{ fontStyle: 'italic' }}
-                                    >
-                                        Typing...
-                                    </Typography>
-                                </div>
+                                    typing...
+                                </Typography>
                             ) : (
-                                ''
-                            )}
-                            <Divider
-                                className={classes.dividerStatus}
-                                orientation="vertical"
-                                flexItem
-                            />
-                            <div className="d-flex align-items-center">
-                                <IconButton
-                                    size="small"
-                                    className={'m-1 p-1' + classes.iconButton}
-                                    aria-label="chat settings"
-                                    aria-haspopup="true"
-                                    aria-controls={chatSettingsId}
-                                    onClick={() => setSearchOpen(true)}
-                                >
-                                    <Search />
-                                </IconButton>
-                            </div>{' '}
-                            {searchOpen ? (
-                                <Paper
-                                    variant={
-                                        theme.palette.mode == 'light'
-                                            ? 'outlined'
-                                            : 'elevation'
-                                    }
-                                    elevation={0}
-                                    component="form"
-                                    className={classes.paperSearch}
-                                >
-                                    {' '}
-                                    <IconButton
-                                        size="small"
-                                        className={
-                                            'm-1 p-1' + classes.iconButton
-                                        }
-                                        aria-label="search"
-                                    >
-                                        <Search />
-                                    </IconButton>{' '}
-                                    <InputBase
-                                        className={classes.input}
-                                        placeholder="Search Messages"
-                                        inputProps={{
-                                            'aria-label': 'search Messages',
-                                        }}
-                                        name="searchString"
-                                        onChange={handleDebouncedSearch}
-                                    />
-                                    <Divider orientation="vertical" flexItem />
-                                    <Typography variant="body2">0/0</Typography>
-                                    <IconButton
-                                        size="small"
-                                        className={
-                                            'm-1 p-1' + classes.iconButton
-                                        }
-                                        onClick={handleDownIndex}
-                                    >
-                                        <ArrowDropDown />
-                                    </IconButton>
-                                    <IconButton
-                                        size="small"
-                                        className={
-                                            'm-1 p-1' + classes.iconButton
-                                        }
-                                        onClick={handleUpIndex}
-                                    >
-                                        <ArrowDropUp />
-                                    </IconButton>
-                                    <IconButton
-                                        size="small"
-                                        className={
-                                            'm-1 p-1' + classes.iconButton
-                                        }
-                                        onClick={handleSearchClearNClose}
-                                    >
-                                        <CloseRounded />
-                                    </IconButton>
-                                </Paper>
-                            ) : (
-                                ''
+                                <Typography variant="subtitle2">
+                                    last seen{' '}
+                                    {moment(otherUser.lastSeen).format(
+                                        'dddd h:mm'
+                                    )}
+                                </Typography>
                             )}
                         </div>
+                        {userTypingData?.userTyping?.typing === true && (
+                            <div
+                                className="d-flex align-items-center"
+                                style={{ marginLeft: '10px' }}
+                            >
+                                <Typography
+                                    variant="subtitle2"
+                                    style={{ fontStyle: 'italic' }}
+                                >
+                                    typing...
+                                </Typography>
+                            </div>
+                        )}
                     </div>
                 }
             />
