@@ -58,6 +58,7 @@ export default function SendMessage({
     otherUser,
 }) {
     const [text, setText] = useState('');
+    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -68,6 +69,7 @@ export default function SendMessage({
     const [openGif, setGifOpen] = useState(false);
     const [sendMessageErr, setSendMessageError] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
+    const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const theme = useTheme();
     const classes = useStyles();
