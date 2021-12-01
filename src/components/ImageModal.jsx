@@ -153,7 +153,7 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
     Container: {
-        height: '600px',
+        height: '550px',
         overflowX: 'hidden',
         overflowY: 'auto',
         [theme.breakpoints.down('md')]: {
@@ -165,7 +165,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '550px',
+        height: '500px',
         padding: '10px',
         margin: 0,
         [theme.breakpoints.down('sm')]: {
@@ -175,7 +175,7 @@ const useStyles = makeStyles((theme) => ({
     },
     Content: {
         display: 'flex',
-        height: '540px',
+        height: '550px',
         padding: '10px',
         /* [theme.breakpoints.down('sm')]: {
             padding: '5px',
