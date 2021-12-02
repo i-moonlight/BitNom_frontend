@@ -137,6 +137,24 @@ export default function BnConnect() {
         usersLoading,
     ]);
 
+    useEffect(() => {
+        const OneSignal = window.OneSignal || [];
+
+        OneSignal.push(() => {
+            OneSignal.init({
+                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+                // appId: '6f7e8d21-0a84-4680-9af5-bfe6e141b6c7',
+            });
+            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+                if (isEnabled) {
+                    var externalUserId = user._id;
+                    OneSignal.setExternalUserId(externalUserId);
+                } else {
+                    // Push notifications not enabled
+                }
+            });
+        });
+    }, [user._id]);
     return (
         <Screen>
             <SEO

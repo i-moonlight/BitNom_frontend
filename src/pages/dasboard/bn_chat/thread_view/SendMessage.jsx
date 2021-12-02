@@ -58,6 +58,7 @@ export default function SendMessage({
     otherUser,
 }) {
     const [text, setText] = useState('');
+    const inputRef = useRef();
     const [message_images, setMessageImages] = useState([]);
     const [message_video, setMessageVideo] = useState(null);
     const [message_gif, setMessageGif] = useState(null);
@@ -66,13 +67,10 @@ export default function SendMessage({
     const [openFile, setFileOpen] = useState(false);
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
+    const [sendMessageErr, setSendMessageError] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
-    const [sendMessageErr, setSendMessageError] = useState({});
     const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
-
-    const inputRef = useRef();
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-
     const theme = useTheme();
     const classes = useStyles();
     const xsDown = useMediaQuery('(max-width:599px)');
@@ -155,6 +153,14 @@ export default function SendMessage({
 
     const handleSendMessage = (e) => {
         e.preventDefault();
+        if (
+            !text &&
+            message_docs?.length < 1 &&
+            message_images?.length < 1 &&
+            message_video === null &&
+            message_gif === null
+        )
+            return setSendMessageError(true);
         onSendMessage({
             chat: chat,
             text: text,
@@ -535,7 +541,7 @@ export default function SendMessage({
                                         ? handleSendMessage()
                                         : null;
                                 }}
-                                error={Object.keys(sendMessageErr)?.length > 0}
+                                error={sendMessageErr ? true : false}
                             />
                             <IconButton
                                 size="small"
@@ -550,19 +556,11 @@ export default function SendMessage({
                                 <SendOutlined />
                             </IconButton>
                         </Paper>
-
-                        {Object.keys(sendMessageErr)?.length > 0 && (
-                            <div>
-                                {Object.values(sendMessageErr)?.map((value) => (
-                                    <Typography
-                                        color="error"
-                                        variant="body2"
-                                        key={value}
-                                    >
-                                        {value}
-                                    </Typography>
-                                ))}
-                            </div>
+                        {sendMessageErr && (
+                            <Typography color="error" variant="body2">
+                                {' '}
+                                This field cannot be empty!
+                            </Typography>
                         )}
                     </div>
                 </div>
