@@ -27,6 +27,8 @@ import {
     Skeleton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -34,7 +36,7 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 import { Button } from '../../../../components/Button';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
@@ -96,8 +98,9 @@ export default function Scroll({
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    //const [createCommentErr, setCreateCommentErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
+    const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -140,26 +143,42 @@ export default function Scroll({
                     variables: { data: { scroll_id: scroll?._id } },
                 },
             ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
@@ -174,8 +193,6 @@ export default function Scroll({
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -233,12 +250,9 @@ export default function Scroll({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            autoClose: 5000,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -703,10 +717,32 @@ export default function Scroll({
                             </IconButton>
                         </div>
                         <div className={classes.inputHelper}>
-                            <Typography color="error" variant="body2">
-                                {createCommentErr &&
-                                    'The comment content cannot be empty'}
-                            </Typography>
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    //variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
                         </div>
                         <Card
                             style={{

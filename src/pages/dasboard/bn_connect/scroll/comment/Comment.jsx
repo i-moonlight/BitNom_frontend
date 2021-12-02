@@ -17,6 +17,8 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -25,7 +27,6 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import ReactionHover from '../../../../../components/ReactionHover';
@@ -35,9 +36,13 @@ import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
+    getFeed,
 } from '../../../utilities/functions';
 import {
     MUTATION_CREATE_REACTION,
+    MUTATION_CREATE_COMMENT,
+    QUERY_LOAD_SCROLLS,
+    QUERY_POST_BY_ID,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
@@ -51,7 +56,7 @@ export default function Comment({
     id,
     comment,
     style,
-    onCreateComment,
+    //onCreateComment,
     comment_image,
     scroll,
     setCommentImage,
@@ -74,9 +79,10 @@ export default function Comment({
     const [userReaction, setUserReaction] = useState();
     const [likeHovered, setLikeHovered] = useState(false);
     const [responseTo, setResponseTo] = useState('');
-    const [replyErr, setReplyErr] = useState(false);
+    //const [replyErr, setReplyErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -89,6 +95,7 @@ export default function Comment({
     // const comments = commentList[id];
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const {
         data: commentsData,
@@ -97,6 +104,74 @@ export default function Comment({
     } = useQuery(QUERY_GET_COMMENTS, {
         variables: { data: { scroll_id: comment?.scroll } },
     });
+
+    const onCreateComment = (ICreateComment) => {
+        createComment({
+            variables: {
+                data: ICreateComment,
+            },
+            errorPolicy: 'all',
+            refetchQueries: [
+                {
+                    query: QUERY_GET_COMMENTS,
+                    variables: {
+                        data: { scroll_id: scroll?.id },
+                    },
+                },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: scroll?.id },
+                },
+            ],
+        }).then(({ data, errors: createCommentErrors }) => {
+            if (data?.Comments?.create) {
+                setReply('');
+                setCommentImage(null);
+                setErrors([]);
+                setPreviewURL();
+                setReply('');
+
+                setFileErrors([]);
+            }
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = createCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
+        });
+    };
 
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -176,12 +251,9 @@ export default function Comment({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            autoClose: 5000,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -194,7 +266,6 @@ export default function Comment({
 
     const handleCreateReply = (e) => {
         e.preventDefault();
-        if (reply.trim() == '' && !comment_image) return setReplyErr(true);
 
         const mentionsData = mentionsFinder(reply);
         onCreateComment({
@@ -204,10 +275,6 @@ export default function Comment({
             image: comment_image,
             response_to: responseTo,
         });
-        setReply('');
-        setPreviewURL();
-        setFileErrors([]);
-        setReplyErr(false);
     };
 
     const getUserReaction = useCallback(
@@ -565,10 +632,32 @@ export default function Comment({
                                 </IconButton>
                             </div>
                             <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {replyErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                             </div>
                             <Card
                                 style={{

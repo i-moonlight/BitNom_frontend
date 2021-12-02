@@ -31,7 +31,6 @@ import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
@@ -65,8 +64,9 @@ export default function UpdatePost({
     setVideoDisabled,
     postView,
 }) {
-    const [updatePostErr, setUpdatePostErr] = useState(null);
+    //const [updatePostErr, setUpdatePostErr] = useState(null);
     const [fileType, setFileType] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState(null);
     const [scroll_video, setScrollVideo] = useState(undefined);
@@ -103,16 +103,7 @@ export default function UpdatePost({
                 },
             ],
         });
-        setScrollText('');
-        setScrollImages(null);
-        setScrollVideo(undefined);
-        setUpdatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setFileType(null);
-        setOpenVideo(false);
-        setPostToEdit(null);
+        handleCloseModal();
         if (postView) history.push('/connect');
     };
 
@@ -134,39 +125,43 @@ export default function UpdatePost({
                     variables: { _id: postToEdit._id },
                 },
             ],
-        }).then(({ data: updatePostData, errors }) => {
+        }).then(({ data: updatePostData, errors: updatePostErrors }) => {
             if (updatePostData?.Posts?.update) {
-                setScrollText('');
-                setScrollImages(null);
-                setScrollVideo(undefined);
-                setUpdatePostErr(false);
-                setImageDisabled(false);
-                setVideoDisabled(false);
-                setOpenImage(false);
-                setFileType(null);
-                setOpenVideo(false);
-                setPostToEdit(null);
-                setImagePreviewURLS([]);
-                setVideoPreviewURL(null);
-                setUpdateScrollOpen(false);
+                handleCloseModal();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
-                    const errorMsg = errors[0]?.message;
+            if (updatePostErrors) {
+                if (
+                    updatePostErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    const errorMsg = updatePostErrors[0]?.message;
                     const mime = errorMsg?.substring(
                         errorMsg?.indexOf(':') + 1
                     );
 
-                    toast.error(
-                        `Your image(s) have an unsupported file type (${mime})`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
                     setImagePreviewURLS([]);
                     setScrollImages([]);
                     setScrollVideo(null);
+                } else if (updatePostErrors[0]?.message == 400) {
+                    const errorObject = updatePostErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`~ ${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(['The post content cannot be empty.']);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection and refresh the page.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
                 }
             }
         });
@@ -202,6 +197,21 @@ export default function UpdatePost({
         };
     });
 
+    const handleCloseModal = () => {
+        setUpdateScrollOpen(!updateScrollOpen);
+        setPostToEdit(null);
+        setOpenImage(false);
+        setOpenVideo(false);
+        setScrollImages(null);
+        setScrollVideo(null);
+        setErrors([]);
+        setFileType(null);
+        setImageDisabled(false);
+        setVideoDisabled(false);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
+    };
+
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);
     };
@@ -218,14 +228,7 @@ export default function UpdatePost({
     const handleSelectImages = (files) => {
         if (files.length < 1) return;
         if (files.length > 4) {
-            return toast.error('You can only upload maximum of 4 images', {
-                position: 'bottom-left',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            return setErrors(['You can only upload a maximum of 4 images']);
         }
         const previews = [];
         const allowedFiles = [];
@@ -233,14 +236,7 @@ export default function UpdatePost({
             if (file.size > 2500000) {
                 previews.splice(0, previews.length);
                 allowedFiles.splice(0, allowedFiles.length);
-                return toast.error('Each image should be less than 2MB', {
-                    position: 'bottom-left',
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
+                return setErrors(['Each image should be less than 2MB']);
             } else {
                 previews.push(URL.createObjectURL(file));
                 allowedFiles.push(file);
@@ -254,14 +250,7 @@ export default function UpdatePost({
         if (files.length < 1) return;
         const file = files[0];
         if (file.size > 4000000) {
-            return toast.error('The video should be less than 4MB', {
-                position: 'bottom-left',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            return setErrors(['The video should be less than 4MB']);
         } else {
             setVideoPreviewURL(URL.createObjectURL(file));
             setScrollVideo(file);
@@ -270,7 +259,9 @@ export default function UpdatePost({
 
     const handleUpdatePost = (e) => {
         e.preventDefault();
-        if (scroll_text.trim() == '') return setUpdatePostErr(true);
+        if (scroll_text.trim() == '') {
+            return setErrors(['The post content cannot be empty.']);
+        }
         const mentionsData = mentionsFinder(scroll_text);
         onUpdatePost({
             post_id: postToEdit?._id,
@@ -311,18 +302,7 @@ export default function UpdatePost({
                             <Typography variant="body1">Update Post</Typography>
                             <IconButton
                                 onClick={() => {
-                                    setUpdateScrollOpen(!updateScrollOpen);
-                                    setPostToEdit(null);
-                                    setOpenImage(false);
-                                    setOpenVideo(false);
-                                    setScrollImages(null);
-                                    setScrollVideo(null);
-                                    setUpdatePostErr(false);
-                                    setFileType(null);
-                                    setImageDisabled(false);
-                                    setVideoDisabled(false);
-                                    setImagePreviewURLS([]);
-                                    setVideoPreviewURL(null);
+                                    handleCloseModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -401,10 +381,7 @@ export default function UpdatePost({
                                     }}
                                 />
                             </MentionsInput>
-                            <Typography color="error" variant="body2">
-                                {updatePostErr &&
-                                    'The post content cannot be empty'}
-                            </Typography>
+
                             {imagePreviewURLS.length > 0 && (
                                 <>
                                     <Grid
@@ -600,6 +577,30 @@ export default function UpdatePost({
                                     </Button>
                                 </DialogActions>
                             </Dialog>
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
                             <div className="space-between mt-1">
                                 <div className="center-horizontal">
                                     <IconButton
