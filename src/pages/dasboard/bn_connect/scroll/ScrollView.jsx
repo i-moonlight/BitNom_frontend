@@ -29,6 +29,8 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -100,7 +102,7 @@ function PostView() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
-    //const [openImage, setOpenImage] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [openVideo, setOpenVideo] = useState(false);
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
@@ -115,7 +117,7 @@ function PostView() {
     const [comment_image, setCommentImage] = useState(null);
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+
     const [getPostErr, setGetPostErr] = useState(null);
     const [openShareModal, setOpenShareModal] = useState(false);
 
@@ -240,32 +242,46 @@ function PostView() {
                     variables: { _id: postId },
                 },
             ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentFilter(1);
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
-
-        // if (!createCommentData) console.log(createCommentData);
     };
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -307,8 +323,6 @@ function PostView() {
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -946,13 +960,39 @@ function PostView() {
                                             <div
                                                 className={classes.inputHelper}
                                             >
-                                                <Typography
-                                                    color="error"
-                                                    variant="body2"
-                                                >
-                                                    {createCommentErr &&
-                                                        'The comment content cannot be empty'}
-                                                </Typography>
+                                                {errors?.length > 0 && (
+                                                    <Card
+                                                        elevation={0}
+                                                        style={{
+                                                            marginTop: '3px',
+                                                            background:
+                                                                'transparent',
+                                                        }}
+                                                        component="div"
+                                                        //variant="outlined"
+                                                    >
+                                                        {errors?.map(
+                                                            (errItem) => (
+                                                                <ListItem
+                                                                    key={
+                                                                        errItem
+                                                                    }
+                                                                >
+                                                                    <ListItemText
+                                                                        secondary={
+                                                                            <Typography
+                                                                                variant="body2"
+                                                                                color="error"
+                                                                            >
+                                                                                {`~ ${errItem}`}
+                                                                            </Typography>
+                                                                        }
+                                                                    />
+                                                                </ListItem>
+                                                            )
+                                                        )}
+                                                    </Card>
+                                                )}
                                             </div>
 
                                             <Card

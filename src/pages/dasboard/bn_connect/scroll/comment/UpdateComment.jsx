@@ -11,7 +11,6 @@ import {
     Avatar,
     Card,
     CardContent,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -29,7 +28,6 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
 import {
@@ -56,7 +54,6 @@ export default function UpdateComment({
     setOpenImage,
     profileData,
 }) {
-    const [updateCommentErr, setUpdateCommentErr] = useState(null);
     const [fileType, setFileType] = useState(null);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(undefined);
@@ -64,6 +61,7 @@ export default function UpdateComment({
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const emojiPickerId = 'emoji-picker-popover';
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -93,12 +91,7 @@ export default function UpdateComment({
                 },
             ],
         });
-        setCommentText('');
-        setCommentImage(undefined);
-        setUpdateCommentErr(false);
-        setOpenImage(false);
-        setFileType(null);
-        setCommentToEdit(null);
+        handleCloseModal();
     };
 
     const onUpdateComment = async (IUpdateComment) => {
@@ -119,34 +112,54 @@ export default function UpdateComment({
                     variables: { data: { scroll_id: commentToEdit?.scroll } },
                 },
             ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: updateCommentErrors }) => {
             if (data?.Comments?.update) {
-                setCommentText('');
-                setCommentImage(undefined);
-                setUpdateCommentErr(false);
-                setOpenImage(false);
-                setFileType(null);
-                setCommentToEdit(null);
-                setPreviewURL();
-                setFileErrors([]);
-                setUpdateCommentOpen(false);
+                handleCloseModal();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (updateCommentErrors) {
+                if (
+                    updateCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = updateCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (updateCommentErrors[0]?.message == 400) {
+                    const errorObject = updateCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
+    };
+
+    const handleCloseModal = () => {
+        setCommentText('');
+        setUpdateCommentOpen(!updateCommentOpen);
+        setCommentToEdit(null);
+        setOpenImage(false);
+        setCommentImage(undefined);
+        setErrors([]);
+        setFileType(null);
+        setPreviewURL();
+        setFileErrors([]);
     };
 
     const handleEmojiPickerOpen = (event) => {
@@ -192,17 +205,9 @@ export default function UpdateComment({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -215,7 +220,6 @@ export default function UpdateComment({
 
     const handleUpdateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '') return setUpdateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onUpdateComment({
@@ -230,7 +234,6 @@ export default function UpdateComment({
         e.preventDefault();
         onDeleteComment(commentToEdit?._id);
         setOpenDelete(false);
-        setUpdateCommentOpen(false);
     };
 
     const userInitials = getUserInitials(user?.displayName);
@@ -259,16 +262,7 @@ export default function UpdateComment({
                                 </Typography>
                                 <IconButton
                                     onClick={() => {
-                                        setUpdateCommentOpen(
-                                            !updateCommentOpen
-                                        );
-                                        setCommentToEdit(null);
-                                        setOpenImage(false);
-                                        setCommentImage(undefined);
-                                        setUpdateCommentErr(false);
-                                        setFileType(null);
-                                        setPreviewURL();
-                                        setFileErrors([]);
+                                        handleCloseModal();
                                     }}
                                     size="small"
                                     className="m-1 p-1"
@@ -361,10 +355,7 @@ export default function UpdateComment({
                                         }}
                                     />
                                 </MentionsInput>
-                                <Typography color="error" variant="body2">
-                                    {updateCommentErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+
                                 <Card
                                     style={{
                                         display: previewURL ? 'block' : 'none',
@@ -490,6 +481,32 @@ export default function UpdateComment({
                                     }
                                     handleSelectEmoji={handleSelectEmoji}
                                 />
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                                 <div className="space-between mt-1">
                                     <div className="center-horizontal">
                                         <IconButton
@@ -524,6 +541,7 @@ export default function UpdateComment({
                                                 backgroundColor: '#ba000d',
                                                 color: '#FFFFFF',
                                                 marginRight: '3px',
+                                                display: loading && 'none',
                                             }}
                                             variant="contained"
                                             size="small"
@@ -531,25 +549,14 @@ export default function UpdateComment({
                                         >
                                             Delete
                                         </Button>
-                                        {!loading && (
-                                            <Button
-                                                size="small"
-                                                onClick={handleUpdateComment}
-                                            >
-                                                Update
-                                            </Button>
-                                        )}
-                                        {loading && (
-                                            <Button
-                                                size="small"
-                                                style={{ margin: '0' }}
-                                            >
-                                                <CircularProgress
-                                                    size={24}
-                                                    thickness={4}
-                                                />
-                                            </Button>
-                                        )}
+
+                                        <Button
+                                            size="small"
+                                            onClick={handleUpdateComment}
+                                            disabled={loading}
+                                        >
+                                            Update
+                                        </Button>
                                     </div>
                                 </div>
                             </CardContent>

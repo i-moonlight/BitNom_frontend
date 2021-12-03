@@ -23,10 +23,11 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { toast } from 'react-toastify';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -81,7 +82,7 @@ export default function ScrollImage({
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [previewURL, setPreviewURL] = useState();
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -131,26 +132,42 @@ export default function ScrollImage({
                     variables: { data: { scroll_id: postId } },
                 },
             ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
@@ -177,17 +194,9 @@ export default function ScrollImage({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -200,8 +209,6 @@ export default function ScrollImage({
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -628,10 +635,32 @@ export default function ScrollImage({
                                 </IconButton>
                             </div>
                             <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {createCommentErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                             </div>
                             <Card
                                 style={{

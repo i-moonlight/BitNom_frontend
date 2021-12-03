@@ -508,17 +508,11 @@ export default function ProfileCard({ profile, profileView }) {
                             color="inherit"
                         >
                             Joined{' '}
-                            {smDown
-                                ? profile?.date &&
-                                  format(
-                                      new Date(profile?.date).getTime(),
-                                      'MMM do, y'
-                                  )
-                                : profile?.date &&
-                                  format(
-                                      new Date(profile?.date).getTime(),
-                                      'MMMM do, y'
-                                  )}
+                            {profile?.date &&
+                                format(
+                                    new Date(profile?.date).getTime(),
+                                    'MMMM y'
+                                )}
                         </Button>
                         <Button
                             className="me-2"

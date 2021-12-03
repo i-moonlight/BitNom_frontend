@@ -665,6 +665,42 @@ export default function EventView() {
                                                         gutterBottom
                                                         variant="body1"
                                                     >
+                                                        Description
+                                                    </Typography>
+                                                    <Typography
+                                                        component="div"
+                                                        variant="body2"
+                                                    >
+                                                        <Typography
+                                                            onClick={(e) =>
+                                                                contentClickHandler(
+                                                                    e
+                                                                )
+                                                            }
+                                                            style={{
+                                                                zIndex: 2,
+                                                                overflowWrap:
+                                                                    'break-word',
+                                                                wordWrap:
+                                                                    'break-word',
+                                                            }}
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: contentBodyFactory(
+                                                                    eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                ),
+                                                            }}
+                                                        ></Typography>
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                            <Card className="mb-3">
+                                                <CardContent>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="body1"
+                                                    >
                                                         Details
                                                     </Typography>
                                                     <div
@@ -897,42 +933,7 @@ export default function EventView() {
                                                     </div>
                                                 </CardContent>
                                             </Card>
-                                            <Card className="mb-3">
-                                                <CardContent>
-                                                    <Typography
-                                                        gutterBottom
-                                                        variant="body1"
-                                                    >
-                                                        Description
-                                                    </Typography>
-                                                    <Typography
-                                                        component="div"
-                                                        variant="body2"
-                                                    >
-                                                        <Typography
-                                                            onClick={(e) =>
-                                                                contentClickHandler(
-                                                                    e
-                                                                )
-                                                            }
-                                                            style={{
-                                                                zIndex: 2,
-                                                                overflowWrap:
-                                                                    'break-word',
-                                                                wordWrap:
-                                                                    'break-word',
-                                                            }}
-                                                            dangerouslySetInnerHTML={{
-                                                                __html: contentBodyFactory(
-                                                                    eventData
-                                                                        ?.Events
-                                                                        ?.getById
-                                                                ),
-                                                            }}
-                                                        ></Typography>
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
+
                                             <Card className="mb-3">
                                                 <CardContent>
                                                     <Typography
@@ -982,8 +983,12 @@ export default function EventView() {
                                                     <Typography
                                                         style={{
                                                             marginTop: '8px',
+                                                            overflowWrap:
+                                                                'break-word',
+                                                            wordWrap:
+                                                                'break-word',
                                                         }}
-                                                        variant="body1"
+                                                        variant="body2"
                                                     >
                                                         {
                                                             eventData?.Events

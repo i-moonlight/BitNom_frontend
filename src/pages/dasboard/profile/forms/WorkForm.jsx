@@ -83,6 +83,7 @@ export default function WorkForm({ onClose, updateData }) {
                         company,
                         title,
                         start_date,
+                        end_date: current ? null : end_date,
                         current,
                         description,
                     };
