@@ -1,4 +1,3 @@
-//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
