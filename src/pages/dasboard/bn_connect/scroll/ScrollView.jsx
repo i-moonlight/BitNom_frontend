@@ -167,9 +167,9 @@ function PostView() {
     );
 
     const {
-        error: postError,
         loading: postLoading,
         data: postData,
+        error: postError,
     } = useQuery(QUERY_POST_BY_ID, {
         variables: { _id: postId },
     });
@@ -1084,7 +1084,7 @@ function PostView() {
                                                             postData?.Posts
                                                                 ?.getById
                                                         }
-                                                        key={comment._id}
+                                                        key={comment?._id}
                                                         setUpdateCommentOpen={
                                                             setUpdateCommentOpen
                                                         }
@@ -1135,7 +1135,7 @@ function PostView() {
                                                                 postData?.Posts
                                                                     ?.getById
                                                             }
-                                                            key={comment._id}
+                                                            key={comment?._id}
                                                             setUpdateCommentOpen={
                                                                 setUpdateCommentOpen
                                                             }

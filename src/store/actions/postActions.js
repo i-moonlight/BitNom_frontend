@@ -4,6 +4,12 @@ export const loadScrolls = (scrolls) => {
     };
 };
 
+export const loadFeed = (feed) => {
+    return (dispatch) => {
+        feed && dispatch({ type: 'LOAD_FEED', feed });
+    };
+};
+
 export const loadTrending = (trending) => {
     return (dispatch) => {
         trending && dispatch({ type: 'LOAD_TRENDING', trending });

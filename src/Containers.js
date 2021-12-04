@@ -175,8 +175,37 @@ const client = new ApolloClient({
                     Dialogue: {
                         merge: true,
                     },
+                    Feed: {
+                        merge: true,
+                    },
+                    /* Feed: {
+                        keyArgs: false,
+                        merge(existing, incoming) {
+                            if (!incoming) return existing;
+                            if (!existing) return incoming;
+                            //console.log(existing, incoming, 'sdkfshfk');
+                            return { ...existing, ...incoming };
+                        },
+                    }, */
                 },
             },
+            /* OFeed: {
+                fields: {
+                    data: {
+                        merge(existing, incoming) {
+                            if (!incoming) return existing;
+                            if (!existing) return incoming;
+                            //console.log(existing, incoming, 'sdkfshfk');
+                            return [...existing, ...incoming];
+                        },
+                    },
+                    hasMore: {
+                        merge(existing, incoming) {
+                            return incoming;
+                        },
+                    },
+                },
+            }, */
         },
     }),
 });
