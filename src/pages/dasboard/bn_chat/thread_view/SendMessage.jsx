@@ -107,6 +107,7 @@ export default function SendMessage({
     const [userTypingMutation] = useMutation(USER_TYPING);
 
     const onSendMessage = async (ICreateMessage) => {
+        setText('');
         await sendMessage({
             variables: {
                 data: ICreateMessage,
@@ -114,7 +115,6 @@ export default function SendMessage({
 
             context: { clientName: 'chat' },
         });
-        setText('');
         setMessageImages([]);
         setMessageVideo(null);
         setMessageDoc([]);
@@ -124,13 +124,13 @@ export default function SendMessage({
     };
 
     const onUpdateMessage = async (IUpdateMessage) => {
+        setText('');
         await updateMessage({
             variables: {
                 data: IUpdateMessage,
             },
             context: { clientName: 'chat' },
         });
-        setText('');
         setEditText();
     };
 
@@ -151,8 +151,7 @@ export default function SendMessage({
         );
     };
 
-    const handleSendMessage = (e) => {
-        e.preventDefault();
+    const handleSendMessage = () => {
         if (
             !text &&
             message_docs?.length < 1 &&
@@ -172,8 +171,7 @@ export default function SendMessage({
         });
     };
 
-    const handleUpdateMessage = (e) => {
-        e.preventDefault();
+    const handleUpdateMessage = () => {
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
     };
 
@@ -533,13 +531,17 @@ export default function SendMessage({
                                 margin="dense"
                                 maxRows={3}
                                 onKeyDown={(e) => {
-                                    e.key === 'Enter' &&
-                                    e.shiftKey &&
-                                    editText?.text?.length > 0
-                                        ? handleUpdateMessage()
-                                        : e.key === 'Enter' && e.shiftKey
-                                        ? handleSendMessage()
-                                        : null;
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        handleSendMessage();
+                                    }
+                                    if (
+                                        e.key === 'Enter' &&
+                                        editText?.text?.length > 0
+                                    ) {
+                                        e.preventDefault();
+                                        handleUpdateMessage();
+                                    }
                                 }}
                                 error={sendMessageErr ? true : false}
                             />

@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery, useSubscription, useMutation } from '@apollo/client';
 import {
     CircularProgress,
     Grid,
@@ -17,6 +17,7 @@ import {
     addToPinnedChats,
     clearCurrentChat,
     removeFromInvites,
+    resetTotalCount,
     setArchivedChats,
     setChatInvites,
     setCurrentChat,
@@ -27,6 +28,7 @@ import {
     GET_DIALOGUES,
     NEW_CHAT_ADDED,
     PIN_CHAT_SUB,
+    RESET_UNREAD_COUNT,
 } from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';
@@ -79,6 +81,7 @@ function Chats({ onSetChatMobile }) {
             context: { clientName: 'chat' },
         }
     );
+    const [unreadCountReset] = useMutation(RESET_UNREAD_COUNT);
 
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
@@ -103,6 +106,15 @@ function Chats({ onSetChatMobile }) {
             _id: user._id,
         },
     });
+
+    const onResetUnreadCount = async (_id) => {
+        await unreadCountReset({
+            variables: {
+                _id: _id,
+            },
+            context: { clientName: 'chat' },
+        });
+    };
     useEffect(() => {
         if (chatAccepted?.chatAccepted) {
             dispatch(clearCurrentChat());
@@ -173,6 +185,8 @@ function Chats({ onSetChatMobile }) {
             dispatch(setCurrentChat(chat));
             xsDown && onSetChatMobile();
         }
+        onResetUnreadCount(chat._id);
+        dispatch(resetTotalCount());
     };
     return (
         <Fragment>
