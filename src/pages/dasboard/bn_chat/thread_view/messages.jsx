@@ -89,7 +89,6 @@ export default function Messages({ onExitChatMobile }) {
 
     useEffect(() => {
         if (pinnedMessages?.Dialogue?.getMessages) {
-            // console.log('Pinning ...', pinnedMessages?.Dialogue?.getMessages);
             dispatch(addPinnedMessage(pinnedMessages?.Dialogue?.getMessages));
             pinnedMessages?.Dialogue?.getMessages?.length > 0 &&
                 setPinOpen(true);

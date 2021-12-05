@@ -1409,3 +1409,17 @@ export const USER_TYPING = gql`
         }
     }
 `;
+export const GET_TOTAL_COUNT = gql`
+    query getCount($data: IUserSmall!) {
+        Dialogue {
+            getCount(data: $data)
+        }
+    }
+`;
+export const RESET_UNREAD_COUNT = gql`
+    mutation resetUnreadCount($_id: ID!) {
+        Dialogue {
+            resetUnreadCount(_id: $_id)
+        }
+    }
+`;

@@ -3,7 +3,10 @@ import { AppBar, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { TOTAL_COUNT } from '../../../pages/dasboard/bn_chat/graphql/queries';
+import {
+    GET_TOTAL_COUNT,
+    TOTAL_COUNT,
+} from '../../../pages/dasboard/bn_chat/graphql/queries';
 import {
     NOTIFICATIONS_SUBSCRIPTION,
     QUERY_FETCH_PROFILE,
@@ -79,6 +82,13 @@ export default function NavBar() {
 
     const { data } = useQuery(QUERY_GET_USER_NOTIFICATIONS, {
         context: { clientName: 'notifications' },
+    });
+
+    const { data: chatCountData } = useQuery(GET_TOTAL_COUNT, {
+        variables: {
+            data: { _id: user._id },
+        },
+        context: { clientName: 'chat' },
     });
 
     const { data: userPosts } = useQuery(QUERY_LOAD_SCROLLS, {
@@ -179,6 +189,12 @@ export default function NavBar() {
     useEffect(() => {
         dispatch(userUpdate(profileData?.Users?.profile));
     }, [dispatch, profileData]);
+
+    useEffect(() => {
+        if (chatCountData?.Dialogue?.getCount) {
+            dispatch(setTotalCount(chatCountData?.Dialogue?.getCount));
+        }
+    }, [dispatch, chatCountData]);
 
     useEffect(() => {
         user?.email &&
