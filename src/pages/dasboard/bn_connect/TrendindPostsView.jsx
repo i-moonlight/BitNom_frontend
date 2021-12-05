@@ -12,7 +12,6 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getFeed } from '../utilities/functions';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
@@ -39,12 +38,13 @@ export default function TrendingPostsView() {
     const { data, loading } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: {
-                ids: getFeed(user),
+                feed_id: user?._id,
                 sortByField: 'trending',
                 limit: 10,
                 //skip: skip,
             },
         },
+        fetchPolicy: 'network-only',
     });
 
     useEffect(() => {

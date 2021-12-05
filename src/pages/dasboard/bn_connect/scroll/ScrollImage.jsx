@@ -25,6 +25,7 @@ import {
     useTheme,
     ListItemText,
     ListItem,
+    Grid,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -39,7 +40,6 @@ import ReactionHover from '../../../../components/ReactionHover';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
-    getFeed,
     getReactionsSum,
     mentionsFinder,
 } from '../../utilities/functions';
@@ -48,7 +48,6 @@ import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
@@ -84,6 +83,7 @@ export default function ScrollImage({
     const [likeHovered, setLikeHovered] = useState(false);
     const [errors, setErrors] = useState([]);
     const [previewURL, setPreviewURL] = useState();
+    const [loadingMore, setLoadingMore] = useState(false);
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -94,19 +94,72 @@ export default function ScrollImage({
     const history = useHistory();
     const user = state.auth.user;
 
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
+    const {
+        // loading: commentsLoading,
+        data: commentsData,
+        // error: commentsError,
+        fetchMore,
+    } = useQuery(QUERY_GET_COMMENTS, {
+        variables: { data: { scroll_id: postId, limit: 8 } },
+    });
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
+    });
     const { data: postData, loading } = useQuery(QUERY_POST_BY_ID, {
         variables: { _id: postId },
     });
 
     const scroll = postData?.Posts?.getById;
-    const {
-        data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
-    } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postId } },
-    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: scroll?._id,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -114,24 +167,6 @@ export default function ScrollImage({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: {
-                        _id: postId,
-                    },
-                },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: postId } },
-                },
-            ],
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
@@ -238,12 +273,6 @@ export default function ScrollImage({
             },
             refetchQueries: [
                 {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
                     query: QUERY_POST_BY_ID,
                     variables: {
                         _id: postId,
@@ -264,12 +293,6 @@ export default function ScrollImage({
                 },
             },
             refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
                 {
                     query: QUERY_POST_BY_ID,
                     variables: {
@@ -570,7 +593,7 @@ export default function ScrollImage({
                                             }
                                         }}
                                         placeholder={
-                                            commentsData?.Comments?.get
+                                            commentsData?.Comments?.get?.data
                                                 ?.length > 0
                                                 ? ''
                                                 : 'Be the first to comment..'
@@ -705,7 +728,7 @@ export default function ScrollImage({
                                 </div>
                             </Card>
                             {commentsData &&
-                                commentsData?.Comments?.get
+                                commentsData?.Comments?.get?.data
                                     .filter((comment) => !comment.response_to)
                                     .map((comment) => (
                                         <Comment
@@ -736,6 +759,33 @@ export default function ScrollImage({
                                             comment_image={comment_image}
                                         />
                                     ))}
+
+                            {commentsData?.Comments?.get?.data?.length > 0 &&
+                                commentsData?.Comments?.get?.hasMore &&
+                                !loadingMore && (
+                                    <Grid align="center">
+                                        <Button
+                                            size="small"
+                                            textCase
+                                            variant="text"
+                                            onClick={() =>
+                                                loadMore(
+                                                    commentsData?.Comments?.get
+                                                        ?.data?.length
+                                                )
+                                            }
+                                        >
+                                            more comments...
+                                        </Button>
+                                    </Grid>
+                                )}
+                            {loadingMore && (
+                                <Grid align="center">
+                                    <Typography color="primary">
+                                        Loading ...
+                                    </Typography>
+                                </Grid>
+                            )}
                         </div>
                     )}
                 </Card>

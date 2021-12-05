@@ -28,7 +28,8 @@ import { Button } from '../../../../components/Button';
 //import { loadScrolls, loadFeed } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import { getFeed, mentionsFinder } from '../../utilities/functions';
+import { mentionsFinder } from '../../utilities/functions';
+
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
@@ -75,13 +76,13 @@ export default function CreatePost({
             const existingFeed = cache.readQuery({
                 query: QUERY_GET_FEED,
                 variables: {
-                    data: { feed_id: user?._id, limit: 10, skip: 0 },
+                    data: { feed_id: user?._id, limit: 10 },
                 },
             });
             cache.writeQuery({
                 query: QUERY_GET_FEED,
                 variables: {
-                    data: { feed_id: user?._id, limit: 10, skip: 0 },
+                    data: { feed_id: user?._id, limit: 10 },
                 },
                 data: {
                     Feed: {
@@ -96,12 +97,6 @@ export default function CreatePost({
         },
     });
 
-    /*  const { data: feedData } = useQuery(QUERY_GET_FEED, {
-        variables: {
-            data: { feed_id: user?._id, limit: 10, skip: 0 },
-        },
-    }); */
-
     const userInitials = getUserInitials(user?.displayName);
 
     const onCreatePost = (ICreatePost) => {
@@ -111,16 +106,16 @@ export default function CreatePost({
             },
             errorPolicy: 'all',
             refetchQueries: [
-                {
+                /* {
                     query: QUERY_LOAD_SCROLLS,
                     variables: {
                         data: { ids: getFeed(profileData), limit: 220 },
                     },
-                },
-                /* {
+                }, */
+                {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
-                }, */
+                },
                 /*  {
                     query: QUERY_GET_FEED,
                     variables: { data: { feed_id: user?._id, limit: 10 } },
