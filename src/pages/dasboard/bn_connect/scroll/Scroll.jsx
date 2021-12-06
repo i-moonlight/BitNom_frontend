@@ -53,7 +53,7 @@ import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
+    QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
@@ -98,7 +98,7 @@ export default function Scroll({
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
     const [likeHovered, setLikeHovered] = useState(false);
-    //const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [errors, setErrors] = useState([]);
 
@@ -117,16 +117,68 @@ export default function Scroll({
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
-    //TODO
     const {
         data: commentsData,
         loading: commentsLoading,
         error: commentsError,
+        fetchMore,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: scroll?._id } },
+        variables: { data: { scroll_id: scroll?._id, limit: 8 } },
     });
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
+    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: scroll?._id,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -134,15 +186,6 @@ export default function Scroll({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: scroll?._id } },
-                },
-            ],
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
@@ -212,7 +255,12 @@ export default function Scroll({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: scroll?._id },
+                },
+            ],
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -226,7 +274,12 @@ export default function Scroll({
                     type: 'post',
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: scroll?._id },
+                },
+            ],
         });
         setIcon();
         setUserReaction();
@@ -325,7 +378,7 @@ export default function Scroll({
         setEmojiPickerAnchorEl(null);
     };
 
-    const comments = commentsData?.Comments?.get;
+    const comments = commentsData?.Comments?.get?.data;
 
     useEffect(() => {
         const reaction = getUserReaction(scroll);
@@ -336,9 +389,9 @@ export default function Scroll({
     useEffect(() => {
         !commentsError &&
             !commentsLoading &&
-            dispatch(loadComments(commentsData?.Comments?.get, id));
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
     }, [
-        commentsData?.Comments?.get,
+        commentsData?.Comments?.get?.data,
         commentsError,
         commentsLoading,
         dispatch,
@@ -839,6 +892,32 @@ export default function Scroll({
                                     />
                                 </Suspense>
                             ))}
+                        {commentsData?.Comments?.get?.data?.length > 0 &&
+                            commentsData?.Comments?.get?.hasMore &&
+                            !loadingMore && (
+                                <Grid align="center">
+                                    <Button
+                                        size="small"
+                                        textCase
+                                        variant="text"
+                                        onClick={() =>
+                                            loadMore(
+                                                commentsData?.Comments?.get
+                                                    ?.data?.length
+                                            )
+                                        }
+                                    >
+                                        more comments...
+                                    </Button>
+                                </Grid>
+                            )}
+                        {loadingMore && (
+                            <Grid align="center">
+                                <Typography color="primary">
+                                    Loading ...
+                                </Typography>
+                            </Grid>
+                        )}
                     </div>
                 )}
             </Card>

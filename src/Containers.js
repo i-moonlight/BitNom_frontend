@@ -178,34 +178,66 @@ const client = new ApolloClient({
                     Feed: {
                         merge: true,
                     },
-                    /* Feed: {
-                        keyArgs: false,
-                        merge(existing, incoming) {
-                            if (!incoming) return existing;
-                            if (!existing) return incoming;
-                            //console.log(existing, incoming, 'sdkfshfk');
-                            return { ...existing, ...incoming };
-                        },
-                    }, */
                 },
             },
-            /* OFeed: {
+            OFeed: {
                 fields: {
                     data: {
-                        merge(existing, incoming) {
-                            if (!incoming) return existing;
-                            if (!existing) return incoming;
-                            //console.log(existing, incoming, 'sdkfshfk');
-                            return [...existing, ...incoming];
-                        },
-                    },
-                    hasMore: {
-                        merge(existing, incoming) {
-                            return incoming;
+                        merge(existing = [], incoming, { readField }) {
+                            const merged = existing ? existing.slice(0) : [];
+                            // Obtain a Set of all existing post IDs.
+                            const existingIdSet = new Set(
+                                merged.map((post) => readField('_id', post))
+                            );
+                            // Remove incoming posts already present in the existing data.
+                            incoming = incoming.filter(
+                                (post) =>
+                                    !existingIdSet.has(readField('_id', post))
+                            );
+
+                            merged.push(...incoming);
+                            return merged;
                         },
                     },
                 },
-            }, */
+                hasMore: {
+                    merge(existing, incoming) {
+                        if (existing == false) return existing;
+                        return incoming;
+                    },
+                },
+            },
+            Comments: {
+                fields: {
+                    data: {
+                        merge(existing = [], incoming, { readField }) {
+                            const merged = existing ? existing.slice(0) : [];
+                            // Obtain a Set of all existing comment IDs.
+                            const existingIdSet = new Set(
+                                merged.map((comment) =>
+                                    readField('_id', comment)
+                                )
+                            );
+                            // Remove incoming comments already present in the existing data.
+                            incoming = incoming.filter(
+                                (comment) =>
+                                    !existingIdSet.has(
+                                        readField('_id', comment)
+                                    )
+                            );
+
+                            merged.push(...incoming);
+                            return merged;
+                        },
+                    },
+                },
+                hasMore: {
+                    merge(existing, incoming) {
+                        if (existing == false) return existing;
+                        return incoming;
+                    },
+                },
+            },
         },
     }),
 });

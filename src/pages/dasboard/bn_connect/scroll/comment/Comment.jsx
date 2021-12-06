@@ -36,13 +36,10 @@ import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
-    getFeed,
 } from '../../../utilities/functions';
 import {
     MUTATION_CREATE_REACTION,
     MUTATION_CREATE_COMMENT,
-    QUERY_LOAD_SCROLLS,
-    QUERY_POST_BY_ID,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
@@ -95,14 +92,62 @@ export default function Comment({
     // const comments = commentList[id];
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
     const {
         data: commentsData,
         loading: commentsLoading,
         error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: comment?.scroll } },
+        variables: { data: { scroll_id: comment?.scroll, limit: 8 } },
+    });
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            const normalizedCommentId = cache.identify({
+                id: id,
+                __typename: 'OComment',
+            });
+            cache.modify({
+                id: normalizedCommentId,
+                fields: {
+                    replies(existingReplyCount) {
+                        return existingReplyCount + 1;
+                    },
+                },
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+        },
     });
 
     const onCreateComment = (ICreateComment) => {
@@ -111,24 +156,6 @@ export default function Comment({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: {
-                        data: { scroll_id: scroll?.id },
-                    },
-                },
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: scroll?.id },
-                },
-            ],
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setReply('');
@@ -209,12 +236,6 @@ export default function Comment({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
         });
         setUserReaction(reaction);
     };
@@ -227,12 +248,6 @@ export default function Comment({
                     type: 'comment',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
         });
         setUserReaction();
     };
@@ -304,7 +319,7 @@ export default function Comment({
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    const comments = commentsData?.Comments?.get;
+    const comments = commentsData?.Comments?.get?.data;
 
     useEffect(() => {
         const reaction = getUserReaction(comment);
@@ -314,9 +329,9 @@ export default function Comment({
     useEffect(() => {
         !commentsError &&
             !commentsLoading &&
-            dispatch(loadComments(commentsData?.Comments?.get, id));
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
     }, [
-        commentsData?.Comments?.get,
+        commentsData?.Comments?.get?.data,
         commentsError,
         commentsLoading,
         dispatch,
@@ -717,6 +732,7 @@ export default function Comment({
                         ?.map((commentInner) => (
                             <Comment
                                 key={commentInner._id}
+                                id={commentInner._id}
                                 comment={commentInner}
                                 setCommentImage={setCommentImage}
                                 setUpdateCommentOpen={setUpdateCommentOpen}
