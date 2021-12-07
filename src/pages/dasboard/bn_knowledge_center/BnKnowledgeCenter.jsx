@@ -1,11 +1,9 @@
-import { Star } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Container, Divider, Tab } from '@mui/material';
 import React, { useState } from 'react';
 import Screen from '../../../components/Screen';
 import Categories from './sub_sections/Categories';
 import CryptoCurrency from './sub_sections/CryptoCurrency';
-import { CryptoGazing } from './sub_sections/gazing/CryptoGazing';
 import TopSection from './sub_sections/fragments/TopSection';
 import GainersAndLosers from './sub_sections/GainersAndLosers';
 import HeatMap from './sub_sections/HeatMap';
@@ -13,7 +11,7 @@ import RecentlyAdded from './sub_sections/RecentlyAdded';
 import WatchList from './sub_sections/WatchList';
 
 export default function BnKnowledgeCenter() {
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState('2');
 
     const handleTabChanges = (event, newValue) => {
         setValue(newValue);
@@ -27,7 +25,6 @@ export default function BnKnowledgeCenter() {
                 <section>
                     <TabContext value={value}>
                         <TabList
-                            // className="mb-2"
                             onChange={handleTabChanges}
                             aria-label="Tab list for cryptocurrency section"
                             variant="scrollable"
@@ -35,28 +32,13 @@ export default function BnKnowledgeCenter() {
                             scrollButtons
                         >
                             <Tab
-                                label={
-                                    <span className="d-flex align-items-center">
-                                        <Star className="me-2" /> Portfolio
-                                    </span>
-                                }
-                                style={custom.buttonStyle}
-                                value="0"
-                            />
-                            <Tab
                                 label={'Watchlist'}
                                 style={custom.buttonStyle}
-                                value="2"
+                                value="1"
                             />
-                            {/* <hr style={custom.verticalLine} /> */}
                             <Tab
                                 label="Cryptocurrency"
-                                value="1"
-                                style={custom.tabStyle}
-                            />
-                            <Tab
-                                label="Cryptogazing"
-                                value="3"
+                                value="2"
                                 style={custom.tabStyle}
                             />
                             <Tab
@@ -81,23 +63,14 @@ export default function BnKnowledgeCenter() {
                             />
                         </TabList>
                         <Divider flexItem />
-                        {/* <Button style={custom.listGridStyle}>
-                                <List />
-                            </Button> */}
-
                         <TabPanel value="1">
-                            <div>
-                                <CryptoCurrency />
-                            </div>
-                        </TabPanel>
-                        <TabPanel value="2">
                             <div>
                                 <WatchList />
                             </div>
                         </TabPanel>
-                        <TabPanel value="3">
+                        <TabPanel value="2">
                             <div>
-                                <CryptoGazing />
+                                <CryptoCurrency />
                             </div>
                         </TabPanel>
                         <TabPanel value="4">

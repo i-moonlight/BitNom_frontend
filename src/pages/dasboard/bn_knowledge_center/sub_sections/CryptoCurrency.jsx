@@ -90,7 +90,7 @@ export default function CryptoCurrencyPage() {
                                             className={'c-pointer'}
                                             onClick={() => {
                                                 history.push(
-                                                    `/knowledge_center/cryptocurrency/${row.id}`
+                                                    `/knowledge_center/cryptocurrencies/${row.id}`
                                                 );
                                             }}
                                         >

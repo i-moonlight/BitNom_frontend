@@ -8,6 +8,7 @@ const initialState = {
     recentTable: [],
     gazingTable: [],
     gazingDetail: {},
+    cryptoDetail: {},
 };
 
 export default function cryptoReducer(state = initialState, action) {
@@ -27,8 +28,15 @@ export default function cryptoReducer(state = initialState, action) {
         case 'FETCH_GAZING_TABLE':
             return { ...state, gazingTable: action.data };
         case 'FETCH_GAZING_DETAIL':
-            console.log('ftch gzng dtl: ', action.data);
             return { ...state, gazingDetail: action.data };
+        case 'FETCH_CRYPTO_DETAIL':
+            return {
+                ...state,
+                cryptoDetail: {
+                    ...state.cryptoDetail,
+                    [action.data.coin_id]: action.data.coin_info,
+                },
+            };
         default:
             return { ...state };
     }

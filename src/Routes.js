@@ -23,6 +23,9 @@ const Notifications = React.lazy(() =>
 const ConnectProfile = React.lazy(() =>
     import('./pages/dasboard/bn_connect/ConnectProfile')
 );
+const CryptoGazing = React.lazy(() =>
+    import('./pages/dasboard/cryptogazing/CryptoGazing')
+);
 const HashtagView = React.lazy(() =>
     import('./pages/dasboard/bn_connect/HashtagView')
 );
@@ -245,12 +248,17 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={BnKnowledgeCenter}
-                                    path="/knowledge_center/cryptocurrency"
+                                    path="/knowledge_center/cryptocurrencies"
                                 />
                                 <Route
                                     exact
                                     component={CoinDetails}
-                                    path="/knowledge_center/cryptocurrency/:id"
+                                    path="/knowledge_center/cryptocurrencies/:id"
+                                />
+                                <Route
+                                    exact
+                                    component={CryptoGazing}
+                                    path="/knowledge_center/cryptogazing"
                                 />
 
                                 <Route

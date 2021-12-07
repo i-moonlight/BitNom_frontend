@@ -1,8 +1,8 @@
+import { Button } from '@mui/material';
 import React from 'react';
-import { Button, Chip } from '@mui/material';
 import { useStyles } from './styles';
 
-export const GeneralButtons = ({
+export const GeneralButton = ({
     setActiveButton,
     setActiveCoinFeature,
     active,
@@ -19,35 +19,15 @@ export const GeneralButtons = ({
     return (
         <Button
             color={'inherit'}
-            className={`${active ? btnColor.bGActive : btnColor.bGNormal}`}
+            className={`${
+                active ? btnColor.bGActive : btnColor.bGNormal
+            } me-1 mb-1`}
             size={'small'}
             value={value}
-            name={name}
             onClick={clickButtonHandler}
         >
             {value}
         </Button>
-    );
-};
-
-export const GeneralChips = ({ setActiveChip, id, active, value }) => {
-    const btnColor = useStyles();
-
-    const clickChipHandler = () => {
-        setActiveChip(id);
-    };
-
-    return (
-        <>
-            <Chip
-                color={'inherit'}
-                className={`${active ? btnColor.bGActive : btnColor.bGNormal}`}
-                size={'small'}
-                label={value}
-                value={value}
-                onClick={clickChipHandler}
-            />
-        </>
     );
 };
 

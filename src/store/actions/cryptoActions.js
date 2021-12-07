@@ -62,7 +62,6 @@ export const fetchCryptoTable = () => {
 };
 
 export const fetchGazingCoinDetails = () => {
-    console.log('fetching coid details: ');
     return (dispatch) => {
         axios
             .get(
@@ -71,6 +70,20 @@ export const fetchGazingCoinDetails = () => {
             .then((res) => {
                 const data = res.data;
                 dispatch({ type: 'FETCH_GAZING_DETAIL', data });
+            });
+    };
+};
+
+export const fetchCryptoCoinDetails = (coin_id) => {
+    return (dispatch) => {
+        axios
+            .get(`https://api.coingecko.com/api/v3/coins/${coin_id}`)
+            .then((res) => {
+                const data = {
+                    coin_id,
+                    coin_info: res.data,
+                };
+                dispatch({ type: 'FETCH_CRYPTO_DETAIL', data });
             });
     };
 };

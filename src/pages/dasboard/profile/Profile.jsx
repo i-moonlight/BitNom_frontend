@@ -91,7 +91,7 @@ export default function Profile() {
                         {!loading && data && (
                             <Grid item xs={12} sm={12} md={8} lg={6}>
                                 <ProfileCard profile={profile} />
-                                <InsightCard profile={profile} />
+                                {/* <InsightCard profile={profile} /> */}
                                 <AboutCard profile={profile} />
                                 <WorkCard profile={profile} />
                                 <EducationCard profile={profile} />
