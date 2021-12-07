@@ -7,55 +7,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React, { useEffect } from 'react';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 13,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRecentTable } from '../../../../store/actions/cryptoActions';
 
 export default function RecentlyAdded() {
-    const [coins, getCoinList] = React.useState([]);
-    const [coinsLoaded, setCoinLoaded] = React.useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const coins = state.crypto?.marketTable;
 
     useEffect(() => {
-        const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,bitcoin-cash,bitcoin-cash-sv,litecoin,eos,tether,binancecoin,cardano,tezos,ethereum-classic,stellar,monero,tron,dash,chainlink,okb,iota,leo-token&order=market_cap_desc&sparkline=false`;
-        const abortCont = new AbortController();
+        dispatch(fetchRecentTable());
+    }, [dispatch]);
 
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                getCoinList(data);
-                setCoinLoaded(true);
-            })
-            .catch((err) => {
-                if (err.name !== 'AbortError') {
-                    setCoinLoaded(false);
-                }
-            });
-    }, []);
     return (
         <>
             <TableContainer>
-                <Table
-                    sx={{ maxHeight: 500 }}
-                    aria-label="coins table"
-                    stickyHeader
-                >
+                <Table aria-label="coins table" stickyHeader>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>#</StyledTableCell>
@@ -77,7 +44,7 @@ export default function RecentlyAdded() {
                             </StyledTableCell>
                         </TableRow>
                     </TableHead>
-                    {coinsLoaded ? (
+                    {coins?.length > 0 ? (
                         <TableBody>
                             {coins.map((row, id) => (
                                 <StyledTableRow key={row.name}>
@@ -142,3 +109,23 @@ export default function RecentlyAdded() {
         </>
     );
 }
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 13,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));

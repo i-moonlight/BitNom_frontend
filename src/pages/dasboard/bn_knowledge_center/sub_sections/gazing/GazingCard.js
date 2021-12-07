@@ -59,8 +59,8 @@ const GazingCard = ({
                                 <div className="col">
                                     <img
                                         height="100px"
-                                        src={coin.image?.large}
-                                        alt="Bitcoin Image"
+                                        src={coin?.image || coin?.image?.large}
+                                        alt="Coin Image"
                                     />
                                     <p className="mt-1">
                                         <strong>

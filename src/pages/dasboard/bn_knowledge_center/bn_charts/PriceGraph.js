@@ -1,73 +1,68 @@
-import React, { Component } from 'react';
-import ApexCharts from 'react-apexcharts';
+import React from 'react';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+// import faker from 'faker';
 
-class PriceGraph extends Component {
-    constructor(props) {
-        super(props);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
-        this.state = {
-            series: [
-                {
-                    data: this.props.sparkline.price,
-                },
-            ],
-            options: {
-                chart: {
-                    type: 'line',
-                    width: 100,
-                    height: 35,
-                    sparkline: {
-                        enabled: true,
-                    },
-                },
-                tooltip: {
-                    fixed: {
-                        enabled: false,
-                    },
-                    x: {
-                        show: false,
-                    },
-                    y: {
-                        title: {
-                            formatter: function () {
-                                return '';
-                            },
-                        },
-                    },
-                    marker: {
-                        show: false,
-                    },
-                },
-                stroke: {
-                    show: true,
-                    curve: 'smooth',
-                    lineCap: 'butt',
-                    colors: 'red',
-                    width: 1,
-                    dashArray: 0,
-                },
-                colors: ['#F44336', '#E91E63', '#9C27B0'],
+export const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: false,
+        },
+        title: {
+            display: false,
+        },
+    },
+    scales: {
+        x: {
+            display: false,
+        },
+        y: {
+            display: false,
+        },
+    },
+    elements: {
+        point: {
+            radius: 0,
+        },
+    },
+};
+
+export default function PriceGraph({ sparkline }) {
+    const labels = sparkline.price;
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Dataset 1',
+                data: sparkline.price,
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
-        };
-    }
+        ],
+    };
 
-    render() {
-        return (
-            <div className="app">
-                <div className="row">
-                    <div className="mixed-chart">
-                        <ApexCharts
-                            options={this.state.options}
-                            series={this.state.series}
-                            type="line"
-                            height={35}
-                            width={100}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    return <Line options={options} data={data} />;
 }
-
-export default PriceGraph;

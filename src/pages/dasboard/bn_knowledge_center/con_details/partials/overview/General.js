@@ -14,7 +14,6 @@ import {
     CardContent,
     Checkbox,
     Chip,
-    CircularProgress,
     FormControlLabel,
     Stack,
     Table,
@@ -26,36 +25,25 @@ import {
     Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGeneralTable } from '../../../../../../store/actions/cryptoActions';
 import CoinChart from '../../../bn_charts/CoinChart';
 import { buttonData, GeneralButtons } from '../utils/GeneralButtons';
 import { customOverview } from '../utils/styles';
 import { convertDate, volumePercentage } from '../utils/utilities';
 
 export default function General({ coinDetail }) {
-    const [rows, setRows] = useState([]);
-    const [rowLoaded, setRowLoaded] = useState(false);
-    const [error, setError] = useState(false);
     const [activeButton, setActiveButton] = useState(0);
     const [coinFeature, setCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
 
-    useEffect(() => {
-        const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=10&sparkline=true`;
-        const abortCont = new AbortController();
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const rows = state.crypto?.generalTable;
 
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                setRows(data);
-                setRowLoaded(true);
-            })
-            .catch((err) => {
-                if (err.name !== 'AbortError') {
-                    setRowLoaded(true);
-                    setError(err);
-                }
-            });
-    }, []);
+    useEffect(() => {
+        dispatch(fetchGeneralTable());
+    }, [dispatch]);
 
     const CoinDescription = () => {
         const description = coinDetail?.description?.en;
@@ -567,7 +555,7 @@ export default function General({ coinDetail }) {
             </div>
 
             {/*Bitcoin Market*/}
-            {rowLoaded ? (
+            {rows?.length > 0 && (
                 <Typography
                     color="textPrimary"
                     className={'row mt-3'}
@@ -686,12 +674,6 @@ export default function General({ coinDetail }) {
                         </a>
                     </div>
                 </Typography>
-            ) : error ? (
-                <Card className={'text-danger text-center'}>
-                    <CircularProgress color="secondary" />
-                </Card>
-            ) : (
-                <p>An Error Occured</p>
             )}
 
             {/*Bitcoin News*/}

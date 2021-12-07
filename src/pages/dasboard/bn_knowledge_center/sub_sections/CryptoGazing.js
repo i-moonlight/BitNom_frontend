@@ -1,33 +1,27 @@
 import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
 import { Card, CardContent, Skeleton } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGazingCoinDetails } from '../../../../store/actions/cryptoActions';
 
 export function CryptoGazing() {
-    const [coinDetails, getCoin] = useState([]);
-    const [coinIsLoaded, checkLoadedCoin] = useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const coinDetails = state.crypto?.grazingDetail;
 
     useEffect(() => {
-        // const coin_list = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
-        const url = `https://api.coingecko.com/api/v3/coins/bitcoin?sparkline=true`;
-        const abortCont = new AbortController();
-
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                getCoin(data);
-                checkLoadedCoin(true);
-            });
-    }, []);
+        dispatch(fetchGazingCoinDetails());
+    }, [dispatch]);
 
     return (
         <>
-            {coinIsLoaded ? (
+            {JSON.stringify(coinDetails) !== '{}' ? (
                 <div className="container col-sm-12 col-md-6 col-lg-6 text-center justify-content-center pb-5">
                     <Card>
                         <CardContent>
                             <div className="d-flex flex-row justify-content-between mb-3">
                                 <button className="btn btn-success">
-                                    Rank #{coinDetails.coingecko_rank}
+                                    Rank #{coinDetails?.coingecko_rank}
                                 </button>
                                 <a className="text-primary text-decoration-underline">
                                     Visit Coin
@@ -37,18 +31,18 @@ export function CryptoGazing() {
                                 <div className="col">
                                     <img
                                         height="100px"
-                                        src={coinDetails.image.large}
-                                        alt="Bitcoin Image"
+                                        src={coinDetails?.image?.large}
+                                        alt="Coin Image"
                                     />
                                     <p className="mt-1">
                                         <strong>
-                                            {coinDetails.name}{' '}
+                                            {coinDetails?.name}{' '}
                                             <span
                                                 style={{
                                                     textTransform: 'uppercase',
                                                 }}
                                             >
-                                                ({coinDetails.symbol})
+                                                ({coinDetails?.symbol})
                                             </span>
                                         </strong>
                                     </p>
@@ -56,8 +50,8 @@ export function CryptoGazing() {
                                         <strong>
                                             $
                                             {
-                                                coinDetails.market_data
-                                                    .current_price.usd
+                                                coinDetails?.market_data
+                                                    ?.current_price.usd
                                             }
                                         </strong>
                                     </a>
@@ -69,15 +63,17 @@ export function CryptoGazing() {
                                     <p className="text-danger">
                                         <strong>
                                             {
-                                                coinDetails.market_data
-                                                    .price_change_24h
+                                                coinDetails?.market_data
+                                                    ?.price_change_24h
                                             }
                                             %
                                         </strong>
                                     </p>
                                     <br />
                                     <p>Available Supply</p>
-                                    <p>{coinDetails.market_data.max_supply}</p>
+                                    <p>
+                                        {coinDetails?.market_data?.max_supply}
+                                    </p>
                                 </div>
                                 <div className="col">
                                     <p>
@@ -87,7 +83,7 @@ export function CryptoGazing() {
                                         <strong>
                                             $
                                             {
-                                                coinDetails.market_data
+                                                coinDetails?.market_data
                                                     .market_cap.usd
                                             }
                                         </strong>
@@ -95,7 +91,7 @@ export function CryptoGazing() {
                                     <br />
                                     <p>Total Supply</p>
                                     <p>
-                                        {coinDetails.market_data.total_supply}
+                                        {coinDetails?.market_data?.total_supply}
                                     </p>
                                 </div>
                             </div>

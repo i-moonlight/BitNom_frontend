@@ -1,10 +1,4 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/19/21
- * Time: 1:00 PM
- */
-import { Fragment, useEffect, useState } from 'react';
+import { LinkSharp } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -16,27 +10,23 @@ import {
     Skeleton,
     Typography,
 } from '@mui/material';
-import { LinkSharp } from '@mui/icons-material';
 import * as React from 'react';
+import { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNewsTable } from '../../../../../../store/actions/cryptoActions';
 
 export default function NewsTable() {
-    const [trendings, setTrending] = useState({});
-    const [isTrending, checkIsTrending] = useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const trendings = state.crypto?.newsTable;
 
     useEffect(() => {
-        const abortCont = new AbortController();
-
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                setTrending(data.coins);
-                checkIsTrending(true);
-            });
-    }, []);
+        dispatch(fetchNewsTable());
+    }, [dispatch]);
 
     return (
         <Fragment>
-            {isTrending ? (
+            {trendings?.length > 0 ? (
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid
                         container
@@ -125,7 +115,6 @@ export default function NewsTable() {
 //     textAlign: 'center',
 //     color: theme.palette.text.secondary,
 // }));
-const url = `https://api.coingecko.com/api/v3/search/trending`;
 
 {
     /*<div className={'row'}>*/

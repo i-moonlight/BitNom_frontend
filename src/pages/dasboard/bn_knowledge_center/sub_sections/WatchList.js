@@ -12,7 +12,7 @@ import { Button } from '../../../../components/Button';
 export default function WatchList() {
     return (
         <Fragment>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
