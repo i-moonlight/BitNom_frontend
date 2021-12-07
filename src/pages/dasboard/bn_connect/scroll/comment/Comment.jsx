@@ -17,6 +17,8 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -25,7 +27,6 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import ReactionHover from '../../../../../components/ReactionHover';
@@ -38,6 +39,7 @@ import {
 } from '../../../utilities/functions';
 import {
     MUTATION_CREATE_REACTION,
+    MUTATION_CREATE_COMMENT,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
@@ -51,7 +53,7 @@ export default function Comment({
     id,
     comment,
     style,
-    onCreateComment,
+    //onCreateComment,
     comment_image,
     scroll,
     setCommentImage,
@@ -74,9 +76,10 @@ export default function Comment({
     const [userReaction, setUserReaction] = useState();
     const [likeHovered, setLikeHovered] = useState(false);
     const [responseTo, setResponseTo] = useState('');
-    const [replyErr, setReplyErr] = useState(false);
+    //const [replyErr, setReplyErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -95,8 +98,107 @@ export default function Comment({
         loading: commentsLoading,
         error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: comment?.scroll } },
+        variables: { data: { scroll_id: comment?.scroll, limit: 8 } },
     });
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            const normalizedCommentId = cache.identify({
+                id: id,
+                __typename: 'OComment',
+            });
+            cache.modify({
+                id: normalizedCommentId,
+                fields: {
+                    replies(existingReplyCount) {
+                        return existingReplyCount + 1;
+                    },
+                },
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+        },
+    });
+
+    const onCreateComment = (ICreateComment) => {
+        createComment({
+            variables: {
+                data: ICreateComment,
+            },
+            errorPolicy: 'all',
+        }).then(({ data, errors: createCommentErrors }) => {
+            if (data?.Comments?.create) {
+                setReply('');
+                setCommentImage(null);
+                setErrors([]);
+                setPreviewURL();
+                setReply('');
+
+                setFileErrors([]);
+            }
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = createCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
+        });
+    };
 
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -134,12 +236,6 @@ export default function Comment({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
         });
         setUserReaction(reaction);
     };
@@ -152,12 +248,6 @@ export default function Comment({
                     type: 'comment',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
         });
         setUserReaction();
     };
@@ -176,12 +266,9 @@ export default function Comment({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            autoClose: 5000,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -194,7 +281,6 @@ export default function Comment({
 
     const handleCreateReply = (e) => {
         e.preventDefault();
-        if (reply.trim() == '' && !comment_image) return setReplyErr(true);
 
         const mentionsData = mentionsFinder(reply);
         onCreateComment({
@@ -204,10 +290,6 @@ export default function Comment({
             image: comment_image,
             response_to: responseTo,
         });
-        setReply('');
-        setPreviewURL();
-        setFileErrors([]);
-        setReplyErr(false);
     };
 
     const getUserReaction = useCallback(
@@ -237,7 +319,7 @@ export default function Comment({
     const commentUserInitials = getUserInitials(comment?.author?.displayName);
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    const comments = commentsData?.Comments?.get;
+    const comments = commentsData?.Comments?.get?.data;
 
     useEffect(() => {
         const reaction = getUserReaction(comment);
@@ -247,9 +329,9 @@ export default function Comment({
     useEffect(() => {
         !commentsError &&
             !commentsLoading &&
-            dispatch(loadComments(commentsData?.Comments?.get, id));
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
     }, [
-        commentsData?.Comments?.get,
+        commentsData?.Comments?.get?.data,
         commentsError,
         commentsLoading,
         dispatch,
@@ -565,10 +647,32 @@ export default function Comment({
                                 </IconButton>
                             </div>
                             <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {replyErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                             </div>
                             <Card
                                 style={{
@@ -628,6 +732,7 @@ export default function Comment({
                         ?.map((commentInner) => (
                             <Comment
                                 key={commentInner._id}
+                                id={commentInner._id}
                                 comment={commentInner}
                                 setCommentImage={setCommentImage}
                                 setUpdateCommentOpen={setUpdateCommentOpen}

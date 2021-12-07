@@ -29,6 +29,8 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -51,7 +53,6 @@ import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import {
     contentBodyFactory,
-    getFeed,
     getReactionsSum,
     getTopComments,
     mentionsFinder,
@@ -62,7 +63,6 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_FETCH_PROFILE,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import ExternalShareModal from '../popovers/ExternalShareModal';
@@ -100,7 +100,7 @@ function PostView() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
-    //const [openImage, setOpenImage] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [openVideo, setOpenVideo] = useState(false);
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
@@ -115,7 +115,8 @@ function PostView() {
     const [comment_image, setCommentImage] = useState(null);
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+
     const [getPostErr, setGetPostErr] = useState(null);
     const [openShareModal, setOpenShareModal] = useState(false);
 
@@ -165,11 +166,12 @@ function PostView() {
     );
 
     const {
-        error: postError,
         loading: postLoading,
         data: postData,
+        error: postError,
     } = useQuery(QUERY_POST_BY_ID, {
         variables: { _id: postId },
+        //fetchPolicy: 'cache-first',
     });
 
     useEffect(() => {
@@ -206,14 +208,66 @@ function PostView() {
     });
     const profileData = profile?.Users?.profile;
 
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-
     const {
         data: commentsData,
         // loading: commentsLoading,
         // error: commentsError,
+        fetchMore,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postId } },
+        variables: { data: { scroll_id: postId, limit: 8 } },
+    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: postId,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: postId, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: postId,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: postId, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
     });
 
     const onCreateComment = (ICreateComment) => {
@@ -222,50 +276,46 @@ function PostView() {
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: {
-                        data: { scroll_id: postId },
-                    },
-                },
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
-                setCommentFilter(1);
+                //setCommentFilter(1);
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
-
-        // if (!createCommentData) console.log(createCommentData);
     };
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -307,8 +357,6 @@ function PostView() {
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -397,12 +445,12 @@ function PostView() {
 
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    const latestComments = commentsData?.Comments?.get.filter(
+    const latestComments = commentsData?.Comments?.get?.data?.filter(
         (comment) => !comment.response_to
     );
 
-    const topComments = commentsData?.Comments?.get
-        .filter((comment) => !comment.response_to)
+    const topComments = commentsData?.Comments?.get?.data
+        ?.filter((comment) => !comment.response_to)
         .sort((a, b) => getTopComments(b) - getTopComments(a));
 
     return (
@@ -869,7 +917,8 @@ function PostView() {
                                                         placeholder={
                                                             commentsData
                                                                 ?.Comments?.get
-                                                                ?.length > 0
+                                                                ?.data?.length >
+                                                            0
                                                                 ? ''
                                                                 : 'Be the first to comment..'
                                                         }
@@ -946,13 +995,39 @@ function PostView() {
                                             <div
                                                 className={classes.inputHelper}
                                             >
-                                                <Typography
-                                                    color="error"
-                                                    variant="body2"
-                                                >
-                                                    {createCommentErr &&
-                                                        'The comment content cannot be empty'}
-                                                </Typography>
+                                                {errors?.length > 0 && (
+                                                    <Card
+                                                        elevation={0}
+                                                        style={{
+                                                            marginTop: '3px',
+                                                            background:
+                                                                'transparent',
+                                                        }}
+                                                        component="div"
+                                                        //variant="outlined"
+                                                    >
+                                                        {errors?.map(
+                                                            (errItem) => (
+                                                                <ListItem
+                                                                    key={
+                                                                        errItem
+                                                                    }
+                                                                >
+                                                                    <ListItemText
+                                                                        secondary={
+                                                                            <Typography
+                                                                                variant="body2"
+                                                                                color="error"
+                                                                            >
+                                                                                {`~ ${errItem}`}
+                                                                            </Typography>
+                                                                        }
+                                                                    />
+                                                                </ListItem>
+                                                            )
+                                                        )}
+                                                    </Card>
+                                                )}
                                             </div>
 
                                             <Card
@@ -1044,7 +1119,8 @@ function PostView() {
                                                             postData?.Posts
                                                                 ?.getById
                                                         }
-                                                        key={comment._id}
+                                                        id={comment._id}
+                                                        key={comment?._id}
                                                         setUpdateCommentOpen={
                                                             setUpdateCommentOpen
                                                         }
@@ -1095,7 +1171,8 @@ function PostView() {
                                                                 postData?.Posts
                                                                     ?.getById
                                                             }
-                                                            key={comment._id}
+                                                            id={comment._id}
+                                                            key={comment?._id}
                                                             setUpdateCommentOpen={
                                                                 setUpdateCommentOpen
                                                             }
@@ -1136,6 +1213,37 @@ function PostView() {
                                                         />
                                                     )
                                                 )}
+                                            {commentsData?.Comments?.get?.data
+                                                ?.length > 0 &&
+                                                commentsData?.Comments?.get
+                                                    ?.hasMore &&
+                                                !loadingMore && (
+                                                    <Grid align="center">
+                                                        <Button
+                                                            size="small"
+                                                            textCase
+                                                            variant="text"
+                                                            onClick={() =>
+                                                                loadMore(
+                                                                    commentsData
+                                                                        ?.Comments
+                                                                        ?.get
+                                                                        ?.data
+                                                                        ?.length
+                                                                )
+                                                            }
+                                                        >
+                                                            more comments...
+                                                        </Button>
+                                                    </Grid>
+                                                )}
+                                            {loadingMore && (
+                                                <Grid align="center">
+                                                    <Typography color="primary">
+                                                        Loading ...
+                                                    </Typography>
+                                                </Grid>
+                                            )}
                                         </div>
                                     )}
                                 </Card>

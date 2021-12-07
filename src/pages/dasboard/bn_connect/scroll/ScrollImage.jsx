@@ -23,10 +23,12 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
+    Grid,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { toast } from 'react-toastify';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
@@ -38,7 +40,6 @@ import ReactionHover from '../../../../components/ReactionHover';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import {
     contentBodyFactory,
-    getFeed,
     getReactionsSum,
     mentionsFinder,
 } from '../../utilities/functions';
@@ -47,7 +48,6 @@ import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
@@ -81,8 +81,9 @@ export default function ScrollImage({
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [previewURL, setPreviewURL] = useState();
+    const [loadingMore, setLoadingMore] = useState(false);
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
@@ -93,19 +94,72 @@ export default function ScrollImage({
     const history = useHistory();
     const user = state.auth.user;
 
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
+    const {
+        // loading: commentsLoading,
+        data: commentsData,
+        // error: commentsError,
+        fetchMore,
+    } = useQuery(QUERY_GET_COMMENTS, {
+        variables: { data: { scroll_id: postId, limit: 8 } },
+    });
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
+    });
     const { data: postData, loading } = useQuery(QUERY_POST_BY_ID, {
         variables: { _id: postId },
     });
 
     const scroll = postData?.Posts?.getById;
-    const {
-        data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
-    } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postId } },
-    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: scroll?._id,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -113,44 +167,42 @@ export default function ScrollImage({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: {
-                        _id: postId,
-                    },
-                },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: postId } },
-                },
-            ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
@@ -177,17 +229,9 @@ export default function ScrollImage({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -200,8 +244,6 @@ export default function ScrollImage({
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -231,12 +273,6 @@ export default function ScrollImage({
             },
             refetchQueries: [
                 {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
                     query: QUERY_POST_BY_ID,
                     variables: {
                         _id: postId,
@@ -257,12 +293,6 @@ export default function ScrollImage({
                 },
             },
             refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
                 {
                     query: QUERY_POST_BY_ID,
                     variables: {
@@ -563,7 +593,7 @@ export default function ScrollImage({
                                             }
                                         }}
                                         placeholder={
-                                            commentsData?.Comments?.get
+                                            commentsData?.Comments?.get?.data
                                                 ?.length > 0
                                                 ? ''
                                                 : 'Be the first to comment..'
@@ -628,10 +658,32 @@ export default function ScrollImage({
                                 </IconButton>
                             </div>
                             <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {createCommentErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                             </div>
                             <Card
                                 style={{
@@ -676,7 +728,7 @@ export default function ScrollImage({
                                 </div>
                             </Card>
                             {commentsData &&
-                                commentsData?.Comments?.get
+                                commentsData?.Comments?.get?.data
                                     .filter((comment) => !comment.response_to)
                                     .map((comment) => (
                                         <Comment
@@ -707,6 +759,33 @@ export default function ScrollImage({
                                             comment_image={comment_image}
                                         />
                                     ))}
+
+                            {commentsData?.Comments?.get?.data?.length > 0 &&
+                                commentsData?.Comments?.get?.hasMore &&
+                                !loadingMore && (
+                                    <Grid align="center">
+                                        <Button
+                                            size="small"
+                                            textCase
+                                            variant="text"
+                                            onClick={() =>
+                                                loadMore(
+                                                    commentsData?.Comments?.get
+                                                        ?.data?.length
+                                                )
+                                            }
+                                        >
+                                            more comments...
+                                        </Button>
+                                    </Grid>
+                                )}
+                            {loadingMore && (
+                                <Grid align="center">
+                                    <Typography color="primary">
+                                        Loading ...
+                                    </Typography>
+                                </Grid>
+                            )}
                         </div>
                     )}
                 </Card>

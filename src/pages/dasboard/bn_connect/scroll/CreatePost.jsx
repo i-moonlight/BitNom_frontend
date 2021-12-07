@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
     CloseRounded,
@@ -23,16 +23,17 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
-import { loadScrolls } from '../../../../store/actions/postActions';
+//import { loadScrolls, loadFeed } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import { getFeed, mentionsFinder } from '../../utilities/functions';
+import { mentionsFinder } from '../../utilities/functions';
+
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
+    QUERY_GET_FEED,
 } from '../../utilities/queries';
 import ScrollPreview from './ScrollPreview';
 
@@ -55,7 +56,7 @@ export default function CreatePost({
     sharedResource,
     setSharedResource,
 }) {
-    const [createPostErr, setCreatePostErr] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
@@ -65,16 +66,34 @@ export default function CreatePost({
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
-    const [createPost, { loading, data, error }] =
-        useMutation(MUTATION_CREATE_POST);
-
-    const { data: feedData } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: {
-            data: { ids: getFeed(profileData), limit: 220 },
+    const [createPost, { loading, data }] = useMutation(MUTATION_CREATE_POST, {
+        update(cache, { data: createPostData }) {
+            const newPost = createPostData?.Posts?.create;
+            const existingFeed = cache.readQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+                data: {
+                    Feed: {
+                        get: {
+                            _id: existingFeed?.Feed?.get?._id,
+                            data: [newPost, ...existingFeed?.Feed?.get?.data],
+                            hasMore: existingFeed?.Feed?.get?.hasMore,
+                        },
+                    },
+                },
+            });
         },
     });
 
@@ -87,57 +106,61 @@ export default function CreatePost({
             },
             errorPolicy: 'all',
             refetchQueries: [
-                {
+                /* {
                     query: QUERY_LOAD_SCROLLS,
                     variables: {
                         data: { ids: getFeed(profileData), limit: 220 },
                     },
-                },
+                }, */
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
                 },
+                /*  {
+                    query: QUERY_GET_FEED,
+                    variables: { data: { feed_id: user?._id, limit: 10 } },
+                }, */
             ],
-        }).then(({ data: createPostData, errors }) => {
+        }).then(({ data: createPostData, errors: createPostErrors }) => {
             if (createPostData?.Posts?.create) {
-                setScrollText('');
-                setScrollImages([]);
-                setScrollVideo(null);
-                setSharedResource(null);
-                setCreatePostErr(false);
-                setImageDisabled(false);
-                setVideoDisabled(false);
-                setOpenImage(false);
-                setOpenVideo(false);
-                setImagePreviewURLS([]);
-                setVideoPreviewURL(null);
-                setOpen(false);
+                handleCloseModal();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
-                    const errorMsg = errors[0]?.message;
+            if (createPostErrors) {
+                if (
+                    createPostErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    const errorMsg = createPostErrors[0]?.message;
                     const mime = errorMsg?.substring(
                         errorMsg?.indexOf(':') + 1
                     );
 
-                    toast.error(
-                        `Your image(s) have an unsupported file type (${mime})`
-                    );
+                    setErrors([
+                        `Your image(s) have an unsupported file type (${mime})`,
+                    ]);
                     setImagePreviewURLS([]);
                     setScrollImages([]);
                     setScrollVideo(null);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection and refresh the page.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
                 }
             }
         });
     };
 
-    useEffect(() => {
-        !error && !loading && dispatch(loadScrolls(feedData?.Posts?.get));
-    }, [dispatch, error, feedData?.Posts?.get, loading]);
+    /*   useEffect(() => {
+        !error &&
+            !loading &&
+            dispatch(
+                loadFeed({
+                    posts: feedData?.Feed?.get?.data,
+                    hasMore: feedData?.Feed?.get?.hasMore,
+                })
+            );
+    }, [dispatch, error, feedData?.Feed?.get, loading]); */
 
     useEffect(() => {
         if (sharedResource) {
@@ -152,6 +175,21 @@ export default function CreatePost({
             display: item?.userId?.displayName,
         };
     });
+
+    const handleCloseModal = () => {
+        setOpen(!open);
+        setOpenImage(false);
+        setScrollText('');
+        setOpenVideo(false);
+        setScrollImages([]);
+        setScrollVideo(null);
+        setErrors([]);
+        setSharedResource(null);
+        setImageDisabled(false);
+        setVideoDisabled(false);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
+    };
 
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);
@@ -169,14 +207,7 @@ export default function CreatePost({
     const handleSelectImages = (files) => {
         if (files.length < 1) return;
         if (files.length > 4) {
-            return toast.error('You can only upload maximum of 4 images', {
-                position: 'bottom-left',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            return setErrors(['You can only upload a maximum of 4 images']);
         }
         const previews = [];
         const allowedFiles = [];
@@ -184,14 +215,7 @@ export default function CreatePost({
             if (file.size > 2000000) {
                 previews.splice(0, previews.length);
                 allowedFiles.splice(0, allowedFiles.length);
-                return toast.error('Each image should be less than 2MB', {
-                    position: 'bottom-left',
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
+                return setErrors(['Each image should be less than 2MB']);
             } else {
                 previews.push(URL.createObjectURL(file));
                 allowedFiles.push(file);
@@ -205,14 +229,7 @@ export default function CreatePost({
         if (files.length < 1) return;
         const file = files[0];
         if (file.size > 4000000) {
-            return toast.error('The video should be less than 4MB', {
-                position: 'bottom-left',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            return setErrors(['The video should be less than 4MB']);
         } else {
             setVideoPreviewURL(URL.createObjectURL(file));
             setScrollVideo(file);
@@ -222,7 +239,9 @@ export default function CreatePost({
     const handleCreatePost = (e) => {
         e.preventDefault();
 
-        if (scroll_text.trim() == '') return setCreatePostErr(true);
+        if (scroll_text.trim() == '') {
+            return setErrors(['The post content cannot be empty.']);
+        }
         let sharedResourceType;
         if (sharedResource?.__typename === 'OPost') {
             sharedResourceType = 'post';
@@ -274,18 +293,7 @@ export default function CreatePost({
                             </Typography>
                             <IconButton
                                 onClick={() => {
-                                    setOpen(!open);
-                                    setOpenImage(false);
-                                    setScrollText('');
-                                    setOpenVideo(false);
-                                    setScrollImages([]);
-                                    setScrollVideo(null);
-                                    setCreatePostErr(false);
-                                    setSharedResource(null);
-                                    setImageDisabled(false);
-                                    setVideoDisabled(false);
-                                    setImagePreviewURLS([]);
-                                    setVideoPreviewURL(null);
+                                    handleCloseModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -365,10 +373,7 @@ export default function CreatePost({
                                     }}
                                 />
                             </MentionsInput>
-                            <Typography color="error" variant="body2">
-                                {createPostErr &&
-                                    'The post content cannot be empty'}
-                            </Typography>
+
                             {imagePreviewURLS.length > 0 && (
                                 <>
                                     <Grid
@@ -463,6 +468,33 @@ export default function CreatePost({
                                     <EventPreview event={sharedResource} />
                                 )}
                             {/* <Divider /> */}
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    //variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
+
                             <div className="space-between mt-1">
                                 <div className="center-horizontal">
                                     <IconButton

@@ -11,12 +11,14 @@ import {
     Modal,
     Paper,
     Typography,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
@@ -39,7 +41,7 @@ export default function CreateEvent({ open, setOpen }) {
     const [linkErr, setLinkErr] = useState(false);
     const [locationErr, setLocationErr] = useState(false);
     const [titleErr, setTitleErr] = useState(false);
-    const [dateErr, setDateErr] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [errorText, setErrorText] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
@@ -81,23 +83,47 @@ export default function CreateEvent({ open, setOpen }) {
                     variables: { data: { host: user?._id, limit: 50 } },
                 },
             ],
-        }).then(({ data: createEventData, errors }) => {
+        }).then(({ data: createEventData, errors: createEventErrors }) => {
             if (createEventData?.Events?.create) {
                 handleCloseEventModal();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createEventErrors) {
+                if (
+                    createEventErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setEventImage(null);
-                    const message = errors[0]?.message;
+                    const message = createEventErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `~ Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createEventErrors[0]?.message == 400) {
+                    const errorObject = createEventErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`~ ${value[0]}`);
+                        if (key === 'title') {
+                            setTitleErr(true);
+                        } else if (key === 'description') {
+                            setDescriptionErr(true);
+                        } else if (key === 'organizers') {
+                            setOrganizerErr(true);
+                        } else if (key === 'link') {
+                            setLinkErr(true);
+                        } else if (key === 'location') {
+                            setLocationErr(true);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `~ Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
@@ -146,11 +172,6 @@ export default function CreateEvent({ open, setOpen }) {
                         'Image should be less than 1200px by 1350px & below 2mb.',
                         {
                             position: 'bottom-left',
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
                         }
                     );
                 }
@@ -164,7 +185,8 @@ export default function CreateEvent({ open, setOpen }) {
     };
 
     const handleCloseEventModal = () => {
-        setDateErr(false);
+        setErrors([]);
+
         setEventLink('');
         setEventImage(null);
         setEventTitle('');
@@ -174,7 +196,7 @@ export default function CreateEvent({ open, setOpen }) {
         setTagsErr(false);
         setTitleErr(false);
         setLinkErr(false);
-        setDateErr(false);
+
         setLocationErr(false);
         setEventOrganizers([]);
         setEventStartDate('');
@@ -189,62 +211,16 @@ export default function CreateEvent({ open, setOpen }) {
         setOpen(false);
     };
 
+    const ErrorRef = useRef(null);
+
+    const handleScrollModal = () => {
+        ErrorRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(handleScrollModal, [errors]);
+
     const handleCreateEvent = (e) => {
         e.preventDefault();
-        if (eventTitle.trim() == '') {
-            setErrorText('The event title must be provided');
-            return setTitleErr(true);
-        }
-        if (eventDescription.length < 20) {
-            setErrorText('The event description provided is too short');
-            return setDescriptionErr(true);
-        }
-        if (locationType.trim() == '') {
-            setErrorText('The event must have a location');
-            return setLocationErr(true);
-        }
-        if (locationType === 'virtual') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-        }
-        if (locationType === 'virtual' && eventLink.trim() == '') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-            setErrorText('Virtual events must have event links');
-            return setLinkErr(true);
-        }
-        if (
-            locationType === 'physical' &&
-            (String(latitude).trim() == '' ||
-                String(longitude).trim() == '' ||
-                String(address).trim() == '')
-        ) {
-            setErrorText('Please provide the venue for this event');
-            return setLocationErr(true);
-        }
-        if (eventStartDate.trim() == '' && eventEndDate.trim() == '') {
-            setErrorText('The event dates must be set');
-            return setDateErr(true);
-        }
-        if (eventStartDate.trim() == '') {
-            setErrorText('The event start date must be set');
-            return setDateErr(true);
-        }
-        if (eventEndDate.trim() == '') {
-            setErrorText('The event end date must be set');
-            return setDateErr(true);
-        }
-        if (
-            new Date(eventEndDate).getTime() <
-            new Date(eventStartDate).getTime()
-        ) {
-            setErrorText(
-                'The event end date cannot be before the event starting time'
-            );
-            return setDateErr(true);
-        }
 
         let organizers = [];
 
@@ -269,7 +245,7 @@ export default function CreateEvent({ open, setOpen }) {
             endDate: eventEndDate,
             link: eventLink,
             location: {
-                type: locationType,
+                type: String(locationType),
                 lat: String(latitude),
                 long: String(longitude),
                 address: String(address),
@@ -324,8 +300,9 @@ export default function CreateEvent({ open, setOpen }) {
                         <CardContent
                             style={{
                                 maxHeight: '85vh',
-                                overflowY: 'auto',
+                                overflowY: 'scroll',
                             }}
+                            id="createEventModal"
                         >
                             <div variant="elevation" elevation={0}>
                                 <div
@@ -378,10 +355,9 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
-                                                <span>
-                                                    {titleErr && errorText}
-                                                </span>
+                                                <span></span>
                                                 <span>{`${eventTitle?.length}/50`}</span>
                                             </Typography>
                                         }
@@ -419,16 +395,13 @@ export default function CreateEvent({ open, setOpen }) {
                                                 className="space-between"
                                                 component="div"
                                             >
-                                                <span>
-                                                    {descriptionErr &&
-                                                        errorText}
-                                                </span>
-                                                <span>{`${eventDescription?.length}/250`}</span>
+                                                <span></span>
+                                                <span>{`${eventDescription?.length}/300`}</span>
                                             </Typography>
                                         }
                                         onChange={(e) => {
                                             setEventDescription(
-                                                eventDescription?.length >= 250
+                                                eventDescription?.length >= 300
                                                     ? e.target.value.substring(
                                                           0,
                                                           e.target.value
@@ -436,7 +409,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                       )
                                                     : e.target.value.substring(
                                                           0,
-                                                          250
+                                                          300
                                                       )
                                             );
                                             setDescriptionErr(false);
@@ -467,18 +440,6 @@ export default function CreateEvent({ open, setOpen }) {
                                             );
                                             setLinkErr(false);
                                         }}
-                                        helperText={
-                                            <Typography
-                                                variant="body2"
-                                                className="space-between"
-                                                component="div"
-                                            >
-                                                <span>
-                                                    {linkErr && errorText}
-                                                </span>
-                                                <span></span>
-                                            </Typography>
-                                        }
                                     />
                                     <Divider />
                                     <div className="mb-3">
@@ -497,14 +458,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                 </Typography>
                                             </div>
                                             <>
-                                                <Typography
-                                                    className="mb-2"
-                                                    variant="body2"
-                                                    color="error"
-                                                >
-                                                    {organizersErr && errorText}
-                                                </Typography>
-
                                                 <OrganizerSearch
                                                     loading={usersLoading}
                                                     searchResults={
@@ -768,7 +721,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                         handleSelectLocation
                                                     }
                                                     locationErr={locationErr}
-                                                    errorText={errorText}
                                                     selectedLocation={
                                                         selectedLocation
                                                     }
@@ -777,13 +729,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                     }
                                                 />
                                             </Grid>
-                                            <Typography
-                                                color="error"
-                                                variant="body2"
-                                                className="mb-2"
-                                            >
-                                                {locationErr && errorText}
-                                            </Typography>
                                         </div>
                                     </div>
                                     <Divider />
@@ -828,7 +773,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
@@ -858,16 +802,39 @@ export default function CreateEvent({ open, setOpen }) {
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Typography color="error" variant="body2">
-                                        {dateErr && errorText}
-                                    </Typography>
                                 </div>
                             </div>
+
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
 
                             {/* <Divider /> */}
                             <div className="space-between mt-1">
@@ -875,11 +842,13 @@ export default function CreateEvent({ open, setOpen }) {
 
                                 <Button
                                     disabled={loading}
+                                    size="small"
                                     onClick={handleCreateEvent}
                                 >
                                     Save
                                 </Button>
                             </div>
+                            <div ref={ErrorRef} />
                         </CardContent>
                     </Card>
                 </Grid>

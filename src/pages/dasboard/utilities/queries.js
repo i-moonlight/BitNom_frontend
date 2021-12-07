@@ -505,6 +505,34 @@ const postSubFields = `
         }
   `;
 
+/* export const QUERY_GET_TRENDING = gql`
+  query ($data: IGetFeed!) {
+    Feed {
+      get(data: $data) {
+          _id
+         data {
+           ${postSubFields}
+          }
+          hasMore
+      }
+    }
+  }
+`; */
+
+export const QUERY_GET_FEED = gql`
+  query ($data: IGetFeed!) {
+    Feed {
+      get(data: $data) {
+          _id
+         data {
+           ${postSubFields}
+          }
+          hasMore
+      }
+    }
+  }
+`;
+
 export const QUERY_LOAD_SCROLLS = gql`
   query ($data: IGetPosts) {
     Posts {
@@ -548,7 +576,9 @@ export const QUERY_POSTS_BY_HASHTAG = gql`
 export const MUTATION_CREATE_POST = gql`
     mutation ($data: ICreatePost!) {
         Posts {
-            create(data: $data)
+            create(data: $data){
+               ${postSubFields}
+            }
         }
     }
 `;
@@ -556,7 +586,9 @@ export const MUTATION_CREATE_POST = gql`
 export const MUTATION_UPDATE_POST = gql`
     mutation ($data: IUpdatePost!) {
         Posts {
-            update(data: $data)
+            update(data: $data){
+               ${postSubFields}
+            }
         }
     }
 `;
@@ -626,7 +658,9 @@ export const QUERY_GET_COMMENTS = gql`
   query ($data: IGetComments!) {
     Comments {
       get(data: $data) {
-       ${commentSubFields}
+      _id
+      data{ ${commentSubFields}}
+      hasMore
       }
     }
   }
@@ -655,7 +689,9 @@ export const MUTATION_CREATE_COMMENT = gql`
 export const MUTATION_UPDATE_COMMENT = gql`
     mutation ($data: IUpdateComment!) {
         Comments {
-            update(data: $data)
+            update(data: $data){
+                ${commentSubFields}
+            }
         }
     }
 `;

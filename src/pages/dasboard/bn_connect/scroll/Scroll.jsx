@@ -27,6 +27,8 @@ import {
     Skeleton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -34,7 +36,7 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 import { Button } from '../../../../components/Button';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
@@ -51,7 +53,7 @@ import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
+    QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
@@ -96,8 +98,9 @@ export default function Scroll({
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [previewURL, setPreviewURL] = useState();
+    const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -114,16 +117,68 @@ export default function Scroll({
 
     const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
     const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
 
-    //TODO
     const {
         data: commentsData,
         loading: commentsLoading,
         error: commentsError,
+        fetchMore,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: scroll?._id } },
+        variables: { data: { scroll_id: scroll?._id, limit: 8 } },
     });
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
+    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: scroll?._id,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const onCreateComment = (ICreateComment) => {
         createComment({
@@ -131,35 +186,42 @@ export default function Scroll({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: scroll?._id } },
-                },
-            ],
-        }).then(({ data, errors }) => {
+        }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
                 setCommentImage(null);
-                setCreateCommentErr(false);
+                setErrors([]);
                 setPreviewURL();
             }
-            if (errors) {
-                if (errors[0]?.message?.includes('Unsupported MIME type:')) {
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
                     setPreviewURL();
                     setCommentImage(null);
-                    const message = errors[0]?.message;
+                    const message = createCommentErrors[0]?.message;
                     const mime = message?.substring(message?.indexOf(':') + 1);
-                    toast.error(
-                        `Unsupported file type! The original type of your image is ${mime}`
-                    );
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
                 } else {
-                    toast.error(
-                        `Something is wrong! Check your connection or use another image.`
-                    );
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
                 }
             }
         });
@@ -174,8 +236,6 @@ export default function Scroll({
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -195,7 +255,12 @@ export default function Scroll({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: scroll?._id },
+                },
+            ],
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -209,7 +274,12 @@ export default function Scroll({
                     type: 'post',
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            refetchQueries: [
+                {
+                    query: QUERY_POST_BY_ID,
+                    variables: { _id: scroll?._id },
+                },
+            ],
         });
         setIcon();
         setUserReaction();
@@ -233,12 +303,9 @@ export default function Scroll({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
+                    return setErrors([
                         'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            autoClose: 5000,
-                        }
-                    );
+                    ]);
                 }
                 if (counter === 1) {
                     setPreviewURL(URL.createObjectURL(file));
@@ -311,7 +378,7 @@ export default function Scroll({
         setEmojiPickerAnchorEl(null);
     };
 
-    const comments = commentsData?.Comments?.get;
+    const comments = commentsData?.Comments?.get?.data;
 
     useEffect(() => {
         const reaction = getUserReaction(scroll);
@@ -322,9 +389,9 @@ export default function Scroll({
     useEffect(() => {
         !commentsError &&
             !commentsLoading &&
-            dispatch(loadComments(commentsData?.Comments?.get, id));
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
     }, [
-        commentsData?.Comments?.get,
+        commentsData?.Comments?.get?.data,
         commentsError,
         commentsLoading,
         dispatch,
@@ -703,10 +770,32 @@ export default function Scroll({
                             </IconButton>
                         </div>
                         <div className={classes.inputHelper}>
-                            <Typography color="error" variant="body2">
-                                {createCommentErr &&
-                                    'The comment content cannot be empty'}
-                            </Typography>
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    //variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
                         </div>
                         <Card
                             style={{
@@ -803,6 +892,32 @@ export default function Scroll({
                                     />
                                 </Suspense>
                             ))}
+                        {commentsData?.Comments?.get?.data?.length > 0 &&
+                            commentsData?.Comments?.get?.hasMore &&
+                            !loadingMore && (
+                                <Grid align="center">
+                                    <Button
+                                        size="small"
+                                        textCase
+                                        variant="text"
+                                        onClick={() =>
+                                            loadMore(
+                                                commentsData?.Comments?.get
+                                                    ?.data?.length
+                                            )
+                                        }
+                                    >
+                                        more comments...
+                                    </Button>
+                                </Grid>
+                            )}
+                        {loadingMore && (
+                            <Grid align="center">
+                                <Typography color="primary">
+                                    Loading ...
+                                </Typography>
+                            </Grid>
+                        )}
                     </div>
                 )}
             </Card>
