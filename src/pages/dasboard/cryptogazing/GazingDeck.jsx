@@ -50,7 +50,7 @@ const CardDeck = ({
                     />
                 ))}
             </OwlCarousel>
-            <Card className="mt-5">
+            <Card className="my-5 morph-inner">
                 <CardContent>
                     <div className="d-flex justify-content-between">
                         <Stack direction="row" style={{ width: '80%' }}>

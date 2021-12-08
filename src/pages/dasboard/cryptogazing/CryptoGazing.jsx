@@ -18,7 +18,7 @@ export default function CryptoGazing() {
 
     return (
         <Screen>
-            <Container className="pt-3">
+            <Container className="py-3">
                 <div>
                     {coins?.length > 0 ? (
                         <GazingDeck

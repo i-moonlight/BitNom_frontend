@@ -1,5 +1,6 @@
 import {
     ArrowDownward,
+    ChatBubble,
     Close,
     Favorite,
     Forum,
@@ -25,7 +26,7 @@ import { Fragment } from 'react';
 import { Button } from '../../../components/Button';
 
 const GazingCard = ({
-    coin = {},
+    coin,
     onLike,
     onDislike,
     coin_index,
@@ -35,145 +36,167 @@ const GazingCard = ({
     return (
         <Fragment>
             {coin && (
-                <Card
-                    className="gazing-card"
-                    style={{
-                        minHeight: 'calc(51vh - 65px)',
-                        marginTop: '5px',
-                        zIndex: coin_index,
-                    }}
-                >
-                    <CardContent>
-                        <div className="d-flex flex-row justify-content-between mb-3">
-                            <Avatar src={coin?.image || coin?.image?.large} />
-                            <IconButton>
-                                <Star />
-                            </IconButton>
-                        </div>
+                <div className="gazing-card">
+                    <Card
+                        style={{
+                            minHeight: 'calc(51vh - 65px)',
+                            marginTop: '5px',
+                            zIndex: coin_index,
+                        }}
+                    >
+                        <CardContent>
+                            <div className="d-flex flex-row justify-content-between mb-3">
+                                <Avatar
+                                    src={coin?.image || coin?.image?.large}
+                                />
+                                <IconButton>
+                                    <Star />
+                                </IconButton>
+                            </div>
 
-                        <div className="d-flex align-items-center">
-                            <Button
-                                color="#00ff00"
-                                size="small"
-                                className="me-2"
-                                textCase
-                            >
-                                Rank #{coin?.coin_index}
-                            </Button>
-                            <Button size="small" className="me-2" textCase>
-                                Coin
-                            </Button>
-                            <Button size="small" className="me-2" textCase>
-                                On{' '}
-                                {Math.floor(
-                                    Math.random() * 100000
-                                ).toLocaleString()}{' '}
-                                Watchlists
-                            </Button>
-                        </div>
-
-                        <div className="mt-3">
-                            <Typography>
-                                {coin?.name} ( {coin?.symbol?.toUpperCase()} )
-                            </Typography>
-                            <div className="d-flex justify-content-between">
-                                <Typography variant="h5">
-                                    $ {coin?.current_price?.toLocaleString()}
-                                </Typography>
+                            <div className="d-flex align-items-center">
                                 <Button
+                                    color="#00ff00"
                                     size="small"
-                                    startIcon={<ArrowDownward />}
+                                    className="me-2"
+                                    textCase
                                 >
-                                    {coin?.price_change_percentage_24h}%
+                                    Rank #{coin?.coin_index}
+                                </Button>
+                                <Button size="small" className="me-2" textCase>
+                                    Coin
+                                </Button>
+                                <Button size="small" className="me-2" textCase>
+                                    On{' '}
+                                    {Math.floor(
+                                        Math.random() * 100000
+                                    ).toLocaleString()}{' '}
+                                    Watchlists
                                 </Button>
                             </div>
+
+                            <div className="mt-3">
+                                <Typography>
+                                    {coin?.name} ( {coin?.symbol?.toUpperCase()}{' '}
+                                    )
+                                </Typography>
+                                <div className="d-flex justify-content-between">
+                                    <Typography variant="h5">
+                                        ${' '}
+                                        {coin?.current_price?.toLocaleString()}
+                                    </Typography>
+                                    <Button
+                                        size="small"
+                                        startIcon={<ArrowDownward />}
+                                    >
+                                        {coin?.price_change_percentage_24h}%
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="mt-3 mb-1">
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={20}
+                                    max={60}
+                                />
+                            </div>
+
+                            <div className="d-flex justify-content-between mb-4">
+                                <Typography>Low:</Typography>
+                                <Typography>High:</Typography>
+                            </div>
+
+                            {/* <Divider /> */}
+
+                            <List>
+                                <ListItem divider>
+                                    <ListItemText primary="Price Change 24hrs" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <ListItem divider>
+                                    <ListItemText primary="Market Cap" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <ListItem divider>
+                                    <ListItemText primary="Volume" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <ListItem divider>
+                                    <ListItemText primary="Fully Diluted Market Cap" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <ListItem divider>
+                                    <ListItemText primary="Available Supply" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemText primary="Total Supply" />
+                                    <ListItemSecondaryAction>
+                                        <Typography
+                                            color="textSecondary"
+                                            variant="body2"
+                                        >
+                                            ${'123456'?.toLocaleString()}
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            </List>
+                        </CardContent>
+                    </Card>
+                    <Card className="my-2">
+                        <div className="w-100 px-4 py-3">
+                            <div className="d-flex justify-content-between w-100">
+                                <IconButton className="morph-outer">
+                                    <Close />
+                                </IconButton>
+
+                                <IconButton className="morph-outer-dark">
+                                    <Favorite />
+                                </IconButton>
+
+                                <IconButton className="morph-outer">
+                                    <ChatBubble />
+                                </IconButton>
+                            </div>
                         </div>
-
-                        <div className="mt-3 mb-1">
-                            <LinearProgress
-                                variant="determinate"
-                                value={20}
-                                max={60}
-                            />
-                        </div>
-
-                        <div className="d-flex justify-content-between mb-4">
-                            <Typography>Low:</Typography>
-                            <Typography>High:</Typography>
-                        </div>
-
-                        {/* <Divider /> */}
-
-                        <List>
-                            <ListItem divider>
-                                <ListItemText primary="Price Change 24hrs" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                            <ListItem divider>
-                                <ListItemText primary="Market Cap" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                            <ListItem divider>
-                                <ListItemText primary="Volume" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                            <ListItem divider>
-                                <ListItemText primary="Fully Diluted Market Cap" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                            <ListItem divider>
-                                <ListItemText primary="Available Supply" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Total Supply" />
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        color="textSecondary"
-                                        variant="body2"
-                                    >
-                                        ${'123456'?.toLocaleString()}
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        </List>
-                    </CardContent>
-                </Card>
+                    </Card>
+                </div>
             )}
         </Fragment>
     );
