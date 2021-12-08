@@ -104,7 +104,9 @@ export const fetchRecentTable = () => {
 export const fetchGazingTable = () => {
     return (dispatch) => {
         axios
-            .get(`https://api.coingecko.com/api/v3/coins/list?`)
+            .get(
+                `https://api.coingecko.com/api/v3/coins/list?localization=false&tickers=false&market_data=true&community_data=true&developer_data=true`
+            )
             .then((res) => {
                 const data = res.data;
                 dispatch({ type: 'FETCH_GAZING_TABLE', data });

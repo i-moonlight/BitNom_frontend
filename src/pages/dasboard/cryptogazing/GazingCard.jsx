@@ -1,8 +1,28 @@
-import { Close, Favorite, Forum, Replay } from '@mui/icons-material';
-import { Card, Fab, Link } from '@mui/material';
+import {
+    ArrowDownward,
+    Close,
+    Favorite,
+    Forum,
+    Replay,
+    Star,
+} from '@mui/icons-material';
+import {
+    Avatar,
+    Card,
+    Divider,
+    Fab,
+    IconButton,
+    LinearProgress,
+    List,
+    ListItem,
+    ListItemSecondaryAction,
+    ListItemText,
+    Typography,
+} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import * as React from 'react';
 import { Fragment } from 'react';
+import { Button } from '../../../components/Button';
 
 const GazingCard = ({
     coin = {},
@@ -25,93 +45,134 @@ const GazingCard = ({
                 >
                     <CardContent>
                         <div className="d-flex flex-row justify-content-between mb-3">
-                            <button className="btn btn-success">
-                                Rank #{coin?.coingecko_rank}
-                            </button>
-                            {/*<a className="text-primary text-decoration-underline">*/}
-                            {/*    Visit Coin*/}
-                            {/*</a>*/}
-                            <Link
-                                href={`/knowledge_center/cryptocurrencies/${coin?.id}`}
-                                style={{
-                                    color: 'blue',
-                                    textDecoration: 'none',
-                                }}
-                            >
-                                Visit Coin
-                            </Link>
+                            <Avatar src={coin?.image || coin?.image?.large} />
+                            <IconButton>
+                                <Star />
+                            </IconButton>
                         </div>
-                        <div className="row">
-                            <div className="col">
-                                <img
-                                    height="100px"
-                                    src={coin?.image || coin?.image?.large}
-                                    alt="Coin Image"
-                                />
-                                <p className="mt-1">
-                                    <strong>
-                                        {coin?.name}
-                                        <span
-                                            style={{
-                                                textTransform: 'uppercase',
-                                            }}
-                                        >
-                                            ({coin?.symbol})
-                                        </span>
-                                    </strong>
-                                </p>
-                                <a className="btn btn-success mb-2">
-                                    <strong>
-                                        ${coin.market_data?.current_price.usd}
-                                    </strong>
-                                </a>
-                            </div>
-                            <div className="col">
-                                <p>
-                                    <strong>Price Change 24 hours</strong>
-                                </p>
-                                <p className="text-danger">
-                                    <strong>
-                                        {coin.market_data?.price_change_24h}%
-                                    </strong>
-                                </p>
-                                <br />
-                                <p>Available Supply</p>
-                                <p>{coin.market_data?.max_supply}</p>
-                            </div>
-                            <div className="col">
-                                <p>
-                                    <strong>Market Cap</strong>
-                                </p>
-                                <p className="text-success">
-                                    <strong>
-                                        ${coin.market_data?.market_cap.usd}
-                                    </strong>
-                                </p>
-                                <br />
-                                <p>Total Supply</p>
-                                <p>{coin.market_data?.total_supply}</p>
-                            </div>
-                        </div>
-                    </CardContent>
 
-                    <div className="d-flex flex-row justify-content-around m-3">
-                        <Fab disabled={!show_back} onClick={undo}>
-                            <Replay />
-                        </Fab>
-                        <Fab>
-                            <Close onClick={async () => onDislike(coin.id)} />
-                        </Fab>
-                        <Fab
-                            onClick={async () => onLike(coin.id)}
-                            style={{ color: 'green' }}
-                        >
-                            <Favorite />
-                        </Fab>
-                        <Fab>
-                            <Forum />
-                        </Fab>
-                    </div>
+                        <div className="d-flex align-items-center">
+                            <Button
+                                color="#00ff00"
+                                size="small"
+                                className="me-2"
+                                textCase
+                            >
+                                Rank #{coin?.coin_index}
+                            </Button>
+                            <Button size="small" className="me-2" textCase>
+                                Coin
+                            </Button>
+                            <Button size="small" className="me-2" textCase>
+                                On{' '}
+                                {Math.floor(
+                                    Math.random() * 100000
+                                ).toLocaleString()}{' '}
+                                Watchlists
+                            </Button>
+                        </div>
+
+                        <div className="mt-3">
+                            <Typography>
+                                {coin?.name} ( {coin?.symbol?.toUpperCase()} )
+                            </Typography>
+                            <div className="d-flex justify-content-between">
+                                <Typography variant="h5">
+                                    $ {coin?.current_price?.toLocaleString()}
+                                </Typography>
+                                <Button
+                                    size="small"
+                                    startIcon={<ArrowDownward />}
+                                >
+                                    {coin?.price_change_percentage_24h}%
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="mt-3 mb-1">
+                            <LinearProgress
+                                variant="determinate"
+                                value={20}
+                                max={60}
+                            />
+                        </div>
+
+                        <div className="d-flex justify-content-between mb-4">
+                            <Typography>Low:</Typography>
+                            <Typography>High:</Typography>
+                        </div>
+
+                        {/* <Divider /> */}
+
+                        <List>
+                            <ListItem divider>
+                                <ListItemText primary="Price Change 24hrs" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <ListItem divider>
+                                <ListItemText primary="Market Cap" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <ListItem divider>
+                                <ListItemText primary="Volume" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <ListItem divider>
+                                <ListItemText primary="Fully Diluted Market Cap" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <ListItem divider>
+                                <ListItemText primary="Available Supply" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Total Supply" />
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        ${'123456'?.toLocaleString()}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        </List>
+                    </CardContent>
                 </Card>
             )}
         </Fragment>
