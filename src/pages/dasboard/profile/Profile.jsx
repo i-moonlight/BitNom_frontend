@@ -14,7 +14,6 @@ import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
 import EducationCard from './EducationCard';
 import HonorCard from './HonorCard';
-import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
 import SkillsCard from './SkillsCard';
 import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';

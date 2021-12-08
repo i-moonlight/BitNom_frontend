@@ -11,7 +11,6 @@ import {
 } from '@mui/icons-material';
 import {
     Card,
-    CardContent,
     Checkbox,
     FormControlLabel,
     Grid,
@@ -34,7 +33,7 @@ import { convertDate, volumePercentage } from '../utils/utilities';
 
 export default function General({ coinDetail }) {
     const [activeButton, setActiveButton] = useState(0);
-    const [coinFeature, setCoinFeature] = useState('price');
+    // const [coinFeature, setCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
 
     const dispatch = useDispatch();
@@ -88,9 +87,9 @@ export default function General({ coinDetail }) {
                                                 setActiveButton={(val) =>
                                                     setActiveButton(val)
                                                 }
-                                                setActiveCoinFeature={(val) =>
-                                                    setCoinFeature(val)
-                                                }
+                                                // setActiveCoinFeature={(val) =>
+                                                //     setCoinFeature(val)
+                                                // }
                                                 active={activeButton === index}
                                             />
                                         ))}
@@ -108,9 +107,9 @@ export default function General({ coinDetail }) {
                                                 setActiveButton={(val) =>
                                                     setActiveButton(val)
                                                 }
-                                                setActiveCoinFeature={(val) =>
-                                                    setCoinFeature(val)
-                                                }
+                                                // setActiveCoinFeature={(val) =>
+                                                //     setCoinFeature(val)
+                                                // }
                                                 active={activeButton === index}
                                             />
                                         ))}

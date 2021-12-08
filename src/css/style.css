@@ -268,14 +268,16 @@ ul {
 
 .owl-item.active .gazing-card {
     transform: scale(0.9);
-    opacity: 0.5;
+    opacity: 0.4;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
     transition: all 0.3s;
 }
 
 .owl-item.active.center .gazing-card {
     transform: scale(1.01);
-    /* margin-top: 30px; */
-    /* margin-left: -100px; */
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
     opacity: 1;
 }
 
@@ -289,14 +291,9 @@ ul {
 .owl-nav .owl-next {
     position: absolute;
     top: calc(50% - 25px);
-    right: 10;
+    right: 0;
     opacity: 1;
-    font-size: 30px !important;
     z-index: 1;
-    /*  */
-    /* width: 30px; */
-    /* height: 30px; */
-    /* background-color: #006097; */
 }
 
 .owl-nav .owl-prev {
@@ -304,8 +301,11 @@ ul {
     top: calc(50% - 25px);
     left: 0;
     opacity: 1;
-    font-size: 30px !important;
     z-index: 1;
+    /* width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #787878; */
 }
 
 /* Neumorphism */

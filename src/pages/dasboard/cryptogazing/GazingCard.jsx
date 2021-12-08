@@ -1,17 +1,14 @@
 import {
-    ArrowDownward,
+    ArrowDropDown,
+    ArrowDropUp,
     ChatBubble,
     Close,
     Favorite,
-    Forum,
-    Replay,
     Star,
 } from '@mui/icons-material';
 import {
     Avatar,
     Card,
-    Divider,
-    Fab,
     IconButton,
     LinearProgress,
     List,
@@ -25,14 +22,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { Button } from '../../../components/Button';
 
-const GazingCard = ({
-    coin,
-    onLike,
-    onDislike,
-    coin_index,
-    undo,
-    show_back,
-}) => {
+const GazingCard = ({ coin, onNext }) => {
     return (
         <Fragment>
             {coin && (
@@ -41,7 +31,6 @@ const GazingCard = ({
                         style={{
                             minHeight: 'calc(51vh - 65px)',
                             marginTop: '5px',
-                            zIndex: coin_index,
                         }}
                     >
                         <CardContent>
@@ -87,7 +76,14 @@ const GazingCard = ({
                                     </Typography>
                                     <Button
                                         size="small"
-                                        startIcon={<ArrowDownward />}
+                                        startIcon={
+                                            coin?.price_change_percentage_24h >
+                                            0 ? (
+                                                <ArrowDropUp />
+                                            ) : (
+                                                <ArrowDropDown />
+                                            )
+                                        }
                                     >
                                         {coin?.price_change_percentage_24h}%
                                     </Button>
@@ -103,8 +99,14 @@ const GazingCard = ({
                             </div>
 
                             <div className="d-flex justify-content-between mb-4">
-                                <Typography>Low:</Typography>
-                                <Typography>High:</Typography>
+                                <Typography variant="body2">
+                                    Low: $
+                                    {coin?.high_24h?.toLocaleString() || ' --'}
+                                </Typography>
+                                <Typography variant="body2">
+                                    High: $
+                                    {coin?.low_24h?.toLocaleString() || ' --'}
+                                </Typography>
                             </div>
 
                             {/* <Divider /> */}
@@ -117,7 +119,9 @@ const GazingCard = ({
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.price_change_24h?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -128,7 +132,9 @@ const GazingCard = ({
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.market_cap?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -139,29 +145,35 @@ const GazingCard = ({
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.total_volume?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
                                 <ListItem divider>
-                                    <ListItemText primary="Fully Diluted Market Cap" />
+                                    <ListItemText primary="Fully Diluted Mkt Cap" />
                                     <ListItemSecondaryAction>
                                         <Typography
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.fully_diluted_valuation?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
                                 <ListItem divider>
-                                    <ListItemText primary="Available Supply" />
+                                    <ListItemText primary="Max Supply" />
                                     <ListItemSecondaryAction>
                                         <Typography
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.max_supply?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -172,7 +184,9 @@ const GazingCard = ({
                                             color="textSecondary"
                                             variant="body2"
                                         >
-                                            ${'123456'?.toLocaleString()}
+                                            $
+                                            {coin?.total_supply?.toLocaleString() ||
+                                                ' --'}
                                         </Typography>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -182,11 +196,14 @@ const GazingCard = ({
                     <Card className="my-2">
                         <div className="w-100 px-4 py-3">
                             <div className="d-flex justify-content-between w-100">
-                                <IconButton className="morph-outer">
+                                <IconButton
+                                    className="morph-outer"
+                                    onClick={onNext}
+                                >
                                     <Close />
                                 </IconButton>
 
-                                <IconButton className="morph-outer-dark">
+                                <IconButton className="morph-outer">
                                     <Favorite />
                                 </IconButton>
 

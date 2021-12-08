@@ -1,49 +1,59 @@
-import React, { Fragment } from 'react';
-import GazingCard from './GazingCard';
-import OwlCarousel from 'react-owl-carousel';
+import { Avatar, Card, CardContent, Stack, Typography } from '@mui/material';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import { Avatar, Card, CardContent, Stack, Typography } from '@mui/material';
+import React, { Fragment, useRef } from 'react';
+import OwlCarousel from 'react-owl-carousel2';
+// import 'react-owl-carousel2/style.css'; //
 import { Button } from '../../../components/Button';
+import GazingCard from './GazingCard';
 
-const CardDeck = ({
-    coins = [],
-    coin_index,
-    onLike,
-    onDislike,
-    is_back = false,
-    undo = () => null,
-    show_back = false,
-}) => {
+const CardDeck = ({ coins = [] }) => {
+    const carousel = useRef(null);
+
     return (
         <Fragment>
             <OwlCarousel
-                className="owl-theme"
-                loop
-                margin={10}
-                items={3}
-                center
-                nav
-                // dots
-                responsive={{
-                    0: {
-                        items: 1,
-                    },
-                    600: {
-                        items: 3,
-                    },
-                    1000: {
-                        items: 3,
+                ref={carousel}
+                // className="owl-theme"
+                options={{
+                    loop: true,
+                    autoplay: true,
+                    center: true,
+                    nav: true,
+                    responsive: {
+                        0: {
+                            items: 1,
+                        },
+                        600: {
+                            items: 3,
+                        },
+                        1000: {
+                            items: 3,
+                        },
                     },
                 }}
-                // height="500"
-                // autoHeightClass
+                // loop
+                // autoplay
+                // margin={10}
+                // center
+                // nav
+                // responsive={{
+                //     0: {
+                //         items: 1,
+                //     },
+                //     600: {
+                //         items: 3,
+                //     },
+                //     1000: {
+                //         items: 3,
+                //     },
+                // }}
             >
                 {coins.slice(0, 20).map((coin) => (
                     <GazingCard
                         key={coin?.id}
                         coin={coin}
-                        // onLike={onLike}
+                        onNext={() => carousel?.current?.next()}
                         // coin_index={is_back ? 2 : 0}
                         // onDislike={onDislike}
                         // show_back={false}
