@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 const useInfiniteScroll = (callback, isFetching) => {
     //here we use useRef to store a DOM node and the returned object will persist regardless of re-renders

@@ -37,14 +37,18 @@ export const tabs = [
         link: '/connect',
     },
     {
-        label: 'Cryptocurrency',
-        link: '/knowledge_center/cryptocurrency',
+        label: 'Cryptocurrencies',
+        link: '/knowledge_center/cryptocurrencies',
         // menuItems: [
         //     { label: 'Crypto-tinder' },
         //     { label: 'Forum' },
         //     { label: 'Cryptocurrency' },
         //     { label: 'Bitcointalk' },
         // ],
+    },
+    {
+        label: 'Cryptogazing',
+        link: '/knowledge_center/cryptogazing',
     },
     // { label: 'Exchange' },
     // { label: 'Services' },

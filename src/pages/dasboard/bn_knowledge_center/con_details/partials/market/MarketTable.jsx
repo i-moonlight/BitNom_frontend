@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/19/21
- * Time: 12:30 PM
- */
-import { Fragment, useEffect, useState } from 'react';
 import {
     Skeleton,
     Table,
@@ -15,25 +8,23 @@ import {
     TableRow,
 } from '@mui/material';
 import * as React from 'react';
+import { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMarketTable } from '../../../../../../store/actions/cryptoActions';
 import { convertDate } from '../utils/utilities';
 
 export default function MarketTable() {
-    const [market, getMarket] = useState({});
-    const [isMarket, checkLoadedMarket] = useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const market = state.crypto?.marketTable;
 
     useEffect(() => {
-        const abortCont = new AbortController();
+        dispatch(fetchMarketTable());
+    }, [dispatch]);
 
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                getMarket(data);
-                checkLoadedMarket(true);
-            });
-    }, []);
     return (
         <Fragment>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer>
                 <Table stickyHeader aria-label="caption table">
                     <TableHead>
                         <TableRow
@@ -72,7 +63,7 @@ export default function MarketTable() {
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    {isMarket ? (
+                    {market.length > 0 ? (
                         <TableBody>
                             {market.map((row, id) => (
                                 <TableRow key={id}>
@@ -152,4 +143,3 @@ export default function MarketTable() {
         </Fragment>
     );
 }
-const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=35&page=1&sparkline=true`;

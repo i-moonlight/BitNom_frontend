@@ -1,20 +1,16 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import General from './General';
-import Developer from './Developer';
 import Analysis from './Analysis';
+import Developer from './Developer';
+import General from './General';
 
-// export default function Overview({ coinDetail }) {
-export default function Overview() {
+export default function Overview({ coinDetail }) {
     const [value, setValue] = useState('1');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const classes = useStyles();
 
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -22,66 +18,58 @@ export default function Overview() {
                 sx={{ width: '100%', typography: 'body1' }}
                 value={value}
             >
-                <div>
-                    <TabList
-                        onChange={handleChange}
-                        aria-label="lab API tabs example"
-                        className={'m-1'}
-                        variant="scrollable"
-                        allowScrollButtonsMobile
-                        scrollButtons
-                    >
-                        <Tab
-                            label="General"
-                            className={'m-2'}
-                            value="1"
-                            style={custom.buttonStyle}
-                        />
-                        <Tab
-                            label="Developers"
-                            className={'m-2'}
-                            value="2"
-                            style={custom.buttonStyle}
-                        />
-                        <Tab
-                            label="Widget"
-                            className={'m-2'}
-                            value="3"
-                            style={custom.buttonStyle}
-                        />
-                        <Tab
-                            label="Analysis"
-                            className={'m-2'}
-                            value="4"
-                            style={custom.buttonStyle}
-                        />
-                    </TabList>
-                </div>
+                <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                    className={'m-1'}
+                    variant="scrollable"
+                    allowScrollButtonsMobile
+                    scrollButtons
+                >
+                    <Tab
+                        label="General"
+                        className={'m-2'}
+                        value="1"
+                        style={custom.buttonStyle}
+                    />
+                    <Tab
+                        label="Developers"
+                        className={'m-2'}
+                        value="2"
+                        style={custom.buttonStyle}
+                    />
+                    <Tab
+                        label="Widget"
+                        className={'m-2'}
+                        value="3"
+                        style={custom.buttonStyle}
+                    />
+                    <Tab
+                        label="Analysis"
+                        className={'m-2'}
+                        value="4"
+                        style={custom.buttonStyle}
+                    />
+                </TabList>
 
-                <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-                    <General />
+                <TabPanel value="1">
+                    <General coinDetail={coinDetail} />
                 </TabPanel>
-                <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="2">
                     <Developer />
                 </TabPanel>
-                <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
-                    <div>
+                <TabPanel value="3">
+                    {/* <div>
                         <strong>To be discussed</strong>
-                    </div>
+                    </div> */}
                 </TabPanel>
-                <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="4">
                     <Analysis />
                 </TabPanel>
             </TabContext>
         </Box>
     );
 }
-
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
 
 const custom = {
     tabStyle: {

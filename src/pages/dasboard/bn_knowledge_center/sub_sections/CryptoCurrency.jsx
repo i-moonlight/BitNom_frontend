@@ -1,5 +1,4 @@
 import { StarOutline } from '@mui/icons-material';
-import TablePagination from '@mui/material/TablePagination';
 import {
     Skeleton,
     Table,
@@ -10,17 +9,24 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import TablePagination from '@mui/material/TablePagination';
 import { styled } from '@mui/system';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { fetchCryptoTable } from '../../../../store/actions/cryptoActions';
+import PriceGraph from '../bn_charts/PriceGraph';
+
+// const PriceGraph = React.lazy(() => import('../bn_charts/PriceGraph'));
 
 export default function CryptoCurrencyPage() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(50);
-    const [coins, getCoins] = useState([]);
-    const [coinIsLoaded, checkLoadedCoin] = useState(false);
 
+    const dispatch = useDispatch();
     const history = useHistory();
+    const state = useSelector((st) => st);
+    const coins = state.crypto?.cryptoTable;
 
     const handleChangePage = (newPage) => {
         setPage(newPage);
@@ -32,19 +38,12 @@ export default function CryptoCurrencyPage() {
     };
 
     useEffect(() => {
-        const abortCont = new AbortController();
-
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                getCoins(data);
-                checkLoadedCoin(true);
-            });
-    }, []);
+        dispatch(fetchCryptoTable());
+    }, [dispatch]);
 
     return (
         <>
-            <TableContainer sx={{ maxHeight: 720 }}>
+            <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -75,7 +74,7 @@ export default function CryptoCurrencyPage() {
                         </TableRow>
                     </TableHead>
 
-                    {coinIsLoaded ? (
+                    {coins?.length > 0 ? (
                         <TableBody>
                             {coins
                                 .slice(
@@ -91,7 +90,7 @@ export default function CryptoCurrencyPage() {
                                             className={'c-pointer'}
                                             onClick={() => {
                                                 history.push(
-                                                    `/knowledge_center/cryptocurrency/${row.id}`
+                                                    `/knowledge_center/cryptocurrencies/${row.id}`
                                                 );
                                             }}
                                         >
@@ -144,11 +143,18 @@ export default function CryptoCurrencyPage() {
                                                         <div>Loading...</div>
                                                     }
                                                 >
-                                                    <PriceGraph
-                                                        sparkline={
-                                                            row.sparkline_in_7d
-                                                        }
-                                                    />
+                                                    <div
+                                                        style={{
+                                                            width: '120px',
+                                                            height: 40,
+                                                        }}
+                                                    >
+                                                        <PriceGraph
+                                                            sparkline={
+                                                                row.sparkline_in_7d
+                                                            }
+                                                        />
+                                                    </div>
                                                 </Suspense>
                                             </StyledTableCell>
                                         </StyledTableRow>
@@ -177,22 +183,19 @@ export default function CryptoCurrencyPage() {
                     )}
                 </Table>
             </TableContainer>
-            {coinIsLoaded && (
-                <TablePagination
-                    rowsPerPageOptions={[50, 100, 150]}
-                    component="div"
-                    count={coins.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            )}
+
+            <TablePagination
+                rowsPerPageOptions={[50, 100, 150]}
+                component="div"
+                count={coins.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </>
     );
 }
-
-const PriceGraph = React.lazy(() => import('../bn_charts/PriceGraph'));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -213,5 +216,3 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
-
-const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true`;

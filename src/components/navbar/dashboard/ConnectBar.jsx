@@ -1,8 +1,3 @@
-/* import {
-    Brightness4Rounded,
-    Brightness7Rounded,
-    ChevronRight,
-} from '@mui/icons-material'; */
 import { Box, Container, useMediaQuery, Button } from '@mui/material';
 import { useHistory } from 'react-router';
 
