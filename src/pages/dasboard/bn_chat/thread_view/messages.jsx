@@ -125,7 +125,7 @@ export default function Messages({ onExitChatMobile }) {
     return (
         <div style={{ height: '100%', overflowY: 'auto' }}>
             <div style={{ height: 'fit-content' }}>
-                {dialogue.status === 'new' && (
+                {dialogue?.status === 'new' && (
                     <div className={classes.chatHeader}>
                         <ChatHeader
                             chat={dialogue}
@@ -145,7 +145,7 @@ export default function Messages({ onExitChatMobile }) {
                 )}
             </div>
             <div style={{ margin: '8px', height: '70%', overflowY: 'scroll' }}>
-                {dialogue.status === 'accepted' && (
+                {dialogue?.status === 'accepted' && (
                     <div
                     //style={{ margin: '8px' }}
                     //className={classes.chatHeader}
@@ -229,10 +229,10 @@ export default function Messages({ onExitChatMobile }) {
                             <AwaitResponse dialogue={dialogue} />
                         )}
                     {dialogue.status === 'new' &&
-                        dialogue.recipient?.info._id === user?._id && (
+                        dialogue?.recipient?.info._id === user?._id && (
                             <InviteView dialogue={dialogue} />
                         )}
-                    {dialogue.status === 'accepted' &&
+                    {dialogue?.status === 'accepted' &&
                         !messages?.length > 0 &&
                         !loading && <EmptyMessages />}
                     {dialogue.status === 'accepted' &&

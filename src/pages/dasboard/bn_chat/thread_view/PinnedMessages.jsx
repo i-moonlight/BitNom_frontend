@@ -33,7 +33,7 @@ export default function PinnedMessages({ message }) {
     };
 
     const handleUnpinMessage = (_id) => {
-        unpinMessage({ chat: message.chat._id, message: message._id });
+        unpinMessage({ chat: message?.chat?._id, message: message?._id });
         dispatch(deletePinnedMessage(_id));
     };
 
@@ -46,7 +46,7 @@ export default function PinnedMessages({ message }) {
                     <IconButton
                         edge="end"
                         aria-label="delete"
-                        onClick={() => handleUnpinMessage(message._id)}
+                        onClick={() => handleUnpinMessage(message?._id)}
                     >
                         <DeleteRounded />
                     </IconButton>

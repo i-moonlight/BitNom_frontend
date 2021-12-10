@@ -134,7 +134,13 @@ export default function CreateChatPrompt({
                                 />
                             </Paper>
                         </div>
-                        <CardContent>
+                        <CardContent
+                            style={{
+                                maxHeight: '75vh',
+                                minHeight: '30vh',
+                                overflowY: 'auto',
+                            }}
+                        >
                             {users && (
                                 <List>
                                     {users?.map((user, index) => (
@@ -186,7 +192,7 @@ export default function CreateChatPrompt({
                                     container
                                     item
                                     direction="column"
-                                    style={{ width: '100%', marginTop: '40%' }}
+                                    style={{ width: '100%', marginTop: '10%' }}
                                 >
                                     <CircularProgress />
                                 </Grid>
