@@ -14,7 +14,6 @@ import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
 import EducationCard from './EducationCard';
 import HonorCard from './HonorCard';
-import InsightCard from './InsightCard';
 import ProfileCard from './ProfileCard';
 import SkillsCard from './SkillsCard';
 import { QUERY_FETCH_PROFILE } from './utilities/profile.queries';
@@ -91,7 +90,7 @@ export default function Profile() {
                         {!loading && data && (
                             <Grid item xs={12} sm={12} md={8} lg={6}>
                                 <ProfileCard profile={profile} />
-                                <InsightCard profile={profile} />
+                                {/* <InsightCard profile={profile} /> */}
                                 <AboutCard profile={profile} />
                                 <WorkCard profile={profile} />
                                 <EducationCard profile={profile} />

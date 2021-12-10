@@ -7,53 +7,31 @@ import {
     Telegram,
     Twitter,
 } from '@mui/icons-material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
+    Avatar,
     Breadcrumbs,
     Container,
-    Divider,
-    Skeleton,
-    Tab,
+    Grid,
     Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import Screen from '../../../../components/Screen';
-import Forum from './partials/forum/Forum';
-import HistoricalData from './partials/HistoricalData';
-import Market from './partials/market/Market';
-import News from './partials/news/News';
-import Overview from './partials/overview/Overview';
-import ProjectInfo from './partials/project_info/ProjectInfo';
+import { fetchCryptoCoinDetails } from '../../../../store/actions/cryptoActions';
+import CoinDetailsTabPanel from './CoinDetailsTabPanel';
 
 export default function CoinDetails({ match }) {
-    const [value, setValue] = useState('1');
-    const [coinDetail, setCoinDetail] = useState(null);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    const classes = useStyles();
     const coin_id = match.params.id;
-    const url = `https://api.coingecko.com/api/v3/coins/${coin_id}`;
+    const coinDetail = state?.crypto?.cryptoDetail[coin_id] || null;
 
     useEffect(() => {
-        const abortCont = new AbortController();
-
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                setCoinDetail(data);
-            })
-            .catch((err) => {
-                if (err.name !== 'AbortError') {
-                    setCoinDetail(null);
-                }
-            });
-    }, [url]);
+        dispatch(fetchCryptoCoinDetails(coin_id));
+    }, [coin_id, dispatch]);
 
     return (
         <Screen>
@@ -61,7 +39,7 @@ export default function CoinDetails({ match }) {
                 {/*Links to menus and coins*/}
                 <Breadcrumbs aria-label="breadcrumb" className="m-3">
                     <Link
-                        to="/knowledge_center/cryptocurrency"
+                        to="/knowledge_center/cryptocurrencies"
                         underline="hover"
                         color="inherit"
                         href="/"
@@ -72,653 +50,354 @@ export default function CoinDetails({ match }) {
                 </Breadcrumbs>
 
                 {/*Coin Details*/}
-                {coinDetail ? (
+                {coinDetail && (
                     <>
-                        <div className="mt-3">
-                            <div className="d-lg-flex d-md-flex d-sm-block row">
-                                <Typography
-                                    component="div"
-                                    color="textPrimary"
-                                    className="d-lg-flex d-md-flex d-sm-block col-lg-7
-                         col-md-7 col-sm-12 mt-3 justify-content-evenly"
-                                >
-                                    <div>
-                                        <div>
-                                            <img
-                                                alt={'Bitcoin image'}
-                                                src={coinDetail?.image?.small}
-                                            />
-                                        </div>
-                                        <div>
-                                            <p>
-                                                <span
-                                                    className={'text-secondary'}
-                                                >
-                                                    {coinDetail?.name}{' '}
-                                                    <span
-                                                        className={
-                                                            'text-uppercase'
+                        <div>
+                            <Grid container>
+                                <Grid item xs={12} sm={12} md={8} lg={7}>
+                                    <Grid container>
+                                        <Grid
+                                            className="mt-4"
+                                            item
+                                            xs={12}
+                                            sm={12}
+                                            md={12}
+                                            lg={6}
+                                        >
+                                            <div>
+                                                <div className="d-flex text-white align-items-flex-start">
+                                                    <Avatar
+                                                        className="m-1"
+                                                        src={
+                                                            coinDetail?.image
+                                                                ?.small
                                                         }
-                                                    >
-                                                        ({coinDetail?.symbol})
-                                                    </span>
-                                                </span>
-                                                <a style={custom.greenBg}>
-                                                    #
-                                                    {coinDetail?.coingecko_rank}
-                                                </a>{' '}
-                                                <Star />
-                                            </p>
-                                            <h5>
-                                                <span>$47,811.67</span>{' '}
-                                                <span className={'text-danger'}>
-                                                    <ArrowDropDown /> 7.76%
-                                                </span>
-                                            </h5>
-                                            <p>
-                                                <Button
-                                                    variant="contained"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Coin
-                                                </Button>
-                                                <Button
-                                                    variant="contained"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    On 2,267,548 watchlists
-                                                </Button>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={'mt-5'}>
-                                            <section
-                                                className={
-                                                    'd-flex justify-content-between'
-                                                }
-                                            >
-                                                <p className={'m-1'}>
-                                                    <strong>
-                                                        Price Change 24hrs
-                                                    </strong>
-                                                </p>
-                                                <p className={'m-1'}>
-                                                    <strong>Market cap</strong>
-                                                </p>
-                                            </section>
-                                            <section
-                                                className={
-                                                    'd-flex justify-content-between'
-                                                }
-                                            >
-                                                <p
-                                                    className={
-                                                        'text-success text-sm-end'
-                                                    }
-                                                >
-                                                    $1,687,456
-                                                </p>
-                                                <p
-                                                    className={
-                                                        'text-success  text-sm-end'
-                                                    }
-                                                >
-                                                    $1,687,456
-                                                </p>
-                                            </section>
-                                            <section
-                                                className={
-                                                    'd-flex justify-content-between'
-                                                }
-                                            >
-                                                <p>Availability Supply</p>
-                                                <p>Total Supply</p>
-                                            </section>
-                                            <section
-                                                className={
-                                                    'd-flex justify-content-between'
-                                                }
-                                            >
-                                                <p className={'text-success'}>
-                                                    18,834,400
-                                                </p>
-                                                <p className={'text-success'}>
-                                                    18,834,400
-                                                </p>
-                                            </section>
-                                        </div>
-                                    </div>
-                                    <hr style={custom.verticalLine} />
-                                </Typography>
-                                <Typography
-                                    component="div"
-                                    color="textPrimary"
-                                    className="col-lg-5 col-md-5 col-sm-12"
-                                >
-                                    <h4 className="mt-4">Info:</h4>
-                                    <div>
-                                        <div className={'m-1'}>
-                                            <div className={'row'}>
-                                                <div className={'col-3'}>
-                                                    <strong className="text-secondary">
-                                                        Website
-                                                    </strong>
-                                                </div>
-                                                <div className={'col-9'}>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        <LinkOutlined />
-                                                        bitcoin.org
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={'m-1'}>
-                                            <div className={'row'}>
-                                                <div className={'col-3'}>
-                                                    <strong className="text-secondary">
-                                                        Explorer
-                                                    </strong>
-                                                </div>
-                                                <div className={'col-9'}>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        Blockchain
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        BTC
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        TokenView
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        OKLink
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={'m-1'}>
-                                            <div className={'row'}>
-                                                <div className={'col-3'}>
-                                                    <strong className="text-secondary">
-                                                        Community
-                                                    </strong>
-                                                </div>
-                                                <div className={'col-9'}>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        <Twitter /> Twitter
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        <Telegram /> Telegram
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        <Facebook /> Facebook
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={'m-1'}>
-                                            <div className={'row'}>
-                                                <div className={'col-3'}>
-                                                    <strong className="text-secondary">
-                                                        Source Code
-                                                    </strong>
-                                                </div>
-                                                <div className={'col-9'}>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        <GitHub /> Github
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={'m-1'}>
-                                            <div className={'row'}>
-                                                <div className={'col-3'}>
-                                                    <strong className="text-secondary">
-                                                        Tags
-                                                    </strong>
-                                                </div>
-                                                <div className={'col-9'}>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        Cryptocurrency
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        Bitcoin
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        Mineable
-                                                    </Button>
-                                                    <Button
-                                                        variant="contained"
-                                                        style={
-                                                            custom.buttonStyle
-                                                        }
-                                                    >
-                                                        Store of Value
-                                                    </Button>
-                                                    <br />
-                                                    <br />
-                                                    <a className="text-primary">
-                                                        <strong>See all</strong>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Typography>
-                            </div>
-                        </div>
+                                                    />
+                                                    <div>
+                                                        <div className="d-flex align-items-center">
+                                                            <span
+                                                                className={
+                                                                    'text-secondary'
+                                                                }
+                                                            >
+                                                                {
+                                                                    coinDetail?.name
+                                                                }{' '}
+                                                                <span
+                                                                    className={
+                                                                        'text-uppercase'
+                                                                    }
+                                                                >
+                                                                    ({' '}
+                                                                    {
+                                                                        coinDetail?.symbol
+                                                                    }{' '}
+                                                                    )
+                                                                </span>
+                                                            </span>
+                                                            <div className="bg-success px-2 mx-1 br-1">
+                                                                #
+                                                                {
+                                                                    coinDetail?.coingecko_rank
+                                                                }
+                                                            </div>
+                                                            <Star />
+                                                        </div>
+                                                        <div>
+                                                            <Typography
+                                                                component="div"
+                                                                classsName="d-flex align-items-center mt-2"
+                                                            >
+                                                                <span>
+                                                                    $47,811.67{' '}
+                                                                </span>
+                                                                <span
+                                                                    className={
+                                                                        'text-danger'
+                                                                    }
+                                                                >
+                                                                    <ArrowDropDown />
+                                                                    7.76%
+                                                                </span>
+                                                            </Typography>
 
-                        <div className={'mt-3'}>
-                            <TabContext value={value} variant="standard">
-                                <div>
-                                    <Divider
-                                        orientation="horizontal"
-                                        flexItem
-                                    ></Divider>
-                                    <TabList
-                                        onChange={handleChange}
-                                        aria-label="lab API tabs example"
-                                        className={'m-2'}
-                                        variant="scrollable"
-                                        allowScrollButtonsMobile
-                                        scrollButtons
-                                    >
-                                        <Tab
-                                            label="Overview"
-                                            value="1"
-                                            style={custom.tabStyle}
-                                        />
-                                        <Tab
-                                            label="Market"
-                                            value="2"
-                                            style={custom.tabStyle}
-                                        />
-                                        <Tab
-                                            label="News"
-                                            value="3"
-                                            style={custom.tabStyle}
-                                        />
-                                        <Tab
-                                            label="Forum"
-                                            value="4"
-                                            style={custom.tabStyle}
-                                        />
-                                        <Tab
-                                            label="Historical Data"
-                                            value="5"
-                                            style={custom.tabStyle}
-                                        />
-                                        <Tab
-                                            label="Project Info."
-                                            value="6"
-                                            style={custom.tabStyle}
-                                        />
-                                        {/* <Button
-                                        textColor={'#333333'}
-                                        className={'float-end'}
-                                        style={{
-                                            marginLeft: '5%',
-                                            backgroundColor: '#333333',
-                                        }}
-                                    >
-                                        <ShareTwoTone />
-                                        <span style={{ marginLeft: '5px' }}>
-                                            Share
-                                        </span>
-                                    </Button> */}
-                                    </TabList>
-                                    <Divider
-                                        orientation="horizontal"
-                                        flexItem
-                                    ></Divider>
-                                </div>
-                                {/*<hr/>*/}
-                                <TabPanel
-                                    value="1"
-                                    classes={{ root: classes.tabPanelRoot }}
+                                                            <Button
+                                                                className="me-2 my-1"
+                                                                size="small"
+                                                                variant="contained"
+                                                                style={
+                                                                    custom.buttonStyle
+                                                                }
+                                                            >
+                                                                Coin
+                                                            </Button>
+                                                            <Button
+                                                                className="me-2 my-1"
+                                                                size="small"
+                                                                variant="contained"
+                                                                style={
+                                                                    custom.buttonStyle
+                                                                }
+                                                            >
+                                                                On 2,267,548
+                                                                watchlists
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Grid>
+                                        <Grid
+                                            className="mt-4 px-2"
+                                            item
+                                            xs={12}
+                                            sm={12}
+                                            md={12}
+                                            lg={6}
+                                        >
+                                            <Grid container>
+                                                <Grid xs={6}>
+                                                    <Typography color="textPrimary">
+                                                        Price Change 24hrs
+                                                    </Typography>
+                                                    <div className="text-success mb-2">
+                                                        $
+                                                        {
+                                                            coinDetail
+                                                                ?.market_data
+                                                                ?.price_change_24h_in_currency
+                                                                ?.usd
+                                                        }
+                                                    </div>
+                                                    <Typography color="textPrimary">
+                                                        Circulating Supply
+                                                    </Typography>
+                                                    <div className="text-success">
+                                                        $
+                                                        {
+                                                            coinDetail
+                                                                ?.market_data
+                                                                ?.circulating_supply
+                                                        }
+                                                    </div>
+                                                </Grid>
+                                                <Grid xs={6}>
+                                                    <Typography color="textPrimary">
+                                                        Market Cap
+                                                    </Typography>
+                                                    <div className="text-success mb-2">
+                                                        $
+                                                        {
+                                                            coinDetail
+                                                                ?.market_data
+                                                                ?.market_cap_change_24h_in_currency
+                                                                ?.usd
+                                                        }
+                                                    </div>
+                                                    <Typography color="textPrimary">
+                                                        Total Supply
+                                                    </Typography>
+                                                    <div className="text-success">
+                                                        $
+                                                        {
+                                                            coinDetail
+                                                                ?.market_data
+                                                                ?.total_supply
+                                                        }
+                                                    </div>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    className="mt-4"
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={4}
+                                    lg={5}
                                 >
-                                    <Overview coinDetail={coinDetail} />
-                                </TabPanel>
-                                <TabPanel
-                                    value="2"
-                                    classes={{ root: classes.tabPanelRoot }}
-                                >
-                                    <Market />
-                                </TabPanel>
-                                <TabPanel
-                                    value="3"
-                                    classes={{ root: classes.tabPanelRoot }}
-                                >
-                                    <News />
-                                </TabPanel>
-                                <TabPanel
-                                    value="4"
-                                    classes={{ root: classes.tabPanelRoot }}
-                                >
-                                    <Forum />
-                                </TabPanel>
-                                <TabPanel
-                                    value="5"
-                                    classes={{ root: classes.tabPanelRoot }}
-                                >
-                                    <HistoricalData />
-                                </TabPanel>
-                                <TabPanel
-                                    value="6"
-                                    classes={{ root: classes.tabPanelRoot }}
-                                >
-                                    <ProjectInfo />
-                                </TabPanel>
-                            </TabContext>
+                                    <h4>Info:</h4>
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <strong className="text-secondary">
+                                                    Website
+                                                </strong>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    <LinkOutlined />
+                                                    bitcoin.org
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <strong className="text-secondary w-25">
+                                                    Explorer
+                                                </strong>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    Blockchain
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    BTC
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    TokenView
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    OKLink
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <strong className="text-secondary">
+                                                    Community
+                                                </strong>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    <Twitter /> Twitter
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    <Telegram /> Telegram
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    <Facebook /> Facebook
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <strong className="text-secondary">
+                                                    Source Code
+                                                </strong>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    <GitHub /> Github
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <strong className="text-secondary">
+                                                    Tags
+                                                </strong>
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    Cryptocurrency
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    Bitcoin
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    Mineable
+                                                </Button>
+                                                <Button
+                                                    className="me-2 my-1"
+                                                    variant="contained"
+                                                    size="small"
+                                                    style={custom.buttonStyle}
+                                                >
+                                                    Store of Value
+                                                </Button>
+                                                {/* <br />
+                                        <br />
+                                        <a className="text-primary">
+                                            <strong>See all</strong>
+                                        </a> */}
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </div>
+                        <CoinDetailsTabPanel coinDetail={coinDetail} />
                     </>
-                ) : (
-                    <div className="mt-3">
-                        <div className="d-lg-flex d-md-flex d-sm-block row">
-                            <div
-                                className="d-lg-flex d-md-flex d-sm-block col-lg-7
-                         col-md-7 col-sm-12 mt-3 justify-content-evenly"
-                            >
-                                <div>
-                                    <div>
-                                        <Skeleton
-                                            className="mb-2"
-                                            animation="wave"
-                                            variant="circular"
-                                            height={50}
-                                            width={50}
-                                        />
-                                    </div>
-                                    <div>
-                                        <Skeleton
-                                            animation="wave"
-                                            variant="text"
-                                        />
-                                        <Skeleton
-                                            animation="wave"
-                                            variant="text"
-                                        />
-                                        <Skeleton
-                                            className="mt-2"
-                                            animation="wave"
-                                            variant="rectangular"
-                                            height={30}
-                                            width={200}
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className={'mt-5'}>
-                                        <section
-                                            className={
-                                                'd-flex justify-content-between'
-                                            }
-                                        >
-                                            <Skeleton
-                                                className="me-2"
-                                                animation="wave"
-                                                variant="text"
-                                                width={100}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                variant="text"
-                                                width={100}
-                                            />
-                                        </section>
-                                        <section
-                                            className={
-                                                'd-flex justify-content-between'
-                                            }
-                                        >
-                                            <Skeleton
-                                                className="me-2"
-                                                animation="wave"
-                                                variant="text"
-                                                width={90}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                variant="text"
-                                                width={90}
-                                            />
-                                        </section>
-                                        <section
-                                            className={
-                                                'd-flex justify-content-between'
-                                            }
-                                        >
-                                            <Skeleton
-                                                animation="wave"
-                                                variant="text"
-                                                width="100%"
-                                            />
-                                        </section>
-                                        <section
-                                            className={
-                                                'd-flex justify-content-between'
-                                            }
-                                        >
-                                            <Skeleton
-                                                className="me-2"
-                                                animation="wave"
-                                                variant="text"
-                                                width={100}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                variant="text"
-                                                width={100}
-                                            />
-                                        </section>
-                                    </div>
-                                </div>
-                                <hr style={custom.verticalLine} />
-                            </div>
-                            <div className="col-lg-5 col-md-5 col-sm-12">
-                                <Skeleton
-                                    animation="wave"
-                                    variant="text"
-                                    width={100}
-                                />
-                                <div>
-                                    <div className={'m-1'}>
-                                        <div className={'row'}>
-                                            <div className={'col-3'}>
-                                                <Skeleton
-                                                    animation="wave"
-                                                    variant="text"
-                                                    width={100}
-                                                />
-                                            </div>
-                                            <div className={'col-9'}>
-                                                <Skeleton
-                                                    className="br-1"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'m-1'}>
-                                        <div className={'row'}>
-                                            <div className={'col-3'}>
-                                                <Skeleton
-                                                    animation="wave"
-                                                    variant="text"
-                                                    width={100}
-                                                />
-                                            </div>
-                                            <div className={'col-9'}>
-                                                <Skeleton
-                                                    className="br-1"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'m-1'}>
-                                        <div className={'row'}>
-                                            <div className={'col-3'}>
-                                                <Skeleton
-                                                    animation="wave"
-                                                    variant="text"
-                                                    width={100}
-                                                />
-                                            </div>
-                                            <div
-                                                className={
-                                                    'col-9 d-flex align-items-center'
-                                                }
-                                            >
-                                                <Skeleton
-                                                    className="br-1 me-2"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                                <Skeleton
-                                                    className="br-1"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'m-1'}>
-                                        <div className={'row'}>
-                                            <div className={'col-3'}>
-                                                <Skeleton
-                                                    animation="wave"
-                                                    variant="text"
-                                                    width={100}
-                                                />
-                                            </div>
-                                            <div className={'col-9'}>
-                                                <Skeleton
-                                                    className="br-1"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'m-1'}>
-                                        <div className={'row'}>
-                                            <div className={'col-3'}>
-                                                <Skeleton
-                                                    animation="wave"
-                                                    variant="text"
-                                                    width={100}
-                                                />
-                                            </div>
-                                            <div
-                                                className={
-                                                    'col-9 d-flex align-items-center'
-                                                }
-                                            >
-                                                <Skeleton
-                                                    className="br-1 me-2"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                                <Skeleton
-                                                    className="br-1"
-                                                    animation="wave"
-                                                    variant="rectangular"
-                                                    width={70}
-                                                    height={30}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 )}
             </Container>
         </Screen>
     );
 }
-
-const useStyles = makeStyles({
-    tabPanelRoot: {
-        padding: '25px 0',
-    },
-});
 
 const custom = {
     darkTransparent: {

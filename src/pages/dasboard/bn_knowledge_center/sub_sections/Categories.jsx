@@ -7,55 +7,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React, { useEffect } from 'react';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategoryTable } from '../../../../store/actions/cryptoActions';
 
 export default function Categories() {
-    const [categories, setCategories] = React.useState([]);
-    const [categoryLoaded, setCategoriesLoaded] = React.useState(false);
+    const dispatch = useDispatch();
+    const state = useSelector((st) => st);
+    const categories = state.crypto?.categoryTable;
 
     useEffect(() => {
-        const url = `https://api.coingecko.com/api/v3/coins/categories`;
-        const abortCont = new AbortController();
-
-        fetch(url, { signal: abortCont.signal })
-            .then((response) => response.json())
-            .then((data) => {
-                setCategories(data);
-                setCategoriesLoaded(true);
-            })
-            .catch((err) => {
-                if (err.name !== 'AbortError') {
-                    setCategoriesLoaded(false);
-                }
-            });
-    }, []);
+        dispatch(fetchCategoryTable());
+    }, [dispatch]);
 
     return (
         <TableContainer>
-            <Table
-                sx={{ maxHeight: 500 }}
-                aria-label="coins table"
-                stickyHeader
-            >
+            <Table aria-label="coins table" stickyHeader>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>#</StyledTableCell>
@@ -65,7 +31,7 @@ export default function Categories() {
                         <StyledTableCell>Volume (24h)</StyledTableCell>
                     </TableRow>
                 </TableHead>
-                {categoryLoaded ? (
+                {categories?.length > 0 ? (
                     <TableBody>
                         {categories.map((row, id) => (
                             <StyledTableRow key={row.name}>
@@ -109,3 +75,23 @@ export default function Categories() {
         </TableContainer>
     );
 }
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
