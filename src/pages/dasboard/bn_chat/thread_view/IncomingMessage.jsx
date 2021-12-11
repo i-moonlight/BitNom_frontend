@@ -35,7 +35,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                         src={
                             chat?.otherUser?.info?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  chat?.otherUser?.info.profile_pic
+                                  chat?.otherUser?.info?.profile_pic
                                 : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
@@ -180,7 +180,11 @@ export default function IncomingMessage({ message, chat, onClick }) {
                 </Typography>
             </Paper>
             <div className={classes.time}>
-                <small>{getDistanceToNowWithSuffix(message?.date)}</small>
+                <small>
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
+                </small>
             </div>
         </div>
     );

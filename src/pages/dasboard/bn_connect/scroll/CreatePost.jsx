@@ -79,6 +79,7 @@ export default function CreatePost({
                     data: { feed_id: user?._id, limit: 10 },
                 },
             });
+
             cache.writeQuery({
                 query: QUERY_GET_FEED,
                 variables: {
@@ -94,6 +95,22 @@ export default function CreatePost({
                     },
                 },
             });
+
+            const existingUserPosts = cache.readQuery({
+                query: QUERY_LOAD_SCROLLS,
+                variables: { data: { author: user?._id, limit: 220 } },
+            });
+            cache.writeQuery({
+                query: QUERY_LOAD_SCROLLS,
+                variables: {
+                    data: { author: user?._id, limit: 220 },
+                },
+                data: {
+                    Posts: {
+                        get: [newPost, ...existingUserPosts?.Posts?.get],
+                    },
+                },
+            });
         },
     });
 
@@ -105,22 +122,6 @@ export default function CreatePost({
                 data: ICreatePost,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                /* {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                }, */
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: { data: { author: user?._id, limit: 220 } },
-                },
-                /*  {
-                    query: QUERY_GET_FEED,
-                    variables: { data: { feed_id: user?._id, limit: 10 } },
-                }, */
-            ],
         }).then(({ data: createPostData, errors: createPostErrors }) => {
             if (createPostData?.Posts?.create) {
                 handleCloseModal();

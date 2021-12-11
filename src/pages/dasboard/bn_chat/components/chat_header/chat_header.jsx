@@ -20,7 +20,6 @@ import {
     useTheme,
 } from '@mui/material';
 import debounce from 'lodash/debounce';
-//import moment from 'moment';
 import { format } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -289,12 +288,9 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             ) : (
                                 <Typography variant="subtitle2">
                                     last seen{' '}
-                                    {/*  {moment(otherUser.lastSeen).format(
-                                        'dddd h:mm'
-                                    )} */}
                                     {format(
                                         new Date(otherUser.lastSeen),
-                                        'dddd h:mm'
+                                        'MMM do h:mm aaa'
                                     )}
                                 </Typography>
                             )}

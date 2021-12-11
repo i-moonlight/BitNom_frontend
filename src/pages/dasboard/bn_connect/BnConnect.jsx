@@ -89,16 +89,6 @@ export default function BnConnect() {
         context: { clientName: 'users' },
     });
 
-    /* const {
-        loading: scrollLoading,
-        data: scrollData,
-        error: scrollError,
-    } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: {
-            data: { ids: getFeed(user), limit: 220 },
-        },
-    }); */
-
     const {
         loading: feedLoading,
         data: feedData,
@@ -108,7 +98,6 @@ export default function BnConnect() {
         variables: {
             data: { feed_id: user?._id, limit: 10 },
         },
-        fetchPolicy: 'cache-first',
     });
 
     const {
