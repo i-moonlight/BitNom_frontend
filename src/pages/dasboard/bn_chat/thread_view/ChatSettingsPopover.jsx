@@ -9,6 +9,7 @@ import {
 import {
     ARCHIVE_CHAT,
     BLOCK_CHAT,
+    GET_DIALOGUES,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
     PIN_CHAT,
@@ -38,6 +39,15 @@ export default function ChatSettingPopover({
             _id: chat._id,
         },
         context: { clientName: 'chat' },
+        refetchQueries: [
+            {
+                query: GET_DIALOGUES,
+                variables: {
+                    status: 'accepted',
+                },
+                context: { clientName: 'chat' },
+            },
+        ],
     });
 
     const [MarkAsSeen] = useMutation(MARK_CHAT_AS_READ, {
@@ -80,48 +90,65 @@ export default function ChatSettingPopover({
             _id: chat._id,
         },
         context: { clientName: 'chat' },
+        refetchQueries: [
+            {
+                query: GET_DIALOGUES,
+                variables: {
+                    status: 'accepted',
+                },
+                context: { clientName: 'chat' },
+            },
+        ],
     });
 
     const handleArchiveChat = () => {
+        handleChatSettingsClose();
         ArchiveChat();
     };
 
     const handleMarkAsRead = () => {
+        handleChatSettingsClose();
         MarkAsSeen();
     };
 
     const handleMuteConversation = () => {
+        handleChatSettingsClose();
         MuteConversation();
     };
 
     const handleBlockUser = () => {
+        handleChatSettingsClose();
         BlockUser();
     };
 
     const handleReport = () => {
+        handleChatSettingsClose();
         ReportUser();
     };
 
     const handlePinChat = () => {
+        handleChatSettingsClose();
         PinChat();
     };
 
     const handleUnpinChat = () => {
+        handleChatSettingsClose();
         UnpinChat();
     };
 
     const handleUnArchiveChat = () => {
+        handleChatSettingsClose();
         UnarchiveChat();
     };
 
     useEffect(() => {
-        if (unpinData === true) {
+        if (unpinData?.Dialogue?.unpin === true) {
             dispatch(deletePinnedChat(chat));
         }
     }, [dispatch, unpinData, chat]);
 
     useEffect(() => {
-        if (unarchiveData === true) {
+        if (unarchiveData?.Dialogue?.unarchive === true) {
             dispatch(deleteArchivedchat(chat));
         }
     }, [dispatch, unarchiveData, chat]);

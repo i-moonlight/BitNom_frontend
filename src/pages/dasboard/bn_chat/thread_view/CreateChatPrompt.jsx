@@ -134,7 +134,9 @@ export default function CreateChatPrompt({
                                 />
                             </Paper>
                         </div>
-                        <CardContent>
+                        <CardContent
+                            style={{ overflowY: 'auto', maxHeight: '65vh' }}
+                        >
                             {users && (
                                 <List>
                                     {users?.map((user, index) => (
