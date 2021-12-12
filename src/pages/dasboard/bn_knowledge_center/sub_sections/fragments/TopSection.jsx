@@ -47,7 +47,8 @@ export default function TopSection() {
                             The global cryptocurrency market cap today is $2.08
                             Trillion, a
                             <span className="text-danger"> -1.1% </span> change
-                            in the last 24 hours <a href={'#'}>Read More</a>
+                            in the last 24 hours
+                            {/* <a href={'#'}>Read More</a> */}
                         </Typography>
                     </div>
                 </div>
@@ -162,7 +163,6 @@ export default function TopSection() {
                     </div>
                 </section>
             )}
-            ;
         </>
     );
 }

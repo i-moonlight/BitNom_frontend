@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { CircularProgress } from '@material-ui/core';
 import {
     CloseRounded,
     ImageRounded,
@@ -19,6 +18,7 @@ import {
     useTheme,
     ListItemText,
     ListItem,
+    CircularProgress,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';

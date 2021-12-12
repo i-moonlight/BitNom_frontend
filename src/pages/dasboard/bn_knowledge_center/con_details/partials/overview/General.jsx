@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     ArrowBack,
     ArrowDropDown,
@@ -36,6 +37,7 @@ export default function General({ coinDetail }) {
     // const [coinFeature, setCoinFeature] = useState('price');
     const [showLess, setShowLess] = useState(true);
 
+    const theme = useTheme();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const rows = state.crypto?.generalTable;
@@ -331,13 +333,11 @@ export default function General({ coinDetail }) {
                                         alt={'bitcoin'}
                                     />
                                     <p>Blizzard Token (Buzz)</p>
-                                    <button
-                                        className={
-                                            'btn btn-success btn-sm h-25'
-                                        }
-                                    >
-                                        #574
-                                    </button>
+                                    <div>
+                                        <Typography className="px-1 br-1 bg-success">
+                                            #574
+                                        </Typography>
+                                    </div>
                                 </div>
                                 <div
                                     className={
@@ -352,13 +352,11 @@ export default function General({ coinDetail }) {
                                         alt={'bitcoin'}
                                     />
                                     <p>Blizzard Token (Buzz)</p>
-                                    <button
-                                        className={
-                                            'btn btn-success btn-sm h-25'
-                                        }
-                                    >
-                                        #574
-                                    </button>
+                                    <div>
+                                        <Typography className="px-1 br-1 bg-success">
+                                            #574
+                                        </Typography>
+                                    </div>
                                 </div>
                                 <div
                                     className={
@@ -373,13 +371,11 @@ export default function General({ coinDetail }) {
                                         alt={'bitcoin'}
                                     />
                                     <p>Blizzard Token (Buzz)</p>
-                                    <button
-                                        className={
-                                            'btn btn-success btn-sm h-25'
-                                        }
-                                    >
-                                        #574
-                                    </button>
+                                    <div>
+                                        <Typography className="px-1 br-1 bg-success">
+                                            #574
+                                        </Typography>
+                                    </div>
                                 </div>
                                 <div
                                     className={
@@ -394,13 +390,11 @@ export default function General({ coinDetail }) {
                                         alt={'bitcoin'}
                                     />
                                     <p>Blizzard Token (Buzz)</p>
-                                    <button
-                                        className={
-                                            'btn btn-success btn-sm h-25'
-                                        }
-                                    >
-                                        #574
-                                    </button>
+                                    <div>
+                                        <Typography className="px-1 br-1 bg-success">
+                                            #574
+                                        </Typography>
+                                    </div>
                                 </div>
                                 <div
                                     className={
@@ -415,13 +409,11 @@ export default function General({ coinDetail }) {
                                         alt={'bitcoin'}
                                     />
                                     <p>Blizzard Token (Buzz)</p>
-                                    <button
-                                        className={
-                                            'btn btn-success btn-sm h-25'
-                                        }
-                                    >
-                                        #574
-                                    </button>
+                                    <div>
+                                        <Typography className="px-1 br-1 bg-success">
+                                            #574
+                                        </Typography>
+                                    </div>
                                 </div>
                             </div>
                         </Card>
@@ -443,43 +435,33 @@ export default function General({ coinDetail }) {
                             <TableHead>
                                 <TableRow
                                     style={{
-                                        backgroundColor: '#3e4041',
-                                        color: '#fff',
+                                        backgroundColor:
+                                            theme.palette.mode === 'dark'
+                                                ? '#3e4041'
+                                                : '#eeeeee',
                                     }}
                                 >
-                                    <TableCell className="text-white">
+                                    <TableCell>
                                         <strong>#</strong>
                                     </TableCell>
-                                    <TableCell className="text-white">
+                                    <TableCell>
                                         <strong>Source</strong>
                                     </TableCell>
                                     <TableCell />
-                                    <TableCell className={'text-primary'}>
+                                    <TableCell>
                                         <strong>Pairs</strong>
                                     </TableCell>
                                     <TableCell>
                                         <strong>Price</strong>
                                     </TableCell>
-                                    {/*<TableCell >*/}
-                                    {/*    <strong>+ 2% Depth</strong>*/}
-                                    {/*</TableCell>*/}
-                                    {/*<TableCell >*/}
-                                    {/*    <strong>- 2% Depth</strong>*/}
-                                    {/*</TableCell>*/}
                                     <TableCell>
                                         <strong>Volume</strong>
                                     </TableCell>
                                     <TableCell>
                                         <strong>Volume % </strong>
                                     </TableCell>
-                                    {/*<TableCell >*/}
-                                    {/*    <strong>Confidence</strong>*/}
-                                    {/*</TableCell>*/}
-                                    {/*<TableCell >*/}
-                                    {/*    <strong>Liquidity</strong>*/}
-                                    {/*</TableCell>*/}
-                                    <TableCell className="text-white">
-                                        Updated
+                                    <TableCell>
+                                        <strong>Updated</strong>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -505,12 +487,6 @@ export default function General({ coinDetail }) {
                                         <TableCell>
                                             {row.current_price}
                                         </TableCell>
-                                        {/*<TableCell >*/}
-                                        {/*    {row.plus_depth}*/}
-                                        {/*</TableCell>*/}
-                                        {/*<TableCell >*/}
-                                        {/*    {row.neg_depth}*/}
-                                        {/*</TableCell>*/}
                                         <TableCell>
                                             {row.total_volume}
                                         </TableCell>
@@ -521,16 +497,6 @@ export default function General({ coinDetail }) {
                                             )}
                                             %
                                         </TableCell>
-                                        {/*<TableCell >*/}
-                                        {/*    <span style={{backgroundColor: '#b4b474', borderRadius: '15px',}}>*/}
-                                        {/*        <span className={'m-1'}>*/}
-                                        {/*            {row.confidence}*/}
-                                        {/*        </span>*/}
-                                        {/*    </span>*/}
-                                        {/*</TableCell>*/}
-                                        {/*<TableCell >*/}
-                                        {/*    {row.liquidity}*/}
-                                        {/*</TableCell>*/}
                                         <TableCell>
                                             {convertDate(row.atl_date)}
                                         </TableCell>
@@ -725,12 +691,7 @@ export default function General({ coinDetail }) {
                 </section>
                 <section>
                     <div className={'m-3 d-flex justify-content-center'}>
-                        <a
-                            href={'#'}
-                            className={'btn btn-secondary btn-lg btn-sm btn-md'}
-                        >
-                            Read More
-                        </a>
+                        <Button textCase>Read More</Button>
                     </div>
                 </section>
             </Typography>

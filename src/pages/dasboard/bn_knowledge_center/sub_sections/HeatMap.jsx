@@ -1,4 +1,5 @@
 import { ArrowDropDown, Fullscreen } from '@mui/icons-material';
+import { Button } from '../../../../components/Button';
 
 export default function HeatMap() {
     return (
@@ -27,9 +28,9 @@ export default function HeatMap() {
                         </strong>
                     </div>
                     <div>
-                        <button className={'btn btn-secondary'}>
-                            Full Screen <Fullscreen />
-                        </button>
+                        <Button textCase endIcon={<Fullscreen />}>
+                            Full Screen
+                        </Button>
                     </div>
                 </section>
                 <section className={'row m-3'}>

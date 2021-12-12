@@ -57,7 +57,10 @@ export default function PriceGraph({ sparkline }) {
             {
                 label: 'Dataset 1',
                 data: sparkline.price,
-                borderColor: 'rgb(255, 99, 132)',
+                borderColor:
+                    labels[labels.length - 1] < labels[labels.length - 2]
+                        ? '#00ff00'
+                        : 'rgb(255, 99, 132)',
                 borderWidth: 1,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },

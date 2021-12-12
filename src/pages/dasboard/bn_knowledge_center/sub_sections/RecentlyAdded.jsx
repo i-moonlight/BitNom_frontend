@@ -1,8 +1,8 @@
+import { useTheme } from '@emotion/react';
 import { Skeleton } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRecentTable } from '../../../../store/actions/cryptoActions';
 
 export default function RecentlyAdded() {
+    const theme = useTheme();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const coins = state.crypto?.marketTable;
@@ -22,43 +23,40 @@ export default function RecentlyAdded() {
     return (
         <>
             <TableContainer>
-                <Table aria-label="coins table" stickyHeader>
+                <Table aria-label="coins table">
                     <TableHead>
-                        <TableRow>
-                            <StyledTableCell>#</StyledTableCell>
-                            <StyledTableCell align="right">
-                                Coin
-                            </StyledTableCell>
-                            <StyledTableCell align="right" />
-                            <StyledTableCell align="right">
-                                Price
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                Volume
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                Market Cap
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                Change(24)
-                            </StyledTableCell>
+                        <TableRow
+                            style={{
+                                backgroundColor:
+                                    theme.palette.mode === 'dark'
+                                        ? '#3e4041'
+                                        : '#eeeeee',
+                            }}
+                        >
+                            <TableCell>#</TableCell>
+                            <TableCell>Coin</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Price</TableCell>
+                            <TableCell>Volume</TableCell>
+                            <TableCell>Market Cap</TableCell>
+                            <TableCell>Change(24)</TableCell>
                         </TableRow>
                     </TableHead>
                     {coins?.length > 0 ? (
                         <TableBody>
                             {coins.map((row, id) => (
-                                <StyledTableRow key={row.name}>
-                                    <StyledTableCell component="th" scope="row">
+                                <TableRow key={row.name}>
+                                    <TableCell component="th" scope="row">
                                         {id + 1}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
+                                    </TableCell>
+                                    <TableCell>
                                         <img
                                             src={row.image}
                                             alt={'coin image'}
                                             height="25px"
                                         />
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
+                                    </TableCell>
+                                    <TableCell>
                                         {row.name}
                                         <span
                                             style={{
@@ -67,23 +65,20 @@ export default function RecentlyAdded() {
                                         >
                                             ({row.symbol})
                                         </span>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        ${row.current_price}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        ${row.total_volume}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        ${row.market_cap}
-                                    </StyledTableCell>
-                                    <StyledTableCell
-                                        align="right"
-                                        className={'text-danger'}
+                                    </TableCell>
+                                    <TableCell>${row.current_price}</TableCell>
+                                    <TableCell>${row.total_volume}</TableCell>
+                                    <TableCell>${row.market_cap}</TableCell>
+                                    <TableCell
+                                        className={
+                                            row.price_change_percentage_24h < 0
+                                                ? 'text-danger'
+                                                : 'text-success'
+                                        }
                                     >
                                         {row.price_change_percentage_24h}%
-                                    </StyledTableCell>
-                                </StyledTableRow>
+                                    </TableCell>
+                                </TableRow>
                             ))}
                         </TableBody>
                     ) : (
@@ -109,23 +104,3 @@ export default function RecentlyAdded() {
         </>
     );
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 13,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
