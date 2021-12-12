@@ -1,5 +1,5 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Tab } from '@mui/material';
+import { Box, Tab, styled } from '@mui/material';
 import React, { useState } from 'react';
 import Analysis from './Analysis';
 import Developer from './Developer';
@@ -12,13 +12,20 @@ export default function Overview({ coinDetail }) {
         setValue(newValue);
     };
 
+    const StyledTabList = styled(TabList)({
+        borderBottom: '1px solid #e8e8e8',
+        '& .MuiTabs-indicator': {
+            opacity: 0,
+        },
+    });
+
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext
                 sx={{ width: '100%', typography: 'body1' }}
                 value={value}
             >
-                <TabList
+                <StyledTabList
                     onChange={handleChange}
                     aria-label="lab API tabs example"
                     className={'m-1'}
@@ -50,7 +57,7 @@ export default function Overview({ coinDetail }) {
                         value="4"
                         style={custom.buttonStyle}
                     />
-                </TabList>
+                </StyledTabList>
 
                 <TabPanel value="1">
                     <General coinDetail={coinDetail} />
