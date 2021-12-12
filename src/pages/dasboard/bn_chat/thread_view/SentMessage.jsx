@@ -1,12 +1,12 @@
 import { Reply } from '@mui/icons-material';
 import { Avatar, Grid, IconButton, Typography } from '@mui/material';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function SentMessage({ message, onReply = () => null }) {
     const [show_reply, setShowReply] = useState(false);
-    const user = message.author || {};
+    const user = message?.author || {};
 
     return (
         <Grid
@@ -52,15 +52,15 @@ export default function SentMessage({ message, onReply = () => null }) {
                         </Link>
                     </Typography>
                     <Typography variant="caption" component="span">
-                        {moment(message.date).format('MMMM Do YYYY, h:mm:ss a')}
+                        {format(new Date(message?.date), 'MMMM do y, h:mm aaa')}
                     </Typography>
-                    {message.responseTo && (
+                    {message?.responseTo && (
                         <Typography variant="body2" component="article">
-                            {message.responsTo?.text}
+                            {message?.responsTo?.text}
                         </Typography>
                     )}
                     <Typography variant="body2" component="article">
-                        {message.text}
+                        {message?.text}
                     </Typography>
                 </Grid>
                 {show_reply && (

@@ -21,6 +21,7 @@ import {
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
 import { setPostCount } from '../../../store/actions/postCountActions';
+
 import {
     setTotalCount,
     resetTotalCount,
@@ -204,20 +205,30 @@ export default function NavBar() {
             setTabValue(0);
         }
 
-        if (window.location.pathname?.includes('/knowledge_center')) {
+        if (
+            window.location.pathname?.includes(
+                '/knowledge_center/cryptocurrencies'
+            )
+        ) {
             setTabValue(1);
         }
 
-        if (window.location.pathname?.includes('/events')) {
+        if (
+            window.location.pathname?.includes('/knowledge_center/cryptogazing')
+        ) {
             setTabValue(2);
         }
 
-        if (window.location.pathname?.includes('/chat')) {
+        if (window.location.pathname?.includes('/events')) {
             setTabValue(3);
         }
 
-        if (window.location.pathname?.includes('/investors')) {
+        if (window.location.pathname?.includes('/chat')) {
             setTabValue(4);
+        }
+
+        if (window.location.pathname?.includes('/investors')) {
+            setTabValue(5);
         }
     }, [history, user?.email, user?.email?.verified]);
 

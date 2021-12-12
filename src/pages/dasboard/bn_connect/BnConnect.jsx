@@ -4,17 +4,23 @@ import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { Button } from '../../../components/Button';
 import ImageModal from '../../../components/ImageModal';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import {
-    loadScrolls,
+    //loadScrolls,
     loadTrending,
     loadUsers,
+    loadFeed,
 } from '../../../store/actions/postActions';
-import { getFeed } from '../utilities/functions';
-import { QUERY_GET_USERS, QUERY_LOAD_SCROLLS } from '../utilities/queries';
+//import { getFeed } from '../utilities/functions';
+import {
+    QUERY_GET_USERS,
+    QUERY_LOAD_SCROLLS,
+    QUERY_GET_FEED,
+} from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
@@ -55,12 +61,16 @@ export default function BnConnect() {
     const [flaggedResource, setFlaggedResource] = useState(null);
     const [openShareModal, setOpenShareModal] = useState(false);
 
+    //const [skip, setSkip] = useState(0);
+    const [loadingMore, setLoadingMore] = useState(false);
+
     const classes = useStyles();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
 
     const user = state.auth.user;
-    const posts = state.posts.list;
+    //const posts = state.posts.list;
+    const feed = state.posts.feed;
     // const comments = state.posts.comments;
     const trending = state.posts.trending;
     const users = state.posts.users;
@@ -79,7 +89,7 @@ export default function BnConnect() {
         context: { clientName: 'users' },
     });
 
-    const {
+    /* const {
         loading: scrollLoading,
         data: scrollData,
         error: scrollError,
@@ -87,6 +97,18 @@ export default function BnConnect() {
         variables: {
             data: { ids: getFeed(user), limit: 220 },
         },
+    }); */
+
+    const {
+        loading: feedLoading,
+        data: feedData,
+        error: feedError,
+        fetchMore,
+    } = useQuery(QUERY_GET_FEED, {
+        variables: {
+            data: { feed_id: user?._id, limit: 10 },
+        },
+        fetchPolicy: 'cache-first',
     });
 
     const {
@@ -96,12 +118,28 @@ export default function BnConnect() {
     } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: {
-                ids: getFeed(user),
+                feed_id: user?._id,
                 sortByField: 'trending',
-                limit: 5,
+                limit: 10,
             },
         },
+        fetchPolicy: 'network-only',
     });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    feed_id: user?._id,
+                    limit: 10,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const following = [];
     user?.following?.forEach((item) => following.push(item?.userId?._id));
@@ -121,14 +159,25 @@ export default function BnConnect() {
         !trendingError &&
             !trendingLoading &&
             dispatch(loadTrending(trendingData?.Posts?.get));
-        !scrollError &&
-            !scrollLoading &&
-            dispatch(loadScrolls(scrollData?.Posts?.get));
+        //!scrollError &&
+        //    !scrollLoading &&
+        //    dispatch(loadScrolls(scrollData?.Posts?.get));
+        !feedError &&
+            !feedLoading &&
+            dispatch(
+                loadFeed({
+                    posts: feedData?.Feed?.get?.data,
+                    hasMore: feedData?.Feed?.get?.hasMore,
+                })
+            );
     }, [
         dispatch,
-        scrollData?.Posts?.get,
-        scrollError,
-        scrollLoading,
+        feedError,
+        feedData?.Feed?.get,
+        feedLoading,
+        //scrollData?.Posts?.get,
+        //scrollError,
+        //scrollLoading,
         trendingData?.Posts?.get,
         trendingError,
         trendingLoading,
@@ -211,7 +260,7 @@ export default function BnConnect() {
                                     }
                                 />
                             </Suspense>
-                            <Grid item align="center">
+                            {/* <Grid item align="center">
                                 {scrollLoading && (
                                     <Typography
                                         className="my-2"
@@ -220,9 +269,9 @@ export default function BnConnect() {
                                         Updating ...
                                     </Typography>
                                 )}
-                            </Grid>
+                            </Grid> */}
 
-                            {posts?.slice(0, 2).map((scroll) => (
+                            {feed?.posts?.map((scroll) => (
                                 <Suspense
                                     key={scroll?._id}
                                     fallback={<SkeletonScrollCard />}
@@ -263,7 +312,31 @@ export default function BnConnect() {
                                 </Suspense>
                             ))}
 
-                            {posts?.length < 1 && (
+                            {feed?.posts?.length > 0 &&
+                                feed?.hasMore &&
+                                !loadingMore && (
+                                    <Grid align="center">
+                                        <Button
+                                            size="small"
+                                            variant="text"
+                                            textCase
+                                            onClick={() =>
+                                                loadMore(feed?.posts?.length)
+                                            }
+                                        >
+                                            more posts...
+                                        </Button>
+                                    </Grid>
+                                )}
+                            {loadingMore && (
+                                <Grid align="center">
+                                    <Typography color="primary">
+                                        Loading ...
+                                    </Typography>
+                                </Grid>
+                            )}
+
+                            {feed?.posts?.length < 1 && (
                                 <Grid align="center">
                                     <Typography variant="body1">
                                         Nothing here yet!

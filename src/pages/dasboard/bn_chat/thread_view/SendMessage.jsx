@@ -21,6 +21,10 @@ import {
     Typography,
     useMediaQuery,
     useTheme,
+    Grid,
+    CardMedia,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { styled } from '@mui/styles';
 
@@ -75,6 +79,10 @@ export default function SendMessage({
     const [openVideo, setVideoOpen] = useState(false);
     const [openGif, setGifOpen] = useState(false);
     const [sendMessageErr, setSendMessageError] = useState(null);
+    const [imagePreviewURLS, setImagePreviewURLS] = useState([]);
+    const [docPreviewNames, setDocPreviewNames] = useState([]);
+    const [videoPreviewURL, setVideoPreviewURL] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [mediaUploadAnchorEl, setMediaUploadAnchorEl] = useState(null);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -113,32 +121,78 @@ export default function SendMessage({
     const [updateMessage] = useMutation(UPDATE_MESSAGE);
     const [userTypingMutation] = useMutation(USER_TYPING);
 
-    const onSendMessage = async (ICreateMessage) => {
-        setText('');
-        await sendMessage({
+    const onSendMessage = (ICreateMessage) => {
+        sendMessage({
             variables: {
                 data: ICreateMessage,
             },
 
             context: { clientName: 'chat' },
+        }).then(({ data, errors: sendErrors }) => {
+            if (data) {
+                setText('');
+                handleResetFiles();
+                setOpen(false);
+                setReplyText();
+            }
+            if (sendErrors) {
+                if (
+                    sendErrors[0]?.message?.includes('Unsupported MIME type:')
+                ) {
+                    const errorMsg = sendErrors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
+
+                    setErrors([
+                        `Your image(s) have an unsupported file type (${mime})`,
+                    ]);
+
+                    handleResetFiles();
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
+                }
+            }
         });
-        setMessageImages([]);
-        setMessageVideo(null);
-        setMessageDoc([]);
-        setMessageGif(null);
-        setOpen(false);
-        setReplyText();
     };
 
     const onUpdateMessage = async (IUpdateMessage) => {
         setText('');
-        await updateMessage({
+        updateMessage({
             variables: {
                 data: IUpdateMessage,
             },
             context: { clientName: 'chat' },
+        }).then(({ data, errors: updateErrors }) => {
+            if (data) {
+                setText('');
+                setOpen(false);
+                setEditText();
+                handleResetFiles();
+            }
+            if (updateErrors) {
+                if (
+                    updateErrors[0]?.message?.includes('Unsupported MIME type:')
+                ) {
+                    const errorMsg = updateErrors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
+
+                    setErrors([
+                        `Your image(s) have an unsupported file type (${mime})`,
+                    ]);
+
+                    handleResetFiles();
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
+                }
+            }
         });
-        setEditText();
     };
 
     const onUserTyping = async (IUserTyping) => {
@@ -180,6 +234,17 @@ export default function SendMessage({
 
     const handleUpdateMessage = () => {
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
+    };
+
+    const handleResetFiles = () => {
+        setMessageDoc([]);
+        setMessageVideo(null);
+        setMessageGif(null);
+        setMessageImages([]);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
+        setDocPreviewNames();
+        setErrors([]);
     };
 
     useEffect(() => {
@@ -229,6 +294,7 @@ export default function SendMessage({
         setImageOpen(false);
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
+        handleResetFiles();
     };
 
     const handleGifOpen = () => {
@@ -238,6 +304,7 @@ export default function SendMessage({
         setImageOpen(false);
         setFileOpen(false);
         setMediaUploadAnchorEl(null);
+        handleResetFiles();
     };
 
     const handleImageOpen = () => {
@@ -247,6 +314,7 @@ export default function SendMessage({
         setFileOpen(false);
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
+        handleResetFiles();
     };
 
     const handleVideoLibrary = () => {
@@ -256,6 +324,60 @@ export default function SendMessage({
         setFileOpen(false);
         setGifOpen(false);
         setMediaUploadAnchorEl(null);
+        handleResetFiles();
+    };
+
+    const handleSelectImages = (files) => {
+        if (files.length < 1) return;
+        if (files.length > 4) {
+            return setErrors(['You can only upload a maximum of 4 images']);
+        }
+        const previews = [];
+        const allowedFiles = [];
+        files.forEach((file) => {
+            if (file.size > 2000000) {
+                previews.splice(0, previews.length);
+                allowedFiles.splice(0, allowedFiles.length);
+                return setErrors(['Each image should be less than 2MB']);
+            } else {
+                previews.push(URL.createObjectURL(file));
+                allowedFiles.push(file);
+            }
+        });
+        setImagePreviewURLS(previews);
+        setMessageImages(allowedFiles);
+    };
+
+    const handleSelectVideo = (files) => {
+        if (files.length < 1) return;
+        const file = files[0];
+        if (file.size > 4000000) {
+            return setErrors(['The video should be less than 4MB']);
+        } else {
+            setVideoPreviewURL(URL.createObjectURL(file));
+            setMessageVideo(file);
+        }
+    };
+
+    const handleSelectDocs = (files) => {
+        if (files.length < 1) return;
+        if (files.length > 4) {
+            return setErrors(['You can only upload a maximum of 4 documents']);
+        }
+        const names = [];
+        const allowedFiles = [];
+        files.forEach((file) => {
+            if (file.size > 2000000) {
+                names.splice(0, names.length);
+                allowedFiles.splice(0, allowedFiles.length);
+                return setErrors(['Each document should be less than 2MB']);
+            } else {
+                names.push(file.name);
+                allowedFiles.push(file);
+            }
+        });
+        setDocPreviewNames(names);
+        setMessageDoc(allowedFiles);
     };
 
     return (
@@ -332,6 +454,7 @@ export default function SendMessage({
                                 </Typography>
                             }
                         />
+
                         <CardContent style={{ marginTop: '-35px' }}>
                             <Typography
                                 variant="body2"
@@ -350,12 +473,119 @@ export default function SendMessage({
                     <Card className={classes.cardDropzone}>
                         <CardHeader
                             action={
-                                <IconButton onClick={() => setOpen(false)}>
+                                <IconButton
+                                    onClick={() => {
+                                        setOpen(false);
+                                        handleResetFiles();
+                                    }}
+                                >
                                     <Close />
                                 </IconButton>
                             }
                         />
                         <CardContent>
+                            <Grid>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
+                                {imagePreviewURLS.length > 0 && (
+                                    <>
+                                        <Grid
+                                            container
+                                            style={{ margin: '3px 0px' }}
+                                        >
+                                            {imagePreviewURLS.map(
+                                                (imageURL) => (
+                                                    <Grid
+                                                        style={{
+                                                            padding: '1px',
+                                                        }}
+                                                        key={imageURL}
+                                                        item
+                                                        xs={
+                                                            imagePreviewURLS.length >
+                                                            1
+                                                                ? 6
+                                                                : 12
+                                                        }
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                height: 200,
+                                                                borderRadius: 8,
+                                                                width: '100%',
+                                                                backgroundImage:
+                                                                    'url(' +
+                                                                    imageURL +
+                                                                    ')',
+                                                                backgroundSize:
+                                                                    'cover',
+                                                                backgroundColor:
+                                                                    'rgba(0,0,0,0.2)',
+                                                                backgroundBlendMode:
+                                                                    'soft-light',
+                                                                cursor: 'pointer',
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                )
+                                            )}
+                                        </Grid>
+                                    </>
+                                )}
+                                {videoPreviewURL && (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                        style={{ marginTop: '3px' }}
+                                    >
+                                        <CardMedia
+                                            className="br-2"
+                                            component="video"
+                                            src={videoPreviewURL}
+                                            controls
+                                            preload="metadata"
+                                        />
+                                    </Grid>
+                                )}
+                                {docPreviewNames?.map((item) => (
+                                    <ListItem key={item}>
+                                        <ListItemText
+                                            secondary={
+                                                <Typography variant="body1">
+                                                    {`~ ${item}`}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItem>
+                                ))}
+                            </Grid>
                             <Stack
                                 direction="row"
                                 alignItems="center"
@@ -369,7 +599,7 @@ export default function SendMessage({
                                             multiple
                                             type="file"
                                             onChange={(e) => {
-                                                setMessageImages(
+                                                handleSelectImages(
                                                     Array.from(e.target.files)
                                                 );
                                             }}
@@ -386,10 +616,9 @@ export default function SendMessage({
                                         <Input
                                             accept="video/*"
                                             id="send-message-video"
-                                            multiple
                                             type="file"
                                             onChange={(e) => {
-                                                setMessageVideo(
+                                                handleSelectVideo(
                                                     Array.from(e.target.files)
                                                 );
                                             }}
@@ -407,7 +636,7 @@ export default function SendMessage({
                                             id="send-message-docs"
                                             type="file"
                                             onChange={(e) => {
-                                                setMessageDoc(
+                                                handleSelectDocs(
                                                     Array.from(e.target.files)
                                                 );
                                             }}

@@ -1,4 +1,3 @@
-//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
@@ -33,16 +32,10 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import {
-    getFeed,
-    mentionsFinder,
-    mentionsUpdate,
-} from '../../utilities/functions';
+import { mentionsFinder, mentionsUpdate } from '../../utilities/functions';
 import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
-    QUERY_LOAD_SCROLLS,
-    QUERY_POST_BY_ID,
 } from '../../utilities/queries';
 
 const EmojiPickerPopover = React.lazy(() =>
@@ -90,18 +83,14 @@ export default function UpdatePost({
             variables: {
                 _id: id,
             },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: { data: { author: user?._id, limit: 220 } },
-                },
-            ],
+            update(cache) {
+                const normalizedId = cache.identify({
+                    id,
+                    __typename: 'OPost',
+                });
+                cache.evict({ id: normalizedId });
+                cache.gc();
+            },
         });
         handleCloseModal();
         if (postView) history.push('/connect');
@@ -113,18 +102,6 @@ export default function UpdatePost({
                 data: IUpdatePost,
             },
             errorPolicy: 'all',
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postToEdit._id },
-                },
-            ],
         }).then(({ data: updatePostData, errors: updatePostErrors }) => {
             if (updatePostData?.Posts?.update) {
                 handleCloseModal();

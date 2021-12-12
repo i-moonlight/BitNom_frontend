@@ -9,7 +9,6 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import moment from 'moment';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
@@ -17,11 +16,13 @@ import { Code, LinkTag } from '../../../../components/markdown_renders';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
 
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
+
 export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
 
-    const author = message.author || {};
+    const author = message?.author || {};
     const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
     return (
         <div className={classes.messageLeft}>
@@ -174,12 +175,12 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     }}
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
-                        {message.text}
+                        {message?.text}
                     </ReactMarkdown>
                 </Typography>
             </Paper>
             <div className={classes.time}>
-                <small>{moment(message?.date).fromNow()}</small>
+                <small>{getDistanceToNowWithSuffix(message?.date)}</small>
             </div>
         </div>
     );

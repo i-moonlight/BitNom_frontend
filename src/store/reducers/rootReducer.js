@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import chatReducer from './chatReducers';
 import countReducer from './countReducer';
+import cryptoReducer from './cryptoReducer';
 import eventCountReducer from './eventCountReducer';
 import postCountReducer from './postCountReducer';
 import postReducer from './postReducer';
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
     chats: chatReducer,
     postCount: postCountReducer,
     eventCount: eventCountReducer,
+    crypto: cryptoReducer,
 });
 
 export default appReducer;

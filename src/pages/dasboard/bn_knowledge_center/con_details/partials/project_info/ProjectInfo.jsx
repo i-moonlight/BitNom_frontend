@@ -1,4 +1,12 @@
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Card,
+    CardContent,
+    Tab,
+    Tabs,
+    Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -44,94 +52,9 @@ export default function ProjectInfo() {
                         </h4>
                         <hr />
                         <div className={'d-flex justify-content-between'}>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
+                            {[1, 2, 3, 4].map((item) => (
+                                <TeamCard key={item} />
+                            ))}
                         </div>
                     </div>
                     <div className={'mt-5'}>
@@ -139,125 +62,17 @@ export default function ProjectInfo() {
                             <strong>Maintainers</strong>
                         </h4>
                         <hr />
-                        <div className={'d-flex justify-content-between'}>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        {[1, 2, 3, 4].map((item) => (
+                            <TeamCard key={item} />
+                        ))}
                     </div>
                     <div className={'mt-5'}>
                         <h3>
                             <strong>Creator</strong>
                         </h3>
-                        <div className={'d-flex justify-content-between'}>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        {[1].map((item) => (
+                            <TeamCard key={item} />
+                        ))}
                     </div>
                 </TabPanel>
                 <TabPanel
@@ -271,99 +86,35 @@ export default function ProjectInfo() {
                         </h4>
                         <hr />
                         <div className={'d-flex justify-content-between'}>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                className={'row'}
-                                style={custom.cardsContainer}
-                            >
-                                <div className={'col-3'}>
-                                    <img
-                                        src={
-                                            'https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png'
-                                        }
-                                        className="rounded-circle"
-                                        alt="Cinque Terre"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </div>
-                                <div className={'col-9'}>
-                                    <p>
-                                        Don Phelix{' '}
-                                        <span>Bitcoin Core Contributor</span>
-                                    </p>
-                                </div>
-                            </div>
+                            {[1, 2, 3, 4].map((item) => (
+                                <TeamCard key={item} />
+                            ))}
                         </div>
                     </div>
                 </TabPanel>
             </Box>
         </Typography>
+    );
+}
+
+function TeamCard() {
+    return (
+        <Card>
+            <CardContent>
+                <div className="d-flex align-items-center">
+                    <Avatar
+                        className="me-2"
+                        src=" https://mod.go.ke/wp-content/uploads/2021/04/default-profile-pic.png"
+                    />
+                    <div>
+                        <Typography>Don Phelix</Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            Bitcoin Core Contributor
+                        </Typography>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
     );
 }
 

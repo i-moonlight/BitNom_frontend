@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
     CloseRounded,
@@ -23,15 +23,17 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
-import { loadScrolls } from '../../../../store/actions/postActions';
+//import { loadScrolls, loadFeed } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import { getFeed, mentionsFinder } from '../../utilities/functions';
+import { mentionsFinder } from '../../utilities/functions';
+
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
+    QUERY_GET_FEED,
 } from '../../utilities/queries';
 import ScrollPreview from './ScrollPreview';
 
@@ -64,16 +66,34 @@ export default function CreatePost({
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
-    const [createPost, { loading, data, error }] =
-        useMutation(MUTATION_CREATE_POST);
-
-    const { data: feedData } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: {
-            data: { ids: getFeed(profileData), limit: 220 },
+    const [createPost, { loading, data }] = useMutation(MUTATION_CREATE_POST, {
+        update(cache, { data: createPostData }) {
+            const newPost = createPostData?.Posts?.create;
+            const existingFeed = cache.readQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+                data: {
+                    Feed: {
+                        get: {
+                            _id: existingFeed?.Feed?.get?._id,
+                            data: [newPost, ...existingFeed?.Feed?.get?.data],
+                            hasMore: existingFeed?.Feed?.get?.hasMore,
+                        },
+                    },
+                },
+            });
         },
     });
 
@@ -86,16 +106,20 @@ export default function CreatePost({
             },
             errorPolicy: 'all',
             refetchQueries: [
-                {
+                /* {
                     query: QUERY_LOAD_SCROLLS,
                     variables: {
                         data: { ids: getFeed(profileData), limit: 220 },
                     },
-                },
+                }, */
                 {
                     query: QUERY_LOAD_SCROLLS,
                     variables: { data: { author: user?._id, limit: 220 } },
                 },
+                /*  {
+                    query: QUERY_GET_FEED,
+                    variables: { data: { feed_id: user?._id, limit: 10 } },
+                }, */
             ],
         }).then(({ data: createPostData, errors: createPostErrors }) => {
             if (createPostData?.Posts?.create) {
@@ -127,9 +151,16 @@ export default function CreatePost({
         });
     };
 
-    useEffect(() => {
-        !error && !loading && dispatch(loadScrolls(feedData?.Posts?.get));
-    }, [dispatch, error, feedData?.Posts?.get, loading]);
+    /*   useEffect(() => {
+        !error &&
+            !loading &&
+            dispatch(
+                loadFeed({
+                    posts: feedData?.Feed?.get?.data,
+                    hasMore: feedData?.Feed?.get?.hasMore,
+                })
+            );
+    }, [dispatch, error, feedData?.Feed?.get, loading]); */
 
     useEffect(() => {
         if (sharedResource) {

@@ -2,10 +2,10 @@ import { Card, CardContent, Switch, Typography } from '@mui/material';
 import { useState } from 'react';
 
 export default function TopSection() {
-    const [checked, setChecked] = useState(true);
+    const [checked, setShowStatus] = useState(false);
 
     const handleChange = (event) => {
-        setChecked(event.target.checked);
+        setShowStatus(event.target.checked);
     };
 
     const borders = {
@@ -28,16 +28,20 @@ export default function TopSection() {
                             component="div"
                         >
                             Cryptocurrency Prices by Market Cap
-                            <small style={{ fontSize: '12px' }}>
-                                <Switch
-                                    checked={checked}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        'aria-label': 'controlled',
-                                    }}
-                                />
+                            <Switch
+                                checked={checked}
+                                onChange={handleChange}
+                                inputProps={{
+                                    'aria-label': 'controlled',
+                                }}
+                            />
+                            <Typography
+                                color="textPrimary"
+                                className="fw-bold"
+                                component="span"
+                            >
                                 Show Status
-                            </small>
+                            </Typography>
                         </Typography>
                         <Typography color="textPrimary">
                             The global cryptocurrency market cap today is $2.08
@@ -59,7 +63,6 @@ export default function TopSection() {
                                         <span className="text-danger float-end">
                                             -4.9 %
                                         </span>
-                                        <br />
                                         <br />
                                         <h6>
                                             <strong>$1,964,164,087,420</strong>
@@ -85,7 +88,6 @@ export default function TopSection() {
                                             -4.9 %
                                         </span>
                                         <br />
-                                        <br />
                                         <h6>
                                             <strong>$1,964,164,087,420</strong>
                                         </h6>
@@ -109,7 +111,6 @@ export default function TopSection() {
                                             Bitcoin
                                         </span>
                                         <br />
-                                        <br />
                                         <h6>
                                             <strong>42.84%</strong>
                                         </h6>
@@ -130,7 +131,6 @@ export default function TopSection() {
                                 <Typography component="div" variant="caption">
                                     <div>
                                         <br />
-                                        <br />
                                         <h6>
                                             <strong>456</strong>
                                         </h6>
@@ -150,7 +150,6 @@ export default function TopSection() {
                             <CardContent>
                                 <Typography component="div" variant="caption">
                                     <div>
-                                        <br />
                                         <br />
                                         <h6>
                                             <strong>9,076</strong>

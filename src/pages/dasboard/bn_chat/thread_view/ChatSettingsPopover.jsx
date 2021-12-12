@@ -29,14 +29,14 @@ export default function ChatSettingPopover({
 
     const [ArchiveChat] = useMutation(ARCHIVE_CHAT, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
         context: { clientName: 'chat' },
     });
 
     const [UnarchiveChat, { data: unarchiveData }] = useMutation(UNARCHIVE, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
         context: { clientName: 'chat' },
         refetchQueries: [
@@ -66,7 +66,7 @@ export default function ChatSettingPopover({
 
     const [BlockUser] = useMutation(BLOCK_CHAT, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
         context: { clientName: 'chat' },
     });
@@ -87,7 +87,7 @@ export default function ChatSettingPopover({
 
     const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
         context: { clientName: 'chat' },
         refetchQueries: [
@@ -174,14 +174,14 @@ export default function ChatSettingPopover({
                     button
                     divider
                     onClick={
-                        chat.currentUser.archived !== true
+                        chat?.currentUser?.archived !== true
                             ? handleArchiveChat
                             : handleUnArchiveChat
                     }
                 >
                     <ListItemText
                         primary={
-                            chat.currentUser.archived !== true
+                            chat?.currentUser?.archived !== true
                                 ? 'Archive'
                                 : 'Remove From Archive'
                         }
@@ -194,14 +194,14 @@ export default function ChatSettingPopover({
                     button
                     divider
                     onClick={
-                        chat.currentUser.pinned === true
+                        chat?.currentUser?.pinned === true
                             ? handleUnpinChat
                             : handlePinChat
                     }
                 >
                     <ListItemText
                         primary={
-                            chat.currentUser.pinned === true
+                            chat?.currentUser?.pinned === true
                                 ? 'Unpin this Chat'
                                 : 'Pin this chat'
                         }
