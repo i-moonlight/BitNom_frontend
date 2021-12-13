@@ -351,7 +351,23 @@ export const MUTATION_REMOVE_EVENT_ATTENDANCE = gql`
 export const MUTATION_CREATE_REACTION = gql`
     mutation ($data: ICreateReaction!) {
         Reactions {
-            create(data: $data)
+            create(data: $data) {
+                reactedToBy {
+                    _id
+                    reaction_type
+                    user_id {
+                        _id
+                        displayName
+                        profile_pic
+                    }
+                }
+                reactions {
+                    likes
+                    dislikes
+                    loves
+                    celebrations
+                }
+            }
         }
     }
 `;
@@ -359,7 +375,23 @@ export const MUTATION_CREATE_REACTION = gql`
 export const MUTATION_REMOVE_REACTION = gql`
     mutation ($data: IRemoveReaction!) {
         Reactions {
-            delete(data: $data)
+            delete(data: $data) {
+                reactedToBy {
+                    _id
+                    reaction_type
+                    user_id {
+                        _id
+                        displayName
+                        profile_pic
+                    }
+                }
+                reactions {
+                    likes
+                    dislikes
+                    loves
+                    celebrations
+                }
+            }
         }
     }
 `;
