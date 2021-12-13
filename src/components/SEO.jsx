@@ -14,6 +14,7 @@ function SEO(data) {
             {/* <script type="application/ld+json">{SchemaFactory(data)}</script> */}
             {/* General tags */}
             <title>{title || 'BitNorm Website'}</title>
+
             {/*  <meta charSet="utf-8" /> */}
             <meta name="description" content={description} />
             <meta name="image" content={image || null} />
@@ -30,6 +31,7 @@ function SEO(data) {
                 }
             />
             <meta property="og:image" content={image || null} />
+
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content="@BitNorm" />
