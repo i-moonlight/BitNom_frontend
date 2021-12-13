@@ -1,5 +1,5 @@
 //import { helmetJsonLdProp } from 'react-schemaorg';
-import moment from 'moment';
+import { format } from 'date-fns';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -67,7 +67,8 @@ const SchemaFactory = (props) => {
             '@context': 'https://schema.org',
             '@type': 'SocialMediaPosting',
             '@id': props?.url,
-            datePublished: moment(props?.resource?.createdAt).format(
+            datePublished: format(
+                new Date(props?.resource?.createdAt),
                 'YYYY-MM-DD'
             ),
             author: {
@@ -123,11 +124,14 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+
+                startDate: format(
+                    new Date(props?.resource?.startDate),
+                    'YYYY-MM-DD'
                 ),
-                endDate: moment(props?.resource?.endDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                endDate: format(
+                    new Date(props?.resource?.endDate),
+                    'YYYY-MM-DD'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OfflineEventAttendanceMode',
@@ -152,11 +156,13 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                startDate: format(
+                    new Date(props?.resource?.startDate),
+                    'YYYY-MM-DD'
                 ),
-                endDate: moment(props?.resource?.endDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                endDate: format(
+                    new Date(props?.resource?.endDate),
+                    'YYYY-MM-DD'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OnlineEventAttendanceMode',
