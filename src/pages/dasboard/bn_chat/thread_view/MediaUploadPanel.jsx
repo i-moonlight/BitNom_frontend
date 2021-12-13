@@ -1,4 +1,4 @@
-import { AttachFile, Gif, Image, VideoLibrary } from '@mui/icons-material';
+import { AttachFile, Image, VideoLibrary } from '@mui/icons-material';
 import { Card, IconButton, List, ListItem } from '@mui/material';
 import React from 'react';
 import { useStyles } from '../utils/styles';
@@ -7,7 +7,7 @@ export default function MediaUploadPanel({
     handleAttachFileOpen,
     handleImageOpen,
     handleVideoLibrary,
-    handleGifOpen,
+    //handleGifOpen,
 }) {
     const classes = useStyles();
     return (
@@ -43,7 +43,7 @@ export default function MediaUploadPanel({
                         <VideoLibrary />
                     </IconButton>
                 </ListItem>
-                <ListItem>
+                {/*  <ListItem>
                     <IconButton
                         size="small"
                         className={'m-1 p-1' + classes.iconButton}
@@ -52,7 +52,7 @@ export default function MediaUploadPanel({
                     >
                         <Gif />
                     </IconButton>
-                </ListItem>
+                </ListItem> */}
             </List>
         </Card>
     );

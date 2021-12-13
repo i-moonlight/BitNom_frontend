@@ -78,6 +78,7 @@ import CreatePost from './CreatePost';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')
@@ -122,8 +123,12 @@ function PostView() {
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
 
     const theme = useTheme();
     const state = useSelector((st) => st);
@@ -178,7 +183,14 @@ function PostView() {
         const reaction = getUserReaction(postData?.Posts?.getById);
         setUserReaction(reaction);
         setIcon(reaction);
-    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+    }, [
+        getUserReaction,
+        setUserReaction,
+        setIcon,
+        postData?.Posts?.getById,
+        createReactionData,
+        removeReactionData,
+    ]);
 
     useEffect(() => {
         postError &&
@@ -276,6 +288,28 @@ function PostView() {
                 data: ICreateComment,
             },
             errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(comment_text).content,
+                        content_entities:
+                            mentionsFinder(comment_text).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: postId,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createCommentResponse,
+                    },
+                },
+            },
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 //setCommentFilter(1);
@@ -365,6 +399,7 @@ function PostView() {
             scroll: postId,
             image: comment_image,
         });
+        setCommentText('');
     };
 
     const handleScrollOptionOpen = (event) => {
@@ -392,12 +427,26 @@ function PostView() {
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: postId,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -411,12 +460,26 @@ function PostView() {
                     type: 'post',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: postId,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setIcon();
         setUserReaction();

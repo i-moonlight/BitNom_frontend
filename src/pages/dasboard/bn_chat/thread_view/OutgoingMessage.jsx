@@ -22,11 +22,15 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
-    const userInitials = getUserInitials(chat?.currentUser?.info.displayName);
+    const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
-                <small>{getDistanceToNowWithSuffix(message?.date)}</small>
+                <small>
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
+                </small>
             </div>
 
             <Paper
@@ -183,9 +187,9 @@ export default function OutgoingMessage({ chat, message, onClick }) {
             <ButtonBase>
                 <Avatar
                     src={
-                        chat?.currentUser?.info.profile_pic
+                        chat?.currentUser?.info?.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
-                              chat?.currentUser?.info.profile_pic
+                              chat?.currentUser?.info?.profile_pic
                             : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                     }
                     alt={'avatar'}
