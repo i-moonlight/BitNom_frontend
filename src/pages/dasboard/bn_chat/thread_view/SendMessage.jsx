@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import {
     AttachFile,
     Close,
@@ -28,7 +29,13 @@ import {
 import { styled } from '@mui/styles';
 
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    Suspense,
+} from 'react';
 import { Button } from '../../../../components/Button';
 import {
     CREATE_DIALOGUE_MESSAGE,
@@ -101,8 +108,8 @@ export default function SendMessage({
     };
 
     const handleSelectEmoji = (emoji) => {
+        setText(`${text} ${emoji}`);
         handleEmojiPickerClose();
-        setText(`${text} ${emoji.native}`);
     };
 
     const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
@@ -241,7 +248,9 @@ export default function SendMessage({
     };
 
     useEffect(() => {
-        setText(editText?.text);
+        if (editText?.text) {
+            setText(editText?.text);
+        }
     }, [editText]);
 
     useEffect(() => {
@@ -372,431 +381,449 @@ export default function SendMessage({
     };
 
     return (
-        <div>
-            {replyText && (
-                <Card variant="outlined" className={classes.promptCard}>
-                    <CardHeader
-                        className="bg-primary"
-                        style={{ marginTop: '-15px' }}
-                        action={
-                            <IconButton onClick={onCancelReply} size="small">
-                                <Close />
-                            </IconButton>
-                        }
-                        subheader={
-                            <Typography
-                                variant="body2"
-                                component="span"
-                                style={{ margin: '1px 5px' }}
-                            >
-                                <strong>{replyText.author}</strong>
-                            </Typography>
-                        }
-                    />
-                    <CardContent style={{ marginTop: '-35px' }}>
-                        <Typography
-                            variant="body2"
-                            component="span"
-                            style={{ margin: '1px 5px' }}
-                        >
-                            {replyText.text?.length > 80
-                                ? replyText?.text.substring(0, 80) + '...'
-                                : replyText?.text}
-                        </Typography>
-                    </CardContent>
-                </Card>
-            )}
-
-            {isMediaUploadOpen && (
-                <MediaUploadPanel
-                    handleAttachFileOpen={() => handleAttachFileOpen()}
-                    handleGifOpen={() => handleGifOpen()}
-                    handleImageOpen={() => handleImageOpen()}
-                    handleVideoLibrary={() => handleVideoLibrary()}
-                />
-            )}
-
-            {editText?.text && (
-                <Card variant="outlined" className={classes.promptCard}>
-                    <CardHeader
-                        className="bg-primary"
-                        style={{ marginTop: '-15px' }}
-                        action={
-                            <IconButton
-                                onClick={() => {
-                                    onCancelMessageUpdate(), setText('');
-                                }}
-                                size="small"
-                            >
-                                <Close />
-                            </IconButton>
-                        }
-                        subheader={
-                            <Typography
-                                variant="body2"
-                                component="span"
-                                style={{ margin: '1px 5px' }}
-                            >
-                                <strong>Edit</strong>
-                            </Typography>
-                        }
-                    />
-                    <CardContent style={{ marginTop: '-35px' }}>
-                        <Typography
-                            variant="body2"
-                            component="span"
-                            style={{ margin: '1px 5px' }}
-                        >
-                            {editText?.text?.length > 80
-                                ? editText?.text?.substring(0, 80) + '...'
-                                : editText?.text}
-                        </Typography>
-                    </CardContent>
-                </Card>
-            )}
-
-            {open && (
-                <Card className={classes.cardDropzone}>
-                    <CardHeader
-                        action={
-                            <IconButton
-                                onClick={() => {
-                                    setOpen(false);
-                                    handleResetFiles();
-                                }}
-                            >
-                                <Close />
-                            </IconButton>
-                        }
-                    />
-                    <CardContent>
-                        <Grid>
-                            {errors?.length > 0 && (
-                                <Card
-                                    elevation={0}
-                                    style={{
-                                        marginTop: '3px',
-                                        background: 'transparent',
-                                    }}
-                                    component="div"
-                                    //variant="outlined"
+        <>
+            <div>
+                {replyText && (
+                    <Card variant="outlined" className={classes.promptCard}>
+                        <CardHeader
+                            className="bg-primary"
+                            style={{ marginTop: '-15px' }}
+                            action={
+                                <IconButton
+                                    onClick={onCancelReply}
+                                    size="small"
                                 >
-                                    {errors?.map((errItem) => (
-                                        <ListItem key={errItem}>
-                                            <ListItemText
-                                                secondary={
-                                                    <Typography
-                                                        variant="body2"
-                                                        color="error"
-                                                    >
-                                                        {`~ ${errItem}`}
-                                                    </Typography>
-                                                }
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </Card>
-                            )}
-                            {imagePreviewURLS.length > 0 && (
-                                <>
-                                    <Grid
-                                        container
-                                        style={{ margin: '3px 0px' }}
+                                    <Close />
+                                </IconButton>
+                            }
+                            subheader={
+                                <Typography
+                                    variant="body2"
+                                    component="span"
+                                    style={{ margin: '1px 5px' }}
+                                >
+                                    <strong>{replyText.author}</strong>
+                                </Typography>
+                            }
+                        />
+                        <CardContent style={{ marginTop: '-35px' }}>
+                            <Typography
+                                variant="body2"
+                                component="span"
+                                style={{ margin: '1px 5px' }}
+                            >
+                                {replyText.text?.length > 80
+                                    ? replyText?.text.substring(0, 80) + '...'
+                                    : replyText?.text}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isMediaUploadOpen && (
+                    <MediaUploadPanel
+                        handleAttachFileOpen={() => handleAttachFileOpen()}
+                        handleGifOpen={() => handleGifOpen()}
+                        handleImageOpen={() => handleImageOpen()}
+                        handleVideoLibrary={() => handleVideoLibrary()}
+                    />
+                )}
+
+                {editText?.text && (
+                    <Card variant="outlined" className={classes.promptCard}>
+                        <CardHeader
+                            className="bg-primary"
+                            style={{ marginTop: '-15px' }}
+                            action={
+                                <IconButton
+                                    onClick={() => {
+                                        onCancelMessageUpdate(), setText('');
+                                    }}
+                                    size="small"
+                                >
+                                    <Close />
+                                </IconButton>
+                            }
+                            subheader={
+                                <Typography
+                                    variant="body2"
+                                    component="span"
+                                    style={{ margin: '1px 5px' }}
+                                >
+                                    <strong>Edit</strong>
+                                </Typography>
+                            }
+                        />
+
+                        <CardContent style={{ marginTop: '-35px' }}>
+                            <Typography
+                                variant="body2"
+                                component="span"
+                                style={{ margin: '1px 5px' }}
+                            >
+                                {editText?.text?.length > 80
+                                    ? editText?.text?.substring(0, 80) + '...'
+                                    : editText?.text}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {open && (
+                    <Card className={classes.cardDropzone}>
+                        <CardHeader
+                            action={
+                                <IconButton
+                                    onClick={() => {
+                                        setOpen(false);
+                                        handleResetFiles();
+                                    }}
+                                >
+                                    <Close />
+                                </IconButton>
+                            }
+                        />
+                        <CardContent>
+                            <Grid>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
                                     >
-                                        {imagePreviewURLS.map((imageURL) => (
-                                            <Grid
-                                                style={{ padding: '1px' }}
-                                                key={imageURL}
-                                                item
-                                                xs={
-                                                    imagePreviewURLS.length > 1
-                                                        ? 6
-                                                        : 12
-                                                }
-                                            >
-                                                <div
-                                                    style={{
-                                                        height: 200,
-                                                        borderRadius: 8,
-                                                        width: '100%',
-                                                        backgroundImage:
-                                                            'url(' +
-                                                            imageURL +
-                                                            ')',
-                                                        backgroundSize: 'cover',
-                                                        backgroundColor:
-                                                            'rgba(0,0,0,0.2)',
-                                                        backgroundBlendMode:
-                                                            'soft-light',
-                                                        cursor: 'pointer',
-                                                    }}
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
                                                 />
-                                            </Grid>
+                                            </ListItem>
                                         ))}
+                                    </Card>
+                                )}
+                                {imagePreviewURLS.length > 0 && (
+                                    <>
+                                        <Grid
+                                            container
+                                            style={{ margin: '3px 0px' }}
+                                        >
+                                            {imagePreviewURLS.map(
+                                                (imageURL) => (
+                                                    <Grid
+                                                        style={{
+                                                            padding: '1px',
+                                                        }}
+                                                        key={imageURL}
+                                                        item
+                                                        xs={
+                                                            imagePreviewURLS.length >
+                                                            1
+                                                                ? 6
+                                                                : 12
+                                                        }
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                height: 200,
+                                                                borderRadius: 8,
+                                                                width: '100%',
+                                                                backgroundImage:
+                                                                    'url(' +
+                                                                    imageURL +
+                                                                    ')',
+                                                                backgroundSize:
+                                                                    'cover',
+                                                                backgroundColor:
+                                                                    'rgba(0,0,0,0.2)',
+                                                                backgroundBlendMode:
+                                                                    'soft-light',
+                                                                cursor: 'pointer',
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                )
+                                            )}
+                                        </Grid>
+                                    </>
+                                )}
+                                {videoPreviewURL && (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                        style={{ marginTop: '3px' }}
+                                    >
+                                        <CardMedia
+                                            className="br-2"
+                                            component="video"
+                                            src={videoPreviewURL}
+                                            controls
+                                            preload="metadata"
+                                        />
                                     </Grid>
-                                </>
-                            )}
-                            {videoPreviewURL && (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                    }}
-                                    style={{ marginTop: '3px' }}
-                                >
-                                    <CardMedia
-                                        className="br-2"
-                                        component="video"
-                                        src={videoPreviewURL}
-                                        controls
-                                        preload="metadata"
-                                    />
-                                </Grid>
-                            )}
-                            {docPreviewNames?.map((item) => (
-                                <ListItem key={item}>
-                                    <ListItemText
-                                        secondary={
-                                            <Typography variant="body1">
-                                                {`~ ${item}`}
-                                            </Typography>
-                                        }
-                                    />
-                                </ListItem>
-                            ))}
-                        </Grid>
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                            {openImage ? (
-                                <label htmlFor="send-message-images">
-                                    <Input
-                                        accept="image/*"
-                                        id="send-message-images"
-                                        multiple
-                                        type="file"
-                                        onChange={(e) => {
-                                            handleSelectImages(
-                                                Array.from(e.target.files)
-                                            );
-                                        }}
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        component="span"
-                                    >
-                                        Upload Image
-                                    </Button>
-                                </label>
-                            ) : openVideo ? (
-                                <label htmlFor="send-message-video">
-                                    <Input
-                                        accept="video/*"
-                                        id="send-message-video"
-                                        type="file"
-                                        onChange={(e) => {
-                                            handleSelectVideo(
-                                                Array.from(e.target.files)
-                                            );
-                                        }}
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        component="span"
-                                    >
-                                        Upload Video
-                                    </Button>
-                                </label>
-                            ) : openFile ? (
-                                <label htmlFor="send-message-docs">
-                                    <Input
-                                        id="send-message-docs"
-                                        type="file"
-                                        onChange={(e) => {
-                                            handleSelectDocs(
-                                                Array.from(e.target.files)
-                                            );
-                                        }}
-                                        accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                )}
+                                {docPreviewNames?.map((item) => (
+                                    <ListItem key={item}>
+                                        <ListItemText
+                                            secondary={
+                                                <Typography variant="body1">
+                                                    {`~ ${item}`}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItem>
+                                ))}
+                            </Grid>
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
+                            >
+                                {openImage ? (
+                                    <label htmlFor="send-message-images">
+                                        <Input
+                                            accept="image/*"
+                                            id="send-message-images"
+                                            multiple
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImages(
+                                                    Array.from(e.target.files)
+                                                );
+                                            }}
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Upload Image
+                                        </Button>
+                                    </label>
+                                ) : openVideo ? (
+                                    <label htmlFor="send-message-video">
+                                        <Input
+                                            accept="video/*"
+                                            id="send-message-video"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectVideo(
+                                                    Array.from(e.target.files)
+                                                );
+                                            }}
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Upload Video
+                                        </Button>
+                                    </label>
+                                ) : openFile ? (
+                                    <label htmlFor="send-message-docs">
+                                        <Input
+                                            id="send-message-docs"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectDocs(
+                                                    Array.from(e.target.files)
+                                                );
+                                            }}
+                                            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
                               text/plain, application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document "
-                                        multiple
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        component="span"
-                                    >
-                                        Upload File
-                                    </Button>
-                                </label>
-                            ) : openGif ? (
-                                <label htmlFor="send-message-gif">
-                                    <Input
-                                        id="send-message-gif"
-                                        type="file"
-                                        onChange={(e) => {
-                                            setMessageGif(
-                                                Array.from(e.target.files)
-                                            );
-                                        }}
-                                        accept="image/gif"
-                                        multiple
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        component="span"
-                                    >
-                                        Upload GIF
-                                    </Button>
-                                </label>
-                            ) : null}
-                        </Stack>
-                    </CardContent>
-                </Card>
-            )}
+                                            multiple
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Upload File
+                                        </Button>
+                                    </label>
+                                ) : openGif ? (
+                                    <label htmlFor="send-message-gif">
+                                        <Input
+                                            id="send-message-gif"
+                                            type="file"
+                                            onChange={(e) => {
+                                                setMessageGif(
+                                                    Array.from(e.target.files)
+                                                );
+                                            }}
+                                            accept="image/gif"
+                                            multiple
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Upload GIF
+                                        </Button>
+                                    </label>
+                                ) : null}
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                )}
 
-            <Divider className="my-2" />
+                <Divider className="my-2" />
 
-            <div className={classes.inputRoot}>
-                <div className="d-flex">
-                    {xsDown && !isMediaUploadOpen ? (
-                        <IconButton
-                            size="small"
-                            className={'m-1 p-1' + classes.iconButton}
-                            aria-label="search"
-                            onClick={(e) => handleMediaUploadOpen(e)}
-                        >
-                            <AttachFile />
-                        </IconButton>
-                    ) : xsDown && isMediaUploadOpen ? (
-                        <IconButton
-                            size="small"
-                            className={'m-1 p-1' + classes.iconButton}
-                            aria-label="search"
-                            onClick={handleMediaUploadClose}
-                        >
-                            <Close />
-                        </IconButton>
-                    ) : (
-                        <div
-                            className={classes.inputTab}
-                            style={{ width: '33%' }}
-                        >
+                <div className={classes.inputRoot}>
+                    <div className="d-flex">
+                        {xsDown && !isMediaUploadOpen ? (
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => handleAttachFileOpen()}
+                                onClick={(e) => handleMediaUploadOpen(e)}
                             >
                                 <AttachFile />
                             </IconButton>
+                        ) : xsDown && isMediaUploadOpen ? (
                             <IconButton
                                 size="small"
                                 className={'m-1 p-1' + classes.iconButton}
                                 aria-label="search"
-                                onClick={() => handleImageOpen()}
+                                onClick={handleMediaUploadClose}
                             >
-                                <Image />
+                                <Close />
                             </IconButton>
-                            <IconButton
-                                size="small"
-                                className={'m-1 p-1' + classes.iconButton}
-                                aria-label="search"
-                                onClick={() => handleVideoLibrary()}
+                        ) : (
+                            <div
+                                className={classes.inputTab}
+                                style={{ width: '33%' }}
                             >
-                                <VideoLibrary />
-                            </IconButton>
-                            <IconButton
-                                size="small"
-                                className={'m-1 p-1' + classes.iconButton}
-                                aria-label="search"
-                                onClick={() => handleGifOpen()}
-                            >
-                                <Gif />
-                            </IconButton>
-                        </div>
-                    )}
-
-                    <div style={{ width: '100%' }}>
-                        <Paper
-                            variant={
-                                theme.palette.type == 'light'
-                                    ? 'outlined'
-                                    : 'elevation'
-                            }
-                            elevation={0}
-                            component="form"
-                            className={classes.sendMessage}
-                        >
-                            <IconButton
-                                size="small"
-                                className={'m-1 p-1' + classes.iconButton}
-                                aria-label="pick emoji"
-                                aria-controls={emojiPickerId}
-                                aria-haspopup="true"
-                                onClick={(e) => {
-                                    handleEmojiPickerOpen(e);
-                                }}
-                            >
-                                <EmojiEmotions />
-                            </IconButton>
-                            <InputBase
-                                size="small"
-                                name="text"
-                                value={text}
-                                inputRef={inputRef}
-                                className={classes.inputField}
-                                placeholder="Type a message"
-                                fullWidth
-                                onKeyDownCapture={handleUserTyping}
-                                onKeyUp={debouncedUserTyping}
-                                onChange={handleChange}
-                                multiline
-                                margin="dense"
-                                maxRows={3}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        handleSendMessage();
-                                    }
-                                    if (
-                                        e.key === 'Enter' &&
-                                        editText?.text?.length > 0
-                                    ) {
-                                        e.preventDefault();
-                                        handleUpdateMessage();
-                                    }
-                                }}
-                                error={sendMessageErr ? true : false}
-                            />
-                            <IconButton
-                                size="small"
-                                className={'m-1 p-1' + classes.iconButton}
-                                aria-label="send"
-                                onClick={
-                                    editText?.text?.length > 0
-                                        ? handleUpdateMessage
-                                        : handleSendMessage
-                                }
-                            >
-                                <SendOutlined />
-                            </IconButton>
-                        </Paper>
-                        {sendMessageErr && (
-                            <Typography color="error" variant="body2">
-                                {' '}
-                                This field cannot be empty!
-                            </Typography>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="search"
+                                    onClick={() => handleAttachFileOpen()}
+                                >
+                                    <AttachFile />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="search"
+                                    onClick={() => handleImageOpen()}
+                                >
+                                    <Image />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="search"
+                                    onClick={() => handleVideoLibrary()}
+                                >
+                                    <VideoLibrary />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="search"
+                                    onClick={() => handleGifOpen()}
+                                >
+                                    <Gif />
+                                </IconButton>
+                            </div>
                         )}
+
+                        <div style={{ width: '100%' }}>
+                            <Paper
+                                variant={
+                                    theme.palette.type == 'light'
+                                        ? 'outlined'
+                                        : 'elevation'
+                                }
+                                elevation={0}
+                                component="form"
+                                className={classes.sendMessage}
+                            >
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="pick emoji"
+                                    aria-controls={emojiPickerId}
+                                    aria-haspopup="true"
+                                    onClick={(e) => {
+                                        handleEmojiPickerOpen(e);
+                                    }}
+                                >
+                                    <EmojiEmotions />
+                                </IconButton>
+                                <InputBase
+                                    size="small"
+                                    name="text"
+                                    value={text}
+                                    inputRef={inputRef}
+                                    className={classes.inputField}
+                                    placeholder="Type a message"
+                                    fullWidth
+                                    onKeyDownCapture={handleUserTyping}
+                                    onKeyUp={debouncedUserTyping}
+                                    onChange={handleChange}
+                                    multiline
+                                    margin="dense"
+                                    maxRows={3}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            handleSendMessage();
+                                        }
+                                        if (
+                                            e.key === 'Enter' &&
+                                            editText?.text?.length > 0
+                                        ) {
+                                            e.preventDefault();
+                                            handleUpdateMessage();
+                                        }
+                                    }}
+                                    error={sendMessageErr ? true : false}
+                                />
+                                <IconButton
+                                    size="small"
+                                    className={'m-1 p-1' + classes.iconButton}
+                                    aria-label="send"
+                                    onClick={
+                                        editText?.text?.length > 0
+                                            ? handleUpdateMessage
+                                            : handleSendMessage
+                                    }
+                                >
+                                    <SendOutlined />
+                                </IconButton>
+                            </Paper>
+                            {sendMessageErr && (
+                                <Typography color="error" variant="body2">
+                                    {' '}
+                                    This field cannot be empty!
+                                </Typography>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <EmojiPickerPopover
-                emojiPickerId={emojiPickerId}
-                emojiPickerAnchorEl={emojiPickerAnchorEl}
-                isEmojiPickerOpen={isEmojiPickerOpen}
-                handleEmojiPickerClose={handleEmojiPickerClose}
-                handleSelectEmoji={handleSelectEmoji}
-            />
-        </div>
+            </div>{' '}
+            <Suspense fallback={<CircularProgress />}>
+                {' '}
+                <EmojiPickerPopover
+                    emojiPickerId={emojiPickerId}
+                    emojiPickerAnchorEl={emojiPickerAnchorEl}
+                    isEmojiPickerOpen={isEmojiPickerOpen}
+                    handleEmojiPickerClose={handleEmojiPickerClose}
+                    handleSelectEmoji={handleSelectEmoji}
+                />
+            </Suspense>
+        </>
     );
 }
