@@ -29,6 +29,7 @@ import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import { mentionsFinder } from '../../utilities/functions';
+//import { createPostResponse } from '../../utilities/optimisticResponseObjects';
 
 import {
     MUTATION_CREATE_POST,
@@ -95,22 +96,6 @@ export default function CreatePost({
                     },
                 },
             });
-
-            const existingUserPosts = cache.readQuery({
-                query: QUERY_LOAD_SCROLLS,
-                variables: { data: { author: user?._id, limit: 220 } },
-            });
-            cache.writeQuery({
-                query: QUERY_LOAD_SCROLLS,
-                variables: {
-                    data: { author: user?._id, limit: 220 },
-                },
-                data: {
-                    Posts: {
-                        get: [newPost, ...existingUserPosts?.Posts?.get],
-                    },
-                },
-            });
         },
     });
 
@@ -122,6 +107,14 @@ export default function CreatePost({
                 data: ICreatePost,
             },
             errorPolicy: 'all',
+            refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { author: user?._id, limit: 220 },
+                    },
+                },
+            ],
         }).then(({ data: createPostData, errors: createPostErrors }) => {
             if (createPostData?.Posts?.create) {
                 handleCloseModal();
@@ -140,6 +133,7 @@ export default function CreatePost({
                     setErrors([
                         `Your image(s) have an unsupported file type (${mime})`,
                     ]);
+
                     setImagePreviewURLS([]);
                     setScrollImages([]);
                     setScrollVideo(null);
@@ -151,17 +145,6 @@ export default function CreatePost({
             }
         });
     };
-
-    /*   useEffect(() => {
-        !error &&
-            !loading &&
-            dispatch(
-                loadFeed({
-                    posts: feedData?.Feed?.get?.data,
-                    hasMore: feedData?.Feed?.get?.hasMore,
-                })
-            );
-    }, [dispatch, error, feedData?.Feed?.get, loading]); */
 
     useEffect(() => {
         if (sharedResource) {
@@ -243,11 +226,14 @@ export default function CreatePost({
         if (scroll_text.trim() == '') {
             return setErrors(['The post content cannot be empty.']);
         }
+
         let sharedResourceType;
-        if (sharedResource?.__typename === 'OPost') {
-            sharedResourceType = 'post';
-        } else if (sharedResource?.__typename === 'OEvent') {
-            sharedResourceType = 'event';
+        if (sharedResource != null) {
+            if (sharedResource?.__typename === 'OPost') {
+                sharedResourceType = 'post';
+            } else if (sharedResource?.__typename === 'OEvent') {
+                sharedResourceType = 'event';
+            }
         }
         const shared = sharedResource
             ? { _id: sharedResource?._id, type: sharedResourceType }
@@ -446,7 +432,7 @@ export default function CreatePost({
                                             Array.from(e.target.files)
                                         );
                                     }}
-                                    accept="image/jpeg, image/png"
+                                    accept="image/jpeg, image/png, image/gif"
                                     multiple
                                 />
                                 <input
@@ -581,3 +567,26 @@ export default function CreatePost({
         </Modal>
     );
 }
+
+/*  optimisticResponse: {
+                Posts: {
+                    create: {
+                        content: mentionsFinder(scroll_text).content,
+                        content_entities:
+                            mentionsFinder(scroll_text).contentEntities,
+                        images: imagePreviewURLS,
+                        video: videoPreviewURL,
+                        createdAt: new Date().getTime(),
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createPostResponse,
+                    },
+                },
+            }, */

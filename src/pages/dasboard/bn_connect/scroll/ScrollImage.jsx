@@ -38,6 +38,7 @@ import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -86,8 +87,12 @@ export default function ScrollImage({
     const [loadingMore, setLoadingMore] = useState(false);
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
 
     const theme = useTheme();
     const state = useSelector((st) => st);
@@ -167,6 +172,28 @@ export default function ScrollImage({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(comment_text).content,
+                        content_entities:
+                            mentionsFinder(comment_text).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: scroll?._id,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createCommentResponse,
+                    },
+                },
+            },
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
                 setCommentText('');
@@ -252,6 +279,7 @@ export default function ScrollImage({
             scroll: postId,
             image: comment_image,
         });
+        setCommentText('');
     };
 
     const handleEmojiPickerOpen = (event) => {
@@ -271,14 +299,26 @@ export default function ScrollImage({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: {
-                        _id: postId,
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: scroll?._id,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
                     },
-                },
-            ],
+                });
+            },
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -292,14 +332,26 @@ export default function ScrollImage({
                     type: 'post',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: {
-                        _id: postId,
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: scroll?._id,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
                     },
-                },
-            ],
+                });
+            },
         });
         setIcon();
         setUserReaction();
@@ -359,7 +411,13 @@ export default function ScrollImage({
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);
         setIcon(reaction);
-    }, [getUserReaction, scroll, setIcon]);
+    }, [
+        getUserReaction,
+        scroll,
+        setIcon,
+        createReactionData,
+        removeReactionData,
+    ]);
 
     return (
         <>
