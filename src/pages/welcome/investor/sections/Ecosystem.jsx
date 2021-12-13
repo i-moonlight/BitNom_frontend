@@ -57,7 +57,7 @@ export default function Ecosystem() {
             id="ecosystem"
             style={{ backgroundColor: theme.palette.background.investorShade }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <div className="py-5">
                     <Grid container spacing={3}>
                         <Grid item xs={12}>

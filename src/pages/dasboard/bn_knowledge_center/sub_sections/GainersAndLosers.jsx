@@ -29,8 +29,7 @@ export default function GainersAndLosers() {
                     onChange={handleTabChanges}
                     aria-label="gainers-loosers-tab"
                     variant="scrollable"
-                    allowScrollButtonsMobile
-                    scrollButtons
+                    scrollButtons="auto"
                 >
                     <Tab
                         className="text-capitalize fw-bold"
@@ -44,7 +43,7 @@ export default function GainersAndLosers() {
                     />
                 </TabList>
                 <Divider flexItem />
-                <TabPanel value="0">
+                <TabPanel value="0" className="px-0">
                     <div>
                         <TableContainer>
                             <Table aria-label="caption table">
@@ -99,7 +98,7 @@ export default function GainersAndLosers() {
                         </TableContainer>
                     </div>
                 </TabPanel>
-                <TabPanel value="1">
+                <TabPanel value="1" className="px-0">
                     <div>
                         <TableContainer>
                             <Table aria-label="caption table">

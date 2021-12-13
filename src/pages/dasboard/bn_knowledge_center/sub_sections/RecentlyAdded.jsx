@@ -11,9 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRecentTable } from '../../../../store/actions/cryptoActions';
 
 export default function RecentlyAdded() {
-    const theme = useTheme();
     const dispatch = useDispatch();
+    const theme = useTheme();
     const state = useSelector((st) => st);
+
     const coins = state.crypto?.marketTable;
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export default function RecentlyAdded() {
 
     return (
         <>
-            <TableContainer>
+            <TableContainer className="mx-0">
                 <Table aria-label="coins table">
                     <TableHead>
                         <TableRow

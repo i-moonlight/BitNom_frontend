@@ -287,9 +287,9 @@ export default function Footer() {
 
                 <Grid style={{ backgroundColor: '#141617' }}>
                     <Container
+                        maxWidth="lg"
                         container
                         component={Grid}
-                        maxWidth="lg"
                         className="py-3"
                     >
                         <Grid item lg={6}>

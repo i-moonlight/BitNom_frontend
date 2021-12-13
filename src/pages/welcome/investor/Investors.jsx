@@ -43,7 +43,7 @@ export default function Investors() {
                     backgroundColor: theme.palette.background.investorDark,
                 }}
             >
-                <Container>
+                <Container maxWidth="lg">
                     <LazyImage
                         style={{ width: '100%' }}
                         image={{
@@ -64,7 +64,7 @@ export default function Investors() {
                     backgroundColor: theme.palette.background.investorDark,
                 }}
             >
-                <Container>
+                <Container maxWidth="lg">
                     <div className="py-1">
                         <Divider />
                     </div>

@@ -8,7 +8,7 @@ import Categories from './sub_sections/Categories';
 import CryptoCurrency from './sub_sections/CryptoCurrency';
 import TopSection from './sub_sections/fragments/TopSection';
 import GainersAndLosers from './sub_sections/GainersAndLosers';
-import HeatMap from './sub_sections/HeatMap';
+// import HeatMap from './sub_sections/HeatMap';
 import RecentlyAdded from './sub_sections/RecentlyAdded';
 import WatchList from './sub_sections/WatchList';
 
@@ -30,7 +30,7 @@ export default function BnKnowledgeCenter() {
 
     return (
         <Screen>
-            <Container>
+            <Container maxWidth="lg">
                 <TopSection />
                 <br />
                 <section>
@@ -39,8 +39,8 @@ export default function BnKnowledgeCenter() {
                             onChange={handleTabChanges}
                             aria-label="Tab list for cryptocurrency section"
                             variant="scrollable"
-                            allowScrollButtonsMobile
-                            scrollButtons
+                            scrollButtons="auto"
+                            className="px-0 mx-0"
                         >
                             <Tab
                                 label={'Watchlist'}
@@ -67,43 +67,43 @@ export default function BnKnowledgeCenter() {
                                 value="5"
                                 className={classes.tabStyle}
                             />
-                            <Tab
+                            {/* <Tab
                                 label="Heatmap"
                                 value="7"
                                 className={classes.tabStyle}
-                            />
+                            /> */}
                         </StyledTabList>
                         <Divider flexItem />
-                        <TabPanel value="1">
+                        <TabPanel value="1" className="px-0">
                             <div>
                                 <WatchList />
                             </div>
                         </TabPanel>
-                        <TabPanel value="2">
+                        <TabPanel value="2" className="px-0">
                             <div>
                                 <CryptoCurrency />
                             </div>
                         </TabPanel>
-                        <TabPanel value="4">
+                        <TabPanel value="4" className="px-0">
                             <div>
                                 <Categories />
                             </div>
                         </TabPanel>
-                        <TabPanel value="5">
+                        <TabPanel value="5" className="px-0">
                             <div>
                                 <GainersAndLosers />
                             </div>
                         </TabPanel>
-                        <TabPanel value="6">
+                        <TabPanel value="6" className="px-0">
                             <div>
                                 <RecentlyAdded />
                             </div>
                         </TabPanel>
-                        <TabPanel value="7">
+                        {/* <TabPanel value="7" className="px-0">
                             <div>
                                 <HeatMap />
                             </div>
-                        </TabPanel>
+                        </TabPanel> */}
                     </TabContext>
                 </section>
             </Container>

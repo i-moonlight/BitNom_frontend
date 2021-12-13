@@ -456,7 +456,6 @@ export default function Scroll({
                             </Typography>
                         </div>
                     }
-                    // subheader={moment(scroll?.createdAt).fromNow()}
                     subheader={getDistanceToNowWithSuffix(scroll?.createdAt)}
                 />
 
