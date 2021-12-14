@@ -1,14 +1,7 @@
 import { useTheme } from '@emotion/react';
-import {
-    DateRange,
-    Fireplace,
-    Fullscreen,
-    MoreHoriz,
-} from '@mui/icons-material';
+import { Fireplace } from '@mui/icons-material';
 import {
     Card,
-    Checkbox,
-    FormControlLabel,
     Grid,
     Table,
     TableBody,
@@ -18,18 +11,18 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchGeneralTable,
     fetchTrendingTable,
 } from '../../../../../../store/actions/cryptoActions';
-import CoinChart from '../../../bn_charts/CoinChart';
-import { buttonData, chipLabels, GeneralButton } from '../utils/GeneralButtons';
+// import CoinChart from '../../../bn_charts/CoinChart';
+// import { buttonData, chipLabels, GeneralButton } from '../utils/GeneralButtons';
 import { convertDate, volumePercentage } from '../utils/utilities';
 
 export default function General({ coinDetail }) {
-    const [activeButton, setActiveButton] = useState(0);
+    // const [activeButton, setActiveButton] = useState(0);
     // const [coinFeature, setCoinFeature] = useState('price');
     // const [showLess, setShowLess] = useState(true);
 
@@ -61,7 +54,7 @@ export default function General({ coinDetail }) {
             <Typography color="textPrimary" component="div">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={8} lg={8}>
-                        <div className={'my-3'}>
+                        {/* <div className={'my-3'}>
                             <div className={'d-flex justify-content-between'}>
                                 <h4>
                                     {`${
@@ -132,7 +125,7 @@ export default function General({ coinDetail }) {
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className={'mt-5'}>
                             <h2>About {coinDetail?.name}</h2>
                             <hr />

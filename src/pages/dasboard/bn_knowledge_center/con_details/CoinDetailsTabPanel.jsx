@@ -2,12 +2,12 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Divider, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
-import Forum from './partials/forum/Forum';
+// import Forum from './partials/forum/Forum';
 import HistoricalData from './partials/HistoricalData';
 import Market from './partials/market/Market';
-import News from './partials/news/News';
+// import News from './partials/news/News';
 import Overview from './partials/overview/Overview';
-import ProjectInfo from './partials/project_info/ProjectInfo';
+// import ProjectInfo from './partials/project_info/ProjectInfo';
 
 export default function CoinDetailsTabPanel({ coinDetail }) {
     const [value, setValue] = useState('1');
@@ -36,20 +36,20 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                             style={custom.tabStyle}
                         />
                         <Tab label="Market" value="2" style={custom.tabStyle} />
-                        <Tab label="News" value="3" style={custom.tabStyle} />
-                        <Tab label="Forum" value="4" style={custom.tabStyle} />
+                        {/* <Tab label="News" value="3" style={custom.tabStyle} /> */}
+                        {/* <Tab label="Forum" value="4" style={custom.tabStyle} /> */}
                         <Tab
                             label="Historical Data"
                             value="5"
                             style={custom.tabStyle}
                         />
-                        <Tab
+                        {/* <Tab
                             label="Project Info."
                             value="6"
                             style={custom.tabStyle}
-                        />
+                        /> */}
                     </TabList>
-                    <Divider flexItems></Divider>
+                    <Divider flexItem></Divider>
                 </div>
                 <TabPanel value="1" className={classes.tabPanelRoot}>
                     <Overview coinDetail={coinDetail} />
@@ -57,18 +57,18 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                 <TabPanel value="2" className={classes.tabPanelRoot}>
                     <Market />
                 </TabPanel>
-                <TabPanel value="3" className={classes.tabPanelRoot}>
+                {/* <TabPanel value="3" className={classes.tabPanelRoot}>
                     <News />
-                </TabPanel>
-                <TabPanel value="4" className={classes.tabPanelRoot}>
+                </TabPanel> */}
+                {/* <TabPanel value="4" className={classes.tabPanelRoot}>
                     <Forum />
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel value="5" className={classes.tabPanelRoot}>
                     <HistoricalData />
                 </TabPanel>
-                <TabPanel value="6" className={classes.tabPanelRoot}>
+                {/* <TabPanel value="6" className={classes.tabPanelRoot}>
                     <ProjectInfo />
-                </TabPanel>
+                </TabPanel> */}
             </TabContext>
         </div>
     );
