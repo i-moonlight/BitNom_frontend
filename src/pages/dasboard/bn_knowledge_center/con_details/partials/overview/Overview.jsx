@@ -1,5 +1,5 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Tab } from '@mui/material';
+import { Box, styled, Tab } from '@mui/material';
 import React, { useState } from 'react';
 import Analysis from './Analysis';
 import Developer from './Developer';
@@ -12,79 +12,61 @@ export default function Overview({ coinDetail }) {
         setValue(newValue);
     };
 
+    const StyledTabList = styled(TabList)({
+        borderBottom: '1px solid #e8e8e8',
+        height: '20px !important',
+        '& .MuiTabs-indicator': {
+            opacity: 0,
+        },
+    });
+
+    const StyledTab = styled((props) => (
+        <Tab disableRipple LinkComponent={'div'} {...props} />
+    ))(({ theme }) => ({
+        minHeight: 36,
+        textTransform: 'none',
+        fontWeight: 'bold',
+        marginRight: theme.spacing(1),
+        backgroundColor: theme.palette.mode == 'dark' ? '#333333' : '#e4e4e4',
+        borderRadius: '50px',
+        '&.Mui-selected': {
+            color: '#fff',
+            backgroundColor: theme.palette.primary.main,
+        },
+        '&.Mui-focusVisible': {
+            backgroundColor: '#555',
+        },
+    }));
+
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
-            <TabContext
-                sx={{ width: '100%', typography: 'body1' }}
-                value={value}
-            >
-                <TabList
+            <TabContext value={value}>
+                <StyledTabList
                     onChange={handleChange}
                     aria-label="lab API tabs example"
-                    className={'m-1'}
                     variant="scrollable"
-                    allowScrollButtonsMobile
-                    scrollButtons
+                    scrollButtons="auto"
                 >
-                    <Tab
-                        label="General"
-                        className={'m-2'}
-                        value="1"
-                        style={custom.buttonStyle}
-                    />
-                    <Tab
-                        label="Developers"
-                        className={'m-2'}
-                        value="2"
-                        style={custom.buttonStyle}
-                    />
-                    <Tab
-                        label="Widget"
-                        className={'m-2'}
-                        value="3"
-                        style={custom.buttonStyle}
-                    />
-                    <Tab
-                        label="Analysis"
-                        className={'m-2'}
-                        value="4"
-                        style={custom.buttonStyle}
-                    />
-                </TabList>
-
-                <TabPanel value="1">
+                    <StyledTab label="General" value="1" />
+                    <StyledTab label="Developers" value="2" />
+                    {/* <StyledTab label="Widget" value="3" /> */}
+                    <StyledTab label="Analysis" value="4" />
+                </StyledTabList>
+                <TabPanel value="1" className="px-0">
                     <General coinDetail={coinDetail} />
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="2" className="px-0">
                     <Developer />
                 </TabPanel>
-                <TabPanel value="3">
-                    {/* <div>
+                {/* <TabPanel value="3"  className="px-0">
+                    <div>
                         <strong>To be discussed</strong>
-                    </div> */}
-                </TabPanel>
-                <TabPanel value="4">
+                    </div>
+                </TabPanel> */}
+                <TabPanel value="4" className="px-0">
                     <Analysis />
                 </TabPanel>
             </TabContext>
         </Box>
     );
 }
-
-const custom = {
-    tabStyle: {
-        textTransform: 'capitalize',
-    },
-    buttonStyle: {
-        textTransform: 'capitalize',
-        fontWeight: 'bold',
-        backgroundColor: '#333333',
-        margin: '5px 5px 5px 0',
-        borderRadius: '50px',
-        minWidth: '120px',
-    },
-    coinsBorder: {
-        borderLeft: '5px solid blue',
-        minWidth: '250px',
-    },
-};

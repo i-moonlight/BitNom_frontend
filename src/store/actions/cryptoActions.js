@@ -28,7 +28,7 @@ export const fetchGeneralTable = () => {
     return (dispatch) => {
         axios
             .get(
-                `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=10&sparkline=true`
+                `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=true`
             )
             .then((res) => {
                 const data = res.data;
@@ -110,6 +110,17 @@ export const fetchGazingTable = () => {
             .then((res) => {
                 const data = res.data;
                 dispatch({ type: 'FETCH_GAZING_TABLE', data });
+            });
+    };
+};
+
+export const fetchTrendingTable = () => {
+    return (dispatch) => {
+        axios
+            .get(`https://api.coingecko.com/api/v3/search/trending`)
+            .then((res) => {
+                const data = res.data?.coins;
+                dispatch({ type: 'FETCH_TRENDING_TABLE', data });
             });
     };
 };

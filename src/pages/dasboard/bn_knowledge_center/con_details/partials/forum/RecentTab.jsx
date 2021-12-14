@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { Announcement, EmojiPeople, Home, Message } from '@mui/icons-material';
 import { AvatarGroup } from '@mui/lab';
 import {
@@ -18,7 +19,9 @@ import { Fragment } from 'react';
 import { useStyles } from '../utils/styles';
 
 export default function RecentTab() {
-    const btnColor = useStyles();
+    const theme = useTheme();
+    const classes = useStyles();
+
     return (
         <>
             <Fragment>
@@ -34,7 +37,7 @@ export default function RecentTab() {
                             <div>
                                 <Button
                                     color={'inherit'}
-                                    className={` ${btnColor.categoryActive}`}
+                                    className={` ${classes.categoryActive}`}
                                 >
                                     <Home className={'me-3'} /> General
                                     Discussion
@@ -43,7 +46,7 @@ export default function RecentTab() {
                             <div>
                                 <Button
                                     color={'inherit'}
-                                    className={` ${btnColor.categoryNormal}`}
+                                    className={` ${classes.categoryNormal}`}
                                 >
                                     <EmojiPeople className={'me-3'} /> Ideas
                                 </Button>
@@ -51,7 +54,7 @@ export default function RecentTab() {
                             <div>
                                 <Button
                                     color={'inherit'}
-                                    className={` ${btnColor.categoryNormal}`}
+                                    className={` ${classes.categoryNormal}`}
                                 >
                                     <Announcement className={'me-3'} />{' '}
                                     Announcement
@@ -60,7 +63,7 @@ export default function RecentTab() {
                             <div>
                                 <Button
                                     color={'inherit'}
-                                    className={` ${btnColor.categoryNormal}`}
+                                    className={` ${classes.categoryNormal}`}
                                 >
                                     <Message
                                         color={'inherit'}
@@ -82,28 +85,26 @@ export default function RecentTab() {
                                 aria-label="simple table"
                             >
                                 <TableHead>
-                                    <TableRow>
+                                    <TableRow
+                                        style={{
+                                            backgroundColor:
+                                                theme.palette.mode === 'dark'
+                                                    ? '#3e4041'
+                                                    : '#eeeeee',
+                                        }}
+                                    >
                                         <TableCell className={'fw-bold'}>
                                             Topic
                                         </TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell
-                                            className={'fw-bold'}
-                                            align="right"
-                                        >
+                                        <TableCell></TableCell>
+                                        <TableCell></TableCell>
+                                        <TableCell className={'fw-bold'}>
                                             Replies
                                         </TableCell>
-                                        <TableCell
-                                            className={'fw-bold'}
-                                            align="right"
-                                        >
+                                        <TableCell className={'fw-bold'}>
                                             Views
                                         </TableCell>
-                                        <TableCell
-                                            className={'fw-bold'}
-                                            align="right"
-                                        >
+                                        <TableCell className={'fw-bold'}>
                                             Activity
                                         </TableCell>
                                     </TableRow>
@@ -178,12 +179,8 @@ export default function RecentTab() {
                                                     />
                                                 </AvatarGroup>
                                             </TableCell>
-                                            <TableCell align="right">
-                                                {row.replies}
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                {row.views}
-                                            </TableCell>
+                                            <TableCell>{row.replies}</TableCell>
+                                            <TableCell>{row.views}</TableCell>
                                             <TableCell>
                                                 <div className={'d-flex'}>
                                                     <Avatar

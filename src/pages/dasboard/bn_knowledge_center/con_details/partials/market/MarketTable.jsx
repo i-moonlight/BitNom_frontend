@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Skeleton,
     Table,
@@ -14,6 +15,7 @@ import { fetchMarketTable } from '../../../../../../store/actions/cryptoActions'
 import { convertDate } from '../utils/utilities';
 
 export default function MarketTable() {
+    const theme = useTheme();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const market = state.crypto?.marketTable;
@@ -25,94 +27,78 @@ export default function MarketTable() {
     return (
         <Fragment>
             <TableContainer>
-                <Table stickyHeader aria-label="caption table">
+                <Table aria-label="caption table">
                     <TableHead>
                         <TableRow
                             style={{
-                                backgroundColor: '#3e4041',
-                                color: '#fff',
+                                backgroundColor:
+                                    theme.palette.mode === 'dark'
+                                        ? '#3e4041'
+                                        : '#eeeeee',
                             }}
                         >
-                            <TableCell className="text-white">
+                            <TableCell>
                                 <strong>#</strong>
                             </TableCell>
-                            <TableCell className="text-white" align="right">
+                            <TableCell>
                                 <strong>Sources</strong>
                             </TableCell>
-                            <TableCell align="right" />
-                            <TableCell align="right" className={'text-primary'}>
+                            <TableCell />
+                            <TableCell>
                                 <strong>Pair</strong>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <strong>Price</strong>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <strong>Volume</strong>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <strong>Volume % </strong>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <strong>Confidence</strong>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <strong>Liquidity</strong>
                             </TableCell>
-                            <TableCell className="text-white" align="right">
-                                Updated
-                            </TableCell>
+                            <TableCell>Updated</TableCell>
                         </TableRow>
                     </TableHead>
                     {market.length > 0 ? (
                         <TableBody>
                             {market.map((row, id) => (
                                 <TableRow key={id}>
-                                    <TableCell align="right">
+                                    <TableCell>
                                         {row?.market_cap_rank}
                                     </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell>
                                         <img
                                             src={row?.image}
                                             alt={'coin image'}
                                             height="25px"
                                         />
                                     </TableCell>
-                                    <TableCell align="right">
-                                        {row?.name}
-                                    </TableCell>
+                                    <TableCell>{row?.name}</TableCell>
                                     <TableCell
-                                        align="right"
                                         className={
                                             'text-primary text-uppercase'
                                         }
                                     >
                                         {row?.symbol}
                                     </TableCell>
-                                    <TableCell align="right">
-                                        ${row?.current_price}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {row?.total_volume}
-                                    </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell>${row?.current_price}</TableCell>
+                                    <TableCell>{row?.total_volume}</TableCell>
+                                    <TableCell>
                                         {row?.price_change_percentage_24h}%
                                     </TableCell>
-                                    <TableCell align="right">
-                                        <span
-                                            style={{
-                                                backgroundColor: '#b4b474',
-                                                borderRadius: '15px',
-                                            }}
-                                        >
-                                            <span className={'m-1'}>
-                                                {row?.market_cap_rank}
-                                            </span>
+                                    <TableCell align="center">
+                                        <span className={'p-1 bg-success br-2'}>
+                                            {row?.market_cap_rank}
                                         </span>
                                     </TableCell>
-                                    <TableCell align="right">
-                                        {row?.low_24h}
-                                    </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell>{row?.low_24h}</TableCell>
+                                    <TableCell>
                                         {convertDate(row?.atl_date)}
                                     </TableCell>
                                 </TableRow>

@@ -106,7 +106,7 @@ export default function HeaderSection() {
                 open={videoOpen}
                 onClose={() => setVideoOpen(false)}
             >
-                <Container className="h-75" maxWidth="lg my-5">
+                <Container className="h-75" maxWidth="lg">
                     <div
                         className="d-flex justify-content-center align-items-center bg-success m-0 p-0 h-100"
                         // style={{

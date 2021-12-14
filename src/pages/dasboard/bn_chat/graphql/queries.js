@@ -814,6 +814,7 @@ export const MARK_CHAT_AS_READ = gql`
                     }
                     lastSeen
                     archived
+                    pinned
                 }
                 recipient {
                     unreadCount
@@ -827,6 +828,7 @@ export const MARK_CHAT_AS_READ = gql`
                     }
                     lastSeen
                     archived
+                    pinned
                 }
                 otherUser {
                     info {
@@ -840,6 +842,7 @@ export const MARK_CHAT_AS_READ = gql`
                     blocked
                     lastSeen
                     archived
+                    pinned
                 }
 
                 currentUser {
@@ -1069,6 +1072,7 @@ export const NEW_CHAT_ADDED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             recipient {
                 unreadCount
@@ -1081,6 +1085,7 @@ export const NEW_CHAT_ADDED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             otherUser {
                 info {
@@ -1093,6 +1098,7 @@ export const NEW_CHAT_ADDED = gql`
                 blocked
                 lastSeen
                 pinned
+                archived
             }
             status
             currentUser {
@@ -1106,6 +1112,7 @@ export const NEW_CHAT_ADDED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             lastMessage {
                 text
@@ -1149,6 +1156,7 @@ export const CHAT_ACCEPTED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             recipient {
                 unreadCount
@@ -1161,6 +1169,7 @@ export const CHAT_ACCEPTED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             otherUser {
                 info {
@@ -1173,6 +1182,7 @@ export const CHAT_ACCEPTED = gql`
                 blocked
                 lastSeen
                 pinned
+                archived
             }
             status
             currentUser {
@@ -1186,6 +1196,7 @@ export const CHAT_ACCEPTED = gql`
                 }
                 lastSeen
                 pinned
+                archived
             }
             lastMessage {
                 gif
@@ -1234,6 +1245,7 @@ export const PIN_CHAT = gql`
                     }
                     lastSeen
                     pinned
+                    archived
                 }
                 recipient {
                     unreadCount
@@ -1246,6 +1258,7 @@ export const PIN_CHAT = gql`
                     }
                     lastSeen
                     pinned
+                    archived
                 }
                 otherUser {
                     info {
@@ -1258,6 +1271,7 @@ export const PIN_CHAT = gql`
                     blocked
                     lastSeen
                     pinned
+                    archived
                 }
                 status
                 currentUser {
@@ -1271,6 +1285,7 @@ export const PIN_CHAT = gql`
                     }
                     lastSeen
                     pinned
+                    archived
                 }
                 lastMessage {
                     images
@@ -1351,6 +1366,66 @@ export const PIN_CHAT_SUB = gql`
     subscription pinChat($_id: ID!) {
         pinChat(_id: $_id) {
             _id
+            initiator {
+                unreadCount
+                blocked
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                lastSeen
+                pinned
+                archived
+            }
+            recipient {
+                unreadCount
+                blocked
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                lastSeen
+                pinned
+                archived
+            }
+            otherUser {
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                unreadCount
+                blocked
+                lastSeen
+                pinned
+                archived
+            }
+            status
+            currentUser {
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                unreadCount
+                blocked
+                lastSeen
+                pinned
+                archived
+            }
+            lastMessage {
+                images
+                video
+                documents
+                gif
+                text
+            }
         }
     }
 `;
@@ -1358,6 +1433,66 @@ export const ARCHIVE_CHAT_SUB = gql`
     subscription archiveChat($_id: ID!) {
         archiveChat(_id: $_id) {
             _id
+            initiator {
+                unreadCount
+                blocked
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                lastSeen
+                pinned
+                archived
+            }
+            recipient {
+                unreadCount
+                blocked
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                lastSeen
+                pinned
+                archived
+            }
+            otherUser {
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                unreadCount
+                blocked
+                lastSeen
+                pinned
+                archived
+            }
+            status
+            currentUser {
+                unreadCount
+                blocked
+                info {
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                lastSeen
+                pinned
+                archived
+            }
+            lastMessage {
+                images
+                video
+                documents
+                gif
+                text
+            }
         }
     }
 `;

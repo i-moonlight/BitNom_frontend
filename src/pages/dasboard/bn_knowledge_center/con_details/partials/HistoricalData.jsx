@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import { DateRange } from '@mui/icons-material';
 import {
     Table,
@@ -8,32 +9,40 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import { Button } from '../../../../../components/Button';
 
 export default function HistoricalData() {
+    const theme = useTheme();
+
     return (
         <Typography color={'textPrimary'} component="div">
             <div className={'m-3'}>
                 <div className={'mb-3 d-flex justify-content-between'}>
                     <h3>Historical Data For Bitcoin</h3>
-                    <a className={'btn btn-secondary'}>
-                        Date Range <DateRange />
-                    </a>
+                    <Button textCase endIcon={<DateRange />}>
+                        Date Range
+                    </Button>
                 </div>
                 <hr />
                 <div>
                     <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead className={'bg-secondary'}>
-                                <TableRow>
+                                <TableRow
+                                    style={{
+                                        backgroundColor:
+                                            theme.palette.mode === 'dark'
+                                                ? '#3e4041'
+                                                : '#eeeeee',
+                                    }}
+                                >
                                     <TableCell>Date</TableCell>
-                                    <TableCell align="right">Open</TableCell>
-                                    <TableCell align="right">High</TableCell>
-                                    <TableCell align="right">Low</TableCell>
-                                    <TableCell align="right">Close**</TableCell>
-                                    <TableCell align="right">Volume</TableCell>
-                                    <TableCell align="right">
-                                        Market Cap
-                                    </TableCell>
+                                    <TableCell>Open</TableCell>
+                                    <TableCell>High</TableCell>
+                                    <TableCell>Low</TableCell>
+                                    <TableCell>Close**</TableCell>
+                                    <TableCell>Volume</TableCell>
+                                    <TableCell>Market Cap</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -45,27 +54,13 @@ export default function HistoricalData() {
                                                 { border: 0 },
                                         }}
                                     >
-                                        <TableCell component="th" scope="row">
-                                            {row.date}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.open}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.high}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.low}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.close}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.volume}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.market_cap}
-                                        </TableCell>
+                                        <TableCell>{row.date}</TableCell>
+                                        <TableCell>{row.open}</TableCell>
+                                        <TableCell>{row.high}</TableCell>
+                                        <TableCell>{row.low}</TableCell>
+                                        <TableCell>{row.close}</TableCell>
+                                        <TableCell>{row.volume}</TableCell>
+                                        <TableCell>{row.market_cap}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

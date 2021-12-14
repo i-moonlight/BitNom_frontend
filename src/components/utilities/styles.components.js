@@ -4,6 +4,7 @@ import bannerImg from '../../assets/banner.webp';
 export const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        backgroundColor: theme.palette.background.appBar,
     },
     appBar: {
         display: 'flex',

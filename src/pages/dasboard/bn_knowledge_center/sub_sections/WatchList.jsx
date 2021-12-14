@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import {
     Table,
     TableCell,
@@ -10,22 +11,23 @@ import React, { Fragment } from 'react';
 import { Button } from '../../../../components/Button';
 
 export default function WatchList() {
+    const theme = useTheme();
+
     return (
         <Fragment>
             <TableContainer>
-                <Table stickyHeader aria-label="sticky table">
+                <Table aria-label="sticky table">
                     <TableHead>
-                        <TableRow>
+                        <TableRow
+                            style={{
+                                backgroundColor:
+                                    theme.palette.mode === 'dark'
+                                        ? '#3e4041'
+                                        : '#eeeeee',
+                            }}
+                        >
                             {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{
-                                        minWidth: column.minWidth,
-                                        backgroundColor: '#3e4041',
-                                        color: '#fff',
-                                    }}
-                                >
+                                <TableCell key={column.id} align={column.align}>
                                     {column.label}
                                 </TableCell>
                             ))}
