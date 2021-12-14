@@ -159,7 +159,6 @@ export default function SendMessage({
     };
 
     const onUpdateMessage = async (IUpdateMessage) => {
-        setText('');
         updateMessage({
             variables: {
                 data: IUpdateMessage,
@@ -777,7 +776,11 @@ export default function SendMessage({
                                     margin="dense"
                                     maxRows={3}
                                     onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
+                                        if (
+                                            e.key === 'Enter' &&
+                                            (editText?.text?.length < 0 ||
+                                                replyText?.text?.length > 0)
+                                        ) {
                                             e.preventDefault();
                                             handleSendMessage();
                                         }

@@ -64,14 +64,14 @@ export default function Messages({ onExitChatMobile }) {
         NEW_MESSAGE_SUBSCRIPTION,
         {
             variables: {
-                _id: dialogue._id,
+                _id: dialogue?._id,
             },
         }
     );
 
     const { data: messageUpdateData } = useSubscription(MESSAGE_UPDATE_SUB, {
         variables: {
-            _id: dialogue._id,
+            _id: dialogue?._id,
         },
     });
 
@@ -104,23 +104,23 @@ export default function Messages({ onExitChatMobile }) {
     });
 
     useEffect(() => {
-        if (dialogue._id) {
+        if (dialogue?._id) {
             getDialogueMessages({
                 variables: {
-                    chat: dialogue._id || 'control',
+                    chat: dialogue?._id || 'control',
                 },
                 context: { clientName: 'chat' },
             });
 
             getPinnedDialogueMessages({
                 variables: {
-                    chat: dialogue._id || 'control',
+                    chat: dialogue?._id || 'control',
                     pinned: true,
                 },
                 context: { clientName: 'chat' },
             });
         }
-    }, [dialogue._id, getDialogueMessages, getPinnedDialogueMessages]);
+    }, [dialogue?._id, getDialogueMessages, getPinnedDialogueMessages]);
 
     return (
         <div style={{ height: '100%', overflowY: 'auto' }}>
@@ -134,7 +134,7 @@ export default function Messages({ onExitChatMobile }) {
                         <Divider />
                     </div>
                 )}
-                {dialogue.status === 'accepted' && (
+                {dialogue?.status === 'accepted' && (
                     <div className={classes.chatHeader}>
                         <ChatHeader
                             chat={dialogue}
@@ -205,39 +205,39 @@ export default function Messages({ onExitChatMobile }) {
                                 ? '48vh'
                                 : '50vh',
                         height: 'fit-content',
-                        /* height:
-                        open === true
-                            ? window.innerHeight - 490 //
-                            : open === true && pinOpen === true
-                            ? window.innerHeight - 750
-                            : pinOpen === true
-                            ? window.innerHeight - 350 //
-                            : typeof replyText !== 'undefined' ||
-                              typeof editText !== 'undefined'
-                            ? window.innerHeight - 450
-                            : window.innerHeight - 372, */
+                        // height:
+                        //     open === true
+                        //         ? window.innerHeight - 490 //
+                        //         : open === true && pinOpen === true
+                        //         ? window.innerHeight - 750
+                        //         : pinOpen === true
+                        //         ? window.innerHeight - 350 //
+                        //         : typeof replyText !== 'undefined' ||
+                        //           typeof editText !== 'undefined'
+                        //         ? window.innerHeight - 450
+                        //         : window.innerHeight - 372,
                     }}
                 >
                     {' '}
-                    {dialogue.status === undefined &&
-                        dialogue._id === undefined &&
+                    {dialogue?.status === undefined &&
+                        dialogue?._id === undefined &&
                         !loading && <NoChatSelected />}
-                    {dialogue.status === 'new' &&
+                    {dialogue?.status === 'new' &&
                         dialogue?.initiator?.info?._id === user?._id &&
                         !loading &&
                         !messages?.length > 0 && (
                             <AwaitResponse dialogue={dialogue} />
                         )}
-                    {dialogue.status === 'new' &&
+                    {dialogue?.status === 'new' &&
                         dialogue?.recipient?.info._id === user?._id && (
                             <InviteView dialogue={dialogue} />
                         )}
                     {dialogue?.status === 'accepted' &&
                         !messages?.length > 0 &&
                         !loading && <EmptyMessages />}
-                    {dialogue.status === 'accepted' &&
+                    {dialogue?.status === 'accepted' &&
                     filteredMessages &&
-                    filteredMessages.author !== user._id &&
+                    filteredMessages?.author !== user._id &&
                     filteredMessages?.length > 0
                         ? filteredMessages?.map((filtered, I) => (
                               <Message
@@ -246,9 +246,9 @@ export default function Messages({ onExitChatMobile }) {
                                   chat={dialogue}
                               />
                           ))
-                        : dialogue.status === 'accepted' &&
+                        : dialogue?.status === 'accepted' &&
                           messages &&
-                          messages.author !== user._id &&
+                          messages?.author !== user._id &&
                           messages?.length > 0
                         ? messages?.map((message, mI) => (
                               <Message
@@ -257,15 +257,15 @@ export default function Messages({ onExitChatMobile }) {
                                   chat={dialogue}
                                   onReply={() =>
                                       setReplyText({
-                                          text: message.text,
-                                          _id: message._id,
-                                          author: message.author,
+                                          text: message?.text,
+                                          _id: message?._id,
+                                          author: message?.author,
                                       })
                                   }
                                   onUpdateMessage={() =>
                                       setEditText({
-                                          _id: message._id,
-                                          text: message.text,
+                                          _id: message?._id,
+                                          text: message?.text,
                                       })
                                   }
                               />
@@ -282,26 +282,28 @@ export default function Messages({ onExitChatMobile }) {
                     <div ref={endRef} className="mt-4" />
                 </div>{' '}
                 <div>
-                    {dialogue.status === 'accepted' &&
+                    {dialogue?.status === 'accepted' &&
                         messages &&
                         messages?.length > 0 &&
-                        (dialogue.recipient.blocked === true ||
-                            dialogue.initiator.blocked === true) && <Blocked />}
+                        (dialogue?.recipient?.blocked === true ||
+                            dialogue?.initiator?.blocked === true) && (
+                            <Blocked />
+                        )}
                 </div>
             </div>
             <div style={{ height: 'fit-content' }}>
-                {dialogue.status === 'accepted' &&
+                {dialogue?.status === 'accepted' &&
                     messages &&
                     messages?.length > 0 &&
-                    (dialogue.recipient.blocked === false ||
-                        dialogue.initiator.blocked === false) && (
+                    (dialogue?.recipient?.blocked === false ||
+                        dialogue?.initiator?.blocked === false) && (
                         <SendMessage
-                            chat={dialogue._id}
+                            chat={dialogue?._id}
                             replyText={replyText}
                             open={open}
                             setOpen={setOpen}
-                            currentUser={dialogue.currentUser}
-                            otherUser={dialogue.otherUser}
+                            currentUser={dialogue?.currentUser}
+                            otherUser={dialogue?.otherUser}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}
                             editText={editText}
@@ -310,17 +312,17 @@ export default function Messages({ onExitChatMobile }) {
                         />
                     )}
 
-                {dialogue.status === 'accepted' &&
+                {dialogue?.status === 'accepted' &&
                     !loading &&
                     !messages?.length > 0 &&
-                    (dialogue.recipient.blocked === false ||
-                        dialogue.initiator.blocked === false) && (
+                    (dialogue?.recipient?.blocked === false ||
+                        dialogue?.initiator?.blocked === false) && (
                         <SendMessage
                             open={open}
                             setOpen={setOpen}
-                            chat={dialogue._id}
-                            currentUser={dialogue.currentUser}
-                            otherUser={dialogue.otherUser}
+                            chat={dialogue?._id}
+                            currentUser={dialogue?.currentUser}
+                            otherUser={dialogue?.otherUser}
                             replyText={replyText}
                             onCancelReply={() => setReplyText(undefined)}
                             setReplyText={() => setReplyText(undefined)}

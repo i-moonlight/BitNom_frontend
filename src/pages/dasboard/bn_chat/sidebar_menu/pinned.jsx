@@ -37,7 +37,7 @@ export default function Pinned({ pinned, loading }) {
                 >
                     {pinned?.map((chat) => (
                         <Chat
-                            key={chat._id}
+                            key={chat?._id}
                             chat={chat}
                             onClick={() => openChatInvite(chat)}
                         />
