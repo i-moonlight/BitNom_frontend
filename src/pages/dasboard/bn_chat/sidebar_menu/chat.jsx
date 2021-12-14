@@ -31,21 +31,21 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
 
     const { data } = useSubscription(LATESTMESSAGE_SUBSCRIPTION, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
     });
 
     //unread count
     const { data: countData } = useSubscription(UNREAD_COUNT, {
         variables: {
-            _id: chat._id,
+            _id: chat?._id,
         },
     });
 
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: chat.otherUser.info._id,
+            _id: chat?.otherUser?.info?._id,
         },
     });
 
@@ -79,9 +79,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     };
 
     const otherUser =
-        chat.otherUser.info._id === user._id
-            ? chat.currentUser
-            : chat.otherUser;
+        chat?.otherUser?.info?._id === user._id
+            ? chat?.currentUser
+            : chat?.otherUser;
 
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
@@ -95,7 +95,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
-                className={activeChatId === chat._id ? classes.activeChat : ''}
+                className={activeChatId === chat?._id ? classes.activeChat : ''}
                 divider
                 // to={`/dashboard/chat/{chat._id}`}
             >
@@ -148,7 +148,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     }
                     secondary={
                         <React.Fragment>
-                            {chat.status === 'accepted' ? (
+                            {chat?.status === 'accepted' ? (
                                 <span>
                                     {data?.lastMessageUpdate?.text ? (
                                         truncateString(
