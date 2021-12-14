@@ -24,6 +24,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
 
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
+
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
@@ -181,9 +182,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
             </Paper>
             <div className={classes.time}>
                 <small>
-                    {getDistanceToNowWithSuffix(
-                        new Date(message?.date).getTime()
-                    )}
+                    {getDistanceToNowWithSuffix(parseInt(message?.date))}
                 </small>
             </div>
         </div>
