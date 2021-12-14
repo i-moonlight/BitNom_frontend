@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { CircularProgress } from '@material-ui/core';
 import {
     CloseRounded,
     ImageRounded,
@@ -19,6 +18,7 @@ import {
     useTheme,
     ListItemText,
     ListItem,
+    CircularProgress,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -32,6 +32,7 @@ import ReactionButton from '../../../../../components/ReactionButton';
 import ReactionHover from '../../../../../components/ReactionHover';
 import { loadComments } from '../../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { createReplyResponse } from '../../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -91,8 +92,12 @@ export default function Comment({
     // const commentList = state.posts.comments;
     // const comments = commentList[id];
 
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
     const {
         data: commentsData,
         loading: commentsLoading,
@@ -156,9 +161,35 @@ export default function Comment({
                 data: ICreateComment,
             },
             errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(reply).content,
+                        content_entities: mentionsFinder(reply).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: scroll?._id,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        response_to: {
+                            _id: comment?._id,
+                            author: {
+                                _id: comment?.author?._id,
+                            },
+                        },
+                        ...createReplyResponse,
+                    },
+                },
+            },
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
-                setReply('');
                 setCommentImage(null);
                 setErrors([]);
                 setPreviewURL();
@@ -236,6 +267,26 @@ export default function Comment({
                     reaction: reaction,
                 },
             },
+            update: (cache, { data }) => {
+                const normalizedCommentId = cache.identify({
+                    id: comment?._id,
+                    __typename: 'OComment',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedCommentId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction(reaction);
     };
@@ -247,6 +298,26 @@ export default function Comment({
                     _id: comment?._id,
                     type: 'comment',
                 },
+            },
+            update: (cache, { data }) => {
+                const normalizedCommentId = cache.identify({
+                    id: comment?._id,
+                    __typename: 'OComment',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedCommentId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
             },
         });
         setUserReaction();
@@ -290,6 +361,7 @@ export default function Comment({
             image: comment_image,
             response_to: responseTo,
         });
+        setReply('');
     };
 
     const getUserReaction = useCallback(
@@ -324,7 +396,7 @@ export default function Comment({
     useEffect(() => {
         const reaction = getUserReaction(comment);
         setUserReaction(reaction);
-    }, [comment, getUserReaction]);
+    }, [comment, getUserReaction, createReactionData, removeReactionData]);
 
     useEffect(() => {
         !commentsError &&

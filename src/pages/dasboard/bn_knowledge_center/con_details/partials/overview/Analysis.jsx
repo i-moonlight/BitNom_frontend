@@ -2,18 +2,11 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import { Button } from '../../../../../../components/Button';
 
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 11/15/21
- * Time: 6:20 AM
- */
-
 export default function Analysis() {
     return (
         <>
             <Typography color={'textPrimary'} component="div">
-                <div className={'m-3'}>
+                <div className={'my-3'}>
                     <div>
                         <h5>
                             <strong>Token Summary</strong>

@@ -27,7 +27,7 @@ export default function CoinMarquee() {
     }, []);
 
     return (
-        <Container>
+        <Container maxWidth="lg">
             <Grid
                 style={{ maxHeight: '100%' }}
                 container

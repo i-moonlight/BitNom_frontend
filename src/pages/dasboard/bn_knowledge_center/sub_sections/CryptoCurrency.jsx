@@ -1,16 +1,15 @@
+import { useTheme } from '@emotion/react';
 import { StarOutline } from '@mui/icons-material';
 import {
     Skeleton,
     Table,
     TableBody,
     TableCell,
-    tableCellClasses,
     TableContainer,
     TableHead,
     TableRow,
 } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
-import { styled } from '@mui/system';
 import React, { Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -23,6 +22,7 @@ export default function CryptoCurrencyPage() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
+    const theme = useTheme();
     const dispatch = useDispatch();
     const history = useHistory();
     const state = useSelector((st) => st);
@@ -44,33 +44,44 @@ export default function CryptoCurrencyPage() {
     return (
         <>
             <TableContainer>
-                <Table stickyHeader aria-label="sticky table">
+                <Table aria-label="sticky table">
                     <TableHead>
-                        <TableRow>
-                            <StyledTableCell>
+                        <TableRow
+                            style={{
+                                backgroundColor:
+                                    theme.palette.mode === 'dark'
+                                        ? '#3e4041'
+                                        : '#eeeeee',
+                            }}
+                        >
+                            <TableCell />
+                            <TableCell>
                                 <strong>#</strong>
-                            </StyledTableCell>
-                            <StyledTableCell />
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Coin</strong>
-                            </StyledTableCell>
-                            <StyledTableCell />
-                            <StyledTableCell />
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
+                                <strong>Name</strong>
+                            </TableCell>
+                            <TableCell>
+                                <strong>Symbol</strong>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Price</strong>
-                            </StyledTableCell>
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Volume (24h)</strong>
-                            </StyledTableCell>
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Mkt Cap</strong>
-                            </StyledTableCell>
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Change(24h)</strong>
-                            </StyledTableCell>
-                            <StyledTableCell>
+                            </TableCell>
+                            <TableCell>
                                 <strong>Price Graph</strong>
-                            </StyledTableCell>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -83,7 +94,7 @@ export default function CryptoCurrencyPage() {
                                 )
                                 .map((row, id) => {
                                     return (
-                                        <StyledTableRow
+                                        <TableRow
                                             hover
                                             role="checkbox"
                                             key={row.id}
@@ -94,23 +105,19 @@ export default function CryptoCurrencyPage() {
                                                 );
                                             }}
                                         >
-                                            <StyledTableCell>
+                                            <TableCell>
                                                 <StarOutline />
-                                            </StyledTableCell>
-                                            <StyledTableCell align="right">
-                                                {id + 1}
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>{id + 1}</TableCell>
+                                            <TableCell>
                                                 <img
                                                     src={row.image}
                                                     alt={'coin image'}
                                                     height="25px"
                                                 />
-                                            </StyledTableCell>
-                                            <StyledTableCell>
-                                                {row.name}
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>{row.name}</TableCell>
+                                            <TableCell>
                                                 <span
                                                     style={{
                                                         textTransform:
@@ -119,25 +126,30 @@ export default function CryptoCurrencyPage() {
                                                 >
                                                     {row.symbol}
                                                 </span>
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>
                                                 ${row.current_price}
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>
                                                 ${row.total_volume}
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>
                                                 ${row.market_cap}
-                                            </StyledTableCell>
-                                            <StyledTableCell
-                                                className={'text-danger'}
+                                            </TableCell>
+                                            <TableCell
+                                                className={
+                                                    row.price_change_percentage_24h <
+                                                    0
+                                                        ? 'text-danger'
+                                                        : 'text-success'
+                                                }
                                             >
                                                 {
                                                     row.price_change_percentage_24h
                                                 }
                                                 %
-                                            </StyledTableCell>
-                                            <StyledTableCell>
+                                            </TableCell>
+                                            <TableCell>
                                                 <Suspense
                                                     fallback={
                                                         <div>Loading...</div>
@@ -156,8 +168,8 @@ export default function CryptoCurrencyPage() {
                                                         />
                                                     </div>
                                                 </Suspense>
-                                            </StyledTableCell>
-                                        </StyledTableRow>
+                                            </TableCell>
+                                        </TableRow>
                                     );
                                 })}
                         </TableBody>
@@ -196,23 +208,3 @@ export default function CryptoCurrencyPage() {
         </>
     );
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 13,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
