@@ -29,7 +29,6 @@ import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import { mentionsFinder } from '../../utilities/functions';
-//import { createPostResponse } from '../../utilities/optimisticResponseObjects';
 
 import {
     MUTATION_CREATE_POST,

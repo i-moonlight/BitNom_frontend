@@ -283,6 +283,7 @@ function PostView() {
     });
 
     const onCreateComment = (ICreateComment) => {
+        setCommentFilter(1);
         createComment({
             variables: {
                 data: ICreateComment,
@@ -312,7 +313,6 @@ function PostView() {
             },
         }).then(({ data, errors: createCommentErrors }) => {
             if (data?.Comments?.create) {
-                //setCommentFilter(1);
                 setCommentText('');
                 setCommentImage(null);
                 setErrors([]);
@@ -400,6 +400,7 @@ function PostView() {
             image: comment_image,
         });
         setCommentText('');
+        setPreviewURL();
     };
 
     const handleScrollOptionOpen = (event) => {

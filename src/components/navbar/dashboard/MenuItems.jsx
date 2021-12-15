@@ -5,7 +5,7 @@ import {
     Brightness7Rounded,
     ChevronRight,
     ExitToAppRounded,
-    ForumRounded,
+    //ForumRounded,
     Notifications,
     PeopleRounded,
 } from '@mui/icons-material';
@@ -177,7 +177,7 @@ export default function ListItems({ handleMenuClose }) {
             </ListItem>
             {!mdUp && (
                 <>
-                    <ListItem disablePadding>
+                    {/*  <ListItem disablePadding>
                         <ListItemButton
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -194,7 +194,7 @@ export default function ListItems({ handleMenuClose }) {
                             </ListItemIcon>
                             <ListItemText primary="Messages" />
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem disablePadding>
                         <ListItemButton
                             onClick={(e) => {
