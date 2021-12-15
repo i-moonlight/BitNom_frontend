@@ -39,7 +39,7 @@ export default function ListItems({ handleMenuClose }) {
     const mdUp = useMediaQuery('(min-width:960px)');
     const state = useSelector((st) => st);
     const notificationsCount = state.count.count;
-    const messagesCount = state.chats.unreadCount;
+    //const messagesCount = state.chats.unreadCount;
     const user = state.auth.user;
 
     const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
