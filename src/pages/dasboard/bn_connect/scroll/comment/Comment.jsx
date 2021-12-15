@@ -362,6 +362,8 @@ export default function Comment({
             response_to: responseTo,
         });
         setReply('');
+        setPreviewURL();
+        setCommentImage(null);
     };
 
     const getUserReaction = useCallback(
