@@ -20,7 +20,7 @@ export default function Team() {
             className="py-5"
             style={{ backgroundColor: theme.palette.background.investorDark }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <Card
                     elevation={0}
                     style={{

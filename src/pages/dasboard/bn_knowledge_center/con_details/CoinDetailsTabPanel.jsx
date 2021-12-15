@@ -20,16 +20,15 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
 
     return (
         <div className={'mt-3'}>
-            <TabContext value={value} variant="standard">
+            <TabContext value={value}>
                 <div>
-                    <Divider orientation="horizontal" flexItem></Divider>
+                    {/* <Divider orientation="horizontal" flexItem></Divider> */}
                     <TabList
                         onChange={handleChange}
                         aria-label="lab API tabs example"
-                        className={'m-2'}
+                        className={'mt-2'}
                         variant="scrollable"
-                        allowScrollButtonsMobile
-                        scrollButtons
+                        scrollButtons="auto"
                     >
                         <Tab
                             label="Overview"
@@ -50,24 +49,24 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                             style={custom.tabStyle}
                         />
                     </TabList>
-                    <Divider orientation="horizontal" flexItem></Divider>
+                    <Divider flexItems></Divider>
                 </div>
-                <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="1" className={classes.tabPanelRoot}>
                     <Overview coinDetail={coinDetail} />
                 </TabPanel>
-                <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="2" className={classes.tabPanelRoot}>
                     <Market />
                 </TabPanel>
-                <TabPanel value="3" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="3" className={classes.tabPanelRoot}>
                     <News />
                 </TabPanel>
-                <TabPanel value="4" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="4" className={classes.tabPanelRoot}>
                     <Forum />
                 </TabPanel>
-                <TabPanel value="5" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="5" className={classes.tabPanelRoot}>
                     <HistoricalData />
                 </TabPanel>
-                <TabPanel value="6" classes={{ root: classes.tabPanelRoot }}>
+                <TabPanel value="6" className={classes.tabPanelRoot}>
                     <ProjectInfo />
                 </TabPanel>
             </TabContext>
@@ -78,6 +77,7 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
 const useStyles = makeStyles({
     tabPanelRoot: {
         padding: '25px 0',
+        margin: 0,
     },
 });
 

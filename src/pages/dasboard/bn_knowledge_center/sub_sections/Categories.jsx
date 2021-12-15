@@ -1,8 +1,8 @@
+import { useTheme } from '@emotion/react';
 import { Skeleton } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategoryTable } from '../../../../store/actions/cryptoActions';
 
 export default function Categories() {
+    const theme = useTheme();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const categories = state.crypto?.categoryTable;
@@ -21,36 +22,41 @@ export default function Categories() {
 
     return (
         <TableContainer>
-            <Table aria-label="coins table" stickyHeader>
+            <Table aria-label="coins table">
                 <TableHead>
-                    <TableRow>
-                        <StyledTableCell>#</StyledTableCell>
-                        <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell>Market Cap</StyledTableCell>
-                        <StyledTableCell>Market Change (24h)</StyledTableCell>
-                        <StyledTableCell>Volume (24h)</StyledTableCell>
+                    <TableRow
+                        style={{
+                            backgroundColor:
+                                theme.palette.mode === 'dark'
+                                    ? '#3e4041'
+                                    : '#eeeeee',
+                        }}
+                    >
+                        <TableCell>#</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Market Cap</TableCell>
+                        <TableCell>Market Change (24h)</TableCell>
+                        <TableCell>Volume (24h)</TableCell>
                     </TableRow>
                 </TableHead>
                 {categories?.length > 0 ? (
                     <TableBody>
                         {categories.map((row, id) => (
-                            <StyledTableRow key={row.name}>
-                                <StyledTableCell component="th" scope="row">
-                                    {id + 1}
-                                </StyledTableCell>
-                                <StyledTableCell component="th" scope="row">
-                                    {row.name}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    ${row.market_cap}
-                                </StyledTableCell>
-                                <StyledTableCell className={'text-danger'}>
+                            <TableRow key={row.name}>
+                                <TableCell>{id + 1}</TableCell>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>${row.market_cap}</TableCell>
+                                <TableCell
+                                    className={
+                                        row.market_cap_change_24h < 0
+                                            ? 'text-danger'
+                                            : 'text-success'
+                                    }
+                                >
                                     {row.market_cap_change_24h}%
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    ${row.volume_24h}
-                                </StyledTableCell>
-                            </StyledTableRow>
+                                </TableCell>
+                                <TableCell>${row.volume_24h}</TableCell>
+                            </TableRow>
                         ))}
                     </TableBody>
                 ) : (
@@ -75,23 +81,3 @@ export default function Categories() {
         </TableContainer>
     );
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));

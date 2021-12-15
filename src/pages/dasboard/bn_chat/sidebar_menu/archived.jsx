@@ -37,7 +37,7 @@ export default function Archived({ archived, loading }) {
                 >
                     {archived?.map((chat) => (
                         <Chat
-                            key={chat._id}
+                            key={chat?._id}
                             chat={chat}
                             onClick={() => openChatInvite(chat)}
                         />

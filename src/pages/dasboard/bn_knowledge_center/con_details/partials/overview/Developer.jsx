@@ -6,7 +6,7 @@ export default function Developer() {
     return (
         <>
             <Typography color={'textPrimary'} component="div">
-                <div className={'m-3'}>
+                <div className={'my-3'}>
                     <div>
                         <p className={'text-primary fw-bold'}>bitcoin</p>
                         <p className={'fw-bold '}>

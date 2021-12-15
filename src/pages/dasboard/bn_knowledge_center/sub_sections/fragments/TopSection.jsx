@@ -1,4 +1,4 @@
-import { Card, CardContent, Switch, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Switch, Typography } from '@mui/material';
 import { useState } from 'react';
 
 export default function TopSection() {
@@ -20,7 +20,7 @@ export default function TopSection() {
         <>
             <section>
                 <div className="my-2">
-                    <div className="m-3">
+                    <div className="my-3">
                         <Typography
                             variant="h5"
                             color="textPrimary"
@@ -47,15 +47,16 @@ export default function TopSection() {
                             The global cryptocurrency market cap today is $2.08
                             Trillion, a
                             <span className="text-danger"> -1.1% </span> change
-                            in the last 24 hours <a href={'#'}>Read More</a>
+                            in the last 24 hours
+                            {/* <a href={'#'}>Read More</a> */}
                         </Typography>
                     </div>
                 </div>
             </section>
             {/*Cards Being Checked*/}
             {checked && (
-                <section className="d-lg-flex d-md-flex d-sm-block flex-row justify-content-between">
-                    <div className="m-3">
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <Card style={borders.market}>
                             <CardContent>
                                 <Typography component="div" variant="caption">
@@ -72,9 +73,8 @@ export default function TopSection() {
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="m-3">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <Card
                             variant="contained"
                             color="primary"
@@ -96,9 +96,8 @@ export default function TopSection() {
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="m-3">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <Card
                             variant="contained"
                             color="primary"
@@ -119,9 +118,8 @@ export default function TopSection() {
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="m-3">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <Card
                             variant="contained"
                             color="primary"
@@ -139,9 +137,8 @@ export default function TopSection() {
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="m-3">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <Card
                             variant="contained"
                             color="primary"
@@ -159,10 +156,9 @@ export default function TopSection() {
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
-                </section>
+                    </Grid>
+                </Grid>
             )}
-            ;
         </>
     );
 }

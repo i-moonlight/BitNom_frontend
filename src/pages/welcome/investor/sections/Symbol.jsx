@@ -19,7 +19,7 @@ export default function Symbol() {
         <section
             style={{ backgroundColor: theme.palette.background.investorDark }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <div className="py-3">
                     <Card
                         style={{

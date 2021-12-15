@@ -54,7 +54,7 @@ export default function ProfileBar({
 
     return (
         <Box className={classes.root}>
-            <Container>
+            <Container maxWidth="lg">
                 <Card elevation={0} className={classes.appBar}>
                     <div
                         className="center-horizontal c-pointer"

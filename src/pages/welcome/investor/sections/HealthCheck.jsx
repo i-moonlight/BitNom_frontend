@@ -26,7 +26,7 @@ export default function HealthCheck() {
             className="py-5"
             style={{ backgroundColor: theme.palette.background.investorShade }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <Typography color="textPrimary" className="my-2 mx-2 fw-bold ">
                     Investor Health Check
                 </Typography>

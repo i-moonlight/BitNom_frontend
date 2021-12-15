@@ -1,5 +1,9 @@
 //import { helmetJsonLdProp } from 'react-schemaorg';
+<<<<<<< HEAD
 import { format } from 'date-fns';
+=======
+// import moment from 'moment';
+>>>>>>> 831e614375dfe3d7f8c3953ad51e3795d829ed13
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -11,9 +15,10 @@ function SEO(data) {
             //script={[helmetJsonLdProp(SchemaFactory(data))]}
             htmlAttributes={{ lang: `en` }}
         >
-            <script type="application/ld+json">{SchemaFactory(data)}</script>
+            {/* <script type="application/ld+json">{SchemaFactory(data)}</script> */}
             {/* General tags */}
             <title>{title || 'BitNorm Website'}</title>
+
             {/*  <meta charSet="utf-8" /> */}
             <meta name="description" content={description} />
             <meta name="image" content={image || null} />
@@ -30,6 +35,7 @@ function SEO(data) {
                 }
             />
             <meta property="og:image" content={image || null} />
+
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content="@BitNorm" />

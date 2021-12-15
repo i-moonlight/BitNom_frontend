@@ -53,7 +53,7 @@ export default function NavBarLanding() {
         >
             <StatusBar />
             <Divider />
-            <Container>
+            <Container maxWidth="lg">
                 <div className="space-between my-3">
                     <div
                         className="center-horizontal c-pointer"

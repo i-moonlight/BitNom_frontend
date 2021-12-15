@@ -40,6 +40,12 @@ function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+    const chats = state.chats.chats;
+    const invites = state.chats.invites;
+    const archived = state.chats.archived;
+    const pinned = state.chats.pinnedChats;
+    const searchedChats = state.chats.searchedChats;
+    const activeChatId = state?.chats?.current_chat?._id;
 
     const xsDown = useMediaQuery('(max-width:599px)');
 
@@ -161,33 +167,35 @@ function Chats({ onSetChatMobile }) {
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
     useEffect(() => {
-        if (pinnedChatData?.pinChat) {
+        if (pinnedChatData?.pinChat?.currentUser?.info?._id === user._id) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
             dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
-    }, [dispatch, pinnedChatData?.pinChat]);
+    }, [dispatch, pinnedChatData, user]);
 
     useEffect(() => {
-        if (archivedChatData?.archivedChat) {
-            dispatch(addToArchivedChats(archivedChatData?.archivedChat));
+        if (
+            archivedChatData?.archiveChat?.currentUser?.info?._id === user._id
+        ) {
+            dispatch(addToArchivedChats(archivedChatData?.archiveChat));
+            dispatch(setCurrentChat(archivedChatData?.archiveChat));
         }
-    }, [dispatch, archivedChatData?.archivedChat]);
-    const chats = state.chats.chats;
-    const invites = state.chats.invites;
-    const archived = state.chats.archived;
-    const pinned = state.chats.pinnedChats;
-    const searchedChats = state.chats.searchedChats;
-    const activeChatId = state.chats.current_chat._id;
+    }, [dispatch, archivedChatData, user]);
+    const handleResetCount = (_id) => {
+        onResetUnreadCount(_id);
+    };
+
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
 
-        if (current_chat._id !== chat._id) {
+        if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
             xsDown && onSetChatMobile();
         }
         onResetUnreadCount(chat._id);
         dispatch(resetTotalCount());
     };
+
     return (
         <Fragment>
             {searchedChats?.length > 0 ? (
@@ -217,7 +225,10 @@ function Chats({ onSetChatMobile }) {
                             {chats?.map((chat) => (
                                 <ChatItem
                                     key={chat._id}
-                                    onClick={() => openChat(chat)}
+                                    onClick={() => {
+                                        openChat(chat),
+                                            handleResetCount(chat._id);
+                                    }}
                                     chat={chat}
                                     activeChatId={activeChatId}
                                 />

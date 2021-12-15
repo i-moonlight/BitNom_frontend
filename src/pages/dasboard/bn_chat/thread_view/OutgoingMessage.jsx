@@ -27,9 +27,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
         <div className={classes.messageRight}>
             <div className={classes.time}>
                 <small>
-                    {getDistanceToNowWithSuffix(
-                        new Date(message?.date).getTime()
-                    )}
+                    {getDistanceToNowWithSuffix(parseInt(message?.date))}
                 </small>
             </div>
 
