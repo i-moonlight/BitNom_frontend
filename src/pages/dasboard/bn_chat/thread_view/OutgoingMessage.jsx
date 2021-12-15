@@ -1,4 +1,8 @@
-import { ExpandMoreRounded } from '@mui/icons-material';
+import {
+    ExpandMoreRounded,
+    DoneAllOutlined,
+    DoneOutlined,
+} from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -23,11 +27,14 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
+
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
                 <small>
-                    {getDistanceToNowWithSuffix(parseInt(message?.date))}
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
                 </small>
             </div>
 
@@ -164,23 +171,44 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                         {message?.text}
                     </ReactMarkdown>
                 </Typography>
-                {/* {show_reply && (
-                    <div className={classes.reply}>
-                        <IconButton
+
+                <div className={classes.reply}>
+                    {message?.status === 'delivered' ? (
+                        <DoneAllOutlined
                             style={{
-                                fontSize: '1em',
+                                fontSize: '18px',
                                 marginTop: '-2px',
                                 bottom: '5px',
                                 right: '3px',
+                                marginRight: '7px',
                                 color: '#bbb',
                             }}
-                            size="small"
-                            onClick={onReply}
-                        >
-                            <Reply />
-                        </IconButton>
-                    </div>
-                )} */}
+                        />
+                    ) : message?.status === 'read' ? (
+                        <DoneAllOutlined
+                            color="primary"
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    ) : (
+                        <DoneOutlined
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    )}
+                </div>
             </Paper>
             <ButtonBase>
                 <Avatar

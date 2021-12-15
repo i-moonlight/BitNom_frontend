@@ -378,7 +378,7 @@ export default function SendMessage({
         setDocPreviewNames(names);
         setMessageDoc(allowedFiles);
     };
-
+    const editing = editText?.text?.length > 0 ? true : false;
     return (
         <>
             <div>
@@ -778,15 +778,14 @@ export default function SendMessage({
                                     onKeyDown={(e) => {
                                         if (
                                             e.key === 'Enter' &&
-                                            (editText?.text?.length < 0 ||
-                                                replyText?.text?.length > 0)
+                                            editing === false
                                         ) {
                                             e.preventDefault();
                                             handleSendMessage();
                                         }
                                         if (
                                             e.key === 'Enter' &&
-                                            editText?.text?.length > 0
+                                            editing === true
                                         ) {
                                             e.preventDefault();
                                             handleUpdateMessage();

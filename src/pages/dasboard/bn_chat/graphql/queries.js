@@ -99,6 +99,7 @@ export const SEARCH_MESSAGES = gql`
                 gif
                 documents
                 date
+                status
                 chat {
                     _id
                 }
@@ -534,6 +535,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 gif
                 pinned
                 edited
+                status
                 responseTo {
                     _id
                     text
@@ -562,6 +564,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 documents
                 gif
                 edited
+                status
                 responseTo {
                     _id
                     text
@@ -1049,6 +1052,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             documents
             gif
             edited
+            status
             responseTo {
                 _id
                 text
@@ -1511,6 +1515,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             documents
             gif
             edited
+            status
             responseTo {
                 _id
                 text
