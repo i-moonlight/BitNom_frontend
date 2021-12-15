@@ -182,7 +182,9 @@ export default function IncomingMessage({ message, chat, onClick }) {
             </Paper>
             <div className={classes.time}>
                 <small>
-                    {getDistanceToNowWithSuffix(parseInt(message?.date))}
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
                 </small>
             </div>
         </div>

@@ -106,7 +106,7 @@ export default function CoinDetails({ match }) {
                                                         <div>
                                                             <Typography
                                                                 component="div"
-                                                                classsName="d-flex align-items-center mt-2"
+                                                                className="d-flex align-items-center mt-2"
                                                             >
                                                                 <span>
                                                                     $47,811.67{' '}
@@ -156,7 +156,7 @@ export default function CoinDetails({ match }) {
                                             lg={6}
                                         >
                                             <Grid container>
-                                                <Grid xs={6}>
+                                                <Grid item xs={6}>
                                                     <Typography color="textPrimary">
                                                         Price Change 24hrs
                                                     </Typography>
@@ -181,7 +181,7 @@ export default function CoinDetails({ match }) {
                                                         }
                                                     </div>
                                                 </Grid>
-                                                <Grid xs={6}>
+                                                <Grid item xs={6}>
                                                     <Typography color="textPrimary">
                                                         Market Cap
                                                     </Typography>

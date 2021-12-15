@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { StarOutline } from '@mui/icons-material';
+// import { StarOutline } from '@mui/icons-material';
 import {
     Skeleton,
     Table,
@@ -54,7 +54,7 @@ export default function CryptoCurrencyPage() {
                                         : '#eeeeee',
                             }}
                         >
-                            <TableCell />
+                            {/* <TableCell /> */}
                             <TableCell>
                                 <strong>#</strong>
                             </TableCell>
@@ -105,9 +105,9 @@ export default function CryptoCurrencyPage() {
                                                 );
                                             }}
                                         >
-                                            <TableCell>
+                                            {/* <TableCell>
                                                 <StarOutline />
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell>{id + 1}</TableCell>
                                             <TableCell>
                                                 <img

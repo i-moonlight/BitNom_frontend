@@ -1,17 +1,20 @@
-import { Button, Card, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import * as React from 'react';
 import { Fragment } from 'react';
-import './style.css';
 import { useStyles } from '../utils/styles';
 import MarketTable from './MarketTable';
+import './style.css';
 
 export default function Market() {
-    const [toggleState, setToggleState] = React.useState(1);
+    const [
+        toggleState,
+        // setToggleState
+    ] = React.useState(1);
     const btnColor = useStyles();
 
-    const toggleTab = (index) => {
-        setToggleState(index);
-    };
+    // const toggleTab = (index) => {
+    //     setToggleState(index);
+    // };
 
     const getActiveClasses = (index, className) => {
         return toggleState === index ? className : btnColor.bGNormal;
@@ -25,7 +28,7 @@ export default function Market() {
                 component="div"
             >
                 <div className={'d-flex'}>
-                    <div className={'d-flex'}>
+                    {/* <div className={'d-flex'}>
                         <Card className={'m-1'}>
                             <Button
                                 color={'inherit'}
@@ -61,7 +64,7 @@ export default function Market() {
                                 Futures
                             </Button>
                         </Card>
-                    </div>
+                    </div> */}
                 </div>
                 <div>
                     <div
