@@ -1559,7 +1559,69 @@ export const GET_TOTAL_COUNT = gql`
 export const RESET_UNREAD_COUNT = gql`
     mutation resetUnreadCount($_id: ID!) {
         Dialogue {
-            resetUnreadCount(_id: $_id)
+            resetUnreadCount(_id: $_id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                otherUser {
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    unreadCount
+                    blocked
+                    lastSeen
+                    pinned
+                    archived
+                }
+                status
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                lastMessage {
+                    images
+                    video
+                    documents
+                    gif
+                    text
+                }
+            }
         }
     }
 `;
