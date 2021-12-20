@@ -8,9 +8,9 @@ import Categories from './sub_sections/Categories';
 import CryptoCurrency from './sub_sections/CryptoCurrency';
 import TopSection from './sub_sections/fragments/TopSection';
 import GainersAndLosers from './sub_sections/GainersAndLosers';
-// import HeatMap from './sub_sections/HeatMap';
 import RecentlyAdded from './sub_sections/RecentlyAdded';
-import WatchList from './sub_sections/WatchList';
+// import WatchList from './sub_sections/WatchList';
+// import HeatMap from './sub_sections/HeatMap';
 
 export default function BnKnowledgeCenter() {
     const [value, setValue] = useState('2');
@@ -42,11 +42,11 @@ export default function BnKnowledgeCenter() {
                             scrollButtons="auto"
                             className="px-0 mx-0"
                         >
-                            <Tab
+                            {/* <Tab
                                 label={'Watchlist'}
                                 className={classes.buttonStyle}
                                 value="1"
-                            />
+                            /> */}
                             <Tab
                                 label="Cryptocurrency"
                                 value="2"
@@ -74,11 +74,11 @@ export default function BnKnowledgeCenter() {
                             /> */}
                         </StyledTabList>
                         <Divider flexItem />
-                        <TabPanel value="1" className="px-0">
+                        {/* <TabPanel value="1" className="px-0">
                             <div>
                                 <WatchList />
                             </div>
-                        </TabPanel>
+                        </TabPanel> */}
                         <TabPanel value="2" className="px-0">
                             <div>
                                 <CryptoCurrency />

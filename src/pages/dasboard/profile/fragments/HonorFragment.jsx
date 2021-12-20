@@ -15,6 +15,7 @@ export default function HonorFragment({
     photoURL,
     expires,
     profileView,
+    url,
 }) {
     const [formOpen, setFormOpen] = useState(false);
     const classes = useStyles();
@@ -35,6 +36,7 @@ export default function HonorFragment({
                         start_date: dateFrom,
                         end_date: dateTo || '',
                         expires,
+                        url,
                     }}
                 />
             )}
@@ -86,6 +88,13 @@ export default function HonorFragment({
                                         new Date(dateTo),
                                         'MMMM do, y'
                                     )}`}
+                            </Typography>
+                            <Typography
+                                component="a"
+                                href={url}
+                                variant="body2"
+                            >
+                                {url}
                             </Typography>
                         </div>
                     </div>

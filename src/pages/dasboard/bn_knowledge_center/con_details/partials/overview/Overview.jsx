@@ -1,7 +1,7 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, styled, Tab } from '@mui/material';
 import React, { useState } from 'react';
-import Analysis from './Analysis';
+// import Analysis from './Analysis';
 import Developer from './Developer';
 import General from './General';
 
@@ -50,7 +50,7 @@ export default function Overview({ coinDetail }) {
                     <StyledTab label="General" value="1" />
                     <StyledTab label="Developers" value="2" />
                     {/* <StyledTab label="Widget" value="3" /> */}
-                    <StyledTab label="Analysis" value="4" />
+                    {/* <StyledTab label="Analysis" value="4" /> */}
                 </StyledTabList>
                 <TabPanel value="1" className="px-0">
                     <General coinDetail={coinDetail} />
@@ -63,9 +63,9 @@ export default function Overview({ coinDetail }) {
                         <strong>To be discussed</strong>
                     </div>
                 </TabPanel> */}
-                <TabPanel value="4" className="px-0">
+                {/* <TabPanel value="4" className="px-0">
                     <Analysis />
-                </TabPanel>
+                </TabPanel> */}
             </TabContext>
         </Box>
     );

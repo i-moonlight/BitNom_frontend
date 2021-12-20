@@ -271,6 +271,8 @@ export default function Scroll({
             image: comment_image,
         });
         setCommentText('');
+        setPreviewURL();
+        setCommentImage(null);
     };
 
     const handleCreateReaction = (reaction) => {

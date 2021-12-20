@@ -1,5 +1,4 @@
 import { useTheme } from '@emotion/react';
-import { DateRange } from '@mui/icons-material';
 import {
     Table,
     TableBody,
@@ -9,7 +8,6 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { Button } from '../../../../../components/Button';
 
 export default function HistoricalData() {
     const theme = useTheme();
@@ -19,11 +17,11 @@ export default function HistoricalData() {
             <div className={'m-3'}>
                 <div className={'mb-3 d-flex justify-content-between'}>
                     <h3>Historical Data For Bitcoin</h3>
-                    <Button textCase endIcon={<DateRange />}>
+                    {/* <Button textCase endIcon={<DateRange />}>
                         Date Range
-                    </Button>
+                    </Button> */}
                 </div>
-                <hr />
+
                 <div>
                     <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">

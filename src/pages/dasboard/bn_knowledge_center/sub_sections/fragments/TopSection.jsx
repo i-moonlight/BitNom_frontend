@@ -43,13 +43,12 @@ export default function TopSection() {
                                 Show Status
                             </Typography>
                         </Typography>
-                        <Typography color="textPrimary">
+                        {/* <Typography color="textPrimary">
                             The global cryptocurrency market cap today is $2.08
                             Trillion, a
                             <span className="text-danger"> -1.1% </span> change
                             in the last 24 hours
-                            {/* <a href={'#'}>Read More</a> */}
-                        </Typography>
+                        </Typography> */}
                     </div>
                 </div>
             </section>

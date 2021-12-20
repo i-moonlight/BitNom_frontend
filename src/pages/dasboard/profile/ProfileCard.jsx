@@ -4,10 +4,10 @@ import {
     CalendarTodayOutlined,
     CameraAltRounded,
     Language,
-    PeopleRounded,
-    StarRounded,
-    StorageRounded,
-    TimelineRounded,
+    //PeopleRounded,
+    //StarRounded,
+    //StorageRounded,
+    //TimelineRounded,
 } from '@mui/icons-material';
 import {
     Card,
@@ -533,7 +533,7 @@ export default function ProfileCard({ profile, profileView }) {
                             {profile?.portfolio || 'Portfolio'}
                         </Button>
                     </div>
-                    <div className="my-4 space-between">
+                    {/* <div className="my-4 space-between">
                         <IconInfo
                             icon={<StarRounded />}
                             value={profile?.reputation}
@@ -554,7 +554,7 @@ export default function ProfileCard({ profile, profileView }) {
                             value={profile?.connections}
                             text="Connections"
                         />
-                    </div>
+                    </div> */}
                 </CardContent>
             </Card>
             {/*  <Snackbar>Uploaded</Snackbar> */}
@@ -562,7 +562,7 @@ export default function ProfileCard({ profile, profileView }) {
     );
 }
 
-const IconInfo = ({ icon, text, value }) => (
+/* const IconInfo = ({ icon, text, value }) => (
     <div>
         <Typography
             variant="body2"
@@ -578,3 +578,4 @@ const IconInfo = ({ icon, text, value }) => (
         <Typography variant="body2">{text}</Typography>
     </div>
 );
+ */

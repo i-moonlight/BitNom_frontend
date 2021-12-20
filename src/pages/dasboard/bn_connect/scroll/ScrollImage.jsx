@@ -280,6 +280,8 @@ export default function ScrollImage({
             image: comment_image,
         });
         setCommentText('');
+        setPreviewURL();
+        setCommentImage(null);
     };
 
     const handleEmojiPickerOpen = (event) => {
