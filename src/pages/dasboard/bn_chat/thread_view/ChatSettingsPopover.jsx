@@ -164,6 +164,7 @@ export default function ChatSettingPopover({
             onClose={handleChatSettingsClose}
             style={{ marginLeft: 16, width: '100%' }}
             disableScrollLock
+            disablePortal
         >
             <List
                 style={{ padding: 0, paddingBottom: 0 }}

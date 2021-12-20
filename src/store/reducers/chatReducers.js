@@ -29,6 +29,13 @@ export default function chatReducer(state = initialState, action) {
                 }, 0),
             };
         }
+        case 'UPDATE_DIALOGUE':
+            return {
+                ...state,
+                chats: state.chats.map((chat) =>
+                    chat._id === action.data._id ? action.data : chat
+                ),
+            };
         case 'SET_CURRENT_CHAT':
             return { ...state, current_chat: action.chat };
         case 'SET_CHAT_INVITES':

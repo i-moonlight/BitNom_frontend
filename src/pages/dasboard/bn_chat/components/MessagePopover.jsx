@@ -70,6 +70,7 @@ export default function MessagePopover({
             open={isMessageSettingsOpen}
             onClose={handleMessageClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disablePortal
         >
             <List>
                 <ListItem
@@ -97,6 +98,7 @@ export default function MessagePopover({
                         handleDeleteMessage(), handleMessageClose();
                     }}
                     disabled={user._id === message.author ? false : true}
+                    style={{ display: user._id !== message.author && 'none' }}
                 >
                     <ListItemText primary="Delete Message" />
                 </ListItem>
@@ -108,6 +110,7 @@ export default function MessagePopover({
                         onUpdateMessage(), handleMessageClose();
                     }}
                     disabled={user._id === message.author ? false : true}
+                    style={{ display: user._id !== message.author && 'none' }}
                 >
                     <ListItemText primary="Edit text" />
                 </ListItem>

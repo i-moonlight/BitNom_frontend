@@ -159,7 +159,9 @@ export default function CreateChatPrompt({
                                                             ? process.env
                                                                   .REACT_APP_BACKEND_URL +
                                                               user?.profile_pic
-                                                            : ''
+                                                            : `https://ui-avatars.com/api/?name=${getUserInitials(
+                                                                  user?.displayName
+                                                              )}&background=random`
                                                     }
                                                     style={{
                                                         backgroundColor:
@@ -167,11 +169,9 @@ export default function CreateChatPrompt({
                                                         marginRight: '5px',
                                                     }}
                                                 >
-                                                    {user?.profile_pic
-                                                        ? ''
-                                                        : getUserInitials(
-                                                              user?.displayName
-                                                          )}
+                                                    {getUserInitials(
+                                                        user?.displayName
+                                                    )}
                                                 </Avatar>
                                             </ListItemAvatar>
                                             <ListItemText

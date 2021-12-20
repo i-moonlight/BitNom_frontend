@@ -110,8 +110,7 @@ export default function CreateScrollCard({
                             )}
                         </div>
                     </Button>
-                    <div></div>
-                    <div></div>
+
                     {/* <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
                             <LazyImage

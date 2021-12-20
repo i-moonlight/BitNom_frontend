@@ -19,6 +19,9 @@ export const addToInvites = (data) => {
 export const removeFromInvites = (data) => {
     return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_INVITES' });
 };
+export const updateDialogue = (data) => {
+    return (dispatch) => dispatch({ data, type: 'UPDATE_DIALOGUE' });
+};
 export const addToChatDialogues = (data) => {
     return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_DIALOGUES' });
 };
