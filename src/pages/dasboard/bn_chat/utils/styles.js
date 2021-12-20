@@ -161,6 +161,8 @@ export const useStyles = makeStyles((theme) => ({
         justifyContent: 'end',
         alignItems: 'end',
         marginTop: '-20px',
+        /*   marginRight: '5px',
+        marginLeft: '5px', */
     },
     Edited: {
         display: 'flex',

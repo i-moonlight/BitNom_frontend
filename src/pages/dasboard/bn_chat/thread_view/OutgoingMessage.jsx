@@ -12,6 +12,7 @@ import {
     IconButton,
     Paper,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -27,7 +28,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
-
+    const mdDown = useMediaQuery('(max-width:1279px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -49,25 +50,28 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
-                        <small className={classes.author}>
-                            <strong>@{author}</strong>
-                        </small>
-                    </Link>
-                    {message?.edited === true ? (
-                        <div className={classes.Edited}>
-                            <strong>(Edited)</strong>
-                        </div>
-                    ) : (
-                        ''
-                    )}
-                    {show_reply && (
-                        <div className={classes.reply}>
+                    <span
+                        style={{
+                            display: 'flex',
+                            width: '100%',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Link
+                            to={`/profile`}
+                            style={{
+                                textDecoration: 'none',
+                                marginRight: '5px',
+                            }}
+                        >
+                            <small className={classes.author}>
+                                <strong>@{author}</strong>
+                            </small>
+                        </Link>
+                        {(show_reply || mdDown) && (
                             <IconButton
                                 style={{
                                     fontSize: '1em',
-                                    bottom: '5px',
-                                    right: '3px',
                                     color: '#000',
                                 }}
                                 size="small"
@@ -75,7 +79,14 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             >
                                 <ExpandMoreRounded />
                             </IconButton>
-                        </div>
+                        )}
+                    </span>
+                    {message?.edited === true ? (
+                        <small>
+                            <strong>(Edited)</strong>
+                        </small>
+                    ) : (
+                        ''
                     )}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
