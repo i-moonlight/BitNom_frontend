@@ -1,5 +1,6 @@
 import {
     ArrowDropDown,
+    ArrowDropUp,
     Facebook,
     GitHub,
     LinkOutlined,
@@ -109,15 +110,33 @@ export default function CoinDetails({ match }) {
                                                                 className="d-flex align-items-center mt-2"
                                                             >
                                                                 <span>
-                                                                    $47,811.67{' '}
+                                                                    $
+                                                                    {coinDetail?.market_data?.current_price?.usd?.toLocaleString()}{' '}
                                                                 </span>
                                                                 <span
                                                                     className={
-                                                                        'text-danger'
+                                                                        coinDetail
+                                                                            ?.market_data
+                                                                            ?.market_cap_change_percentage_24h >
+                                                                        0
+                                                                            ? 'text-success'
+                                                                            : 'text-danger'
                                                                     }
                                                                 >
-                                                                    <ArrowDropDown />
-                                                                    7.76%
+                                                                    {coinDetail
+                                                                        ?.market_data
+                                                                        ?.market_cap_change_percentage_24h >
+                                                                    0 ? (
+                                                                        <ArrowDropUp />
+                                                                    ) : (
+                                                                        <ArrowDropDown />
+                                                                    )}
+                                                                    {
+                                                                        coinDetail
+                                                                            ?.market_data
+                                                                            ?.market_cap_change_percentage_24h
+                                                                    }
+                                                                    %
                                                                 </span>
                                                             </Typography>
 
@@ -162,23 +181,18 @@ export default function CoinDetails({ match }) {
                                                     </Typography>
                                                     <div className="text-success mb-2">
                                                         $
-                                                        {
-                                                            coinDetail
-                                                                ?.market_data
-                                                                ?.price_change_24h_in_currency
-                                                                ?.usd
-                                                        }
+                                                        {coinDetail?.market_data?.price_change_24h_in_currency?.usd?.toFixed(
+                                                            2
+                                                        )}
                                                     </div>
                                                     <Typography color="textPrimary">
                                                         Circulating Supply
                                                     </Typography>
                                                     <div className="text-success">
                                                         $
-                                                        {
-                                                            coinDetail
-                                                                ?.market_data
-                                                                ?.circulating_supply
-                                                        }
+                                                        {coinDetail?.market_data?.circulating_supply?.toFixed(
+                                                            2
+                                                        )}
                                                     </div>
                                                 </Grid>
                                                 <Grid item xs={6}>
@@ -187,23 +201,18 @@ export default function CoinDetails({ match }) {
                                                     </Typography>
                                                     <div className="text-success mb-2">
                                                         $
-                                                        {
-                                                            coinDetail
-                                                                ?.market_data
-                                                                ?.market_cap_change_24h_in_currency
-                                                                ?.usd
-                                                        }
+                                                        {coinDetail?.market_data?.market_cap_change_24h_in_currency?.usd?.toFixed(
+                                                            2
+                                                        )}
                                                     </div>
                                                     <Typography color="textPrimary">
                                                         Total Supply
                                                     </Typography>
                                                     <div className="text-success">
                                                         $
-                                                        {
-                                                            coinDetail
-                                                                ?.market_data
-                                                                ?.total_supply
-                                                        }
+                                                        {coinDetail?.market_data?.total_supply?.toFixed(
+                                                            2
+                                                        )}
                                                     </div>
                                                 </Grid>
                                             </Grid>
