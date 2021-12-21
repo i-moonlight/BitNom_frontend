@@ -17,7 +17,7 @@ import {
     fetchGeneralTable,
     fetchTrendingTable,
 } from '../../../../../../store/actions/cryptoActions';
-// import CoinChart from '../../../bn_charts/CoinChart';
+import CoinChart from '../../../bn_charts/CoinChart';
 // import { buttonData, chipLabels, GeneralButton } from '../utils/GeneralButtons';
 import { convertDate, volumePercentage } from '../utils/utilities';
 
@@ -31,6 +31,8 @@ export default function General({ coinDetail }) {
     const state = useSelector((st) => st);
     const rows = state.crypto?.generalTable;
     const trending = state.crypto?.trendingTable;
+
+    const coinData = coinDetail?.market_data?.sparkline_7d?.price;
 
     useEffect(() => {
         dispatch(fetchGeneralTable());
@@ -54,8 +56,8 @@ export default function General({ coinDetail }) {
             <Typography color="textPrimary" component="div">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={8} lg={8}>
-                        {/* <div className={'my-3'}>
-                            <div className={'d-flex justify-content-between'}>
+                        <div className={'my-3'}>
+                            {/* <div className={'d-flex justify-content-between'}>
                                 <h4>
                                     {`${
                                         coinDetail?.name
@@ -66,9 +68,9 @@ export default function General({ coinDetail }) {
                                     <Fullscreen className={'m-1'} />
                                     <MoreHoriz className={'m-1'} />
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <div className={'d-flex justify-content-between'}>
+                            {/* <div className={'d-flex justify-content-between'}>
                                 <Card>
                                     <div className={'m-1'}>
                                         {buttonData.map((item, index) => (
@@ -109,12 +111,17 @@ export default function General({ coinDetail }) {
                                         <DateRange />
                                     </div>
                                 </Card>
-                            </div>
+                            </div> */}
+
                             <div className={'mt-2'}>
                                 <Card>
-                                    <CoinChart />
+                                    {(!process.env.NODE_ENV ||
+                                        process.env.NODE_ENV ===
+                                            'development') && (
+                                        <CoinChart data={coinData} />
+                                    )}
                                 </Card>
-                                <div className={'d-flex justify-content-start'}>
+                                {/* <div className={'d-flex justify-content-start'}>
                                     <FormControlLabel
                                         control={<Checkbox defaultChecked />}
                                         label="BTC"
@@ -123,9 +130,9 @@ export default function General({ coinDetail }) {
                                         control={<Checkbox />}
                                         label="USD"
                                     />
-                                </div>
+                                </div> */}
                             </div>
-                        </div> */}
+                        </div>
                         <div className={'mt-5'}>
                             <h2>About {coinDetail?.name}</h2>
                             <hr />
