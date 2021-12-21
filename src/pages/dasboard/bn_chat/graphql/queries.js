@@ -99,6 +99,7 @@ export const SEARCH_MESSAGES = gql`
                 gif
                 documents
                 date
+                status
                 chat {
                     _id
                 }
@@ -534,6 +535,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 gif
                 pinned
                 edited
+                status
                 responseTo {
                     _id
                     text
@@ -562,6 +564,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 documents
                 gif
                 edited
+                status
                 responseTo {
                     _id
                     text
@@ -1049,6 +1052,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             documents
             gif
             edited
+            status
             responseTo {
                 _id
                 text
@@ -1511,6 +1515,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             documents
             gif
             edited
+            status
             responseTo {
                 _id
                 text
@@ -1554,7 +1559,69 @@ export const GET_TOTAL_COUNT = gql`
 export const RESET_UNREAD_COUNT = gql`
     mutation resetUnreadCount($_id: ID!) {
         Dialogue {
-            resetUnreadCount(_id: $_id)
+            resetUnreadCount(_id: $_id) {
+                _id
+                initiator {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                recipient {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                otherUser {
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    unreadCount
+                    blocked
+                    lastSeen
+                    pinned
+                    archived
+                }
+                status
+                currentUser {
+                    unreadCount
+                    blocked
+                    info {
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
+                    lastSeen
+                    pinned
+                    archived
+                }
+                lastMessage {
+                    images
+                    video
+                    documents
+                    gif
+                    text
+                }
+            }
         }
     }
 `;

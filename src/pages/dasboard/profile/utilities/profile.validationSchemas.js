@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 const minRealDate = new Date(1920, 0, 1, 0, 0, 0);
+const today = new Date();
 
 export const workValidation = Yup.object().shape({
     company: Yup.string().required().min(2).max(50).label('Company'),
@@ -33,12 +34,13 @@ export const honorValidation = Yup.object().shape({
     name: Yup.string().required().min(2).max(50).label('Name'),
     start_date: Yup.date()
         .min(minRealDate, 'Enter a realistic date')
+        .max(today, 'Enter a date before today')
         .required()
         .label('Start Date'),
     end_date: Yup.date()
         .min(Yup.ref('start_date'), "End date can't be before start date")
         .label('End Date'),
-    url: Yup.string().required().url().max(50).label('Credential Url'),
+    url: Yup.string().required().url().max(2048).label('Credential Url'),
 });
 
 export const courseAndProjectValidation = Yup.object().shape({

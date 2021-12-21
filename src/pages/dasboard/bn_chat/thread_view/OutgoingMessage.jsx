@@ -1,4 +1,8 @@
-import { ExpandMoreRounded } from '@mui/icons-material';
+import {
+    ExpandMoreRounded,
+    DoneAllOutlined,
+    DoneOutlined,
+} from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -8,6 +12,7 @@ import {
     IconButton,
     Paper,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -23,11 +28,14 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
+    const mdDown = useMediaQuery('(max-width:1279px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
                 <small>
-                    {getDistanceToNowWithSuffix(parseInt(message?.date))}
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
                 </small>
             </div>
 
@@ -42,25 +50,28 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
-                        <small className={classes.author}>
-                            <strong>@{author}</strong>
-                        </small>
-                    </Link>
-                    {message?.edited === true ? (
-                        <div className={classes.Edited}>
-                            <strong>(Edited)</strong>
-                        </div>
-                    ) : (
-                        ''
-                    )}
-                    {show_reply && (
-                        <div className={classes.reply}>
+                    <span
+                        style={{
+                            display: 'flex',
+                            width: '100%',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Link
+                            to={`/profile`}
+                            style={{
+                                textDecoration: 'none',
+                                marginRight: '5px',
+                            }}
+                        >
+                            <small className={classes.author}>
+                                <strong>@{author}</strong>
+                            </small>
+                        </Link>
+                        {(show_reply || mdDown) && (
                             <IconButton
                                 style={{
                                     fontSize: '1em',
-                                    bottom: '5px',
-                                    right: '3px',
                                     color: '#000',
                                 }}
                                 size="small"
@@ -68,7 +79,14 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             >
                                 <ExpandMoreRounded />
                             </IconButton>
-                        </div>
+                        )}
+                    </span>
+                    {message?.edited === true ? (
+                        <small>
+                            <strong>(Edited)</strong>
+                        </small>
+                    ) : (
+                        ''
                     )}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
@@ -164,23 +182,44 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                         {message?.text}
                     </ReactMarkdown>
                 </Typography>
-                {/* {show_reply && (
-                    <div className={classes.reply}>
-                        <IconButton
+
+                <div className={classes.reply}>
+                    {message?.status === 'delivered' ? (
+                        <DoneAllOutlined
                             style={{
-                                fontSize: '1em',
+                                fontSize: '18px',
                                 marginTop: '-2px',
                                 bottom: '5px',
                                 right: '3px',
+                                marginRight: '7px',
                                 color: '#bbb',
                             }}
-                            size="small"
-                            onClick={onReply}
-                        >
-                            <Reply />
-                        </IconButton>
-                    </div>
-                )} */}
+                        />
+                    ) : message?.status === 'read' ? (
+                        <DoneAllOutlined
+                            color="primary"
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    ) : (
+                        <DoneOutlined
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    )}
+                </div>
             </Paper>
             <ButtonBase>
                 <Avatar

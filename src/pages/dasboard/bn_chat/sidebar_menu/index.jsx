@@ -21,6 +21,7 @@ import {
     setArchivedChats,
     setChatInvites,
     setCurrentChat,
+    updateDialogue,
 } from '../../../../store/actions/chatActions';
 import {
     ARCHIVE_CHAT_SUB,
@@ -87,7 +88,8 @@ function Chats({ onSetChatMobile }) {
             context: { clientName: 'chat' },
         }
     );
-    const [unreadCountReset] = useMutation(RESET_UNREAD_COUNT);
+    const [unreadCountReset, { data: readCountData }] =
+        useMutation(RESET_UNREAD_COUNT);
 
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
@@ -121,6 +123,12 @@ function Chats({ onSetChatMobile }) {
             context: { clientName: 'chat' },
         });
     };
+
+    useEffect(() => {
+        if (readCountData?.Dialogue?.resetUnreadCount) {
+            dispatch(updateDialogue(readCountData?.Dialogue?.resetUnreadCount));
+        }
+    }, [dispatch, readCountData?.Dialogue?.resetUnreadCount]);
     useEffect(() => {
         if (chatAccepted?.chatAccepted) {
             dispatch(clearCurrentChat());

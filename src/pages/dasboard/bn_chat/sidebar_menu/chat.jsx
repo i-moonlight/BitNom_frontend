@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
+//import { truncateText } from '../../utilities/functions';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
     UNREAD_COUNT,
@@ -86,6 +87,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
 
+    const truncateName = (input) =>
+        input?.length > 15 ? `${input?.substring(0, 15)}...` : input;
+
     const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
 
     return (
@@ -132,7 +136,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     //         />
                     primary={
                         <Typography color="textPrimary" component="span">
-                            {otherUser?.info?.displayName}{' '}
+                            {truncateName(otherUser?.info?.displayName)}{' '}
                             <Badge
                                 badgeContent={
                                     countData?.UnreadCount?.user ===
