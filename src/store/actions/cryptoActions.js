@@ -77,7 +77,9 @@ export const fetchGazingCoinDetails = () => {
 export const fetchCryptoCoinDetails = (coin_id) => {
     return (dispatch) => {
         axios
-            .get(`https://api.coingecko.com/api/v3/coins/${coin_id}`)
+            .get(
+                `https://api.coingecko.com/api/v3/coins/${coin_id}?sparkline=true`
+            )
             .then((res) => {
                 const data = {
                     coin_id,

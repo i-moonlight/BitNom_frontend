@@ -94,7 +94,13 @@ export default function HeaderSection() {
                                     href="https://latoken.com/exchange/BN_USDT"
                                     className="alt"
                                 >
-                                    <b>Click here to buy</b>
+                                    <b>
+                                        Click here to buy
+                                        {(!process.env.NODE_ENV ||
+                                            process.env.NODE_ENV ===
+                                                'development') &&
+                                            '.'}
+                                    </b>
                                 </a>
                             </Typography>
                         </DarkThemeOnly>
