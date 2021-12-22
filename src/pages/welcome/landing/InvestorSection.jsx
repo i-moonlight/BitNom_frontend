@@ -9,6 +9,8 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import investorGraphicImg from '../../../assets/landing/articles.png';
+import investorPageImg from '../../../assets/landing/investor.png';
+import LazyImage from '../../../components/LazyImage';
 import { INVESTOR_CARD_DISPLACEMENT, useStyles } from './Landing';
 
 export default function InvestorSection() {
@@ -47,14 +49,25 @@ export default function InvestorSection() {
                         >
                             <Grid item sm={2} md={5}></Grid>
                             <Grid item xs={12} sm={10} md={7}>
-                                <iframe
+                                {/* <iframe
                                     className="br-2 scroll-hidden"
                                     src={`${window.location.origin}/investors`}
                                     style={{
                                         width: '100%',
                                         height: 400,
                                     }}
-                                ></iframe>
+                                ></iframe> */}
+                                <LazyImage
+                                    style={{
+                                        width: '100%',
+                                        borderRadius: '20px 20px 0 0',
+                                        height: 400,
+                                    }}
+                                    image={{
+                                        src: investorPageImg,
+                                        alt: 'Card Image',
+                                    }}
+                                />
                             </Grid>
                         </Grid>
 

@@ -1,14 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Dialog, Slide, Grid, IconButton, Typography } from '@mui/material';
-import {
-    ArrowBackIos,
-    ArrowForwardIos,
-    CloseRounded,
-} from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { Dialog, Grid, IconButton, Slide, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useCallback, useEffect, useState } from 'react';
 import ScrollImage from '../pages/dasboard/bn_connect/scroll/ScrollImage';
-// import { useQuery } from '@apollo/client';
-// import { QUERY_POST_BY_ID } from '../pages/dasboard/utilities/queries';
 
 export default function ImageModal({
     post,
@@ -16,7 +10,6 @@ export default function ImageModal({
     onClose,
     imageIndex,
     setImageIndex,
-
     profileData,
     setSharedResource,
     setCommentToEdit,
@@ -26,6 +19,8 @@ export default function ImageModal({
     setOpenReactions,
     setResourceReactions,
     setOpen,
+    setImagePreviewURL,
+    setImagePreviewOpen,
 }) {
     const [modalStyle] = useState(getModalStyle);
     const classes = useStyles();
@@ -35,9 +30,7 @@ export default function ImageModal({
     const [slideIn, setSlideIn] = useState(true);
     const [slideDirection, setSlideDirection] = useState('down');
 
-    // const { data: postData } = useQuery(QUERY_POST_BY_ID, {
-    //     variables: { _id: post?._id },
-    // });
+    const mdDown = useMediaQuery('(max-width:1279px)');
 
     const onArrowClick = useCallback(
         (direction) => {
@@ -76,22 +69,6 @@ export default function ImageModal({
 
     return (
         <Dialog fullWidth={true} maxWidth={'lg'} open={open} onClose={onClose}>
-            <div
-                className="space-between center-horizontal"
-                style={{ margin: '2px' }}
-            >
-                <Typography variant="body2"></Typography>
-                <Typography variant="body1"></Typography>
-                <IconButton
-                    onClick={() => {
-                        onClose();
-                    }}
-                    size="small"
-                    className="m-1 p-1"
-                >
-                    <CloseRounded />
-                </IconButton>
-            </div>
             <Grid container className={classes.Container}>
                 <Grid item xs={12} md={6} lg={6}>
                     <div className={classes.Carousel}>
@@ -119,7 +96,7 @@ export default function ImageModal({
                     </div>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
-                    {post && (
+                    {post && !mdDown && (
                         <div className={classes.Content}>
                             <ScrollImage
                                 postId={post?._id}
@@ -133,6 +110,8 @@ export default function ImageModal({
                                 setResourceReactions={setResourceReactions}
                                 setSharedResource={setSharedResource}
                                 setCommentToEdit={setCommentToEdit}
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setImagePreviewURL={setImagePreviewURL}
                             />
                         </div>
                     )}
@@ -166,7 +145,7 @@ function getModalStyle() {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
-        ':focus-visibile:': {
+        ':focusVisibile:': {
             outline: 'none !important',
         },
     };
@@ -174,28 +153,35 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
     Container: {
-        height: '600px',
+        height: '550px',
         overflowX: 'hidden',
+        overflowY: 'auto',
+        [theme.breakpoints.down('md')]: {
+            height: 'fit-content',
+            padding: '5px',
+        },
     },
     Carousel: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '550px',
-        padding: '10px 50px',
+        height: '500px',
+        padding: '10px',
         margin: 0,
         [theme.breakpoints.down('sm')]: {
             padding: '5px',
+            height: 'fit-content',
         },
     },
     Content: {
         display: 'flex',
         height: '550px',
         padding: '10px',
-        [theme.breakpoints.down('sm')]: {
+        /* [theme.breakpoints.down('sm')]: {
             padding: '5px',
             alignItems: 'center',
-        },
+            height: 'fit-content',
+        }, */
     },
     Arrow: {
         height: '30px',
@@ -205,6 +191,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         overflow: 'scroll',
         maxWidth: '90%',
-        maxHeight: '550px',
+        maxHeight: '500px',
+        // minHeight: '100px',
     },
 }));

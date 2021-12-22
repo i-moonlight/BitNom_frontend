@@ -22,22 +22,28 @@ import {
     CardMedia,
     Divider,
     Grid,
+    Hidden,
     IconButton,
+    Skeleton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
 import { Button } from '../../../../components/Button';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
+import ReactionHover from '../../../../components/ReactionHover';
+import { loadComments } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import EventPreview from '../../events/EventPreview';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -48,18 +54,22 @@ import {
     MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const scrollOptionId = 'menu-scroll-option';
 const emojiPickerId = 'emoji-picker-popover';
 
+const EventPreview = React.lazy(() => import('../../events/EventPreview'));
 const ScrollPreview = React.lazy(() => import('./ScrollPreview'));
 const Comment = React.lazy(() => import('./comment/Comment'));
 
 export default function Scroll({
+    id,
     scroll,
     profileData,
     setSharedResource,
@@ -80,7 +90,6 @@ export default function Scroll({
     style,
     setOpenShareModal,
 }) {
-    const classes = useStyles();
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -88,51 +97,160 @@ export default function Scroll({
     const [openComments, setOpenComments] = useState(false);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(null);
-    const [fileErrors, setFileErrors] = useState([]);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [previewURL, setPreviewURL] = useState();
+    const [errors, setErrors] = useState([]);
 
-    const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
-    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
-    const [createComment] = useMutation(MUTATION_CREATE_COMMENT);
-    const {
-        data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
-    } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: scroll?._id } },
-    });
-
+    const dispatch = useDispatch();
+    const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
     const state = useSelector((st) => st);
 
     const user = state.auth.user;
+    // const commentList = state.posts.comments;
+    // const comments = commentList[id];
+
+    const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
+    const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
+
+    const {
+        data: commentsData,
+        loading: commentsLoading,
+        error: commentsError,
+        fetchMore,
+    } = useQuery(QUERY_GET_COMMENTS, {
+        variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+    });
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
+    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: scroll?._id,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
 
     const onCreateComment = (ICreateComment) => {
         createComment({
             variables: {
                 data: ICreateComment,
             },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
+            errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(comment_text).content,
+                        content_entities:
+                            mentionsFinder(comment_text).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: scroll?._id,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createCommentResponse,
+                    },
                 },
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: scroll?._id } },
-                },
-            ],
+            },
+        }).then(({ data, errors: createCommentErrors }) => {
+            if (data?.Comments?.create) {
+                setCommentText('');
+                setCommentImage(null);
+                setErrors([]);
+                setPreviewURL();
+            }
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = createCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
         });
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setFileErrors([]);
-        setPreviewURL();
     };
 
     const mentions = profileData?.followers?.map?.((item) => {
@@ -144,8 +262,6 @@ export default function Scroll({
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -154,6 +270,9 @@ export default function Scroll({
             scroll: scroll?._id,
             image: comment_image,
         });
+        setCommentText('');
+        setPreviewURL();
+        setCommentImage(null);
     };
 
     const handleCreateReaction = (reaction) => {
@@ -165,7 +284,26 @@ export default function Scroll({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: scroll?._id,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -179,15 +317,60 @@ export default function Scroll({
                     type: 'post',
                 },
             },
-            refetchQueries: [{ query: QUERY_LOAD_SCROLLS }],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: scroll?._id,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setIcon();
         setUserReaction();
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
+    };
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return setErrors([
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                    ]);
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
     };
 
     const getUserReaction = useCallback(
@@ -252,89 +435,118 @@ export default function Scroll({
         setEmojiPickerAnchorEl(null);
     };
 
+    const comments = commentsData?.Comments?.get?.data;
+
     useEffect(() => {
         const reaction = getUserReaction(scroll);
         setUserReaction(reaction);
         setIcon(reaction);
-    }, [getUserReaction, scroll, setIcon]);
+    }, [
+        getUserReaction,
+        scroll,
+        setIcon,
+        createReactionData,
+        removeReactionData,
+    ]);
+
+    useEffect(() => {
+        !commentsError &&
+            !commentsLoading &&
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
+    }, [
+        commentsData?.Comments?.get?.data,
+        commentsError,
+        commentsLoading,
+        dispatch,
+        id,
+    ]);
 
     return (
         <>
             <Card style={{ ...style, marginBottom: 16 }}>
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            style={{
+                                backgroundColor: '#fed132',
+                            }}
+                            src={
+                                scroll?.author?.profile_pic &&
+                                process.env.REACT_APP_BACKEND_URL +
+                                    scroll?.author?.profile_pic
+                            }
+                        >
+                            {authorInitials}
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton
+                            size="small"
+                            className="m-1 p-1"
+                            aria-label="post options"
+                            aria-controls={scrollOptionId}
+                            style={{ zIndex: 2 }}
+                            aria-haspopup="true"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleScrollOptionOpen(e);
+                            }}
+                            color="inherit"
+                        >
+                            <MoreVert />
+                        </IconButton>
+                    }
+                    title={
+                        <div className=" d-flex align-items-center">
+                            <Typography
+                                component="a"
+                                style={{ marginRight: 8, zIndex: 2 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    history.push(
+                                        `/users/${scroll?.author?._id}`
+                                    );
+                                }}
+                            >
+                                {scroll?.author?.displayName}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                {`@${scroll?.author?._id}`}
+                            </Typography>
+                        </div>
+                    }
+                    subheader={getDistanceToNowWithSuffix(scroll?.createdAt)}
+                />
+
                 <CardContent
                     style={{ zIndex: 1 }}
                     onClick={() => history.push(`/posts/${scroll?._id}`)}
                 >
-                    <CardHeader
-                        avatar={
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    scroll?.author?.profile_pic
-                                }
-                            >
-                                {authorInitials}
-                            </Avatar>
-                        }
-                        action={
-                            <IconButton
-                                size="small"
-                                className="m-1 p-1"
-                                aria-label="post options"
-                                aria-controls={scrollOptionId}
-                                style={{ zIndex: 2 }}
-                                aria-haspopup="true"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleScrollOptionOpen(e);
-                                }}
-                                color="inherit"
-                            >
-                                <MoreVert />
-                            </IconButton>
-                        }
-                        title={
-                            <div className=" d-flex align-items-center">
-                                <Typography
-                                    component="a"
-                                    style={{ marginRight: 8, zIndex: 2 }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        history.push(
-                                            `/users/${scroll?.author?._id}`
-                                        );
-                                    }}
-                                >
-                                    {scroll?.author?.displayName}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                >
-                                    {`@${scroll?.author?._id}`}
-                                </Typography>
-                            </div>
-                        }
-                        subheader={moment(scroll?.createdAt).fromNow()}
-                    />
-
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                    >
+                    <Typography component="div">
                         <Typography
+                            variant="body2"
+                            component="span"
                             onClick={(e) => contentClickHandler(e)}
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
                         ></Typography>
                     </Typography>
-                    <Grid container spacing={2} className="mb-2">
+                    <Grid
+                        container
+                        style={{
+                            margin: '3px 0px',
+                        }}
+                    >
                         {scroll?.video?.path && (
                             <Grid
                                 item
@@ -353,13 +565,16 @@ export default function Scroll({
                                 />
                             </Grid>
                         )}
+
                         {scroll?.images.length > 0 &&
                             scroll?.images?.map((imageURL, index) => (
                                 <Grid
-                                    className="mt-3"
                                     key={imageURL}
                                     item
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        padding: '2px',
+                                    }}
                                     xs={scroll?.images.length > 1 ? 6 : 12}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -389,22 +604,32 @@ export default function Scroll({
                                 </Grid>
                             ))}
                     </Grid>
+
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'post' && (
-                            <ScrollPreview
-                                scroll={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <ScrollPreview
+                                    scroll={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
+
                     {scroll?.shared_resource?._id &&
                         scroll?.shared_resource?.type === 'event' && (
-                            <EventPreview
-                                event={scroll?.shared_resource?._id}
-                            />
+                            <Suspense fallback={<SkeletonScrollCard />}>
+                                <EventPreview
+                                    event={scroll?.shared_resource?._id}
+                                />
+                            </Suspense>
                         )}
+
                     <br />
 
                     <Typography display="inline" style={{ zIndex: 2 }}>
                         <Typography
+                            component="span"
+                            color="textSecondary"
+                            variant="body2"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenReactions(true);
@@ -421,6 +646,9 @@ export default function Scroll({
                         </Typography>
                         {' . '}
                         <Typography
+                            color="textSecondary"
+                            component="span"
+                            variant="body2"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenComments(true);
@@ -451,54 +679,12 @@ export default function Scroll({
                     onMouseEnter={() => setLikeHovered(true)}
                     onMouseLeave={() => setLikeHovered(false)}
                 >
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('like');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbUpRounded className={classes.primary} />
-                        }
-                    >
-                        Like
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('love');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<FavoriteRounded className={classes.red} />}
-                    >
-                        Love
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('dislike');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={
-                            <ThumbDownRounded className={classes.primary} />
-                        }
-                    >
-                        Dislike
-                    </Button>
-                    <Button
-                        textCase
-                        onClick={() => {
-                            handleCreateReaction('celebrate');
-                            setLikeHovered(false);
-                        }}
-                        variant="text"
-                        startIcon={<PanToolRounded className={classes.green} />}
-                    >
-                        Celebrate
-                    </Button>
+                    <ReactionHover
+                        setLikeHovered={setLikeHovered}
+                        handleCreateReaction={handleCreateReaction}
+                        likeHovered={likeHovered}
+                        reaction={userReaction}
+                    />
                 </Card>
                 <CardActions
                     className="space-around"
@@ -550,20 +736,29 @@ export default function Scroll({
                     )}
                 </CardActionArea>
                 {openComments && (
-                    <CardContent>
+                    <div className={classes.commentSection}>
                         <div className="d-flex align-items-center">
-                            <Avatar
-                                style={{
-                                    backgroundColor: '#fed132',
-                                }}
-                                src={
-                                    process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
-                                }
-                                className="mx-2"
-                            >
-                                {currentUserInitials}
-                            </Avatar>
+                            <Hidden smDown>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#fed132',
+                                        marginRight: '3px',
+                                    }}
+                                    src={
+                                        user?.profile_pic &&
+                                        process.env.REACT_APP_BACKEND_URL +
+                                            user?.profile_pic
+                                    }
+                                    sx={{
+                                        width: '30px',
+                                        height: '30px',
+                                    }}
+                                >
+                                    <Typography variant="body2">
+                                        {currentUserInitials}
+                                    </Typography>
+                                </Avatar>
+                            </Hidden>
                             <div className="w-100">
                                 <MentionsInput
                                     spellcheck="false"
@@ -575,7 +770,7 @@ export default function Scroll({
                                         }
                                     }}
                                     placeholder={
-                                        commentsData?.Comments?.get?.length > 0
+                                        comments?.length > 0
                                             ? ''
                                             : 'Be the first to comment..'
                                     }
@@ -596,7 +791,7 @@ export default function Scroll({
                                 >
                                     <Mention
                                         markup="/*@__id__-__display__*/"
-                                        displayTransform={(id, display) =>
+                                        displayTransform={(_id, display) =>
                                             display
                                         }
                                         trigger="@"
@@ -620,13 +815,9 @@ export default function Scroll({
                             </IconButton>
                             <IconButton
                                 size="small"
-                                //className='m-1 p-1'
                                 onClick={() => {
-                                    //setOpenImage(true);
                                     document
-                                        .getElementsByClassName(
-                                            'comment-dropzone'
-                                        )[0]
+                                        .getElementById('scroll-comment-image')
                                         .click();
                                 }}
                             >
@@ -641,10 +832,32 @@ export default function Scroll({
                             </IconButton>
                         </div>
                         <div className={classes.inputHelper}>
-                            <Typography color="error" variant="body2">
-                                {createCommentErr &&
-                                    'The comment content cannot be empty'}
-                            </Typography>
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    //variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
                         </div>
                         <Card
                             style={{
@@ -660,66 +873,15 @@ export default function Scroll({
                             <div className="space-between">
                                 <div>
                                     <div style={{ display: 'none' }}>
-                                        <DropzoneArea
-                                            clearOnUnmount
-                                            dropzoneClass="comment-dropzone"
-                                            clickable={true}
-                                            onChange={(files) => {
-                                                const errors = [];
-                                                let counter = 0;
-                                                files.map((file) => {
-                                                    const image = new Image();
-                                                    image.addEventListener(
-                                                        'load',
-                                                        () => {
-                                                            // only select images within width/height/size limits
-                                                            if (
-                                                                (image.width <
-                                                                    1200) &
-                                                                (image.height <
-                                                                    1350) &
-                                                                (file.size <
-                                                                    2500000)
-                                                            ) {
-                                                                counter += 1;
-                                                                setFileErrors(
-                                                                    []
-                                                                );
-                                                            } else {
-                                                                errors.push(
-                                                                    'Image is too large. Trim to 1200px by 1350px or less.'
-                                                                );
-                                                                setFileErrors(
-                                                                    errors
-                                                                );
-                                                            }
-                                                            if (counter === 1) {
-                                                                setPreviewURL(
-                                                                    URL.createObjectURL(
-                                                                        file
-                                                                    )
-                                                                );
-                                                                setCommentImage(
-                                                                    file
-                                                                );
-                                                            }
-                                                        }
-                                                    );
-                                                    image.src =
-                                                        URL.createObjectURL(
-                                                            file
-                                                        );
-                                                });
+                                        <input
+                                            id="scroll-comment-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
+                                                );
                                             }}
-                                            acceptedFiles={[
-                                                'image/jpeg',
-                                                'image/png',
-                                            ]}
-                                            maxFileSize={2500000}
-                                            filesLimit={1}
-                                            showPreviewsInDropzone
-                                            showPreviews={false}
-                                            showFileNames={false}
+                                            accept="image/jpeg, image/png"
                                         />
                                     </div>
                                 </div>
@@ -727,31 +889,50 @@ export default function Scroll({
                                     size="small"
                                     color="primary"
                                     className="m-1 p-1"
+                                    onClick={() => {
+                                        setPreviewURL();
+
+                                        setCommentImage(null);
+                                    }}
                                 >
-                                    <CloseRounded
-                                        onClick={() => {
-                                            setPreviewURL();
-                                            setFileErrors([]);
-                                            setCommentImage(null);
-                                        }}
-                                    />
+                                    <CloseRounded />
                                 </IconButton>
                             </div>
                         </Card>
 
-                        <div className={classes.inputHelper}>
-                            <Typography color="error" variant="body2">
-                                {fileErrors.length > 0 && fileErrors[0]}
-                            </Typography>
-                        </div>
-                        {commentsData &&
-                            commentsData?.Comments?.get
-                                .filter((comment) => !comment.response_to)
-                                .map((comment) => (
+                        {comments
+                            ?.filter((comment) => !comment.response_to)
+                            .map((comment) => (
+                                <Suspense
+                                    key={comment?._id}
+                                    fallback={
+                                        <div className="ms-4 d-flex align-items-center justify-content-start my-2 ">
+                                            <Skeleton
+                                                className="me-2"
+                                                animation="wave"
+                                                variant="circular"
+                                                width={40}
+                                                height={40}
+                                            />
+                                            <div>
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="text"
+                                                    width={200}
+                                                />
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="text"
+                                                    width={80}
+                                                />
+                                            </div>
+                                        </div>
+                                    }
+                                >
                                     <Comment
                                         profileData={profileData}
                                         scroll={scroll}
-                                        key={comment._id}
+                                        id={comment._id}
                                         setUpdateCommentOpen={
                                             setUpdateCommentOpen
                                         }
@@ -771,8 +952,35 @@ export default function Scroll({
                                         }
                                         comment_image={comment_image}
                                     />
-                                ))}
-                    </CardContent>
+                                </Suspense>
+                            ))}
+                        {commentsData?.Comments?.get?.data?.length > 0 &&
+                            commentsData?.Comments?.get?.hasMore &&
+                            !loadingMore && (
+                                <Grid align="center">
+                                    <Button
+                                        size="small"
+                                        textCase
+                                        variant="text"
+                                        onClick={() =>
+                                            loadMore(
+                                                commentsData?.Comments?.get
+                                                    ?.data?.length
+                                            )
+                                        }
+                                    >
+                                        more comments...
+                                    </Button>
+                                </Grid>
+                            )}
+                        {loadingMore && (
+                            <Grid align="center">
+                                <Typography color="primary">
+                                    Loading ...
+                                </Typography>
+                            </Grid>
+                        )}
+                    </div>
                 )}
             </Card>
             <ScrollOptionsPopover
@@ -801,20 +1009,20 @@ export default function Scroll({
 
 const useStyles = makeStyles((theme) => ({
     clickableTypography: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
         [theme.breakpoints.down('md')]: {
             textDecoration: 'underline',
         },
     },
     replies: {
-        color: 'inherit',
         cursor: 'pointer',
         '&:hover': {
             textDecoration: 'underline',
+            color: 'inherit',
         },
     },
     inputHelper: {
@@ -825,6 +1033,12 @@ const useStyles = makeStyles((theme) => ({
         padding: '0px 10px 0px 5px',
         [theme.breakpoints.up('md')]: {
             padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
         },
     },
     red: {

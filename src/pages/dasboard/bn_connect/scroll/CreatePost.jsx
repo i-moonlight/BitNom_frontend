@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
     CloseRounded,
@@ -12,7 +12,6 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -22,34 +21,34 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
-import { loadScrolls } from '../../../../store/actions/postActions';
-import { createPostIcons } from '../../../../store/local/dummy';
+//import { loadScrolls, loadFeed } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
-import { getFeed, mentionsFinder } from '../../utilities/functions';
+import { mentionsFinder } from '../../utilities/functions';
+
 import {
     MUTATION_CREATE_POST,
     QUERY_LOAD_SCROLLS,
+    QUERY_GET_FEED,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
 import ScrollPreview from './ScrollPreview';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 
 export default function CreatePost({
     open,
     setOpen,
-    openImage,
     imageDisabled,
     setOpenImage,
     setImageDisabled,
-    openVideo,
     profileData,
     videoDisabled,
     setOpenVideo,
@@ -57,7 +56,7 @@ export default function CreatePost({
     sharedResource,
     setSharedResource,
 }) {
-    const [createPostErr, setCreatePostErr] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState([]);
     const [scroll_video, setScrollVideo] = useState(null);
@@ -67,55 +66,84 @@ export default function CreatePost({
 
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
 
-    const [createPost, { loading, data, error }] =
-        useMutation(MUTATION_CREATE_POST);
+    const [createPost, { loading, data }] = useMutation(MUTATION_CREATE_POST, {
+        update(cache, { data: createPostData }) {
+            const newPost = createPostData?.Posts?.create;
+            const existingFeed = cache.readQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+            });
 
-    const { data: feedData } = useQuery(QUERY_LOAD_SCROLLS, {
-        variables: {
-            data: { ids: getFeed(profileData), limit: 220 },
+            cache.writeQuery({
+                query: QUERY_GET_FEED,
+                variables: {
+                    data: { feed_id: user?._id, limit: 10 },
+                },
+                data: {
+                    Feed: {
+                        get: {
+                            _id: existingFeed?.Feed?.get?._id,
+                            data: [newPost, ...existingFeed?.Feed?.get?.data],
+                            hasMore: existingFeed?.Feed?.get?.hasMore,
+                        },
+                    },
+                },
+            });
         },
     });
 
     const userInitials = getUserInitials(user?.displayName);
 
-    const onCreatePost = async (ICreatePost) => {
-        await createPost({
+    const onCreatePost = (ICreatePost) => {
+        createPost({
             variables: {
                 data: ICreatePost,
             },
+            errorPolicy: 'all',
             refetchQueries: [
-                // {
-                //     query: QUERY_LOAD_SCROLLS,
-                //     variables: {
-                //         data: { ids: getFeed(profileData), limit: 220 },
-                //     },
-                // },
                 {
                     query: QUERY_LOAD_SCROLLS,
-                    variables: { data: { author: user?._id, limit: 220 } },
+                    variables: {
+                        data: { author: user?._id, limit: 220 },
+                    },
                 },
             ],
-        });
-        setScrollText('');
-        setScrollImages([]);
-        setScrollVideo(null);
-        setSharedResource(null);
-        setCreatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setOpenVideo(false);
-        setImagePreviewURLS([]);
-        setVideoPreviewURL(null);
-    };
+        }).then(({ data: createPostData, errors: createPostErrors }) => {
+            if (createPostData?.Posts?.create) {
+                handleCloseModal();
+            }
+            if (createPostErrors) {
+                if (
+                    createPostErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    const errorMsg = createPostErrors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
 
-    useEffect(() => {
-        !error && !loading && dispatch(loadScrolls(feedData?.Posts?.get));
-    }, [dispatch, error, feedData?.Posts?.get, loading]);
+                    setErrors([
+                        `Your image(s) have an unsupported file type (${mime})`,
+                    ]);
+
+                    setImagePreviewURLS([]);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
+                }
+            }
+        });
+    };
 
     useEffect(() => {
         if (sharedResource) {
@@ -131,6 +159,21 @@ export default function CreatePost({
         };
     });
 
+    const handleCloseModal = () => {
+        setOpen(!open);
+        setOpenImage(false);
+        setScrollText('');
+        setOpenVideo(false);
+        setScrollImages([]);
+        setScrollVideo(null);
+        setErrors([]);
+        setSharedResource(null);
+        setImageDisabled(false);
+        setVideoDisabled(false);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
+    };
+
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);
     };
@@ -140,35 +183,56 @@ export default function CreatePost({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setScrollText(`${scroll_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji}`);
     };
 
     const handleSelectImages = (files) => {
         if (files.length < 1) return;
+        if (files.length > 4) {
+            return setErrors(['You can only upload a maximum of 4 images']);
+        }
         const previews = [];
+        const allowedFiles = [];
         files.forEach((file) => {
-            previews.push(URL.createObjectURL(file));
+            if (file.size > 2000000) {
+                previews.splice(0, previews.length);
+                allowedFiles.splice(0, allowedFiles.length);
+                return setErrors(['Each image should be less than 2MB']);
+            } else {
+                previews.push(URL.createObjectURL(file));
+                allowedFiles.push(file);
+            }
         });
         setImagePreviewURLS(previews);
-        setScrollImages(files);
+        setScrollImages(allowedFiles);
     };
 
-    const handleSelectVideo = (file) => {
-        if (!file) return;
-        setVideoPreviewURL(URL.createObjectURL(file));
-        setScrollVideo(file);
+    const handleSelectVideo = (files) => {
+        if (files.length < 1) return;
+        const file = files[0];
+        if (file.size > 4000000) {
+            return setErrors(['The video should be less than 4MB']);
+        } else {
+            setVideoPreviewURL(URL.createObjectURL(file));
+            setScrollVideo(file);
+        }
     };
 
     const handleCreatePost = (e) => {
         e.preventDefault();
 
-        if (scroll_text.trim() == '') return setCreatePostErr(true);
+        if (scroll_text.trim() == '') {
+            return setErrors(['The post content cannot be empty.']);
+        }
+
         let sharedResourceType;
-        if (sharedResource?.__typename === 'OPost') {
-            sharedResourceType = 'post';
-        } else if (sharedResource?.__typename === 'OEvent') {
-            sharedResourceType = 'event';
+        if (sharedResource != null) {
+            if (sharedResource?.__typename === 'OPost') {
+                sharedResourceType = 'post';
+            } else if (sharedResource?.__typename === 'OEvent') {
+                sharedResourceType = 'event';
+            }
         }
         const shared = sharedResource
             ? { _id: sharedResource?._id, type: sharedResourceType }
@@ -184,7 +248,6 @@ export default function CreatePost({
             shared_resource: shared,
             is_flag: flag,
         });
-        setOpen(false);
     };
 
     return (
@@ -216,18 +279,7 @@ export default function CreatePost({
                             </Typography>
                             <IconButton
                                 onClick={() => {
-                                    setOpen(!open);
-                                    setOpenImage(false);
-                                    setScrollText('');
-                                    setOpenVideo(false);
-                                    setScrollImages([]);
-                                    setScrollVideo(null);
-                                    setCreatePostErr(false);
-                                    setSharedResource(null);
-                                    setImageDisabled(false);
-                                    setVideoDisabled(false);
-                                    setImagePreviewURLS([]);
-                                    setVideoPreviewURL(null);
+                                    handleCloseModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -238,7 +290,7 @@ export default function CreatePost({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <ListItem className="p-0">
                                 <ListItemAvatar>
@@ -247,8 +299,9 @@ export default function CreatePost({
                                             backgroundColor: '#fed132',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                     >
                                         {userInitials}
@@ -259,10 +312,10 @@ export default function CreatePost({
                                     secondary={
                                         <Button
                                             textCase
-                                            variant="text"
                                             style={{
                                                 //backgroundColor: theme.palette.background.default,
                                                 padding: '0px 10px',
+                                                textTransform: 'none',
                                             }}
                                             startIcon={<Public />}
                                             endIcon={
@@ -306,25 +359,9 @@ export default function CreatePost({
                                     }}
                                 />
                             </MentionsInput>
-                            <Typography color="error" variant="body2">
-                                {createPostErr &&
-                                    'The post content cannot be empty'}
-                            </Typography>
+
                             {imagePreviewURLS.length > 0 && (
                                 <>
-                                    {/*  <div className="space-between mx-3 my-2 center-horizontal">
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            onClick={() => {
-                                                setScrollImages([]);
-                                                setImagePreviewURLS([]);
-                                            }}
-                                            size="small"
-                                        >
-                                            <CloseRounded />
-                                        </IconButton>
-                                    </div> */}
                                     <Grid
                                         container
                                         style={{ margin: '3px 0px' }}
@@ -386,48 +423,26 @@ export default function CreatePost({
                                     display: 'none',
                                 }}
                             >
-                                <DropzoneArea
-                                    clearOnUnmount
-                                    dropzoneClass="post-dropzone"
-                                    clickable={true}
-                                    onChange={(files) => {
-                                        openVideo
-                                            ? handleSelectVideo(files[0])
-                                            : handleSelectImages(files);
+                                <input
+                                    id="create-post-images"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectImages(
+                                            Array.from(e.target.files)
+                                        );
                                     }}
-                                    dropzoneText={
-                                        openImage
-                                            ? 'Drag n drop images here or click'
-                                            : 'Drag n drop a video here or click'
-                                    }
-                                    acceptedFiles={
-                                        openImage
-                                            ? ['image/jpeg', 'image/png']
-                                            : ['video/*']
-                                    }
-                                    maxFileSize={openImage ? 2500000 : 4500000}
-                                    filesLimit={openImage ? 4 : 1}
-                                    showAlerts={false}
-                                    showPreviews={false}
-                                    showPreviewsInDropzone
-                                    previewGridProps={{
-                                        container: {
-                                            spacing: 1,
-                                            direction: 'row',
-                                        },
+                                    accept="image/jpeg, image/png, image/gif"
+                                    multiple
+                                />
+                                <input
+                                    id="create-post-video"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectVideo(
+                                            Array.from(e.target.files)
+                                        );
                                     }}
-                                    onAlert={(message, variant) => {
-                                        if (variant == 'error') {
-                                            toast.error(message, {
-                                                position: 'bottom-left',
-                                                autoClose: 5000,
-                                                hideProgressBar: true,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                            });
-                                        }
-                                    }}
+                                    accept="video/mp4"
                                 />
                             </Card>
                             {sharedResource &&
@@ -439,37 +454,70 @@ export default function CreatePost({
                                     <EventPreview event={sharedResource} />
                                 )}
                             {/* <Divider /> */}
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    //variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
+
                             <div className="space-between mt-1">
                                 <div className="center-horizontal">
                                     <IconButton
                                         size="small"
-                                        //className="m-1 p-1"
                                         onClick={() => {
                                             setOpenImage(true);
                                             setVideoDisabled(true);
+
                                             document
-                                                .getElementsByClassName(
-                                                    'post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'create-post-images'
+                                                )
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
+                                        style={{
+                                            display: imageDisabled && 'none',
+                                        }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
                                     <IconButton
                                         size="small"
-                                        //className="m-1 p-1"
                                         onClick={() => {
                                             setOpenVideo(true);
                                             setImageDisabled(true);
+
                                             document
-                                                .getElementsByClassName(
-                                                    'post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'create-post-video'
+                                                )
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
+                                        style={{
+                                            display: videoDisabled && 'none',
+                                        }}
                                     >
                                         <VideocamRounded />
                                     </IconButton>
@@ -484,7 +532,7 @@ export default function CreatePost({
                                     >
                                         <InsertEmoticon />
                                     </IconButton>
-                                    {createPostIcons.map(({ Icon }) => {
+                                    {/* {createPostIcons.map(({ Icon }) => {
                                         return (
                                             <IconButton
                                                 size="small"
@@ -493,27 +541,16 @@ export default function CreatePost({
                                                 <Icon />
                                             </IconButton>
                                         );
-                                    })}
+                                    })} */}
                                 </div>
-                                {!loading && (
-                                    <Button
-                                        size="small"
-                                        onClick={handleCreatePost}
-                                    >
-                                        Post
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    size="small"
+                                    onClick={handleCreatePost}
+                                    disabled={loading}
+                                >
+                                    Post
+                                </Button>
                             </div>
                         </CardContent>
                         <EmojiPickerPopover
@@ -529,3 +566,26 @@ export default function CreatePost({
         </Modal>
     );
 }
+
+/*  optimisticResponse: {
+                Posts: {
+                    create: {
+                        content: mentionsFinder(scroll_text).content,
+                        content_entities:
+                            mentionsFinder(scroll_text).contentEntities,
+                        images: imagePreviewURLS,
+                        video: videoPreviewURL,
+                        createdAt: new Date().getTime(),
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createPostResponse,
+                    },
+                },
+            }, */

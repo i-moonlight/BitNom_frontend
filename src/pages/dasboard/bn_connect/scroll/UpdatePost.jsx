@@ -1,4 +1,3 @@
-//TODO: Upload video
 import { useMutation } from '@apollo/client';
 import {
     ChevronRight,
@@ -13,7 +12,6 @@ import {
     Card,
     CardContent,
     CardMedia,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -28,24 +26,21 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import {
-    getFeed,
-    mentionsFinder,
-    mentionsUpdate,
-} from '../../utilities/functions';
+import { mentionsFinder, mentionsUpdate } from '../../utilities/functions';
 import {
     MUTATION_DELETE_POST,
     MUTATION_UPDATE_POST,
-    QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
 const emojiPickerId = 'emoji-picker-popover';
 export default function UpdatePost({
@@ -54,17 +49,17 @@ export default function UpdatePost({
     postToEdit,
     profileData,
     setPostToEdit,
-    openImage,
     imageDisabled,
     setOpenImage,
     setImageDisabled,
-    openVideo,
     videoDisabled,
     setOpenVideo,
     setVideoDisabled,
+    postView,
 }) {
-    const [updatePostErr, setUpdatePostErr] = useState(null);
+    //const [updatePostErr, setUpdatePostErr] = useState(null);
     const [fileType, setFileType] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [scroll_text, setScrollText] = useState('');
     const [scroll_images, setScrollImages] = useState(null);
     const [scroll_video, setScrollVideo] = useState(undefined);
@@ -77,6 +72,7 @@ export default function UpdatePost({
 
     const state = useSelector((st) => st);
     const user = state.auth.user;
+    const history = useHistory();
 
     const [updatePost, { loading }] = useMutation(MUTATION_UPDATE_POST);
 
@@ -87,29 +83,17 @@ export default function UpdatePost({
             variables: {
                 _id: id,
             },
-            refetchQueries: [
-                // {
-                //     query: QUERY_LOAD_SCROLLS,
-                //     variables: {
-                //         data: { ids: getFeed(profileData), limit: 220 },
-                //     },
-                // },
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: { data: { author: user?._id, limit: 220 } },
-                },
-            ],
+            update(cache) {
+                const normalizedId = cache.identify({
+                    id,
+                    __typename: 'OPost',
+                });
+                cache.evict({ id: normalizedId });
+                cache.gc();
+            },
         });
-        setScrollText('');
-        setScrollImages(null);
-        setScrollVideo(undefined);
-        setUpdatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setFileType(null);
-        setOpenVideo(false);
-        setPostToEdit(null);
+        handleCloseModal();
+        if (postView) history.push('/connect');
     };
 
     const onUpdatePost = async (IUpdatePost) => {
@@ -117,27 +101,47 @@ export default function UpdatePost({
             variables: {
                 data: IUpdatePost,
             },
-            refetchQueries: [
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-            ],
+            errorPolicy: 'all',
+        }).then(({ data: updatePostData, errors: updatePostErrors }) => {
+            if (updatePostData?.Posts?.update) {
+                handleCloseModal();
+            }
+            if (updatePostErrors) {
+                if (
+                    updatePostErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    const errorMsg = updatePostErrors[0]?.message;
+                    const mime = errorMsg?.substring(
+                        errorMsg?.indexOf(':') + 1
+                    );
+
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                    setImagePreviewURLS([]);
+                    setScrollImages([]);
+                    setScrollVideo(null);
+                } else if (updatePostErrors[0]?.message == 400) {
+                    const errorObject = updatePostErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`~ ${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(['The post content cannot be empty.']);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection and refresh the page.`,
+                    ]);
+                }
+            }
         });
-        setScrollText('');
-        setScrollImages(null);
-        setScrollVideo(undefined);
-        setUpdatePostErr(false);
-        setImageDisabled(false);
-        setVideoDisabled(false);
-        setOpenImage(false);
-        setFileType(null);
-        setOpenVideo(false);
-        setPostToEdit(null);
-        setImagePreviewURLS([]);
-        setVideoPreviewURL(null);
     };
 
     useEffect(() => {
@@ -170,6 +174,21 @@ export default function UpdatePost({
         };
     });
 
+    const handleCloseModal = () => {
+        setUpdateScrollOpen(!updateScrollOpen);
+        setPostToEdit(null);
+        setOpenImage(false);
+        setOpenVideo(false);
+        setScrollImages(null);
+        setScrollVideo(null);
+        setErrors([]);
+        setFileType(null);
+        setImageDisabled(false);
+        setVideoDisabled(false);
+        setImagePreviewURLS([]);
+        setVideoPreviewURL(null);
+    };
+
     const handleEmojiPickerOpen = (event) => {
         setEmojiPickerAnchorEl(event.currentTarget);
     };
@@ -179,29 +198,47 @@ export default function UpdatePost({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setScrollText(`${scroll_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setScrollText(`${scroll_text} ${emoji}`);
     };
 
     const handleSelectImages = (files) => {
         if (files.length < 1) return;
+        if (files.length > 4) {
+            return setErrors(['You can only upload a maximum of 4 images']);
+        }
         const previews = [];
+        const allowedFiles = [];
         files.forEach((file) => {
-            previews.push(URL.createObjectURL(file));
+            if (file.size > 2500000) {
+                previews.splice(0, previews.length);
+                allowedFiles.splice(0, allowedFiles.length);
+                return setErrors(['Each image should be less than 2MB']);
+            } else {
+                previews.push(URL.createObjectURL(file));
+                allowedFiles.push(file);
+            }
         });
         setImagePreviewURLS(previews);
-        setScrollImages(files);
+        setScrollImages(allowedFiles);
     };
 
-    const handleSelectVideo = (file) => {
-        if (!file) return;
-        setVideoPreviewURL(URL.createObjectURL(file));
-        setScrollVideo(file);
+    const handleSelectVideo = (files) => {
+        if (files.length < 1) return;
+        const file = files[0];
+        if (file.size > 4000000) {
+            return setErrors(['The video should be less than 4MB']);
+        } else {
+            setVideoPreviewURL(URL.createObjectURL(file));
+            setScrollVideo(file);
+        }
     };
 
     const handleUpdatePost = (e) => {
         e.preventDefault();
-        if (scroll_text.trim() == '') return setUpdatePostErr(true);
+        if (scroll_text.trim() == '') {
+            return setErrors(['The post content cannot be empty.']);
+        }
         const mentionsData = mentionsFinder(scroll_text);
         onUpdatePost({
             post_id: postToEdit?._id,
@@ -210,8 +247,6 @@ export default function UpdatePost({
             images: scroll_images,
             video: scroll_video,
         });
-
-        setUpdateScrollOpen(false);
     };
 
     const handleDeletePost = (e) => {
@@ -244,18 +279,7 @@ export default function UpdatePost({
                             <Typography variant="body1">Update Post</Typography>
                             <IconButton
                                 onClick={() => {
-                                    setUpdateScrollOpen(!updateScrollOpen);
-                                    setPostToEdit(null);
-                                    setOpenImage(false);
-                                    setOpenVideo(false);
-                                    setScrollImages(null);
-                                    setScrollVideo(null);
-                                    setUpdatePostErr(false);
-                                    setFileType(null);
-                                    setImageDisabled(false);
-                                    setVideoDisabled(false);
-                                    setImagePreviewURLS([]);
-                                    setVideoPreviewURL(null);
+                                    handleCloseModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -266,7 +290,7 @@ export default function UpdatePost({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{ maxHeight: '85vh', overflowY: 'auto' }}
                         >
                             <ListItem className="p-0">
                                 <ListItemAvatar>
@@ -275,8 +299,9 @@ export default function UpdatePost({
                                             backgroundColor: '#fed132',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                     >
                                         {userInitials}
@@ -307,7 +332,7 @@ export default function UpdatePost({
                                 />
                             </ListItem>
                             <MentionsInput
-                                spellcheck="false"
+                                spellCheck="false"
                                 className="mentions-textarea"
                                 id="content-field"
                                 placeholder="What's happening"
@@ -333,25 +358,9 @@ export default function UpdatePost({
                                     }}
                                 />
                             </MentionsInput>
-                            <Typography color="error" variant="body2">
-                                {updatePostErr &&
-                                    'The post content cannot be empty'}
-                            </Typography>
+
                             {imagePreviewURLS.length > 0 && (
                                 <>
-                                    {/*  <div className="space-between mx-3 my-2 center-horizontal">
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            onClick={() => {
-                                                setScrollImages([]);
-                                                setImagePreviewURLS([]);
-                                            }}
-                                            size="small"
-                                        >
-                                            <CloseRounded />
-                                        </IconButton>
-                                    </div> */}
                                     <Grid
                                         container
                                         style={{ margin: '3px 0px' }}
@@ -412,48 +421,26 @@ export default function UpdatePost({
                                     display: 'none',
                                 }}
                             >
-                                <DropzoneArea
-                                    clearOnUnmount
-                                    dropzoneClass="update-post-dropzone"
-                                    clickable={true}
-                                    onChange={(files) => {
-                                        openVideo
-                                            ? handleSelectVideo(files[0])
-                                            : handleSelectImages(files);
+                                <input
+                                    id="update-post-images"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectImages(
+                                            Array.from(e.target.files)
+                                        );
                                     }}
-                                    dropzoneText={
-                                        openImage
-                                            ? 'Drag n drop images here or click'
-                                            : 'Drag n drop a video here or click'
-                                    }
-                                    acceptedFiles={
-                                        openImage
-                                            ? ['image/jpeg', 'image/png']
-                                            : ['video/*']
-                                    }
-                                    maxFileSize={openImage ? 2500000 : 4500000}
-                                    filesLimit={openImage ? 4 : 1}
-                                    showAlerts={false}
-                                    showPreviews={false}
-                                    showPreviewsInDropzone
-                                    previewGridProps={{
-                                        container: {
-                                            spacing: 1,
-                                            direction: 'row',
-                                        },
+                                    accept="image/jpeg, image/png"
+                                    multiple
+                                />
+                                <input
+                                    id="update-post-video"
+                                    type="file"
+                                    onChange={(e) => {
+                                        handleSelectVideo(
+                                            Array.from(e.target.files)
+                                        );
                                     }}
-                                    onAlert={(message, variant) => {
-                                        if (variant == 'error') {
-                                            toast.error(message, {
-                                                position: 'bottom-left',
-                                                autoClose: 5000,
-                                                hideProgressBar: true,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                            });
-                                        }
-                                    }}
+                                    accept="video/mp4"
                                 />
                             </Card>
                             {(postToEdit?.video?.path ||
@@ -466,14 +453,13 @@ export default function UpdatePost({
                                             <IconButton
                                                 size="small"
                                                 className="m-1 p-1"
+                                                onClick={() => {
+                                                    setFileType(null);
+                                                    setScrollImages([]);
+                                                    setScrollVideo(null);
+                                                }}
                                             >
-                                                <CloseRounded
-                                                    onClick={() => {
-                                                        setFileType(null);
-                                                        setScrollImages([]);
-                                                        setScrollVideo(null);
-                                                    }}
-                                                />
+                                                <CloseRounded />
                                             </IconButton>
                                         </div>
                                         <Grid
@@ -568,25 +554,52 @@ export default function UpdatePost({
                                     </Button>
                                 </DialogActions>
                             </Dialog>
-                            <div className="center-horizontal mt-1">
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`~ ${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
+                            <div className="space-between mt-1">
                                 <div className="center-horizontal">
                                     <IconButton
                                         size="small"
                                         onClick={() => {
                                             setOpenVideo(false);
                                             setOpenImage(true);
-
+                                            setImagePreviewURLS([]);
                                             setFileType(null);
                                             setScrollImages([]);
                                             setScrollVideo(null);
                                             setVideoDisabled(true);
                                             document
-                                                .getElementsByClassName(
-                                                    'update-post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'update-post-images'
+                                                )
                                                 .click();
                                         }}
                                         disabled={imageDisabled}
+                                        style={{
+                                            display: imageDisabled && 'none',
+                                        }}
                                     >
                                         <ImageRounded />
                                     </IconButton>
@@ -595,18 +608,21 @@ export default function UpdatePost({
                                         onClick={() => {
                                             setOpenImage(false);
                                             setOpenVideo(true);
-
+                                            setVideoPreviewURL(null);
                                             setFileType(null);
                                             setScrollImages([]);
                                             setScrollVideo(null);
                                             setImageDisabled(true);
                                             document
-                                                .getElementsByClassName(
-                                                    'update-post-dropzone'
-                                                )[0]
+                                                .getElementById(
+                                                    'update-post-video'
+                                                )
                                                 .click();
                                         }}
                                         disabled={videoDisabled}
+                                        style={{
+                                            display: videoDisabled && 'none',
+                                        }}
                                     >
                                         <VideocamRounded />
                                     </IconButton>
@@ -628,6 +644,7 @@ export default function UpdatePost({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '3px',
+                                            display: loading && 'none',
                                         }}
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
@@ -635,25 +652,14 @@ export default function UpdatePost({
                                     >
                                         Delete
                                     </Button>
-                                    {!loading && (
-                                        <Button
-                                            size="small"
-                                            onClick={handleUpdatePost}
-                                        >
-                                            Update
-                                        </Button>
-                                    )}
-                                    {loading && (
-                                        <Button
-                                            size="small"
-                                            style={{ margin: '0' }}
-                                        >
-                                            <CircularProgress
-                                                size={24}
-                                                thickness={4}
-                                            />
-                                        </Button>
-                                    )}
+
+                                    <Button
+                                        size="small"
+                                        onClick={handleUpdatePost}
+                                        disabled={loading}
+                                    >
+                                        Update
+                                    </Button>
                                 </div>
                             </div>
                         </CardContent>

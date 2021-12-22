@@ -19,6 +19,9 @@ export const addToInvites = (data) => {
 export const removeFromInvites = (data) => {
     return (dispatch) => dispatch({ data, type: 'REMOVE_FROM_INVITES' });
 };
+export const updateDialogue = (data) => {
+    return (dispatch) => dispatch({ data, type: 'UPDATE_DIALOGUE' });
+};
 export const addToChatDialogues = (data) => {
     return (dispatch) => dispatch({ data, type: 'ADD_CHAT_TO_DIALOGUES' });
 };
@@ -31,10 +34,9 @@ export const addMessagesToCurrentChat = (data) => {
         dispatch({ data, type: 'ADD_MESSAGES_TO_CURRENT_CHAT' });
 };
 export const updateMessage = (data) => {
-    console.log('DATA', data);
     return (dispatch) => dispatch({ data, type: 'UPDATE_MESSAGE' });
 };
-export const setSearchOutput = (data = []) => {
+export const setSearchOutput = (data) => {
     return (dispatch) => dispatch({ data, type: 'SET_SEARCH_OUTPUT' });
 };
 export const clearSearchOutput = () => {
@@ -79,4 +81,21 @@ export const setArchivedChats = (data = []) => {
 };
 export const addToArchivedChats = (data) => {
     return (dispatch) => dispatch({ data, type: 'ADD_TO_ARCHIVED' });
+};
+export const deleteArchivedchat = (data) => {
+    return (dispatch) => dispatch({ data, type: 'DELETE_ARCHIVED_CHAT' });
+};
+//total count
+export const setTotalCount = (data) => {
+    return (dispatch) => dispatch({ data, type: 'SET_TOTAL_COUNT' });
+};
+export const resetTotalCount = () => {
+    return (dispatch) => dispatch({ type: 'RESET_TOTAL_COUNT' });
+};
+//chat searches
+export const setChatSearchInput = (data = []) => {
+    return (dispatch) => dispatch({ data, type: 'SET_CHAT_SRCH_DATA' });
+};
+export const clearSearchChatData = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_CHAT_SRCH_DATA' });
 };

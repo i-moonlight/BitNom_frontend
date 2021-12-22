@@ -10,11 +10,10 @@ import { useFormikContext } from 'formik';
 
 export default function TextField({
     name,
-    label = '',
+    label,
     labelTop,
     placeholder,
     errorText,
-    defaultValue,
     adornment,
     adornmentType,
     type,
@@ -69,7 +68,6 @@ export default function TextField({
                     fullWidth
                     label={label}
                     error={name && touched[name] && errors[name] && true}
-                    defaultValue={defaultValue ? defaultValue : null}
                     placeholder={placeholder}
                     onChange={name && handleChange(name)}
                     onBlur={() => name && setFieldTouched(name)}
@@ -100,7 +98,7 @@ export default function TextField({
                 ) : null}
                 {errorText && (
                     <small
-                        className="ml-5 mt-1 text-sm text-start"
+                        className="ml-5 mt-1 text-sm text-start "
                         style={{ color: '#F44336' }}
                     >
                         {errorText}

@@ -161,6 +161,8 @@ export const useStyles = makeStyles((theme) => ({
         justifyContent: 'end',
         alignItems: 'end',
         marginTop: '-20px',
+        /*   marginRight: '5px',
+        marginLeft: '5px', */
     },
     Edited: {
         display: 'flex',
@@ -178,6 +180,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     cardDropzone: {
         backgroundColor: theme.palette.background.default,
+        marginLeft: 8,
+        marginRight: 8,
     },
     pinnedList: {
         backgroundColor: theme.palette.background.default,
@@ -190,5 +194,28 @@ export const useStyles = makeStyles((theme) => ({
         borderWidth: '0px 0px 0px 7px ',
         borderRadius: '5px 2px 2px 5px',
         height: '60px',
+    },
+    responseTo: {
+        backgroundColor: theme.palette.background.responseTo,
+        marginLeft: '8px',
+        marginRight: '8px',
+        borderWidth: '0px 0px 0px 7px ',
+        borderRadius: '5px 5px 5px 5px',
+    },
+    responseToOut: {
+        backgroundColor: theme.palette.background.responseOutGoing,
+        marginLeft: '8px',
+        marginRight: '8px',
+        borderWidth: '0px 0px 0px 7px ',
+        borderRadius: '5px 5px 5px 5px',
+    },
+    uploadPanel: {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 0,
+        listStyleType: 'none',
+        '& .before': {
+            content: '',
+        },
     },
 }));

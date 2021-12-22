@@ -9,7 +9,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import moment from 'moment';
+import { getDistanceToNow } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -56,8 +56,9 @@ export default function SavedComment({
                                     backgroundColor: '#fed132',
                                 }}
                                 src={
+                                    comment?.author?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    comment?.author?.profile_pic
+                                        comment?.author?.profile_pic
                                 }
                             >
                                 {commentUserInitials}
@@ -79,29 +80,46 @@ export default function SavedComment({
                             </IconButton>
                         }
                         title={
-                            <Typography display="inline">
-                                {comment?.author?.displayName}{' '}
+                            <Typography component="div" display="inline">
+                                <Typography
+                                    component="a"
+                                    style={{ marginRight: 4, zIndex: 2 }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        history.push(
+                                            `/users/${comment?.author?._id}`
+                                        );
+                                    }}
+                                >
+                                    {comment?.author?.displayName}
+                                </Typography>{' '}
                                 <Typography display="inline" variant="body2">
                                     . @{comment?.author?._id}
                                 </Typography>{' '}
-                                <Typography display="inline" variant="body2">
-                                    . {moment(comment.creation_date).fromNow()}
+                                <Typography
+                                    component="span"
+                                    color="textSecondary"
+                                    display="inline"
+                                    variant="body2"
+                                >
+                                    . {getDistanceToNow(comment?.creation_date)}
                                 </Typography>
                             </Typography>
                         }
                     />
                     <CardContent>
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                        >
+                        <Typography variant="body2" component="div">
                             <Typography
                                 onClick={(e) => contentClickHandler(e)}
                                 dangerouslySetInnerHTML={{
                                     __html: contentBodyFactory(comment),
                                 }}
-                                style={{ zIndex: 2 }}
+                                style={{
+                                    zIndex: 2,
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                variant="body2"
                             ></Typography>
 
                             {comment?.image.length > 0 && (
@@ -116,7 +134,7 @@ export default function SavedComment({
                                                 setImagePreviewURL(
                                                     process.env
                                                         .REACT_APP_BACKEND_URL +
-                                                        comment.image
+                                                        comment?.image
                                                 );
                                             setImagePreviewOpen(true);
                                         }}
@@ -130,7 +148,7 @@ export default function SavedComment({
                                                     'url(' +
                                                     process.env
                                                         .REACT_APP_BACKEND_URL +
-                                                    comment.image +
+                                                    comment?.image +
                                                     ')',
                                                 backgroundSize: 'cover',
                                                 backgroundColor:
@@ -145,8 +163,12 @@ export default function SavedComment({
                             )}
                         </Typography>
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography
+                            color="textSecondary"
+                            component="div"
+                            display="inline"
+                        >
+                            <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(comment)} ${
                                     getReactionsSum(comment) === 1
                                         ? 'Reaction'
@@ -154,7 +176,7 @@ export default function SavedComment({
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${comment?.replies} ${
                                     comment?.replies === 1 ? 'Reply' : 'Replies'
                                 }`}

@@ -1,7 +1,7 @@
+//import { helmetJsonLdProp } from 'react-schemaorg';
+import { format } from 'date-fns';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-//import { helmetJsonLdProp } from 'react-schemaorg';
-import moment from 'moment';
 
 function SEO(data) {
     const { title, description, url, image, resource } = data;
@@ -14,6 +14,7 @@ function SEO(data) {
             <script type="application/ld+json">{SchemaFactory(data)}</script>
             {/* General tags */}
             <title>{title || 'BitNorm Website'}</title>
+
             {/*  <meta charSet="utf-8" /> */}
             <meta name="description" content={description} />
             <meta name="image" content={image || null} />
@@ -30,6 +31,7 @@ function SEO(data) {
                 }
             />
             <meta property="og:image" content={image || null} />
+
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content="@BitNorm" />
@@ -67,7 +69,8 @@ const SchemaFactory = (props) => {
             '@context': 'https://schema.org',
             '@type': 'SocialMediaPosting',
             '@id': props?.url,
-            datePublished: moment(props?.resource?.createdAt).format(
+            datePublished: format(
+                new Date(props?.resource?.createdAt),
                 'YYYY-MM-DD'
             ),
             author: {
@@ -123,11 +126,14 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+
+                startDate: format(
+                    new Date(props?.resource?.startDate),
+                    'YYYY-MM-DD'
                 ),
-                endDate: moment(props?.resource?.endDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                endDate: format(
+                    new Date(props?.resource?.endDate),
+                    'YYYY-MM-DD'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OfflineEventAttendanceMode',
@@ -152,11 +158,13 @@ const SchemaFactory = (props) => {
                 '@context': 'https://schema.org',
                 '@type': 'Event',
                 name: props?.resource?.title,
-                startDate: moment(props?.resource?.startDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                startDate: format(
+                    new Date(props?.resource?.startDate),
+                    'YYYY-MM-DD'
                 ),
-                endDate: moment(props?.resource?.endDate).format(
-                    'YYYY-MM-DDTHH:mm:ssZ'
+                endDate: format(
+                    new Date(props?.resource?.endDate),
+                    'YYYY-MM-DD'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OnlineEventAttendanceMode',

@@ -4,12 +4,13 @@ import {
     ArrowBack,
     BookmarkBorderRounded,
     Launch,
-    ShareRounded,
     MoreHorizRounded,
     Public,
     RoomRounded,
+    ShareRounded,
 } from '@mui/icons-material';
 import {
+    Alert,
     Avatar,
     Card,
     CardActions,
@@ -20,20 +21,18 @@ import {
     Container,
     Divider,
     Grid,
-    IconButton,
-    List,
     Tab,
     Tabs,
-    Tooltip,
     Typography,
     useMediaQuery,
 } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-//import IosShareIcon from '@mui/icons-material/IosShare'
-//import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import Screen from '../../../components/Screen';
@@ -43,6 +42,7 @@ import FlagResourceModal from '../bn_connect/popovers/FlagResourceModal';
 import CreatePost from '../bn_connect/scroll/CreatePost';
 import { contentBodyFactory, getDateOrdinal } from '../utilities/functions';
 import {
+    GET_BOOKMARKED_EVENTS,
     MUTATION_ATTEND_EVENT,
     MUTATION_CREATE_BOOKMARK,
     MUTATION_REMOVE_EVENT_ATTENDANCE,
@@ -58,31 +58,6 @@ import InviteFriends from './InviteFriends';
 import UpdateEvent from './UpdateEvent';
 
 const eventOptionsId = 'event-options-menu';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    details: {
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: '3fr 2fr',
-        },
-    },
-
-    endTime: {
-        color: theme.palette.primary.main,
-    },
-    avatar: {
-        backgroundColor: '#fed132',
-        marginRight: '8px',
-        [theme.breakpoints.up('md')]: {
-            width: 80,
-            height: 80,
-        },
-    },
-}));
 
 export default function EventView() {
     const [eventOptionsAnchorEl, setEventOptionsAnchorEl] = useState(null);
@@ -101,6 +76,7 @@ export default function EventView() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
     const [createFlagOpen, setCreateFlagOpen] = useState(false);
     const [openShareModal, setOpenShareModal] = useState(false);
+    const [getEventErr, setGetEventErr] = useState(null);
 
     const classes = useStyles();
     const history = useHistory();
@@ -112,12 +88,28 @@ export default function EventView() {
 
     const isEventOptionsOpen = Boolean(eventOptionsAnchorEl);
 
-    const { loading: eventLoading, data: eventData } = useQuery(
-        QUERY_EVENT_BY_ID,
-        {
-            variables: { _id: eventId },
-        }
-    );
+    const {
+        loading: eventLoading,
+        data: eventData,
+        error: eventError,
+    } = useQuery(QUERY_EVENT_BY_ID, {
+        variables: { _id: eventId },
+    });
+
+    useEffect(() => {
+        eventError &&
+            eventError.graphQLErrors.length > 0 &&
+            eventError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find an event with the ID you provided!'
+                ) {
+                    setGetEventErr(
+                        'This event might have been deleted by the host.'
+                    );
+                }
+            });
+    }, [eventError]);
 
     const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
@@ -190,16 +182,20 @@ export default function EventView() {
                     type: 'event',
                 },
             },
+            refetchQueries: [
+                {
+                    query: GET_BOOKMARKED_EVENTS,
+                    variables: {
+                        data: {
+                            sortAscending: true,
+                        },
+                    },
+                },
+            ],
         });
         toast.success('Added to saved items', {
-            position: 'bottom-left',
             autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
         });
-
         handleEventOptionsClose();
     };
 
@@ -266,8 +262,8 @@ export default function EventView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -310,6 +306,13 @@ export default function EventView() {
                                         size={60}
                                         thickness={6}
                                     />
+                                )}
+                            </Grid>
+                            <Grid item>
+                                {getEventErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getEventErr}</Typography>
+                                    </Alert>
                                 )}
                             </Grid>
                             {eventData?.Events?.getById && (
@@ -403,14 +406,12 @@ export default function EventView() {
                                                         }}
                                                     >
                                                         {getDateOrdinal(
-                                                            moment
-                                                                .utc(
-                                                                    eventData
-                                                                        ?.Events
-                                                                        ?.getById
-                                                                        ?.startDate
-                                                                )
-                                                                ._d.getDate()
+                                                            format(
+                                                                new Date(
+                                                                    eventData?.Events?.getById?.startDate
+                                                                ),
+                                                                'd'
+                                                            )
                                                         )}
                                                     </Avatar>
                                                     <Typography
@@ -419,12 +420,11 @@ export default function EventView() {
                                                         color="primary"
                                                         gutterBottom
                                                     >
-                                                        {moment(
-                                                            eventData?.Events
-                                                                ?.getById
-                                                                ?.startDate
-                                                        ).format(
-                                                            'ddd, MMMM Do YYYY, h:mm a'
+                                                        {format(
+                                                            new Date(
+                                                                eventData?.Events?.getById?.startDate
+                                                            ),
+                                                            'E, MMMM do y, h:mm aaa'
                                                         )}
                                                     </Typography>
                                                     <Typography
@@ -470,6 +470,7 @@ export default function EventView() {
                                                     <Typography
                                                         className="text-success"
                                                         variant="body2"
+                                                        component="div"
                                                     >
                                                         {eventData?.Events
                                                             ?.getById?.host
@@ -554,7 +555,7 @@ export default function EventView() {
                                             </div>
                                         </CardContent>
                                         <Divider />
-                                        <CardActions className="space-between">
+                                        <CardActions className="space-between pb-0">
                                             <div>
                                                 <Tabs
                                                     value={value}
@@ -664,6 +665,42 @@ export default function EventView() {
                                                         gutterBottom
                                                         variant="body1"
                                                     >
+                                                        Description
+                                                    </Typography>
+                                                    <Typography
+                                                        component="div"
+                                                        variant="body2"
+                                                    >
+                                                        <Typography
+                                                            onClick={(e) =>
+                                                                contentClickHandler(
+                                                                    e
+                                                                )
+                                                            }
+                                                            style={{
+                                                                zIndex: 2,
+                                                                overflowWrap:
+                                                                    'break-word',
+                                                                wordWrap:
+                                                                    'break-word',
+                                                            }}
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: contentBodyFactory(
+                                                                    eventData
+                                                                        ?.Events
+                                                                        ?.getById
+                                                                ),
+                                                            }}
+                                                        ></Typography>
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                            <Card className="mb-3">
+                                                <CardContent>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="body1"
+                                                    >
                                                         Details
                                                     </Typography>
                                                     <div
@@ -684,13 +721,11 @@ export default function EventView() {
                                                                             classes.endTime
                                                                         }
                                                                     >
-                                                                        {moment(
-                                                                            eventData
-                                                                                ?.Events
-                                                                                ?.getById
-                                                                                ?.endDate
-                                                                        ).format(
-                                                                            'ddd, MMMM Do YYYY, h:mm a'
+                                                                        {format(
+                                                                            new Date(
+                                                                                eventData?.Events?.getById?.endDate
+                                                                            ),
+                                                                            'E, MMMM do y, h:mm aaa'
                                                                         )}
                                                                     </span>
                                                                 </span>
@@ -699,6 +734,7 @@ export default function EventView() {
                                                                 display="inline-flex"
                                                                 className="center-horizontal"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Typography variant="body2">
                                                                     Organizers :
@@ -706,6 +742,7 @@ export default function EventView() {
                                                                 <Typography
                                                                     display="inline-flex"
                                                                     className="center-horizontal"
+                                                                    component="div"
                                                                 >
                                                                     {eventData
                                                                         ?.Events
@@ -749,6 +786,7 @@ export default function EventView() {
                                                                 display="inline-flex"
                                                                 className="center-horizontal"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Typography variant="body2">
                                                                     Tags :
@@ -756,6 +794,7 @@ export default function EventView() {
                                                                 <Typography
                                                                     display="inline-flex"
                                                                     className="center-horizontal"
+                                                                    component="div"
                                                                 >
                                                                     {eventData?.Events?.getById?.tags?.map(
                                                                         (
@@ -791,6 +830,7 @@ export default function EventView() {
                                                                 className="center-horizontal"
                                                                 variant="body2"
                                                                 gutterBottom
+                                                                component="div"
                                                             >
                                                                 <Launch
                                                                     fontSize="small"
@@ -893,38 +933,7 @@ export default function EventView() {
                                                     </div>
                                                 </CardContent>
                                             </Card>
-                                            <Card className="mb-3">
-                                                <CardContent>
-                                                    <Typography
-                                                        gutterBottom
-                                                        variant="body1"
-                                                    >
-                                                        Description
-                                                    </Typography>
-                                                    <Typography
-                                                        component="p"
-                                                        variant="body2"
-                                                    >
-                                                        <Typography
-                                                            onClick={(e) =>
-                                                                contentClickHandler(
-                                                                    e
-                                                                )
-                                                            }
-                                                            style={{
-                                                                zIndex: 2,
-                                                            }}
-                                                            dangerouslySetInnerHTML={{
-                                                                __html: contentBodyFactory(
-                                                                    eventData
-                                                                        ?.Events
-                                                                        ?.getById
-                                                                ),
-                                                            }}
-                                                        ></Typography>
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
+
                                             <Card className="mb-3">
                                                 <CardContent>
                                                     <Typography
@@ -938,13 +947,18 @@ export default function EventView() {
                                                             <Avatar
                                                                 variant="rounded"
                                                                 src={
-                                                                    process.env
-                                                                        .REACT_APP_BACKEND_URL +
                                                                     eventData
                                                                         ?.Events
                                                                         ?.getById
                                                                         ?.host
-                                                                        ?.profile_pic
+                                                                        ?.profile_pic &&
+                                                                    process.env
+                                                                        .REACT_APP_BACKEND_URL +
+                                                                        eventData
+                                                                            ?.Events
+                                                                            ?.getById
+                                                                            ?.host
+                                                                            ?.profile_pic
                                                                 }
                                                                 className={
                                                                     classes.avatar
@@ -960,17 +974,21 @@ export default function EventView() {
                                                                 }
                                                             </Typography>
                                                         </div>
-
-                                                        <Button variant="outlined">
-                                                            Subscribe
-                                                        </Button>
+                                                        <div>
+                                                            <Button variant="outlined">
+                                                                Subscribe
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                     <Typography
                                                         style={{
                                                             marginTop: '8px',
+                                                            overflowWrap:
+                                                                'break-word',
+                                                            wordWrap:
+                                                                'break-word',
                                                         }}
-                                                        variant="body1"
-                                                        component="p"
+                                                        variant="body2"
                                                     >
                                                         {
                                                             eventData?.Events
@@ -1101,3 +1119,28 @@ export default function EventView() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    details: {
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        [theme.breakpoints.up('md')]: {
+            gridTemplateColumns: '3fr 2fr',
+        },
+    },
+
+    endTime: {
+        color: theme.palette.primary.main,
+    },
+    avatar: {
+        backgroundColor: '#fed132',
+        marginRight: '8px',
+        [theme.breakpoints.up('md')]: {
+            width: 80,
+            height: 80,
+        },
+    },
+}));

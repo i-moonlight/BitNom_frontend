@@ -2,16 +2,18 @@ import { MessageOutlined } from '@mui/icons-material';
 import {
     Avatar,
     Card,
+    CardActions,
+    CardHeader,
     Grid,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Paper,
     Skeleton,
     Typography,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import { Button } from '../../../components/Button';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -29,51 +31,66 @@ export default function TrendingPostsCard({ trending, loading }) {
     };
 
     return (
-        <Paper
+        <Card
+            variant="outlined"
             style={{
                 marginBottom: 16,
             }}
         >
-            <List
-                style={{ padding: 8, paddingBottom: 0 }}
-                component={Card}
-                variant="outlined"
-            >
-                <Typography style={{ marginLeft: 8 }} variant="body1">
-                    Trending Posts
-                </Typography>
-                {loading &&
-                    trending?.length < 1 &&
-                    [1, 2, 3].map((post) => (
-                        <ListItem
-                            key={post}
-                            divider
-                            style={{ zIndex: 1, cursor: 'pointer' }}
-                        >
-                            <ListItemAvatar>
-                                <Skeleton animation="wave">
-                                    <Avatar
-                                        variant="square"
-                                        style={{ height: 50 }}
-                                    />
-                                </Skeleton>
-                            </ListItemAvatar>
+            <CardHeader subheader="Trending posts" />
+            <div>
+                <List>
+                    {trending?.length < 1 && !loading && (
+                        <ListItem>
                             <ListItemText
-                                primary={
-                                    <Skeleton variant="text" animation="wave" />
-                                }
-                                secondary={
-                                    <Skeleton variant="text" animation="wave" />
-                                }
+                                primary="Nothing here yet"
+                                secondary="Start to interact to show content here"
                             />
                         </ListItem>
-                    ))}
+                    )}
 
-                {trending &&
-                    trending?.slice(0, 3).map((post) => (
+                    {loading &&
+                        trending?.length < 1 &&
+                        [1, 2, 3].map((post) => (
+                            <ListItem
+                                key={post}
+                                style={{ zIndex: 1, cursor: 'pointer' }}
+                            >
+                                <ListItemAvatar>
+                                    <span>
+                                        <Skeleton
+                                            animation="wave"
+                                            variant="rectangular"
+                                            height={50}
+                                            width={50}
+                                            className="br-2"
+                                        />
+                                    </span>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={
+                                        <span>
+                                            <Skeleton
+                                                variant="text"
+                                                animation="wave"
+                                            />
+                                        </span>
+                                    }
+                                    secondary={
+                                        <span>
+                                            <Skeleton
+                                                variant="text"
+                                                animation="wave"
+                                            />
+                                        </span>
+                                    }
+                                />
+                            </ListItem>
+                        ))}
+
+                    {trending?.slice(0, 3).map((post) => (
                         <ListItem
                             key={post?._id}
-                            divider
                             style={{ zIndex: 1, cursor: 'pointer' }}
                             onClick={() => history.push(`/posts/${post?._id}`)}
                         >
@@ -109,6 +126,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                             <ListItemText
                                 primary={
                                     <Typography
+                                        variant="body2"
                                         onClick={(e) => contentClickHandler(e)}
                                         style={{ zIndex: 2 }}
                                         dangerouslySetInnerHTML={{
@@ -119,28 +137,52 @@ export default function TrendingPostsCard({ trending, loading }) {
                                         }}
                                     ></Typography>
                                 }
-                                secondary={`${getReactionsSum(post)} ${
-                                    getReactionsSum(post) === 1
-                                        ? 'Reaction'
-                                        : 'Reactions'
-                                } . ${post?.comments} ${
-                                    post?.comments === 1
-                                        ? 'Comment'
-                                        : 'Comments'
-                                }`}
+                                secondary={
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="body2"
+                                    >
+                                        {`${getReactionsSum(post)} ${
+                                            getReactionsSum(post) === 1
+                                                ? 'Reaction'
+                                                : 'Reactions'
+                                        } . ${post?.comments} ${
+                                            post?.comments === 1
+                                                ? 'Comment'
+                                                : 'Comments'
+                                        }`}
+                                    </Typography>
+                                }
                             />
                         </ListItem>
                     ))}
-                {(!loading && trending?.length === 0) ||
-                    (!trending && (
-                        <Grid className="p-2">
-                            <Typography color="Primary" variant="body2">
-                                Trending posts will appear here ... start
-                                participating.
-                            </Typography>
-                        </Grid>
-                    ))}
-            </List>
-        </Paper>
+
+                    {(!loading && trending?.length === 0) ||
+                        (!trending && (
+                            <Grid className="p-2">
+                                <Typography color="Primary" variant="body2">
+                                    Trending posts will appear here.
+                                </Typography>
+                            </Grid>
+                        ))}
+                </List>
+            </div>
+
+            <CardActions>
+                {trending?.length > 0 && (
+                    <Button
+                        textCase
+                        size="small"
+                        variant="text"
+                        className="my-1"
+                        onClick={() => {
+                            history.push('/connect/trending');
+                        }}
+                    >
+                        Show More
+                    </Button>
+                )}
+            </CardActions>
+        </Card>
     );
 }

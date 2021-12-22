@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 //import { MoreVert } from '@mui/icons-material';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 
 import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -44,8 +44,9 @@ export default function ScrollPreview({ scroll }) {
                                 backgroundColor: '#fed132',
                             }}
                             src={
+                                scroll?.author?.profile_pic &&
                                 process.env.REACT_APP_BACKEND_URL +
-                                scroll?.author?.profile_pic
+                                    scroll?.author?.profile_pic
                             }
                             sx={{ width: '28px', height: '28px' }}
                         >
@@ -56,7 +57,17 @@ export default function ScrollPreview({ scroll }) {
                     }
                     title={
                         <div className="d-flex align-items-center">
-                            <Typography variant="body2">
+                            <Typography
+                                component="a"
+                                style={{ marginRight: 8, zIndex: 3 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    history.push(
+                                        `/users/${scroll?.author?._id}`
+                                    );
+                                }}
+                                variant="body2"
+                            >
                                 {scroll?.author?.displayName}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
@@ -65,8 +76,12 @@ export default function ScrollPreview({ scroll }) {
                         </div>
                     }
                     subheader={
-                        <Typography variant="body2">
-                            {moment(scroll?.createdAt).fromNow()}
+                        <Typography
+                            component="span"
+                            color="textSecondary"
+                            variant="body2"
+                        >
+                            {getDistanceToNowWithSuffix(scroll?.createdAt)}
                         </Typography>
                     }
                 />
@@ -74,15 +89,20 @@ export default function ScrollPreview({ scroll }) {
                     <Typography
                         variant="body2"
                         color="textSecondary"
-                        component="p"
+                        component="div"
                     >
                         <Typography
                             variant="body2"
                             onClick={(e) => contentClickHandler(e)}
+                            component="div"
                             dangerouslySetInnerHTML={{
                                 __html: contentBodyFactory(scroll),
                             }}
-                            style={{ zIndex: 2 }}
+                            style={{
+                                zIndex: 2,
+                                overflowWrap: 'break-word',
+                                wordWrap: 'break-word',
+                            }}
                         ></Typography>
                         <br />
                         <Grid container style={{ margin: '3px 0px' }}>
@@ -105,7 +125,7 @@ export default function ScrollPreview({ scroll }) {
                             {scroll?.images.length > 0 &&
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
-                                        style={{ zIndex: 2, padding: '1px' }}
+                                        style={{ zIndex: 2, padding: '2px' }}
                                         key={imageURL}
                                         item
                                         xs={scroll?.images.length > 1 ? 6 : 12}
@@ -133,7 +153,11 @@ export default function ScrollPreview({ scroll }) {
                                 ))}
                         </Grid>
                         <br />
-                        <Typography variant="body2" display="inline">
+                        <Typography
+                            component="div"
+                            variant="body2"
+                            display="inline"
+                        >
                             <Typography variant="body2" display="inline">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1

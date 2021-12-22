@@ -1,21 +1,74 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/18/21
- * Time: 6:15 AM
- */
-
-import { DateRange } from '@mui/icons-material';
+import { useTheme } from '@emotion/react';
 import {
-    Card,
-    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
+    Typography,
 } from '@mui/material';
+
+export default function HistoricalData() {
+    const theme = useTheme();
+
+    return (
+        <Typography color={'textPrimary'} component="div">
+            <div className={'m-3'}>
+                <div className={'mb-3 d-flex justify-content-between'}>
+                    <h3>Historical Data For Bitcoin</h3>
+                    {/* <Button textCase endIcon={<DateRange />}>
+                        Date Range
+                    </Button> */}
+                </div>
+
+                <div>
+                    <TableContainer>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead className={'bg-secondary'}>
+                                <TableRow
+                                    style={{
+                                        backgroundColor:
+                                            theme.palette.mode === 'dark'
+                                                ? '#3e4041'
+                                                : '#eeeeee',
+                                    }}
+                                >
+                                    <TableCell>Date</TableCell>
+                                    <TableCell>Open</TableCell>
+                                    <TableCell>High</TableCell>
+                                    <TableCell>Low</TableCell>
+                                    <TableCell>Close**</TableCell>
+                                    <TableCell>Volume</TableCell>
+                                    <TableCell>Market Cap</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((row, id) => (
+                                    <TableRow
+                                        key={id}
+                                        sx={{
+                                            '&:last-child td, &:last-child th':
+                                                { border: 0 },
+                                        }}
+                                    >
+                                        <TableCell>{row.date}</TableCell>
+                                        <TableCell>{row.open}</TableCell>
+                                        <TableCell>{row.high}</TableCell>
+                                        <TableCell>{row.low}</TableCell>
+                                        <TableCell>{row.close}</TableCell>
+                                        <TableCell>{row.volume}</TableCell>
+                                        <TableCell>{row.market_cap}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </div>
+        </Typography>
+    );
+}
 
 function createData(date, open, high, low, close, volume, market_cap) {
     return { date, open, high, low, close, volume, market_cap };
@@ -77,71 +130,3 @@ const rows = [
         '$48,208,897.91'
     ),
 ];
-
-export default function HistoricalData() {
-    return (
-        <Card>
-            <div className={'m-3'}>
-                <div className={'mb-3 d-flex justify-content-between'}>
-                    <h3>Historical Data For Bitcoin</h3>
-                    <a className={'btn btn-secondary'}>
-                        Date Range <DateRange />
-                    </a>
-                </div>
-                <hr />
-                <div>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead className={'bg-secondary'}>
-                                <TableRow>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell align="right">Open*</TableCell>
-                                    <TableCell align="right">High</TableCell>
-                                    <TableCell align="right">Low</TableCell>
-                                    <TableCell align="right">Close**</TableCell>
-                                    <TableCell align="right">Volume</TableCell>
-                                    <TableCell align="right">
-                                        Market Cap
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow
-                                        key={row.date}
-                                        sx={{
-                                            '&:last-child td, &:last-child th':
-                                                { border: 0 },
-                                        }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {row.date}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.open}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.high}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.low}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.close}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.volume}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {row.market_cap}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
-        </Card>
-    );
-}

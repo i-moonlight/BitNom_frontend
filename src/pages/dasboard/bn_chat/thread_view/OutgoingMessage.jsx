@@ -1,29 +1,42 @@
-import { ExpandMoreRounded } from '@mui/icons-material';
+import {
+    ExpandMoreRounded,
+    DoneAllOutlined,
+    DoneOutlined,
+} from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
+    Card,
     CardMedia,
     Grid,
     IconButton,
     Paper,
     Typography,
-    Card,
+    useMediaQuery,
 } from '@mui/material';
-import moment from 'moment';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Link } from 'react-router-dom';
+import { Code, LinkTag } from '../../../../components/markdown_renders';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
-import ReactMarkdown from 'react-markdown';
-import { Code, LinkTag } from '../../../../components/markdown_renders';
-import { Link } from 'react-router-dom';
+
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
+
 export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
-    const author = message.author || {};
+    const author = message?.author || {};
+    const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
+    const mdDown = useMediaQuery('(max-width:1279px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
-                <small>{moment(message?.date).fromNow()}</small>
+                <small>
+                    {getDistanceToNowWithSuffix(
+                        new Date(message?.date).getTime()
+                    )}
+                </small>
             </div>
 
             <Paper
@@ -34,28 +47,31 @@ export default function OutgoingMessage({ chat, message, onClick }) {
             >
                 <Typography
                     variant="body1"
-                    component="p"
+                    component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
-                        <small className={classes.author}>
-                            <strong>@{author}</strong>
-                        </small>
-                    </Link>
-                    {message?.edited === true ? (
-                        <div className={classes.Edited}>
-                            <strong>(Edited)</strong>
-                        </div>
-                    ) : (
-                        ''
-                    )}
-                    {show_reply && (
-                        <div className={classes.reply}>
+                    <span
+                        style={{
+                            display: 'flex',
+                            width: '100%',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Link
+                            to={`/profile`}
+                            style={{
+                                textDecoration: 'none',
+                                marginRight: '5px',
+                            }}
+                        >
+                            <small className={classes.author}>
+                                <strong>@{author}</strong>
+                            </small>
+                        </Link>
+                        {(show_reply || mdDown) && (
                             <IconButton
                                 style={{
                                     fontSize: '1em',
-                                    bottom: '5px',
-                                    right: '3px',
                                     color: '#000',
                                 }}
                                 size="small"
@@ -63,23 +79,21 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             >
                                 <ExpandMoreRounded />
                             </IconButton>
-                        </div>
+                        )}
+                    </span>
+                    {message?.edited === true ? (
+                        <small>
+                            <strong>(Edited)</strong>
+                        </small>
+                    ) : (
+                        ''
                     )}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
-                    <Card
-                        variant="outlined"
-                        style={{
-                            backgroundColor: '#BDE0FF',
-                            marginLeft: '8px',
-                            marginRight: '8px',
-                            borderWidth: '0px 0px 0px 7px ',
-                            borderRadius: '5px 5px 5px 5px',
-                        }}
-                    >
+                    <Card variant="outlined" className={classes.responseToOut}>
                         <Typography
                             variant="body2"
-                            component="article"
+                            component="div"
                             style={{
                                 marginLeft: '8px',
                                 marginTop: '8px',
@@ -88,7 +102,6 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                         >
                             <ReactMarkdown
                                 components={{ code: Code, Link: LinkTag }}
-                                escapeHtml={false}
                             >
                                 {message?.responseTo?.text?.length > 200
                                     ? message?.responseTo?.text.substring(
@@ -160,50 +173,65 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                 <Typography
                     className={classes.message}
                     variant="body2"
-                    component="article"
+                    component="div"
                     style={{
                         marginTop: '4px',
                     }}
                 >
-                    <ReactMarkdown
-                        components={{ code: Code, Link: LinkTag }}
-                        escapeHtml={false}
-                    >
-                        {message.text}
+                    <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
+                        {message?.text}
                     </ReactMarkdown>
                 </Typography>
-                {/* {show_reply && (
-                    <div className={classes.reply}>
-                        <IconButton
+
+                <div className={classes.reply}>
+                    {message?.status === 'delivered' ? (
+                        <DoneAllOutlined
                             style={{
-                                fontSize: '1em',
+                                fontSize: '18px',
                                 marginTop: '-2px',
                                 bottom: '5px',
                                 right: '3px',
+                                marginRight: '7px',
                                 color: '#bbb',
                             }}
-                            size="small"
-                            onClick={onReply}
-                        >
-                            <Reply />
-                        </IconButton>
-                    </div>
-                )} */}
+                        />
+                    ) : message?.status === 'read' ? (
+                        <DoneAllOutlined
+                            color="primary"
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    ) : (
+                        <DoneOutlined
+                            style={{
+                                fontSize: '18px',
+                                marginTop: '-2px',
+                                bottom: '5px',
+                                right: '3px',
+                                marginRight: '7px',
+                                color: '#bbb',
+                            }}
+                        />
+                    )}
+                </div>
             </Paper>
             <ButtonBase>
                 <Avatar
-                    alt={chat.currentUser.info.displayName}
                     src={
-                        chat?.currentUser?.info.profile_pic
+                        chat?.currentUser?.info?.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
-                              chat?.currentUser?.info.profile_pic
-                            : ''
+                              chat?.currentUser?.info?.profile_pic
+                            : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                     }
-                    style={{ backgroundColor: '#1C0C5B' }}
+                    alt={'avatar'}
                 >
-                    {chat?.currentUser?.info.profile_pic
-                        ? ''
-                        : getUserInitials(chat?.currentUser?.info.displayName)}
+                    {userInitials}
                 </Avatar>
             </ButtonBase>
         </div>

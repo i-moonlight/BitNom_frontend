@@ -4,8 +4,10 @@ import {
     CheckBoxOutlineBlank,
     CloseRounded,
 } from '@mui/icons-material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
 import {
-    Button,
     Card,
     CardActions,
     CardContent,
@@ -15,9 +17,7 @@ import {
     Grid,
     IconButton,
     Modal,
-    TextField,
     Typography,
-    Autocomplete,
 } from '@mui/material';
 import { useState } from 'react';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
@@ -99,7 +99,7 @@ export default function InviteFriends({
                             <Autocomplete
                                 multiple
                                 id="invite-friends-to-event"
-                                options={profile?.followers}
+                                options={profile?.followers || []}
                                 disableCloseOnSelect
                                 onChange={(event, value) => {
                                     setSelectedFriends(value);
@@ -107,8 +107,8 @@ export default function InviteFriends({
                                 getOptionLabel={(option) =>
                                     option?.userId?.displayName
                                 }
-                                renderOption={(option, { selected }) => (
-                                    <>
+                                renderOption={(props, option, { selected }) => (
+                                    <div {...props}>
                                         <Checkbox
                                             icon={icon}
                                             checkedIcon={checkedIcon}
@@ -116,7 +116,7 @@ export default function InviteFriends({
                                             checked={selected}
                                         />
                                         {option?.userId?.displayName}
-                                    </>
+                                    </div>
                                 )}
                                 style={{ width: '100%' }}
                                 renderInput={(params) => (

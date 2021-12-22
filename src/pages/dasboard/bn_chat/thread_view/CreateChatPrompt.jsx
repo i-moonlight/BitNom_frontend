@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { CloseRounded, Search } from '@mui/icons-material';
 import {
     Avatar,
@@ -18,7 +18,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { Fragment, useState } from 'react';
+import React from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
@@ -29,24 +29,14 @@ export default function CreateChatPrompt({
     openChatInvite,
     setChatInviteOpen,
 }) {
-    const [values, setValues] = useState({
-        searchString: '',
-    });
-
     const theme = useTheme();
     const classes = useStyles();
 
-    const { loading: userLoading, data: userData } = useQuery(
-        QUERY_SEARCH_USERS,
-        {
-            variables: {
-                params: { searchString: values.searchString },
-            },
-            context: { clientName: 'users' },
-        }
-    );
+    const [searchUsers, { loading: userLoading, data: userData }] =
+        useLazyQuery(QUERY_SEARCH_USERS);
 
     const [sendChatInvite, { data }] = useMutation(CREATE_DIALOGUE);
+
     const onSendInvite = async (IUserSmall) => {
         await sendChatInvite({
             variables: {
@@ -56,25 +46,16 @@ export default function CreateChatPrompt({
         });
     };
 
-    const handleSearch = (e) => {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const handleSendInvite = (user) => {
         onSendInvite({
             _id: user?._id,
-            displayName: user?.displayName,
-            profile_pic: user?.profile_pic,
-            bio: user?.bio,
         });
         setChatInviteOpen(false);
     };
 
-    const users =
-        userData && userData?.Users?.search ? userData?.Users?.search : null;
+    const users = userData?.Users?.search?.filter(
+        (user) => user?._id !== 'bn-ai'
+    );
 
     return (
         <Modal
@@ -90,9 +71,8 @@ export default function CreateChatPrompt({
             open={openChatInvite}
         >
             <Grid container>
-                {' '}
-                <Grid item lg={5} md={2} sm={1} xs={1}></Grid>
-                <Grid item lg={3} md={8} sm={10} xs={10}>
+                <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                <Grid item xs={10} sm={8} md={6} lg={4}>
                     <Card>
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body1">
@@ -125,7 +105,6 @@ export default function CreateChatPrompt({
                                     type="submit"
                                     className={'m-1 p-1' + classes.iconButton}
                                     aria-label="search"
-                                    onClick={handleSearch}
                                 >
                                     <Search />
                                 </IconButton>
@@ -137,69 +116,75 @@ export default function CreateChatPrompt({
                                     }}
                                     name="searchString"
                                     type="text"
-                                    value={values.searchString}
-                                    onChange={handleSearch}
+                                    onChange={(e) => {
+                                        if (e.target.value.length > 0) {
+                                            searchUsers({
+                                                variables: {
+                                                    params: {
+                                                        searchString:
+                                                            e.target.value,
+                                                    },
+                                                },
+                                                context: {
+                                                    clientName: 'users',
+                                                },
+                                            });
+                                        }
+                                    }}
                                 />
                             </Paper>
                         </div>
-                        <CardContent>
+                        <CardContent
+                            style={{
+                                maxHeight: '75vh',
+                                minHeight: '30vh',
+                                overflowY: 'auto',
+                            }}
+                        >
                             {users && (
                                 <List>
-                                    {users &&
-                                        users?.map((user, index) => (
-                                            <ListItem
-                                                button
-                                                key={index}
-                                                onClick={() =>
-                                                    handleSendInvite(user)
-                                                }
-                                            >
-                                                <ListItemAvatar>
-                                                    <Avatar
-                                                        alt={user._id}
-                                                        src={
-                                                            user?.profile_pic
-                                                                ? process.env
-                                                                      .REACT_APP_BACKEND_URL +
-                                                                  user?.profile_pic
-                                                                : ''
-                                                        }
-                                                        style={{
-                                                            backgroundColor:
-                                                                generateRandomColor(),
-                                                            marginRight: '5px',
-                                                        }}
-                                                    >
-                                                        {user?.profile_pic
-                                                            ? ''
-                                                            : getUserInitials(
+                                    {users?.map((user, index) => (
+                                        <ListItem
+                                            button
+                                            key={index}
+                                            onClick={() =>
+                                                handleSendInvite(user)
+                                            }
+                                        >
+                                            <ListItemAvatar>
+                                                <Avatar
+                                                    alt={user._id}
+                                                    src={
+                                                        user?.profile_pic
+                                                            ? process.env
+                                                                  .REACT_APP_BACKEND_URL +
+                                                              user?.profile_pic
+                                                            : `https://ui-avatars.com/api/?name=${getUserInitials(
                                                                   user?.displayName
-                                                              )}
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    secondary={
-                                                        <Fragment>
-                                                            <Typography
-                                                                sx={{
-                                                                    display:
-                                                                        'inline',
-                                                                }}
-                                                            >
-                                                                {
-                                                                    user.displayName
-                                                                }
-                                                            </Typography>
-                                                            <Typography>
-                                                                {user.bio}
-                                                            </Typography>
-                                                        </Fragment>
+                                                              )}&background=random`
                                                     }
-                                                ></ListItemText>
-                                            </ListItem>
-                                        ))}
+                                                    style={{
+                                                        backgroundColor:
+                                                            generateRandomColor(),
+                                                        marginRight: '5px',
+                                                    }}
+                                                >
+                                                    {getUserInitials(
+                                                        user?.displayName
+                                                    )}
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary={user?.displayName}
+                                                secondary={
+                                                    user?.bio || `@${user?._id}`
+                                                }
+                                            ></ListItemText>
+                                        </ListItem>
+                                    ))}
                                 </List>
                             )}
+
                             {userLoading && (
                                 <Grid
                                     alignContent="center"
@@ -207,11 +192,12 @@ export default function CreateChatPrompt({
                                     container
                                     item
                                     direction="column"
-                                    style={{ width: '100%', marginTop: '40%' }}
+                                    style={{ width: '100%', marginTop: '10%' }}
                                 >
                                     <CircularProgress />
                                 </Grid>
                             )}
+
                             {!userLoading && !users && (
                                 <Grid
                                     alignContent="center"
@@ -227,78 +213,8 @@ export default function CreateChatPrompt({
                         </CardContent>
                     </Card>
                 </Grid>
+                <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
             </Grid>
-            {/* <Autocomplete
-        options={users}
-        loading={userLoading}
-        inputValue={values.searchString}
-        onChange={handleChange}
-        multiple
-        filterSelectedOptions
-        getOptionLabel={(option) => option?.displayName}
-        renderInput={(params) => (
-          <Paper
-            {...params}
-            variant={theme.palette.mode == "light" ? "outlined" : "elevation"}
-            elevation={0}
-            component="form"
-            className={classes.paperSearch}
-          >
-            {" "}
-            <IconButton
-              size="small"
-              type="submit"
-              className={"m-1 p-1" + classes.iconButton}
-              aria-label="search"
-              onClick={handleSearch}
-            >
-              <Search />
-            </IconButton>
-            <InputBase
-              className={classes.input}
-              placeholder="Find Users"
-              inputProps={{ "aria-label": "search messages" }}
-              name="searchString"
-              type="text"
-              value={values.searchString}
-              onChange={handleChange}
-            />
-          </Paper>
-        )}
-        renderOption={(option) => {
-          return (
-            <Grid container alignItems="center">
-              <Avatar
-                src={
-                  option?.profile_pic
-                    ? process.env.REACT_APP_BACKEND_URL + option?.profile_pic
-                    : ""
-                }
-                style={{
-                  backgroundColor: generateRandomColor(),
-                  marginRight: "5px",
-                }}
-              >
-                {option?.profile_pic
-                  ? ""
-                  : getUserInitials(option?.displayName)}
-              </Avatar>
-              <Grid item xs>
-                <span
-                  key={option?._id}
-                  //style={{ fontWeight: part.highlight ? 700 : 400 }}
-                >
-                  {option?.displayName}
-                </span>
-
-                <Typography variant="body2" color="textSecondary">
-                  {`@${option?._id}`}
-                </Typography>
-              </Grid>
-            </Grid>
-          );
-        }}
-      /> */}
         </Modal>
     );
 }

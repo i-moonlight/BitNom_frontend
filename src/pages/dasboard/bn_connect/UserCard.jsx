@@ -72,8 +72,9 @@ export default function UserCard({ setOpen, followers, following }) {
                         <div>
                             <Avatar
                                 src={
+                                    user?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    user?.profile_pic
+                                        user?.profile_pic
                                 }
                                 variant="rounded"
                                 style={{
@@ -196,8 +197,9 @@ export default function UserCard({ setOpen, followers, following }) {
                     </Button>
                 </CardActions>
             </Card>
-            {(location.pathname.includes('connect') ||
-                location.pathname.includes('posts/')) && (
+            {((location.pathname.includes('/connect') &&
+                !location.pathname.includes('/connect/')) ||
+                location.pathname.includes('/posts/')) && (
                 <Button onClick={setOpen} color="primary" fullWidth textCase>
                     Create Post
                 </Button>

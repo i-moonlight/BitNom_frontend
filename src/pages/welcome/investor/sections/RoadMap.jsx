@@ -40,7 +40,7 @@ export default function RoadMap() {
                 paddingBottom: query > 1 && ROADMAP_DISPLACEMENT,
             }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <div className="py-4">
                     <Paper
                         elevation={0}

@@ -36,7 +36,7 @@ export default function MuiCarousel() {
                 {' '}
                 STH: {JSON.stringify(query)}
             </Typography>
-            <Container>
+            <Container maxWidth="lg">
                 <div className="container">
                     <Carousel
                         autoPlay

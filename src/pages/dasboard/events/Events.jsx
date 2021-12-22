@@ -19,18 +19,17 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import { Button } from '../../../components/Button';
-import {
-    GET_BOOKMARKED_EVENTS,
-    QUERY_FETCH_PROFILE,
-    QUERY_LOAD_EVENTS,
-} from '../utilities/queries';
+import { ToastContainer } from 'react-toastify';
+import { GET_BOOKMARKED_EVENTS, QUERY_LOAD_EVENTS } from '../utilities/queries';
+
 import CreateEvent from './CreateEvent';
+import EventsFilter from './EventsFilter';
 import CreateEventCard from './CreateEventCard';
 import SEO from '../../../components/SEO';
 
@@ -49,13 +48,6 @@ export default function Events() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const user = state.auth.user;
-
-    const {
-        //  loading,
-        data: profileData,
-    } = useQuery(QUERY_FETCH_PROFILE, {
-        context: { clientName: 'users' },
-    });
 
     const { data: bookmarkedEvents, loading: bookmarksLoading } = useQuery(
         GET_BOOKMARKED_EVENTS,
@@ -83,6 +75,17 @@ export default function Events() {
                 title="Your Events | Bitnorm"
                 url={`${window.location.origin}/events`}
                 description={`All Events`}
+            />
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
             <div className={classes.root}>
                 <Container maxWidth="lg">
@@ -132,6 +135,7 @@ export default function Events() {
                                 </Card>
                             )}
                             <EventListCard
+                                setSelectedIndex={setSelectedIndex}
                                 selectedIndex={selectedIndex}
                                 loading={eventsLoading}
                                 events={eventsData?.Events?.get}
@@ -148,7 +152,7 @@ export default function Events() {
                 </Container>
             </div>
             <CreateEvent
-                profileData={profileData?.Users?.profile}
+                profileData={user}
                 open={createEventOpen}
                 setOpen={(open) => setCreateEventOpen(open)}
             />
@@ -160,9 +164,11 @@ function EventListCard({
     events,
     loading,
     selectedIndex,
+    setSelectedIndex,
     savedEvents,
     bookmarksLoading,
 }) {
+    const mdDown = useMediaQuery('(max-width:1279px)');
     const upcomingEvents = events?.filter(
         (event) => new Date(event?.endDate).getTime() > new Date().getTime()
     );
@@ -187,7 +193,14 @@ function EventListCard({
                 }
                 title={
                     <div className="center-horizontal">
-                        <Typography>Your Events</Typography>
+                        {mdDown ? (
+                            <EventsFilter
+                                eventsFilter={selectedIndex}
+                                setEventsFilter={setSelectedIndex}
+                            />
+                        ) : (
+                            <Typography variant="body1">Events</Typography>
+                        )}
                     </div>
                 }
             />
@@ -212,21 +225,21 @@ function EventListCard({
                 </Grid>
                 {selectedIndex === 0 && upcomingEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have no upcoming events.
                         </Typography>
                     </Grid>
                 )}
                 {selectedIndex === 1 && pastEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have no past events.
                         </Typography>
                     </Grid>
                 )}
                 {selectedIndex === 2 && savedEvents?.length < 1 && (
                     <Grid align="center">
-                        <Typography variant="body1" color="primary">
+                        <Typography variant="body2" color="primary">
                             You have not saved any events.
                         </Typography>
                     </Grid>
@@ -303,8 +316,9 @@ function EventPreview({ event }) {
                     >
                         {!smDown && (
                             <Typography color="textSecondary" variant="body2">
-                                {moment(event?.startDate).format(
-                                    'ddd, MMMM Do YYYY, h:mm a'
+                                {format(
+                                    new Date(event?.startDate),
+                                    'E, MMMM do y, h:mm aaa'
                                 )}
                             </Typography>
                         )}
@@ -321,47 +335,37 @@ function EventPreview({ event }) {
                                 <RoomRounded color="primary" />
                                 <Typography
                                     color="primary"
-                                    style={{ textDecoration: 'underline' }}
                                     variant="body2"
+                                    href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
+                                    style={{
+                                        color: 'inherit',
+                                        zIndex: '3',
+                                        textDecoration: 'underline',
+                                    }}
+                                    onClick={(e) => e.stopPropagation()}
+                                    target="_blank"
+                                    rel="noreferrer"
                                 >
-                                    <a
-                                        href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                                        style={{
-                                            color: 'inherit',
-                                            zIndex: '3',
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        {truncateText(
-                                            event?.location?.address,
-                                            40
-                                        )}
-                                    </a>
+                                    {truncateText(event?.location?.address, 40)}
                                 </Typography>
                             </div>
                         ) : (
                             <div className="center-horizontal">
                                 <VideocamRounded color="primary" />
                                 <Typography
+                                    component="a"
                                     color="primary"
-                                    style={{ textDecoration: 'underline' }}
                                     variant="body2"
+                                    style={{
+                                        textDecoration: 'underline',
+                                        zIndex: '3',
+                                    }}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href={event?.link}
+                                    onClick={(e) => e.stopPropagation()}
                                 >
-                                    <a
-                                        //component='a'
-                                        href={event?.link}
-                                        style={{
-                                            color: 'inherit',
-                                            zIndex: '3',
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        Online
-                                    </a>
+                                    Online
                                 </Typography>
                             </div>
                         )}

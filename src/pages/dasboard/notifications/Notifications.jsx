@@ -12,23 +12,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
-
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { GET_USER_NOTIFICATIONS } from '../utilities/queries';
 import NotificationsListCard from './NotificationsListCard';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    // sidebar: {
-    //     width: '100%',
-    //     maxWidth: 360,
-    //     background: 'transparent',
-    //     //color: theme.typography.textPrimary,
-    // },
-}));
 
 export default function Notifications() {
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -36,7 +23,6 @@ export default function Notifications() {
     const mdDown = useMediaQuery('(max-width:1279px)');
 
     const { loading, data } = useQuery(GET_USER_NOTIFICATIONS, {
-        variables: { limit: 20 },
         context: { clientName: 'notifications' },
     });
 
@@ -185,3 +171,15 @@ function SideBarMenu({ selectedIndex, setSelectedIndex }) {
         </Card>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    // sidebar: {
+    //     width: '100%',
+    //     maxWidth: 360,
+    //     background: 'transparent',
+    //     //color: theme.typography.textPrimary,
+    // },
+}));

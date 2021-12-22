@@ -14,6 +14,7 @@ import {
     ThumbUpRounded,
 } from '@mui/icons-material';
 import {
+    Alert,
     Avatar,
     Card,
     CardActionArea,
@@ -21,7 +22,6 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    CircularProgress,
     Container,
     Divider,
     Grid,
@@ -29,22 +29,24 @@ import {
     IconButton,
     Typography,
     useTheme,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '../../../../components/Button';
-import ImagePreview from '../../../../components/ImagePreview';
 import ImageModal from '../../../../components/ImageModal';
+import ImagePreview from '../../../../components/ImagePreview';
 import ReactionButton from '../../../../components/ReactionButton';
+import ReactionHover from '../../../../components/ReactionHover';
 import Screen from '../../../../components/Screen';
 import SEO from '../../../../components/SEO';
 import { getUserInitials } from '../../../../utilities/Helpers';
@@ -54,7 +56,6 @@ import {
     getReactionsSum,
     getTopComments,
     mentionsFinder,
-    getFeed,
 } from '../../utilities/functions';
 import {
     MUTATION_CREATE_COMMENT,
@@ -62,66 +63,27 @@ import {
     MUTATION_REMOVE_REACTION,
     QUERY_FETCH_PROFILE,
     QUERY_GET_COMMENTS,
-    QUERY_LOAD_SCROLLS,
     QUERY_POST_BY_ID,
 } from '../../utilities/queries';
-import EmojiPickerPopover from '../popovers/EmojiPickerPopover';
+import ExternalShareModal from '../popovers/ExternalShareModal';
 import FlagResourceModal from '../popovers/FlagResourceModal';
 import ReactionsModal from '../popovers/ReactionsModal';
+import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import UserCard from '../UserCard';
 import Comment from './comment/Comment';
+import CommentsFilter from './comment/CommentsFilter';
 import UpdateComment from './comment/UpdateComment';
 import CreatePost from './CreatePost';
-import FilterButton from './FilterButton';
 // import LinkCard from './LinkCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
+const EmojiPickerPopover = React.lazy(() =>
+    import('../popovers/EmojiPickerPopover')
+);
 
-const scrollOptionId = 'menu-scroll-option';
-const emojiPickerId = 'emoji-picker-popover';
 function PostView() {
     const classes = useStyles();
     const [updateScrollOpen, setUpdateScrollOpen] = useState(false);
@@ -139,13 +101,11 @@ function PostView() {
     const [postToEdit, setPostToEdit] = useState(null);
     const [commentToEdit, setCommentToEdit] = useState(null);
     const [flaggedResource, setFlaggedResource] = useState(null);
-    //const [openImage, setOpenImage] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [openVideo, setOpenVideo] = useState(false);
     const [videoDisabled, setVideoDisabled] = useState(false);
     const [imageDisabled, setImageDisabled] = useState(false);
     const [previewURL, setPreviewURL] = useState();
-    const [fileErrors, setFileErrors] = useState([]);
-
     const [scrollOptionAnchorEl, setScrollOptionAnchorEl] = useState(null);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [userReaction, setUserReaction] = useState();
@@ -156,12 +116,19 @@ function PostView() {
     const [comment_image, setCommentImage] = useState(null);
     const [openImage, setOpenImage] = useState(false);
     const [likeHovered, setLikeHovered] = useState(false);
-    const [createCommentErr, setCreateCommentErr] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+
+    const [getPostErr, setGetPostErr] = useState(null);
+    const [openShareModal, setOpenShareModal] = useState(false);
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
 
     const theme = useTheme();
     const state = useSelector((st) => st);
@@ -203,75 +170,187 @@ function PostView() {
         [classes.green, classes.primary, classes.red]
     );
 
-    const { loading: postLoading, data: postData } = useQuery(
-        QUERY_POST_BY_ID,
-        {
-            variables: { _id: postId },
-        }
-    );
+    const {
+        loading: postLoading,
+        data: postData,
+        error: postError,
+    } = useQuery(QUERY_POST_BY_ID, {
+        variables: { _id: postId },
+        //fetchPolicy: 'cache-first',
+    });
 
     useEffect(() => {
         const reaction = getUserReaction(postData?.Posts?.getById);
         setUserReaction(reaction);
         setIcon(reaction);
-    }, [getUserReaction, setUserReaction, setIcon, postData?.Posts?.getById]);
+    }, [
+        getUserReaction,
+        setUserReaction,
+        setIcon,
+        postData?.Posts?.getById,
+        createReactionData,
+        removeReactionData,
+    ]);
+
+    useEffect(() => {
+        postError &&
+            postError.graphQLErrors.length > 0 &&
+            postError.graphQLErrors?.forEach((err) => {
+                if (
+                    err?.state?._id[0] ==
+                    'We did not find a post with the ID you provided!'
+                ) {
+                    setGetPostErr(
+                        'Oops! We did not find this post. It might have been deleted by the author.'
+                    );
+                }
+            });
+        postError &&
+            postError.networkError &&
+            setGetPostErr(
+                'Something is wrong! Please check your connection and refresh the page.'
+            );
+    }, [postError]);
 
     const {
         //  loading,
-        data: profileData,
+        data: profile,
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
-    const [
-        createComment,
-        {
-            data: createCommentData,
-            // loading: createCommentLoading,
-            // error: createCommentError,
-        },
-    ] = useMutation(MUTATION_CREATE_COMMENT);
+    const profileData = profile?.Users?.profile;
 
     const {
         data: commentsData,
         // loading: commentsLoading,
         // error: commentsError,
+        fetchMore,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: postId } },
+        variables: { data: { scroll_id: postId, limit: 8 } },
+    });
+
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    scroll_id: postId,
+                    limit: 8,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
+
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: postId, limit: 8 } },
+            });
+            const normalizedPostId = cache.identify({
+                id: postId,
+                __typename: 'OPost',
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: postId, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+        },
     });
 
     const onCreateComment = (ICreateComment) => {
+        setCommentFilter(1);
         createComment({
             variables: {
                 data: ICreateComment,
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: {
-                        data: { scroll_id: postId },
+            errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(comment_text).content,
+                        content_entities:
+                            mentionsFinder(comment_text).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: postId,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        ...createCommentResponse,
                     },
                 },
-                {
-                    query: QUERY_LOAD_SCROLLS,
-                    variables: {
-                        data: { ids: getFeed(profileData), limit: 220 },
-                    },
-                },
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
+            },
+        }).then(({ data, errors: createCommentErrors }) => {
+            if (data?.Comments?.create) {
+                setCommentText('');
+                setCommentImage(null);
+                setErrors([]);
+                setPreviewURL();
+            }
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = createCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
         });
-        if (!createCommentData) console.log(createCommentData);
-        setCommentFilter(1);
-        setCommentText('');
-        setCommentImage(null);
-        setCreateCommentErr(false);
-        setFileErrors([]);
-        setPreviewURL();
     };
-
     const mentions = profileData?.followers?.map?.((item) => {
         return {
             id: item?.userId?._id,
@@ -279,10 +358,39 @@ function PostView() {
         };
     });
 
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
     const handleCreateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '' && !comment_image)
-            return setCreateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
@@ -291,6 +399,8 @@ function PostView() {
             scroll: postId,
             image: comment_image,
         });
+        setCommentText('');
+        setPreviewURL();
     };
 
     const handleScrollOptionOpen = (event) => {
@@ -318,12 +428,26 @@ function PostView() {
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: postId,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction(reaction);
         setIcon(reaction);
@@ -337,20 +461,34 @@ function PostView() {
                     type: 'post',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_POST_BY_ID,
-                    variables: { _id: postId },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedPostId = cache.identify({
+                    id: postId,
+                    __typename: 'OPost',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedPostId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setIcon();
         setUserReaction();
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        setCommentText(`${comment_text} ${emoji}`);
+        //handleEmojiPickerClose();
     };
 
     const contentClickHandler = (e) => {
@@ -368,14 +506,15 @@ function PostView() {
     const authorInitials = getUserInitials(
         postData?.Posts?.getById?.author?.displayName
     );
+
     const currentUserInitials = getUserInitials(user?.displayName);
 
-    const latestComments = commentsData?.Comments?.get.filter(
+    const latestComments = commentsData?.Comments?.get?.data?.filter(
         (comment) => !comment.response_to
     );
 
-    const topComments = commentsData?.Comments?.get
-        .filter((comment) => !comment.response_to)
+    const topComments = commentsData?.Comments?.get?.data
+        ?.filter((comment) => !comment.response_to)
         .sort((a, b) => getTopComments(b) - getTopComments(a));
 
     return (
@@ -398,8 +537,8 @@ function PostView() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -414,57 +553,45 @@ function PostView() {
                             <Grid item lg={3}>
                                 <UserCard
                                     scrolls={state?.postCount?.postCount}
-                                    following={
-                                        profileData?.Users?.profile?.following
-                                            ?.length
-                                    }
-                                    followers={
-                                        profileData?.Users?.profile?.followers
-                                            ?.length
-                                    }
+                                    following={user?.following?.length}
+                                    followers={user?.followers?.length}
                                     setOpen={(open) =>
                                         setCreateScrollOpen(open)
                                     }
-                                    events={0}
                                 />
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Card
-                                variant="outlined"
-                                style={{ marginBottom: 12 }}
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <IconButton
-                                            size="small"
-                                            aria-label="back"
-                                            color="inherit"
-                                            onClick={() => history.goBack()}
-                                        >
-                                            <ArrowBack />
-                                        </IconButton>
-                                    }
-                                />
-                            </Card>
-
-                            <Grid item align="center">
-                                {postLoading && (
-                                    <CircularProgress
-                                        color="primary"
-                                        size={60}
-                                        thickness={6}
+                            <Hidden mdDown>
+                                <Card variant="outlined">
+                                    <CardHeader
+                                        avatar={
+                                            <IconButton
+                                                size="small"
+                                                aria-label="back"
+                                                color="inherit"
+                                                onClick={() => history.goBack()}
+                                            >
+                                                <ArrowBack />
+                                            </IconButton>
+                                        }
                                     />
+                                </Card>
+                            </Hidden>
+                            <Grid item>
+                                {getPostErr && (
+                                    <Alert severity="error">
+                                        <Typography>{getPostErr}</Typography>
+                                    </Alert>
                                 )}
+                            </Grid>
+                            <Grid item className={classes.mainCard}>
+                                {postLoading && <SkeletonScrollCard />}
                             </Grid>
                             {postData?.Posts?.getById && (
                                 <Card
-                                    style={{ marginBottom: 16, zIndex: 1 }}
-                                    /* onClick={() =>
-                                        history.push(
-                                            `/posts/${postData?.Posts?.getById?._id}`
-                                        )
-                                    } */
+                                    style={{ zIndex: 1 }}
+                                    className={classes.mainCard}
                                 >
                                     <CardHeader
                                         avatar={
@@ -473,10 +600,13 @@ function PostView() {
                                                     backgroundColor: '#fed132',
                                                 }}
                                                 src={
+                                                    postData?.Posts?.getById
+                                                        ?.author?.profile_pic &&
                                                     process.env
                                                         .REACT_APP_BACKEND_URL +
-                                                    postData?.Posts?.getById
-                                                        ?.author?.profile_pic
+                                                        postData?.Posts?.getById
+                                                            ?.author
+                                                            ?.profile_pic
                                                 }
                                             >
                                                 {authorInitials}
@@ -526,21 +656,24 @@ function PostView() {
                                             </div>
                                         }
                                         subheader={
-                                            <Typography variant="body2">
-                                                {moment(
+                                            <Typography
+                                                color="textSecondary"
+                                                variant="body2"
+                                            >
+                                                {getDistanceToNowWithSuffix(
                                                     postData?.Posts?.getById
                                                         ?.createdAt
-                                                ).fromNow()}
+                                                )}
                                             </Typography>
                                         }
                                     />
                                     <CardContent>
                                         <Typography
                                             variant="body2"
-                                            color="textSecondary"
-                                            component="p"
+                                            component="div"
                                         >
                                             <Typography
+                                                variant="body2"
                                                 onClick={(e) =>
                                                     contentClickHandler(e)
                                                 }
@@ -549,7 +682,11 @@ function PostView() {
                                                         postData?.Posts?.getById
                                                     ),
                                                 }}
-                                                style={{ zIndex: 2 }}
+                                                style={{
+                                                    zIndex: 2,
+                                                    overflowWrap: 'break-word',
+                                                    wordWrap: 'break-word',
+                                                }}
                                             ></Typography>
                                         </Typography>
                                         <Grid
@@ -576,7 +713,7 @@ function PostView() {
                                                         <Grid
                                                             style={{
                                                                 zIndex: 2,
-                                                                padding: '1px',
+                                                                padding: '2px',
                                                             }}
                                                             key={imageURL}
                                                             item
@@ -655,8 +792,13 @@ function PostView() {
                                             )}
                                         <br />
 
-                                        <Typography display="inline">
+                                        <Typography
+                                            display="inline"
+                                            component="div"
+                                            color="textSecondary"
+                                        >
                                             <Typography
+                                                variant="body2"
                                                 onClick={() => {
                                                     setOpenReactions(true);
                                                     setResourceReactions(
@@ -680,6 +822,7 @@ function PostView() {
                                             </Typography>
                                             {' . '}
                                             <Typography
+                                                variant="body2"
                                                 onClick={() =>
                                                     setOpenComments(true)
                                                 }
@@ -719,72 +862,14 @@ function PostView() {
                                             setLikeHovered(false)
                                         }
                                     >
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('like');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbUpRounded
-                                                    className={classes.primary}
-                                                />
+                                        <ReactionHover
+                                            setLikeHovered={setLikeHovered}
+                                            handleCreateReaction={
+                                                handleCreateReaction
                                             }
-                                        >
-                                            Like
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('love');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <FavoriteRounded
-                                                    className={classes.red}
-                                                />
-                                            }
-                                        >
-                                            Love
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction('dislike');
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <ThumbDownRounded
-                                                    className={classes.primary}
-                                                />
-                                            }
-                                        >
-                                            Dislike
-                                        </Button>
-                                        <Button
-                                            color="default"
-                                            textCase
-                                            onClick={() => {
-                                                handleCreateReaction(
-                                                    'celebrate'
-                                                );
-                                                setLikeHovered(false);
-                                            }}
-                                            variant="text"
-                                            startIcon={
-                                                <PanToolRounded
-                                                    className={classes.green}
-                                                />
-                                            }
-                                        >
-                                            Celebrate
-                                        </Button>
+                                            likeHovered={likeHovered}
+                                            reaction={userReaction}
+                                        />
                                     </Card>
                                     <CardActions className="space-around">
                                         <ReactionButton
@@ -851,7 +936,7 @@ function PostView() {
                                             )}
                                     </CardActionArea>
                                     {openComments && (
-                                        <div style={{ padding: '3px' }}>
+                                        <div className={classes.commentSection}>
                                             <div className="d-flex align-items-center">
                                                 <Hidden smDown>
                                                     <Avatar
@@ -861,9 +946,10 @@ function PostView() {
                                                             marginRight: '3px',
                                                         }}
                                                         src={
+                                                            user?.profile_pic &&
                                                             process.env
                                                                 .REACT_APP_BACKEND_URL +
-                                                            user?.profile_pic
+                                                                user?.profile_pic
                                                         }
                                                         sx={{
                                                             width: '30px',
@@ -895,7 +981,8 @@ function PostView() {
                                                         placeholder={
                                                             commentsData
                                                                 ?.Comments?.get
-                                                                ?.length > 0
+                                                                ?.data?.length >
+                                                            0
                                                                 ? ''
                                                                 : 'Be the first to comment..'
                                                         }
@@ -952,9 +1039,9 @@ function PostView() {
                                                     size="small"
                                                     onClick={() => {
                                                         document
-                                                            .getElementsByClassName(
-                                                                'comment-dropzone'
-                                                            )[0]
+                                                            .getElementById(
+                                                                'scrollview-comment-image'
+                                                            )
                                                             .click();
                                                     }}
                                                 >
@@ -972,13 +1059,39 @@ function PostView() {
                                             <div
                                                 className={classes.inputHelper}
                                             >
-                                                <Typography
-                                                    color="error"
-                                                    variant="body2"
-                                                >
-                                                    {createCommentErr &&
-                                                        'The comment content cannot be empty'}
-                                                </Typography>
+                                                {errors?.length > 0 && (
+                                                    <Card
+                                                        elevation={0}
+                                                        style={{
+                                                            marginTop: '3px',
+                                                            background:
+                                                                'transparent',
+                                                        }}
+                                                        component="div"
+                                                        //variant="outlined"
+                                                    >
+                                                        {errors?.map(
+                                                            (errItem) => (
+                                                                <ListItem
+                                                                    key={
+                                                                        errItem
+                                                                    }
+                                                                >
+                                                                    <ListItemText
+                                                                        secondary={
+                                                                            <Typography
+                                                                                variant="body2"
+                                                                                color="error"
+                                                                            >
+                                                                                {`~ ${errItem}`}
+                                                                            </Typography>
+                                                                        }
+                                                                    />
+                                                                </ListItem>
+                                                            )
+                                                        )}
+                                                    </Card>
+                                                )}
                                             </div>
 
                                             <Card
@@ -1004,84 +1117,21 @@ function PostView() {
                                                                 display: 'none',
                                                             }}
                                                         >
-                                                            <DropzoneArea
-                                                                clearOnUnmount
-                                                                dropzoneClass="comment-dropzone"
-                                                                //id="dropzone"
-                                                                clickable={true}
+                                                            <input
+                                                                id="scrollview-comment-image"
+                                                                type="file"
                                                                 onChange={(
-                                                                    files
+                                                                    e
                                                                 ) => {
-                                                                    const errors =
-                                                                        [];
-                                                                    let counter = 0;
-                                                                    files.map(
-                                                                        (
-                                                                            file
-                                                                        ) => {
-                                                                            const image =
-                                                                                new Image();
-                                                                            image.addEventListener(
-                                                                                'load',
-                                                                                () => {
-                                                                                    // only select images within width/height/size limits
-                                                                                    if (
-                                                                                        (image.width <
-                                                                                            1200) &
-                                                                                        (image.height <
-                                                                                            1350) &
-                                                                                        (file.size <
-                                                                                            5000000)
-                                                                                    ) {
-                                                                                        counter += 1;
-                                                                                        setFileErrors(
-                                                                                            []
-                                                                                        );
-                                                                                    } else {
-                                                                                        errors.push(
-                                                                                            'Image is too large. Trim to 1200px by 1200px or less.'
-                                                                                        );
-                                                                                        setFileErrors(
-                                                                                            errors
-                                                                                        );
-                                                                                    }
-                                                                                    if (
-                                                                                        counter ===
-                                                                                        1
-                                                                                    ) {
-                                                                                        setPreviewURL(
-                                                                                            URL.createObjectURL(
-                                                                                                file
-                                                                                            )
-                                                                                        );
-                                                                                        setCommentImage(
-                                                                                            file
-                                                                                        );
-                                                                                    }
-                                                                                }
-                                                                            );
-                                                                            image.src =
-                                                                                URL.createObjectURL(
-                                                                                    file
-                                                                                );
-                                                                        }
+                                                                    handleSelectImage(
+                                                                        Array.from(
+                                                                            e
+                                                                                .target
+                                                                                .files
+                                                                        )
                                                                     );
                                                                 }}
-                                                                acceptedFiles={[
-                                                                    'image/jpeg',
-                                                                    'image/png',
-                                                                ]}
-                                                                maxFileSize={
-                                                                    2500000
-                                                                }
-                                                                filesLimit={1}
-                                                                showPreviewsInDropzone
-                                                                showPreviews={
-                                                                    false
-                                                                }
-                                                                showFileNames={
-                                                                    false
-                                                                }
+                                                                accept="image/jpeg, image/png"
                                                             />
                                                         </div>
                                                     </div>
@@ -1089,33 +1139,19 @@ function PostView() {
                                                         size="small"
                                                         color="primary"
                                                         className="m-1 p-1"
+                                                        onClick={() => {
+                                                            setPreviewURL();
+
+                                                            setCommentImage(
+                                                                null
+                                                            );
+                                                        }}
                                                     >
-                                                        <CloseRounded
-                                                            onClick={() => {
-                                                                setPreviewURL();
-                                                                setFileErrors(
-                                                                    []
-                                                                );
-                                                                setCommentImage(
-                                                                    null
-                                                                );
-                                                            }}
-                                                        />
+                                                        <CloseRounded />
                                                     </IconButton>
                                                 </div>
                                             </Card>
 
-                                            <div
-                                                className={classes.inputHelper}
-                                            >
-                                                <Typography
-                                                    color="error"
-                                                    variant="body2"
-                                                >
-                                                    {fileErrors.length > 0 &&
-                                                        fileErrors[0]}
-                                                </Typography>
-                                            </div>
                                             {postData?.Posts?.getById
                                                 ?.comments > 0 && (
                                                 <Typography
@@ -1124,8 +1160,9 @@ function PostView() {
                                                     style={{
                                                         margin: '15px 0px',
                                                     }}
+                                                    component="div"
                                                 >
-                                                    <FilterButton
+                                                    <CommentsFilter
                                                         setCommentFilter={
                                                             setCommentFilter
                                                         }
@@ -1146,7 +1183,8 @@ function PostView() {
                                                             postData?.Posts
                                                                 ?.getById
                                                         }
-                                                        key={comment._id}
+                                                        id={comment._id}
+                                                        key={comment?._id}
                                                         setUpdateCommentOpen={
                                                             setUpdateCommentOpen
                                                         }
@@ -1181,6 +1219,9 @@ function PostView() {
                                                         comment_image={
                                                             comment_image
                                                         }
+                                                        setCommentImage={
+                                                            setCommentImage
+                                                        }
                                                     />
                                                 ))}
                                             {commentFilter === 1 &&
@@ -1194,7 +1235,8 @@ function PostView() {
                                                                 postData?.Posts
                                                                     ?.getById
                                                             }
-                                                            key={comment._id}
+                                                            id={comment._id}
+                                                            key={comment?._id}
                                                             setUpdateCommentOpen={
                                                                 setUpdateCommentOpen
                                                             }
@@ -1229,9 +1271,43 @@ function PostView() {
                                                             comment_image={
                                                                 comment_image
                                                             }
+                                                            setCommentImage={
+                                                                setCommentImage
+                                                            }
                                                         />
                                                     )
                                                 )}
+                                            {commentsData?.Comments?.get?.data
+                                                ?.length > 0 &&
+                                                commentsData?.Comments?.get
+                                                    ?.hasMore &&
+                                                !loadingMore && (
+                                                    <Grid align="center">
+                                                        <Button
+                                                            size="small"
+                                                            textCase
+                                                            variant="text"
+                                                            onClick={() =>
+                                                                loadMore(
+                                                                    commentsData
+                                                                        ?.Comments
+                                                                        ?.get
+                                                                        ?.data
+                                                                        ?.length
+                                                                )
+                                                            }
+                                                        >
+                                                            more comments...
+                                                        </Button>
+                                                    </Grid>
+                                                )}
+                                            {loadingMore && (
+                                                <Grid align="center">
+                                                    <Typography color="primary">
+                                                        Loading ...
+                                                    </Typography>
+                                                </Grid>
+                                            )}
                                         </div>
                                     )}
                                 </Card>
@@ -1284,6 +1360,7 @@ function PostView() {
                 setOpenImage={setOpenImage}
                 openVideo={openVideo}
                 setOpenVideo={setOpenVideo}
+                postView
             />
             <UpdateComment
                 profileData={profileData?.Users?.profile}
@@ -1306,6 +1383,8 @@ function PostView() {
             />
             <ImageModal
                 open={imageModalOpen}
+                setImagePreviewURL={setImagePreviewURL}
+                setImagePreviewOpen={setImagePreviewOpen}
                 setImageIndex={setImageIndex}
                 imageIndex={imageIndex}
                 post={postToPreview}
@@ -1346,6 +1425,8 @@ function PostView() {
                 setPostToEdit={setPostToEdit}
                 setOpenFlag={setOpenFlag}
                 setUpdateOpen={setUpdateScrollOpen}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
             />
             <EmojiPickerPopover
                 emojiPickerId={emojiPickerId}
@@ -1354,8 +1435,71 @@ function PostView() {
                 handleEmojiPickerClose={handleEmojiPickerClose}
                 handleSelectEmoji={handleSelectEmoji}
             />
+            <ExternalShareModal
+                openShareModal={openShareModal}
+                sharedResource={sharedResource}
+                setSharedResource={setSharedResource}
+                setOpenShareModal={setOpenShareModal}
+            />
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+    mainCard: {
+        marginTop: 16,
+        [theme.breakpoints.down('md')]: {
+            marginBottom: 16,
+        },
+    },
+    clickableTypography: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    replies: {
+        color: 'inherit',
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    commentSection: {
+        padding: '5px 4px',
+        [theme.breakpoints.up('md')]: {
+            padding: '15px',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const scrollOptionId = 'menu-scroll-option';
+const emojiPickerId = 'emoji-picker-popover';
 
 export default PostView;

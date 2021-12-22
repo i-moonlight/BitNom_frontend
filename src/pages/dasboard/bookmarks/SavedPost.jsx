@@ -10,7 +10,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import moment from 'moment';
+import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getUserInitials } from '../../../utilities/Helpers';
@@ -58,8 +58,9 @@ export default function SavedPost({ scroll }) {
                                     backgroundColor: '#fed132',
                                 }}
                                 src={
+                                    scroll?.author?.profile_pic &&
                                     process.env.REACT_APP_BACKEND_URL +
-                                    scroll?.author?.profile_pic
+                                        scroll?.author?.profile_pic
                                 }
                                 aria-label="recipe"
                             >
@@ -91,7 +92,16 @@ export default function SavedPost({ scroll }) {
                         }
                         title={
                             <div className="center-horizontal">
-                                <Typography style={{ marginRight: 8 }}>
+                                <Typography
+                                    component="a"
+                                    style={{ marginRight: 8, zIndex: 2 }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        history.push(
+                                            `/users/${scroll?.author?._id}`
+                                        );
+                                    }}
+                                >
                                     {scroll?.author?.displayName}
                                 </Typography>
                                 <Typography
@@ -102,20 +112,29 @@ export default function SavedPost({ scroll }) {
                                 </Typography>
                             </div>
                         }
-                        subheader={moment(scroll?.createdAt).fromNow()}
+                        subheader={
+                            <Typography
+                                component="span"
+                                color="textSecondary"
+                                variant="body2"
+                            >
+                                {getDistanceToNowWithSuffix(scroll?.createdAt)}
+                            </Typography>
+                        }
                     />
                     <CardContent>
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                        >
+                        <Typography variant="body2" component="div">
                             <Typography
+                                variant="body2"
                                 onClick={(e) => contentClickHandler(e)}
                                 dangerouslySetInnerHTML={{
                                     __html: contentBodyFactory(scroll),
                                 }}
-                                style={{ zIndex: 2 }}
+                                style={{
+                                    zIndex: 2,
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
                             ></Typography>
                         </Typography>
                         <Grid container style={{ margin: '3px 0px' }}>
@@ -134,7 +153,7 @@ export default function SavedPost({ scroll }) {
                                 scroll?.images?.map((imageURL) => (
                                     <Grid
                                         style={{
-                                            padding: '1px',
+                                            padding: '2px',
                                         }}
                                         key={imageURL}
                                         item
@@ -176,8 +195,12 @@ export default function SavedPost({ scroll }) {
                             )}
 
                         <br />
-                        <Typography display="inline">
-                            <Typography display="inline">
+                        <Typography
+                            color="textSecondary"
+                            component="div"
+                            display="inline"
+                        >
+                            <Typography display="inline" variant="body2">
                                 {`${getReactionsSum(scroll)} ${
                                     getReactionsSum(scroll) === 1
                                         ? 'Reaction'
@@ -185,7 +208,7 @@ export default function SavedPost({ scroll }) {
                                 }`}
                             </Typography>
                             {' . '}
-                            <Typography display="inline">
+                            <Typography variant="body2" display="inline">
                                 {`${scroll?.comments} ${
                                     scroll?.comments === 1
                                         ? 'Comment'

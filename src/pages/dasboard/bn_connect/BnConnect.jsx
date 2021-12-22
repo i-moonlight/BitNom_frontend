@@ -4,35 +4,40 @@ import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { Button } from '../../../components/Button';
 import ImageModal from '../../../components/ImageModal';
 import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
-import { loadScrolls, loadTrending } from '../../../store/actions/postActions';
-import { getFeed } from '../utilities/functions';
-import { QUERY_GET_USERS, QUERY_LOAD_SCROLLS } from '../utilities/queries';
+import {
+    //loadScrolls,
+    loadTrending,
+    loadUsers,
+    loadFeed,
+} from '../../../store/actions/postActions';
+//import { getFeed } from '../utilities/functions';
+import {
+    QUERY_GET_USERS,
+    QUERY_LOAD_SCROLLS,
+    QUERY_GET_FEED,
+} from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
 import ReactionsModal from './popovers/ReactionsModal';
 import UpdateComment from './scroll/comment/UpdateComment';
-import CreatePost from './scroll/CreatePost';
-import Scroll from './scroll/Scroll';
-import UpdatePost from './scroll/UpdatePost';
+import CreatePostModal from './scroll/CreatePost';
+import UpdatePostModal from './scroll/UpdatePost';
 import SkeletonCreateScrollCard from './skeleton/SkeletonCreateScrollCard';
+import SkeletonScrollCard from './skeleton/SkeletonScrollCard';
 import SkeletonSuggestedPeopleCard from './skeleton/SkeletonSuggestedPeopleCard';
 import SkeletonTrendingPostsCard from './skeleton/SkeletonTrendingPostCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
 
+const Scroll = React.lazy(() => import('./scroll/Scroll'));
 const CreateScrollCard = React.lazy(() => import('./CreateScrollCard'));
 const SuggestedPeopleCard = React.lazy(() => import('./SuggestedPeopleCard'));
 const TrendingPostsCard = React.lazy(() => import('./TrendingPostsCard'));
 const UserCard = React.lazy(() => import('./UserCard'));
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(2),
-    },
-}));
 
 export default function BnConnect() {
     const [createScrollOpen, setCreateScrollOpen] = useState(false);
@@ -56,37 +61,42 @@ export default function BnConnect() {
     const [flaggedResource, setFlaggedResource] = useState(null);
     const [openShareModal, setOpenShareModal] = useState(false);
 
+    //const [skip, setSkip] = useState(0);
+    const [loadingMore, setLoadingMore] = useState(false);
+
     const classes = useStyles();
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
 
     const user = state.auth.user;
-    const posts = state.posts.list;
+    //const posts = state.posts.list;
+    const feed = state.posts.feed;
+    // const comments = state.posts.comments;
     const trending = state.posts.trending;
+    const users = state.posts.users;
+
+    // console.log(comments);
 
     const mdDown = useMediaQuery('(max-width:1279px)');
     const smDown = useMediaQuery('(max-width:959px)');
 
-    // const { data: profileData } = useQuery(QUERY_FETCH_PROFILE, {
-    //     context: { clientName: 'users' },
-    // });
-
-    const { data: usersData } = useQuery(QUERY_GET_USERS, {
+    const {
+        loading: usersLoading,
+        data: usersData,
+        error: usersError,
+    } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
         context: { clientName: 'users' },
     });
 
-    const suggestedUsers = usersData?.Users?.get?.filter(
-        (item) => item?._id !== 'bn-ai' && item?._id !== user?._id
-    );
-
     const {
-        loading: scrollLoading,
-        data: scrollData,
-        error: scrollError,
-    } = useQuery(QUERY_LOAD_SCROLLS, {
+        loading: feedLoading,
+        data: feedData,
+        error: feedError,
+        fetchMore,
+    } = useQuery(QUERY_GET_FEED, {
         variables: {
-            data: { ids: getFeed(user), limit: 220 },
+            data: { feed_id: user?._id, limit: 10 },
         },
     });
 
@@ -97,28 +107,72 @@ export default function BnConnect() {
     } = useQuery(QUERY_LOAD_SCROLLS, {
         variables: {
             data: {
-                ids: getFeed(user),
+                feed_id: user?._id,
                 sortByField: 'trending',
-                limit: 5,
+                limit: 10,
             },
         },
+        fetchPolicy: 'network-only',
     });
 
+    const loadMore = (offset) => {
+        setLoadingMore(true);
+        fetchMore({
+            variables: {
+                data: {
+                    feed_id: user?._id,
+                    limit: 10,
+                    skip: offset,
+                },
+            },
+        }).then(() => {
+            setLoadingMore(false);
+        });
+    };
+
+    const following = [];
+    user?.following?.forEach((item) => following.push(item?.userId?._id));
+
+    const suggestedUsers = users?.filter(
+        (item) =>
+            item?._id !== 'bn-ai' &&
+            item?._id !== user?._id &&
+            !following.includes(item?._id) &&
+            item?.displayName
+    );
+
     useEffect(() => {
+        !usersError &&
+            !usersLoading &&
+            dispatch(loadUsers(usersData?.Users?.get));
         !trendingError &&
             !trendingLoading &&
             dispatch(loadTrending(trendingData?.Posts?.get));
-        !scrollError &&
-            !scrollLoading &&
-            dispatch(loadScrolls(scrollData?.Posts?.get));
+        //!scrollError &&
+        //    !scrollLoading &&
+        //    dispatch(loadScrolls(scrollData?.Posts?.get));
+        !feedError &&
+            !feedLoading &&
+            dispatch(
+                loadFeed({
+                    posts: feedData?.Feed?.get?.data,
+                    hasMore: feedData?.Feed?.get?.hasMore,
+                })
+            );
     }, [
         dispatch,
-        scrollData?.Posts?.get,
-        scrollError,
-        scrollLoading,
+        feedError,
+        feedData?.Feed?.get,
+        feedLoading,
+        //scrollData?.Posts?.get,
+        //scrollError,
+        //scrollLoading,
         trendingData?.Posts?.get,
         trendingError,
         trendingLoading,
+        usersData?.Users?.get,
+        usersError,
+        usersLoading,
     ]);
 
     useEffect(() => {
@@ -127,18 +181,18 @@ export default function BnConnect() {
         OneSignal.push(() => {
             OneSignal.init({
                 appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+                // appId: '6f7e8d21-0a84-4680-9af5-bfe6e141b6c7',
             });
             OneSignal.isPushNotificationsEnabled(function (isEnabled) {
                 if (isEnabled) {
                     var externalUserId = user._id;
                     OneSignal.setExternalUserId(externalUserId);
                 } else {
-                    console.log('Push notifications are not enabled yet.');
+                    // Push notifications not enabled
                 }
             });
         });
     }, [user._id]);
-
     return (
         <Screen>
             <SEO
@@ -148,8 +202,8 @@ export default function BnConnect() {
             />
             <ToastContainer
                 position="bottom-left"
-                autoClose={3000}
-                hideProgressBar={false}
+                autoClose={5000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
@@ -173,8 +227,18 @@ export default function BnConnect() {
                                 </Suspense>
                             </Grid>
                         )}
-                        <Grid item xs={12} sm={12} md={8} lg={6}>
-                            <Suspense fallback={<SkeletonCreateScrollCard />}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={8}
+                            lg={6}
+                            className={classes.mainCard}
+                        >
+                            <Suspense
+                                className={classes.createScrollCard}
+                                fallback={<SkeletonCreateScrollCard />}
+                            >
                                 <CreateScrollCard
                                     setOpenImage={setOpenImage}
                                     setImageDisabled={setImageDisabled}
@@ -185,11 +249,8 @@ export default function BnConnect() {
                                     }
                                 />
                             </Suspense>
-                            <Grid item align="center">
-                                {false && (
-                                    // scrollLoading
-                                    // TODO
-
+                            {/* <Grid item align="center">
+                                {scrollLoading && (
                                     <Typography
                                         className="my-2"
                                         color="primary"
@@ -197,40 +258,84 @@ export default function BnConnect() {
                                         Updating ...
                                     </Typography>
                                 )}
-                            </Grid>
-                            {posts?.map((scroll) => (
-                                <Scroll
-                                    setOpen={() => setCreateScrollOpen(true)}
-                                    setOpenShareModal={setOpenShareModal}
-                                    setUpdateOpen={setUpdateScrollOpen}
-                                    profileData={user}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setOpenFlag={setCreateFlagOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                    setSharedResource={setSharedResource}
-                                    setImageIndex={setImageIndex}
-                                    setPostToPreview={setPostToPreview}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setPostToEdit={setPostToEdit}
+                            </Grid> */}
+
+                            {feed?.posts?.map((scroll) => (
+                                <Suspense
                                     key={scroll?._id}
-                                    scroll={scroll}
-                                    setImagePreviewURL={(url) => {
-                                        setImagePreviewURL(url);
-                                    }}
-                                    setImagePreviewOpen={(open) => {
-                                        setImagePreviewOpen(open);
-                                    }}
-                                    setImageModalOpen={(open) => {
-                                        setImageModalOpen(open);
-                                    }}
-                                />
+                                    fallback={<SkeletonScrollCard />}
+                                >
+                                    <Scroll
+                                        id={scroll?._id}
+                                        setOpen={() =>
+                                            setCreateScrollOpen(true)
+                                        }
+                                        setOpenShareModal={setOpenShareModal}
+                                        setUpdateOpen={setUpdateScrollOpen}
+                                        profileData={user}
+                                        setUpdateCommentOpen={
+                                            setUpdateCommentOpen
+                                        }
+                                        setOpenFlag={setCreateFlagOpen}
+                                        setFlaggedResource={setFlaggedResource}
+                                        setOpenReactions={setOpenReactions}
+                                        setResourceReactions={
+                                            setResourceReactions
+                                        }
+                                        setSharedResource={setSharedResource}
+                                        setImageIndex={setImageIndex}
+                                        setPostToPreview={setPostToPreview}
+                                        setCommentToEdit={setCommentToEdit}
+                                        setPostToEdit={setPostToEdit}
+                                        scroll={scroll}
+                                        setImagePreviewURL={(url) => {
+                                            setImagePreviewURL(url);
+                                        }}
+                                        setImagePreviewOpen={(open) => {
+                                            setImagePreviewOpen(open);
+                                        }}
+                                        setImageModalOpen={(open) => {
+                                            setImageModalOpen(open);
+                                        }}
+                                    />
+                                </Suspense>
                             ))}
-                            {posts?.length < 1 && (
+
+                            {feed?.posts?.length > 0 &&
+                                feed?.hasMore &&
+                                !loadingMore && (
+                                    <Grid align="center">
+                                        <Button
+                                            size="small"
+                                            variant="text"
+                                            textCase
+                                            onClick={() =>
+                                                loadMore(feed?.posts?.length)
+                                            }
+                                        >
+                                            more posts...
+                                        </Button>
+                                    </Grid>
+                                )}
+                            {loadingMore && (
                                 <Grid align="center">
-                                    <Typography variant="h5" color="primary">
-                                        .
+                                    <Typography color="primary">
+                                        Loading ...
+                                    </Typography>
+                                </Grid>
+                            )}
+
+                            {feed?.posts?.length < 1 && (
+                                <Grid align="center">
+                                    <Typography variant="body1">
+                                        Nothing here yet!
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="GrayText"
+                                    >
+                                        Follow other users to show their posts
+                                        here.
                                     </Typography>
                                 </Grid>
                             )}
@@ -262,7 +367,7 @@ export default function BnConnect() {
                     </Grid>
                 </Container>
             </div>
-            <CreatePost
+            <CreatePostModal
                 profileData={user}
                 open={createScrollOpen}
                 setOpen={(open) => setCreateScrollOpen(open)}
@@ -277,7 +382,7 @@ export default function BnConnect() {
                 sharedResource={sharedResource}
                 setSharedResource={setSharedResource}
             />
-            <UpdatePost
+            <UpdatePostModal
                 profileData={user}
                 updateScrollOpen={updateScrollOpen}
                 postToEdit={postToEdit}
@@ -316,6 +421,12 @@ export default function BnConnect() {
             {postToPreview && (
                 <ImageModal
                     open={imageModalOpen}
+                    setImagePreviewURL={(url) => {
+                        setImagePreviewURL(url);
+                    }}
+                    setImagePreviewOpen={(open) => {
+                        setImagePreviewOpen(open);
+                    }}
                     setImageIndex={setImageIndex}
                     imageIndex={imageIndex}
                     post={postToPreview}
@@ -356,3 +467,9 @@ export default function BnConnect() {
         </Screen>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: theme.spacing(2),
+    },
+}));

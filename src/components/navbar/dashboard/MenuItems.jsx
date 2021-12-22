@@ -5,22 +5,21 @@ import {
     Brightness7Rounded,
     ChevronRight,
     ExitToAppRounded,
-    PeopleRounded,
-    ForumRounded,
+    //ForumRounded,
     Notifications,
+    PeopleRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
+    Badge,
     ListItem,
+    ListItemButton,
     ListItemIcon,
     ListItemText,
-    ListItemButton,
     Typography,
     useMediaQuery,
     useTheme,
-    Badge,
 } from '@mui/material';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { signout } from '../../../store/actions/authActions';
@@ -37,9 +36,10 @@ export default function ListItems({ handleMenuClose }) {
     const theme = useTheme();
     const history = useHistory();
     const smUp = useMediaQuery('(min-width:600px)');
+    const mdUp = useMediaQuery('(min-width:960px)');
     const state = useSelector((st) => st);
     const notificationsCount = state.count.count;
-    const messagesCount = state.chats.unreadCount;
+    //const messagesCount = state.chats.unreadCount;
     const user = state.auth.user;
 
     const [markAsSeen] = useMutation(MARK_NOTIFICAION_AS_SEEN, {
@@ -175,9 +175,9 @@ export default function ListItems({ handleMenuClose }) {
                     <AccountBalanceWalletOutlined />
                 </ListItemIcon>
             </ListItem>
-            {!smUp && (
+            {!mdUp && (
                 <>
-                    <ListItem disablePadding>
+                    {/*  <ListItem disablePadding>
                         <ListItemButton
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -194,7 +194,7 @@ export default function ListItems({ handleMenuClose }) {
                             </ListItemIcon>
                             <ListItemText primary="Messages" />
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem disablePadding>
                         <ListItemButton
                             onClick={(e) => {

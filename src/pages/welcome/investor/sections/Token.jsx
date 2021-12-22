@@ -13,7 +13,7 @@ export default function Token() {
         <section
             style={{ backgroundColor: theme.palette.background.investorDark }}
         >
-            <Container>
+            <Container maxWidth="lg">
                 <div className="py-5">
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>

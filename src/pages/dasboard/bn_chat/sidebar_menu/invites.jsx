@@ -5,7 +5,6 @@ import {
     ListSubheader,
     Typography,
 } from '@mui/material';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
 import ChatItem from './chat';
@@ -13,10 +12,10 @@ import ChatItem from './chat';
 export default function Invites({ invites, loading }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
-    const activeChatId = state.chats.current_chat._id;
+    const activeChatId = state.chats.current_chat?._id;
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
-        if (current_chat._id !== chat._id) {
+        if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
         }
     };

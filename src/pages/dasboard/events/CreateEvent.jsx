@@ -1,27 +1,28 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { CameraAltRounded, CloseRounded } from '@mui/icons-material';
 import {
     Card,
     CardContent,
     Chip,
-    CircularProgress,
     Divider,
     Grid,
     IconButton,
     InputBase,
     Modal,
     Paper,
-    TextField,
     Typography,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,
@@ -30,67 +31,6 @@ import {
 } from '../utilities/queries';
 import LocationInput from './LocationInput';
 import OrganizerSearch from './OrganizerSearch';
-
-const useStyles = makeStyles((theme) => ({
-    paperSearch: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.profileCard,
-    },
-    locationButtons: {
-        display: 'flex',
-        marginTop: theme.spacing(2),
-        alignItems: 'center',
-    },
-    physicalEvent: {
-        width: '25%',
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            marginRight: '5px',
-        },
-        marginRight: '10px',
-    },
-    virtualEvent: {
-        width: '25%',
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-        },
-        textTransform: 'none',
-    },
-    paperSearchAlt: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.paper,
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    timeField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-    datePicker: {
-        border: '1px solid',
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-        padding: '0px 4px',
-        borderColor: 'rgba(0, 96, 151, 0.5)',
-        borderRadius: '4px',
-        width: '80%',
-        backgroundColor: theme.palette.background.paper,
-        '&:hover, &:focus': {
-            borderColor: theme.palette.primary.main,
-        },
-        height: '2rem',
-    },
-}));
 
 export default function CreateEvent({ open, setOpen }) {
     const classes = useStyles();
@@ -101,7 +41,7 @@ export default function CreateEvent({ open, setOpen }) {
     const [linkErr, setLinkErr] = useState(false);
     const [locationErr, setLocationErr] = useState(false);
     const [titleErr, setTitleErr] = useState(false);
-    const [dateErr, setDateErr] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [errorText, setErrorText] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
@@ -126,15 +66,8 @@ export default function CreateEvent({ open, setOpen }) {
 
     const setSearchTermDebounced = debounce(setSearchTerm, 500);
 
-    const { data: usersData, loading: usersLoading } = useQuery(
-        QUERY_SEARCH_USERS,
-        {
-            variables: {
-                params: { searchString: searchTerm },
-            },
-            context: { clientName: 'users' },
-        }
-    );
+    const [searchUsers, { data: usersData, loading: usersLoading }] =
+        useLazyQuery(QUERY_SEARCH_USERS);
 
     const [createEvent, { loading, data }] = useMutation(MUTATION_CREATE_EVENT);
 
@@ -143,16 +76,57 @@ export default function CreateEvent({ open, setOpen }) {
             variables: {
                 data: ICreateEvent,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_LOAD_EVENTS,
                     variables: { data: { host: user?._id, limit: 50 } },
                 },
             ],
+        }).then(({ data: createEventData, errors: createEventErrors }) => {
+            if (createEventData?.Events?.create) {
+                handleCloseEventModal();
+            }
+            if (createEventErrors) {
+                if (
+                    createEventErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setEventImage(null);
+                    const message = createEventErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `~ Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createEventErrors[0]?.message == 400) {
+                    const errorObject = createEventErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`~ ${value[0]}`);
+                        if (key === 'title') {
+                            setTitleErr(true);
+                        } else if (key === 'description') {
+                            setDescriptionErr(true);
+                        } else if (key === 'organizers') {
+                            setOrganizerErr(true);
+                        } else if (key === 'link') {
+                            setLinkErr(true);
+                        } else if (key === 'location') {
+                            setLocationErr(true);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `~ Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
         });
-        /*  .then(({ data, errors }) => {
-           
-        }) */
     };
 
     const handleSelectLocation = (location) => {
@@ -163,7 +137,7 @@ export default function CreateEvent({ open, setOpen }) {
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
             })
-            .catch((error) => console.error('Error', error));
+            .catch(() => {});
     };
 
     const handleSetTags = () => {
@@ -180,62 +154,73 @@ export default function CreateEvent({ open, setOpen }) {
         setTagText('');
     };
 
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setEventImage(file);
+                    setPreviewURL(URL.createObjectURL(file));
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
+    const handleCloseEventModal = () => {
+        setErrors([]);
+
+        setEventLink('');
+        setEventImage(null);
+        setEventTitle('');
+        setEventDescription('');
+        setDescriptionErr(false);
+        setOrganizerErr(false);
+        setTagsErr(false);
+        setTitleErr(false);
+        setLinkErr(false);
+
+        setLocationErr(false);
+        setEventOrganizers([]);
+        setEventStartDate('');
+        setEventEndDate('');
+        setLocationType('');
+        setLatitude('');
+        setAddress('');
+        setLongitude('');
+        setEventTags([]);
+        setTagText('');
+        setPreviewURL();
+        setOpen(false);
+    };
+
+    const ErrorRef = useRef(null);
+
+    const handleScrollModal = () => {
+        ErrorRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(handleScrollModal, [errors]);
+
     const handleCreateEvent = (e) => {
         e.preventDefault();
-        if (eventTitle.trim() == '') {
-            setErrorText('The event title must be provided');
-            return setTitleErr(true);
-        }
-        if (eventDescription.length < 20) {
-            setErrorText('The event description provided is too short');
-            return setDescriptionErr(true);
-        }
-        if (locationType.trim() == '') {
-            setErrorText('The event must have a location');
-            return setLocationErr(true);
-        }
-        if (locationType === 'virtual') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-        }
-        if (locationType === 'virtual' && eventLink.trim() == '') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-            setErrorText('Virtual events must have event links');
-            return setLinkErr(true);
-        }
-        if (
-            locationType === 'physical' &&
-            (String(latitude).trim() == '' ||
-                String(longitude).trim() == '' ||
-                String(address).trim() == '')
-        ) {
-            setErrorText('Please provide the venue for this event');
-            return setLocationErr(true);
-        }
-        if (eventStartDate.trim() == '' && eventEndDate.trim() == '') {
-            setErrorText('The event dates must be set');
-            return setDateErr(true);
-        }
-        if (eventStartDate.trim() == '') {
-            setErrorText('The event start date must be set');
-            return setDateErr(true);
-        }
-        if (eventEndDate.trim() == '') {
-            setErrorText('The event end date must be set');
-            return setDateErr(true);
-        }
-        if (
-            new Date(eventEndDate).getTime() <
-            new Date(eventStartDate).getTime()
-        ) {
-            setErrorText(
-                'The event end date cannot be before the event starting time'
-            );
-            return setDateErr(true);
-        }
 
         let organizers = [];
 
@@ -260,36 +245,23 @@ export default function CreateEvent({ open, setOpen }) {
             endDate: eventEndDate,
             link: eventLink,
             location: {
-                type: locationType,
+                type: String(locationType),
                 lat: String(latitude),
                 long: String(longitude),
                 address: String(address),
             },
         });
-        setDateErr(false);
-        setEventLink('');
-        setEventImage(null);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setOrganizerErr(false);
-        setTagsErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setEventOrganizers([]);
-        setEventStartDate('');
-        setEventEndDate('');
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
-        setEventTags([]);
-        setTagText('');
-        setPreviewURL();
-        setOpen(false);
     };
+
+    useEffect(() => {
+        searchTerm.length > 0 &&
+            searchUsers({
+                variables: {
+                    params: { searchString: searchTerm },
+                },
+                context: { clientName: 'users' },
+            });
+    }, [searchTerm, searchUsers]);
 
     return (
         <Modal
@@ -297,7 +269,7 @@ export default function CreateEvent({ open, setOpen }) {
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -317,28 +289,7 @@ export default function CreateEvent({ open, setOpen }) {
                                 size="small"
                                 className="m-1 p-1"
                                 onClick={() => {
-                                    setOpen(!open);
-                                    setEventLink('');
-                                    setEventImage(null);
-                                    setEventTitle('');
-                                    setEventDescription('');
-                                    setDescriptionErr(false);
-                                    setOrganizerErr(false);
-                                    setTagsErr(false);
-                                    setTitleErr(false);
-                                    setLinkErr(false);
-                                    setDateErr(false);
-                                    setLocationErr(false);
-                                    setEventStartDate('');
-                                    setEventEndDate('');
-                                    setLocationType('');
-                                    setLatitude('');
-                                    setAddress('');
-                                    setLongitude('');
-                                    setEventTags([]);
-                                    setTagText('');
-                                    setPreviewURL();
-                                    setEventOrganizers([]);
+                                    handleCloseEventModal();
                                 }}
                             >
                                 <CloseRounded />
@@ -348,9 +299,10 @@ export default function CreateEvent({ open, setOpen }) {
                         <Divider />
                         <CardContent
                             style={{
-                                maxHeight: '500px',
-                                overflowY: 'auto',
+                                maxHeight: '85vh',
+                                overflowY: 'scroll',
                             }}
+                            id="createEventModal"
                         >
                             <div variant="elevation" elevation={0}>
                                 <div
@@ -361,39 +313,33 @@ export default function CreateEvent({ open, setOpen }) {
                                         backgroundImage:
                                             'url(' + previewURL + ')',
                                         backgroundSize: 'cover',
-                                        backgroundColor: '#aaa',
+                                        backgroundColor: !previewURL && '#aaa',
                                         backgroundBlendMode: 'soft-light',
                                         marginBottom: '15px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        document
+                                            .getElementById('event-image')
+                                            .click();
                                     }}
                                 >
-                                    <DropzoneArea
-                                        dropzoneClass="event-upload-dropzone"
-                                        clearOnUnmount
-                                        Icon={CameraAltRounded}
-                                        dropzoneText={' '}
-                                        acceptedFiles={['.jpeg', '.png']}
-                                        maxFileSize={2500000}
-                                        filesLimit={1}
-                                        showAlerts={['error']}
-                                        showPreviews={false}
-                                        showPreviewsInDropzone={false}
-                                        previewGridProps={{
-                                            container: {
-                                                spacing: 1,
-                                                direction: 'row',
-                                            },
-                                        }}
-                                        onChange={(files) => {
-                                            setEventImage(files[0]);
-                                            if (files[0]) {
-                                                setPreviewURL(
-                                                    URL.createObjectURL(
-                                                        files[0]
-                                                    )
+                                    <CameraAltRounded />
+                                    <div style={{ display: 'none' }}>
+                                        <input
+                                            id="event-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
                                                 );
-                                            }
-                                        }}
-                                    />
+                                            }}
+                                            accept="image/jpeg, image/png"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <TextField
@@ -402,7 +348,6 @@ export default function CreateEvent({ open, setOpen }) {
                                         variant="outlined"
                                         name="title"
                                         error={titleErr}
-                                        errorText={errorText}
                                         className="mb-2"
                                         label="Title"
                                         value={eventTitle}
@@ -410,10 +355,9 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
-                                                <span>
-                                                    {titleErr && errorText}
-                                                </span>
+                                                <span></span>
                                                 <span>{`${eventTitle?.length}/50`}</span>
                                             </Typography>
                                         }
@@ -449,17 +393,15 @@ export default function CreateEvent({ open, setOpen }) {
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
-                                                <span>
-                                                    {descriptionErr &&
-                                                        errorText}
-                                                </span>
-                                                <span>{`${eventDescription?.length}/250`}</span>
+                                                <span></span>
+                                                <span>{`${eventDescription?.length}/300`}</span>
                                             </Typography>
                                         }
                                         onChange={(e) => {
                                             setEventDescription(
-                                                eventDescription?.length >= 250
+                                                eventDescription?.length >= 300
                                                     ? e.target.value.substring(
                                                           0,
                                                           e.target.value
@@ -467,7 +409,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                       )
                                                     : e.target.value.substring(
                                                           0,
-                                                          250
+                                                          300
                                                       )
                                             );
                                             setDescriptionErr(false);
@@ -498,17 +440,6 @@ export default function CreateEvent({ open, setOpen }) {
                                             );
                                             setLinkErr(false);
                                         }}
-                                        helperText={
-                                            <Typography
-                                                variant="body2"
-                                                className="space-between"
-                                            >
-                                                <span>
-                                                    {linkErr && errorText}
-                                                </span>
-                                                <span></span>
-                                            </Typography>
-                                        }
                                     />
                                     <Divider />
                                     <div className="mb-3">
@@ -527,14 +458,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                 </Typography>
                                             </div>
                                             <>
-                                                <Typography
-                                                    className="mb-2"
-                                                    variant="body2"
-                                                    color="error"
-                                                >
-                                                    {organizersErr && errorText}
-                                                </Typography>
-
                                                 <OrganizerSearch
                                                     loading={usersLoading}
                                                     searchResults={
@@ -567,6 +490,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
@@ -681,6 +605,7 @@ export default function CreateEvent({ open, setOpen }) {
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventTags?.length}/5 tags`}</span>
                                                     <span>{`${tagText?.length}/20`}</span>
@@ -796,7 +721,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                         handleSelectLocation
                                                     }
                                                     locationErr={locationErr}
-                                                    errorText={errorText}
                                                     selectedLocation={
                                                         selectedLocation
                                                     }
@@ -805,13 +729,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                     }
                                                 />
                                             </Grid>
-                                            <Typography
-                                                color="error"
-                                                variant="body2"
-                                                className="mb-2"
-                                            >
-                                                {locationErr && errorText}
-                                            </Typography>
                                         </div>
                                     </div>
                                     <Divider />
@@ -856,7 +773,6 @@ export default function CreateEvent({ open, setOpen }) {
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
@@ -886,37 +802,53 @@ export default function CreateEvent({ open, setOpen }) {
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Typography color="error" variant="body2">
-                                        {dateErr && errorText}
-                                    </Typography>
                                 </div>
                             </div>
+
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
 
                             {/* <Divider /> */}
                             <div className="space-between mt-1">
                                 <div className="center-horizontal"></div>
-                                {!loading && (
-                                    <Button onClick={handleCreateEvent}>
-                                        Save
-                                    </Button>
-                                )}
-                                {loading && (
-                                    <Button
-                                        size="small"
-                                        style={{ margin: '0' }}
-                                    >
-                                        <CircularProgress
-                                            size={24}
-                                            thickness={4}
-                                        />
-                                    </Button>
-                                )}
+
+                                <Button
+                                    disabled={loading}
+                                    size="small"
+                                    onClick={handleCreateEvent}
+                                >
+                                    Save
+                                </Button>
                             </div>
+                            <div ref={ErrorRef} />
                         </CardContent>
                     </Card>
                 </Grid>
@@ -924,3 +856,64 @@ export default function CreateEvent({ open, setOpen }) {
         </Modal>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    paperSearch: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.profileCard,
+    },
+    locationButtons: {
+        display: 'flex',
+        marginTop: theme.spacing(2),
+        alignItems: 'center',
+    },
+    physicalEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            marginRight: '5px',
+        },
+        marginRight: '10px',
+    },
+    virtualEvent: {
+        width: '25%',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+        },
+        textTransform: 'none',
+    },
+    paperSearchAlt: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    timeField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+    datePicker: {
+        border: '1px solid',
+        color: theme.palette.getContrastText(theme.palette.background.paper),
+        padding: '0px 4px',
+        borderColor: 'rgba(0, 96, 151, 0.5)',
+        borderRadius: '4px',
+        width: '80%',
+        backgroundColor: theme.palette.background.paper,
+        '&:hover, &:focus': {
+            borderColor: theme.palette.primary.main,
+        },
+        height: '2rem',
+    },
+}));

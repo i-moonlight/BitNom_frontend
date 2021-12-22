@@ -91,7 +91,7 @@ export default function UserPosts() {
                                         }
                                         title={
                                             <div className="center-horizontal">
-                                                <Typography variant="body1">
+                                                <Typography variant="body2">
                                                     Your Posts
                                                 </Typography>
                                             </div>
@@ -114,7 +114,7 @@ export default function UserPosts() {
                                 {userPosts?.Posts?.get?.length < 1 && (
                                     <Grid align="center">
                                         <Typography
-                                            variant="body1"
+                                            variant="body2"
                                             color="primary"
                                         >
                                             Create your posts to see them here.

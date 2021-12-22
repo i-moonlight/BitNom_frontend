@@ -4,7 +4,7 @@ import {
     HttpLink,
     InMemoryCache,
     split,
-} from '@apollo/client';
+} from '@apollo/client/';
 import { ApolloLink, Observable } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -23,13 +23,16 @@ import LightThemeStyles from './utilities/LightThemeStyles';
 const errorLink = onError(({ graphqlErrors, networkError }) => {
     if (graphqlErrors) {
         graphqlErrors.map(({ message, location, path }, index) => {
+            // eslint-disable-next-line no-console
             console.log(`Graphql error[${index}] ${message}`);
+            // eslint-disable-next-line no-console
             console.log(
                 `Above graphql error[${index}] ocurred at location ${location} and path ${path}`
             );
         });
     }
     if (networkError) {
+        // eslint-disable-next-line no-console
         console.log(`Graphql network error ${networkError}`);
     }
 });
@@ -66,8 +69,8 @@ class WebSocketLink extends ApolloLink {
                         }
                         return sink.error(
                             new Error(
-                                // err?.map(({ message }) => message).join(', ')
-                                console.log('sink error: ', err)
+                                // eslint-disable-next-line no-console
+                                console.log('sink.error: ', err)
                             )
                         );
                     },
@@ -169,6 +172,70 @@ const client = new ApolloClient({
                     Events: {
                         merge: true,
                     },
+                    Dialogue: {
+                        merge: true,
+                    },
+                    Feed: {
+                        merge: true,
+                    },
+                },
+            },
+            OFeed: {
+                fields: {
+                    data: {
+                        merge(existing = [], incoming, { readField }) {
+                            const merged = existing ? existing.slice(0) : [];
+                            // Obtain a Set of all existing post IDs.
+                            const existingIdSet = new Set(
+                                merged.map((post) => readField('_id', post))
+                            );
+                            // Remove incoming posts already present in the existing data.
+                            incoming = incoming.filter(
+                                (post) =>
+                                    !existingIdSet.has(readField('_id', post))
+                            );
+
+                            merged.push(...incoming);
+                            return merged;
+                        },
+                    },
+                },
+                hasMore: {
+                    merge(existing, incoming) {
+                        if (existing == false) return existing;
+                        return incoming;
+                    },
+                },
+            },
+            Comments: {
+                fields: {
+                    data: {
+                        merge(existing = [], incoming, { readField }) {
+                            const merged = existing ? existing.slice(0) : [];
+                            // Obtain a Set of all existing comment IDs.
+                            const existingIdSet = new Set(
+                                merged.map((comment) =>
+                                    readField('_id', comment)
+                                )
+                            );
+                            // Remove incoming comments already present in the existing data.
+                            incoming = incoming.filter(
+                                (comment) =>
+                                    !existingIdSet.has(
+                                        readField('_id', comment)
+                                    )
+                            );
+
+                            merged.push(...incoming);
+                            return merged;
+                        },
+                    },
+                },
+                hasMore: {
+                    merge(existing, incoming) {
+                        if (existing == false) return existing;
+                        return incoming;
+                    },
                 },
             },
         },
@@ -178,15 +245,33 @@ const client = new ApolloClient({
 export default function AppContainers() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const palette = useSelector((st) => st.theme.palette);
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    const palette = state.theme.palette;
 
     useEffect(() => {
+        const OneSignal = window.OneSignal || [];
         dispatch(checkSessionTimeOut());
 
         palette == 'dark'
             ? dispatch(changeTheme('dark'))
             : dispatch(changeTheme('light'));
-    }, [dispatch, palette]);
+
+        OneSignal.push(() => {
+            OneSignal.init({
+                appId: '97869740-c9fd-42b4-80de-bfd368eb1715',
+            });
+            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+                if (isEnabled) {
+                    var externalUserId = user._id;
+                    OneSignal.setExternalUserId(externalUserId);
+                } else {
+                    // Push notifications not enabled
+                }
+            });
+        });
+    }, [dispatch, palette, user._id]);
 
     return (
         <div className={classes.root}>

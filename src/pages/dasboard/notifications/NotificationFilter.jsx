@@ -30,10 +30,6 @@ export default function NotificationFilter({
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
 
-    const handleClick = () => {
-        console.info(`You clicked ${options[notificationFilter]}`);
-    };
-
     const handleMenuItemClick = (event, index) => {
         setOpen(false);
         setNotificationFilter(index);
@@ -65,8 +61,8 @@ export default function NotificationFilter({
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
-                        onClick={handleClick}
                     >
                         {options[notificationFilter]}
                     </Button>
@@ -75,6 +71,7 @@ export default function NotificationFilter({
                         fullWidth
                         style={{
                             textTransform: 'none',
+                            width: 'fit-content',
                         }}
                         aria-controls={open ? 'split-button-menu' : undefined}
                         aria-expanded={open ? 'true' : undefined}

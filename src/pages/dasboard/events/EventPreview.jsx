@@ -1,6 +1,6 @@
 import { RoomRounded, VideocamRounded } from '@mui/icons-material';
 import { Card, Typography, useMediaQuery } from '@mui/material';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useHistory } from 'react-router-dom';
 
 function EventPreview({ event }) {
@@ -63,8 +63,9 @@ function EventPreview({ event }) {
             >
                 {!smDown && (
                     <Typography color="textSecondary" variant="body2">
-                        {moment(event?.startDate).format(
-                            'ddd, MMMM Do YYYY, h:mm a'
+                        {format(
+                            new Date(event?.startDate),
+                            'E, MMMM do y, h:mm aaa'
                         )}
                     </Typography>
                 )}
@@ -81,38 +82,37 @@ function EventPreview({ event }) {
                         <RoomRounded color="primary" />
                         <Typography
                             color="primary"
-                            style={{ textDecoration: 'underline' }}
                             variant="body2"
+                            href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
+                            style={{
+                                color: 'inherit',
+                                zIndex: '3',
+                                textDecoration: 'underline',
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            target="_blank"
+                            rel="noreferrer"
                         >
-                            <a
-                                href={`https://www.google.com/maps/@?api=1&map_action=map&center=${event?.location?.lat}%2C${event?.location?.long}`}
-                                style={{ color: 'inherit', zIndex: '3' }}
-                                onClick={(e) => e.stopPropagation()}
-                                target="_blank"
-                                rel="noreferrer"
-                                on
-                            >
-                                {truncateText(event?.location?.address, 40)}
-                            </a>
+                            {truncateText(event?.location?.address, 40)}
                         </Typography>
                     </div>
                 ) : (
                     <div className="center-horizontal">
                         <VideocamRounded color="primary" />
                         <Typography
+                            component="a"
                             color="primary"
-                            style={{ textDecoration: 'underline' }}
                             variant="body2"
+                            style={{
+                                textDecoration: 'underline',
+                                zIndex: '3',
+                            }}
+                            target="_blank"
+                            rel="noreferrer"
+                            href={event?.link}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <a
-                                href={event?.link}
-                                style={{ color: 'inherit', zIndex: '3' }}
-                                onClick={(e) => e.stopPropagation()}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Online
-                            </a>
+                            Online
                         </Typography>
                     </div>
                 )}

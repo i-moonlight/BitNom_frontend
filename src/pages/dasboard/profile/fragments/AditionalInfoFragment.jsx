@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Delete, Edit } from '@mui/icons-material';
 import { Card, IconButton, Typography } from '@mui/material';
-
 import {
     MUTATION_REMOVE_COURSE,
     MUTATION_REMOVE_PROJECT,

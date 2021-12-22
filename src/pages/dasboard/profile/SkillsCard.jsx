@@ -9,7 +9,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_ADD_SKILL,
@@ -20,6 +20,7 @@ import { useStyles } from './utilities/profile.styles';
 
 export default function SkillsCard({ profile, profileView }) {
     const [text, setText] = useState('');
+    const [skillErr, setSkillErr] = useState(null);
     const theme = useTheme();
     const classes = useStyles();
     const skills = profile?.skills;
@@ -27,7 +28,7 @@ export default function SkillsCard({ profile, profileView }) {
     const [
         addSkill,
         {
-            // addError,
+            //addError,
             // data,
             addLoading,
         },
@@ -45,6 +46,12 @@ export default function SkillsCard({ profile, profileView }) {
     ] = useMutation(MUTATION_REMOVE_SKILL, {
         context: { clientName: 'users' },
     });
+
+    useEffect(() => {
+        text.length > 20
+            ? setSkillErr('Skill should be 20 chars max')
+            : setSkillErr(null);
+    }, [text.length]);
 
     return (
         <Card className="mb-3">
@@ -75,10 +82,12 @@ export default function SkillsCard({ profile, profileView }) {
                                 endAdornment={
                                     <Button
                                         onClick={() => {
+                                            //  if (text.length < 5) return;
                                             addSkill({
                                                 variables: {
                                                     data: { name: text },
                                                 },
+                                                errorPolicy: 'all',
                                                 refetchQueries: [
                                                     {
                                                         query: QUERY_FETCH_PROFILE,
@@ -87,22 +96,38 @@ export default function SkillsCard({ profile, profileView }) {
                                                         },
                                                     },
                                                 ],
-                                            }).then(() => {
-                                                setText('');
+                                            }).then(({ data, errors }) => {
+                                                if (data) {
+                                                    setText('');
+                                                    setSkillErr(null);
+                                                }
+                                                if (errors) {
+                                                    setSkillErr(
+                                                        errors[0]?.state
+                                                            ?.skill[0]
+                                                    );
+                                                }
                                             });
                                         }}
-                                        color="primary"
+                                        disabled={addLoading}
                                         size="small"
                                         className="my-1"
                                         textCase
-                                        disabled={addLoading}
                                     >
                                         Add
                                     </Button>
                                 }
                             />
                         </Paper>
-
+                        {skillErr && (
+                            <Typography
+                                variant="body2"
+                                className="mt-2 mb-2"
+                                color="error"
+                            >
+                                {skillErr}
+                            </Typography>
+                        )}
                         <Typography
                             variant="body2"
                             className="mt-2 mb-2"
@@ -121,18 +146,23 @@ export default function SkillsCard({ profile, profileView }) {
                             label={name}
                             className="me-2 mb-2"
                             disabled={removeLoading}
-                            onDelete={() =>
-                                removeSkill({
-                                    variables: {
-                                        id: _id,
-                                    },
-                                    refetchQueries: [
-                                        {
-                                            query: QUERY_FETCH_PROFILE,
-                                            context: { clientName: 'users' },
-                                        },
-                                    ],
-                                })
+                            onDelete={
+                                !profileView
+                                    ? () =>
+                                          removeSkill({
+                                              variables: {
+                                                  id: _id,
+                                              },
+                                              refetchQueries: [
+                                                  {
+                                                      query: QUERY_FETCH_PROFILE,
+                                                      context: {
+                                                          clientName: 'users',
+                                                      },
+                                                  },
+                                              ],
+                                          })
+                                    : undefined
                             }
                         />
                     ))}

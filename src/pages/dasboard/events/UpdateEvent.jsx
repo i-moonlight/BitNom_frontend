@@ -4,7 +4,6 @@ import {
     Card,
     CardContent,
     Chip,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -16,18 +15,20 @@ import {
     InputBase,
     Modal,
     Paper,
-    TextField,
     Typography,
+    ListItemText,
+    ListItem,
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Flatpickr from 'react-flatpickr';
-import { useSelector } from 'react-redux';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_DELETE_EVENT,
@@ -38,52 +39,6 @@ import {
 } from '../utilities/queries';
 import LocationInput from './LocationInput';
 import OrganizerSearch from './OrganizerSearch';
-
-const useStyles = makeStyles((theme) => ({
-    paperSearch: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.profileCard,
-    },
-    locationButtons: {
-        display: 'flex',
-        marginTop: theme.spacing(2),
-        alignItems: 'center',
-    },
-    paperSearchAlt: {
-        padding: '0px 4px',
-        display: 'flex',
-        flexGrow: 1,
-        alignItems: 'center',
-        marginTop: theme.spacing(2),
-        backgroundColor: theme.palette.background.paper,
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    timeField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-    datePicker: {
-        border: '1px solid',
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-        padding: '0px 4px',
-        borderColor: 'rgba(0, 96, 151, 0.5)',
-        borderRadius: '4px',
-        width: '80%',
-        backgroundColor: theme.palette.background.paper,
-        '&:hover, &:focus': {
-            borderColor: theme.palette.primary.main,
-        },
-        height: '2rem',
-    },
-}));
 
 export default function UpdateEvent({
     openUpdate,
@@ -100,12 +55,12 @@ export default function UpdateEvent({
     const [linkErr, setLinkErr] = useState(false);
     const [locationErr, setLocationErr] = useState(false);
     const [titleErr, setTitleErr] = useState(false);
-    const [dateErr, setDateErr] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [errorText, setErrorText] = useState('');
 
     const [eventDescription, setEventDescription] = useState('');
     const [eventLink, setEventLink] = useState('');
-    const [eventImage, setEventImage] = useState(null);
+    const [eventImage, setEventImage] = useState(undefined);
     const [eventStartDate, setEventStartDate] = useState('');
     const [eventEndDate, setEventEndDate] = useState('');
     const [eventTitle, setEventTitle] = useState('');
@@ -116,7 +71,7 @@ export default function UpdateEvent({
     const [previewURL, setPreviewURL] = useState();
     const [tagText, setTagText] = useState('');
     const [eventTags, setEventTags] = useState([]);
-    //const [organizerName, setOrganizerName] = useState('');
+
     const [eventOrganizers, setEventOrganizers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchedValues, setSearchedValues] = useState();
@@ -150,17 +105,61 @@ export default function UpdateEvent({
 
     const [deleteEvent] = useMutation(MUTATION_DELETE_EVENT);
 
-    const onUpdateEvent = async (IUpdateEvent) => {
-        await updateEvent({
+    const onUpdateEvent = (IUpdateEvent) => {
+        updateEvent({
             variables: {
                 data: IUpdateEvent,
             },
+            errorPolicy: 'all',
             refetchQueries: [
                 {
                     query: QUERY_EVENT_BY_ID,
                     variables: { _id: eventToEdit?._id },
                 },
             ],
+        }).then(({ data: updateEventData, errors: updateEventErrors }) => {
+            if (updateEventData?.Events?.update) {
+                handleCloseEventModal();
+            }
+            if (updateEventErrors) {
+                if (
+                    updateEventErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setEventImage(null);
+                    const message = updateEventErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `~ Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (updateEventErrors[0]?.message == 400) {
+                    const errorObject = updateEventErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`~ ${value[0]}`);
+                        if (key === 'title') {
+                            setTitleErr(true);
+                        } else if (key === 'description') {
+                            setDescriptionErr(true);
+                        } else if (key === 'organizers') {
+                            setOrganizerErr(true);
+                        } else if (key === 'link') {
+                            setLinkErr(true);
+                        } else if (key === 'location') {
+                            setLocationErr(true);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `~ Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
         });
     };
 
@@ -202,20 +201,7 @@ export default function UpdateEvent({
             ],
         });
 
-        setEventLink('');
-        setPreviewURL();
-        setEventImage(null);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
+        handleCloseEventModal();
         history.push(`/dashboard/events`);
     };
 
@@ -224,6 +210,40 @@ export default function UpdateEvent({
         onDeleteEvent(eventToEdit?._id);
         setOpenDelete(false);
         setOpenUpdate(false);
+    };
+
+    const ErrorRef = useRef(null);
+
+    const handleScrollModal = () => {
+        ErrorRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(handleScrollModal, [errors]);
+
+    const handleCloseEventModal = () => {
+        setErrors([]);
+        setEventLink('');
+        setEventImage(undefined);
+        setEventTitle('');
+        setEventDescription('');
+        setDescriptionErr(false);
+        setOrganizerErr(false);
+        setTagsErr(false);
+        setTitleErr(false);
+        setLinkErr(false);
+        setLocationErr(false);
+        setEventOrganizers([]);
+        setEventStartDate('');
+        setEventEndDate('');
+        setLocationType('');
+        setLatitude('');
+        setAddress('');
+        setLongitude('');
+        setEventTags([]);
+        setTagText('');
+        setPreviewURL();
+        setOpenUpdate(false);
+        setEventToEdit(null);
     };
 
     const handleSetTags = () => {
@@ -247,70 +267,50 @@ export default function UpdateEvent({
                 setLatitude(latLng?.lat);
                 setLongitude(latLng?.lng);
                 setAddress(location?.description);
-                console.error('Error', latitude, longitude);
             })
-            .catch((error) => console.error('Error', error));
+            .catch((error) => {
+                // eslint-disable-next-line no-console
+                console.error('Error', error);
+            });
+    };
+
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return toast.error(
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                        {
+                            position: 'bottom-left',
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                        }
+                    );
+                }
+                if (counter === 1) {
+                    setEventImage(file);
+                    setPreviewURL(URL.createObjectURL(file));
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
     };
 
     const handleUpdateEvent = (e) => {
         e.preventDefault();
-        if (eventTitle.trim() == '') {
-            setErrorText('The event title must be provided');
-            return setTitleErr(true);
-        }
-        if (eventDescription.length < 20) {
-            setErrorText('The event description provided is too short');
-            return setDescriptionErr(true);
-        }
-        if (locationType.trim() == '') {
-            setErrorText('The event must have a location');
-            return setLocationErr(true);
-        }
-        if (locationType === 'virtual') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-        }
-        if (locationType === 'virtual' && eventLink.trim() == '') {
-            setLatitude('');
-            setAddress('');
-            setLongitude('');
-            setErrorText('Virtual events must have event links');
-            return setLinkErr(true);
-        }
-        if (
-            locationType === 'physical' &&
-            (String(latitude).trim() == '' ||
-                String(longitude).trim() == '' ||
-                String(address).trim() == '')
-        ) {
-            setErrorText('Please provide the venue for this event');
-            return setLocationErr(true);
-        }
-        if (
-            String(eventStartDate).trim() == '' &&
-            String(eventEndDate).trim() == ''
-        ) {
-            setErrorText('The event dates must be set');
-            return setDateErr(true);
-        }
-        if (String(eventStartDate).trim() == '') {
-            setErrorText('The event start date must be set');
-            return setDateErr(true);
-        }
-        if (String(eventEndDate).trim() == '') {
-            setErrorText('The event end date must be set');
-            return setDateErr(true);
-        }
-        if (
-            new Date(eventEndDate).getTime() <
-            new Date(eventStartDate).getTime()
-        ) {
-            setErrorText(
-                'The event end date cannot be before the event starting time'
-            );
-            return setDateErr(true);
-        }
 
         let organizers = [];
 
@@ -342,30 +342,6 @@ export default function UpdateEvent({
                 address: String(address),
             },
         });
-        setDateErr(false);
-        setEventLink('');
-        setEventImage(null);
-        setEventTitle('');
-        setEventDescription('');
-        setDescriptionErr(false);
-        setOrganizerErr(false);
-        setTagsErr(false);
-        setTitleErr(false);
-        setLinkErr(false);
-        setDateErr(false);
-        setLocationErr(false);
-        setEventOrganizers([]);
-        setEventStartDate('');
-        setEventEndDate('');
-        setLocationType('');
-        setLatitude('');
-        setAddress('');
-        setLongitude('');
-        setEventTags([]);
-        setTagText('');
-        setPreviewURL();
-        setOpenUpdate(false);
-        setEventToEdit(null);
     };
 
     return (
@@ -374,7 +350,7 @@ export default function UpdateEvent({
             style={{
                 outline: 'none',
 
-                '&:focus-visible': {
+                '&:focusVisible': {
                     outline: 'none',
                 },
             }}
@@ -392,29 +368,7 @@ export default function UpdateEvent({
                             </Typography>
                             <IconButton
                                 onClick={() => {
-                                    setOpenUpdate(!openUpdate);
-                                    setEventLink('');
-                                    setEventImage(null);
-                                    setEventTitle('');
-                                    setEventDescription('');
-                                    setDescriptionErr(false);
-                                    setOrganizerErr(false);
-                                    setTagsErr(false);
-                                    setTitleErr(false);
-                                    setLinkErr(false);
-                                    setDateErr(false);
-                                    setLocationErr(false);
-                                    setEventStartDate('');
-                                    setEventEndDate('');
-                                    setLocationType('');
-                                    setLatitude('');
-                                    setAddress('');
-                                    setLongitude('');
-                                    setEventTags([]);
-                                    setTagText('');
-                                    setPreviewURL();
-                                    setEventOrganizers([]);
-                                    setEventToEdit(null);
+                                    handleCloseEventModal();
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -425,7 +379,10 @@ export default function UpdateEvent({
 
                         <Divider />
                         <CardContent
-                            style={{ maxHeight: '500px', overflowY: 'auto' }}
+                            style={{
+                                maxHeight: '85vh',
+                                overflowY: 'auto',
+                            }}
                         >
                             <Card elevation={0}>
                                 <div
@@ -437,55 +394,35 @@ export default function UpdateEvent({
                                             previewURL &&
                                             'url(' + previewURL + ')',
                                         backgroundSize: 'cover',
-                                        backgroundColor: '#aaa',
+                                        backgroundColor: !previewURL && '#aaa',
                                         backgroundBlendMode: 'soft-light',
                                         marginBottom: '15px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        document
+                                            .getElementById(
+                                                'update-event-image'
+                                            )
+                                            .click();
                                     }}
                                 >
-                                    <div className="space-between mx-3 my-2">
-                                        <Typography variant="body2"></Typography>
-                                        <Typography variant="body1"></Typography>
-                                        <IconButton
-                                            color="primary"
-                                            size="small"
-                                            className="m-1 p-1"
-                                        >
-                                            <CloseRounded
-                                                onClick={() => {
-                                                    setEventImage(null);
-                                                    setPreviewURL();
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </div>
-                                    <DropzoneArea
-                                        dropzoneClass="event-upload-dropzone"
-                                        clearOnUnmount
-                                        Icon={CameraAltRounded}
-                                        dropzoneText={' '}
-                                        acceptedFiles={['image/*']}
-                                        maxFileSize={5000000}
-                                        filesLimit={1}
-                                        showAlerts={['error']}
-                                        showPreviews={false}
-                                        showPreviewsInDropzone={false}
-                                        previewGridProps={{
-                                            container: {
-                                                spacing: 1,
-                                                direction: 'row',
-                                            },
-                                        }}
-                                        onChange={(files) => {
-                                            setEventImage(files[0]);
-                                            if (files[0]) {
-                                                setPreviewURL(
-                                                    URL.createObjectURL(
-                                                        files[0]
-                                                    )
+                                    <CameraAltRounded />
+                                    <div style={{ display: 'none' }}>
+                                        <input
+                                            id="update-event-image"
+                                            type="file"
+                                            onChange={(e) => {
+                                                handleSelectImage(
+                                                    Array.from(e.target.files)
                                                 );
-                                            }
-                                        }}
-                                    />
+                                            }}
+                                            accept="image/jpeg, image/png"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <TextField
@@ -494,7 +431,6 @@ export default function UpdateEvent({
                                         variant="outlined"
                                         name="title"
                                         error={titleErr}
-                                        errorText={errorText}
                                         className="mb-2"
                                         label="Title"
                                         value={eventTitle}
@@ -502,10 +438,9 @@ export default function UpdateEvent({
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
-                                                <span>
-                                                    {titleErr && errorText}
-                                                </span>
+                                                <span></span>
                                                 <span>{`${eventTitle?.length}/50`}</span>
                                             </Typography>
                                         }
@@ -541,11 +476,9 @@ export default function UpdateEvent({
                                             <Typography
                                                 variant="body2"
                                                 className="space-between"
+                                                component="div"
                                             >
-                                                <span>
-                                                    {descriptionErr &&
-                                                        errorText}
-                                                </span>
+                                                <span></span>
                                                 <span>{`${eventDescription?.length}/250`}</span>
                                             </Typography>
                                         }
@@ -590,17 +523,6 @@ export default function UpdateEvent({
                                             );
                                             setLinkErr(false);
                                         }}
-                                        helperText={
-                                            <Typography
-                                                variant="body2"
-                                                className="space-between"
-                                            >
-                                                <span>
-                                                    {linkErr && errorText}
-                                                </span>
-                                                <span></span>
-                                            </Typography>
-                                        }
                                     />
                                     <Divider />
                                     <div className="mb-3">
@@ -619,12 +541,6 @@ export default function UpdateEvent({
                                                 </Typography>
                                             </div>
                                             <>
-                                                <Typography
-                                                    variant="body2"
-                                                    color="error"
-                                                >
-                                                    {organizersErr && errorText}
-                                                </Typography>
                                                 <OrganizerSearch
                                                     loading={usersLoading}
                                                     searchResults={
@@ -657,6 +573,7 @@ export default function UpdateEvent({
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventOrganizers?.length}/3 friends`}</span>
                                                 </Typography>
@@ -788,6 +705,7 @@ export default function UpdateEvent({
                                                 <Typography
                                                     variant="body2"
                                                     className="mt-2 mb-2 space-between"
+                                                    component="div"
                                                 >
                                                     <span>{`${eventTags?.length}/5 tags`}</span>
                                                     <span>{`${tagText?.length}/20`}</span>
@@ -915,13 +833,6 @@ export default function UpdateEvent({
                                                     }
                                                 />
                                             </Grid>
-                                            <Typography
-                                                color="error"
-                                                variant="body2"
-                                                className="mb-2"
-                                            >
-                                                {locationErr && errorText}
-                                            </Typography>
                                         </div>
                                     </div>
                                     <Divider />
@@ -966,7 +877,6 @@ export default function UpdateEvent({
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
@@ -996,14 +906,10 @@ export default function UpdateEvent({
                                                             date
                                                         ).toISOString()
                                                     );
-                                                    setDateErr(false);
                                                 }}
                                             />
                                         </Grid>
                                     </Grid>
-                                    <Typography color="error" variant="body2">
-                                        {dateErr && errorText}
-                                    </Typography>
                                 </div>
                             </Card>
                             {/* <Divider /> */}
@@ -1040,6 +946,32 @@ export default function UpdateEvent({
                                     </Button>
                                 </DialogActions>
                             </Dialog>
+                            {errors?.length > 0 && (
+                                <Card
+                                    elevation={0}
+                                    style={{
+                                        marginTop: '3px',
+                                        background: 'transparent',
+                                    }}
+                                    component="div"
+                                    variant="outlined"
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </Card>
+                            )}
                             <div className="space-between mt-1">
                                 <div className="center-horizontal"></div>
                                 <div>
@@ -1048,30 +980,25 @@ export default function UpdateEvent({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '12px',
+                                            display: loading && 'none',
                                         }}
+                                        size="small"
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
                                     >
                                         Delete
                                     </Button>
-                                    {!loading && (
-                                        <Button onClick={handleUpdateEvent}>
-                                            Update
-                                        </Button>
-                                    )}
-                                    {loading && (
-                                        <Button
-                                            size="small"
-                                            style={{ margin: '0' }}
-                                        >
-                                            <CircularProgress
-                                                size={24}
-                                                thickness={4}
-                                            />
-                                        </Button>
-                                    )}
+
+                                    <Button
+                                        size="small"
+                                        onClick={handleUpdateEvent}
+                                        disabled={loading}
+                                    >
+                                        Update
+                                    </Button>
                                 </div>
                             </div>
+                            <div ref={ErrorRef} />
                         </CardContent>
                     </Card>
                 </Grid>
@@ -1079,3 +1006,49 @@ export default function UpdateEvent({
         </Modal>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    paperSearch: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.profileCard,
+    },
+    locationButtons: {
+        display: 'flex',
+        marginTop: theme.spacing(2),
+        alignItems: 'center',
+    },
+    paperSearchAlt: {
+        padding: '0px 4px',
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        marginTop: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    timeField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+    datePicker: {
+        border: '1px solid',
+        color: theme.palette.getContrastText(theme.palette.background.paper),
+        padding: '0px 4px',
+        borderColor: 'rgba(0, 96, 151, 0.5)',
+        borderRadius: '4px',
+        width: '80%',
+        backgroundColor: theme.palette.background.paper,
+        '&:hover, &:focus': {
+            borderColor: theme.palette.primary.main,
+        },
+        height: '2rem',
+    },
+}));

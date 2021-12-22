@@ -12,13 +12,10 @@ import {
     Popover,
     Typography,
 } from '@mui/material';
-
 import { Link, useHistory } from 'react-router-dom';
-import {
-    getCreationTime,
-    notificationBodyFactory,
-} from '../../../../pages/dasboard/utilities/functions';
+import { notificationBodyFactory } from '../../../../pages/dasboard/utilities/functions';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import { getDistanceToNowWithSuffix } from '../../../utilities/date.components';
 
 export default function NotificationsPopover({
     notificationAnchorEl,
@@ -100,7 +97,7 @@ function ListItemComponent({ item }) {
     } else if (item?.link_to_resource?.type === 'comment') {
         link = `/posts/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'user') {
-        link = `/users/${item?.link_to_resource?._id}`;
+        link = `/users/${item?.content_entities[0]?.url?._id}`;
     }
 
     const getNotifyingUser = (notification) => {
@@ -145,8 +142,9 @@ function ListItemComponent({ item }) {
                         backgroundColor: '#fed132',
                     }}
                     src={
+                        getNotifyingUserProfile(item) &&
                         process.env.REACT_APP_BACKEND_URL +
-                        getNotifyingUserProfile(item)
+                            getNotifyingUserProfile(item)
                     }
                 >
                     {getUserInitials(getNotifyingUser(item))}
@@ -166,7 +164,11 @@ function ListItemComponent({ item }) {
                         ></Typography>
                     </div>
                 }
-                secondary={getCreationTime(item?.date)}
+                secondary={
+                    <Typography variant="body2" style={{ marginRight: '8px' }}>
+                        {getDistanceToNowWithSuffix(Number(item?.date))}
+                    </Typography>
+                }
             />
         </ListItem>
     );

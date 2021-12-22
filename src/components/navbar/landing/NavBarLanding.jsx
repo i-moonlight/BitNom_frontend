@@ -13,6 +13,7 @@ import {
     useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';
@@ -29,8 +30,14 @@ export default function NavBarLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [showMenuEcosystem, setShowMenuEcosystem] = useState(false);
     const [showMenuProduct, setShowMenuProduct] = useState(false);
+
     const theme = useTheme();
     const history = useHistory();
+    const state = useSelector((st) => st);
+    const user = state.auth.user;
+
+    const loggedIn = user && JSON.stringify(user) !== '{}';
+
     const xsDown = useMediaQuery('(max-width:599px)');
     const smUp = useMediaQuery('(min-width:600px)');
     const smDown = useMediaQuery('(max-width:959px)');
@@ -46,11 +53,11 @@ export default function NavBarLanding() {
         >
             <StatusBar />
             <Divider />
-            <Container>
+            <Container maxWidth="lg">
                 <div className="space-between my-3">
                     <div
                         className="center-horizontal c-pointer"
-                        onClick={() => history.push('/connect')}
+                        onClick={() => history.push('/')}
                     >
                         {!xsDown && (
                             <div>
@@ -81,10 +88,14 @@ export default function NavBarLanding() {
                             />
                         )}
                     </div>
+
                     {!smDown && (
                         <>
                             <div className="center-horizontal">
                                 <Button
+                                    onClick={() => {
+                                        history.push('/');
+                                    }}
                                     className="mx-2"
                                     color={theme.palette.text.primary}
                                     variant="text"
@@ -158,6 +169,9 @@ export default function NavBarLanding() {
                                     color={theme.palette.text.primary}
                                     variant="text"
                                     textCase
+                                    onClick={() => {
+                                        history.push('/business');
+                                    }}
                                 >
                                     <Typography className="fw-bold">
                                         BN for Business
@@ -168,6 +182,9 @@ export default function NavBarLanding() {
                                     color={theme.palette.text.primary}
                                     variant="text"
                                     textCase
+                                    onClick={() => {
+                                        history.push('/learn');
+                                    }}
                                 >
                                     <Typography className="fw-bold">
                                         Learn
@@ -177,30 +194,50 @@ export default function NavBarLanding() {
                         </>
                     )}
                     <div className="center-horizontal">
-                        <Button
-                            className="mx-2"
-                            color={theme.palette.text.primary}
-                            variant="text"
-                            textCase
-                            onClick={() => {
-                                history.push('/auth/login');
-                            }}
-                        >
-                            <Typography className="fw-bold">Sign In</Typography>
-                        </Button>
-                        <Button
-                            variant="contained"
-                            textCase
-                            endIcon={!xsDown && <ArrowRightAltRounded />}
-                            onClick={() => {
-                                history.push('/auth/signup');
-                            }}
-                        >
-                            <Typography className="fw-bold">
-                                Explore
-                                {!smDown && 'BN'}
-                            </Typography>
-                        </Button>
+                        {!loggedIn ? (
+                            <>
+                                <Button
+                                    className="mx-2"
+                                    color={theme.palette.text.primary}
+                                    variant="text"
+                                    textCase
+                                    onClick={() => {
+                                        history.push('/auth/login');
+                                    }}
+                                >
+                                    <Typography className="fw-bold">
+                                        Sign In
+                                    </Typography>
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    textCase
+                                    endIcon={
+                                        !xsDown && <ArrowRightAltRounded />
+                                    }
+                                    onClick={() => {
+                                        history.push('/auth/signup');
+                                    }}
+                                >
+                                    <Typography className="fw-bold">
+                                        Sign Up
+                                    </Typography>
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                textCase
+                                endIcon={!xsDown && <ArrowRightAltRounded />}
+                                onClick={() => {
+                                    history.push('/connect');
+                                }}
+                            >
+                                <Typography className="fw-bold">
+                                    Back to BN
+                                </Typography>
+                            </Button>
+                        )}
 
                         {!mdUp && (
                             <IconButton

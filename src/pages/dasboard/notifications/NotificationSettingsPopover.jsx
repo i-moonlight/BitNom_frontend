@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
 import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
-
 import { useSelector } from 'react-redux';
 import {
     GET_USER_NOTIFICATIONS,

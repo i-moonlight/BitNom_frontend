@@ -1,11 +1,9 @@
-/**
- * Created by PhpStorm.
- * User: don@donphelix.com
- * Date: 10/11/21
- * Time: 10:54 PM
- */
+import { useTheme } from '@emotion/react';
 import { ChangeHistorySharp } from '@mui/icons-material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
+    Divider,
+    Tab,
     Table,
     TableBody,
     TableCell,
@@ -13,6 +11,155 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import { useState } from 'react';
+
+export default function GainersAndLosers() {
+    const [value, setValue] = useState('0');
+
+    const theme = useTheme();
+
+    const handleTabChanges = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <>
+            <TabContext value={value}>
+                <TabList
+                    onChange={handleTabChanges}
+                    aria-label="gainers-loosers-tab"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                >
+                    <Tab
+                        className="text-capitalize fw-bold"
+                        label={'Top Gainers'}
+                        value="0"
+                    />
+                    <Tab
+                        className="text-capitalize fw-bold"
+                        label={'Top Losers'}
+                        value="1"
+                    />
+                </TabList>
+                <Divider flexItem />
+                <TabPanel value="0" className="px-0">
+                    <div>
+                        <TableContainer>
+                            <Table aria-label="caption table">
+                                <TableHead>
+                                    <TableRow
+                                        style={{
+                                            backgroundColor:
+                                                theme.palette.mode === 'dark'
+                                                    ? '#3e4041'
+                                                    : '#eeeeee',
+                                        }}
+                                    >
+                                        <TableCell>
+                                            <strong>Coin</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Name</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Volume</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Price</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <ChangeHistorySharp />
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row) => (
+                                        <TableRow key={Math.random() * 1000}>
+                                            <TableCell>
+                                                <img
+                                                    src={row.image}
+                                                    alt={'coin image'}
+                                                    height="25px"
+                                                />
+                                            </TableCell>
+                                            <TableCell>{row.coin}</TableCell>
+                                            <TableCell>{row.volume}</TableCell>
+                                            <TableCell>{row.price}</TableCell>
+                                            <TableCell>
+                                                <span className="bg-success p-1 br-2">
+                                                    {row.pyramid}
+                                                </span>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </TabPanel>
+                <TabPanel value="1" className="px-0">
+                    <div>
+                        <TableContainer>
+                            <Table aria-label="caption table">
+                                <TableHead>
+                                    <TableRow
+                                        style={{
+                                            backgroundColor:
+                                                theme.palette.mode === 'dark'
+                                                    ? '#3e4041'
+                                                    : '#eeeeee',
+                                        }}
+                                    >
+                                        <TableCell>
+                                            <strong>Coin</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Name</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Volume</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <strong>Price</strong>
+                                        </TableCell>
+                                        <TableCell>
+                                            <ChangeHistorySharp />
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody variant="scrollable">
+                                    {rows.map((row) => (
+                                        <TableRow
+                                            key={Math.random() * 1000}
+                                            tabIndex={-1}
+                                        >
+                                            <TableCell>
+                                                <img
+                                                    src={row.image}
+                                                    alt={'coin image'}
+                                                    height="25px"
+                                                />
+                                            </TableCell>
+                                            <TableCell>{row.coin}</TableCell>
+                                            <TableCell>{row.volume}</TableCell>
+                                            <TableCell>{row.price}</TableCell>
+                                            <TableCell>
+                                                <small className="bg-success p-1 br-2">
+                                                    {row.pyramid}
+                                                </small>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </TabPanel>
+            </TabContext>
+        </>
+    );
+}
 
 function createData(image, coin, volume, price, pyramid) {
     return { image, coin, volume, price, pyramid };
@@ -104,185 +251,3 @@ const rows = [
         '151670.8%'
     ),
 ];
-
-export default function GainersAndLosers() {
-    return (
-        <div>
-            <div className="d-lg-flex d-md-flex d-sm-block justify-content-evenly">
-                <div className="mb-5">
-                    <h6 className="fw-bold m-3 text-center">Top Gainers</h6>
-                    <p>
-                        <small>24h Volume is above USD $50,000</small>
-                    </p>
-                    <TableContainer>
-                        <Table sx={{}} aria-label="caption table">
-                            <TableHead>
-                                <TableRow
-                                    style={{
-                                        backgroundColor: '#3e4041',
-                                        color: '#fff',
-                                    }}
-                                >
-                                    <TableCell className="text-white">
-                                        <strong>Coin</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    />
-                                    <TableCell
-                                        className="text-primary"
-                                        align="right"
-                                    >
-                                        <strong>Volume</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-primary"
-                                        align="right"
-                                    >
-                                        <strong>Price</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    >
-                                        <ChangeHistorySharp />
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow key={row.name}>
-                                        <TableCell align="right">
-                                            <img
-                                                src={row.image}
-                                                alt={'coin image'}
-                                                height="25px"
-                                            />
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-primary"
-                                        >
-                                            {row.coin}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-primary"
-                                        >
-                                            {row.volume}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-primary"
-                                        >
-                                            {row.price}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <span
-                                                style={{
-                                                    backgroundColor: '#b4b474',
-                                                    borderRadius: '25px',
-                                                }}
-                                            >
-                                                {row.pyramid}
-                                            </span>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                <div className={'mb-5'}>
-                    <h6 className="fw-bold m-3 text-center">Top Losers</h6>
-                    <p>
-                        <small>24h Volume is above USD $50,000</small>
-                    </p>
-                    <TableContainer>
-                        <Table aria-label="caption table">
-                            <TableHead>
-                                <TableRow
-                                    style={{
-                                        backgroundColor: '#3e4041',
-                                        color: '#fff',
-                                    }}
-                                >
-                                    <TableCell className="text-white">
-                                        <strong>Coin</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    />
-                                    <TableCell
-                                        className="text-secondary"
-                                        align="right"
-                                    >
-                                        <strong>Volume</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-secondary"
-                                        align="right"
-                                    >
-                                        <strong>Price</strong>
-                                    </TableCell>
-                                    <TableCell
-                                        className="text-white"
-                                        align="right"
-                                    >
-                                        <ChangeHistorySharp />
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody
-                                variant="scrollable"
-                                scrollButtons="auto"
-                            >
-                                {rows.map((row) => (
-                                    <TableRow key={row.name} tabIndex={-1}>
-                                        <TableCell align="right">
-                                            <img
-                                                src={row.image}
-                                                alt={'coin image'}
-                                                height="25px"
-                                            />
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-theme"
-                                        >
-                                            {row.coin}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-theme"
-                                        >
-                                            {row.volume}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            className="text-theme"
-                                        >
-                                            {row.price}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <small
-                                                style={{
-                                                    backgroundColor: '#b4b474',
-                                                    borderRadius: '25px',
-                                                }}
-                                            >
-                                                {row.pyramid}
-                                            </small>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
-        </div>
-    );
-}

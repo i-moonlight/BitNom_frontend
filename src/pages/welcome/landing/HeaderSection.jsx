@@ -22,17 +22,19 @@ export default function HeaderSection() {
     return (
         <>
             <Grid
+                className="py-5"
                 style={{
                     backgroundColor: theme.palette.background.landing,
                 }}
             >
                 <Container container component={Grid} maxWidth="md">
                     <Grid
+                        className="py-5 px-3"
                         style={{
                             backgroundImage: `url('${headerBgImg}')`,
                             backgroundSize: 'cover',
                             borderRadius: 30,
-                            padding: '5%',
+                            // padding: '5%',
                             backgroundColor:
                                 theme.palette.mode == 'light'
                                     ? '#ddd'
@@ -40,7 +42,6 @@ export default function HeaderSection() {
                         }}
                         item
                         lg={12}
-                        className="mt-5 mb-5"
                     >
                         <DarkThemeOnly>
                             <Typography
@@ -93,7 +94,13 @@ export default function HeaderSection() {
                                     href="https://latoken.com/exchange/BN_USDT"
                                     className="alt"
                                 >
-                                    <b>Click here to buy</b>
+                                    <b>
+                                        Click here to buy
+                                        {(!process.env.NODE_ENV ||
+                                            process.env.NODE_ENV ===
+                                                'development') &&
+                                            '.'}
+                                    </b>
                                 </a>
                             </Typography>
                         </DarkThemeOnly>
@@ -105,7 +112,7 @@ export default function HeaderSection() {
                 open={videoOpen}
                 onClose={() => setVideoOpen(false)}
             >
-                <Container className="h-75" maxWidth="lg my-5">
+                <Container className="h-75" maxWidth="lg">
                     <div
                         className="d-flex justify-content-center align-items-center bg-success m-0 p-0 h-100"
                         // style={{

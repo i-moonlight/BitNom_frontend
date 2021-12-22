@@ -11,7 +11,6 @@ import {
     Avatar,
     Card,
     CardContent,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -28,18 +27,24 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
 import { useSelector } from 'react-redux';
 import { Button } from '../../../../../components/Button';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { mentionsFinder, mentionsUpdate } from '../../../utilities/functions';
+import {
+    getFeed,
+    mentionsFinder,
+    mentionsUpdate,
+} from '../../../utilities/functions';
 import {
     MUTATION_DELETE_COMMENT,
     MUTATION_UPDATE_COMMENT,
     QUERY_GET_COMMENTS,
     QUERY_LOAD_SCROLLS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
+
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
 export default function UpdateComment({
     updateCommentOpen,
@@ -49,7 +54,6 @@ export default function UpdateComment({
     setOpenImage,
     profileData,
 }) {
-    const [updateCommentErr, setUpdateCommentErr] = useState(null);
     const [fileType, setFileType] = useState(null);
     const [comment_text, setCommentText] = useState('');
     const [comment_image, setCommentImage] = useState(undefined);
@@ -57,6 +61,7 @@ export default function UpdateComment({
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
 
     const emojiPickerId = 'emoji-picker-popover';
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
@@ -74,19 +79,19 @@ export default function UpdateComment({
                 _id: id,
             },
             refetchQueries: [
-                { query: QUERY_LOAD_SCROLLS },
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_GET_COMMENTS,
                     variables: { data: { scroll_id: commentToEdit?.scroll } },
                 },
             ],
         });
-        setCommentText('');
-        setCommentImage(undefined);
-        setUpdateCommentErr(false);
-        setOpenImage(false);
-        setFileType(null);
-        setCommentToEdit(null);
+        handleCloseModal();
     };
 
     const onUpdateComment = async (IUpdateComment) => {
@@ -94,19 +99,65 @@ export default function UpdateComment({
             variables: {
                 data: IUpdateComment,
             },
+            errorPolicy: 'all',
             refetchQueries: [
+                {
+                    query: QUERY_LOAD_SCROLLS,
+                    variables: {
+                        data: { ids: getFeed(profileData), limit: 220 },
+                    },
+                },
                 {
                     query: QUERY_GET_COMMENTS,
                     variables: { data: { scroll_id: commentToEdit?.scroll } },
                 },
             ],
+        }).then(({ data, errors: updateCommentErrors }) => {
+            if (data?.Comments?.update) {
+                handleCloseModal();
+            }
+            if (updateCommentErrors) {
+                if (
+                    updateCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = updateCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (updateCommentErrors[0]?.message == 400) {
+                    const errorObject = updateCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
         });
+    };
+
+    const handleCloseModal = () => {
         setCommentText('');
-        setCommentImage(undefined);
-        setUpdateCommentErr(false);
-        setOpenImage(false);
-        setFileType(null);
+        setUpdateCommentOpen(!updateCommentOpen);
         setCommentToEdit(null);
+        setOpenImage(false);
+        setCommentImage(undefined);
+        setErrors([]);
+        setFileType(null);
         setPreviewURL();
         setFileErrors([]);
     };
@@ -120,8 +171,8 @@ export default function UpdateComment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setCommentText(`${comment_text} ${emoji.native}`);
+        //handleEmojiPickerClose();
+        setCommentText(`${comment_text} ${emoji}`);
     };
 
     useEffect(() => {
@@ -140,9 +191,35 @@ export default function UpdateComment({
         };
     });
 
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return setErrors([
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                    ]);
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
     const handleUpdateComment = (e) => {
         e.preventDefault();
-        if (comment_text.trim() == '') return setUpdateCommentErr(true);
 
         const mentionsData = mentionsFinder(comment_text);
         onUpdateComment({
@@ -151,14 +228,12 @@ export default function UpdateComment({
             content_entities: mentionsData.contentEntities,
             image: comment_image,
         });
-        setUpdateCommentOpen(false);
     };
 
     const handleDeleteComment = (e) => {
         e.preventDefault();
         onDeleteComment(commentToEdit?._id);
         setOpenDelete(false);
-        setUpdateCommentOpen(false);
     };
 
     const userInitials = getUserInitials(user?.displayName);
@@ -187,16 +262,7 @@ export default function UpdateComment({
                                 </Typography>
                                 <IconButton
                                     onClick={() => {
-                                        setUpdateCommentOpen(
-                                            !updateCommentOpen
-                                        );
-                                        setCommentToEdit(null);
-                                        setOpenImage(false);
-                                        setCommentImage(undefined);
-                                        setUpdateCommentErr(false);
-                                        setFileType(null);
-                                        setPreviewURL();
-                                        setFileErrors([]);
+                                        handleCloseModal();
                                     }}
                                     size="small"
                                     className="m-1 p-1"
@@ -208,7 +274,7 @@ export default function UpdateComment({
                             <Divider />
                             <CardContent
                                 style={{
-                                    maxHeight: '500px',
+                                    maxHeight: '85vh',
                                     overflowY: 'auto',
                                 }}
                             >
@@ -219,9 +285,10 @@ export default function UpdateComment({
                                                 backgroundColor: '#fed132',
                                             }}
                                             src={
+                                                user?.profile_pic &&
                                                 process.env
                                                     .REACT_APP_BACKEND_URL +
-                                                user?.profile_pic
+                                                    user?.profile_pic
                                             }
                                         >
                                             {userInitials}
@@ -288,10 +355,7 @@ export default function UpdateComment({
                                         }}
                                     />
                                 </MentionsInput>
-                                <Typography color="error" variant="body2">
-                                    {updateCommentErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+
                                 <Card
                                     style={{
                                         display: previewURL ? 'block' : 'none',
@@ -308,71 +372,17 @@ export default function UpdateComment({
                                     <div className="space-between">
                                         <div>
                                             <div style={{ display: 'none' }}>
-                                                <DropzoneArea
-                                                    clearOnUnmount
-                                                    dropzoneClass="update-comment-dropzone"
-                                                    //id="dropzone"
-                                                    clickable={true}
-                                                    onChange={(files) => {
-                                                        const errors = [];
-                                                        let counter = 0;
-                                                        files.map((file) => {
-                                                            const image =
-                                                                new Image();
-                                                            image.addEventListener(
-                                                                'load',
-                                                                () => {
-                                                                    // only select images within width/height/size limits
-                                                                    if (
-                                                                        (image.width <
-                                                                            1200) &
-                                                                        (image.height <
-                                                                            1350) &
-                                                                        (file.size <
-                                                                            5000000)
-                                                                    ) {
-                                                                        counter += 1;
-                                                                        setFileErrors(
-                                                                            []
-                                                                        );
-                                                                    } else {
-                                                                        errors.push(
-                                                                            'Image is too large. Trim to 1200px by 1200px or less.'
-                                                                        );
-                                                                        setFileErrors(
-                                                                            errors
-                                                                        );
-                                                                    }
-                                                                    if (
-                                                                        counter ===
-                                                                        1
-                                                                    ) {
-                                                                        setPreviewURL(
-                                                                            URL.createObjectURL(
-                                                                                file
-                                                                            )
-                                                                        );
-                                                                        setCommentImage(
-                                                                            file
-                                                                        );
-                                                                    }
-                                                                }
-                                                            );
-                                                            image.src =
-                                                                URL.createObjectURL(
-                                                                    file
-                                                                );
-                                                        });
+                                                <input
+                                                    id="update-comment-image"
+                                                    type="file"
+                                                    onChange={(e) => {
+                                                        handleSelectImage(
+                                                            Array.from(
+                                                                e.target.files
+                                                            )
+                                                        );
                                                     }}
-                                                    acceptedFiles={[
-                                                        'image/jpeg',
-                                                        'image/png',
-                                                    ]}
-                                                    maxFileSize={5000000}
-                                                    filesLimit={1}
-                                                    showPreviewsInDropzone
-                                                    showPreviews={false}
-                                                    showFileNames={false}
+                                                    accept="image/jpeg, image/png"
                                                 />
                                             </div>
                                         </div>
@@ -471,6 +481,32 @@ export default function UpdateComment({
                                     }
                                     handleSelectEmoji={handleSelectEmoji}
                                 />
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                                 <div className="space-between mt-1">
                                     <div className="center-horizontal">
                                         <IconButton
@@ -490,9 +526,9 @@ export default function UpdateComment({
                                                 setFileType(null);
                                                 setCommentImage(null);
                                                 document
-                                                    .getElementsByClassName(
-                                                        'update-comment-dropzone'
-                                                    )[0]
+                                                    .getElementById(
+                                                        'update-comment-image'
+                                                    )
                                                     .click();
                                             }}
                                         >
@@ -505,6 +541,7 @@ export default function UpdateComment({
                                                 backgroundColor: '#ba000d',
                                                 color: '#FFFFFF',
                                                 marginRight: '3px',
+                                                display: loading && 'none',
                                             }}
                                             variant="contained"
                                             size="small"
@@ -512,25 +549,14 @@ export default function UpdateComment({
                                         >
                                             Delete
                                         </Button>
-                                        {!loading && (
-                                            <Button
-                                                size="small"
-                                                onClick={handleUpdateComment}
-                                            >
-                                                Update
-                                            </Button>
-                                        )}
-                                        {loading && (
-                                            <Button
-                                                size="small"
-                                                style={{ margin: '0' }}
-                                            >
-                                                <CircularProgress
-                                                    size={24}
-                                                    thickness={4}
-                                                />
-                                            </Button>
-                                        )}
+
+                                        <Button
+                                            size="small"
+                                            onClick={handleUpdateComment}
+                                            disabled={loading}
+                                        >
+                                            Update
+                                        </Button>
                                     </div>
                                 </div>
                             </CardContent>

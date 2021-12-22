@@ -1,6 +1,12 @@
 import { useMutation } from '@apollo/client';
-import Alert from '@mui/lab/Alert';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import {
+    Alert,
+    Backdrop,
+    Card,
+    CardContent,
+    Grid,
+    Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +16,7 @@ import DividerText from '../../components/DividerText';
 import Form from '../../components/Form';
 import NavBarAuth from '../../components/navbar/auth/NavBarAuth';
 import TextField from '../../components/TextField';
-import { login } from '../../store/actions/authActions';
+import { userUpdate } from '../../store/actions/authActions';
 import { loginUserInitialValues } from './utilities/initial_values';
 import {
     MUTATION_GOOGLE_LOGIN,
@@ -21,6 +27,7 @@ import { loginUserValidationSchema } from './utilities/validation_schemas';
 export default function Login() {
     const [loginErr, setLoginErr] = useState(null);
     const [googleErr, setGoogleErr] = useState(null);
+
     const state = useSelector((st) => st);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,7 +44,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/connect');
+        user && JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [user, history]);
 
     const responseGoogle = (response) => {
@@ -51,11 +58,12 @@ export default function Login() {
             const userErrors = errors || null;
             setGoogleErr(userErrors);
 
-            data?.Users?.googleLogin && dispatch(login(userData, null));
+            data?.Users?.googleLogin && dispatch(userUpdate(userData));
         });
     };
 
     const failureGoogle = (response) => {
+        // eslint-disable-next-line no-console
         console.log('googleErr: ', response);
     };
 
@@ -66,12 +74,10 @@ export default function Login() {
                 <Grid
                     container
                     spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '100vh' }}
+                    style={{ minHeight: '100vh', marginTop: 80 }}
                 >
-                    <Grid item xs={11} sm={7} md={6} lg={4}>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                    <Grid item xs={10} sm={8} md={6} lg={4}>
                         <div className="text-center my-3 px-sm-5">
                             <Typography color="textPrimary" variant="h5">
                                 Hi! WELCOME BACK
@@ -84,6 +90,7 @@ export default function Login() {
                         <Card elevation={4}>
                             <CardContent>
                                 <Form
+                                    enterSubmit
                                     initialValues={loginUserInitialValues}
                                     validationSchema={loginUserValidationSchema}
                                     onSubmit={({ username, password }) => {
@@ -108,8 +115,9 @@ export default function Login() {
                                                 });
 
                                             data?.Users?.login &&
-                                                userData?.email?.verified &&
-                                                dispatch(login(userData, null));
+                                                data?.Users?.login?.email
+                                                    ?.verified &&
+                                                dispatch(userUpdate(userData));
                                         });
                                     }}
                                 >
@@ -200,7 +208,10 @@ export default function Login() {
                                         />
 
                                         <div className="text-center my-3 px-sm-0">
-                                            <Typography variant="body1">
+                                            <Typography
+                                                variant="body1"
+                                                component="div"
+                                            >
                                                 <div
                                                     style={{ marginTop: 10 }}
                                                 ></div>
@@ -218,7 +229,11 @@ export default function Login() {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
                 </Grid>
+                <Backdrop open={googleLoading || loginLoading}>
+                    <div className="preloader-speeding-wheel"></div>
+                </Backdrop>
             </div>
         </>
     );

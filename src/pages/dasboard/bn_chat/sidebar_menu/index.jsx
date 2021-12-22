@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery, useSubscription, useMutation } from '@apollo/client';
 import {
     CircularProgress,
     Grid,
@@ -10,33 +10,43 @@ import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
-    addToInvites,
-    setArchivedChats,
-    setChatInvites,
+    addPinnedChat,
+    addToArchivedChats,
     addToChatDialogues,
+    addToInvites,
+    addToPinnedChats,
     clearCurrentChat,
     removeFromInvites,
+    resetTotalCount,
+    setArchivedChats,
+    setChatInvites,
     setCurrentChat,
-    addPinnedChat,
-    addToPinnedChats,
-    addToArchivedChats,
+    updateDialogue,
 } from '../../../../store/actions/chatActions';
 import {
+    ARCHIVE_CHAT_SUB,
+    CHAT_ACCEPTED,
     GET_DIALOGUES,
     NEW_CHAT_ADDED,
-    CHAT_ACCEPTED,
     PIN_CHAT_SUB,
-    ARCHIVE_CHAT_SUB,
+    RESET_UNREAD_COUNT,
 } from '../graphql/queries';
 import Archived from './archived';
 import ChatItem from './chat';
 import Invites from './invites';
 import Pinned from './pinned';
+import SearchedChats from './SearchedChats';
 
 function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+    const chats = state.chats.chats;
+    const invites = state.chats.invites;
+    const archived = state.chats.archived;
+    const pinned = state.chats.pinnedChats;
+    const searchedChats = state.chats.searchedChats;
+    const activeChatId = state?.chats?.current_chat?._id;
 
     const xsDown = useMediaQuery('(max-width:599px)');
 
@@ -78,6 +88,8 @@ function Chats({ onSetChatMobile }) {
             context: { clientName: 'chat' },
         }
     );
+    const [unreadCountReset, { data: readCountData }] =
+        useMutation(RESET_UNREAD_COUNT);
 
     const { data: newChatData } = useSubscription(NEW_CHAT_ADDED, {
         variables: {
@@ -102,6 +114,21 @@ function Chats({ onSetChatMobile }) {
             _id: user._id,
         },
     });
+
+    const onResetUnreadCount = async (_id) => {
+        await unreadCountReset({
+            variables: {
+                _id: _id,
+            },
+            context: { clientName: 'chat' },
+        });
+    };
+
+    useEffect(() => {
+        if (readCountData?.Dialogue?.resetUnreadCount) {
+            dispatch(updateDialogue(readCountData?.Dialogue?.resetUnreadCount));
+        }
+    }, [dispatch, readCountData?.Dialogue?.resetUnreadCount]);
     useEffect(() => {
         if (chatAccepted?.chatAccepted) {
             dispatch(clearCurrentChat());
@@ -148,72 +175,94 @@ function Chats({ onSetChatMobile }) {
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
     useEffect(() => {
-        if (pinnedChatData?.pinChat) {
+        if (pinnedChatData?.pinChat?.currentUser?.info?._id === user._id) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
+            dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
-    }, [dispatch, pinnedChatData?.pinChat]);
+    }, [dispatch, pinnedChatData, user]);
 
     useEffect(() => {
-        if (archivedChatData?.archivedChat) {
-            dispatch(addToArchivedChats(archivedChatData?.archivedChat));
+        if (
+            archivedChatData?.archiveChat?.currentUser?.info?._id === user._id
+        ) {
+            dispatch(addToArchivedChats(archivedChatData?.archiveChat));
+            dispatch(setCurrentChat(archivedChatData?.archiveChat));
         }
-    }, [dispatch, archivedChatData?.archivedChat]);
-    const chats = state.chats.chats;
-    const invites = state.chats.invites;
-    const archived = state.chats.archived;
-    const pinned = state.chats.pinnedChats;
-    const activeChatId = state.chats.current_chat._id;
+    }, [dispatch, archivedChatData, user]);
+    const handleResetCount = (_id) => {
+        onResetUnreadCount(_id);
+    };
+
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
 
-        if (current_chat._id !== chat._id) {
+        if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
             xsDown && onSetChatMobile();
         }
+        onResetUnreadCount(chat._id);
+        dispatch(resetTotalCount());
     };
+
     return (
         <Fragment>
-            <div style={{ overflow: 'auto' }}>
-                {invites && invites?.length > 0 && (
-                    <Invites invites={invites} loading={invitesLoading} />
-                )}
+            {searchedChats?.length > 0 ? (
+                <div style={{ overflow: 'auto' }}>
+                    {searchedChats && searchedChats?.length > 0 && (
+                        <SearchedChats searchedChats={searchedChats} />
+                    )}
+                </div>
+            ) : (
+                <div style={{ overflow: 'auto' }}>
+                    {invites && invites?.length > 0 && (
+                        <Invites invites={invites} loading={invitesLoading} />
+                    )}
 
-                {pinned && pinned?.length > 0 && (
-                    <Pinned pinned={pinned} loading={pinnedLoading} />
-                )}
-                {chats && chats?.length > 0 && (
-                    <List
-                        component="nav"
-                        subheader={
-                            <ListSubheader component="div">Chats</ListSubheader>
-                        }
-                    >
-                        {chats?.map((chat) => (
-                            <ChatItem
-                                key={chat._id}
-                                onClick={() => openChat(chat)}
-                                chat={chat}
-                                activeChatId={activeChatId}
-                            />
-                        ))}
-                    </List>
-                )}
-                {archived && archived?.length > 0 && (
-                    <Archived archived={archived} loading={archivedLoading} />
-                )}
-                {loading && !chats?.length > 0 && (
-                    <Grid
-                        alignItems="center"
-                        justifyContent="center"
-                        container
-                        item
-                        direction="column"
-                        style={{ width: '100%' }}
-                    >
-                        <CircularProgress />
-                    </Grid>
-                )}
-            </div>
+                    {pinned && pinned?.length > 0 && (
+                        <Pinned pinned={pinned} loading={pinnedLoading} />
+                    )}
+                    {chats && chats?.length > 0 && (
+                        <List
+                            component="nav"
+                            subheader={
+                                <ListSubheader component="div">
+                                    Chats
+                                </ListSubheader>
+                            }
+                        >
+                            {chats?.map((chat) => (
+                                <ChatItem
+                                    key={chat._id}
+                                    onClick={() => {
+                                        openChat(chat),
+                                            handleResetCount(chat._id);
+                                    }}
+                                    chat={chat}
+                                    activeChatId={activeChatId}
+                                />
+                            ))}
+                        </List>
+                    )}
+                    {archived && archived?.length > 0 && (
+                        <Archived
+                            archived={archived}
+                            loading={archivedLoading}
+                        />
+                    )}
+                    {loading && !chats?.length > 0 && (
+                        <Grid
+                            alignItems="center"
+                            justifyContent="center"
+                            container
+                            item
+                            direction="column"
+                            style={{ width: '100%' }}
+                        >
+                            <CircularProgress />
+                        </Grid>
+                    )}
+                </div>
+            )}
         </Fragment>
     );
 }

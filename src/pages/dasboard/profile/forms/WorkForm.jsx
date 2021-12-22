@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { SearchRounded } from '@mui/icons-material';
-import { Alert } from '@mui/lab';
 import {
+    Alert,
     Card,
     CardContent,
     Checkbox,
@@ -24,10 +24,10 @@ import { useStyles } from '../utilities/profile.styles';
 import { workValidation } from '../utilities/profile.validationSchemas';
 
 export default function WorkForm({ onClose, updateData }) {
-    const [current, setCurrent] = useState(updateData?.current);
+    const [current, setCurrent] = useState(updateData?.current || false);
     const [localError, setLocalError] = useState(false);
-    const classes = useStyles();
 
+    const classes = useStyles();
     const [
         addWork,
         {
@@ -79,21 +79,14 @@ export default function WorkForm({ onClose, updateData }) {
                         return;
                     }
 
-                    const Iwork = current
-                        ? {
-                              company,
-                              title,
-                              start_date,
-                              current,
-                              description,
-                          }
-                        : {
-                              company,
-                              title,
-                              start_date,
-                              end_date,
-                              description,
-                          };
+                    const Iwork = {
+                        company,
+                        title,
+                        start_date,
+                        end_date: current ? null : end_date,
+                        current,
+                        description,
+                    };
 
                     updateData
                         ? updateWork({

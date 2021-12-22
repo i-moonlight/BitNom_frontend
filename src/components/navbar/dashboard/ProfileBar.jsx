@@ -1,9 +1,8 @@
 import {
     ChevronRight,
-    ForumRounded,
+    //ForumRounded,
     MenuRounded,
     Notifications,
-    Search,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -11,9 +10,7 @@ import {
     Box,
     Card,
     Container,
-    Divider,
     IconButton,
-    InputBase,
     Paper,
     Typography,
     useMediaQuery,
@@ -26,35 +23,38 @@ import logo from '../../../assets/logo.svg';
 import logo_full from '../../../assets/logo_full.svg';
 import logo_light from '../../../assets/logo_light.svg';
 import logo_light_full from '../../../assets/logo_light_full.svg';
+
 import { getUserInitials } from '../../../utilities/Helpers';
 import { Button } from '../../Button';
 import LazyImage from '../../LazyImage';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
-    notifications,
+    //unreadCount,
+    notificationCount,
     menuId,
     handleMenuOpen,
     notificationId,
     handleNotificationsOpen,
     profile,
+    //handleTotalCountReset,
 }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const classes = useStyles();
     const history = useHistory();
     const theme = useTheme();
-    const unreadCount = state.chats.unreadCount;
+
     const userInitials = getUserInitials(
         user?.displayName || profile?.displayName
     );
     const smDown = useMediaQuery('(max-width:959px)');
     const mdUp = useMediaQuery('(min-width:960px)');
-    const xsDown = useMediaQuery('(max-width:599px)');
+    // const xsDown = useMediaQuery('(max-width:599px)');
 
     return (
         <Box className={classes.root}>
-            <Container>
+            <Container maxWidth="lg">
                 <Card elevation={0} className={classes.appBar}>
                     <div
                         className="center-horizontal c-pointer"
@@ -107,8 +107,12 @@ export default function ProfileBar({
                         elevation={0}
                         component="form"
                         className={classes.paperSearch}
+                        sx={{
+                            height: 36,
+                        }}
                     >
-                        {!xsDown && (
+                        <div className="flex-1 p-1 m-1"></div>
+                        {/* {!xsDown && (
                             <>
                                 <Button textCase variant="text">
                                     <Typography
@@ -141,7 +145,7 @@ export default function ProfileBar({
                             aria-label="search"
                         >
                             <Search />
-                        </IconButton>
+                        </IconButton> */}
                     </Paper>
                     <div className={classes.sectionDesktop}>
                         <IconButton
@@ -153,15 +157,19 @@ export default function ProfileBar({
                             aria-haspopup="true"
                             onClick={handleNotificationsOpen}
                         >
-                            <Badge color="primary" badgeContent={notifications}>
+                            <Badge
+                                color="primary"
+                                badgeContent={notificationCount}
+                            >
                                 <Notifications />
                             </Badge>
                         </IconButton>
-                        <IconButton
+                        {/* <IconButton
                             size="small"
                             className={classes.iconButton}
                             color="inherit"
                             onClick={(e) => {
+                                handleTotalCountReset();
                                 e.stopPropagation();
                                 history.push('/chat');
                             }}
@@ -169,7 +177,7 @@ export default function ProfileBar({
                             <Badge color="primary" badgeContent={unreadCount}>
                                 <ForumRounded />
                             </Badge>
-                        </IconButton>
+                        </IconButton> */}
                         <Button
                             textCase
                             className="py-0 ms-3"

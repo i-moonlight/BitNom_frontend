@@ -6,6 +6,7 @@ import {
     Tab,
     Tabs,
     useTheme,
+    useMediaQuery,
 } from '@mui/material';
 import { styled, withStyles } from '@mui/styles';
 import React, { useState } from 'react';
@@ -31,6 +32,7 @@ export default function NavBarInvestor() {
     const history = useHistory();
     const palette = useSelector((st) => st.theme.palette);
     const theme = useTheme();
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     return (
         <AppBar
@@ -60,27 +62,29 @@ export default function NavBarInvestor() {
                         />
                     </div>
 
-                    <InvestorTabs
-                        value={tabValue}
-                        onChange={(_ev, val) => {
-                            setTabValue(val);
-                        }}
-                        variant="scrollable"
-                        scrollButtons="auto"
-                    >
-                        {investorTabs.map(({ label, hash }) => {
-                            return (
-                                <BitTab
-                                    key={`${Math.random() * 100}`}
-                                    label={label}
-                                    aria-haspopup="true"
-                                    onClick={() => {
-                                        window.location.hash = hash;
-                                    }}
-                                />
-                            );
-                        })}
-                    </InvestorTabs>
+                    {!xsDown && (
+                        <InvestorTabs
+                            value={tabValue}
+                            onChange={(_ev, val) => {
+                                setTabValue(val);
+                            }}
+                            variant="scrollable"
+                            scrollButtons="auto"
+                        >
+                            {investorTabs.map(({ label, hash }) => {
+                                return (
+                                    <BitTab
+                                        key={`${Math.random() * 100}`}
+                                        label={label}
+                                        aria-haspopup="true"
+                                        onClick={() => {
+                                            window.location.hash = hash;
+                                        }}
+                                    />
+                                );
+                            })}
+                        </InvestorTabs>
+                    )}
 
                     <div className="ms-auto">
                         <IconButton

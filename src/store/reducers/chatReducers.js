@@ -7,8 +7,9 @@ const initialState = {
     archived: [],
     unreadCount: null,
     searchData: [],
-    pinnedMessages: [],
     pinnedChats: [],
+    searchedChats: [],
+    pinnedMessages: [],
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -28,6 +29,13 @@ export default function chatReducer(state = initialState, action) {
                 }, 0),
             };
         }
+        case 'UPDATE_DIALOGUE':
+            return {
+                ...state,
+                chats: state.chats.map((chat) =>
+                    chat._id === action.data._id ? action.data : chat
+                ),
+            };
         case 'SET_CURRENT_CHAT':
             return { ...state, current_chat: action.chat };
         case 'SET_CHAT_INVITES':
@@ -102,13 +110,15 @@ export default function chatReducer(state = initialState, action) {
                 ...state,
                 pinnedMessages: [...action.data],
             };
+
         case 'ADD_MESSAGE_TO_PINNED_MESSAGES':
             return {
                 ...state,
                 pinnedMessages: [
-                    ...state.pinnedMessages.slice(0, action.data),
+                    ...state.pinnedMessages,
                     action.data,
-                    ...state.pinnedMessages.slice(action.data),
+                    // action.data,
+                    // ...state.pinnedMessages.slice(0, action.data),
                 ],
             };
         case 'DELETE_PINNED_MESSAGE':
@@ -134,8 +144,54 @@ export default function chatReducer(state = initialState, action) {
                 pinnedChats: [
                     ...state.pinnedChats.slice(0, action.data),
                     action.data,
-                    ...state.pinnedChats.slice(0, action.data),
+                    ...state.pinnedChats.slice(action.data),
                 ],
+            };
+        case 'DELETE_PINNED_CHAT':
+            return {
+                ...state,
+                pinnedChats: state.pinnedChats.filter(
+                    (pinned) => pinned._id !== action.data._id
+                ),
+            };
+
+        case 'ADD_TO_ARCHIVED':
+            return {
+                ...state,
+                archived: [
+                    ...state.archived.slice(0, action.data),
+                    action.data,
+                    ...state.archived.slice(action.data),
+                ],
+            };
+        case 'DELETE_ARCHIVED_CHAT':
+            return {
+                ...state,
+                archived: state.archived.filter(
+                    (archived) => archived._id !== action.data._id
+                ),
+            };
+        case 'SET_TOTAL_COUNT':
+            return {
+                ...state,
+                unreadCount: action.data,
+            };
+
+        case 'RESET_TOTAL_COUNT':
+            return {
+                ...state,
+                unreadCount: null,
+            };
+
+        case 'SET_CHAT_SRCH_DATA':
+            return {
+                ...state,
+                searchedChats: [...action.data],
+            };
+        case 'CLEAR_CHAT_SRCH_DATA':
+            return {
+                ...state,
+                searchedChats: [],
             };
         default:
             return { ...state };

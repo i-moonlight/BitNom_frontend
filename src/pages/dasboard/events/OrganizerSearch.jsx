@@ -1,14 +1,8 @@
-import {
-    Autocomplete,
-    Avatar,
-    Grid,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Avatar, Grid, Typography } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 import { getUserInitials } from '../../../utilities/Helpers';
-//import parse from 'autosuggest-highlight/parse';
-import {} from '../utilities/functions';
 
 function OrganizerSearch({
     searchResults,
@@ -63,12 +57,13 @@ function OrganizerSearch({
                     }}
                 />
             )}
-            renderOption={(option) => {
+            renderOption={(props, option) => {
+                // console.log(option);
                 /*  const matches = match(option?.displayName, inputValue);
         const parts = parse(option?.displayName, matches);
         ); */
                 return (
-                    <Grid container alignItems="center">
+                    <Grid {...props} container alignItems="center">
                         <Avatar
                             src={
                                 option?.profile_pic

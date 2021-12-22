@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { SearchRounded } from '@mui/icons-material';
-import { Alert } from '@mui/lab';
 import {
+    Alert,
     Card,
     CardContent,
     Checkbox,
@@ -33,7 +33,7 @@ export default function EducationForm({ onClose, updateData }) {
         {
             // addError,
             // data,
-            addLoading,
+            loading: addLoading,
         },
     ] = useMutation(MUTATION_ADD_EDUCATION, {
         context: { clientName: 'users' },
@@ -44,7 +44,7 @@ export default function EducationForm({ onClose, updateData }) {
         {
             // updateError,
             //  data,
-            updateLoading,
+            loading: updateLoading,
         },
     ] = useMutation(MUTATION_UPDATE_EDUCATION, {
         context: { clientName: 'users' },
@@ -55,7 +55,7 @@ export default function EducationForm({ onClose, updateData }) {
         {
             // updateError,
             //  data,
-            removeLoading,
+            loading: removeLoading,
         },
     ] = useMutation(MUTATION_REMOVE_EDUCATION, {
         context: { clientName: 'users' },
@@ -79,21 +79,14 @@ export default function EducationForm({ onClose, updateData }) {
                         return;
                     }
 
-                    const IEducation = current
-                        ? {
-                              institution,
-                              major,
-                              start_date,
-                              current,
-                              description,
-                          }
-                        : {
-                              institution,
-                              major,
-                              start_date,
-                              end_date,
-                              description,
-                          };
+                    const IEducation = {
+                        institution,
+                        major,
+                        start_date,
+                        end_date,
+                        current,
+                        description,
+                    };
 
                     updateData
                         ? updateEducation({
@@ -144,8 +137,8 @@ export default function EducationForm({ onClose, updateData }) {
                             required
                             fullWidth
                             name="major"
-                            labelTop={updateData?.major || 'Degree &amp; Major'}
-                            placeholder="Degree Type"
+                            labelTop={'Degree & Major'}
+                            placeholder={updateData?.major || 'Degree Type'}
                         />
                         <Grid container spacing={2}>
                             <Grid item sm={6} xs={12}>

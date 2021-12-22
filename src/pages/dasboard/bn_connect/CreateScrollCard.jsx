@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import React from 'react';
 import image from '../../../assets/scrolls/image.svg';
-import schedule from '../../../assets/scrolls/schedule.svg';
+// import schedule from '../../../assets/scrolls/schedule.svg';
+// import write from '../../../assets/scrolls/write.svg';
 import video from '../../../assets/scrolls/video.svg';
-import write from '../../../assets/scrolls/write.svg';
 import { Button } from '../../../components/Button';
 import LazyImage from '../../../components/LazyImage';
 
@@ -59,7 +59,7 @@ export default function CreateScrollCard({
                             setVideoDisabled(true);
                             setTimeout(() => {
                                 document
-                                    .getElementsByClassName('post-dropzone')[0]
+                                    .getElementById('create-post-images')
                                     .click();
                             }, 1000);
                         }}
@@ -88,7 +88,7 @@ export default function CreateScrollCard({
                             setImageDisabled(true);
                             setTimeout(() => {
                                 document
-                                    .getElementsByClassName('post-dropzone')[0]
+                                    .getElementById('create-post-video')
                                     .click();
                             }, 1000);
                         }}
@@ -110,7 +110,8 @@ export default function CreateScrollCard({
                             )}
                         </div>
                     </Button>
-                    <Button textCase variant="text" color="inherit">
+
+                    {/* <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
                             <LazyImage
                                 style={{ marginRight: 10 }}
@@ -127,8 +128,8 @@ export default function CreateScrollCard({
                                 </Typography>
                             )}
                         </div>
-                    </Button>
-                    <Button textCase variant="text" color="inherit">
+                    </Button> */}
+                    {/* <Button textCase variant="text" color="inherit">
                         <div className="center-horizontal">
                             <LazyImage
                                 style={{ marginRight: 10 }}
@@ -142,7 +143,7 @@ export default function CreateScrollCard({
                                 <Typography variant="body2">Article</Typography>
                             )}
                         </div>
-                    </Button>
+                    </Button> */}
                 </div>
             </CardContent>
         </Card>

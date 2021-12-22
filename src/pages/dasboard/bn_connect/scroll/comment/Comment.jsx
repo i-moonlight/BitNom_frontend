@@ -1,14 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import {
     CloseRounded,
-    FavoriteRounded,
     ImageRounded,
     InsertEmoticon,
     MoreHorizRounded,
-    PanToolRounded,
     Send,
-    ThumbDownRounded,
-    ThumbUpRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -16,22 +12,27 @@ import {
     CardContent,
     Divider,
     Grid,
+    Hidden,
     IconButton,
     Typography,
     useTheme,
-    Hidden,
+    ListItemText,
+    ListItem,
+    CircularProgress,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import { getDistanceToNow } from '../../../../../components/utilities/date.components';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { DropzoneArea } from 'react-mui-dropzone';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
+import ReactionHover from '../../../../../components/ReactionHover';
+import { loadComments } from '../../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
+import { createReplyResponse } from '../../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
@@ -39,57 +40,21 @@ import {
 } from '../../../utilities/functions';
 import {
     MUTATION_CREATE_REACTION,
+    MUTATION_CREATE_COMMENT,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';
-import EmojiPickerPopover from '../../popovers/EmojiPickerPopover';
 import CommentOptionsPopover from './CommentOptionsPopover';
 
-const useStyles = makeStyles((theme) => ({
-    clickableTypography: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-        [theme.breakpoints.down('md')]: {
-            textDecoration: 'underline',
-        },
-    },
-    inputHelper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: '0px 10px 0px 5px',
-        [theme.breakpoints.up('md')]: {
-            padding: '0px 30px 0px 20px',
-        },
-    },
-    replies: {
-        color: 'inherit',
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
+const EmojiPickerPopover = React.lazy(() =>
+    import('../../popovers/EmojiPickerPopover')
+);
 
-const commentOptionId = 'menu-comment-option';
-const emojiPickerId = 'emoji-picker-popover';
 export default function Comment({
+    id,
     comment,
     style,
-    onCreateComment,
+    //onCreateComment,
     comment_image,
     scroll,
     setCommentImage,
@@ -103,8 +68,6 @@ export default function Comment({
     setImagePreviewOpen,
     profileData,
 }) {
-    const classes = useStyles();
-    const theme = useTheme();
     const [commentOptionAnchorEl, setCommentOptionAnchorEl] = useState(null);
     const isCommentOptionOpen = Boolean(commentOptionAnchorEl);
     const [emojiPickerAnchorEl, setEmojiPickerAnchorEl] = useState(null);
@@ -114,22 +77,159 @@ export default function Comment({
     const [userReaction, setUserReaction] = useState();
     const [likeHovered, setLikeHovered] = useState(false);
     const [responseTo, setResponseTo] = useState('');
-    const [replyErr, setReplyErr] = useState(false);
+    //const [replyErr, setReplyErr] = useState(false);
     const [previewURL, setPreviewURL] = useState();
     const [fileErrors, setFileErrors] = useState([]);
-    const state = useSelector((st) => st);
-    const user = state.auth.user;
-    const history = useHistory();
+    const [errors, setErrors] = useState([]);
 
-    const [createReaction] = useMutation(MUTATION_CREATE_REACTION);
-    const [removeReaction] = useMutation(MUTATION_REMOVE_REACTION);
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const theme = useTheme();
+    const history = useHistory();
+    const state = useSelector((st) => st);
+
+    const user = state.auth.user;
+    // const commentList = state.posts.comments;
+    // const comments = commentList[id];
+
+    const [createReaction, { data: createReactionData }] = useMutation(
+        MUTATION_CREATE_REACTION
+    );
+    const [removeReaction, { data: removeReactionData }] = useMutation(
+        MUTATION_REMOVE_REACTION
+    );
     const {
         data: commentsData,
-        // loading: commentsLoading,
-        // error: commentsError,
+        loading: commentsLoading,
+        error: commentsError,
     } = useQuery(QUERY_GET_COMMENTS, {
-        variables: { data: { scroll_id: comment?.scroll } },
+        variables: { data: { scroll_id: comment?.scroll, limit: 8 } },
     });
+    const [createComment] = useMutation(MUTATION_CREATE_COMMENT, {
+        update(cache, { data: createCommentData }) {
+            const newComment = createCommentData?.Comments?.create;
+            const existingComments = cache.readQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+            });
+            cache.writeQuery({
+                query: QUERY_GET_COMMENTS,
+                variables: { data: { scroll_id: scroll?._id, limit: 8 } },
+                data: {
+                    Comments: {
+                        get: {
+                            _id: existingComments?.Comments?.get?._id,
+                            data: [
+                                newComment,
+                                ...existingComments?.Comments?.get?.data,
+                            ],
+                            hasMore: existingComments?.Comments?.get?.hasMore,
+                        },
+                    },
+                },
+            });
+            const normalizedPostId = cache.identify({
+                id: scroll?._id,
+                __typename: 'OPost',
+            });
+            const normalizedCommentId = cache.identify({
+                id: id,
+                __typename: 'OComment',
+            });
+            cache.modify({
+                id: normalizedCommentId,
+                fields: {
+                    replies(existingReplyCount) {
+                        return existingReplyCount + 1;
+                    },
+                },
+            });
+            cache.modify({
+                id: normalizedPostId,
+                fields: {
+                    comments(existingCommentCount) {
+                        return existingCommentCount + 1;
+                    },
+                },
+            });
+        },
+    });
+
+    const onCreateComment = (ICreateComment) => {
+        createComment({
+            variables: {
+                data: ICreateComment,
+            },
+            errorPolicy: 'all',
+            optimisticResponse: {
+                Comments: {
+                    create: {
+                        content: mentionsFinder(reply).content,
+                        content_entities: mentionsFinder(reply).contentEntities,
+                        image: previewURL || '',
+                        creation_date: new Date().getTime(),
+                        scroll: scroll?._id,
+                        author: {
+                            __typename: 'OAuthor',
+                            _id: user?._id,
+                            displayName: user?.displayName,
+                            profile_pic: user?.profile_pic,
+                            bio: '',
+                            type: '',
+                            reputation: '',
+                        },
+                        response_to: {
+                            _id: comment?._id,
+                            author: {
+                                _id: comment?.author?._id,
+                            },
+                        },
+                        ...createReplyResponse,
+                    },
+                },
+            },
+        }).then(({ data, errors: createCommentErrors }) => {
+            if (data?.Comments?.create) {
+                setCommentImage(null);
+                setErrors([]);
+                setPreviewURL();
+                setReply('');
+
+                setFileErrors([]);
+            }
+            if (createCommentErrors) {
+                if (
+                    createCommentErrors[0]?.message?.includes(
+                        'Unsupported MIME type:'
+                    )
+                ) {
+                    setPreviewURL();
+                    setCommentImage(null);
+                    const message = createCommentErrors[0]?.message;
+                    const mime = message?.substring(message?.indexOf(':') + 1);
+                    setErrors([
+                        `Unsupported file type! The original type of your image is ${mime}`,
+                    ]);
+                } else if (createCommentErrors[0]?.message == 400) {
+                    const errorObject = createCommentErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                } else {
+                    setErrors([
+                        `Something is wrong! Check your connection or use another image.`,
+                    ]);
+                }
+            }
+        });
+    };
 
     const mentions = profileData?.followers?.map?.((item) => {
         return {
@@ -155,8 +255,7 @@ export default function Comment({
     };
 
     const handleSelectEmoji = (emoji) => {
-        handleEmojiPickerClose();
-        setReply(`${reply} ${emoji.native}`);
+        setReply(`${reply} ${emoji}`);
     };
 
     const handleCreateReaction = (reaction) => {
@@ -168,15 +267,30 @@ export default function Comment({
                     reaction: reaction,
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedCommentId = cache.identify({
+                    id: comment?._id,
+                    __typename: 'OComment',
+                });
+                const newreactions = data?.Reactions?.create?.reactions;
+                const newreactedToBy = data?.Reactions?.create?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedCommentId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction(reaction);
     };
+
     const handleRemoveReaction = () => {
         removeReaction({
             variables: {
@@ -185,19 +299,59 @@ export default function Comment({
                     type: 'comment',
                 },
             },
-            refetchQueries: [
-                {
-                    query: QUERY_GET_COMMENTS,
-                    variables: { data: { scroll_id: comment?.scroll } },
-                },
-            ],
+            update: (cache, { data }) => {
+                const normalizedCommentId = cache.identify({
+                    id: comment?._id,
+                    __typename: 'OComment',
+                });
+                const newreactions = data?.Reactions?.delete?.reactions;
+                const newreactedToBy = data?.Reactions?.delete?.reactedToBy;
+
+                cache.modify({
+                    id: normalizedCommentId,
+                    fields: {
+                        reactions() {
+                            return newreactions;
+                        },
+                        reacted_to_by() {
+                            return newreactedToBy;
+                        },
+                    },
+                });
+            },
         });
         setUserReaction();
     };
 
+    const handleSelectImage = (files) => {
+        if (files.length < 1) return;
+        let counter = 0;
+        files.map((file) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+                // only select images within width/height/size limits
+                if (
+                    (image.width <= 1200) &
+                    (image.height <= 1350) &
+                    (file.size <= 2500000)
+                ) {
+                    counter += 1;
+                } else {
+                    return setErrors([
+                        'Image should be less than 1200px by 1350px & below 2mb.',
+                    ]);
+                }
+                if (counter === 1) {
+                    setPreviewURL(URL.createObjectURL(file));
+                    setCommentImage(file);
+                }
+            });
+            image.src = URL.createObjectURL(file);
+        });
+    };
+
     const handleCreateReply = (e) => {
         e.preventDefault();
-        if (reply.trim() == '' && !comment_image) return setReplyErr(true);
 
         const mentionsData = mentionsFinder(reply);
         onCreateComment({
@@ -209,8 +363,7 @@ export default function Comment({
         });
         setReply('');
         setPreviewURL();
-        setFileErrors([]);
-        setReplyErr(false);
+        setCommentImage(null);
     };
 
     const getUserReaction = useCallback(
@@ -237,31 +390,27 @@ export default function Comment({
         }
     };
 
+    const commentUserInitials = getUserInitials(comment?.author?.displayName);
+    const currentUserInitials = getUserInitials(user?.displayName);
+
+    const comments = commentsData?.Comments?.get?.data;
+
     useEffect(() => {
         const reaction = getUserReaction(comment);
         setUserReaction(reaction);
-    }, [comment, getUserReaction]);
+    }, [comment, getUserReaction, createReactionData, removeReactionData]);
 
-    const commentUserInitials = getUserInitials(comment?.author?.displayName);
-    const currentUserInitials = getUserInitials(user?.displayName);
-    //moment js single letter formatting for comments
-    moment.updateLocale('en', {
-        relativeTime: {
-            future: 'in %s',
-            past: '%s',
-            s: 'now',
-            m: '1 min',
-            mm: '%d min',
-            h: '1 h',
-            hh: '%d h',
-            d: '1 d',
-            dd: '%d d',
-            M: '1 month',
-            MM: '%d m',
-            y: '1 y',
-            yy: '%d y',
-        },
-    });
+    useEffect(() => {
+        !commentsError &&
+            !commentsLoading &&
+            dispatch(loadComments(commentsData?.Comments?.get?.data, id));
+    }, [
+        commentsData?.Comments?.get?.data,
+        commentsError,
+        commentsLoading,
+        dispatch,
+        id,
+    ]);
 
     return (
         <>
@@ -291,7 +440,11 @@ export default function Comment({
                     >
                         <CardContent>
                             <div className="center-horizontal space-between w-100">
-                                <Typography variant="body2" display="inline">
+                                <Typography
+                                    component="div"
+                                    variant="body2"
+                                    display="inline"
+                                >
                                     <Typography
                                         variant="body2"
                                         component="a"
@@ -307,17 +460,19 @@ export default function Comment({
                                     <Typography
                                         display="inline"
                                         variant="body2"
+                                        color="textSecondary"
                                     >
                                         . @{comment?.author?._id}
                                     </Typography>
                                     <Typography
                                         display="inline"
                                         variant="body2"
+                                        color="textSecondary"
                                     >
                                         .{' '}
-                                        {moment(
-                                            comment.creation_date
-                                        ).fromNow()}
+                                        {getDistanceToNow(
+                                            comment?.creation_date
+                                        )}
                                     </Typography>
                                 </Typography>
                                 <IconButton
@@ -330,18 +485,18 @@ export default function Comment({
                                     <MoreHorizRounded />
                                 </IconButton>
                             </div>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                            >
+                            <Typography variant="body2" component="div">
                                 <Typography
                                     variant="body2"
                                     onClick={(e) => contentClickHandler(e)}
                                     dangerouslySetInnerHTML={{
                                         __html: contentBodyFactory(comment),
                                     }}
-                                    style={{ zIndex: 2 }}
+                                    style={{
+                                        zIndex: 2,
+                                        overflowWrap: 'break-word',
+                                        wordWrap: 'break-word',
+                                    }}
                                 ></Typography>
 
                                 {comment?.image.length > 0 && (
@@ -356,7 +511,7 @@ export default function Comment({
                                                     setImagePreviewURL(
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                            comment.image
+                                                            comment?.image
                                                     );
                                                 setImagePreviewOpen(true);
                                             }}
@@ -370,7 +525,7 @@ export default function Comment({
                                                         'url(' +
                                                         process.env
                                                             .REACT_APP_BACKEND_URL +
-                                                        comment.image +
+                                                        comment?.image +
                                                         ')',
                                                     backgroundSize: 'cover',
                                                     backgroundColor:
@@ -399,58 +554,12 @@ export default function Comment({
                         onMouseEnter={() => setLikeHovered(true)}
                         onMouseLeave={() => setLikeHovered(false)}
                     >
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('like');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbUpRounded className={classes.primary} />
-                            }
-                        >
-                            Like
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('love');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <FavoriteRounded className={classes.red} />
-                            }
-                        >
-                            Love
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('dislike');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <ThumbDownRounded className={classes.primary} />
-                            }
-                        >
-                            Dislike
-                        </Button>
-                        <Button
-                            textCase
-                            onClick={() => {
-                                handleCreateReaction('celebrate');
-                                setLikeHovered(false);
-                            }}
-                            variant="text"
-                            startIcon={
-                                <PanToolRounded className={classes.green} />
-                            }
-                        >
-                            Celebrate
-                        </Button>
+                        <ReactionHover
+                            setLikeHovered={setLikeHovered}
+                            handleCreateReaction={handleCreateReaction}
+                            likeHovered={likeHovered}
+                            reaction={userReaction}
+                        />
                     </Card>
                     <div className="center-horizontal">
                         <ReactionButton
@@ -481,7 +590,7 @@ export default function Comment({
                         {/* {comment?.response_to ? '' : '.'} */}
                         {!comment?.response_to && (
                             <Typography
-                                color="inherit"
+                                color="textSecondary"
                                 component={Button}
                                 onClick={() => {
                                     setOpenReplies(true);
@@ -489,8 +598,8 @@ export default function Comment({
                                 }}
                                 textCase
                                 variantAlt="text"
-                                className="p-0 my-1"
                                 variant="body2"
+                                className={classes.replies}
                             >
                                 Reply
                             </Typography>
@@ -528,8 +637,9 @@ export default function Comment({
                                             marginRight: '3px',
                                         }}
                                         src={
+                                            user?.profile_pic &&
                                             process.env.REACT_APP_BACKEND_URL +
-                                            user?.profile_pic
+                                                user?.profile_pic
                                         }
                                         sx={{ width: '30px', height: '30px' }}
                                     >
@@ -540,7 +650,7 @@ export default function Comment({
                                 </Hidden>
                                 <div className="w-100">
                                     <MentionsInput
-                                        spellCheck="false"
+                                        // spellCheck="false"
                                         className="mentions-textarea"
                                         id="content-field"
                                         onKeyPress={(e) => {
@@ -549,8 +659,7 @@ export default function Comment({
                                             }
                                         }}
                                         placeholder={
-                                            commentsData?.Comments?.get
-                                                ?.length > 0
+                                            comments?.length > 0
                                                 ? ''
                                                 : 'Be the first to comment..'
                                         }
@@ -572,7 +681,7 @@ export default function Comment({
                                     >
                                         <Mention
                                             markup="/*@__id__-__display__*/"
-                                            displayTransform={(id, display) =>
+                                            displayTransform={(_id, display) =>
                                                 display
                                             }
                                             trigger="@"
@@ -598,9 +707,7 @@ export default function Comment({
                                     size="small"
                                     onClick={() => {
                                         document
-                                            .getElementsByClassName(
-                                                'reply-dropzone'
-                                            )[0]
+                                            .getElementById('reply-image')
                                             .click();
                                     }}
                                 >
@@ -614,10 +721,32 @@ export default function Comment({
                                 </IconButton>
                             </div>
                             <div className={classes.inputHelper}>
-                                <Typography color="error" variant="body2">
-                                    {replyErr &&
-                                        'The comment content cannot be empty'}
-                                </Typography>
+                                {errors?.length > 0 && (
+                                    <Card
+                                        elevation={0}
+                                        style={{
+                                            marginTop: '3px',
+                                            background: 'transparent',
+                                        }}
+                                        component="div"
+                                        //variant="outlined"
+                                    >
+                                        {errors?.map((errItem) => (
+                                            <ListItem key={errItem}>
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="error"
+                                                        >
+                                                            {`~ ${errItem}`}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </Card>
+                                )}
                             </div>
                             <Card
                                 style={{
@@ -633,71 +762,17 @@ export default function Comment({
                                 <div className="space-between">
                                     <div>
                                         <div style={{ display: 'none' }}>
-                                            <DropzoneArea
-                                                clearOnUnmount
-                                                dropzoneClass="reply-dropzone"
-                                                //id="dropzone"
-                                                clickable={true}
-                                                onChange={(files) => {
-                                                    const errors = [];
-                                                    let counter = 0;
-                                                    files.map((file) => {
-                                                        const image =
-                                                            new Image();
-                                                        image.addEventListener(
-                                                            'load',
-                                                            () => {
-                                                                // only select images within width/height/size limits
-                                                                if (
-                                                                    (image.width <
-                                                                        1200) &
-                                                                    (image.height <
-                                                                        1350) &
-                                                                    (file.size <
-                                                                        2500000)
-                                                                ) {
-                                                                    counter += 1;
-                                                                    setFileErrors(
-                                                                        []
-                                                                    );
-                                                                } else {
-                                                                    errors.push(
-                                                                        'Image is too large. Trim to 1200px by 1200px or less.'
-                                                                    );
-                                                                    setFileErrors(
-                                                                        errors
-                                                                    );
-                                                                }
-                                                                if (
-                                                                    counter ===
-                                                                    1
-                                                                ) {
-                                                                    setPreviewURL(
-                                                                        URL.createObjectURL(
-                                                                            file
-                                                                        )
-                                                                    );
-                                                                    setCommentImage(
-                                                                        file
-                                                                    );
-                                                                }
-                                                            }
-                                                        );
-                                                        image.src =
-                                                            URL.createObjectURL(
-                                                                file
-                                                            );
-                                                    });
+                                            <input
+                                                id="reply-image"
+                                                type="file"
+                                                onChange={(e) => {
+                                                    handleSelectImage(
+                                                        Array.from(
+                                                            e.target.files
+                                                        )
+                                                    );
                                                 }}
-                                                acceptedFiles={[
-                                                    'image/jpeg',
-                                                    '.png',
-                                                ]}
-                                                maxFileSize={2500000}
-                                                filesLimit={1}
-                                                showPreviewsInDropzone
-                                                showPreviews={false}
-                                                showFileNames={false}
+                                                accept="image/jpeg, image/png"
                                             />
                                         </div>
                                     </div>
@@ -705,14 +780,13 @@ export default function Comment({
                                         size="small"
                                         color="primary"
                                         className="m-1 p-1"
+                                        onClick={() => {
+                                            setPreviewURL();
+                                            setFileErrors([]);
+                                            setCommentImage(null);
+                                        }}
                                     >
-                                        <CloseRounded
-                                            onClick={() => {
-                                                setPreviewURL();
-                                                setFileErrors([]);
-                                                setCommentImage(null);
-                                            }}
-                                        />
+                                        <CloseRounded />
                                     </IconButton>
                                 </div>
                             </Card>
@@ -724,38 +798,44 @@ export default function Comment({
                             </div>
                         </>
                     )}
-                    {commentsData &&
-                        commentsData?.Comments?.get
-                            .filter(
-                                (commentInner) =>
-                                    commentInner?.response_to?._id ===
-                                    comment?._id
-                            )
-                            .map((commentInner) => (
-                                <Comment
-                                    key={commentInner._id}
-                                    comment={commentInner}
-                                    setCommentImage={setCommentImage}
-                                    setUpdateCommentOpen={setUpdateCommentOpen}
-                                    setCommentToEdit={setCommentToEdit}
-                                    setImagePreviewURL={setImagePreviewURL}
-                                    setImagePreviewOpen={setImagePreviewOpen}
-                                    setFlaggedResource={setFlaggedResource}
-                                    setOpenFlag={setOpenFlag}
-                                    setOpenReactions={setOpenReactions}
-                                    setResourceReactions={setResourceReactions}
-                                />
-                            ))}
+                    {comments
+                        ?.filter(
+                            (commentInner) =>
+                                commentInner?.response_to?._id === comment?._id
+                        )
+                        ?.map((commentInner) => (
+                            <Comment
+                                key={commentInner._id}
+                                id={commentInner._id}
+                                comment={commentInner}
+                                setCommentImage={setCommentImage}
+                                setUpdateCommentOpen={setUpdateCommentOpen}
+                                setCommentToEdit={setCommentToEdit}
+                                setImagePreviewURL={setImagePreviewURL}
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setFlaggedResource={setFlaggedResource}
+                                setOpenFlag={setOpenFlag}
+                                setOpenReactions={setOpenReactions}
+                                setResourceReactions={setResourceReactions}
+                            />
+                        ))}
                 </div>
             </div>
-
-            <EmojiPickerPopover
-                emojiPickerId={emojiPickerId}
-                emojiPickerAnchorEl={emojiPickerAnchorEl}
-                isEmojiPickerOpen={isEmojiPickerOpen}
-                handleEmojiPickerClose={handleEmojiPickerClose}
-                handleSelectEmoji={handleSelectEmoji}
-            />
+            <Suspense
+                fallback={() => (
+                    <div>
+                        <CircularProgress />
+                    </div>
+                )}
+            >
+                <EmojiPickerPopover
+                    emojiPickerId={emojiPickerId}
+                    emojiPickerAnchorEl={emojiPickerAnchorEl}
+                    isEmojiPickerOpen={isEmojiPickerOpen}
+                    handleEmojiPickerClose={handleEmojiPickerClose}
+                    handleSelectEmoji={handleSelectEmoji}
+                />
+            </Suspense>
             <CommentOptionsPopover
                 setFlaggedResource={setFlaggedResource}
                 setOpenFlag={setOpenFlag}
@@ -772,3 +852,45 @@ export default function Comment({
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    clickableTypography: {
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+            color: 'inherit',
+        },
+        [theme.breakpoints.down('md')]: {
+            textDecoration: 'underline',
+        },
+    },
+    inputHelper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        padding: '0px 10px 0px 5px',
+        [theme.breakpoints.up('md')]: {
+            padding: '0px 30px 0px 20px',
+        },
+    },
+    replies: {
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+            color: 'inherit',
+        },
+    },
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));
+
+const commentOptionId = 'menu-comment-option';
+const emojiPickerId = 'emoji-picker-popover';

@@ -6,9 +6,9 @@ import Wrapper from '../welcome/Wrapper';
 export default function NotFound() {
     const classes = useStyles();
     return (
-        <Wrapper>
+        <Wrapper noFooter>
             <Container className={classes.root} maxWidth="lg">
-                <div className="my-5 py-5">
+                <div className="my-5 py-5 text-center">
                     <Typography
                         className="mt-5 mb-2"
                         color="textSecondary"

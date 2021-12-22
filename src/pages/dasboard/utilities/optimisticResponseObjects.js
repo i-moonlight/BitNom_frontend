@@ -1,0 +1,116 @@
+export const createPostResponse = {
+    __typename: 'OPost',
+    _id: 'temporary-id',
+    reactions: {
+        __typename: 'OReactions',
+        likes: 0,
+        dislikes: 0,
+        celebrations: 0,
+        loves: 0,
+    },
+    comments: 0,
+    bookmarks: 0,
+    is_flag: '',
+    reacted_to_by: [],
+    bookmarked_by: [],
+    shared_resource: {
+        __typename: 'OSharedResource',
+        _id: {
+            _id: '',
+            images: [],
+            video: '',
+            author: {
+                _id: '',
+                profile_pic: '',
+                displayName: '',
+                reputation: '',
+                type: '',
+            },
+            createdAt: '',
+            comments: 0,
+            reactions: {
+                likes: 0,
+                dislikes: 0,
+                loves: 0,
+                celebrations: 0,
+            },
+            content: '',
+            content_entities: {
+                type: '',
+                offset: '',
+                length: '',
+                resource: {
+                    _id: '',
+                    type: '',
+                },
+                url: '',
+                mentioned: {
+                    _id: '',
+                    displayName: '',
+                },
+            },
+            image: '',
+            description: '',
+            title: '',
+            host: {
+                _id: '',
+                displayName: '',
+                profile_pic: '',
+                bio: '',
+            },
+            location: {
+                type: '',
+                lat: '',
+                long: '',
+                address: '',
+            },
+            link: '',
+            attendees: {
+                attendee: {
+                    _id: '',
+                    displayName: '',
+                    profile_pic: '',
+                    bio: '',
+                },
+            },
+            endDate: '',
+            startDate: '',
+        },
+        type: '',
+    },
+};
+
+export const createCommentResponse = {
+    __typename: 'OComment',
+    _id: 'temporary-id',
+    reactions: {
+        __typename: 'OReactions',
+        likes: 0,
+        dislikes: 0,
+        celebrations: 0,
+        loves: 0,
+    },
+    replies: 0,
+    bookmarks: 0,
+    is_flag: '',
+    reacted_to_by: [],
+    bookmarked_by: [],
+    response_to: null,
+};
+
+export const createReplyResponse = {
+    __typename: 'OComment',
+    _id: 'temporary-id',
+    reactions: {
+        __typename: 'OReactions',
+        likes: 0,
+        dislikes: 0,
+        celebrations: 0,
+        loves: 0,
+    },
+    replies: 0,
+    bookmarks: 0,
+    is_flag: '',
+    reacted_to_by: [],
+    bookmarked_by: [],
+};

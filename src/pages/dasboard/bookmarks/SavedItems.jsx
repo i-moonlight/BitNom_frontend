@@ -182,12 +182,6 @@ export default function SavedItems() {
                                             disableRipple
                                             style={{ textTransform: 'none' }}
                                         />
-                                        <Tab
-                                            key={'Articles'}
-                                            label={'Articles'}
-                                            disableRipple
-                                            style={{ textTransform: 'none' }}
-                                        />
                                     </Tabs>
                                 </Card>
                                 {value === 0 && scrollsLoading && (
@@ -248,11 +242,10 @@ export default function SavedItems() {
                                 !bookmarksLoading ? (
                                     <Grid align="center">
                                         <Typography
-                                            variant="body1"
+                                            variant="body2"
                                             color="primary"
                                         >
-                                            No Saved items here yet..start
-                                            bookmarking!!
+                                            Nothing here yet.
                                         </Typography>
                                     </Grid>
                                 ) : (

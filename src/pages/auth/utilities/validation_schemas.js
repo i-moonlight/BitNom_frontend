@@ -2,7 +2,12 @@
 import * as Yup from 'yup';
 
 export const createUserValidationSchema = Yup.object().shape({
-    username: Yup.string().min(3).max(20).required().label('Username'),
+    username: Yup.string()
+        .min(3)
+        .max(15)
+        .required()
+        .lowercase()
+        .label('Username'),
     email: Yup.string().email().required().label('Email Address'),
     password: Yup.string().min(6).required().label('Password'),
     cpassword: Yup.string().oneOf(

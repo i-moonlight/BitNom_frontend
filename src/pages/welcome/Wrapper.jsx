@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import NavBarLanding from '../../components/navbar/landing/NavBarLanding';
 import Footer from './Footer';
 
-export default function Wrapper({ children, authPage }) {
+export default function Wrapper({ children, authPage, noFooter }) {
     const history = useHistory();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -12,7 +12,7 @@ export default function Wrapper({ children, authPage }) {
 
     useEffect(() => {
         if (JSON.stringify(user) !== '{}') {
-            if (!user?.email?.verified) {
+            if (user?.email && !user?.email?.verified) {
                 history.push('/auth/require_verify');
             } else {
                 if (user?.email?.verified && !user?.displayName) {
@@ -31,14 +31,14 @@ export default function Wrapper({ children, authPage }) {
             ref={toTop}
             style={{
                 width: '100%',
-                paddingTop: 116,
+                paddingTop: 108,
                 minHeight: '100vh',
                 overflowY: 'hidden',
             }}
         >
             <NavBarLanding />
             {children}
-            <Footer />
+            {!noFooter && <Footer />}
         </div>
     );
 }

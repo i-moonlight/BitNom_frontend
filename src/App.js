@@ -3,7 +3,6 @@ import {
     StyledEngineProvider,
     ThemeProvider,
 } from '@mui/material/styles';
-
 import { useSelector } from 'react-redux';
 import AppContainers from './Containers';
 import './css/bootstrap.css';
@@ -27,6 +26,7 @@ export default function App() {
             comment: '#333333',
             profileCard: '#333333',
             default: '#171818',
+            appBar: '#171818',
             landing: '#18191a',
             search: '#242526',
             chatFrom: '#163C53',
@@ -52,7 +52,8 @@ export default function App() {
             comment: '#ececec',
             profileCard: '#ececec',
             search: '#f1f1f1',
-            default: '#F3F2EF',
+            default: '#F8F8F8',
+            appBar: '#FEFEFE',
             chatFrom: '#BDE0FF',
             chatTo: '#F0F8FF',
             investorDark: '#fff',

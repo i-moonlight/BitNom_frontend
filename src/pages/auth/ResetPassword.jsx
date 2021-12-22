@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
-import Alert from '@mui/lab/Alert';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Alert, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -24,7 +23,7 @@ export default function ResetPassword() {
     });
 
     useEffect(() => {
-        JSON.stringify(user) !== '{}' && history.push('/connect');
+        user && JSON.stringify(user) !== '{}' && history.push('/connect');
     }, [history, user]);
 
     return (
@@ -34,12 +33,10 @@ export default function ResetPassword() {
                 <Grid
                     container
                     spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '100vh' }}
+                    style={{ minHeight: '100vh', marginTop: 80 }}
                 >
-                    <Grid item xs={11} sm={7} md={6} lg={4}>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
+                    <Grid item xs={10} sm={8} md={6} lg={4}>
                         <div className="text-center my-3 px-sm-5">
                             <Typography color="textPrimary" variant="h5">
                                 FORGOT PASSWORD
@@ -52,6 +49,7 @@ export default function ResetPassword() {
                         <Card elevation={4}>
                             <CardContent>
                                 <Form
+                                    enterSubmit
                                     initialValues={requestResetInitialValues}
                                     validationSchema={
                                         requestResetValidationSchema
@@ -95,7 +93,9 @@ export default function ResetPassword() {
                                                 className="mb-2"
                                                 severity="success"
                                             >
-                                                Request sent! Check your email.
+                                                Request sent if you provided the
+                                                correct email address! Check
+                                                your email.
                                             </Alert>
                                         )}
 
@@ -105,6 +105,7 @@ export default function ResetPassword() {
                                         >
                                             Reset Password
                                         </FormikButton>
+
                                         <div>
                                             <Typography className="center-vertical mt-4">
                                                 <Link
@@ -120,6 +121,7 @@ export default function ResetPassword() {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Grid item xs={1} sm={2} md={3} lg={4}></Grid>
                 </Grid>
             </div>
         </>

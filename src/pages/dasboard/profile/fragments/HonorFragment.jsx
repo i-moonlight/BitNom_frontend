@@ -1,8 +1,10 @@
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Button } from '../../../../components/Button';
+import { getUserInitials } from '../../../../utilities/Helpers';
 import HonorForm from '../forms/HonorForm';
 import { useStyles } from '../utilities/profile.styles';
+import { format } from 'date-fns';
 
 export default function HonorFragment({
     id,
@@ -13,6 +15,7 @@ export default function HonorFragment({
     photoURL,
     expires,
     profileView,
+    url,
 }) {
     const [formOpen, setFormOpen] = useState(false);
     const classes = useStyles();
@@ -33,6 +36,7 @@ export default function HonorFragment({
                         start_date: dateFrom,
                         end_date: dateTo || '',
                         expires,
+                        url,
                     }}
                 />
             )}
@@ -40,11 +44,18 @@ export default function HonorFragment({
                 <CardContent>
                     <div className="d-flex flex-row">
                         <Avatar src={photoURL} variant="rounded">
-                            HO
+                            {getUserInitials(name)}
                         </Avatar>
                         <div className="mx-3 w-100">
                             <div className="center-horizontal space-between ">
-                                <Typography variant="body2" className="flex-1">
+                                <Typography
+                                    style={{
+                                        overflowWrap: 'break-word',
+                                        wordWrap: 'break-word',
+                                    }}
+                                    variant="body2"
+                                    className="flex-1"
+                                >
                                     {name}
                                 </Typography>
                                 {!profileView && (
@@ -52,16 +63,38 @@ export default function HonorFragment({
                                         textCase
                                         variant="text"
                                         size="small"
+                                        onClick={() => {
+                                            setFormOpen(true);
+                                        }}
                                     >
                                         Edit
                                     </Button>
                                 )}
                             </div>
-                            <Typography color="primary" variant="body2">
+                            <Typography
+                                style={{
+                                    overflowWrap: 'break-word',
+                                    wordWrap: 'break-word',
+                                }}
+                                color="primary"
+                                variant="body2"
+                            >
                                 {organization}
                             </Typography>
                             <Typography variant="body2">
-                                {dateFrom} to {dateTo}
+                                {format(new Date(dateFrom), 'MMMM do, y')}
+                                {dateTo &&
+                                    ` to ${format(
+                                        new Date(dateTo),
+                                        'MMMM do, y'
+                                    )}`}
+                            </Typography>
+                            <Typography
+                                component="a"
+                                href={url}
+                                variant="body2"
+                            >
+                                {url}
                             </Typography>
                         </div>
                     </div>

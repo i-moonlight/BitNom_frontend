@@ -8,11 +8,11 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import moment from 'moment';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NotificationOptionPopover from '../../../components/navbar/dashboard/popovers/NotificationOptionPopover';
+import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { notificationBodyFactory } from '../utilities/functions';
 
@@ -40,7 +40,7 @@ export default function NotificationListItem({ notification }) {
     } else if (notification?.link_to_resource?.type === 'comment') {
         link = `/posts/${notification?.link_to_resource?._id}`;
     } else if (notification?.link_to_resource?.type === 'user') {
-        link = `/users/${notification?.link_to_resource?._id}`;
+        link = `/users/${notification?.content_entities[0]?.url?._id}`;
     }
     const getReadStatus = (ntfn) => {
         let read;
@@ -67,6 +67,7 @@ export default function NotificationListItem({ notification }) {
                 profile = item?.url?.profile_pic;
             }
         });
+
         return profile;
     };
     const contentClickHandler = (e) => {
@@ -77,9 +78,10 @@ export default function NotificationListItem({ notification }) {
         history.push(targetLink.href.substring(location.origin.length));
     };
     const userInitials = getUserInitials(getNotifyingUser(notification));
+
     return (
         <>
-            <Card elevation={0}>
+            <Card elevation={0} style={{ margin: '5px 0px' }}>
                 <div
                     style={{
                         display: 'grid',
@@ -111,11 +113,16 @@ export default function NotificationListItem({ notification }) {
                                 }}
                                 aria-label="recipe"
                                 src={
-                                    process.env.REACT_APP_BACKEND_URL +
                                     getNotifyingUserProfile(notification)
+                                        ? process.env.REACT_APP_BACKEND_URL +
+                                          getNotifyingUserProfile(notification)
+                                        : undefined
                                 }
+                                sx={{ width: '30px', height: '30px' }}
                             >
-                                {userInitials}
+                                <Typography variant="body2">
+                                    {userInitials}
+                                </Typography>
                             </Avatar>
                         }
                         action={
@@ -144,14 +151,15 @@ export default function NotificationListItem({ notification }) {
                                     }}
                                     className="mx-1"
                                     style={{ zIndex: 2 }}
+                                    variant="body2"
                                 ></Typography>
                             </div>
                         }
                     />
                 </div>
                 <Grid align="right">
-                    <Typography>
-                        {moment(Number(notification?.date)).fromNow()}
+                    <Typography variant="body2" style={{ marginRight: '8px' }}>
+                        {getDistanceToNowWithSuffix(Number(notification?.date))}
                     </Typography>
                 </Grid>
                 <Divider />

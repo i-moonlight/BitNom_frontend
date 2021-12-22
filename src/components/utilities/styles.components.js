@@ -1,8 +1,10 @@
 import { makeStyles } from '@mui/styles';
+import bannerImg from '../../assets/banner.webp';
 
 export const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        backgroundColor: theme.palette.background.appBar,
     },
     appBar: {
         display: 'flex',
@@ -30,6 +32,9 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(2),
         backgroundColor: theme.palette.background.paper,
+        backgroundImage: `url("${bannerImg}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
     },
     input: {
         marginLeft: theme.spacing(1),

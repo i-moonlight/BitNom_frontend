@@ -24,20 +24,9 @@ import {
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { getReactionsSum } from '../../utilities/functions';
-
-const useStyles = makeStyles(() => ({
-    red: {
-        color: red[500],
-    },
-    green: {
-        color: green[500],
-    },
-    primary: {
-        color: '#006097',
-    },
-}));
 
 export default function ReactionsModal({
     openReactions,
@@ -47,6 +36,7 @@ export default function ReactionsModal({
 }) {
     const classes = useStyles();
     const [value, setValue] = useState(0);
+
     const handleChange = (event, val) => {
         setValue(val);
     };
@@ -174,7 +164,13 @@ export default function ReactionsModal({
                             />
                         </Tabs>
                         <Divider />
-                        <CardContent>
+                        <CardContent
+                            style={{
+                                maxHeight: '85vh',
+                                minHeight: '30vh',
+                                overflowY: 'auto',
+                            }}
+                        >
                             {value === 0 &&
                                 resourceReactions?.reacted_to_by?.length >
                                     0 && (
@@ -229,18 +225,26 @@ export default function ReactionsModal({
 }
 
 const ReactionList = ({ reactions }) => {
+    const history = useHistory();
     return (
         <List>
             {reactions?.map((reaction) => (
-                <ListItem key={reaction?.user_id?._id} button>
+                <ListItem
+                    key={reaction?.user_id?._id}
+                    onClick={() =>
+                        history.push(`/users/${reaction?.user_id?._id}`)
+                    }
+                    button
+                >
                     <ListItemAvatar>
                         <Avatar
                             style={{
                                 backgroundColor: '#fed132',
                             }}
                             src={
+                                reaction?.user_id?.profile_pic &&
                                 process.env.REACT_APP_BACKEND_URL +
-                                reaction?.user_id?.profile_pic
+                                    reaction?.user_id?.profile_pic
                             }
                             aria-label="recipe"
                         >
@@ -260,3 +264,15 @@ const ReactionList = ({ reactions }) => {
         </List>
     );
 };
+
+const useStyles = makeStyles(() => ({
+    red: {
+        color: red[500],
+    },
+    green: {
+        color: green[500],
+    },
+    primary: {
+        color: '#006097',
+    },
+}));

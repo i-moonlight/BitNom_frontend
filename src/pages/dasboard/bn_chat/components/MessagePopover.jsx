@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
-import { Popover, List, ListItemText, ListItem } from '@mui/material';
-import React from 'react';
+import { List, ListItem, ListItemText, Popover } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addToPinnedMessage,
@@ -22,31 +22,38 @@ export default function MessagePopover({
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
+
     const [pinMessage, { data }] = useMutation(PIN_MESSAGE, {
         variables: {
             data: { chat: chat._id, message: message._id },
         },
         context: { clientName: 'chat' },
     });
+
     const [deleteMessage] = useMutation(DELETE_MESSAGE, {
         variables: {
             data: { chat: chat._id, message: message._id },
         },
         context: { clientName: 'chat' },
     });
+
     const handlePinMessage = () => {
         pinMessage();
-        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
     };
+
     const handleDeleteMessage = () => {
         deleteMessage();
         dispatch(removeFromMessages(message));
     };
 
     const handleReportMessage = () => {
+        // eslint-disable-next-line no-console
         console.log('REPORT');
     };
 
+    useEffect(() => {
+        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+    }, [data?.Dialogue?.pinMessage, dispatch]);
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
@@ -63,6 +70,7 @@ export default function MessagePopover({
             open={isMessageSettingsOpen}
             onClose={handleMessageClose}
             style={{ marginLeft: 16, width: '100%' }}
+            disablePortal
         >
             <List>
                 <ListItem
@@ -90,6 +98,7 @@ export default function MessagePopover({
                         handleDeleteMessage(), handleMessageClose();
                     }}
                     disabled={user._id === message.author ? false : true}
+                    style={{ display: user._id !== message.author && 'none' }}
                 >
                     <ListItemText primary="Delete Message" />
                 </ListItem>
@@ -101,6 +110,7 @@ export default function MessagePopover({
                         onUpdateMessage(), handleMessageClose();
                     }}
                     disabled={user._id === message.author ? false : true}
+                    style={{ display: user._id !== message.author && 'none' }}
                 >
                     <ListItemText primary="Edit text" />
                 </ListItem>

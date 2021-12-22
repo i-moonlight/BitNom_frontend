@@ -79,15 +79,15 @@ export const QUERY_FETCH_PROFILE = gql`
                     current
                     description
                 }
-                #honors {
-                #  _id
-                # organization
-                #  name
-                # start_date
-                # end_date
-                # expires
-                # url
-                #}
+                honors {
+                    _id
+                    organization
+                    name
+                    start_date
+                    end_date
+                    expires
+                    url
+                }
                 courses {
                     _id
                     name
@@ -351,7 +351,23 @@ export const MUTATION_REMOVE_EVENT_ATTENDANCE = gql`
 export const MUTATION_CREATE_REACTION = gql`
     mutation ($data: ICreateReaction!) {
         Reactions {
-            create(data: $data)
+            create(data: $data) {
+                reactedToBy {
+                    _id
+                    reaction_type
+                    user_id {
+                        _id
+                        displayName
+                        profile_pic
+                    }
+                }
+                reactions {
+                    likes
+                    dislikes
+                    loves
+                    celebrations
+                }
+            }
         }
     }
 `;
@@ -359,7 +375,23 @@ export const MUTATION_CREATE_REACTION = gql`
 export const MUTATION_REMOVE_REACTION = gql`
     mutation ($data: IRemoveReaction!) {
         Reactions {
-            delete(data: $data)
+            delete(data: $data) {
+                reactedToBy {
+                    _id
+                    reaction_type
+                    user_id {
+                        _id
+                        displayName
+                        profile_pic
+                    }
+                }
+                reactions {
+                    likes
+                    dislikes
+                    loves
+                    celebrations
+                }
+            }
         }
     }
 `;
@@ -505,6 +537,34 @@ const postSubFields = `
         }
   `;
 
+/* export const QUERY_GET_TRENDING = gql`
+  query ($data: IGetFeed!) {
+    Feed {
+      get(data: $data) {
+          _id
+         data {
+           ${postSubFields}
+          }
+          hasMore
+      }
+    }
+  }
+`; */
+
+export const QUERY_GET_FEED = gql`
+  query ($data: IGetFeed!) {
+    Feed {
+      get(data: $data) {
+          _id
+         data {
+           ${postSubFields}
+          }
+          hasMore
+      }
+    }
+  }
+`;
+
 export const QUERY_LOAD_SCROLLS = gql`
   query ($data: IGetPosts) {
     Posts {
@@ -514,6 +574,7 @@ export const QUERY_LOAD_SCROLLS = gql`
     }
   }
 `;
+
 export const GET_BOOKMARKED_SCROLLS = gql`
   query ($data: IGetBookmarked) {
     Posts {
@@ -547,7 +608,9 @@ export const QUERY_POSTS_BY_HASHTAG = gql`
 export const MUTATION_CREATE_POST = gql`
     mutation ($data: ICreatePost!) {
         Posts {
-            create(data: $data)
+            create(data: $data){
+               ${postSubFields}
+            }
         }
     }
 `;
@@ -555,7 +618,9 @@ export const MUTATION_CREATE_POST = gql`
 export const MUTATION_UPDATE_POST = gql`
     mutation ($data: IUpdatePost!) {
         Posts {
-            update(data: $data)
+            update(data: $data){
+               ${postSubFields}
+            }
         }
     }
 `;
@@ -625,7 +690,9 @@ export const QUERY_GET_COMMENTS = gql`
   query ($data: IGetComments!) {
     Comments {
       get(data: $data) {
-       ${commentSubFields}
+      _id
+      data{ ${commentSubFields}}
+      hasMore
       }
     }
   }
@@ -654,7 +721,9 @@ export const MUTATION_CREATE_COMMENT = gql`
 export const MUTATION_UPDATE_COMMENT = gql`
     mutation ($data: IUpdateComment!) {
         Comments {
-            update(data: $data)
+            update(data: $data){
+                ${commentSubFields}
+            }
         }
     }
 `;
@@ -668,7 +737,7 @@ export const MUTATION_DELETE_COMMENT = gql`
 `;
 
 export const GET_USER_NOTIFICATIONS = gql`
-    query ($limit: Int!) {
+    query ($limit: Int) {
         Notification {
             get(limit: $limit) {
                 _id
