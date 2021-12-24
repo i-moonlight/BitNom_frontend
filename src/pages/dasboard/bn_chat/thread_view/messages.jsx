@@ -53,11 +53,17 @@ export default function Messages({ onExitChatMobile }) {
     const messages = [...unOrderedMessages]?.reverse();
 
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
-        GET_DIALOGUE_MESSAGES
+        GET_DIALOGUE_MESSAGES,
+        {
+            fetchPolicy: 'network-only',
+        }
     );
 
     const [getPinnedDialogueMessages, { data: pinnedMessages }] = useLazyQuery(
-        GET_DIALOGUE_MESSAGES
+        GET_DIALOGUE_MESSAGES,
+        {
+            fetchPolicy: 'network-only',
+        }
     );
 
     const { data: subscriptionData } = useSubscription(
@@ -66,6 +72,7 @@ export default function Messages({ onExitChatMobile }) {
             variables: {
                 _id: dialogue?._id,
             },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -121,6 +128,8 @@ export default function Messages({ onExitChatMobile }) {
             });
         }
     }, [dialogue?._id, getDialogueMessages, getPinnedDialogueMessages]);
+
+    //console.log(dialogue, 'dialogue');
 
     return (
         <div style={{ height: '100%', overflowY: 'auto' }}>
@@ -223,13 +232,13 @@ export default function Messages({ onExitChatMobile }) {
                         dialogue?._id === undefined &&
                         !loading && <NoChatSelected />}
                     {dialogue?.status === 'new' &&
-                        dialogue?.initiator?.info?._id === user?._id &&
+                        dialogue?.initiator?.info?._id?._id === user?._id &&
                         !loading &&
                         !messages?.length > 0 && (
                             <AwaitResponse dialogue={dialogue} />
                         )}
                     {dialogue?.status === 'new' &&
-                        dialogue?.recipient?.info._id === user?._id && (
+                        dialogue?.recipient?.info?._id?._id === user?._id && (
                             <InviteView dialogue={dialogue} />
                         )}
                     {dialogue?.status === 'accepted' &&

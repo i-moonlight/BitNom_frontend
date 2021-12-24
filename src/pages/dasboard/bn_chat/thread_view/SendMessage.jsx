@@ -264,8 +264,8 @@ export default function SendMessage({
 
     const handleUserTyping = () => {
         onUserTyping({
-            currentUser: currentUser?.info._id,
-            otherUser: otherUser?.info._id,
+            currentUser: currentUser?.info?._id?._id,
+            otherUser: otherUser?.info?._id?._id,
             typing: true,
             chat: chat,
         });
@@ -273,8 +273,8 @@ export default function SendMessage({
 
     const handleUserNotTyping = () => {
         onUserTyping({
-            currentUser: currentUser?.info._id,
-            otherUser: otherUser?.info._id,
+            currentUser: currentUser?.info?._id?._id,
+            otherUser: otherUser?.info?._id?._id,
             typing: false,
             chat: chat,
         });

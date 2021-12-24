@@ -55,6 +55,7 @@ function Chats({ onSetChatMobile }) {
             status: 'accepted',
         },
         context: { clientName: 'chat' },
+        fetchPolicy: 'network-only',
     });
 
     const { data: chatInvites, loading: invitesLoading } = useQuery(
@@ -64,6 +65,7 @@ function Chats({ onSetChatMobile }) {
                 status: 'new',
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -75,6 +77,7 @@ function Chats({ onSetChatMobile }) {
                 archived: true,
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -86,6 +89,7 @@ function Chats({ onSetChatMobile }) {
                 pinned: true,
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
     const [unreadCountReset, { data: readCountData }] =
@@ -175,7 +179,7 @@ function Chats({ onSetChatMobile }) {
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
     useEffect(() => {
-        if (pinnedChatData?.pinChat?.currentUser?.info?._id === user._id) {
+        if (pinnedChatData?.pinChat?.currentUser?.info?._id?._id === user._id) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
             dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
@@ -183,7 +187,8 @@ function Chats({ onSetChatMobile }) {
 
     useEffect(() => {
         if (
-            archivedChatData?.archiveChat?.currentUser?.info?._id === user._id
+            archivedChatData?.archiveChat?.currentUser?.info?._id?._id ===
+            user._id
         ) {
             dispatch(addToArchivedChats(archivedChatData?.archiveChat));
             dispatch(setCurrentChat(archivedChatData?.archiveChat));

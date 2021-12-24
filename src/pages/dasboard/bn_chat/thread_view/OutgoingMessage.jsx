@@ -27,7 +27,9 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
-    const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
+    const userInitials = getUserInitials(
+        chat?.currentUser?.info?._id?.displayName
+    );
     const mdDown = useMediaQuery('(max-width:1279px)');
     return (
         <div className={classes.messageRight}>
@@ -224,9 +226,9 @@ export default function OutgoingMessage({ chat, message, onClick }) {
             <ButtonBase>
                 <Avatar
                     src={
-                        chat?.currentUser?.info?.profile_pic
+                        chat?.currentUser?.info?._id?.profile_pic
                             ? process.env.REACT_APP_BACKEND_URL +
-                              chat?.currentUser?.info?.profile_pic
+                              chat?.currentUser?.info?._id?.profile_pic
                             : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                     }
                     alt={'avatar'}

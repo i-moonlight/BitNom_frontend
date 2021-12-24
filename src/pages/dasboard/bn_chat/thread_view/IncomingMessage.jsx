@@ -24,20 +24,22 @@ export default function IncomingMessage({ message, chat, onClick }) {
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
     const author = message?.author || {};
-    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
+    const userInitials = getUserInitials(
+        chat?.otherUser?.info?._id?.displayName
+    );
 
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
                 <Link
-                    to={`/users/${chat?.otherUser?.info?._id}`}
+                    to={`/users/${chat?.otherUser?.info?._id?._id}`}
                     style={{ textDecoration: 'none' }}
                 >
                     <Avatar
                         src={
-                            chat?.otherUser?.info?.profile_pic
+                            chat?.otherUser?.info?._id?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  chat?.otherUser?.info?.profile_pic
+                                  chat?.otherUser?.info?._id?.profile_pic
                                 : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
