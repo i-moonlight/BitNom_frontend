@@ -46,7 +46,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: chat?.otherUser?.info?._id,
+            _id: chat?.otherUser?.info?._id?._id,
         },
     });
 
@@ -80,7 +80,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     };
 
     const otherUser =
-        chat?.otherUser?.info?._id === user._id
+        chat?.otherUser?.info?._id?._id === user._id
             ? chat?.currentUser
             : chat?.otherUser;
 
@@ -90,7 +90,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const truncateName = (input) =>
         input?.length > 15 ? `${input?.substring(0, 15)}...` : input;
 
-    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
+    const userInitials = getUserInitials(
+        chat?.otherUser?.info?._id?.displayName
+    );
 
     return (
         <>
@@ -106,9 +108,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 <ListItemAvatar>
                     <Avatar
                         src={
-                            otherUser?.info?.profile_pic
+                            otherUser?.info?._id?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  otherUser?.info?.profile_pic
+                                  otherUser?.info?._id?.profile_pic
                                 : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
@@ -127,7 +129,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     // secondary={
                     //     <React.Fragment>
                     //         <span sx={{ display: 'inline' }}>
-                    //             {chat.otherUser.info.displayName}
+                    //             {chat.otherUser.info?._id?.displayName}
                     //         </span>
                     //         <Badge
                     //             badgeContent={chat?.currentUser?.unreadCount}
@@ -136,11 +138,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     //         />
                     primary={
                         <Typography color="textPrimary" component="span">
-                            {truncateName(otherUser?.info?.displayName)}{' '}
+                            {truncateName(otherUser?.info?._id?.displayName)}{' '}
                             <Badge
                                 badgeContent={
                                     countData?.UnreadCount?.user ===
-                                        chat?.currentUser?.info?._id &&
+                                        chat?.currentUser?.info?._id?._id &&
                                     countData?.UnreadCount?._id !== activeChatId
                                         ? countData?.UnreadCount?.count
                                         : chat?.currentUser?.unreadCount
@@ -181,11 +183,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : chat?.lastMessage?.text ? (
                                         truncateString(chat?.lastMessage?.text)
                                     ) : (
-                                        `@${otherUser?.info?._id}`
+                                        `@${otherUser?.info?._id?._id}`
                                     )}
                                 </span>
                             ) : (
-                                `@${otherUser?.info?._id}`
+                                `@${otherUser?.info?._id?._id}`
                             )}
                         </React.Fragment>
                     }

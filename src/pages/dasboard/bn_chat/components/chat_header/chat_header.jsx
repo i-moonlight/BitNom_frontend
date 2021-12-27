@@ -54,7 +54,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const user = state.auth.user;
 
     const otherUser =
-        chat?.otherUser?.info?._id === user?._id
+        chat?.otherUser?.info?._id?._id === user?._id
             ? chat?.currentUser
             : chat?.otherUser;
 
@@ -78,12 +78,14 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const [searchMessages, { data }] = useLazyQuery(SEARCH_MESSAGES);
 
     const { data: userTypingData } = useSubscription(USER_TYPING_SUBS, {
-        variables: { data: { _id: otherUser?.info?._id, chat: chat._id } },
+        variables: {
+            data: { _id: otherUser?.info?._id?._id, chat: chat?._id },
+        },
     });
 
     const { data: UserOnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: chat?.otherUser?.info?._id,
+            _id: chat?.otherUser?.info?._id?._id,
         },
     });
 
@@ -103,7 +105,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     };
 
     const onlineUser = UserOnlineData?.userIsOnline?.user;
-    const userInitials = getUserInitials(otherUser?.info?.displayName);
+    const userInitials = getUserInitials(otherUser?.info?._id?.displayName);
 
     useEffect(() => {
         if (data?.Dialogue?.searchMessages?.length > 0) {
@@ -137,6 +139,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         }
     }, [chat._id, debouncedSearchTerm, searchMessages]);
 
+    //console.log(chat, otherUser, 'chat');
     return (
         <>
             <CardHeader
@@ -164,7 +167,8 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 horizontal: 'right',
                             }}
                             badgeContent={
-                                onlineUser === chat?.otherUser?.info?._id &&
+                                onlineUser ===
+                                    chat?.otherUser?.info?._id?._id &&
                                 online === true ? (
                                     <span className={classes.online}></span>
                                 ) : (
@@ -175,7 +179,8 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             <Avatar
                                 src={
                                     process.env.REACT_APP_BACKEND_URL +
-                                        chat?.otherUser?.info?.profile_pic ||
+                                        chat?.otherUser?.info?._id
+                                            ?.profile_pic ||
                                     `https://ui-avatars.com/api/?name=${userInitials}&background=fed132`
                                 }
                                 alt={'avatar'}
@@ -265,18 +270,19 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                 }
                 title={
                     <Typography style={{ marginRight: 8 }}>
-                        {otherUser?.info?.displayName || 'User Name'}
+                        {otherUser?.info?._id?.displayName || 'User Name'}
                     </Typography>
                 }
                 subheader={
                     <div className="d-flex">
                         <div className="d-flex align-items-center">
-                            {onlineUser === chat?.otherUser?.info?._id &&
+                            {onlineUser === chat?.otherUser?.info?._id?._id &&
                             online === true ? (
                                 <Typography variant="subtitle2">
                                     online
                                 </Typography>
-                            ) : onlineUser === chat?.otherUser?.info?._id &&
+                            ) : onlineUser ===
+                                  chat?.otherUser?.info?._id?._id &&
                               online === true &&
                               userTypingData?.userTyping?.typing === true ? (
                                 <Typography
@@ -288,10 +294,11 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             ) : (
                                 <Typography variant="subtitle2">
                                     last seen{' '}
-                                    {format(
-                                        new Date(otherUser.lastSeen),
+                                    {/*  {format(
+                                        new Date(Number(otherUser?.lastSeen)),
                                         'MMM do h:mm aaa'
-                                    )}
+                                    )} */}
+                                    {format(new Date(), 'MMM do h:mm aaa')}
                                 </Typography>
                             )}
                         </div>

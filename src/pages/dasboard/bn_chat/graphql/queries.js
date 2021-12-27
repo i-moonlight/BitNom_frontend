@@ -1,5 +1,77 @@
 import { gql } from '@apollo/client';
 
+const dialogueSubFields = `
+    _id
+    initiator {
+        unreadCount
+        blocked
+        info {
+            _id {
+                _id
+                displayName
+                profile_pic
+                bio
+            }
+        }
+        lastSeen
+        pinned
+        archived
+    }
+    recipient {
+        unreadCount
+        blocked
+        info {
+            _id {
+                _id
+                displayName
+                profile_pic
+                bio
+            }
+        }
+        lastSeen
+        pinned
+        archived
+    }
+    currentUser {
+        unreadCount
+        blocked
+       info {
+            _id {
+                _id
+                displayName
+                profile_pic
+                bio
+            }
+        }
+        lastSeen
+        pinned
+        archived
+    }
+    otherUser {
+        unreadCount
+        blocked
+        info {
+            _id {
+                _id
+                displayName
+                profile_pic
+                bio
+            }
+        }
+        lastSeen
+        pinned
+        archived
+    }
+    status
+    lastMessage {
+        text
+        video
+        images
+        documents
+        gif
+    }
+`;
+
 export const SEARCH_USERS = gql`
     query ($searchString: String!, $limit: Int, $skip: Int) {
         Users {
@@ -22,67 +94,7 @@ export const SEARCH_CHATS = gql`
     query ($params: ISearchDialogue) {
         Dialogue {
             search(params: $params) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                otherUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -112,41 +124,7 @@ export const CREATE_DIALOGUE = gql`
     mutation ($data: IUserSmall!) {
         Dialogue {
             create(data: $data) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -172,72 +150,7 @@ export const GET_DIALOGUES = gql`
                     pinned: $pinned
                 }
             ) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -247,70 +160,7 @@ export const ACCEPT_DIALOGUE_INVITE = gql`
     mutation ($_id: ID!) {
         Dialogue {
             accept(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -320,70 +170,7 @@ export const REJECT_DIALOGUE_INVITE = gql`
     mutation ($_id: ID!) {
         Dialogue {
             reject(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -392,70 +179,7 @@ export const BLOCK_DIALOGUE = gql`
     mutation ($id: ID!) {
         Dialogue {
             block(_id: $id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -465,41 +189,7 @@ export const UNBLOCK_DIALOGUE = gql`
     mutation ($id: ID!) {
         Dialogue {
             unblock(_id: $id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    images
-                    documents
-                    gif
-                }
+               ${dialogueSubFields}
             }
         }
     }
@@ -730,72 +420,7 @@ export const ARCHIVE_CHAT = gql`
     mutation ($_id: ID!) {
         Dialogue {
             archive(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    images
-                    video
-                    documents
-                    gif
-                    text
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -804,72 +429,7 @@ export const MARK_CHAT_AS_READ = gql`
     mutation ($_id: ID!) {
         Dialogue {
             archive(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    gif
-                    images
-                    video
-                    documents
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -878,68 +438,7 @@ export const MUTE_CONVERSATION = gql`
     mutation ($_id: ID!) {
         Dialogue {
             archive(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    text
-                    video
-                    gif
-                    documents
-                    images
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -948,67 +447,7 @@ export const BLOCK_CHAT = gql`
     mutation ($_id: ID!) {
         Dialogue {
             block(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    archived
-                    pinned
-                }
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    archived
-                    pinned
-                }
-                status
-                lastMessage {
-                    images
-                    text
-                    video
-                    documents
-                    gif
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -1064,67 +503,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
 export const NEW_CHAT_ADDED = gql`
     subscription ($_id: ID!) {
         newChat(_id: $_id) {
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                unreadCount
-                blocked
-                lastSeen
-                pinned
-                archived
-            }
-            status
-            currentUser {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            lastMessage {
-                text
-                images
-                video
-                documents
-                gif
-            }
+            ${dialogueSubFields}
         }
     }
 `;
@@ -1148,67 +527,7 @@ export const USER_ONLINE_STATUS = gql`
 export const CHAT_ACCEPTED = gql`
     subscription chatAccepted($_id: ID!) {
         chatAccepted(_id: $_id) {
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                unreadCount
-                blocked
-                lastSeen
-                pinned
-                archived
-            }
-            status
-            currentUser {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            lastMessage {
-                gif
-                text
-                video
-                documents
-                images
-            }
+            ${dialogueSubFields}
         }
     }
 `;
@@ -1237,67 +556,7 @@ export const PIN_CHAT = gql`
     mutation ($_id: ID!) {
         Dialogue {
             pin(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    pinned
-                    archived
-                }
-                status
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                lastMessage {
-                    images
-                    video
-                    documents
-                    gif
-                    text
-                }
+                ${dialogueSubFields}
             }
         }
     }
@@ -1369,134 +628,14 @@ export const DELETE_MESSAGE = gql`
 export const PIN_CHAT_SUB = gql`
     subscription pinChat($_id: ID!) {
         pinChat(_id: $_id) {
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                unreadCount
-                blocked
-                lastSeen
-                pinned
-                archived
-            }
-            status
-            currentUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                unreadCount
-                blocked
-                lastSeen
-                pinned
-                archived
-            }
-            lastMessage {
-                images
-                video
-                documents
-                gif
-                text
-            }
+            ${dialogueSubFields}
         }
     }
 `;
 export const ARCHIVE_CHAT_SUB = gql`
     subscription archiveChat($_id: ID!) {
         archiveChat(_id: $_id) {
-            _id
-            initiator {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            recipient {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            otherUser {
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                unreadCount
-                blocked
-                lastSeen
-                pinned
-                archived
-            }
-            status
-            currentUser {
-                unreadCount
-                blocked
-                info {
-                    _id
-                    displayName
-                    profile_pic
-                    bio
-                }
-                lastSeen
-                pinned
-                archived
-            }
-            lastMessage {
-                images
-                video
-                documents
-                gif
-                text
-            }
+            ${dialogueSubFields}
         }
     }
 `;
@@ -1560,67 +699,7 @@ export const RESET_UNREAD_COUNT = gql`
     mutation resetUnreadCount($_id: ID!) {
         Dialogue {
             resetUnreadCount(_id: $_id) {
-                _id
-                initiator {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                recipient {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                otherUser {
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    unreadCount
-                    blocked
-                    lastSeen
-                    pinned
-                    archived
-                }
-                status
-                currentUser {
-                    unreadCount
-                    blocked
-                    info {
-                        _id
-                        displayName
-                        profile_pic
-                        bio
-                    }
-                    lastSeen
-                    pinned
-                    archived
-                }
-                lastMessage {
-                    images
-                    video
-                    documents
-                    gif
-                    text
-                }
+                ${dialogueSubFields}
             }
         }
     }

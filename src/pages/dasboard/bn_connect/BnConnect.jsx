@@ -87,6 +87,7 @@ export default function BnConnect() {
     } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
         context: { clientName: 'users' },
+        fetchPolicy: 'network-only',
     });
 
     const {
