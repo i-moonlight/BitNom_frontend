@@ -23,6 +23,7 @@ import { useStyles } from '../utils/styles';
 export default function ChatItem({ chat, onClick, activeChatId }) {
     const [isOnline, setIsOnline] = useState(0);
     const [online, setOnline] = useState(false);
+    const [otherUser, setOtherUser] = useState(null);
     const classes = useStyles();
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -72,17 +73,20 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         }
     }, [OnlineData?.userIsOnline?.online]);
 
+    useEffect(() => {
+        if (chat?.otherUser?.info?._id?._id === user._id) {
+            setOtherUser(chat?.currentUser);
+        } else {
+            setOtherUser(chat?.otherUser);
+        }
+    }, [chat, setOtherUser, user._id]);
+
     const updateLastSeen = () => {
         UpdateLastSeenMutation({
             variables: { _id: user._id },
             context: { clientName: 'chat' },
         });
     };
-
-    const otherUser =
-        chat?.otherUser?.info?._id?._id === user._id
-            ? chat?.currentUser
-            : chat?.otherUser;
 
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
@@ -111,11 +115,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                             otherUser?.info?._id?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
                                   otherUser?.info?._id?.profile_pic
-                                : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
+                                : `https://ui-avatars.com/api/?name=${getUserInitials(
+                                      otherUser?.info?._id?.displayName
+                                  )}&background=random`
                         }
                         alt={'avatar'}
                     >
-                        {userInitials}
+                        {getUserInitials(otherUser?.info?._id?.displayName)}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}

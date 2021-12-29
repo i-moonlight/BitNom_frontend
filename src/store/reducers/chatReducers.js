@@ -193,6 +193,10 @@ export default function chatReducer(state = initialState, action) {
                 ...state,
                 searchedChats: [],
             };
+        case 'CLEAR_ALL_CHAT_DATA':
+            return {
+                ...initialState,
+            };
         default:
             return { ...state };
     }

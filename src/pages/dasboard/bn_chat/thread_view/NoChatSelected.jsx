@@ -1,7 +1,10 @@
 import { Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { Button } from '../../../../components/Button';
+import CreateChatPrompt from './CreateChatPrompt';
 
 export default function NoChatSelected() {
+    const [createChatOpen, setCreateChatInviteOpen] = useState(false);
     return (
         <div
             // style={{ minHeight: '55vh' }}
@@ -19,10 +22,17 @@ export default function NoChatSelected() {
                     color="primary"
                     textCase
                     className="my-3"
+                    onClick={() => setCreateChatInviteOpen(true)}
                 >
                     Start a new chat
                 </Button>
             </div>
+            <CreateChatPrompt
+                openChatInvite={createChatOpen}
+                setChatInviteOpen={(openChatInvite) =>
+                    setCreateChatInviteOpen(openChatInvite)
+                }
+            />
         </div>
     );
 }
