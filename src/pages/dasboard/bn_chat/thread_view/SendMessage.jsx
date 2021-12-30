@@ -4,7 +4,7 @@ import {
     AttachFile,
     Close,
     EmojiEmotions,
-    Gif,
+    //Gif,
     Image,
     SendOutlined,
     VideoLibrary,
@@ -703,14 +703,14 @@ export default function SendMessage({
                                 className={classes.inputTab}
                                 style={{ width: '33%' }}
                             >
-                                <IconButton
+                                {/* <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
                                     aria-label="search"
                                     onClick={() => handleAttachFileOpen()}
                                 >
                                     <AttachFile />
-                                </IconButton>
+                                </IconButton> */}
                                 <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
@@ -727,14 +727,14 @@ export default function SendMessage({
                                 >
                                     <VideoLibrary />
                                 </IconButton>
-                                <IconButton
+                                {/*  <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
                                     aria-label="search"
                                     onClick={() => handleGifOpen()}
                                 >
                                     <Gif />
-                                </IconButton>
+                                </IconButton> */}
                             </div>
                         )}
 

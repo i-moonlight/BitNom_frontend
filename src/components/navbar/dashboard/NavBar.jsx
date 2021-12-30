@@ -18,6 +18,7 @@ import {
     signout,
     userUpdate,
 } from '../../../store/actions/authActions';
+import { clearAllChatData } from '../../../store/actions/chatActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
 import { setPostCount } from '../../../store/actions/postCountActions';
@@ -277,6 +278,7 @@ export default function NavBar() {
 
         if (!isAuth) {
             dispatch(signout());
+            dispatch(clearAllChatData());
         }
     }, [
         _count,

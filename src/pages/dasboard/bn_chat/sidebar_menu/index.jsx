@@ -41,8 +41,12 @@ function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const chats = state.chats.chats;
-    const invites = state.chats.invites;
+    const chats = state.chats.chats.filter(
+        (chat) => chat.status !== 'rejected'
+    );
+    const invites = state.chats.invites.filter(
+        (chat) => chat.status !== 'rejected'
+    );
     const archived = state.chats.archived;
     const pinned = state.chats.pinnedChats;
     const searchedChats = state.chats.searchedChats;

@@ -35,7 +35,7 @@ const dialogueSubFields = `
     currentUser {
         unreadCount
         blocked
-       info {
+        info {
             _id {
                 _id
                 displayName
