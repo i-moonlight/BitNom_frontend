@@ -1,4 +1,4 @@
-import { ExpandMoreRounded } from '@mui/icons-material';
+import { ExpandMoreRounded, MoreVertRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -8,6 +8,7 @@ import {
     IconButton,
     Paper,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -21,7 +22,7 @@ import { getDistanceToNowWithSuffix } from '../../../../components/utilities/dat
 export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
-
+    const xsDown = useMediaQuery('(max-width:599px)');
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
 
@@ -68,11 +69,25 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     ) : (
                         ''
                     )}
-                    {show_reply && (
+                    {xsDown ? (
                         <div className={classes.reply}>
                             <IconButton
                                 style={{
-                                    fontSize: '1em',
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <MoreVertRounded style={{ fontSize: '18px' }} />
+                            </IconButton>
+                        </div>
+                    ) : show_reply ? (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    fontSize: '18px',
                                     bottom: '5px',
                                     right: '3px',
                                     color: '#000',
@@ -83,7 +98,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                                 <ExpandMoreRounded />
                             </IconButton>
                         </div>
-                    )}
+                    ) : null}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card variant="outlined" className={classes.responseTo}>
@@ -171,9 +186,6 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     className={classes.message}
                     variant="body2"
                     component="div"
-                    style={{
-                        marginTop: '4px',
-                    }}
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message?.text}

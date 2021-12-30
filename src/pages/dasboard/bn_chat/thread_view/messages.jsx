@@ -9,6 +9,7 @@ import {
     List,
     ListSubheader,
     Tooltip,
+    useMediaQuery,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +52,7 @@ export default function Messages({ onExitChatMobile }) {
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
     const messages = [...unOrderedMessages]?.reverse();
-
+    const xsDown = useMediaQuery('(max-width:599px)');
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
         GET_DIALOGUE_MESSAGES
     );
@@ -144,7 +145,13 @@ export default function Messages({ onExitChatMobile }) {
                     </div>
                 )}
             </div>
-            <div style={{ margin: '8px', height: '70%', overflowY: 'scroll' }}>
+            <div
+                style={{
+                    margin: '8px',
+                    height: xsDown ? '73%' : '80%',
+                    overflowY: 'scroll',
+                }}
+            >
                 {dialogue?.status === 'accepted' && (
                     <div
                     //style={{ margin: '8px' }}

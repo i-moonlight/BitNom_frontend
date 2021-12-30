@@ -90,27 +90,28 @@ export default function MessagePopover({
                 >
                     <ListItemText primary="Reply Message" />
                 </ListItem>
-                <ListItem
-                    button
-                    divider
-                    onClick={() => {
-                        handleDeleteMessage(), handleMessageClose();
-                    }}
-                    disabled={user._id === message.author ? false : true}
-                >
-                    <ListItemText primary="Delete Message" />
-                </ListItem>
-
-                <ListItem
-                    button
-                    divider
-                    onClick={() => {
-                        onUpdateMessage(), handleMessageClose();
-                    }}
-                    disabled={user._id === message.author ? false : true}
-                >
-                    <ListItemText primary="Edit text" />
-                </ListItem>
+                {user._id === message.author && (
+                    <ListItem
+                        button
+                        divider
+                        onClick={() => {
+                            handleDeleteMessage(), handleMessageClose();
+                        }}
+                    >
+                        <ListItemText primary="Delete Message" />
+                    </ListItem>
+                )}
+                {user._id === message.author && (
+                    <ListItem
+                        button
+                        divider
+                        onClick={() => {
+                            onUpdateMessage(), handleMessageClose();
+                        }}
+                    >
+                        <ListItemText primary="Edit text" />
+                    </ListItem>
+                )}
 
                 <ListItem button onClick={handleReportMessage}>
                     <ListItemText primary="Report Message" />

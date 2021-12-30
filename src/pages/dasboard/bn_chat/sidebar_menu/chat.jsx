@@ -7,6 +7,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -25,7 +26,8 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const classes = useStyles();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    //handle set active chat
+    //handle set active chat xs devices
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     const [UpdateLastSeenMutation] = useMutation(USER_ONLINE_STATUS);
 
@@ -95,7 +97,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
-                className={activeChatId === chat?._id ? classes.activeChat : ''}
+                className={
+                    activeChatId === chat?._id && !xsDown
+                        ? classes.activeChat
+                        : ''
+                }
                 divider
                 // to={`/dashboard/chat/{chat._id}`}
             >

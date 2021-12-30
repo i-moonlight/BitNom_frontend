@@ -2,6 +2,7 @@ import {
     ExpandMoreRounded,
     DoneAllOutlined,
     DoneOutlined,
+    MoreVertRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -12,6 +13,7 @@ import {
     IconButton,
     Paper,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -27,7 +29,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const author = message?.author || {};
     const userInitials = getUserInitials(chat?.currentUser?.info?.displayName);
-
+    const xsDown = useMediaQuery('(max-width:599px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -61,7 +63,21 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     ) : (
                         ''
                     )}
-                    {show_reply && (
+                    {xsDown ? (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <MoreVertRounded style={{ fontSize: '18px' }} />
+                            </IconButton>
+                        </div>
+                    ) : show_reply ? (
                         <div className={classes.reply}>
                             <IconButton
                                 style={{
@@ -76,7 +92,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                                 <ExpandMoreRounded />
                             </IconButton>
                         </div>
-                    )}
+                    ) : null}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card variant="outlined" className={classes.responseToOut}>
@@ -163,9 +179,6 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     className={classes.message}
                     variant="body2"
                     component="div"
-                    style={{
-                        marginTop: '4px',
-                    }}
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message?.text}

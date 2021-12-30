@@ -5,7 +5,7 @@ import Chats from '../sidebar';
 
 export default function ChatMenu() {
     return (
-        <Grid container direction="column" style={{ height: '100%' }}>
+        <Grid container direction="column">
             <SideBarHeader />
             <Chats />
         </Grid>
