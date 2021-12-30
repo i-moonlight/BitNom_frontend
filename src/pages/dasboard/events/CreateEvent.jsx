@@ -22,7 +22,7 @@ import { useEffect, useState, useRef } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+//import { toast } from 'react-toastify';
 import { Button } from '../../../components/Button';
 import {
     MUTATION_CREATE_EVENT,
@@ -168,16 +168,20 @@ export default function CreateEvent({ open, setOpen }) {
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                        }
-                    );
+                    return setErrors([
+                        '~ Image should be less than 1200px by 1350px & below 2mb.',
+                    ]);
                 }
                 if (counter === 1) {
                     setEventImage(file);
                     setPreviewURL(URL.createObjectURL(file));
+                    setErrors((prev) =>
+                        prev.filter(
+                            (item) =>
+                                item !==
+                                '~ Image should be less than 1200px by 1350px & below 2mb.'
+                        )
+                    );
                 }
             });
             image.src = URL.createObjectURL(file);
