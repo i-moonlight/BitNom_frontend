@@ -12,10 +12,10 @@ export default function NoChatSelected() {
         >
             <div className="text-center h-100">
                 <Typography variant="body1" className="my-2">
-                    You have no chat selected
+                    You have not selected any chat
                 </Typography>
                 <Typography variant="body2" color="GrayText">
-                    Choose one from your existing chats, or start a new chat
+                    Choose one from your existing chats, or start a new one.
                 </Typography>
                 <Button
                     variant="contained"
