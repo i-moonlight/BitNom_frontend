@@ -94,9 +94,9 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const truncateName = (input) =>
         input?.length > 15 ? `${input?.substring(0, 15)}...` : input;
 
-    const userInitials = getUserInitials(
+    /* const userInitials = getUserInitials(
         chat?.otherUser?.info?._id?.displayName
-    );
+    ); */
 
     return (
         <>

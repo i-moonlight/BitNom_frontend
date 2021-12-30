@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Chat, MoreVert, Search } from '@mui/icons-material';
+import { Chat, Search } from '@mui/icons-material';
 import {
     Divider,
     IconButton,
