@@ -203,12 +203,12 @@ function Chats({ onSetChatMobile }) {
     };
 
     const openChat = (chat) => {
-        const current_chat = state.chats.current_chat;
+        // const current_chat = state.chats.current_chat;
 
-        if (current_chat?._id !== chat?._id) {
-            dispatch(setCurrentChat(chat));
-            xsDown && onSetChatMobile();
-        }
+        // if (current_chat?._id !== chat?._id) {
+        dispatch(setCurrentChat(chat));
+        xsDown && onSetChatMobile();
+        // }
         onResetUnreadCount(chat._id);
         dispatch(resetTotalCount());
     };
@@ -216,13 +216,13 @@ function Chats({ onSetChatMobile }) {
     return (
         <Fragment>
             {searchedChats?.length > 0 ? (
-                <div style={{ overflow: 'auto' }}>
+                <div style={{ overflowY: 'auto' }}>
                     {searchedChats && searchedChats?.length > 0 && (
                         <SearchedChats searchedChats={searchedChats} />
                     )}
                 </div>
             ) : (
-                <div style={{ overflow: 'auto' }}>
+                <div style={{ overflowY: 'auto' }}>
                     {invites && invites?.length > 0 && (
                         <Invites invites={invites} loading={invitesLoading} />
                     )}
