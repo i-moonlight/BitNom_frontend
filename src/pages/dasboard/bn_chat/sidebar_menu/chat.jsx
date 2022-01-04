@@ -7,16 +7,22 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import {
+    setCurrentChat,
+    updateDialogue,
+} from '../../../../store/actions/chatActions';
 //import { truncateText } from '../../utilities/functions';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
     UNREAD_COUNT,
     USER_IS_ONLINE,
     USER_ONLINE_STATUS,
+    BLOCK_USER_SUBS,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
@@ -25,9 +31,12 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const [online, setOnline] = useState(false);
     const [otherUser, setOtherUser] = useState(null);
     const classes = useStyles();
+    const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    //handle set active chat
+    const chats = state.chats.chats;
+    //handle set active chat xs devices
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     const [UpdateLastSeenMutation] = useMutation(USER_ONLINE_STATUS);
 
@@ -51,6 +60,12 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         },
     });
 
+    const { data: blockData } = useSubscription(BLOCK_USER_SUBS, {
+        variables: {
+            _id: user?._id,
+        },
+    });
+
     useEffect(() => {
         updateLastSeen();
         setIsOnline(setInterval(() => updateLastSeen(), 20000));
@@ -60,6 +75,23 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         };
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if (
+            blockData?.blockingUser?._id === activeChatId &&
+            blockData?.blockingUser?.currentUser?.info?._id?._id === user?._id
+        ) {
+            return dispatch(setCurrentChat(blockData?.blockingUser));
+        }
+    }, [dispatch, blockData?.blockingUser, activeChatId, user, chats]);
+
+    useEffect(() => {
+        if (
+            blockData?.blockingUser?.currentUser?.info?._id?._id === user?._id
+        ) {
+            return dispatch(updateDialogue(blockData?.blockingUser));
+        }
+    }, [dispatch, blockData?.blockingUser, user]);
 
     useEffect(() => {
         if (OnlineData?.userIsOnline?.online === true) {
@@ -105,7 +137,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
-                className={activeChatId === chat?._id ? classes.activeChat : ''}
+                className={
+                    activeChatId === chat?._id && !xsDown
+                        ? classes.activeChat
+                        : ''
+                }
                 divider
                 // to={`/dashboard/chat/{chat._id}`}
             >

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     deleteArchivedchat,
-    deletePinnedChat,
+    // deletePinnedChat,
 } from '../../../../store/actions/chatActions';
 import {
     ARCHIVE_CHAT,
@@ -12,10 +12,10 @@ import {
     GET_DIALOGUES,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
-    PIN_CHAT,
+    // PIN_CHAT,
     REPORT_USER,
     UNARCHIVE,
-    UNPIN,
+    // UNPIN,
 } from '../graphql/queries';
 
 export default function ChatSettingPopover({
@@ -78,28 +78,28 @@ export default function ChatSettingPopover({
         context: { clientName: 'chat' },
     });
 
-    const [PinChat] = useMutation(PIN_CHAT, {
-        variables: {
-            _id: chat?._id,
-        },
-        context: { clientName: 'chat' },
-    });
+    // const [PinChat] = useMutation(PIN_CHAT, {
+    //     variables: {
+    //         _id: chat?._id,
+    //     },
+    //     context: { clientName: 'chat' },
+    // });
 
-    const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
-        variables: {
-            _id: chat?._id,
-        },
-        context: { clientName: 'chat' },
-        refetchQueries: [
-            {
-                query: GET_DIALOGUES,
-                variables: {
-                    status: 'accepted',
-                },
-                context: { clientName: 'chat' },
-            },
-        ],
-    });
+    // const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
+    //     variables: {
+    //         _id: chat?._id,
+    //     },
+    //     context: { clientName: 'chat' },
+    //     refetchQueries: [
+    //         {
+    //             query: GET_DIALOGUES,
+    //             variables: {
+    //                 status: 'accepted',
+    //             },
+    //             context: { clientName: 'chat' },
+    //         },
+    //     ],
+    // });
 
     const handleArchiveChat = () => {
         handleChatSettingsClose();
@@ -126,26 +126,26 @@ export default function ChatSettingPopover({
         ReportUser();
     };
 
-    const handlePinChat = () => {
-        handleChatSettingsClose();
-        PinChat();
-    };
+    // const handlePinChat = () => {
+    //     handleChatSettingsClose();
+    //     PinChat();
+    // };
 
-    const handleUnpinChat = () => {
-        handleChatSettingsClose();
-        UnpinChat();
-    };
+    // const handleUnpinChat = () => {
+    //     handleChatSettingsClose();
+    //     UnpinChat();
+    // };
 
     const handleUnArchiveChat = () => {
         handleChatSettingsClose();
         UnarchiveChat();
     };
 
-    useEffect(() => {
-        if (unpinData?.Dialogue?.unpin === true) {
-            dispatch(deletePinnedChat(chat));
-        }
-    }, [dispatch, unpinData, chat]);
+    // useEffect(() => {
+    //     if (unpinData?.Dialogue?.unpin === true) {
+    //         dispatch(deletePinnedChat(chat));
+    //     }
+    // }, [dispatch, unpinData, chat]);
 
     useEffect(() => {
         if (unarchiveData?.Dialogue?.unarchive === true) {
@@ -191,7 +191,7 @@ export default function ChatSettingPopover({
                 <ListItem button divider onClick={handleMarkAsRead}>
                     <ListItemText primary="Mark As read" />
                 </ListItem>
-                <ListItem
+                {/* <ListItem
                     button
                     divider
                     onClick={
@@ -207,7 +207,7 @@ export default function ChatSettingPopover({
                                 : 'Pin this chat'
                         }
                     />
-                </ListItem>
+                </ListItem> */}
                 <ListItem button divider onClick={handleMuteConversation}>
                     <ListItemText primary="Mute conversation" />
                 </ListItem>

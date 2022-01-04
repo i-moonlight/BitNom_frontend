@@ -2,6 +2,7 @@ import {
     ExpandMoreRounded,
     DoneAllOutlined,
     DoneOutlined,
+    MoreVertRounded,
 } from '@mui/icons-material';
 import {
     Avatar,
@@ -30,7 +31,8 @@ export default function OutgoingMessage({ chat, message, onClick }) {
     const userInitials = getUserInitials(
         chat?.currentUser?.info?._id?.displayName
     );
-    const mdDown = useMediaQuery('(max-width:1279px)');
+    //const mdDown = useMediaQuery('(max-width:1279px)');
+const xsDown = useMediaQuery('(max-width:599px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -52,25 +54,34 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <span
-                        style={{
-                            display: 'flex',
-                            width: '100%',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Link
-                            to={`/profile`}
-                            style={{
-                                textDecoration: 'none',
-                                marginRight: '5px',
-                            }}
-                        >
-                            <small className={classes.author}>
-                                <strong>@{author}</strong>
-                            </small>
-                        </Link>
-                        {(show_reply || mdDown) && (
+                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
+                        <small className={classes.author}>
+                            <strong>@{author}</strong>
+                        </small>
+                    </Link>
+                    {message?.edited === true ? (
+                        <div className={classes.Edited}>
+                            <strong>(Edited)</strong>
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    {xsDown ? (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <MoreVertRounded style={{ fontSize: '18px' }} />
+                            </IconButton>
+                        </div>
+                    ) : show_reply ? (
+                        <div className={classes.reply}>
                             <IconButton
                                 style={{
                                     fontSize: '1em',
@@ -81,15 +92,8 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             >
                                 <ExpandMoreRounded />
                             </IconButton>
-                        )}
-                    </span>
-                    {message?.edited === true ? (
-                        <small>
-                            <strong>(Edited)</strong>
-                        </small>
-                    ) : (
-                        ''
-                    )}
+                        </div>
+                    ) : null}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card variant="outlined" className={classes.responseToOut}>
@@ -176,9 +180,6 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     className={classes.message}
                     variant="body2"
                     component="div"
-                    style={{
-                        marginTop: '4px',
-                    }}
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message?.text}

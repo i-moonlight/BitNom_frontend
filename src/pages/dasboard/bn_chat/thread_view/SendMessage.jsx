@@ -113,8 +113,8 @@ export default function SendMessage({
     };
 
     const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
-        onError(error) {
-            setSendMessageError(error?.graphQLErrors[0]?.state);
+        onError(errs) {
+            setSendMessageError(errs?.graphQLErrors[0]?.state);
         },
     });
 
@@ -251,6 +251,16 @@ export default function SendMessage({
             setText(editText?.text);
         }
     }, [editText]);
+    useEffect(() => {
+        if (sendMessageErr !== null) {
+            const timeOut = setTimeout(() => {
+                setSendMessageError(null);
+            }, 5000);
+            return () => {
+                clearTimeout(timeOut);
+            };
+        }
+    }, [sendMessageErr]);
 
     useEffect(() => {
         if (
@@ -379,6 +389,7 @@ export default function SendMessage({
         setMessageDoc(allowedFiles);
     };
     const editing = editText?.text?.length > 0 ? true : false;
+
     return (
         <>
             <div>
@@ -701,7 +712,7 @@ export default function SendMessage({
                         ) : (
                             <div
                                 className={classes.inputTab}
-                                style={{ width: '33%' }}
+                                style={{ width: '15%' }}
                             >
                                 {/* <IconButton
                                     size="small"
@@ -806,12 +817,30 @@ export default function SendMessage({
                                     <SendOutlined />
                                 </IconButton>
                             </Paper>
-                            {sendMessageErr && (
-                                <Typography color="error" variant="body2">
+                            {sendMessageErr &&
+                            otherUser.blocked === false &&
+                            currentUser.blocked === false ? (
+                                <Typography
+                                    color="error"
+                                    variant="body2"
+                                    style={{ marginLeft: '5%' }}
+                                >
                                     {' '}
-                                    This field cannot be empty!
+                                    ~ You cannot send an empty message!
                                 </Typography>
-                            )}
+                            ) : sendMessageErr &&
+                              (otherUser.blocked === true ||
+                                  currentUser.blocked === true) ? (
+                                <Typography
+                                    color="error"
+                                    variant="body2"
+                                    style={{ marginLeft: '5%' }}
+                                >
+                                    {' '}
+                                    ~ You can no longer send messages to this
+                                    chat!
+                                </Typography>
+                            ) : null}
                         </div>
                     </div>
                 </div>

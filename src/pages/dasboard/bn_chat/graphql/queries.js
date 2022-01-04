@@ -186,9 +186,9 @@ export const BLOCK_DIALOGUE = gql`
 `;
 
 export const UNBLOCK_DIALOGUE = gql`
-    mutation ($id: ID!) {
+    mutation ($_id: ID!) {
         Dialogue {
-            unblock(_id: $id) {
+            unblock(_id: $_id) {
                ${dialogueSubFields}
             }
         }
@@ -704,3 +704,9 @@ export const RESET_UNREAD_COUNT = gql`
         }
     }
 `;
+export const BLOCK_USER_SUBS = gql`
+subscription blockingUser($_id:ID!){
+  blockingUser(_id:$_id){
+    ${dialogueSubFields}
+  }
+}`;
