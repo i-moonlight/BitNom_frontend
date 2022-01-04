@@ -82,12 +82,23 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue?._id,
         },
     });
+    // const [resetChatCount, { data: readCountData }] = useMutation(
+    //     RESET_UNREAD_COUNT,
+    //     {
+    //         variables: {
+    //             _id: dialogue._id,
+    //         },
+    //         context: { clientName: 'chat' },
+    //     }
+    // );
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
         }
+        // eslint-disable-next-line
     }, [dispatch, subscriptionData?.newMessage]);
+    //handle reset count for current chat
 
     useEffect(() => {
         if (messageUpdateData?.messageUpdate) {
@@ -129,8 +140,6 @@ export default function Messages({ onExitChatMobile }) {
             });
         }
     }, [dialogue?._id, getDialogueMessages, getPinnedDialogueMessages]);
-
-    //console.log(dialogue, 'dialogue');
 
     return (
         <div style={{ height: '100%', overflowY: 'auto' }}>
@@ -297,7 +306,7 @@ export default function Messages({ onExitChatMobile }) {
                     )}
                     <div ref={endRef} className="mt-4" />
                 </div>{' '}
-                <div>
+                {/* <div>
                     {dialogue?.status === 'accepted' &&
                         messages &&
                         messages?.length > 0 &&
@@ -305,9 +314,19 @@ export default function Messages({ onExitChatMobile }) {
                             dialogue?.initiator?.blocked === true) && (
                             <Blocked />
                         )}
-                </div>
+                </div> */}
             </div>
             <div style={{ height: 'fit-content' }}>
+                {dialogue?.status === 'accepted' &&
+                    messages &&
+                    messages?.length > 0 &&
+                    (dialogue?.recipient?.blocked === true ||
+                        dialogue?.initiator?.blocked === true) && (
+                        <Blocked
+                            otherUser={dialogue?.otherUser}
+                            dialogue={dialogue?._id}
+                        />
+                    )}
                 {dialogue?.status === 'accepted' &&
                     messages &&
                     messages?.length > 0 &&
