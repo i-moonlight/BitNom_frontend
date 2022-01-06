@@ -262,7 +262,7 @@ export default function Messages({ onExitChatMobile }) {
                         !loading && <EmptyMessages />}
                     {dialogue?.status === 'accepted' &&
                     filteredMessages &&
-                    filteredMessages?.author !== user._id &&
+                    filteredMessages?.author?._id !== user._id &&
                     filteredMessages?.length > 0
                         ? filteredMessages?.map((filtered, I) => (
                               <Message
@@ -273,7 +273,7 @@ export default function Messages({ onExitChatMobile }) {
                           ))
                         : dialogue?.status === 'accepted' &&
                           messages &&
-                          messages?.author !== user._id &&
+                          messages?.author?._id !== user._id &&
                           messages?.length > 0
                         ? messages?.map((message, mI) => (
                               <Message
@@ -284,7 +284,7 @@ export default function Messages({ onExitChatMobile }) {
                                       setReplyText({
                                           text: message?.text,
                                           _id: message?._id,
-                                          author: message?.author,
+                                          author: message?.author?._id,
                                       })
                                   }
                                   onUpdateMessage={() =>

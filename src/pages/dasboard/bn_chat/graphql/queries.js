@@ -105,7 +105,12 @@ export const SEARCH_MESSAGES = gql`
             searchMessages(data: $data) {
                 _id
                 text
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 images
                 video
                 gif
@@ -216,7 +221,12 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 }
             ) {
                 _id
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 text
                 date
                 images
@@ -246,7 +256,12 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 text
                 date
                 video
@@ -258,7 +273,12 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 responseTo {
                     _id
                     text
-                    author
+                    author{
+                        _id
+                        displayName
+                        profile_pic
+                        bio
+                    }
                 }
             }
         }
@@ -355,10 +375,7 @@ export const GROUP_CREATE_MESSAGE = gql`
                 text
                 date
                 chat
-                author {
-                    _id
-                    image
-                }
+                author
                 responseTo {
                     _id
                     text
@@ -483,7 +500,12 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             chat {
                 _id
             }
-            author
+            author{
+                _id
+                displayName
+                profile_pic
+                bio
+            }
             text
             date
             images
@@ -569,7 +591,12 @@ export const PIN_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 text
                 images
                 video
@@ -607,7 +634,12 @@ export const UPDATE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
                 date
                 images
                 video
@@ -646,7 +678,12 @@ export const MESSAGE_UPDATE_SUB = gql`
             chat {
                 _id
             }
-            author
+            author{
+                _id
+                displayName
+                profile_pic
+                bio
+            }
             text
             date
             images
@@ -658,7 +695,12 @@ export const MESSAGE_UPDATE_SUB = gql`
             responseTo {
                 _id
                 text
-                author
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
             }
         }
     }

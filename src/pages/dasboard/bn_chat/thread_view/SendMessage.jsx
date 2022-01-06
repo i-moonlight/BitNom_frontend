@@ -412,7 +412,7 @@ export default function SendMessage({
                                     component="span"
                                     style={{ margin: '1px 5px' }}
                                 >
-                                    <strong>{replyText.author}</strong>
+                                    <strong>{replyText.author?._id}</strong>
                                 </Typography>
                             }
                         />

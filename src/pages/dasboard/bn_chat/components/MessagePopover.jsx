@@ -91,7 +91,7 @@ export default function MessagePopover({
                 >
                     <ListItemText primary="Reply Message" />
                 </ListItem>
-                {user._id === message.author && (
+                {user._id === message?.author?._id && (
                     <ListItem
                         button
                         divider
@@ -102,7 +102,7 @@ export default function MessagePopover({
                         <ListItemText primary="Delete Message" />
                     </ListItem>
                 )}
-                {user._id === message.author && (
+                {user._id === message?.author?._id && (
                     <ListItem
                         button
                         divider
