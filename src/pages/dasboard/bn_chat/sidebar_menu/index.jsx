@@ -214,7 +214,7 @@ function Chats({ onSetChatMobile }) {
     };
 
     return (
-        <div style={{ overflowY: 'auto' height: '65vh' }}>
+        <div style={{ overflowY: 'auto', height: '65vh' }}>
             {searchedChats?.length > 0 ? (
                 <div >
                     {searchedChats && searchedChats?.length > 0 && (

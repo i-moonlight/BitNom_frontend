@@ -614,14 +614,30 @@ export const UNARCHIVE = gql`
 export const UNPIN = gql`
     mutation unpin($_id: ID!) {
         Dialogue {
-            unpin(_id: $_id)
+            unpin(_id: $_id){
+                ${dialogueSubFields}
+            }
         }
     }
 `;
 export const UNPIN_MESSAGE = gql`
     mutation unpinMessage($data: OMessageInput!) {
         Dialogue {
-            unpinMessage(data: $data)
+            unpinMessage(data: $data){
+                _id
+                chat {
+                    _id
+                }
+                author{
+                    _id
+                    displayName
+                    profile_pic
+                    bio
+                }
+                text
+                images
+                video
+            }
         }
     }
 `;
