@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useSubscription } from '@apollo/client';
 import { List, ListItem, ListItemText, Popover } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,11 @@ import {
     addToPinnedMessage,
     removeFromMessages,
 } from '../../../../store/actions/chatActions';
-import { DELETE_MESSAGE, PIN_MESSAGE } from '../graphql/queries';
+import {
+    DELETE_MESSAGE,
+    DELETE_MESSAGE_SUBSCRIPTION,
+    PIN_MESSAGE,
+} from '../graphql/queries';
 
 export default function MessagePopover({
     messageSettingsAnchorEl,
@@ -36,14 +40,17 @@ export default function MessagePopover({
         },
         context: { clientName: 'chat' },
     });
-
+    const { data: deleteData } = useSubscription(DELETE_MESSAGE_SUBSCRIPTION, {
+        variables: {
+            _id: chat?._id,
+        },
+    });
     const handlePinMessage = () => {
         pinMessage();
     };
 
     const handleDeleteMessage = () => {
         deleteMessage();
-        dispatch(removeFromMessages(message));
     };
 
     const handleReportMessage = () => {
@@ -54,6 +61,9 @@ export default function MessagePopover({
     useEffect(() => {
         dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
     }, [data?.Dialogue?.pinMessage, dispatch]);
+    useEffect(() => {
+        dispatch(removeFromMessages(deleteData?.deleteMessageS?.message));
+    }, [deleteData, dispatch]);
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
