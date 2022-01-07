@@ -768,3 +768,18 @@ subscription blockingUser($_id:ID!){
     ${dialogueSubFields}
   }
 }`;
+export const REPORT_DIALOGUE_USER = gql`
+    mutation report($data: ICreateReport!) {
+        Dialogue {
+            report(data: $data)
+        }
+    }
+`;
+export const DELETE_MESSAGE_SUBSCRIPTION = gql`
+    subscription deleteMessageS($_id: ID!) {
+        deleteMessageS(_id: $_id) {
+            _id
+            message
+        }
+    }
+`;

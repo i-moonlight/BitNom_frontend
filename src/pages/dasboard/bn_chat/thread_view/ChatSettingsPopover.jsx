@@ -12,8 +12,8 @@ import {
     GET_DIALOGUES,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
+    REPORT_DIALOGUE_USER,
     // PIN_CHAT,
-    REPORT_USER,
     UNARCHIVE,
     // UNPIN,
 } from '../graphql/queries';
@@ -71,9 +71,14 @@ export default function ChatSettingPopover({
         context: { clientName: 'chat' },
     });
 
-    const [ReportUser] = useMutation(REPORT_USER, {
+    const [ReportUser] = useMutation(REPORT_DIALOGUE_USER, {
         variables: {
-            chat: chat?.otherUser?.info,
+            data: {
+                _id: chat?._id,
+                reporter: chat?.currentUser?.info._id._id,
+                reported: chat?.otherUser?.info?._id?._id,
+                reason: 'User sent harmful content,is abusive,sent suspecious content.',
+            },
         },
         context: { clientName: 'chat' },
     });
