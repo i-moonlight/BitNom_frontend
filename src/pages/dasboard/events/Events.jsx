@@ -1,9 +1,8 @@
 import { useQuery } from '@apollo/client';
 import {
-    ArrowBack,
+    EventRounded,
     RoomRounded,
     VideocamRounded,
-    EventRounded,
 } from '@mui/icons-material';
 import {
     Card,
@@ -14,7 +13,6 @@ import {
     Container,
     Divider,
     Grid,
-    IconButton,
     Typography,
     useMediaQuery,
 } from '@mui/material';
@@ -23,15 +21,14 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Screen from '../../../components/Screen';
-import { Button } from '../../../components/Button';
 import { ToastContainer } from 'react-toastify';
-import { GET_BOOKMARKED_EVENTS, QUERY_LOAD_EVENTS } from '../utilities/queries';
-
-import CreateEvent from './CreateEvent';
-import EventsFilter from './EventsFilter';
-import CreateEventCard from './CreateEventCard';
+import { Button } from '../../../components/Button';
+import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
+import { GET_BOOKMARKED_EVENTS, QUERY_LOAD_EVENTS } from '../utilities/queries';
+import CreateEvent from './CreateEvent';
+import CreateEventCard from './CreateEventCard';
+import EventsFilter from './EventsFilter';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -176,21 +173,10 @@ function EventListCard({
     const pastEvents = events?.filter(
         (event) => new Date(event?.endDate).getTime() < new Date().getTime()
     );
-    const history = useHistory();
+
     return (
         <Card>
             <CardHeader
-                avatar={
-                    <IconButton
-                        size="small"
-                        className="m-1 p-1"
-                        aria-label="back"
-                        color="inherit"
-                        onClick={() => history.goBack()}
-                    >
-                        <ArrowBack />
-                    </IconButton>
-                }
                 title={
                     <div className="center-horizontal">
                         {mdDown ? (

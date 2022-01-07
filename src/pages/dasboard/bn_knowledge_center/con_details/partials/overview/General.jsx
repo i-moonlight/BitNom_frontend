@@ -11,18 +11,31 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchGeneralTable,
     fetchTrendingTable,
 } from '../../../../../../store/actions/cryptoActions';
-import CoinChart from '../../../bn_charts/CoinChart';
-// import { buttonData, chipLabels, GeneralButton } from '../utils/GeneralButtons';
+import coinGecko from '../../../../../../store/apis/coinGecko';
+// import CoinChart from '../../../bn_charts/CoinChart';
+import {
+    //  buttonData,
+    chipLabels,
+    GeneralButton,
+} from '../utils/GeneralButtons';
 import { convertDate, volumePercentage } from '../utils/utilities';
 
+import Chartjs from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
+
 export default function General({ coinDetail }) {
-    // const [activeButton, setActiveButton] = useState(0);
+    const [activeButton, setActiveButton] = useState(0);
+    const [chartDuration, setChartDuration] = useState('day');
+    const [coinChartData, setCoinChartData] = useState({});
+
+    const chartRef = useRef(null);
+
     // const [coinFeature, setCoinFeature] = useState('price');
     // const [showLess, setShowLess] = useState(true);
 
@@ -32,12 +45,98 @@ export default function General({ coinDetail }) {
     const rows = state.crypto?.generalTable;
     const trending = state.crypto?.trendingTable;
 
-    const coinData = coinDetail?.market_data?.sparkline_7d?.price;
+    const formatChartData = (data) => {
+        return data.map((el) => {
+            return {
+                x: el[0],
+                y: el[1].toFixed(2),
+            };
+        });
+    };
+
+    const fetchCoinChartData = useCallback(async () => {
+        const [day, week, month, year] = await Promise.all([
+            coinGecko.get(`/coins/${coinDetail?.id}/market_chart`, {
+                params: {
+                    vs_currency: 'usd',
+                    days: '1',
+                },
+            }),
+            coinGecko.get(`/coins/${coinDetail?.id}/market_chart`, {
+                params: {
+                    vs_currency: 'usd',
+                    days: '7',
+                },
+            }),
+            coinGecko.get(`/coins/${coinDetail?.id}/market_chart`, {
+                params: {
+                    vs_currency: 'usd',
+                    days: '30',
+                },
+            }),
+            coinGecko.get(`/coins/${coinDetail?.id}/market_chart`, {
+                params: {
+                    vs_currency: 'usd',
+                    days: '365',
+                },
+            }),
+        ]).catch(() => {
+            // console.log('promse err: ', err);
+        });
+
+        setCoinChartData({
+            day: formatChartData(day.data.prices),
+            week: formatChartData(week.data.prices),
+            month: formatChartData(month.data.prices),
+            year: formatChartData(year.data.prices),
+        });
+    }, [coinDetail?.id]);
+
+    // console.log('qwerty', coinChartData);
+
+    // const coinData = coinDetail?.market_data?.sparkline_7d?.price;
 
     useEffect(() => {
         dispatch(fetchGeneralTable());
         dispatch(fetchTrendingTable());
-    }, [dispatch]);
+        fetchCoinChartData();
+    }, [dispatch, fetchCoinChartData]);
+
+    useEffect(() => {
+        const chartInstance = new Chartjs(chartRef.current, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'price in USD',
+                        data: coinChartData[chartDuration],
+
+                        backgroundColor: 'rgba(174, 385, 194,0.5)',
+                        borderColor: 'rgba(174, 385, 194,0.5)',
+                        borderWidth: 1,
+                        pointRadius: 0,
+                    },
+                ],
+            },
+            options: {
+                animation: {
+                    duration: 2000,
+                },
+                scales: {
+                    xAxes: {
+                        type: 'time',
+                        distribution: 'linear',
+                    },
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+            },
+        });
+
+        return () => {
+            chartInstance?.destroy();
+        };
+    }, [chartDuration, coinChartData, coinChartData.day]);
 
     const CoinDescription = () => {
         const description = coinDetail?.description?.en;
@@ -57,22 +156,22 @@ export default function General({ coinDetail }) {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={8} lg={8}>
                         <div className={'my-3'}>
-                            {/* <div className={'d-flex justify-content-between'}>
+                            <div className={'d-flex justify-content-between'}>
                                 <h4>
                                     {`${
                                         coinDetail?.name
                                     } ( ${coinDetail?.symbol?.toUpperCase()} )`}{' '}
                                     Price Chart
                                 </h4>
-                                <div>
+                                {/* <div>
                                     <Fullscreen className={'m-1'} />
                                     <MoreHoriz className={'m-1'} />
-                                </div>
-                            </div> */}
+                                </div> */}
+                            </div>
 
-                            {/* <div className={'d-flex justify-content-between'}>
+                            <div className={'d-flex justify-content-between'}>
                                 <Card>
-                                    <div className={'m-1'}>
+                                    {/* <div className={'m-1'}>
                                         {buttonData.map((item, index) => (
                                             <GeneralButton
                                                 key={item.value}
@@ -88,7 +187,7 @@ export default function General({ coinDetail }) {
                                                 active={activeButton === index}
                                             />
                                         ))}
-                                    </div>
+                                    </div> */}
                                 </Card>
                                 <div style={{ width: 20, height: 10 }} />
                                 <Card>
@@ -102,24 +201,38 @@ export default function General({ coinDetail }) {
                                                 setActiveButton={(val) =>
                                                     setActiveButton(val)
                                                 }
+                                                setChartDuration={(val) => {
+                                                    setChartDuration(val);
+                                                }}
                                                 // setActiveCoinFeature={(val) =>
                                                 //     setCoinFeature(val)
                                                 // }
                                                 active={activeButton === index}
                                             />
                                         ))}
-                                        <DateRange />
+                                        {/* <DateRange /> */}
                                     </div>
                                 </Card>
-                            </div> */}
+                            </div>
 
                             <div className={'mt-2'}>
                                 <Card>
-                                    {(!process.env.NODE_ENV ||
+                                    {/* {(!process.env.NODE_ENV ||
                                         process.env.NODE_ENV ===
                                             'development') && (
-                                        <CoinChart data={coinData} />
-                                    )}
+                                        <CoinChart
+                                            coin={'Qwsogvtv82FCd'}
+                                            time={chartDuration}
+                                            coinChartData={coinChartData}
+                                        />
+                                    )} */}
+
+                                    <canvas
+                                        ref={chartRef}
+                                        // id="myChart"
+                                        width={'100%'}
+                                        height={300}
+                                    ></canvas>
                                 </Card>
                                 {/* <div className={'d-flex justify-content-start'}>
                                     <FormControlLabel
