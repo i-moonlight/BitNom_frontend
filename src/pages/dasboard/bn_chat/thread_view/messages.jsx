@@ -9,6 +9,7 @@ import {
     List,
     ListSubheader,
     Tooltip,
+    useMediaQuery,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,13 +52,19 @@ export default function Messages({ onExitChatMobile }) {
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
     const messages = [...unOrderedMessages]?.reverse();
-
+    const xsDown = useMediaQuery('(max-width:599px)');
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
-        GET_DIALOGUE_MESSAGES
+        GET_DIALOGUE_MESSAGES,
+        {
+            fetchPolicy: 'network-only',
+        }
     );
 
     const [getPinnedDialogueMessages, { data: pinnedMessages }] = useLazyQuery(
-        GET_DIALOGUE_MESSAGES
+        GET_DIALOGUE_MESSAGES,
+        {
+            fetchPolicy: 'network-only',
+        }
     );
 
     const { data: subscriptionData } = useSubscription(
@@ -66,6 +73,7 @@ export default function Messages({ onExitChatMobile }) {
             variables: {
                 _id: dialogue?._id,
             },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -74,12 +82,23 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue?._id,
         },
     });
+    // const [resetChatCount, { data: readCountData }] = useMutation(
+    //     RESET_UNREAD_COUNT,
+    //     {
+    //         variables: {
+    //             _id: dialogue._id,
+    //         },
+    //         context: { clientName: 'chat' },
+    //     }
+    // );
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
         }
+        // eslint-disable-next-line
     }, [dispatch, subscriptionData?.newMessage]);
+    //handle reset count for current chat
 
     useEffect(() => {
         if (messageUpdateData?.messageUpdate) {
@@ -144,7 +163,13 @@ export default function Messages({ onExitChatMobile }) {
                     </div>
                 )}
             </div>
-            <div style={{ margin: '8px', height: '70%', overflowY: 'scroll' }}>
+            <div
+                style={{
+                    margin: '8px',
+                    height: xsDown ? '73%' : '80%',
+                    overflowY: 'scroll',
+                }}
+            >
                 {dialogue?.status === 'accepted' && (
                     <div
                     //style={{ margin: '8px' }}
@@ -223,13 +248,13 @@ export default function Messages({ onExitChatMobile }) {
                         dialogue?._id === undefined &&
                         !loading && <NoChatSelected />}
                     {dialogue?.status === 'new' &&
-                        dialogue?.initiator?.info?._id === user?._id &&
+                        dialogue?.initiator?.info?._id?._id === user?._id &&
                         !loading &&
                         !messages?.length > 0 && (
                             <AwaitResponse dialogue={dialogue} />
                         )}
                     {dialogue?.status === 'new' &&
-                        dialogue?.recipient?.info._id === user?._id && (
+                        dialogue?.recipient?.info?._id?._id === user?._id && (
                             <InviteView dialogue={dialogue} />
                         )}
                     {dialogue?.status === 'accepted' &&
@@ -281,7 +306,7 @@ export default function Messages({ onExitChatMobile }) {
                     )}
                     <div ref={endRef} className="mt-4" />
                 </div>{' '}
-                <div>
+                {/* <div>
                     {dialogue?.status === 'accepted' &&
                         messages &&
                         messages?.length > 0 &&
@@ -289,9 +314,19 @@ export default function Messages({ onExitChatMobile }) {
                             dialogue?.initiator?.blocked === true) && (
                             <Blocked />
                         )}
-                </div>
+                </div> */}
             </div>
             <div style={{ height: 'fit-content' }}>
+                {dialogue?.status === 'accepted' &&
+                    messages &&
+                    messages?.length > 0 &&
+                    (dialogue?.recipient?.blocked === true ||
+                        dialogue?.initiator?.blocked === true) && (
+                        <Blocked
+                            otherUser={dialogue?.otherUser}
+                            dialogue={dialogue?._id}
+                        />
+                    )}
                 {dialogue?.status === 'accepted' &&
                     messages &&
                     messages?.length > 0 &&

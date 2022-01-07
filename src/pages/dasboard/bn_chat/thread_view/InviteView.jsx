@@ -7,6 +7,8 @@ import {
     Typography,
 } from '@mui/material';
 import { Button } from '../../../../components/Button';
+import { useDispatch } from 'react-redux';
+import { setCurrentChat } from '../../../../store/actions/chatActions';
 import {
     ACCEPT_DIALOGUE_INVITE,
     REJECT_DIALOGUE_INVITE,
@@ -15,6 +17,7 @@ import { useStyles } from '../utils/styles';
 
 export default function InviteView({ dialogue }) {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const [RejectChat] = useMutation(REJECT_DIALOGUE_INVITE, {
         variables: {
@@ -33,6 +36,7 @@ export default function InviteView({ dialogue }) {
     const handleReject = (e) => {
         e.preventDefault();
         RejectChat();
+        dispatch(setCurrentChat({}));
     };
 
     const handleAccept = (e) => {
@@ -49,8 +53,10 @@ export default function InviteView({ dialogue }) {
                 <CardContent>
                     <Typography>
                         Accept to chat with{' '}
-                        <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
-                            {dialogue?.otherUser?.info?.displayName}
+                        <Link
+                            to={`/users/${dialogue?.otherUser?.info?._id?._id}`}
+                        >
+                            {dialogue?.otherUser?.info?._id?.displayName}
                         </Link>
                         . If you ignore this, the chat wil be removed and we
                         wont let the sender know.

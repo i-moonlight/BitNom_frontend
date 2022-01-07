@@ -28,7 +28,7 @@ import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 import { Button } from '../../../components/Button';
 import {
     MUTATION_DELETE_EVENT,
@@ -288,21 +288,21 @@ export default function UpdateEvent({
                 ) {
                     counter += 1;
                 } else {
-                    return toast.error(
-                        'Image should be less than 1200px by 1350px & below 2mb.',
-                        {
-                            position: 'bottom-left',
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                        }
-                    );
+                    return setErrors([
+                        ...errors,
+                        '~ Image should be less than 1200px by 1350px & below 2mb.',
+                    ]);
                 }
                 if (counter === 1) {
                     setEventImage(file);
                     setPreviewURL(URL.createObjectURL(file));
+                    setErrors((prev) =>
+                        prev.filter(
+                            (item) =>
+                                item !==
+                                '~ Image should be less than 1200px by 1350px & below 2mb.'
+                        )
+                    );
                 }
             });
             image.src = URL.createObjectURL(file);
@@ -980,9 +980,10 @@ export default function UpdateEvent({
                                             backgroundColor: '#ba000d',
                                             color: '#FFFFFF',
                                             marginRight: '12px',
-                                            display: loading && 'none',
+                                            //display: loading ? 'none' : 'block',
                                         }}
                                         size="small"
+                                        disabled={loading ? true : false}
                                         variant="contained"
                                         onClick={() => setOpenDelete(true)}
                                     >
@@ -992,7 +993,7 @@ export default function UpdateEvent({
                                     <Button
                                         size="small"
                                         onClick={handleUpdateEvent}
-                                        disabled={loading}
+                                        disabled={loading ? true : false}
                                     >
                                         Update
                                     </Button>

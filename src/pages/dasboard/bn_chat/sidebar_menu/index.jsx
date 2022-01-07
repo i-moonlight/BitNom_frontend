@@ -41,8 +41,12 @@ function Chats({ onSetChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const chats = state.chats.chats;
-    const invites = state.chats.invites;
+    const chats = state.chats.chats.filter(
+        (chat) => chat.status !== 'rejected'
+    );
+    const invites = state.chats.invites.filter(
+        (chat) => chat.status !== 'rejected'
+    );
     const archived = state.chats.archived;
     const pinned = state.chats.pinnedChats;
     const searchedChats = state.chats.searchedChats;
@@ -55,6 +59,7 @@ function Chats({ onSetChatMobile }) {
             status: 'accepted',
         },
         context: { clientName: 'chat' },
+        fetchPolicy: 'network-only',
     });
 
     const { data: chatInvites, loading: invitesLoading } = useQuery(
@@ -64,6 +69,7 @@ function Chats({ onSetChatMobile }) {
                 status: 'new',
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -75,6 +81,7 @@ function Chats({ onSetChatMobile }) {
                 archived: true,
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
 
@@ -86,6 +93,7 @@ function Chats({ onSetChatMobile }) {
                 pinned: true,
             },
             context: { clientName: 'chat' },
+            fetchPolicy: 'network-only',
         }
     );
     const [unreadCountReset, { data: readCountData }] =
@@ -175,7 +183,7 @@ function Chats({ onSetChatMobile }) {
     }, [pinnedData?.Dialogue?.get, dispatch]);
 
     useEffect(() => {
-        if (pinnedChatData?.pinChat?.currentUser?.info?._id === user._id) {
+        if (pinnedChatData?.pinChat?.currentUser?.info?._id?._id === user._id) {
             dispatch(addToPinnedChats(pinnedChatData?.pinChat));
             dispatch(setCurrentChat(pinnedChatData?.pinChat));
         }
@@ -183,7 +191,8 @@ function Chats({ onSetChatMobile }) {
 
     useEffect(() => {
         if (
-            archivedChatData?.archiveChat?.currentUser?.info?._id === user._id
+            archivedChatData?.archiveChat?.currentUser?.info?._id?._id ===
+            user._id
         ) {
             dispatch(addToArchivedChats(archivedChatData?.archiveChat));
             dispatch(setCurrentChat(archivedChatData?.archiveChat));
@@ -194,12 +203,12 @@ function Chats({ onSetChatMobile }) {
     };
 
     const openChat = (chat) => {
-        const current_chat = state.chats.current_chat;
+        // const current_chat = state.chats.current_chat;
 
-        if (current_chat?._id !== chat?._id) {
-            dispatch(setCurrentChat(chat));
-            xsDown && onSetChatMobile();
-        }
+        // if (current_chat?._id !== chat?._id) {
+        dispatch(setCurrentChat(chat));
+        xsDown && onSetChatMobile();
+        // }
         onResetUnreadCount(chat._id);
         dispatch(resetTotalCount());
     };
@@ -207,13 +216,13 @@ function Chats({ onSetChatMobile }) {
     return (
         <Fragment>
             {searchedChats?.length > 0 ? (
-                <div style={{ overflow: 'auto' }}>
+                <div style={{ overflowY: 'auto' }}>
                     {searchedChats && searchedChats?.length > 0 && (
                         <SearchedChats searchedChats={searchedChats} />
                     )}
                 </div>
             ) : (
-                <div style={{ overflow: 'auto' }}>
+                <div style={{ overflowY: 'auto' }}>
                     {invites && invites?.length > 0 && (
                         <Invites invites={invites} loading={invitesLoading} />
                     )}

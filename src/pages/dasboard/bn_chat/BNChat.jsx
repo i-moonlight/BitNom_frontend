@@ -21,7 +21,10 @@ export default function BnChat() {
                             <Grid item xs={12} sm={4} md={4}>
                                 <Card
                                     style={{
-                                        height: window.innerHeight - 200,
+                                        height:
+                                            chatMobileOpen === true
+                                                ? window.innerHeight - 90
+                                                : window.innerHeight - 200,
                                     }}
                                 >
                                     <SideBarHeader className={classes.root} />

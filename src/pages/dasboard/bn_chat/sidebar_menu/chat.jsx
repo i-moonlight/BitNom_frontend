@@ -7,26 +7,36 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getUserInitials } from '../../../../utilities/Helpers';
+import {
+    setCurrentChat,
+    updateDialogue,
+} from '../../../../store/actions/chatActions';
 //import { truncateText } from '../../utilities/functions';
 import {
     LATESTMESSAGE_SUBSCRIPTION,
     UNREAD_COUNT,
     USER_IS_ONLINE,
     USER_ONLINE_STATUS,
+    BLOCK_USER_SUBS,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 
 export default function ChatItem({ chat, onClick, activeChatId }) {
     const [isOnline, setIsOnline] = useState(0);
     const [online, setOnline] = useState(false);
+    const [otherUser, setOtherUser] = useState(null);
     const classes = useStyles();
+    const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    //handle set active chat
+    const chats = state.chats.chats;
+    //handle set active chat xs devices
+    const xsDown = useMediaQuery('(max-width:599px)');
 
     const [UpdateLastSeenMutation] = useMutation(USER_ONLINE_STATUS);
 
@@ -46,7 +56,13 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     //user
     const { data: OnlineData } = useSubscription(USER_IS_ONLINE, {
         variables: {
-            _id: chat?.otherUser?.info?._id,
+            _id: chat?.otherUser?.info?._id?._id,
+        },
+    });
+
+    const { data: blockData } = useSubscription(BLOCK_USER_SUBS, {
+        variables: {
+            _id: user?._id,
         },
     });
 
@@ -61,6 +77,23 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     }, []);
 
     useEffect(() => {
+        if (
+            blockData?.blockingUser?._id === activeChatId &&
+            blockData?.blockingUser?.currentUser?.info?._id?._id === user?._id
+        ) {
+            return dispatch(setCurrentChat(blockData?.blockingUser));
+        }
+    }, [dispatch, blockData?.blockingUser, activeChatId, user, chats]);
+
+    useEffect(() => {
+        if (
+            blockData?.blockingUser?.currentUser?.info?._id?._id === user?._id
+        ) {
+            return dispatch(updateDialogue(blockData?.blockingUser));
+        }
+    }, [dispatch, blockData?.blockingUser, user]);
+
+    useEffect(() => {
         if (OnlineData?.userIsOnline?.online === true) {
             setOnline(true);
         }
@@ -72,6 +105,14 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         }
     }, [OnlineData?.userIsOnline?.online]);
 
+    useEffect(() => {
+        if (chat?.otherUser?.info?._id?._id === user._id) {
+            setOtherUser(chat?.currentUser);
+        } else {
+            setOtherUser(chat?.otherUser);
+        }
+    }, [chat, setOtherUser, user._id]);
+
     const updateLastSeen = () => {
         UpdateLastSeenMutation({
             variables: { _id: user._id },
@@ -79,18 +120,15 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
         });
     };
 
-    const otherUser =
-        chat?.otherUser?.info?._id === user._id
-            ? chat?.currentUser
-            : chat?.otherUser;
-
     const truncateString = (input) =>
         input?.length > 20 ? `${input?.substring(0, 20)}...` : input;
 
     const truncateName = (input) =>
         input?.length > 15 ? `${input?.substring(0, 15)}...` : input;
 
-    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
+    /* const userInitials = getUserInitials(
+        chat?.otherUser?.info?._id?.displayName
+    ); */
 
     return (
         <>
@@ -99,21 +137,27 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                 // component={Link}
                 alignItems="flex-start"
                 onClick={() => onClick()}
-                className={activeChatId === chat?._id ? classes.activeChat : ''}
+                className={
+                    activeChatId === chat?._id && !xsDown
+                        ? classes.activeChat
+                        : ''
+                }
                 divider
                 // to={`/dashboard/chat/{chat._id}`}
             >
                 <ListItemAvatar>
                     <Avatar
                         src={
-                            otherUser?.info?.profile_pic
+                            otherUser?.info?._id?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  otherUser?.info?.profile_pic
-                                : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
+                                  otherUser?.info?._id?.profile_pic
+                                : `https://ui-avatars.com/api/?name=${getUserInitials(
+                                      otherUser?.info?._id?.displayName
+                                  )}&background=random`
                         }
                         alt={'avatar'}
                     >
-                        {userInitials}
+                        {getUserInitials(otherUser?.info?._id?.displayName)}
                     </Avatar>
                 </ListItemAvatar>
                 {/* TODO: check online status */}
@@ -127,7 +171,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     // secondary={
                     //     <React.Fragment>
                     //         <span sx={{ display: 'inline' }}>
-                    //             {chat.otherUser.info.displayName}
+                    //             {chat.otherUser.info?._id?.displayName}
                     //         </span>
                     //         <Badge
                     //             badgeContent={chat?.currentUser?.unreadCount}
@@ -136,11 +180,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                     //         />
                     primary={
                         <Typography color="textPrimary" component="span">
-                            {truncateName(otherUser?.info?.displayName)}{' '}
+                            {truncateName(otherUser?.info?._id?.displayName)}{' '}
                             <Badge
                                 badgeContent={
                                     countData?.UnreadCount?.user ===
-                                        chat?.currentUser?.info?._id &&
+                                        chat?.currentUser?.info?._id?._id &&
                                     countData?.UnreadCount?._id !== activeChatId
                                         ? countData?.UnreadCount?.count
                                         : chat?.currentUser?.unreadCount
@@ -181,11 +225,11 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
                                     ) : chat?.lastMessage?.text ? (
                                         truncateString(chat?.lastMessage?.text)
                                     ) : (
-                                        `@${otherUser?.info?._id}`
+                                        `@${otherUser?.info?._id?._id}`
                                     )}
                                 </span>
                             ) : (
-                                `@${otherUser?.info?._id}`
+                                `@${otherUser?.info?._id?._id}`
                             )}
                         </React.Fragment>
                     }
