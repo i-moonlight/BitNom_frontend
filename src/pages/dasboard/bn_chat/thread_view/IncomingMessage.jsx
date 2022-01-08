@@ -24,7 +24,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
     const classes = useStyles();
     const xsDown = useMediaQuery('(max-width:599px)');
 
-    const author = message?.author || {};
+    const author = message?.author?._id || {};
     const userInitials = getUserInitials(
         chat?.otherUser?.info?._id?.displayName
     );

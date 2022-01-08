@@ -102,7 +102,7 @@ export default function chatReducer(state = initialState, action) {
             return {
                 ...state,
                 dialogue_messages: state.dialogue_messages.filter(
-                    (message) => message._id !== action.data._id
+                    (message) => message._id !== action.data
                 ),
             };
         case 'ADD_PINNED_MESSAGES':

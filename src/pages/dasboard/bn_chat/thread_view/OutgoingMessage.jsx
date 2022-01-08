@@ -27,7 +27,7 @@ import { getDistanceToNowWithSuffix } from '../../../../components/utilities/dat
 export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
-    const author = message?.author || {};
+    const author = message?.author?._id || {};
     const userInitials = getUserInitials(
         chat?.currentUser?.info?._id?.displayName
     );

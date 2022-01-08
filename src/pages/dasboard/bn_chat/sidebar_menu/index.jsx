@@ -6,7 +6,7 @@ import {
     ListSubheader,
     useMediaQuery,
 } from '@mui/material';
-import { Fragment, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
@@ -214,15 +214,15 @@ function Chats({ onSetChatMobile }) {
     };
 
     return (
-        <Fragment>
+        <div style={{ overflowY: 'auto', height: '65vh' }}>
             {searchedChats?.length > 0 ? (
-                <div style={{ overflowY: 'auto' }}>
+                <div >
                     {searchedChats && searchedChats?.length > 0 && (
                         <SearchedChats searchedChats={searchedChats} />
                     )}
                 </div>
             ) : (
-                <div style={{ overflowY: 'auto' }}>
+                <div >
                     {invites && invites?.length > 0 && (
                         <Invites invites={invites} loading={invitesLoading} />
                     )}
@@ -272,7 +272,7 @@ function Chats({ onSetChatMobile }) {
                     )}
                 </div>
             )}
-        </Fragment>
+        </div>
     );
 }
 

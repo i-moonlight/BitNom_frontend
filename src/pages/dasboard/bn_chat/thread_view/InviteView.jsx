@@ -46,7 +46,7 @@ export default function InviteView({ dialogue }) {
 
     return (
         <div
-            // style={{ minHeight: '64vh' }}
+          
             className="d-flex justify-content-center align-items-end mx-auto w-100 mt-3"
         >
             <Card className={classes.cardDefault}>
