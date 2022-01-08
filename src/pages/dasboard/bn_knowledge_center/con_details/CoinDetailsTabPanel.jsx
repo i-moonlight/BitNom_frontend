@@ -5,7 +5,7 @@ import { useState } from 'react';
 // import Forum from './partials/forum/Forum';
 import HistoricalData from './partials/HistoricalData';
 import Market from './partials/market/Market';
-// import News from './partials/news/News';
+import News from './partials/news/News';
 import Overview from './partials/overview/Overview';
 // import ProjectInfo from './partials/project_info/ProjectInfo';
 
@@ -36,7 +36,7 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                             style={custom.tabStyle}
                         />
                         <Tab label="Market" value="2" style={custom.tabStyle} />
-                        {/* <Tab label="News" value="3" style={custom.tabStyle} /> */}
+                        <Tab label="News" value="3" style={custom.tabStyle} />
                         {/* <Tab label="Forum" value="4" style={custom.tabStyle} /> */}
                         <Tab
                             label="Historical Data"
@@ -57,9 +57,9 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                 <TabPanel value="2" className={classes.tabPanelRoot}>
                     <Market />
                 </TabPanel>
-                {/* <TabPanel value="3" className={classes.tabPanelRoot}>
-                    <News />
-                </TabPanel> */}
+                <TabPanel value="3" className={classes.tabPanelRoot}>
+                    <News coinDetail={coinDetail} />
+                </TabPanel>
                 {/* <TabPanel value="4" className={classes.tabPanelRoot}>
                     <Forum />
                 </TabPanel> */}
