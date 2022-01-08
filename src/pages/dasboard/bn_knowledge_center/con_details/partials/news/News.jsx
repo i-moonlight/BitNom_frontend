@@ -11,7 +11,7 @@ export default function News({ coinDetail }) {
     const [newsList, setNewsList] = useState();
 
     const btnColor = useStyles();
-    const newsApiUrl = `http://cryptopanic.com/api/v1/posts/?auth_token=24781b8f72c2b94ed43722082d71b5107317752e&currencies=${coinDetail?.symbol?.toUpperCase()}&kind=news&public=true&filter=${toggleState}`;
+    const newsApiUrl = `https://cryptopanic.com/api/v1/posts/?auth_token=24781b8f72c2b94ed43722082d71b5107317752e&currencies=${coinDetail?.symbol?.toUpperCase()}&kind=news&public=true&filter=${toggleState}`;
 
     const toggleTab = (index) => {
         setToggleState(index);
@@ -56,7 +56,7 @@ export default function News({ coinDetail }) {
             </div>
             <div className={'my-1'}>
                 <div>
-                    <Grid container spacing={2} alignItems="stretch">
+                    <Grid container spacing={2} gridAutoRows gridAutoColumns>
                         {newsList?.map((newsItem) => (
                             <NewsItem key={newsItem?.id} newsItem={newsItem} />
                         ))}
@@ -72,20 +72,22 @@ const NewsItem = ({ newsItem }) => {
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card>
-                <CardContent>
-                    <Typography variant="body2">{title}</Typography>
-                    <div className="mt-2">
-                        {currencies?.map(({ code }) => (
-                            <Chip
-                                className="me-2 mb-2"
-                                color="primary"
-                                variant="outlined"
-                                size="small"
-                                key={code}
-                                label={code}
-                            />
-                        ))}
+            <Card style={{ height: '100%' }}>
+                <CardContent className="d-flex flex-column h-100">
+                    <div className="mb-auto">
+                        <Typography variant="body2">{title}</Typography>
+                        <div className="mt-2">
+                            {currencies?.map(({ code }) => (
+                                <Chip
+                                    className="me-2 mb-2"
+                                    color="primary"
+                                    variant="outlined"
+                                    size="small"
+                                    key={code}
+                                    label={code}
+                                />
+                            ))}
+                        </div>
                     </div>
                     <div className="d-flex align-items-center justify-content-between mt-2">
                         <Typography variant="body2" color="GrayText">
