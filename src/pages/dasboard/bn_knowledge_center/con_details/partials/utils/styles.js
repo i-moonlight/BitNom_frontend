@@ -32,9 +32,11 @@ export const useStyles = makeStyles({
     bGActive: {
         backgroundColor: 'rgb(74 69 69)',
         textTransform: 'capitalize',
+        marginRight: 8,
     },
     bGNormal: {
         textTransform: 'capitalize',
+        marginRight: 8,
     },
     categoryActive: {
         backgroundColor: 'rgb(24 14 44)',
