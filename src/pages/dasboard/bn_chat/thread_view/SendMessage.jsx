@@ -229,10 +229,14 @@ export default function SendMessage({
             gif: message_gif,
             documents: message_docs,
         });
+        setText('');
+        handleResetFiles();
     };
 
     const handleUpdateMessage = () => {
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
+        setText('');
+        handleResetFiles();
     };
 
     const handleResetFiles = () => {

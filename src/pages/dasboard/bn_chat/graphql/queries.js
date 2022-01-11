@@ -69,6 +69,7 @@ const dialogueSubFields = `
         images
         documents
         gif
+        date
     }
 `;
 
@@ -304,6 +305,7 @@ export const CREATE_GROUP = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -331,6 +333,7 @@ export const GROUP_REMOVE_USER = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -358,6 +361,7 @@ export const GROUP_ADD_USER = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -405,6 +409,7 @@ export const GET_GROUPS = gql`
                     video
                     gif
                     documents
+                    date
                 }
             }
         }
@@ -562,6 +567,7 @@ export const LATESTMESSAGE_SUBSCRIPTION = gql`
             video
             documents
             gif
+            date
         }
     }
 `;

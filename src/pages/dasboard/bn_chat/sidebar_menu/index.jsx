@@ -43,7 +43,10 @@ function Chats({ onSetChatMobile }) {
     const user = state.auth.user;
     const chats = state.chats.chats.filter(
         (chat) => chat.status !== 'rejected'
-    );
+    ).sort(
+        (a, b) =>
+          a.lastMessage.date -
+          b.lastMessage.date);
     const invites = state.chats.invites.filter(
         (chat) => chat.status !== 'rejected'
     );
