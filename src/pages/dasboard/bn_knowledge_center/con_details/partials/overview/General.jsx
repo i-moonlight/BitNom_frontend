@@ -144,7 +144,11 @@ export default function General({ coinDetail }) {
         return (
             <>
                 {description?.split('\n')?.map((c, idx) => (
-                    <p key={idx} dangerouslySetInnerHTML={{ __html: c }} />
+                    <p
+                        key={idx}
+                        className="text-justify"
+                        dangerouslySetInnerHTML={{ __html: c }}
+                    />
                 ))}
             </>
         );

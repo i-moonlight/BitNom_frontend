@@ -4,7 +4,7 @@ import {
     Facebook,
     GitHub,
     LinkOutlined,
-    Star,
+    Reddit,
     Telegram,
     Twitter,
 } from '@mui/icons-material';
@@ -65,104 +65,98 @@ export default function CoinDetails({ match }) {
                                             md={12}
                                             lg={6}
                                         >
-                                            <div>
-                                                <div className="d-flex text-white align-items-flex-start">
+                                            <div className="">
+                                                <div className="d-flex align-items-center">
                                                     <Avatar
-                                                        className="m-1"
+                                                        className="m-1 me-2"
                                                         src={
                                                             coinDetail?.image
                                                                 ?.small
                                                         }
                                                     />
-                                                    <div>
-                                                        <div className="d-flex align-items-center">
-                                                            <span
-                                                                className={
-                                                                    'text-secondary'
-                                                                }
-                                                            >
-                                                                {
-                                                                    coinDetail?.name
-                                                                }{' '}
-                                                                <span
-                                                                    className={
-                                                                        'text-uppercase'
-                                                                    }
-                                                                >
-                                                                    ({' '}
-                                                                    {
-                                                                        coinDetail?.symbol
-                                                                    }{' '}
-                                                                    )
-                                                                </span>
-                                                            </span>
-                                                            <div className="bg-success px-2 mx-1 br-1">
-                                                                #
-                                                                {
-                                                                    coinDetail?.coingecko_rank
-                                                                }
-                                                            </div>
-                                                            <Star />
-                                                        </div>
-                                                        <div>
-                                                            <Typography
-                                                                component="div"
-                                                                className="d-flex align-items-center mt-2"
-                                                            >
-                                                                <span>
-                                                                    $
-                                                                    {coinDetail?.market_data?.current_price?.usd?.toLocaleString()}{' '}
-                                                                </span>
-                                                                <span
-                                                                    className={
-                                                                        coinDetail
-                                                                            ?.market_data
-                                                                            ?.market_cap_change_percentage_24h >
-                                                                        0
-                                                                            ? 'text-success'
-                                                                            : 'text-danger'
-                                                                    }
-                                                                >
-                                                                    {coinDetail
-                                                                        ?.market_data
-                                                                        ?.market_cap_change_percentage_24h >
-                                                                    0 ? (
-                                                                        <ArrowDropUp />
-                                                                    ) : (
-                                                                        <ArrowDropDown />
-                                                                    )}
-                                                                    {
-                                                                        coinDetail
-                                                                            ?.market_data
-                                                                            ?.market_cap_change_percentage_24h
-                                                                    }
-                                                                    %
-                                                                </span>
-                                                            </Typography>
+                                                    <Typography
+                                                        component="span"
+                                                        color="textPrimary"
+                                                    >
+                                                        {coinDetail?.name}{' '}
+                                                        <span
+                                                            className={
+                                                                'text-uppercase'
+                                                            }
+                                                        >
+                                                            (
+                                                            {coinDetail?.symbol}
+                                                            )
+                                                        </span>
+                                                    </Typography>
+                                                    <Typography
+                                                        color="textPrimary"
+                                                        component="div"
+                                                        className="bg-success px-2 mx-1 br-1"
+                                                    >
+                                                        #
+                                                        {
+                                                            coinDetail?.coingecko_rank
+                                                        }
+                                                    </Typography>
+                                                </div>
+                                                <div>
+                                                    <Typography
+                                                        color="textPrimary"
+                                                        component="div"
+                                                        className="d-flex align-items-center mt-2"
+                                                    >
+                                                        <span>
+                                                            $
+                                                            {coinDetail?.market_data?.current_price?.usd?.toLocaleString()}{' '}
+                                                        </span>
+                                                        <span
+                                                            className={
+                                                                coinDetail
+                                                                    ?.market_data
+                                                                    ?.market_cap_change_percentage_24h >
+                                                                0
+                                                                    ? 'text-success ms-2'
+                                                                    : 'text-danger ms-2'
+                                                            }
+                                                        >
+                                                            {coinDetail
+                                                                ?.market_data
+                                                                ?.market_cap_change_percentage_24h >
+                                                            0 ? (
+                                                                <ArrowDropUp />
+                                                            ) : (
+                                                                <ArrowDropDown />
+                                                            )}
+                                                            {
+                                                                coinDetail
+                                                                    ?.market_data
+                                                                    ?.market_cap_change_percentage_24h
+                                                            }
+                                                            %
+                                                        </span>
+                                                    </Typography>
 
-                                                            <Button
-                                                                className="me-2 my-1"
-                                                                size="small"
-                                                                variant="contained"
-                                                                style={
-                                                                    custom.buttonStyle
-                                                                }
-                                                            >
-                                                                Coin
-                                                            </Button>
-                                                            <Button
-                                                                className="me-2 my-1"
-                                                                size="small"
-                                                                variant="contained"
-                                                                style={
-                                                                    custom.buttonStyle
-                                                                }
-                                                            >
-                                                                On 2,267,548
-                                                                watchlists
-                                                            </Button>
-                                                        </div>
-                                                    </div>
+                                                    <Button
+                                                        className="me-2 my-1"
+                                                        size="small"
+                                                        variant="contained"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                    >
+                                                        Coin
+                                                    </Button>
+                                                    <Button
+                                                        className="me-2 my-1"
+                                                        size="small"
+                                                        variant="contained"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                    >
+                                                        On 2,267,548 watchlists
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </Grid>
@@ -227,7 +221,7 @@ export default function CoinDetails({ match }) {
                                     md={4}
                                     lg={5}
                                 >
-                                    <h4>Info:</h4>
+                                    {/* <h4>Info:</h4> */}
                                     <div>
                                         <Grid container>
                                             <Grid item xs={3}>
@@ -237,13 +231,27 @@ export default function CoinDetails({ match }) {
                                             </Grid>
                                             <Grid item xs={9}>
                                                 <Button
-                                                    className="me-2 my-1"
+                                                    startIcon={<LinkOutlined />}
+                                                    className="me-2 my-1 text-lowercase"
                                                     variant="contained"
                                                     size="small"
                                                     style={custom.buttonStyle}
+                                                    onClick={() => {
+                                                        window.open(
+                                                            coinDetail?.links
+                                                                ?.homepage[0],
+                                                            '_blank'
+                                                        );
+                                                    }}
                                                 >
-                                                    <LinkOutlined />
-                                                    bitcoin.org
+                                                    {coinDetail?.links?.homepage[0]
+                                                        ?.slice(8)
+                                                        .slice(
+                                                            0,
+                                                            coinDetail?.links?.homepage[0]
+                                                                ?.slice(8)
+                                                                .search('/')
+                                                        )}
                                                 </Button>
                                             </Grid>
                                         </Grid>
@@ -257,38 +265,46 @@ export default function CoinDetails({ match }) {
                                                 </strong>
                                             </Grid>
                                             <Grid item xs={9}>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Blockchain
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    BTC
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    TokenView
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    OKLink
-                                                </Button>
+                                                {coinDetail?.links?.blockchain_site?.map(
+                                                    (site) => (
+                                                        <div
+                                                            key={site}
+                                                            className="d-inline"
+                                                        >
+                                                            {site && (
+                                                                <Button
+                                                                    className="me-2 my-1 text-lowercase"
+                                                                    variant="contained"
+                                                                    size="small"
+                                                                    style={
+                                                                        custom.buttonStyle
+                                                                    }
+                                                                    onClick={() => {
+                                                                        window.open(
+                                                                            site,
+                                                                            '_blank'
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    {site
+                                                                        ?.slice(
+                                                                            8
+                                                                        )
+                                                                        .slice(
+                                                                            0,
+                                                                            site
+                                                                                ?.slice(
+                                                                                    8
+                                                                                )
+                                                                                .search(
+                                                                                    '/'
+                                                                                )
+                                                                        )}
+                                                                </Button>
+                                                            )}
+                                                        </div>
+                                                    )
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </div>
@@ -301,52 +317,135 @@ export default function CoinDetails({ match }) {
                                                 </strong>
                                             </Grid>
                                             <Grid item xs={9}>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    <Twitter /> Twitter
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    <Telegram /> Telegram
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    <Facebook /> Facebook
-                                                </Button>
+                                                {coinDetail?.links
+                                                    ?.facebook_username && (
+                                                    <Button
+                                                        startIcon={<Facebook />}
+                                                        className="me-2 my-1"
+                                                        variant="contained"
+                                                        size="small"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                        onClick={() => {
+                                                            window.open(
+                                                                'https://facebook.com/' +
+                                                                    coinDetail
+                                                                        ?.links
+                                                                        ?.facebook_username,
+                                                                '_blank'
+                                                            );
+                                                        }}
+                                                    >
+                                                        Facebook
+                                                    </Button>
+                                                )}
+                                                {coinDetail?.links
+                                                    ?.twitter_screen_name && (
+                                                    <Button
+                                                        startIcon={<Twitter />}
+                                                        className="me-2 my-1"
+                                                        variant="contained"
+                                                        size="small"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                        onClick={() => {
+                                                            window.open(
+                                                                'https://twitter.com/' +
+                                                                    coinDetail
+                                                                        ?.links
+                                                                        ?.twitter_screen_name,
+                                                                '_blank'
+                                                            );
+                                                        }}
+                                                    >
+                                                        Twitter
+                                                    </Button>
+                                                )}
+                                                {coinDetail?.links
+                                                    ?.telegram_channel_identifier && (
+                                                    <Button
+                                                        startIcon={<Telegram />}
+                                                        className="me-2 my-1"
+                                                        variant="contained"
+                                                        size="small"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                        onClick={() => {
+                                                            window.open(
+                                                                'https://t.me/' +
+                                                                    coinDetail
+                                                                        ?.links
+                                                                        ?.telegram_channel_identifier,
+                                                                '_blank'
+                                                            );
+                                                        }}
+                                                    >
+                                                        Telegram
+                                                    </Button>
+                                                )}
+                                                {coinDetail?.links
+                                                    ?.subreddit_url && (
+                                                    <Button
+                                                        startIcon={<Reddit />}
+                                                        className="me-2 my-1"
+                                                        variant="contained"
+                                                        size="small"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                        onClick={() => {
+                                                            window.open(
+                                                                coinDetail
+                                                                    ?.links
+                                                                    ?.subreddit_url,
+                                                                '_blank'
+                                                            );
+                                                        }}
+                                                    >
+                                                        Reddit
+                                                    </Button>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </div>
 
                                     <div>
-                                        <Grid container>
-                                            <Grid item xs={3}>
-                                                <strong className="text-secondary">
-                                                    Source Code
-                                                </strong>
+                                        {' '}
+                                        {coinDetail?.links?.repos_url
+                                            ?.github[0] && (
+                                            <Grid container>
+                                                <Grid item xs={3}>
+                                                    <strong className="text-secondary">
+                                                        Source Code
+                                                    </strong>
+                                                </Grid>
+                                                <Grid item xs={9}>
+                                                    <Button
+                                                        startIcon={<GitHub />}
+                                                        className="me-2 my-1"
+                                                        variant="contained"
+                                                        size="small"
+                                                        style={
+                                                            custom.buttonStyle
+                                                        }
+                                                        onClick={() => {
+                                                            window.open(
+                                                                coinDetail
+                                                                    ?.links
+                                                                    ?.repos_url
+                                                                    ?.github[0],
+                                                                '_blank'
+                                                            );
+                                                        }}
+                                                    >
+                                                        Github
+                                                    </Button>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={9}>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    <GitHub /> Github
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
+                                        )}
                                     </div>
 
                                     <div>
@@ -357,43 +456,27 @@ export default function CoinDetails({ match }) {
                                                 </strong>
                                             </Grid>
                                             <Grid item xs={9}>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Cryptocurrency
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Bitcoin
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Mineable
-                                                </Button>
-                                                <Button
-                                                    className="me-2 my-1"
-                                                    variant="contained"
-                                                    size="small"
-                                                    style={custom.buttonStyle}
-                                                >
-                                                    Store of Value
-                                                </Button>
-                                                {/* <br />
-                                        <br />
-                                        <a className="text-primary">
-                                            <strong>See all</strong>
-                                        </a> */}
+                                                {coinDetail?.categories?.map(
+                                                    (category) => (
+                                                        <div
+                                                            key={category}
+                                                            className="d-inline"
+                                                        >
+                                                            {category && (
+                                                                <Button
+                                                                    className="me-2 my-1"
+                                                                    variant="contained"
+                                                                    size="small"
+                                                                    style={
+                                                                        custom.buttonStyle
+                                                                    }
+                                                                >
+                                                                    {category}
+                                                                </Button>
+                                                            )}
+                                                        </div>
+                                                    )
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </div>

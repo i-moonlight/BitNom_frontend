@@ -51,6 +51,10 @@ a.alt {
     color: #0ea0f3 !important;
 }
 
+.text-justify {
+    text-align: justify;
+}
+
 small {
     font-family: 'Nunito', sans-serif !important;
 }
