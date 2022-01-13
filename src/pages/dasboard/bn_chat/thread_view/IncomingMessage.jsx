@@ -22,7 +22,7 @@ import { getDistanceToNowWithSuffix } from '../../../../components/utilities/dat
 export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const author = message?.author?._id || {};
     const userInitials = getUserInitials(

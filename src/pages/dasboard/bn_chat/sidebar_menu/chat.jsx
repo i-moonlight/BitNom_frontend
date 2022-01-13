@@ -36,7 +36,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     const user = state.auth.user;
     const chats = state.chats.chats;
     //handle set active chat xs devices
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const [UpdateLastSeenMutation] = useMutation(USER_ONLINE_STATUS);
 
@@ -77,10 +77,7 @@ export default function ChatItem({ chat, onClick, activeChatId }) {
     }, []);
 
     useEffect(() => {
-        if (
-            blockData?.blockingUser?._id === activeChatId &&
-            blockData?.blockingUser?.currentUser?.info?._id?._id === user?._id
-        ) {
+        if (blockData?.blockingUser?._id === activeChatId) {
             return dispatch(setCurrentChat(blockData?.blockingUser));
         }
     }, [dispatch, blockData?.blockingUser, activeChatId, user, chats]);

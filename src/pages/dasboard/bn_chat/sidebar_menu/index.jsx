@@ -6,7 +6,7 @@ import {
     ListSubheader,
     useMediaQuery,
 } from '@mui/material';
-import {  useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     addChatDialogues,
@@ -43,7 +43,10 @@ function Chats({ onSetChatMobile }) {
     const user = state.auth.user;
     const chats = state.chats.chats.filter(
         (chat) => chat.status !== 'rejected'
-    );
+    ).sort(
+        (a, b) =>
+          a.lastMessage.date -
+          b.lastMessage.date);
     const invites = state.chats.invites.filter(
         (chat) => chat.status !== 'rejected'
     );
@@ -52,7 +55,7 @@ function Chats({ onSetChatMobile }) {
     const searchedChats = state.chats.searchedChats;
     const activeChatId = state?.chats?.current_chat?._id;
 
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const { data, loading } = useQuery(GET_DIALOGUES, {
         variables: {
@@ -216,13 +219,13 @@ function Chats({ onSetChatMobile }) {
     return (
         <div style={{ overflowY: 'auto', height: '65vh' }}>
             {searchedChats?.length > 0 ? (
-                <div >
+                <div>
                     {searchedChats && searchedChats?.length > 0 && (
                         <SearchedChats searchedChats={searchedChats} />
                     )}
                 </div>
             ) : (
-                <div >
+                <div>
                     {invites && invites?.length > 0 && (
                         <Invites invites={invites} loading={invitesLoading} />
                     )}

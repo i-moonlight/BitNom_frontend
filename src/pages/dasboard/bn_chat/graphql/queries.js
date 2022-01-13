@@ -69,6 +69,7 @@ const dialogueSubFields = `
         images
         documents
         gif
+        date
     }
 `;
 
@@ -105,7 +106,7 @@ export const SEARCH_MESSAGES = gql`
             searchMessages(data: $data) {
                 _id
                 text
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -221,7 +222,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 }
             ) {
                 _id
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -256,7 +257,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -273,7 +274,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 responseTo {
                     _id
                     text
-                    author{
+                    author {
                         _id
                         displayName
                         profile_pic
@@ -304,6 +305,7 @@ export const CREATE_GROUP = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -331,6 +333,7 @@ export const GROUP_REMOVE_USER = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -358,6 +361,7 @@ export const GROUP_ADD_USER = gql`
                     images
                     documents
                     gif
+                    date
                 }
                 createdOn
             }
@@ -405,6 +409,7 @@ export const GET_GROUPS = gql`
                     video
                     gif
                     documents
+                    date
                 }
             }
         }
@@ -500,7 +505,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             chat {
                 _id
             }
-            author{
+            author {
                 _id
                 displayName
                 profile_pic
@@ -562,6 +567,7 @@ export const LATESTMESSAGE_SUBSCRIPTION = gql`
             video
             documents
             gif
+            date
         }
     }
 `;
@@ -591,7 +597,7 @@ export const PIN_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -623,12 +629,12 @@ export const UNPIN = gql`
 export const UNPIN_MESSAGE = gql`
     mutation unpinMessage($data: OMessageInput!) {
         Dialogue {
-            unpinMessage(data: $data){
+            unpinMessage(data: $data) {
                 _id
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -650,7 +656,7 @@ export const UPDATE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -694,7 +700,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             chat {
                 _id
             }
-            author{
+            author {
                 _id
                 displayName
                 profile_pic
@@ -711,7 +717,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             responseTo {
                 _id
                 text
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
