@@ -43,7 +43,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const theme = useTheme();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
     const [debouncedSearchTerm, setDebouncedValues] = useState('');

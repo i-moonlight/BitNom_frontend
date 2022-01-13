@@ -10,7 +10,7 @@ export default function BnChat() {
     const [chatMobileOpen, setChatMobileOpen] = useState(false);
 
     const classes = useStyles();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     return (
         <Screen>

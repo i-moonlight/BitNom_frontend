@@ -88,7 +88,7 @@ export default function SendMessage({
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const theme = useTheme();
     const classes = useStyles();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const isMediaUploadOpen = Boolean(mediaUploadAnchorEl);
 

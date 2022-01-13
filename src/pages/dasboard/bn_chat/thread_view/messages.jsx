@@ -1,4 +1,4 @@
-import { useLazyQuery, useSubscription } from '@apollo/client';
+import { useLazyQuery, useSubscription, useMutation } from '@apollo/client';
 import { CloseRounded } from '@mui/icons-material';
 import {
     Card,
@@ -17,6 +17,7 @@ import {
     addMessagesToCurrentChat,
     addPinnedMessage,
     setDialogueMessages,
+    updateDialogue,
     updateMessage,
 } from '../../../../store/actions/chatActions';
 import ChatHeader from '../components/chat_header/chat_header';
@@ -24,6 +25,7 @@ import {
     GET_DIALOGUE_MESSAGES,
     MESSAGE_UPDATE_SUB,
     NEW_MESSAGE_SUBSCRIPTION,
+    RESET_UNREAD_COUNT,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 import AwaitResponse from './AwaitResponse';
@@ -52,7 +54,7 @@ export default function Messages({ onExitChatMobile }) {
     const filteredMessages = state?.chats?.searchData;
     const messagePins = state.chats.pinnedMessages;
     const messages = [...unOrderedMessages]?.reverse();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
     const [getDialogueMessages, { loading, data }] = useLazyQuery(
         GET_DIALOGUE_MESSAGES,
         {
@@ -82,22 +84,28 @@ export default function Messages({ onExitChatMobile }) {
             _id: dialogue?._id,
         },
     });
-    // const [resetChatCount, { data: readCountData }] = useMutation(
-    //     RESET_UNREAD_COUNT,
-    //     {
-    //         variables: {
-    //             _id: dialogue._id,
-    //         },
-    //         context: { clientName: 'chat' },
-    //     }
-    // );
+    const [resetChatCount, { data: readCountData }] = useMutation(
+        RESET_UNREAD_COUNT,
+        {
+            variables: {
+                _id: dialogue?._id,
+            },
+            context: { clientName: 'chat' },
+        }
+    );
 
     useEffect(() => {
         if (subscriptionData?.newMessage) {
             dispatch(addMessagesToCurrentChat(subscriptionData?.newMessage));
         }
+        if (
+            subscriptionData?.newMessage?.chat?._id === dialogue?._id &&
+            dialogue
+        ) {
+            resetChatCount();
+        }
         // eslint-disable-next-line
-    }, [dispatch, subscriptionData?.newMessage]);
+    }, [dispatch, subscriptionData?.newMessage, dialogue]);
     //handle reset count for current chat
 
     useEffect(() => {
@@ -121,7 +129,14 @@ export default function Messages({ onExitChatMobile }) {
     useEffect(() => {
         endRef.current.scrollIntoView();
     });
-
+    useEffect(() => {
+        if (
+            readCountData?.Dialogue?.resetUnreadCount?._id === dialogue?._id &&
+            dialogue
+        ) {
+            dispatch(updateDialogue(readCountData?.Dialogue?.resetUnreadCount));
+        }
+    }, [dispatch, readCountData?.Dialogue?.resetUnreadCount, dialogue]);
     useEffect(() => {
         if (dialogue?._id) {
             getDialogueMessages({

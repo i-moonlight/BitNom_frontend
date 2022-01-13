@@ -32,7 +32,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
         chat?.currentUser?.info?._id?.displayName
     );
     //const mdDown = useMediaQuery('(max-width:1279px)');
-const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
