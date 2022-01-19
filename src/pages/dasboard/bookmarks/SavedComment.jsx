@@ -47,7 +47,7 @@ export default function SavedComment({
             <Card style={{ marginBottom: 16 }}>
                 <CardActionArea
                     disableRipple
-                    onClick={() => history.push(`/posts/${comment?.scroll}`)}
+                    onClick={() => history.push(`/post/${comment?.scroll}`)}
                 >
                     <CardHeader
                         avatar={

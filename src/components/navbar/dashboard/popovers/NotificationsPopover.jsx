@@ -91,11 +91,11 @@ function ListItemComponent({ item }) {
     let link;
 
     if (item?.link_to_resource?.type === 'post') {
-        link = `/posts/${item?.link_to_resource?._id}`;
+        link = `/post/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'event') {
         link = `/events/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'comment') {
-        link = `/posts/${item?.link_to_resource?._id}`;
+        link = `/post/${item?.link_to_resource?._id}`;
     } else if (item?.link_to_resource?.type === 'user') {
         link = `/users/${item?.content_entities[0]?.url?._id}`;
     }

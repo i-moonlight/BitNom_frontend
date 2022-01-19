@@ -28,6 +28,7 @@ export default function TrendingPostsView() {
     const state = useSelector((st) => st);
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     //const [skip, setSkip] = useState(0);
     const [trends, setTrends] = useState([]);
@@ -84,6 +85,7 @@ export default function TrendingPostsView() {
     //console.log(skip, trends, 'initial trends');
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="Connect | Bitnorm"
                 url={`${window.location.origin}/connect/trending`}

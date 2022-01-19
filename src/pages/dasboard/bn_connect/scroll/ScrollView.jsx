@@ -123,9 +123,11 @@ function PostView() {
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const [createReaction, { data: createReactionData }] = useMutation(
         MUTATION_CREATE_REACTION
     );
+
     const [removeReaction, { data: removeReactionData }] = useMutation(
         MUTATION_REMOVE_REACTION
     );
@@ -136,8 +138,6 @@ function PostView() {
     const user = state.auth.user;
 
     const { postId } = useParams();
-
-    //const postId = match?.params?.id;
 
     const getUserReaction = useCallback(
         (resource) => {
@@ -218,6 +218,7 @@ function PostView() {
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+
     const profileData = profile?.Users?.profile;
 
     const {
@@ -521,7 +522,7 @@ function PostView() {
         <Screen>
             <SEO
                 title="Post | Bitnorm"
-                url={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
+                url={`${window.location.origin}/post/${postData?.Posts?.getById?._id}`}
                 description={postData?.Posts?.getById?.content}
                 image={
                     postData?.Posts?.getById?.images?.length > 0 ||

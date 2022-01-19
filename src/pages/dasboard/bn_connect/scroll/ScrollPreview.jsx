@@ -5,17 +5,13 @@ import {
     CardHeader,
     CardMedia,
     Grid,
-    //IconButton,
     Typography,
 } from '@mui/material';
-//import { MoreVert } from '@mui/icons-material';
 import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 
 import { useHistory } from 'react-router-dom';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../../utilities/functions';
-
-//const scrollOptionId = 'menu-scroll-option';
 
 export default function ScrollPreview({ scroll }) {
     const history = useHistory();
@@ -27,6 +23,7 @@ export default function ScrollPreview({ scroll }) {
         history.push(targetLink.href.substring(location.origin.length));
     };
     const authorInitials = getUserInitials(scroll?.author?.displayName);
+
     return (
         <>
             <Card
@@ -34,7 +31,7 @@ export default function ScrollPreview({ scroll }) {
                 style={{ marginBottom: 16, marginTop: 16, zIndex: 2 }}
                 onClick={(e) => {
                     e.stopPropagation();
-                    history.push(`/posts/${scroll?._id}`);
+                    history.push(`/post/${scroll?._id}`);
                 }}
             >
                 <CardHeader

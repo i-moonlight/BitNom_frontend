@@ -6,8 +6,8 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-import { Button } from '../../../../components/Button';
 import { useDispatch } from 'react-redux';
+import { Button } from '../../../../components/Button';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
 import {
     ACCEPT_DIALOGUE_INVITE,

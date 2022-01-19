@@ -524,7 +524,7 @@ export default function Scroll({
 
                 <CardContent
                     style={{ zIndex: 1 }}
-                    onClick={() => history.push(`/posts/${scroll?._id}`)}
+                    onClick={() => history.push(`/post/${scroll?._id}`)}
                 >
                     <Typography component="div">
                         <Typography

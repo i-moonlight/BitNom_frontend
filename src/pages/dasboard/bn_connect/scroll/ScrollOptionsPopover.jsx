@@ -200,7 +200,7 @@ export default function ScrollOptionsPopover({
                         setSharedResource(scroll);
                         setOpenShareModal(true);
                         /* navigator.clipboard.writeText(
-                            `${location.origin}/posts/${scroll?._id}`
+                            `${location.origin}/post/${scroll?._id}`
                         );*/
                     }}
                 >

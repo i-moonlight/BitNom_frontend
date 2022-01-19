@@ -196,6 +196,7 @@ export default function BnConnect() {
     }, [user._id]);
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="BitNorm | The ultimate Cryptocurrency suite"
                 url={`${window.location.origin}/connect`}

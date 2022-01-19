@@ -8,7 +8,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-
 import { team } from '../../utilities/welcome.data';
 import TeamCard from '../cards/TeamCard';
 
