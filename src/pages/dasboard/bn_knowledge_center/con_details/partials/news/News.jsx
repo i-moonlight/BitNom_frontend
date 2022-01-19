@@ -1,5 +1,12 @@
 import { Logout } from '@mui/icons-material';
-import { Card, CardContent, Chip, Grid, Typography } from '@mui/material';
+import {
+    Card,
+    CardContent,
+    Chip,
+    Grid,
+    Skeleton,
+    Typography,
+} from '@mui/material';
 import axios from 'axios';
 import { formatDistance } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -9,6 +16,7 @@ import { useStyles } from '../utils/styles';
 export default function News({ coinDetail }) {
     const [toggleState, setToggleState] = useState('recent');
     const [newsList, setNewsList] = useState();
+    const [newsLoading, setNewsLoading] = useState(true);
 
     const btnColor = useStyles();
     const newsApiUrl = `https://cryptopanic.com/api/v1/posts/?auth_token=24781b8f72c2b94ed43722082d71b5107317752e&currencies=${coinDetail?.symbol?.toUpperCase()}&kind=news&public=true&filter=${toggleState}`;
@@ -22,8 +30,10 @@ export default function News({ coinDetail }) {
     };
 
     useEffect(() => {
+        setNewsLoading(true);
         axios.get(newsApiUrl).then((res) => {
             setNewsList(res.data.results);
+            setNewsLoading(false);
         });
         // .catch((err) => console.log(err));
     }, [newsApiUrl]);
@@ -56,10 +66,18 @@ export default function News({ coinDetail }) {
             </div>
             <div className={'my-1'}>
                 <div>
-                    <Grid container spacing={2} gridAutoRows gridAutoColumns>
-                        {newsList?.map((newsItem) => (
-                            <NewsItem key={newsItem?.id} newsItem={newsItem} />
-                        ))}
+                    <Grid container spacing={2}>
+                        {newsLoading &&
+                            [1, 2, 3, 4, 5].map((item) => (
+                                <NewsSkeleton key={item} />
+                            ))}
+                        {!newsLoading &&
+                            newsList?.map((newsItem) => (
+                                <NewsItem
+                                    key={newsItem?.id}
+                                    newsItem={newsItem}
+                                />
+                            ))}
                     </Grid>
                 </div>
             </div>
@@ -104,6 +122,24 @@ const NewsItem = ({ newsItem }) => {
                         >
                             {source?.title}
                         </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </Grid>
+    );
+};
+
+const NewsSkeleton = () => {
+    return (
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Card>
+                <CardContent>
+                    <Skeleton animation="wave" variant="text" />
+                    <Skeleton animation="wave" variant="text" width={'80%'} />
+                    <Skeleton animation="wave" variant="text" width={40} />
+                    <div className="d-flex justify-content-between mt-4">
+                        <Skeleton animation="wave" variant="text" width={60} />
+                        <Skeleton animation="wave" variant="text" width={60} />
                     </div>
                 </CardContent>
             </Card>
