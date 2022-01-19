@@ -103,4 +103,3 @@ export const clearSearchChatData = () => {
 export const clearAllChatData = () => {
     return (dispatch) => dispatch({ type: 'CLEAR_ALL_CHAT_DATA' });
 };
-

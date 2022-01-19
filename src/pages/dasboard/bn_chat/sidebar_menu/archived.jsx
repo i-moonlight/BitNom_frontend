@@ -18,7 +18,7 @@ export default function Archived({ archived, loading }) {
 
     const openChatInvite = (chat) => {
         const current_chat = state.chats.current_chat;
-        if (current_chat._id !== chat._id) {
+        if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
         }
     };
