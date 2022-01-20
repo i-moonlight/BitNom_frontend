@@ -173,7 +173,7 @@ function Chats({ onSetChatMobile }) {
     const openChat = (chat) => {
         dispatch(setCurrentChat(chat));
         xsDown && onSetChatMobile();
-        onResetUnreadCount(chat._id);
+        onResetUnreadCount(chat?._id);
         dispatch(resetTotalCount());
     };
 

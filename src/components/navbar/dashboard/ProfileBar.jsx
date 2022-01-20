@@ -1,6 +1,6 @@
 import {
     ChevronRight,
-    //ForumRounded,
+    ForumRounded,
     MenuRounded,
     Notifications,
 } from '@mui/icons-material';
@@ -30,14 +30,14 @@ import LazyImage from '../../LazyImage';
 import { useStyles } from '../../utilities/styles.components';
 
 export default function ProfileBar({
-    //unreadCount,
+    unreadCount,
     notificationCount,
     menuId,
     handleMenuOpen,
     notificationId,
     handleNotificationsOpen,
     profile,
-    //handleTotalCountReset,
+    handleTotalCountReset,
 }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
@@ -164,7 +164,7 @@ export default function ProfileBar({
                                 <Notifications />
                             </Badge>
                         </IconButton>
-                        {/* <IconButton
+                        <IconButton
                             size="small"
                             className={classes.iconButton}
                             color="inherit"
@@ -177,7 +177,7 @@ export default function ProfileBar({
                             <Badge color="primary" badgeContent={unreadCount}>
                                 <ForumRounded />
                             </Badge>
-                        </IconButton> */}
+                        </IconButton>
                         <Button
                             textCase
                             className="py-0 ms-3"
