@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function SentMessage({ message, onReply = () => null }) {
     const [show_reply, setShowReply] = useState(false);
-    const user = message?.author || {};
+    const user = message?.author?._id || {};
 
     return (
         <Grid

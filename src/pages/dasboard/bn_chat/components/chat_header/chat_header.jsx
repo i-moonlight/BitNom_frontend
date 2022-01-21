@@ -43,7 +43,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const theme = useTheme();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
     const [debouncedSearchTerm, setDebouncedValues] = useState('');
@@ -139,7 +139,6 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         }
     }, [chat._id, debouncedSearchTerm, searchMessages]);
 
-    //console.log(chat, otherUser, 'chat');
     return (
         <>
             <CardHeader
@@ -294,11 +293,11 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             ) : (
                                 <Typography variant="subtitle2">
                                     last seen{' '}
-                                    {/*  {format(
+                                    {format(
                                         new Date(Number(otherUser?.lastSeen)),
                                         'MMM do h:mm aaa'
-                                    )} */}
-                                    {format(new Date(), 'MMM do h:mm aaa')}
+                                    )}
+                                    {/* {format(new Date(), 'MMM do h:mm aaa')} */}
                                 </Typography>
                             )}
                         </div>

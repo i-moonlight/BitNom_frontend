@@ -26,12 +26,13 @@ import { useStyles } from '../utils/styles';
 export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
     const [show_reply, setShowReply] = useState(false);
-    const author = message?.author || {};
+    const author = message?.author?._id || {};
     const userInitials = getUserInitials(
         chat?.currentUser?.info?._id?.displayName
     );
     //const mdDown = useMediaQuery('(max-width:1279px)');
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const customDown = useMediaQuery('(max-width:1200px)');
+
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -65,7 +66,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     ) : (
                         ''
                     )}
-                    {xsDown ? (
+                    {customDown ? (
                         <div className={classes.reply}>
                             <IconButton
                                 style={{
