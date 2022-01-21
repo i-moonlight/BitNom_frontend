@@ -9,9 +9,9 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { getDistanceToNow } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { getDistanceToNow } from '../../../components/utilities/date.components';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';
@@ -47,7 +47,7 @@ export default function SavedComment({
             <Card style={{ marginBottom: 16 }}>
                 <CardActionArea
                     disableRipple
-                    onClick={() => history.push(`/posts/${comment?.scroll}`)}
+                    onClick={() => history.push(`/post/${comment?.scroll}`)}
                 >
                     <CardHeader
                         avatar={

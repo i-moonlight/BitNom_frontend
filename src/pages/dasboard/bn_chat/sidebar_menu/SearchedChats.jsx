@@ -1,3 +1,4 @@
+import { DeleteRounded } from '@mui/icons-material';
 import {
     CircularProgress,
     Divider,
@@ -6,12 +7,11 @@ import {
     ListSubheader,
     Tooltip,
 } from '@mui/material';
-import { DeleteRounded } from '@mui/icons-material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    setCurrentChat,
     clearSearchChatData,
+    setCurrentChat,
 } from '../../../../store/actions/chatActions';
 import Chat from './chat';
 

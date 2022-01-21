@@ -36,7 +36,10 @@ import {
 export default function People() {
     const classes = useStyles();
     const state = useSelector((st) => st);
+
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const history = useHistory();
 
     const user = state.auth.user;
@@ -74,6 +77,7 @@ export default function People() {
 
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="People You May Know | Bitnorm"
                 url={`${window.location.origin}/people`}

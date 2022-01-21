@@ -2,25 +2,25 @@ import { useQuery } from '@apollo/client';
 import { ArrowBack } from '@mui/icons-material';
 import {
     Card,
-    Typography,
+    CardHeader,
     Container,
     Grid,
-    CardHeader,
     IconButton,
+    Typography,
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import { QUERY_LOAD_SCROLLS } from '../utilities/queries';
-
+import ScrollPreview from './scroll/ScrollPreview';
 import SkeletonScrollCard from './skeleton/SkeletonScrollCard';
 import SkeletonUserCard from './skeleton/SkeletonUserCard';
-import { Suspense, useEffect, useState } from 'react';
-import ScrollPreview from './scroll/ScrollPreview';
 import UserCard from './UserCard';
+
 //import { Button } from '../../../components/Button';
 
 export default function TrendingPostsView() {
@@ -28,6 +28,7 @@ export default function TrendingPostsView() {
     const state = useSelector((st) => st);
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
 
     //const [skip, setSkip] = useState(0);
     const [trends, setTrends] = useState([]);
@@ -84,6 +85,7 @@ export default function TrendingPostsView() {
     //console.log(skip, trends, 'initial trends');
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="Connect | Bitnorm"
                 url={`${window.location.origin}/connect/trending`}

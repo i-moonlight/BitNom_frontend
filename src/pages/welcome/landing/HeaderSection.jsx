@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import headerBgImg from '../../../assets/landing/img12.png';
 import { Button } from '../../../components/Button';
 import DarkThemeOnly from '../../../utilities/DarkThemeOnly';
-import headerBgImg from '../../../assets/landing/img12.png';
 
 export default function HeaderSection() {
     const [videoOpen, setVideoOpen] = useState(false);

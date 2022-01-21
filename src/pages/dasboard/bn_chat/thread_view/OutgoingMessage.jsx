@@ -1,7 +1,7 @@
 import {
-    ExpandMoreRounded,
     DoneAllOutlined,
     DoneOutlined,
+    ExpandMoreRounded,
     MoreVertRounded,
 } from '@mui/icons-material';
 import {
@@ -19,10 +19,9 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { Code, LinkTag } from '../../../../components/markdown_renders';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
-
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 
 export default function OutgoingMessage({ chat, message, onClick }) {
     const classes = useStyles();
@@ -32,7 +31,8 @@ export default function OutgoingMessage({ chat, message, onClick }) {
         chat?.currentUser?.info?._id?.displayName
     );
     //const mdDown = useMediaQuery('(max-width:1279px)');
-    const xsDown = useMediaQuery('(max-width:1200px)');
+    const customDown = useMediaQuery('(max-width:1200px)');
+
     return (
         <div className={classes.messageRight}>
             <div className={classes.time}>
@@ -66,7 +66,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     ) : (
                         ''
                     )}
-                    {xsDown ? (
+                    {customDown ? (
                         <div className={classes.reply}>
                             <IconButton
                                 style={{

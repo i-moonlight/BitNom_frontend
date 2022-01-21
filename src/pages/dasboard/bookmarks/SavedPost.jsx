@@ -10,9 +10,9 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
 import EventPreview from '../events/EventPreview';
@@ -48,7 +48,7 @@ export default function SavedPost({ scroll }) {
         <>
             <Card
                 style={{ marginBottom: 16, zIndex: 1 }}
-                onClick={() => history.push(`/posts/${scroll?._id}`)}
+                onClick={() => history.push(`/post/${scroll?._id}`)}
             >
                 <CardActionArea style={{ margin: 0, padding: 0 }} disableRipple>
                     <CardHeader

@@ -101,7 +101,7 @@ const SchemaFactory = (props) => {
                               : props?.resource?.shared_resource?._id?.title,
                       url:
                           props?.resource?.shared_resource?.type === 'post'
-                              ? `https://${location.origin}/posts/${props?.resource?.shared_resource?._id?._id}`
+                              ? `https://${location.origin}/post/${props?.resource?.shared_resource?._id?._id}`
                               : `https://${location.origin}/events/${props?.resource?.shared_resource?._id?._id}`,
                       author: {
                           '@type': 'Person',

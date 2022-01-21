@@ -4,36 +4,31 @@ import {
     CalendarTodayOutlined,
     CameraAltRounded,
     Language,
-    //PeopleRounded,
-    //StarRounded,
-    //StorageRounded,
-    //TimelineRounded,
 } from '@mui/icons-material';
 import {
+    Avatar,
+    Button as MUIButton,
     Card,
     CardContent,
     //Snackbar,
     Typography,
-    Avatar,
-    Button as MUIButton,
     useMediaQuery,
 } from '@mui/material';
-import { format } from 'date-fns';
-import { useState, useEffect } from 'react';
 import { red } from '@mui/material/colors';
-import { Button } from '../../../components/Button';
-
-import { toast } from 'react-toastify';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { Button } from '../../../components/Button';
+import { userUpdate } from '../../../store/actions/authActions';
+import { getUserInitials } from '../../../utilities/Helpers';
 import {
-    QUERY_FETCH_PROFILE,
     MUTATION_FOLLOW_USER,
     MUTATION_UNFOLLOW_USER,
+    QUERY_FETCH_PROFILE,
 } from '../utilities/queries';
-import { getUserInitials } from '../../../utilities/Helpers';
 import ProfileForm from './forms/ProfileForm';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
-import { userUpdate } from '../../../store/actions/authActions';
 
 export default function ProfileCard({ profile, profileView }) {
     const [showForm, setShowForm] = useState(false);

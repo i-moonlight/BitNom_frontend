@@ -29,11 +29,10 @@ import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import { mentionsFinder } from '../../utilities/functions';
-
 import {
     MUTATION_CREATE_POST,
-    QUERY_LOAD_SCROLLS,
     QUERY_GET_FEED,
+    QUERY_LOAD_SCROLLS,
 } from '../../utilities/queries';
 import ScrollPreview from './ScrollPreview';
 

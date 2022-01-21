@@ -67,7 +67,7 @@ export default function ExternalShareModal({
 
     let link;
     if (sharedResource?.__typename === 'OPost') {
-        link = `${location.origin}/posts/${sharedResource?._id}`;
+        link = `${location.origin}/post/${sharedResource?._id}`;
     } else if (sharedResource?.__typename === 'OEvent') {
         link = `${location.origin}/events/${sharedResource?._id}`;
     }
