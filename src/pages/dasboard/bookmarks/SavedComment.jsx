@@ -9,9 +9,9 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { getDistanceToNow } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { getDistanceToNow } from '../../../components/utilities/date.components';
 import { getUserInitials } from '../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../utilities/functions';
 import SavedItemsOptionPopover from './SavedItemsOptionPopover';

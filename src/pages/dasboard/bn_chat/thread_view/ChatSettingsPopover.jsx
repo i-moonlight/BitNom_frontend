@@ -3,11 +3,11 @@ import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
+    addToArchivedChats,
+    addToPinnedChats,
     deleteArchivedchat,
     deletePinnedChat,
-    addToArchivedChats,
     setCurrentChat,
-    addToPinnedChats,
 } from '../../../../store/actions/chatActions';
 import {
     ARCHIVE_CHAT,
@@ -15,8 +15,8 @@ import {
     GET_DIALOGUES,
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
-    REPORT_DIALOGUE_USER,
     PIN_CHAT,
+    REPORT_DIALOGUE_USER,
     UNARCHIVE,
     UNPIN,
 } from '../graphql/queries';

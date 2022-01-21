@@ -10,9 +10,9 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { getDistanceToNowWithSuffix } from '../../../components/utilities/date.components';
 import { getUserInitials } from '../../../utilities/Helpers';
 import ScrollPreview from '../bn_connect/scroll/ScrollPreview';
 import EventPreview from '../events/EventPreview';

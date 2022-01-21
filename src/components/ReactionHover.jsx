@@ -4,9 +4,9 @@ import {
     ThumbDownRounded,
     ThumbUpRounded,
 } from '@mui/icons-material';
-import { Button } from './Button';
-import { makeStyles } from '@mui/styles';
 import { green, red } from '@mui/material/colors';
+import { makeStyles } from '@mui/styles';
+import { Button } from './Button';
 
 function ReactionHover({ setLikeHovered, handleCreateReaction, reaction }) {
     const classes = useStyles();

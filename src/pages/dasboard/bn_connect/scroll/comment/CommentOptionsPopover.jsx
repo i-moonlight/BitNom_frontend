@@ -15,15 +15,14 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 //import { Button } from '../../../../../components/Button';
 import {
     GET_BOOKMARKED_COMMENTS,
     MUTATION_CREATE_BOOKMARK,
-    MUTATION_UNFOLLOW_USER,
     MUTATION_FOLLOW_USER,
+    MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
 } from '../../../utilities/queries';
 

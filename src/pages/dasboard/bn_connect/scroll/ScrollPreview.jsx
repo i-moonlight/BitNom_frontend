@@ -7,9 +7,8 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
-
 import { useHistory } from 'react-router-dom';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { contentBodyFactory, getReactionsSum } from '../../utilities/functions';
 

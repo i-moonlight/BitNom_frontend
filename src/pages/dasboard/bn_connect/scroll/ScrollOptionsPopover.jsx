@@ -16,7 +16,6 @@ import {
     ListItemText,
     Popover,
 } from '@mui/material';
-
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,8 +23,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
     GET_BOOKMARKED_SCROLLS,
     MUTATION_CREATE_BOOKMARK,
-    MUTATION_UNFOLLOW_USER,
     MUTATION_FOLLOW_USER,
+    MUTATION_UNFOLLOW_USER,
     QUERY_FETCH_PROFILE,
 } from '../../utilities/queries';
 

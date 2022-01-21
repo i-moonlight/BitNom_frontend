@@ -13,22 +13,21 @@ import {
     Grid,
     IconButton,
     InputBase,
+    ListItem,
+    ListItemText,
     Modal,
     Paper,
     Typography,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import 'flatpickr/dist/themes/material_blue.css';
 import debounce from 'lodash/debounce';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { Button } from '../../../components/Button';
 import {
     MUTATION_DELETE_EVENT,

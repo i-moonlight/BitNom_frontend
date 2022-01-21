@@ -27,14 +27,13 @@ import {
     Grid,
     Hidden,
     IconButton,
+    ListItem,
+    ListItemText,
     Typography,
     useTheme,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
@@ -49,6 +48,7 @@ import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
 import Screen from '../../../../components/Screen';
 import SEO from '../../../../components/SEO';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import {
@@ -57,6 +57,7 @@ import {
     getTopComments,
     mentionsFinder,
 } from '../../utilities/functions';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
@@ -78,7 +79,6 @@ import CreatePost from './CreatePost';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
-import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')

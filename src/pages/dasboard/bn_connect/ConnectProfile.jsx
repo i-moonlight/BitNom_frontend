@@ -12,10 +12,10 @@ import {
     CardActions,
     CardContent,
     CardMedia,
-    Divider,
-    Typography,
     Container,
+    Divider,
     Grid,
+    Typography,
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -23,9 +23,9 @@ import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
-import { getUserInitials } from '../../../utilities/Helpers';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
+import { getUserInitials } from '../../../utilities/Helpers';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 
 export default function ConnectProfile() {

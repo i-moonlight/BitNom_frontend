@@ -10,16 +10,16 @@ import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import {
+    loadFeed,
     //loadScrolls,
     loadTrending,
     loadUsers,
-    loadFeed,
 } from '../../../store/actions/postActions';
 //import { getFeed } from '../utilities/functions';
 import {
+    QUERY_GET_FEED,
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
-    QUERY_GET_FEED,
 } from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
