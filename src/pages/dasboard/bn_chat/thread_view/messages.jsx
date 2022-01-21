@@ -101,9 +101,10 @@ export default function Messages({ onExitChatMobile }) {
         if (
             subscriptionData?.newMessage?.chat?._id === dialogue?._id &&
             dialogue
-        ) {
-            resetChatCount();
-        }
+        )
+            if (dialogue._id) {
+                resetChatCount();
+            }
         // eslint-disable-next-line
     }, [dispatch, subscriptionData?.newMessage, dialogue]);
     //handle reset count for current chat
