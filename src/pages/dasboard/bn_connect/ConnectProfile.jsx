@@ -12,10 +12,10 @@ import {
     CardActions,
     CardContent,
     CardMedia,
-    Divider,
-    Typography,
     Container,
+    Divider,
     Grid,
+    Typography,
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -23,9 +23,9 @@ import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/Button';
-import { getUserInitials } from '../../../utilities/Helpers';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
+import { getUserInitials } from '../../../utilities/Helpers';
 import { QUERY_FETCH_PROFILE } from '../utilities/queries';
 
 export default function ConnectProfile() {
@@ -37,6 +37,8 @@ export default function ConnectProfile() {
     const state = useSelector((st) => st);
 
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const smDown = useMediaQuery('(max-width:959px)');
+
     const user = state.auth.user;
     const userInitials = getUserInitials(user?.displayName);
 
@@ -50,6 +52,7 @@ export default function ConnectProfile() {
     });
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="Connect | Bitnorm"
                 url={`${window.location.origin}/connect/profile`}

@@ -1,10 +1,10 @@
 import { Avatar, Card, CardContent, Typography } from '@mui/material';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { Button } from '../../../../components/Button';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import WorkForm from '../forms/WorkForm';
 import { useStyles } from '../utilities/profile.styles';
-import { format } from 'date-fns';
 
 export default function WorkFragment({
     id,

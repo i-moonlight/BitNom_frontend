@@ -10,19 +10,19 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getUserInitials } from '../../../../utilities/Helpers';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     setCurrentChat,
     updateDialogue,
 } from '../../../../store/actions/chatActions';
+import { getUserInitials } from '../../../../utilities/Helpers';
 //import { truncateText } from '../../utilities/functions';
 import {
+    BLOCK_USER_SUBS,
     LATESTMESSAGE_SUBSCRIPTION,
     UNREAD_COUNT,
     USER_IS_ONLINE,
     USER_ONLINE_STATUS,
-    BLOCK_USER_SUBS,
 } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
 

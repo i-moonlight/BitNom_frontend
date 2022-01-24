@@ -1,6 +1,5 @@
 import { Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import Wrapper from '../welcome/Wrapper';
 
 export default function NotFound() {

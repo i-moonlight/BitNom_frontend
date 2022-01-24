@@ -4,9 +4,6 @@ import {
     CheckBoxOutlineBlank,
     CloseRounded,
 } from '@mui/icons-material';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Autocomplete from '@mui/material/Autocomplete';
 import {
     Card,
     CardActions,
@@ -19,6 +16,9 @@ import {
     Modal,
     Typography,
 } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { MUTATION_INVITE_FRIENDS_TO_EVENT } from '../utilities/queries';
 //import { getUserInitials } from '../../../utilities/Helpers';

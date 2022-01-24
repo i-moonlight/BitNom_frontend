@@ -27,14 +27,13 @@ import {
     Grid,
     Hidden,
     IconButton,
+    ListItem,
+    ListItemText,
     Typography,
     useTheme,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 //import ImagePreview from '../../../components/ImagePreview';
 //import TextField from '../../../../components/TextField';
@@ -49,6 +48,7 @@ import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
 import Screen from '../../../../components/Screen';
 import SEO from '../../../../components/SEO';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import EventPreview from '../../events/EventPreview';
 import {
@@ -57,6 +57,7 @@ import {
     getTopComments,
     mentionsFinder,
 } from '../../utilities/functions';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
@@ -78,7 +79,6 @@ import CreatePost from './CreatePost';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
 import ScrollPreview from './ScrollPreview';
 import UpdatePost from './UpdatePost';
-import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')
@@ -123,9 +123,11 @@ function PostView() {
 
     const isScrollOptionOpen = Boolean(scrollOptionAnchorEl);
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
+
     const [createReaction, { data: createReactionData }] = useMutation(
         MUTATION_CREATE_REACTION
     );
+
     const [removeReaction, { data: removeReactionData }] = useMutation(
         MUTATION_REMOVE_REACTION
     );
@@ -136,8 +138,6 @@ function PostView() {
     const user = state.auth.user;
 
     const { postId } = useParams();
-
-    //const postId = match?.params?.id;
 
     const getUserReaction = useCallback(
         (resource) => {
@@ -218,6 +218,7 @@ function PostView() {
     } = useQuery(QUERY_FETCH_PROFILE, {
         context: { clientName: 'users' },
     });
+
     const profileData = profile?.Users?.profile;
 
     const {
@@ -521,7 +522,7 @@ function PostView() {
         <Screen>
             <SEO
                 title="Post | Bitnorm"
-                url={`${window.location.origin}/posts/${postData?.Posts?.getById?._id}`}
+                url={`${window.location.origin}/post/${postData?.Posts?.getById?._id}`}
                 description={postData?.Posts?.getById?.content}
                 image={
                     postData?.Posts?.getById?.images?.length > 0 ||

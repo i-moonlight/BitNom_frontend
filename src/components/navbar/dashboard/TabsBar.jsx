@@ -52,7 +52,7 @@ export default function TabsBar({
     );
 }
 
-const BitTab = withStyles((theme) => ({
+export const BitTab = withStyles((theme) => ({
     root: {
         cursor: 'pointer',
         textTransform: 'none',
