@@ -9,7 +9,7 @@ Requires=v1-gateway.service
 TimeoutStartSec=0
 Restart=on-failure
 ExecStartPre=-/usr/bin/bash /home/bitnorm/clean-volumes.sh
-ExecStart=/usr/bin/docker run --rm -v /home/bitnorm/v1-frontend:/host:ro --volumes-from v1-gateway alpine cp -rT /host/ /v1-static
+ExecStart=/usr/bin/docker run --rm -v /home/bitnorm/v1-frontend:/host:ro --volumes-from v1-gateway alpine cp -rT /host/ /v1-static/
 
 [Install]
 WantedBy=multi-user.target
