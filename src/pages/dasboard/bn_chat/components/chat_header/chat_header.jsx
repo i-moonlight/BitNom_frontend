@@ -180,7 +180,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                     process.env.REACT_APP_BACKEND_URL +
                                         chat?.otherUser?.info?._id
                                             ?.profile_pic ||
-                                    `https://ui-avatars.com/api/?name=${userInitials}&background=fed132`
+                                    `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
                                 alt={'avatar'}
                             >
@@ -294,7 +294,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                 <Typography variant="subtitle2">
                                     last seen{' '}
                                     {format(
-                                        new Date(Number(otherUser?.lastSeen)),
+                                        new Date(otherUser?.lastSeen),
                                         'MMM do h:mm aaa'
                                     )}
                                     {/* {format(new Date(), 'MMM do h:mm aaa')} */}
