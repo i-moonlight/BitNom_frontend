@@ -9,7 +9,7 @@ const messageSettingsId = 'message-settings-menu';
 export default function Message({ message, chat, onReply, onUpdateMessage }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
-    const author = message.author || {};
+    const author = message?.author?._id || {};
     const [messageSettingsAnchorEl, setMessageSettingsAnchorEl] =
         useState(null);
     const isMessageSettingsOpen = Boolean(messageSettingsAnchorEl);

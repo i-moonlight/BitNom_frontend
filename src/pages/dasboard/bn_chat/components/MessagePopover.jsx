@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useSubscription } from '@apollo/client';
 import { List, ListItem, ListItemText, Popover } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,11 @@ import {
     addToPinnedMessage,
     removeFromMessages,
 } from '../../../../store/actions/chatActions';
-import { DELETE_MESSAGE, PIN_MESSAGE } from '../graphql/queries';
+import {
+    DELETE_MESSAGE,
+    DELETE_MESSAGE_SUBSCRIPTION,
+    PIN_MESSAGE,
+} from '../graphql/queries';
 
 export default function MessagePopover({
     messageSettingsAnchorEl,
@@ -36,24 +40,28 @@ export default function MessagePopover({
         },
         context: { clientName: 'chat' },
     });
-
+    const { data: deleteData } = useSubscription(DELETE_MESSAGE_SUBSCRIPTION, {
+        variables: {
+            _id: chat?._id,
+        },
+    });
     const handlePinMessage = () => {
         pinMessage();
     };
 
     const handleDeleteMessage = () => {
         deleteMessage();
-        dispatch(removeFromMessages(message));
-    };
-
-    const handleReportMessage = () => {
-        // eslint-disable-next-line no-console
-        console.log('REPORT');
     };
 
     useEffect(() => {
-        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        if (data?.Dialogue?.pinMessage !== undefined) {
+            dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        }
     }, [data?.Dialogue?.pinMessage, dispatch]);
+    useEffect(() => {
+        dispatch(removeFromMessages(deleteData?.deleteMessageS?.message));
+    }, [deleteData, dispatch]);
+
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
@@ -91,33 +99,28 @@ export default function MessagePopover({
                 >
                     <ListItemText primary="Reply Message" />
                 </ListItem>
-                <ListItem
-                    button
-                    divider
-                    onClick={() => {
-                        handleDeleteMessage(), handleMessageClose();
-                    }}
-                    disabled={user._id === message.author ? false : true}
-                    style={{ display: user._id !== message.author && 'none' }}
-                >
-                    <ListItemText primary="Delete Message" />
-                </ListItem>
-
-                <ListItem
-                    button
-                    divider
-                    onClick={() => {
-                        onUpdateMessage(), handleMessageClose();
-                    }}
-                    disabled={user._id === message.author ? false : true}
-                    style={{ display: user._id !== message.author && 'none' }}
-                >
-                    <ListItemText primary="Edit text" />
-                </ListItem>
-
-                <ListItem button onClick={handleReportMessage}>
-                    <ListItemText primary="Report Message" />
-                </ListItem>
+                {user._id === message?.author?._id && (
+                    <ListItem
+                        button
+                        divider
+                        onClick={() => {
+                            handleDeleteMessage(), handleMessageClose();
+                        }}
+                    >
+                        <ListItemText primary="Delete Message" />
+                    </ListItem>
+                )}
+                {user._id === message?.author?._id && (
+                    <ListItem
+                        button
+                        divider
+                        onClick={() => {
+                            onUpdateMessage(), handleMessageClose();
+                        }}
+                    >
+                        <ListItemText primary="Edit text" />
+                    </ListItem>
+                )}
             </List>
         </Popover>
     );

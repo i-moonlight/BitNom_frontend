@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Chat, MoreVert, Search } from '@mui/icons-material';
+import { Chat, Search } from '@mui/icons-material';
 import {
     Divider,
     IconButton,
@@ -15,6 +15,7 @@ import { setChatSearchInput } from '../../../../../store/actions/chatActions';
 import { SEARCH_CHATS } from '../../graphql/queries';
 import CreateChatPrompt from '../../thread_view/CreateChatPrompt';
 import { useStyles } from '../../utils/styles';
+//import { ToastContainer } from 'react-toastify';
 
 export default function SideBarHeader() {
     const [searchTerm, setSearchString] = useState('');
@@ -62,9 +63,9 @@ export default function SideBarHeader() {
                     <IconButton onClick={() => setCreateChatInviteOpen(true)}>
                         <Chat />
                     </IconButton>
-                    <IconButton>
+                    {/*   <IconButton>
                         <MoreVert />
-                    </IconButton>
+                    </IconButton> */}
                 </div>
             </div>
             <Divider className={classes.divider} />

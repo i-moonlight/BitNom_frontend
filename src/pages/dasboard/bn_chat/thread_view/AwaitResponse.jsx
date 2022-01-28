@@ -13,8 +13,8 @@ export default function AwaitResponse({ dialogue }) {
         >
             <Typography variant="body2">
                 Please wait as{' '}
-                <Link to={`/users/${dialogue?.otherUser?.info?._id}`}>
-                    {dialogue?.otherUser?.info?.displayName}
+                <Link to={`/users/${dialogue?.otherUser?.info?._id?._id}`}>
+                    {dialogue?.otherUser?.info?._id?.displayName}
                 </Link>{' '}
                 responds to your chat invitation
             </Typography>

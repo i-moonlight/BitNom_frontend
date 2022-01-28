@@ -1,8 +1,8 @@
 import {
     Card,
     CardActions,
-    CardHeader,
     CardContent,
+    CardHeader,
     Skeleton,
     Typography,
 } from '@mui/material';

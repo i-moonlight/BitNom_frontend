@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client';
-
 import {
     Alert,
     Backdrop,
@@ -273,7 +272,7 @@ export default function Signup() {
                                             </Alert>
                                         ))}
                                     <GoogleLogin
-                                        clientId="705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com"
+                                        clientId={process.env.GOOGLE_CLIENT_ID}
                                         buttonText="Login Google"
                                         onSuccess={responseGoogle}
                                         onFailure={failureGoogle}

@@ -99,3 +99,7 @@ export const setChatSearchInput = (data = []) => {
 export const clearSearchChatData = () => {
     return (dispatch) => dispatch({ type: 'CLEAR_CHAT_SRCH_DATA' });
 };
+
+export const clearAllChatData = () => {
+    return (dispatch) => dispatch({ type: 'CLEAR_ALL_CHAT_DATA' });
+};

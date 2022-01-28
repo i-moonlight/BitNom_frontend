@@ -71,7 +71,7 @@ const SchemaFactory = (props) => {
             '@id': props?.url,
             datePublished: format(
                 new Date(props?.resource?.createdAt),
-                'YYYY-MM-DD'
+                'yyyy-MM-dd'
             ),
             author: {
                 '@type': 'Person',
@@ -101,7 +101,7 @@ const SchemaFactory = (props) => {
                               : props?.resource?.shared_resource?._id?.title,
                       url:
                           props?.resource?.shared_resource?.type === 'post'
-                              ? `https://${location.origin}/posts/${props?.resource?.shared_resource?._id?._id}`
+                              ? `https://${location.origin}/post/${props?.resource?.shared_resource?._id?._id}`
                               : `https://${location.origin}/events/${props?.resource?.shared_resource?._id?._id}`,
                       author: {
                           '@type': 'Person',
@@ -129,11 +129,11 @@ const SchemaFactory = (props) => {
 
                 startDate: format(
                     new Date(props?.resource?.startDate),
-                    'YYYY-MM-DD'
+                    'yyyy-MM-dd'
                 ),
                 endDate: format(
                     new Date(props?.resource?.endDate),
-                    'YYYY-MM-DD'
+                    'yyyy-MM-dd'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OfflineEventAttendanceMode',
@@ -160,11 +160,11 @@ const SchemaFactory = (props) => {
                 name: props?.resource?.title,
                 startDate: format(
                     new Date(props?.resource?.startDate),
-                    'YYYY-MM-DD'
+                    'yyyy-MM-dd'
                 ),
                 endDate: format(
                     new Date(props?.resource?.endDate),
-                    'YYYY-MM-DD'
+                    'yyyy-MM-dd'
                 ),
                 eventAttendanceMode:
                     'https://schema.org/OnlineEventAttendanceMode',

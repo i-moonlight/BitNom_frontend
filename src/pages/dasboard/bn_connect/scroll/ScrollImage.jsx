@@ -19,17 +19,16 @@ import {
     CardContent,
     CardHeader,
     Divider,
+    Grid,
     Hidden,
     IconButton,
+    ListItem,
+    ListItemText,
     Typography,
     useTheme,
-    ListItemText,
-    ListItem,
-    Grid,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useSelector } from 'react-redux';
@@ -37,13 +36,14 @@ import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
 } from '../../utilities/functions';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,

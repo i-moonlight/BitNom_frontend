@@ -1,10 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { CircularProgress } from '@mui/material';
 import {
     AttachFile,
     Close,
     EmojiEmotions,
-    Gif,
+    //Gif,
     Image,
     SendOutlined,
     VideoLibrary,
@@ -13,28 +12,28 @@ import {
     Card,
     CardContent,
     CardHeader,
+    CardMedia,
+    CircularProgress,
     Divider,
+    Grid,
     IconButton,
     InputBase,
+    ListItem,
+    ListItemText,
     Paper,
     Stack,
     Typography,
     useMediaQuery,
     useTheme,
-    Grid,
-    CardMedia,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import { styled } from '@mui/styles';
-
 import debounce from 'lodash/debounce';
 import React, {
+    Suspense,
     useCallback,
     useEffect,
     useRef,
     useState,
-    Suspense,
 } from 'react';
 import { Button } from '../../../../components/Button';
 import {
@@ -88,7 +87,7 @@ export default function SendMessage({
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const theme = useTheme();
     const classes = useStyles();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const isMediaUploadOpen = Boolean(mediaUploadAnchorEl);
 
@@ -113,8 +112,8 @@ export default function SendMessage({
     };
 
     const [sendMessage] = useMutation(CREATE_DIALOGUE_MESSAGE, {
-        onError(error) {
-            setSendMessageError(error?.graphQLErrors[0]?.state);
+        onError(errs) {
+            setSendMessageError(errs?.graphQLErrors[0]?.state);
         },
     });
 
@@ -229,10 +228,14 @@ export default function SendMessage({
             gif: message_gif,
             documents: message_docs,
         });
+        setText('');
+        handleResetFiles();
     };
 
     const handleUpdateMessage = () => {
         onUpdateMessage({ chat: chat, _id: editText?._id, text: text });
+        setText('');
+        handleResetFiles();
     };
 
     const handleResetFiles = () => {
@@ -251,6 +254,16 @@ export default function SendMessage({
             setText(editText?.text);
         }
     }, [editText]);
+    useEffect(() => {
+        if (sendMessageErr !== null) {
+            const timeOut = setTimeout(() => {
+                setSendMessageError(null);
+            }, 5000);
+            return () => {
+                clearTimeout(timeOut);
+            };
+        }
+    }, [sendMessageErr]);
 
     useEffect(() => {
         if (
@@ -264,8 +277,8 @@ export default function SendMessage({
 
     const handleUserTyping = () => {
         onUserTyping({
-            currentUser: currentUser?.info._id,
-            otherUser: otherUser?.info._id,
+            currentUser: currentUser?.info?._id?._id,
+            otherUser: otherUser?.info?._id?._id,
             typing: true,
             chat: chat,
         });
@@ -273,8 +286,8 @@ export default function SendMessage({
 
     const handleUserNotTyping = () => {
         onUserTyping({
-            currentUser: currentUser?.info._id,
-            otherUser: otherUser?.info._id,
+            currentUser: currentUser?.info?._id?._id,
+            otherUser: otherUser?.info?._id?._id,
             typing: false,
             chat: chat,
         });
@@ -379,6 +392,7 @@ export default function SendMessage({
         setMessageDoc(allowedFiles);
     };
     const editing = editText?.text?.length > 0 ? true : false;
+
     return (
         <>
             <div>
@@ -401,7 +415,7 @@ export default function SendMessage({
                                     component="span"
                                     style={{ margin: '1px 5px' }}
                                 >
-                                    <strong>{replyText.author}</strong>
+                                    <strong>{replyText.author?._id}</strong>
                                 </Typography>
                             }
                         />
@@ -701,16 +715,16 @@ export default function SendMessage({
                         ) : (
                             <div
                                 className={classes.inputTab}
-                                style={{ width: '33%' }}
+                                style={{ width: '15%' }}
                             >
-                                <IconButton
+                                {/* <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
                                     aria-label="search"
                                     onClick={() => handleAttachFileOpen()}
                                 >
                                     <AttachFile />
-                                </IconButton>
+                                </IconButton> */}
                                 <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
@@ -727,14 +741,14 @@ export default function SendMessage({
                                 >
                                     <VideoLibrary />
                                 </IconButton>
-                                <IconButton
+                                {/*  <IconButton
                                     size="small"
                                     className={'m-1 p-1' + classes.iconButton}
                                     aria-label="search"
                                     onClick={() => handleGifOpen()}
                                 >
                                     <Gif />
-                                </IconButton>
+                                </IconButton> */}
                             </div>
                         )}
 
@@ -806,12 +820,30 @@ export default function SendMessage({
                                     <SendOutlined />
                                 </IconButton>
                             </Paper>
-                            {sendMessageErr && (
-                                <Typography color="error" variant="body2">
+                            {sendMessageErr &&
+                            otherUser.blocked === false &&
+                            currentUser.blocked === false ? (
+                                <Typography
+                                    color="error"
+                                    variant="body2"
+                                    style={{ marginLeft: '5%' }}
+                                >
                                     {' '}
-                                    This field cannot be empty!
+                                    ~ You cannot send an empty message!
                                 </Typography>
-                            )}
+                            ) : sendMessageErr &&
+                              (otherUser.blocked === true ||
+                                  currentUser.blocked === true) ? (
+                                <Typography
+                                    color="error"
+                                    variant="body2"
+                                    style={{ marginLeft: '5%' }}
+                                >
+                                    {' '}
+                                    ~ You can no longer send messages to this
+                                    chat!
+                                </Typography>
+                            ) : null}
                         </div>
                     </div>
                 </div>

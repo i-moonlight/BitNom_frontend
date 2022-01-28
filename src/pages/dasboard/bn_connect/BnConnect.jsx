@@ -10,16 +10,16 @@ import ImagePreview from '../../../components/ImagePreview';
 import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import {
+    loadFeed,
     //loadScrolls,
     loadTrending,
     loadUsers,
-    loadFeed,
 } from '../../../store/actions/postActions';
 //import { getFeed } from '../utilities/functions';
 import {
+    QUERY_GET_FEED,
     QUERY_GET_USERS,
     QUERY_LOAD_SCROLLS,
-    QUERY_GET_FEED,
 } from '../utilities/queries';
 import ExternalShareModal from './popovers/ExternalShareModal';
 import FlagResourceModal from './popovers/FlagResourceModal';
@@ -87,6 +87,7 @@ export default function BnConnect() {
     } = useQuery(QUERY_GET_USERS, {
         params: { data: { limit: 8 } },
         context: { clientName: 'users' },
+        fetchPolicy: 'network-only',
     });
 
     const {
@@ -195,6 +196,7 @@ export default function BnConnect() {
     }, [user._id]);
     return (
         <Screen>
+            {smDown && <div className="my-5 w-100"></div>}
             <SEO
                 title="BitNorm | The ultimate Cryptocurrency suite"
                 url={`${window.location.origin}/connect`}

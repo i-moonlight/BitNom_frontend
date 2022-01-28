@@ -10,19 +10,18 @@ import {
     Avatar,
     Card,
     CardContent,
+    CircularProgress,
     Divider,
     Grid,
     Hidden,
     IconButton,
+    ListItem,
+    ListItemText,
     Typography,
     useTheme,
-    ListItemText,
-    ListItem,
-    CircularProgress,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
-import { getDistanceToNow } from '../../../../../components/utilities/date.components';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,17 +29,18 @@ import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../../components/Button';
 import ReactionButton from '../../../../../components/ReactionButton';
 import ReactionHover from '../../../../../components/ReactionHover';
+import { getDistanceToNow } from '../../../../../components/utilities/date.components';
 import { loadComments } from '../../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../../utilities/Helpers';
-import { createReplyResponse } from '../../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
 } from '../../../utilities/functions';
+import { createReplyResponse } from '../../../utilities/optimisticResponseObjects';
 import {
-    MUTATION_CREATE_REACTION,
     MUTATION_CREATE_COMMENT,
+    MUTATION_CREATE_REACTION,
     MUTATION_REMOVE_REACTION,
     QUERY_GET_COMMENTS,
 } from '../../../utilities/queries';

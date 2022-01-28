@@ -1,7 +1,6 @@
 import { Container, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-
 import Wrapper from '../Wrapper';
 import FaqSection from './FaqSection';
 

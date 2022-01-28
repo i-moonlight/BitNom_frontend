@@ -1,4 +1,4 @@
-import { ExpandMoreRounded } from '@mui/icons-material';
+import { ExpandMoreRounded, MoreVertRounded } from '@mui/icons-material';
 import {
     Avatar,
     ButtonBase,
@@ -14,30 +14,32 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { Code, LinkTag } from '../../../../components/markdown_renders';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { useStyles } from '../utils/styles';
-
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 
 export default function IncomingMessage({ message, chat, onClick }) {
     const [show_reply, setShowReply] = useState(false);
     const classes = useStyles();
-    const mdDown = useMediaQuery('(max-width:1279px)');
-    const author = message?.author || {};
-    const userInitials = getUserInitials(chat?.otherUser?.info.displayName);
+    const xsDown = useMediaQuery('(max-width:1200px)');
+
+    const author = message?.author?._id || {};
+    const userInitials = getUserInitials(
+        chat?.otherUser?.info?._id?.displayName
+    );
 
     return (
         <div className={classes.messageLeft}>
             <ButtonBase>
                 <Link
-                    to={`/users/${chat?.otherUser?.info?._id}`}
+                    to={`/users/${chat?.otherUser?.info?._id?._id}`}
                     style={{ textDecoration: 'none' }}
                 >
                     <Avatar
                         src={
-                            chat?.otherUser?.info?.profile_pic
+                            chat?.otherUser?.info?._id?.profile_pic
                                 ? process.env.REACT_APP_BACKEND_URL +
-                                  chat?.otherUser?.info?.profile_pic
+                                  chat?.otherUser?.info?._id?.profile_pic
                                 : `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                         }
                         alt={'avatar'}
@@ -57,28 +59,39 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <span
-                        style={{
-                            display: 'flex',
-                            width: '100%',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Link
-                            to={`users/${author}`}
-                            style={{
-                                textDecoration: 'none',
-                                marginRight: '5px',
-                            }}
-                        >
-                            <small className={classes.author}>
-                                <strong>@{author}</strong>
-                            </small>
-                        </Link>
-                        {(show_reply || mdDown) && (
+                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
+                        <small className={classes.author}>
+                            <strong>@{author}</strong>
+                        </small>
+                    </Link>
+                    {message?.edited === true ? (
+                        <div>
+                            <strong>(Edited)</strong>
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    {xsDown ? (
+                        <div className={classes.reply}>
                             <IconButton
                                 style={{
-                                    fontSize: '1em',
+                                    bottom: '5px',
+                                    right: '3px',
+                                    color: '#000',
+                                }}
+                                size="small"
+                                onClick={onClick}
+                            >
+                                <MoreVertRounded style={{ fontSize: '18px' }} />
+                            </IconButton>
+                        </div>
+                    ) : show_reply ? (
+                        <div className={classes.reply}>
+                            <IconButton
+                                style={{
+                                    fontSize: '18px',
+                                    bottom: '5px',
+                                    right: '3px',
                                     color: '#000',
                                 }}
                                 size="small"
@@ -86,15 +99,8 @@ export default function IncomingMessage({ message, chat, onClick }) {
                             >
                                 <ExpandMoreRounded />
                             </IconButton>
-                        )}
-                    </span>
-                    {message?.edited === true ? (
-                        <small>
-                            <strong>(Edited)</strong>
-                        </small>
-                    ) : (
-                        ''
-                    )}
+                        </div>
+                    ) : null}
                 </Typography>
                 {message?.responseTo?.text?.length > 0 ? (
                     <Card variant="outlined" className={classes.responseTo}>
@@ -182,9 +188,6 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     className={classes.message}
                     variant="body2"
                     component="div"
-                    style={{
-                        marginTop: '4px',
-                    }}
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message?.text}

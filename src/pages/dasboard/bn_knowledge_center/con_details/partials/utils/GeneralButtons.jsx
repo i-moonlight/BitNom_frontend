@@ -1,10 +1,11 @@
-import { Button } from '@mui/material';
+import { ButtonBase, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './styles';
 
 export const GeneralButton = ({
     setActiveButton,
     setActiveCoinFeature,
+    setChartDuration,
     active,
     id,
     value,
@@ -12,22 +13,23 @@ export const GeneralButton = ({
     const btnColor = useStyles();
 
     const clickButtonHandler = () => {
-        setActiveButton(id);
-        setActiveCoinFeature(name);
+        setActiveButton && setActiveButton(id);
+        setActiveCoinFeature && setActiveCoinFeature(name);
+        setChartDuration && setChartDuration(value);
     };
 
     return (
-        <Button
+        <ButtonBase
             color={'inherit'}
             className={`${
                 active ? btnColor.bGActive : btnColor.bGNormal
-            } me-1 mb-1`}
+            } me-1 px-2 py-1 br-1`}
             size={'small'}
             value={value}
             onClick={clickButtonHandler}
         >
-            {value}
-        </Button>
+            <Typography variant="body2">{value}</Typography>
+        </ButtonBase>
     );
 };
 
@@ -48,31 +50,19 @@ export const buttonData = [
 
 export const chipLabels = [
     {
-        name: '1d',
-        value: '1d',
+        name: '24h',
+        value: 'day',
     },
     {
-        name: '2d',
-        value: '2d',
+        name: '7d',
+        value: 'week',
     },
     {
-        name: '1m',
-        value: '1m',
+        name: '30d',
+        value: 'month',
     },
     {
-        name: '3m',
-        value: '3m',
-    },
-    {
-        name: '1y',
-        value: '1y',
-    },
-    {
-        name: 'YTD',
-        value: 'YTD',
-    },
-    {
-        name: 'ALL',
-        value: 'ALL',
+        name: '1yr',
+        value: 'year',
     },
 ];

@@ -289,7 +289,7 @@ export default function Routes({ apolloClient }) {
                                 <Route
                                     exact
                                     component={PostView}
-                                    path="/posts/:postId"
+                                    path="/post/:postId"
                                 />
                                 <Route
                                     exact

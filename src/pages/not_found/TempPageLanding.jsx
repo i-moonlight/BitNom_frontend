@@ -1,8 +1,7 @@
 import { Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import LazyImage from '../../components/LazyImage';
 import tempImg from '../../assets/temp.png';
-
+import LazyImage from '../../components/LazyImage';
 import Wrapper from '../welcome/Wrapper';
 
 export default function TempPageLanding() {

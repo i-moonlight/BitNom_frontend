@@ -18,14 +18,14 @@ import {
     signout,
     userUpdate,
 } from '../../../store/actions/authActions';
+import {
+    clearAllChatData,
+    resetTotalCount,
+    setTotalCount,
+} from '../../../store/actions/chatActions';
 import { resetCount, setCount } from '../../../store/actions/countActions';
 import { setEventCount } from '../../../store/actions/eventCountActions';
 import { setPostCount } from '../../../store/actions/postCountActions';
-
-import {
-    setTotalCount,
-    resetTotalCount,
-} from '../../../store/actions/chatActions';
 import {
     MARK_NOTIFICAION_AS_SEEN,
     QUERY_GET_USER_NOTIFICATIONS,
@@ -277,6 +277,7 @@ export default function NavBar() {
 
         if (!isAuth) {
             dispatch(signout());
+            dispatch(clearAllChatData());
         }
     }, [
         _count,
@@ -326,9 +327,14 @@ export default function NavBar() {
                 handleTabOptionsOpen={handleTabOptionsOpen}
                 handleTabOptionsClose={handleTabOptionsClose}
             /> */}
+
             {smDown &&
                 (location.pathname.includes('/connect') ||
-                    location.pathname.includes('/posts')) && <ConnectBar />}
+                    (location.pathname.includes('/posts') &&
+                        !location.pathname.includes('/post/'))) && (
+                    <ConnectBar />
+                )}
+
             <Divider />
             <TabOptionsPopover
                 value={tabValue}

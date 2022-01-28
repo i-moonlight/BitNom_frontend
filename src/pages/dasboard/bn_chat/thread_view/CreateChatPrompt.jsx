@@ -18,7 +18,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
@@ -32,17 +32,40 @@ export default function CreateChatPrompt({
     const theme = useTheme();
     const classes = useStyles();
 
+    const [errors, setErrors] = useState([]);
+
     const [searchUsers, { loading: userLoading, data: userData }] =
         useLazyQuery(QUERY_SEARCH_USERS);
 
     const [sendChatInvite, { data }] = useMutation(CREATE_DIALOGUE);
 
-    const onSendInvite = async (IUserSmall) => {
-        await sendChatInvite({
+    const onSendInvite = (IUserSmall) => {
+        sendChatInvite({
             variables: {
                 data: IUserSmall,
             },
             context: { clientName: 'chat' },
+            errorPolicy: 'all',
+        }).then(({ data: createChatData, errors: createChatErrors }) => {
+            if (createChatData?.Dialogue?.create) {
+                setChatInviteOpen(false);
+                setErrors([]);
+            }
+            if (createChatErrors) {
+                if (createChatErrors[0]?.message == 400) {
+                    const errorObject = createChatErrors[0];
+                    const errorArr = [];
+                    for (const [key, value] of Object.entries(
+                        errorObject?.state
+                    )) {
+                        errorArr.push(`${value[0]}`);
+                        if (key === 'content') {
+                            setErrors(errorArr);
+                        }
+                    }
+                    setErrors(errorArr);
+                }
+            }
         });
     };
 
@@ -50,7 +73,6 @@ export default function CreateChatPrompt({
         onSendInvite({
             _id: user?._id,
         });
-        setChatInviteOpen(false);
     };
 
     const users = userData?.Users?.search?.filter(
@@ -76,11 +98,12 @@ export default function CreateChatPrompt({
                     <Card>
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Typography variant="body1">
-                                Search users
+                                Send connection requests
                             </Typography>
                             <IconButton
                                 onClick={() => {
                                     setChatInviteOpen(false);
+                                    setErrors([]);
                                 }}
                                 size="small"
                                 className="m-1 p-1"
@@ -89,6 +112,7 @@ export default function CreateChatPrompt({
                             </IconButton>
                         </div>
                         <Divider></Divider>
+
                         <div className="space-between mx-3 my-2 center-horizontal">
                             <Paper
                                 variant={
@@ -208,6 +232,31 @@ export default function CreateChatPrompt({
                                     style={{ width: '100%' }}
                                 >
                                     <Typography>No users found</Typography>
+                                </Grid>
+                            )}
+                            {errors?.length > 0 && (
+                                <Grid
+                                    alignContent="center"
+                                    alignItems="center"
+                                    container
+                                    item
+                                    direction="column"
+                                    style={{ width: '100%' }}
+                                >
+                                    {errors?.map((errItem) => (
+                                        <ListItem key={errItem}>
+                                            <ListItemText
+                                                secondary={
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="error"
+                                                    >
+                                                        {`${errItem}`}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    ))}
                                 </Grid>
                             )}
                         </CardContent>

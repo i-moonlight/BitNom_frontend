@@ -3,8 +3,11 @@ import { Card, List, ListItem, ListItemText, Popover } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
+    addToArchivedChats,
+    addToPinnedChats,
     deleteArchivedchat,
     deletePinnedChat,
+    setCurrentChat,
 } from '../../../../store/actions/chatActions';
 import {
     ARCHIVE_CHAT,
@@ -13,7 +16,7 @@ import {
     MARK_CHAT_AS_READ,
     MUTE_CONVERSATION,
     PIN_CHAT,
-    REPORT_USER,
+    REPORT_DIALOGUE_USER,
     UNARCHIVE,
     UNPIN,
 } from '../graphql/queries';
@@ -27,7 +30,7 @@ export default function ChatSettingPopover({
 }) {
     const dispatch = useDispatch();
 
-    const [ArchiveChat] = useMutation(ARCHIVE_CHAT, {
+    const [ArchiveChat, { data: archiveDataRL }] = useMutation(ARCHIVE_CHAT, {
         variables: {
             _id: chat?._id,
         },
@@ -71,21 +74,19 @@ export default function ChatSettingPopover({
         context: { clientName: 'chat' },
     });
 
-    const [ReportUser] = useMutation(REPORT_USER, {
+    const [ReportUser] = useMutation(REPORT_DIALOGUE_USER, {
         variables: {
-            chat: chat?.otherUser?.info,
+            data: {
+                _id: chat?._id,
+                reporter: chat?.currentUser?.info._id._id,
+                reported: chat?.otherUser?.info?._id?._id,
+                reason: 'User sent harmful content,is abusive,sent suspecious content.',
+            },
         },
         context: { clientName: 'chat' },
     });
 
-    const [PinChat] = useMutation(PIN_CHAT, {
-        variables: {
-            _id: chat?._id,
-        },
-        context: { clientName: 'chat' },
-    });
-
-    const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
+    const [PinChat, { data: pinChatData }] = useMutation(PIN_CHAT, {
         variables: {
             _id: chat?._id,
         },
@@ -99,6 +100,13 @@ export default function ChatSettingPopover({
                 context: { clientName: 'chat' },
             },
         ],
+    });
+
+    const [UnpinChat, { data: unpinData }] = useMutation(UNPIN, {
+        variables: {
+            _id: chat?._id,
+        },
+        context: { clientName: 'chat' },
     });
 
     const handleArchiveChat = () => {
@@ -142,7 +150,7 @@ export default function ChatSettingPopover({
     };
 
     useEffect(() => {
-        if (unpinData?.Dialogue?.unpin === true) {
+        if (unpinData?.Dialogue?.unpin?.currentUser?.pinned === false) {
             dispatch(deletePinnedChat(chat));
         }
     }, [dispatch, unpinData, chat]);
@@ -152,6 +160,20 @@ export default function ChatSettingPopover({
             dispatch(deleteArchivedchat(chat));
         }
     }, [dispatch, unarchiveData, chat]);
+    useEffect(() => {
+        if (archiveDataRL?.Dialogue?.archive?.currentUser?.archived === true) {
+            dispatch(addToArchivedChats(archiveDataRL?.Dialogue?.archive));
+            dispatch(setCurrentChat(archiveDataRL?.Dialogue?.archived));
+            dispatch(deletePinnedChat(chat));
+        }
+    }, [dispatch, archiveDataRL, chat]);
+    useEffect(() => {
+        if (pinChatData?.Dialogue?.pin?.currentUser?.pinned === true) {
+            dispatch(addToPinnedChats(pinChatData?.Dialogue?.pin));
+            dispatch(setCurrentChat(pinChatData?.Dialogue?.pin));
+            dispatch(deleteArchivedchat(chat));
+        }
+    }, [dispatch, pinChatData, chat]);
 
     return (
         <Popover
