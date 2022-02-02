@@ -92,7 +92,7 @@ export default function TrendingPostsCard({ trending, loading }) {
                         <ListItem
                             key={post?._id}
                             style={{ zIndex: 1, cursor: 'pointer' }}
-                            onClick={() => history.push(`/posts/${post?._id}`)}
+                            onClick={() => history.push(`/post/${post?._id}`)}
                         >
                             <ListItemAvatar>
                                 <Avatar

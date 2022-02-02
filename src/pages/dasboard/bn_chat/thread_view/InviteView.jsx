@@ -6,8 +6,8 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-import { Button } from '../../../../components/Button';
 import { useDispatch } from 'react-redux';
+import { Button } from '../../../../components/Button';
 import { setCurrentChat } from '../../../../store/actions/chatActions';
 import {
     ACCEPT_DIALOGUE_INVITE,
@@ -45,10 +45,7 @@ export default function InviteView({ dialogue }) {
     };
 
     return (
-        <div
-          
-            className="d-flex justify-content-center align-items-end mx-auto w-100 mt-3"
-        >
+        <div className="d-flex justify-content-center align-items-end mx-auto w-100 mt-3">
             <Card className={classes.cardDefault}>
                 <CardContent>
                     <Typography>

@@ -1,11 +1,11 @@
 import { Button, Card, Typography } from '@mui/material';
-import * as React from 'react';
+import { useState } from 'react';
 import { useStyles } from '../utils/styles';
+import ForumBody from './ForumBody';
 import './styles.css';
-import RecentTab from './RecentTab';
 
 export default function Forum() {
-    const [toggleState, setToggleState] = React.useState(1);
+    const [toggleState, setToggleState] = useState(1);
     const btnColor = useStyles();
 
     const toggleTab = (index) => {
@@ -15,14 +15,16 @@ export default function Forum() {
     const getActiveClass = (index, className) => {
         return toggleState === index ? className : btnColor.bGNormal;
     };
+
     return (
-        <React.Fragment>
-            <Typography color={'textPrimary'} component={'div'}>
-                <div className={'d-flex'}>
-                    {/*<div className={'mt-1 me-4'}>*/}
-                    {/*    <h4 className={'fw-bold'}>Bitcoin Threads</h4>*/}
-                    {/*</div>*/}
-                    <Card>
+        <>
+            <div className={'d-flex align-items-center'}>
+                <Typography
+                    className="me-3"
+                    color="textPrimary"
+                >{`${' '} Threads`}</Typography>
+                <Card>
+                    <div className="m-1">
                         <Button
                             color={'inherit'}
                             className={getActiveClass(1, btnColor.bGActive)}
@@ -47,35 +49,11 @@ export default function Forum() {
                         >
                             Last Month
                         </Button>
-                    </Card>
-                </div>
-                <div>
-                    <div
-                        className={`content ${getActiveClass(
-                            1,
-                            'active-content'
-                        )}`}
-                    >
-                        <RecentTab />
                     </div>
-                    <div
-                        className={`content ${getActiveClass(
-                            2,
-                            'active-content'
-                        )}`}
-                    >
-                        <h2>.</h2>
-                    </div>
-                    <div
-                        className={`content ${getActiveClass(
-                            3,
-                            'active-content'
-                        )}`}
-                    >
-                        <h2>.</h2>
-                    </div>
-                </div>
-            </Typography>
-        </React.Fragment>
+                </Card>
+            </div>
+
+            <ForumBody />
+        </>
     );
 }

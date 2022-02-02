@@ -14,6 +14,7 @@ import { print } from 'graphql';
 import { createClient } from 'graphql-ws';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import MediaQueries from './dev/MediaQueries';
 import Routes from './Routes';
 import { checkSessionTimeOut } from './store/actions/authActions';
 import { changeTheme } from './store/actions/themeActions';
@@ -287,6 +288,8 @@ export default function AppContainers() {
 
             <LightThemeStyles>
                 <Routes apolloClient={client} />
+                {(!process.env.NODE_ENV ||
+                    process.env.NODE_ENV === 'development') && <MediaQueries />}
             </LightThemeStyles>
         </div>
     );

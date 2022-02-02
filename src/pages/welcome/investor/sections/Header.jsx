@@ -1,6 +1,5 @@
 import { useTheme } from '@emotion/react';
 import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
-
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import DonateCard from '../cards/DonateCard';

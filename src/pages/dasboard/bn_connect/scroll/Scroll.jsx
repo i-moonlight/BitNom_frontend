@@ -24,11 +24,11 @@ import {
     Grid,
     Hidden,
     IconButton,
+    ListItem,
+    ListItemText,
     Skeleton,
     Typography,
     useTheme,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
@@ -36,19 +36,18 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { Button } from '../../../../components/Button';
-import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import ReactionButton from '../../../../components/ReactionButton';
 import ReactionHover from '../../../../components/ReactionHover';
+import { getDistanceToNowWithSuffix } from '../../../../components/utilities/date.components';
 import { loadComments } from '../../../../store/actions/postActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
-import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     contentBodyFactory,
     getReactionsSum,
     mentionsFinder,
 } from '../../utilities/functions';
+import { createCommentResponse } from '../../utilities/optimisticResponseObjects';
 import {
     MUTATION_CREATE_COMMENT,
     MUTATION_CREATE_REACTION,
@@ -57,6 +56,7 @@ import {
 } from '../../utilities/queries';
 import SkeletonScrollCard from '../skeleton/SkeletonScrollCard';
 import ScrollOptionsPopover from './ScrollOptionsPopover';
+
 const EmojiPickerPopover = React.lazy(() =>
     import('../popovers/EmojiPickerPopover')
 );
@@ -524,7 +524,7 @@ export default function Scroll({
 
                 <CardContent
                     style={{ zIndex: 1 }}
-                    onClick={() => history.push(`/posts/${scroll?._id}`)}
+                    onClick={() => history.push(`/post/${scroll?._id}`)}
                 >
                     <Typography component="div">
                         <Typography

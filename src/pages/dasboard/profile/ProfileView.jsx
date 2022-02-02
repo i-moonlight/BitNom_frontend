@@ -1,14 +1,14 @@
 import { useQuery } from '@apollo/client';
 import {
+    CircularProgress,
     Container,
     Grid,
     useMediaQuery,
-    CircularProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useEffect } from 'react';
-import Screen from '../../../components/Screen';
 import { ToastContainer } from 'react-toastify';
+import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';

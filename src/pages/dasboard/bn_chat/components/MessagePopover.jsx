@@ -53,17 +53,15 @@ export default function MessagePopover({
         deleteMessage();
     };
 
-    const handleReportMessage = () => {
-        // eslint-disable-next-line no-console
-        console.log('REPORT');
-    };
-
     useEffect(() => {
-        dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        if (data?.Dialogue?.pinMessage !== undefined) {
+            dispatch(addToPinnedMessage(data?.Dialogue?.pinMessage));
+        }
     }, [data?.Dialogue?.pinMessage, dispatch]);
     useEffect(() => {
         dispatch(removeFromMessages(deleteData?.deleteMessageS?.message));
     }, [deleteData, dispatch]);
+
     return (
         <Popover
             anchorEl={messageSettingsAnchorEl}
@@ -123,10 +121,6 @@ export default function MessagePopover({
                         <ListItemText primary="Edit text" />
                     </ListItem>
                 )}
-
-                <ListItem button onClick={handleReportMessage}>
-                    <ListItemText primary="Report Message" />
-                </ListItem>
             </List>
         </Popover>
     );

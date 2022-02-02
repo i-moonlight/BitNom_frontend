@@ -19,8 +19,8 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
-import debounce from 'lodash/debounce';
 import { format } from 'date-fns';
+import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -43,7 +43,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
     const dispatch = useDispatch();
     const state = useSelector((st) => st);
     const theme = useTheme();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const [chatSettingsAnchorEl, setChatSettingsAnchorEl] = useState(null);
     const [debouncedSearchTerm, setDebouncedValues] = useState('');
@@ -139,7 +139,6 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         }
     }, [chat._id, debouncedSearchTerm, searchMessages]);
 
-    //console.log(chat, otherUser, 'chat');
     return (
         <>
             <CardHeader
@@ -181,7 +180,7 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                                     process.env.REACT_APP_BACKEND_URL +
                                         chat?.otherUser?.info?._id
                                             ?.profile_pic ||
-                                    `https://ui-avatars.com/api/?name=${userInitials}&background=fed132`
+                                    `https://ui-avatars.com/api/?name=${userInitials}&background=random`
                                 }
                                 alt={'avatar'}
                             >
@@ -294,11 +293,11 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
                             ) : (
                                 <Typography variant="subtitle2">
                                     last seen{' '}
-                                    {/*  {format(
-                                        new Date(Number(otherUser?.lastSeen)),
+                                    {format(
+                                        new Date(otherUser?.lastSeen),
                                         'MMM do h:mm aaa'
-                                    )} */}
-                                    {format(new Date(), 'MMM do h:mm aaa')}
+                                    )}
+                                    {/* {format(new Date(), 'MMM do h:mm aaa')} */}
                                 </Typography>
                             )}
                         </div>

@@ -11,6 +11,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import Chartjs from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,9 +27,6 @@ import {
     GeneralButton,
 } from '../utils/GeneralButtons';
 import { convertDate, volumePercentage } from '../utils/utilities';
-
-import Chartjs from 'chart.js/auto';
-import 'chartjs-adapter-date-fns';
 
 export default function General({ coinDetail }) {
     const [activeButton, setActiveButton] = useState(0);
@@ -144,7 +143,11 @@ export default function General({ coinDetail }) {
         return (
             <>
                 {description?.split('\n')?.map((c, idx) => (
-                    <p key={idx} dangerouslySetInnerHTML={{ __html: c }} />
+                    <p
+                        key={idx}
+                        className="text-justify"
+                        dangerouslySetInnerHTML={{ __html: c }}
+                    />
                 ))}
             </>
         );

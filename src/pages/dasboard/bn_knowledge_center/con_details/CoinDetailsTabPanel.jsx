@@ -2,7 +2,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Divider, Tab } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
-// import Forum from './partials/forum/Forum';
+import Forum from './partials/forum/Forum';
 import HistoricalData from './partials/HistoricalData';
 import Market from './partials/market/Market';
 import News from './partials/news/News';
@@ -37,7 +37,7 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                         />
                         <Tab label="Market" value="2" style={custom.tabStyle} />
                         <Tab label="News" value="3" style={custom.tabStyle} />
-                        {/* <Tab label="Forum" value="4" style={custom.tabStyle} /> */}
+                        <Tab label="Forum" value="4" style={custom.tabStyle} />
                         <Tab
                             label="Historical Data"
                             value="5"
@@ -60,9 +60,9 @@ export default function CoinDetailsTabPanel({ coinDetail }) {
                 <TabPanel value="3" className={classes.tabPanelRoot}>
                     <News coinDetail={coinDetail} />
                 </TabPanel>
-                {/* <TabPanel value="4" className={classes.tabPanelRoot}>
+                <TabPanel value="4" className={classes.tabPanelRoot}>
                     <Forum />
-                </TabPanel> */}
+                </TabPanel>
                 <TabPanel value="5" className={classes.tabPanelRoot}>
                     <HistoricalData />
                 </TabPanel>

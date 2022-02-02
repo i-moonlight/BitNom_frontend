@@ -1,10 +1,10 @@
+import { useMutation } from '@apollo/client';
 import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../../components/Button';
 import { GET_DIALOGUES, UNBLOCK_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import { useMutation } from '@apollo/client';
 
 export default function Blocked({ otherUser, dialogue }) {
     const classes = useStyles();

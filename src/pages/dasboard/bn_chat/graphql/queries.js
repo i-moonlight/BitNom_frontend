@@ -106,7 +106,7 @@ export const SEARCH_MESSAGES = gql`
             searchMessages(data: $data) {
                 _id
                 text
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -222,7 +222,7 @@ export const GET_DIALOGUE_MESSAGES = gql`
                 }
             ) {
                 _id
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -257,7 +257,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -274,7 +274,7 @@ export const CREATE_DIALOGUE_MESSAGE = gql`
                 responseTo {
                     _id
                     text
-                    author{
+                    author {
                         _id
                         displayName
                         profile_pic
@@ -505,7 +505,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
             chat {
                 _id
             }
-            author{
+            author {
                 _id
                 displayName
                 profile_pic
@@ -597,7 +597,7 @@ export const PIN_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -629,12 +629,12 @@ export const UNPIN = gql`
 export const UNPIN_MESSAGE = gql`
     mutation unpinMessage($data: OMessageInput!) {
         Dialogue {
-            unpinMessage(data: $data){
+            unpinMessage(data: $data) {
                 _id
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -656,7 +656,7 @@ export const UPDATE_MESSAGE = gql`
                 chat {
                     _id
                 }
-                author{
+                author {
                     _id
                     displayName
                     profile_pic
@@ -700,7 +700,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             chat {
                 _id
             }
-            author{
+            author {
                 _id
                 displayName
                 profile_pic
@@ -717,7 +717,7 @@ export const MESSAGE_UPDATE_SUB = gql`
             responseTo {
                 _id
                 text
-                author{
+                author {
                     _id
                     displayName
                     profile_pic

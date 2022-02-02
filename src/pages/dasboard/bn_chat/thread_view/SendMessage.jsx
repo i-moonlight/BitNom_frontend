@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client';
-import { CircularProgress } from '@mui/material';
 import {
     AttachFile,
     Close,
@@ -13,28 +12,28 @@ import {
     Card,
     CardContent,
     CardHeader,
+    CardMedia,
+    CircularProgress,
     Divider,
+    Grid,
     IconButton,
     InputBase,
+    ListItem,
+    ListItemText,
     Paper,
     Stack,
     Typography,
     useMediaQuery,
     useTheme,
-    Grid,
-    CardMedia,
-    ListItemText,
-    ListItem,
 } from '@mui/material';
 import { styled } from '@mui/styles';
-
 import debounce from 'lodash/debounce';
 import React, {
+    Suspense,
     useCallback,
     useEffect,
     useRef,
     useState,
-    Suspense,
 } from 'react';
 import { Button } from '../../../../components/Button';
 import {
@@ -88,7 +87,7 @@ export default function SendMessage({
     const isEmojiPickerOpen = Boolean(emojiPickerAnchorEl);
     const theme = useTheme();
     const classes = useStyles();
-    const xsDown = useMediaQuery('(max-width:599px)');
+    const xsDown = useMediaQuery('(max-width:1200px)');
 
     const isMediaUploadOpen = Boolean(mediaUploadAnchorEl);
 
