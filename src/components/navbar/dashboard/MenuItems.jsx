@@ -147,7 +147,24 @@ export default function ListItems({ handleMenuClose }) {
                     </ListItem>
                 </>
             )}
-
+            <ListItem
+                        divider
+                        button
+                        onClick={() => {
+                            palette == 'light'
+                                ? dispatch(changeTheme('dark'))
+                                : dispatch(changeTheme('light'));
+                        }}
+                    >
+                        <ListItemText primary="Switch Theme" />
+                        <ListItemIcon>
+                            {palette == 'light' ? (
+                                <Brightness4Rounded />
+                            ) : (
+                                <Brightness7Rounded />
+                            )}
+                        </ListItemIcon>
+                    </ListItem>
             <ListItem button divider onClick={handleMenuClose}>
                 <ListItemText
                     primary={
