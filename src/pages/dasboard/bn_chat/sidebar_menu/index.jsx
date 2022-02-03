@@ -171,10 +171,16 @@ function Chats({ onSetChatMobile }) {
     };
 
     const openChat = (chat) => {
-        dispatch(setCurrentChat(chat));
+        const current_chat = state.chats.current_chat;
+
+        if (current_chat?._id !== chat?._id) {
+            dispatch(setCurrentChat(chat));
+        }
+        // if (current_chat?._id === chat?._id) {
         xsDown && onSetChatMobile();
         onResetUnreadCount(chat?._id);
         dispatch(resetTotalCount());
+        // }
     };
 
     return (

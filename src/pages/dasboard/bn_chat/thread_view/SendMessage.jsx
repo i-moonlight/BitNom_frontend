@@ -392,14 +392,13 @@ export default function SendMessage({
         setMessageDoc(allowedFiles);
     };
     const editing = editText?.text?.length > 0 ? true : false;
-
     return (
         <>
             <div>
                 {replyText && (
                     <Card variant="outlined" className={classes.promptCard}>
                         <CardHeader
-                            className="bg-primary"
+                            // className="bg-primary"
                             style={{ marginTop: '-15px' }}
                             action={
                                 <IconButton
@@ -415,7 +414,10 @@ export default function SendMessage({
                                     component="span"
                                     style={{ margin: '1px 5px' }}
                                 >
-                                    <strong>{replyText.author?._id}</strong>
+                                    <small>
+                                        {' '}
+                                        <strong>@{replyText.author}</strong>
+                                    </small>
                                 </Typography>
                             }
                         />
@@ -602,6 +604,8 @@ export default function SendMessage({
                             <Stack
                                 direction="row"
                                 alignItems="center"
+                                display="flex"
+                                justifyContent="center"
                                 spacing={2}
                             >
                                 {openImage ? (
