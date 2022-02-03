@@ -272,7 +272,7 @@ export default function Signup() {
                                             </Alert>
                                         ))}
                                     <GoogleLogin
-                                        clientId="705645298803-6e7phqmcmacbedmortua8t3obsqfif37.apps.googleusercontent.com"
+                                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                                         buttonText="Login Google"
                                         onSuccess={responseGoogle}
                                         onFailure={failureGoogle}
