@@ -48,6 +48,7 @@ function Chats({ onSetChatMobile }) {
     const searchedChats = state.chats.searchedChats;
     const activeChatId = state?.chats?.current_chat?._id;
 
+   
     const xsDown = useMediaQuery('(max-width:1200px)');
 
     const { data, loading } = useQuery(GET_DIALOGUES, {
