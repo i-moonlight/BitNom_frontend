@@ -139,6 +139,8 @@ export default function ChatHeader({ chat, onExitChatMobile }) {
         }
     }, [chat._id, debouncedSearchTerm, searchMessages]);
 
+  
+
     return (
         <>
             <CardHeader

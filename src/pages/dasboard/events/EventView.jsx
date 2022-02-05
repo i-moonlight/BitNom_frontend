@@ -193,9 +193,7 @@ export default function EventView() {
                 },
             ],
         });
-        toast.success('Added to saved items', {
-            autoClose: 3000,
-        });
+        toast.success('Added to saved items');
         handleEventOptionsClose();
     };
 
