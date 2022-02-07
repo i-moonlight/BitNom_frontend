@@ -3,6 +3,16 @@
     "version": "0.1.0",
     "private": true,
     "author": "thecodeinfluencer <mbenjerminne@gmail.com>",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "postxxbuild": "react-snap",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
+        "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
+        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"forum updates\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
+    },
     "dependencies": {
         "@apollo/client": "^3.3.21",
         "@emotion/react": "^11.4.1",
@@ -74,16 +84,6 @@
         "workbox-strategies": "^6.3.0",
         "workbox-streams": "^6.3.0",
         "yup": "^0.32.9"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "postxxbuild": "react-snap",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "pretty": "prettier --write \"./**/*.{js,jsx,json}\"",
-        "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-        "push": "yarn pretty && echo ===== Done Prettifying Files ===== && yarn lint && echo ===== Done Linting Files ===== && git config --global user.email \"mbenjerminne@gmail.com\" &&  git config --global user.name \"thecodeinfluencer\" && git add . && echo ===== Done Adding Files ===== && git commit -m \"forum updates\" && echo ===== Done Commiting Files ===== && git push origin next && echo ===== Done pushing Files ====="
     },
     "browserslist": {
         "production": [
