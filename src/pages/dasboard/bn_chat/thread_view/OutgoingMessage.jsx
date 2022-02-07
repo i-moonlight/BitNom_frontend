@@ -59,13 +59,7 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                             <strong>@{author}</strong>
                         </small>
                     </Link>
-                    {message?.edited === true ? (
-                        <div className={classes.Edited}>
-                            <strong>(Edited)</strong>
-                        </div>
-                    ) : (
-                        ''
-                    )}
+                    
                     {customDown ? (
                         <div className={classes.reply}>
                             <IconButton
@@ -182,7 +176,10 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     component="div"
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
-                        {message?.text}
+                        {message?.text}{message?.edited === true ? ( <strong>(Edited)</strong>    
+                            ) : (
+                                ''
+                            )}
                     </ReactMarkdown>
                 </Typography>
 

@@ -170,12 +170,11 @@ function Chats({ onSetChatMobile }) {
 
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
-
+        mdDown && onSetChatMobile();
         if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
         }
         if (chat?.status == 'accepted') {
-            mdDown && onSetChatMobile();
             onResetUnreadCount(chat?._id);
             dispatch(resetTotalCount());
             handleResetCount(chat?._id);
