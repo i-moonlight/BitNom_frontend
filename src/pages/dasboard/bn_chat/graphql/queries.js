@@ -613,7 +613,9 @@ export const PIN_MESSAGE = gql`
 export const UNARCHIVE = gql`
     mutation unarchive($_id: ID!) {
         Dialogue {
-            unarchive(_id: $_id)
+            unarchive(_id: $_id){
+                ${dialogueSubFields}
+            }
         }
     }
 `;
