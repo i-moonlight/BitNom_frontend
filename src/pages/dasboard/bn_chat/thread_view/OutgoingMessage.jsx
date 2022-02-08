@@ -176,11 +176,12 @@ export default function OutgoingMessage({ chat, message, onClick }) {
                     component="div"
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
-                        {message?.text}{message?.edited === true ? ( <strong>(Edited)</strong>    
+                        {message?.text}
+                    </ReactMarkdown>
+                    <span>{message?.edited === true ? ( <strong>(Edited)</strong>    
                             ) : (
                                 ''
-                            )}
-                    </ReactMarkdown>
+                            )}</span>
                 </Typography>
 
                 <div className={classes.reply}>

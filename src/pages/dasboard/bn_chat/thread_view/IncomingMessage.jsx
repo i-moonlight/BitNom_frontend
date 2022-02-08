@@ -184,12 +184,13 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     component="div"
                 >
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
-                        {message?.text}{message?.edited === true ? (
+                        {message?.text}
+                    </ReactMarkdown>
+                    {message?.edited === true ? (
                             <strong>(Edited)</strong>
                     ) : (
                         ''
                     )}
-                    </ReactMarkdown>
                 </Typography>
                 
             </Paper>
