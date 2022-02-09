@@ -150,30 +150,35 @@ export default function ChatSettingPopover({
     };
 
     useEffect(() => {
-        if (unpinData?.Dialogue?.unpin?.currentUser?.pinned === false) {
-            dispatch(deletePinnedChat(chat));
+        if (unpinData?.Dialogue?.unpin) {
+            dispatch(setCurrentChat(unpinData?.Dialogue?.unpin));
         }
-    }, [dispatch, unpinData, chat]);
+        if (unpinData?.Dialogue?.unpin?.currentUser?.pinned === false) {
+            dispatch(deletePinnedChat(unpinData?.Dialogue?.unpin));
+        }
+    }, [dispatch, unpinData]);
 
     useEffect(() => {
-        if (unarchiveData?.Dialogue?.unarchive === true) {
-            dispatch(deleteArchivedchat(chat));
+        if (unarchiveData?.Dialogue?.unarchive) {
+            dispatch(setCurrentChat(unarchiveData?.Dialogue?.unarchive));
+            dispatch(deleteArchivedchat(unarchiveData?.Dialogue?.unarchive));
         }
-    }, [dispatch, unarchiveData, chat]);
+    }, [dispatch, unarchiveData]);
     useEffect(() => {
         if (archiveDataRL?.Dialogue?.archive?.currentUser?.archived === true) {
             dispatch(addToArchivedChats(archiveDataRL?.Dialogue?.archive));
-            dispatch(setCurrentChat(archiveDataRL?.Dialogue?.archived));
-            dispatch(deletePinnedChat(chat));
+            dispatch(setCurrentChat(archiveDataRL?.Dialogue?.archive));
+            dispatch(deletePinnedChat(archiveDataRL?.Dialogue?.archive));
         }
-    }, [dispatch, archiveDataRL, chat]);
+    }, [dispatch, archiveDataRL]);
     useEffect(() => {
         if (pinChatData?.Dialogue?.pin?.currentUser?.pinned === true) {
             dispatch(addToPinnedChats(pinChatData?.Dialogue?.pin));
             dispatch(setCurrentChat(pinChatData?.Dialogue?.pin));
-            dispatch(deleteArchivedchat(chat));
+            dispatch(deleteArchivedchat(pinChatData?.Dialogue?.pin));
         }
-    }, [dispatch, pinChatData, chat]);
+
+    }, [dispatch, pinChatData]);
 
     return (
         <Popover
