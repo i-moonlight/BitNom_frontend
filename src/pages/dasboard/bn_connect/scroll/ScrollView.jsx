@@ -392,7 +392,7 @@ function PostView() {
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-
+        if(comment_text.length < 1) return;
         const mentionsData = mentionsFinder(comment_text);
         onCreateComment({
             content: mentionsData.content,

@@ -6,9 +6,10 @@ import {
     useMediaQuery,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Screen from '../../../components/Screen';
+import ImagePreview from '../../../components/ImagePreview';
 import SEO from '../../../components/SEO';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileView({ match }) {
     const classes = useStyles();
     const mdDown = useMediaQuery('(max-width:1279px)');
+    const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
+    const [imagePreviewURL, setImagePreviewURL] = useState(null);
     // const state = useSelector(st => st);
     // const profile = state.auth.user;
 
@@ -93,7 +96,12 @@ export default function ProfileView({ match }) {
                         )}
                         {!loading && data && (
                             <Grid item xs={12} sm={12} md={8} lg={6}>
-                                <ProfileCard profile={profile} profileView />
+                                <ProfileCard 
+                                setImagePreviewOpen={setImagePreviewOpen}
+                                setImagePreviewURL={setImagePreviewURL} 
+                                profile={profile} 
+                                profileView 
+                                />
                                 <InsightCard profile={profile} profileView />
                                 <AboutCard profile={profile} profileView />
                                 <WorkCard profile={profile} profileView />
@@ -110,6 +118,14 @@ export default function ProfileView({ match }) {
                     </Grid>
                 </Container>
             </div>
+            <ImagePreview
+                open={imagePreviewOpen}
+                imgURL={imagePreviewURL}
+                onClose={() => {
+                    setImagePreviewOpen(false);
+                    setImagePreviewURL(null);
+                }}
+            />
         </Screen>
     );
 }
