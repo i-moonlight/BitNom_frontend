@@ -352,7 +352,7 @@ export default function Comment({
 
     const handleCreateReply = (e) => {
         e.preventDefault();
-
+        if (reply.trim() == '') return;
         const mentionsData = mentionsFinder(reply);
         onCreateComment({
             content: mentionsData.content,

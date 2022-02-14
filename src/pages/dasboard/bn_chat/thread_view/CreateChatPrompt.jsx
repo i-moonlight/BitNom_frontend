@@ -24,6 +24,11 @@ import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
+import { useDispatch } from 'react-redux';
+import {
+    setCurrentChat,
+    
+} from '../../../../store/actions/chatActions';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -31,7 +36,7 @@ export default function CreateChatPrompt({
 }) {
     const theme = useTheme();
     const classes = useStyles();
-
+    const dispatch = useDispatch();
     const [errors, setErrors] = useState([]);
 
     const [searchUsers, { loading: userLoading, data: userData }] =
@@ -48,6 +53,10 @@ export default function CreateChatPrompt({
             errorPolicy: 'all',
         }).then(({ data: createChatData, errors: createChatErrors }) => {
             if (createChatData?.Dialogue?.create) {
+                const dialogue = createChatData?.Dialogue?.create;
+                if(dialogue?.status !== 'new'){
+                    dispatch(setCurrentChat(dialogue));
+                }
                 setChatInviteOpen(false);
                 setErrors([]);
             }
@@ -59,6 +68,9 @@ export default function CreateChatPrompt({
                         errorObject?.state
                     )) {
                         errorArr.push(`${value[0]}`);
+                        if (key === 'acceptedI' || key === 'acceptedR') {
+                            setChatInviteOpen(false);
+                        }
                         if (key === 'content') {
                             setErrors(errorArr);
                         }

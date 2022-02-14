@@ -12,6 +12,7 @@ import {
     Card,
     CardContent,
     CardMedia,
+    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -542,14 +543,21 @@ export default function CreatePost({
                                         );
                                     })} */}
                                 </div>
-
-                                <Button
-                                    size="small"
-                                    onClick={handleCreatePost}
-                                    disabled={loading}
-                                >
-                                    Post
-                                </Button>
+                                {loading ? (
+                                    <CircularProgress
+                                        color="primary"
+                                        size={24}
+                                        thickness={4}
+                                    />
+                                ) : (
+                                    <Button
+                                        size="small"
+                                        onClick={handleCreatePost}
+                                        //disabled={loading}
+                                    >
+                                        Post
+                                    </Button>
+                                )}
                             </div>
                         </CardContent>
                         <EmojiPickerPopover

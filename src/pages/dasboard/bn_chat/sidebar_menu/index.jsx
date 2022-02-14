@@ -2,8 +2,6 @@ import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import {
     CircularProgress,
     Grid,
-    List,
-    ListSubheader,
     useMediaQuery,
 } from '@mui/material';
 import { useEffect } from 'react';
@@ -28,7 +26,7 @@ import {
     RESET_UNREAD_COUNT,
 } from '../graphql/queries';
 import Archived from './archived';
-import ChatItem from './chat';
+import Accepted from './accepted';
 import Invites from './invites';
 import Pinned from './pinned';
 import SearchedChats from './SearchedChats';
@@ -38,8 +36,8 @@ function Chats({ onSetChatMobile }) {
     const state = useSelector((st) => st);
     const user = state.auth.user;
     const chats = state.chats.chats
-        .filter((chat) => chat.status !== 'rejected')
-        .sort((a, b) => a.lastMessage.date - b.lastMessage.date);
+        .filter((chat) => chat.currentUser.archived == false)
+        .sort((a, b) => b.lastMessage.date - a.lastMessage.date);
     const invites = state.chats.invites.filter(
         (chat) => chat.status !== 'rejected'
     );
@@ -47,8 +45,8 @@ function Chats({ onSetChatMobile }) {
     const pinned = state.chats.pinnedChats;
     const searchedChats = state.chats.searchedChats;
     const activeChatId = state?.chats?.current_chat?._id;
-
-    const xsDown = useMediaQuery('(max-width:1200px)');
+   
+    const mdDown = useMediaQuery('(max-width:1200px)');
 
     const { data, loading } = useQuery(GET_DIALOGUES, {
         variables: {
@@ -172,60 +170,43 @@ function Chats({ onSetChatMobile }) {
 
     const openChat = (chat) => {
         const current_chat = state.chats.current_chat;
-
+        mdDown && onSetChatMobile();
         if (current_chat?._id !== chat?._id) {
             dispatch(setCurrentChat(chat));
         }
-        // if (current_chat?._id === chat?._id) {
-        xsDown && onSetChatMobile();
-        onResetUnreadCount(chat?._id);
-        dispatch(resetTotalCount());
-        // }
+        if (chat?.status == 'accepted') {
+            onResetUnreadCount(chat?._id);
+            dispatch(resetTotalCount());
+            handleResetCount(chat?._id);
+        }
     };
 
     return (
-        <div style={{ overflowY: 'auto', height: '65vh' }}>
+        <div style={{ overflowY: 'auto', height: '100%' }}>
             {searchedChats?.length > 0 ? (
                 <div>
                     {searchedChats && searchedChats?.length > 0 && (
-                        <SearchedChats searchedChats={searchedChats} />
+                        <SearchedChats activeChatId={activeChatId} openChat={openChat} searchedChats={searchedChats} />
                     )}
                 </div>
             ) : (
                 <div>
                     {invites && invites?.length > 0 && (
-                        <Invites invites={invites} loading={invitesLoading} />
+                        <Invites activeChatId={activeChatId} openChat={openChat} invites={invites} loading={invitesLoading} />
                     )}
 
                     {pinned && pinned?.length > 0 && (
-                        <Pinned pinned={pinned} loading={pinnedLoading} />
+                        <Pinned openChat={openChat} pinned={pinned} loading={pinnedLoading} activeChatId={activeChatId} />
                     )}
                     {chats && chats?.length > 0 && (
-                        <List
-                            component="nav"
-                            subheader={
-                                <ListSubheader component="div">
-                                    Chats
-                                </ListSubheader>
-                            }
-                        >
-                            {chats?.map((chat) => (
-                                <ChatItem
-                                    key={chat._id}
-                                    onClick={() => {
-                                        openChat(chat),
-                                            handleResetCount(chat._id);
-                                    }}
-                                    chat={chat}
-                                    activeChatId={activeChatId}
-                                />
-                            ))}
-                        </List>
+                        <Accepted accepted={chats} openChat={openChat} activeChatId={activeChatId} />
                     )}
                     {archived && archived?.length > 0 && (
                         <Archived
                             archived={archived}
                             loading={archivedLoading}
+                            openChat={openChat}
+                            activeChatId={activeChatId}
                         />
                     )}
                     {loading && !chats?.length > 0 && (
