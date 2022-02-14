@@ -30,7 +30,11 @@ import {
 import ProfileForm from './forms/ProfileForm';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
 
-export default function ProfileCard({ profile, profileView }) {
+export default function ProfileCard({ 
+    profile, 
+    profileView, 
+    setImagePreviewOpen,
+    setImagePreviewURL }) {
     const [showForm, setShowForm] = useState(false);
     const [profilePreviewURL, setProfilePreviewURL] = useState(null);
     const [coverPreviewURL, setCoverPreviewURL] = useState(null);
@@ -55,6 +59,11 @@ export default function ProfileCard({ profile, profileView }) {
     const [unFollowUser, { data: unFollowData }] = useMutation(
         MUTATION_UNFOLLOW_USER
     );
+
+    const handleViewImage = (imageURL) => {
+        setImagePreviewURL(imageURL);
+        setImagePreviewOpen(true);
+    };
 
     const handleFollowUser = (user_id) => {
         followUser({
@@ -274,7 +283,7 @@ export default function ProfileCard({ profile, profileView }) {
                         height: 120,
                         backgroundColor: 'transparent',
                         width: '100%',
-                        cursor: !profileView && 'pointer',
+                        cursor: 'pointer',
                         position: 'absolute',
                     }}
                     onClick={
@@ -284,7 +293,7 @@ export default function ProfileCard({ profile, profileView }) {
                                       .getElementById('cover-image')
                                       .click();
                               }
-                            : undefined
+                            : () => { handleViewImage(coverPreviewURL);}
                     }
                 ></div>
                 <div
@@ -302,6 +311,7 @@ export default function ProfileCard({ profile, profileView }) {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
+                    
                 >
                     {!profileView && (
                         <CameraAltRounded
@@ -313,6 +323,7 @@ export default function ProfileCard({ profile, profileView }) {
                                               .click();
                                       }
                                     : undefined
+                                    
                             }
                         />
                     )}
@@ -368,7 +379,7 @@ export default function ProfileCard({ profile, profileView }) {
                                                   )
                                                   .click();
                                           }
-                                        : undefined
+                                        : () => { handleViewImage(profilePreviewURL);}
                                 }
                             >
                                 {!profileView && (

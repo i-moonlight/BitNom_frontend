@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
+import { Container, Grid, Typography, useMediaQuery, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -315,15 +315,17 @@ export default function BnConnect() {
                                                 loadMore(feed?.posts?.length)
                                             }
                                         >
-                                            more posts...
+                                           Load more posts
                                         </Button>
                                     </Grid>
                                 )}
                             {loadingMore && (
                                 <Grid align="center">
-                                    <Typography color="primary">
-                                        Loading ...
-                                    </Typography>
+                                     <CircularProgress
+                                            color="primary"
+                                            size={24}
+                                            thickness={4}
+                                        />
                                 </Grid>
                             )}
 

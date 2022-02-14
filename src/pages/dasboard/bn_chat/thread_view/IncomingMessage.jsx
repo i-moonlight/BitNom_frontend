@@ -59,7 +59,7 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link to={`/profile`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/users/${author}`} style={{ textDecoration: 'none' }}>
                         <small className={classes.author}>
                             <strong>@{author}</strong>
                         </small>
