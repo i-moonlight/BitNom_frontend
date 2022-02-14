@@ -20,7 +20,6 @@ import { useStyles } from '../../utils/styles';
 export default function SideBarHeader() {
     const [searchTerm, setSearchString] = useState('');
     const [createChatOpen, setCreateChatInviteOpen] = useState(false);
-
     const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -53,6 +52,15 @@ export default function SideBarHeader() {
         }
     }, [searchChats, searchTerm]);
 
+    useEffect(() => {
+        if (searchTerm) {
+            const timeoutId = setTimeout(() => {
+                setSearchString('');
+            }, 10000);
+            return () => clearTimeout(timeoutId);
+        }
+    }, [searchTerm]);
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between my-2">
@@ -79,7 +87,6 @@ export default function SideBarHeader() {
             >
                 <IconButton
                     size="small"
-                    type="submit"
                     className={'m-1 p-1' + classes.iconButton}
                     aria-label="search"
                 >
