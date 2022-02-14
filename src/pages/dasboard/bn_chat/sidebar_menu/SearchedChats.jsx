@@ -6,6 +6,7 @@ import {
     List,
     ListSubheader,
     Tooltip,
+    Typography,
 } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,22 +34,22 @@ export default function SearchedChats({ searchedChats }) {
                 <List
                     component="nav"
                     subheader={
-                        <ListSubheader
-                            component="div"
-                            className="d-flex align-items-center justify-content-between my-1"
-                        >
-                            searched chats{' '}
-                            <Tooltip title="Clear search">
-                                <IconButton
-                                    className="align-items-end"
-                                    onClick={() => clearSearch()}
-                                    size="small"
-                                >
-                                    <DeleteRounded
-                                        style={{ fontSize: '18px' }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
+                        <ListSubheader>
+                            <div className="d-flex align-items-center justify-content-between my-1">
+                                <Typography>searched chats </Typography>
+                                <div className="align-items-end">
+                                    <Tooltip title="Clear search">
+                                        <IconButton
+                                            onClick={() => clearSearch()}
+                                            size="small"
+                                        >
+                                            <DeleteRounded
+                                                style={{ fontSize: '18px' }}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            </div>
                             <Divider />
                         </ListSubheader>
                     }
