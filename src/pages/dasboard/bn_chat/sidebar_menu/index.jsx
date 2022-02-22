@@ -1,9 +1,5 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
-import {
-    CircularProgress,
-    Grid,
-    useMediaQuery,
-} from '@mui/material';
+import { CircularProgress, Grid, useMediaQuery } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,8 +21,8 @@ import {
     NEW_CHAT_ADDED,
     RESET_UNREAD_COUNT,
 } from '../graphql/queries';
-import Archived from './archived';
 import Accepted from './accepted';
+import Archived from './archived';
 import Invites from './invites';
 import Pinned from './pinned';
 import SearchedChats from './SearchedChats';
@@ -45,7 +41,7 @@ function Chats({ onSetChatMobile }) {
     const pinned = state.chats.pinnedChats;
     const searchedChats = state.chats.searchedChats;
     const activeChatId = state?.chats?.current_chat?._id;
-   
+
     const mdDown = useMediaQuery('(max-width:1200px)');
 
     const { data, loading } = useQuery(GET_DIALOGUES, {
@@ -186,20 +182,38 @@ function Chats({ onSetChatMobile }) {
             {searchedChats?.length > 0 ? (
                 <div>
                     {searchedChats && searchedChats?.length > 0 && (
-                        <SearchedChats activeChatId={activeChatId} openChat={openChat} searchedChats={searchedChats} />
+                        <SearchedChats
+                            activeChatId={activeChatId}
+                            openChat={openChat}
+                            searchedChats={searchedChats}
+                        />
                     )}
                 </div>
             ) : (
                 <div>
                     {invites && invites?.length > 0 && (
-                        <Invites activeChatId={activeChatId} openChat={openChat} invites={invites} loading={invitesLoading} />
+                        <Invites
+                            activeChatId={activeChatId}
+                            openChat={openChat}
+                            invites={invites}
+                            loading={invitesLoading}
+                        />
                     )}
 
                     {pinned && pinned?.length > 0 && (
-                        <Pinned openChat={openChat} pinned={pinned} loading={pinnedLoading} activeChatId={activeChatId} />
+                        <Pinned
+                            openChat={openChat}
+                            pinned={pinned}
+                            loading={pinnedLoading}
+                            activeChatId={activeChatId}
+                        />
                     )}
                     {chats && chats?.length > 0 && (
-                        <Accepted accepted={chats} openChat={openChat} activeChatId={activeChatId} />
+                        <Accepted
+                            accepted={chats}
+                            openChat={openChat}
+                            activeChatId={activeChatId}
+                        />
                     )}
                     {archived && archived?.length > 0 && (
                         <Archived

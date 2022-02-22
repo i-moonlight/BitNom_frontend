@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import React, { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const CoinDetails = React.lazy(() =>
@@ -82,6 +83,9 @@ const BnConnect = React.lazy(() =>
 );
 
 export default function Routes({ apolloClient }) {
+    const state = useSelector((st) => st);
+    const palette = state.theme.palette;
+
     return (
         <>
             <BrowserRouter>
@@ -99,7 +103,10 @@ export default function Routes({ apolloClient }) {
                                         alignItems: 'center',
                                         width: '100%',
                                         height: '100%',
-                                        backgroundColor: '#000',
+                                        backgroundColor:
+                                            palette === 'dark'
+                                                ? '#000'
+                                                : '#fff',
                                         zIndex: 2100,
                                     }}
                                 >

@@ -4,7 +4,7 @@ import {
     HttpLink,
     InMemoryCache,
     split,
-} from '@apollo/client/';
+} from '@apollo/client';
 import { ApolloLink, Observable } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';

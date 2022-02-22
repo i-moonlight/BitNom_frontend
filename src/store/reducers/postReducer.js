@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 const initialState = {
     list: [],
     trending: [],

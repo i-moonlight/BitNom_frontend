@@ -19,16 +19,13 @@ import {
     useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCurrentChat } from '../../../../store/actions/chatActions';
 import { getUserInitials } from '../../../../utilities/Helpers';
 import { generateRandomColor } from '../../utilities/functions';
 import { QUERY_SEARCH_USERS } from '../../utilities/queries';
 import { CREATE_DIALOGUE } from '../graphql/queries';
 import { useStyles } from '../utils/styles';
-import { useDispatch } from 'react-redux';
-import {
-    setCurrentChat,
-    
-} from '../../../../store/actions/chatActions';
 
 export default function CreateChatPrompt({
     openChatInvite,
@@ -54,7 +51,7 @@ export default function CreateChatPrompt({
         }).then(({ data: createChatData, errors: createChatErrors }) => {
             if (createChatData?.Dialogue?.create) {
                 const dialogue = createChatData?.Dialogue?.create;
-                if(dialogue?.status !== 'new'){
+                if (dialogue?.status !== 'new') {
                     dispatch(setCurrentChat(dialogue));
                 }
                 setChatInviteOpen(false);

@@ -186,7 +186,10 @@ export default function Login() {
                                             ))}
 
                                         <GoogleLogin
-                                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                                            clientId={
+                                                process.env
+                                                    .REACT_APP_GOOGLE_CLIENT_ID
+                                            }
                                             buttonText="Login Google"
                                             onSuccess={responseGoogle}
                                             onFailure={failureGoogle}

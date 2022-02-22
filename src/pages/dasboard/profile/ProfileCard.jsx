@@ -30,11 +30,12 @@ import {
 import ProfileForm from './forms/ProfileForm';
 import { MUTATION_UPDATE_PROFILE } from './utilities/profile.queries';
 
-export default function ProfileCard({ 
-    profile, 
-    profileView, 
+export default function ProfileCard({
+    profile,
+    profileView,
     setImagePreviewOpen,
-    setImagePreviewURL }) {
+    setImagePreviewURL,
+}) {
     const [showForm, setShowForm] = useState(false);
     const [profilePreviewURL, setProfilePreviewURL] = useState(null);
     const [coverPreviewURL, setCoverPreviewURL] = useState(null);
@@ -293,7 +294,9 @@ export default function ProfileCard({
                                       .getElementById('cover-image')
                                       .click();
                               }
-                            : () => { handleViewImage(coverPreviewURL);}
+                            : () => {
+                                  handleViewImage(coverPreviewURL);
+                              }
                     }
                 ></div>
                 <div
@@ -311,7 +314,6 @@ export default function ProfileCard({
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
-                    
                 >
                     {!profileView && (
                         <CameraAltRounded
@@ -323,7 +325,6 @@ export default function ProfileCard({
                                               .click();
                                       }
                                     : undefined
-                                    
                             }
                         />
                     )}
@@ -379,7 +380,11 @@ export default function ProfileCard({
                                                   )
                                                   .click();
                                           }
-                                        : () => { handleViewImage(profilePreviewURL);}
+                                        : () => {
+                                              handleViewImage(
+                                                  profilePreviewURL
+                                              );
+                                          }
                                 }
                             >
                                 {!profileView && (
