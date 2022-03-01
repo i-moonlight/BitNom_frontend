@@ -8,8 +8,8 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import Screen from '../../../components/Screen';
 import ImagePreview from '../../../components/ImagePreview';
+import Screen from '../../../components/Screen';
 import SEO from '../../../components/SEO';
 import AboutCard from './AboutCard';
 import AdditionalInfoCard from './AdditionalInfoCard';
@@ -96,11 +96,11 @@ export default function ProfileView({ match }) {
                         )}
                         {!loading && data && (
                             <Grid item xs={12} sm={12} md={8} lg={6}>
-                                <ProfileCard 
-                                setImagePreviewOpen={setImagePreviewOpen}
-                                setImagePreviewURL={setImagePreviewURL} 
-                                profile={profile} 
-                                profileView 
+                                <ProfileCard
+                                    setImagePreviewOpen={setImagePreviewOpen}
+                                    setImagePreviewURL={setImagePreviewURL}
+                                    profile={profile}
+                                    profileView
                                 />
                                 <InsightCard profile={profile} profileView />
                                 <AboutCard profile={profile} profileView />

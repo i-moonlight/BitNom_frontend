@@ -59,12 +59,15 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     component="div"
                     style={{ marginLeft: '16px' }}
                 >
-                    <Link to={`/users/${author}`} style={{ textDecoration: 'none' }}>
+                    <Link
+                        to={`/users/${author}`}
+                        style={{ textDecoration: 'none' }}
+                    >
                         <small className={classes.author}>
                             <strong>@{author}</strong>
                         </small>
                     </Link>
-                    
+
                     {xsDown ? (
                         <div className={classes.reply}>
                             <IconButton
@@ -186,13 +189,8 @@ export default function IncomingMessage({ message, chat, onClick }) {
                     <ReactMarkdown components={{ code: Code, Link: LinkTag }}>
                         {message?.text}
                     </ReactMarkdown>
-                    {message?.edited === true ? (
-                            <strong>(Edited)</strong>
-                    ) : (
-                        ''
-                    )}
+                    {message?.edited === true ? <strong>(Edited)</strong> : ''}
                 </Typography>
-                
             </Paper>
             <div className={classes.time}>
                 <small>

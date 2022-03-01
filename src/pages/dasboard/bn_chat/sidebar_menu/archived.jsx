@@ -10,8 +10,12 @@ import {
 import React from 'react';
 import ChatItem from './chat';
 
-export default function Archived({ archived, loading, openChat, activeChatId }) {
-   
+export default function Archived({
+    archived,
+    loading,
+    openChat,
+    activeChatId,
+}) {
     return (
         <>
             {archived && archived?.length > 0 && (

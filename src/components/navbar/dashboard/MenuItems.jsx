@@ -23,9 +23,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { signout } from '../../../store/actions/authActions';
-import {
-    clearAllChatData,
-} from '../../../store/actions/chatActions';
+import { clearAllChatData } from '../../../store/actions/chatActions';
 import { resetCount } from '../../../store/actions/countActions';
 import { changeTheme } from '../../../store/actions/themeActions';
 import {
@@ -151,23 +149,23 @@ export default function ListItems({ handleMenuClose }) {
                 </>
             )}
             <ListItem
-                        divider
-                        button
-                        onClick={() => {
-                            palette == 'light'
-                                ? dispatch(changeTheme('dark'))
-                                : dispatch(changeTheme('light'));
-                        }}
-                    >
-                        <ListItemText primary="Switch Theme" />
-                        <ListItemIcon>
-                            {palette == 'light' ? (
-                                <Brightness4Rounded />
-                            ) : (
-                                <Brightness7Rounded />
-                            )}
-                        </ListItemIcon>
-                    </ListItem>
+                divider
+                button
+                onClick={() => {
+                    palette == 'light'
+                        ? dispatch(changeTheme('dark'))
+                        : dispatch(changeTheme('light'));
+                }}
+            >
+                <ListItemText primary="Switch Theme" />
+                <ListItemIcon>
+                    {palette == 'light' ? (
+                        <Brightness4Rounded />
+                    ) : (
+                        <Brightness7Rounded />
+                    )}
+                </ListItemIcon>
+            </ListItem>
             <ListItem button divider onClick={handleMenuClose}>
                 <ListItemText
                     primary={
@@ -237,8 +235,14 @@ export default function ListItems({ handleMenuClose }) {
                 </>
             )}
 
-            <ListItem divider button onClick={() => {dispatch(signout());
-            dispatch(clearAllChatData());}}>
+            <ListItem
+                divider
+                button
+                onClick={() => {
+                    dispatch(signout());
+                    dispatch(clearAllChatData());
+                }}
+            >
                 <ListItemText primary="Sign Out" />
                 <ListItemIcon>
                     <ExitToAppRounded color="secondary" />

@@ -15,7 +15,7 @@ export default function BnChat() {
 
     return (
         <Screen>
-             <SEO
+            <SEO
                 title="Chat | Bitnorm"
                 url={`${window.location.origin}/chat`}
                 description={`Chat with your connections`}

@@ -177,7 +177,6 @@ export default function ChatSettingPopover({
             dispatch(setCurrentChat(pinChatData?.Dialogue?.pin));
             dispatch(deleteArchivedchat(pinChatData?.Dialogue?.pin));
         }
-
     }, [dispatch, pinChatData]);
 
     return (
