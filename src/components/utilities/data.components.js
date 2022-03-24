@@ -55,6 +55,7 @@ export const tabs = [
     // { label: 'Job Board' },
     { label: 'Events', link: '/events' },
     { label: 'BN Chat', link: '/chat' },
+    { label: 'Forum', link: '/forum' },
     {
         label: 'Investors',
         extLink: '/investors',

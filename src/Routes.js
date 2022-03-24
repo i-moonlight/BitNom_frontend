@@ -82,6 +82,8 @@ const BnConnect = React.lazy(() =>
     import('./pages/dasboard/bn_connect/BnConnect')
 );
 
+const Forum = React.lazy(() => import('./pages/dasboard/bn_forum/Forum'));
+
 export default function Routes({ apolloClient }) {
     const state = useSelector((st) => st);
     const palette = state.theme.palette;
@@ -241,6 +243,7 @@ export default function Routes({ apolloClient }) {
                                     path="/connect/trending"
                                 />
                                 <Route exact component={BnChat} path="/chat" />
+                                <Route exact component={Forum} path="/forum" />
                                 <Route
                                     exact
                                     // component={BnServices}
