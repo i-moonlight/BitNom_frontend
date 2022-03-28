@@ -227,8 +227,12 @@ export default function NavBar() {
             setTabValue(4);
         }
 
-        if (window.location.pathname?.includes('/investors')) {
+        if (window.location.pathname?.includes('/forum')) {
             setTabValue(5);
+        }
+
+        if (window.location.pathname?.includes('/investors')) {
+            setTabValue(6);
         }
     }, [history, user?.email, user?.email?.verified]);
 
