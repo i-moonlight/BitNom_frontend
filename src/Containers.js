@@ -95,7 +95,7 @@ const wsLink = new WebSocketLink({
 ]); */
 
 const profileLink = createUploadLink({
-    uri: backendUri + '/users/graphql',
+    uri: backendUri + '/graphql',
     credentials: 'include',
     headers: {
         'keep-alive': 'true',
